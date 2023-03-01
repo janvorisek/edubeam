@@ -7,11 +7,18 @@ $font: "Barlow", sans-serif;
 
 @import url("https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,200;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,200;1,300;1,500;1,600;1,900&family=Inter:wght@100;300;400;700&display=swap");
 
+.v-main {
+  height: 100dvh !important; /* Fallback for browsers that do not support Custom Properties */
+  height: calc(var(--dvh, 1dvh) * 100 - 48px) !important;
+
+}
+
 html, body, #app, .v-application, .v-application__wrap, .v-navigation-drawer {
   height: 100dvh !important; /* Fallback for browsers that do not support Custom Properties */
   height: calc(var(--dvh, 1dvh) * 100) !important;
   min-height: 100dvh !important; /* Fallback for browsers that do not support Custom Properties */
   min-height: calc(var(--dvh, 1dvh) * 100) !important;
+  overflow: hidden;
 }
 
 select.mini-select {

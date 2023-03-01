@@ -11,13 +11,7 @@
       </div>
     </div>
     <v-window v-model="tab" class="fill-height">
-      <v-window-item
-        v-for="item in tabs"
-        :key="item.title"
-        class="fill-height"
-        :transition="false"
-        @touchstart.prevent.stop
-      >
+      <v-window-item v-for="item in tabs" :key="item.title" class="fill-height" :transition="false" @touchstart.stop>
         <keep-alive>
           <component :is="item.component" />
         </keep-alive>

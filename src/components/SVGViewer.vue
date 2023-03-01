@@ -248,7 +248,7 @@ defineExpose({ centerContent, fitContent });
         class="mr-1"
         rounded="lg"
         title="Center content"
-        @click="centerContent"
+        @click.native="centerContent"
       ></v-btn>
       <v-btn
         icon="mdi:mdi-fit-to-screen-outline"
@@ -606,7 +606,7 @@ defineExpose({ centerContent, fitContent });
       </svg>
     </SvgPanZoom>
 
-    <div style="position: absolute; right: 112px; top: 32px; z-index: 60">
+    <div class="d-none d-sm-inline-flex" style="position: absolute; right: 112px; top: 32px; z-index: 60">
       <v-toolbar color="grey-lighten-5" rounded="lg" height="32" class="elevation-1">
         <v-checkbox
           label="Deformed shape"
@@ -637,7 +637,7 @@ defineExpose({ centerContent, fitContent });
         />
       </v-toolbar>
     </div>
-    <div style="position: absolute; right: 32px; top: 76px; z-index: 60">
+    <div class="d-none d-sm-inline-flex" style="position: absolute; right: 32px; top: 76px; z-index: 60">
       <v-toolbar color="grey-lighten-5" rounded="lg" height="32" class="elevation-1">
         <v-checkbox
           label="Supports"

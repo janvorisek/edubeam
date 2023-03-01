@@ -141,14 +141,14 @@ const app_released = APP_RELEASED;
     <v-app-bar clipped-left clipped-right app color="primary" density="compact">
       <div class="ml-3 d-flex align-center font-weight-bold text-uppercase">Edubeam 2</div>
 
-      <v-btn text small class="ml-3" @click="clearMesh">
+      <v-btn text class="d-none d-sm-inline-flex ml-3" @click="clearMesh">
         <v-icon small>mdi-delete-empty</v-icon>
         <span class="ml-1">Clear mesh</span>
       </v-btn>
 
       <v-spacer></v-spacer>
 
-      <v-btn text>
+      <v-btn text class="d-none d-sm-inline-flex">
         <span class="mr-2">Settings</span>
         <v-icon>mdi-cogs</v-icon>
       </v-btn>
@@ -160,7 +160,10 @@ const app_released = APP_RELEASED;
 
     <Dialogs />
 
-    <div class="d-flex align-center justify-space-between px-3 text-caption bg-secondary" style="height: 24px">
+    <div
+      class="d-none d-sm-flex align-center justify-space-between px-3 text-caption bg-secondary"
+      style="height: 24px"
+    >
       <div>
         <a class="text-black text-decoration-none font-weight-medium" href="#">Report issue</a>
         <a class="text-black text-decoration-none font-weight-medium ml-3" href="#">Request feature</a>

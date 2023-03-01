@@ -19,6 +19,8 @@ $font: "Barlow", sans-serif;
 
 html,
 body {
+  height: 100dvh !important; /* Fallback for browsers that do not support Custom Properties */
+  height: calc(var(--dvh, 1dvh) * 100) !important;
   overflow: hidden !important;
 }
 

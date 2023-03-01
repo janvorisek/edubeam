@@ -1,0 +1,73 @@
+// assets/vuetifyTheme.scss
+$font: "Barlow", sans-serif;
+
+@use "vuetify" with (
+  $body-font-family: $font
+);
+
+@import url("https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,200;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,200;1,300;1,500;1,600;1,900&family=Inter:wght@100;300;400;700&display=swap");
+
+#app .v-main {
+  height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+  height: calc(var(--vh, 1vh) * 100 - 24px);
+}
+
+.v-navigation-drawer {
+  height: 100vh !important; /* Fallback for browsers that do not support Custom Properties */
+  height: calc(var(--vh, 1vh) * 100) !important;
+}
+
+html,
+body {
+  overflow: hidden !important;
+}
+
+select.mini-select {
+  background: #eee;
+}
+
+input.inline-edit {
+  border: thin solid #ddd;
+  border-radius: 4px;
+  padding: 1px 6px;
+  box-sizing: content-box;
+  width: 100%;
+}
+
+select.mini-select {
+  background-color: white;
+  border: thin solid #ddd;
+  border-radius: 4px;
+  display: inline-block;
+  font: inherit;
+  line-height: 1.5em;
+  padding: 1px 6px;
+
+  background-image: linear-gradient(45deg, transparent 50%, gray 50%),
+    linear-gradient(135deg, gray 50%, transparent 50%), linear-gradient(to right, #ccc, #ccc);
+  background-position: calc(100% - 12px) calc(0.5em + 2px), calc(100% - 7px) calc(0.5em + 2px), calc(100% - 1.5em) 0em;
+  background-size: 5px 5px, 5px 5px, 1px 1.75em;
+  background-repeat: no-repeat;
+}
+
+.v-btn {
+  letter-spacing: -0.5px;
+  word-spacing: 2px;
+}
+
+.v-label {
+  letter-spacing: -0.5px;
+}
+
+.v-data-table-footer {
+  display: none !important;
+}
+
+.no-overlay {
+  .v-overlay__scrim {
+    display: none !important;
+  }
+
+  justify-content: start;
+  align-items: start;
+}

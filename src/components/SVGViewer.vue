@@ -21,6 +21,7 @@ import {
   formatMoments,
 } from "../SVGUtils";
 import { throttle } from "../utils";
+import { useAppStore } from "@/store/app";
 
 enum MouseMode {
   NONE,
@@ -378,7 +379,9 @@ defineExpose({ centerContent, fitContent });
           <g>
             <g class="element element-1d" v-for="(element, index) in projectStore.beams" :key="`element-${index}`">
               <polyline
-                v-if="projectStore.solver.loadCases[0].solved && viewerStore.showDeformedShape"
+                v-if="
+                  !useAppStore().zooming && projectStore.solver.loadCases[0].solved && viewerStore.showDeformedShape
+                "
                 :points="formatResults(element, scale)"
                 vector-effect="non-scaling-stroke"
                 class="deformedShape"
@@ -386,7 +389,9 @@ defineExpose({ centerContent, fitContent });
                 stroke-linejoin="round"
               />
               <polyline
-                v-if="projectStore.solver.loadCases[0].solved && viewerStore.showDeformedShape"
+                v-if="
+                  !useAppStore().zooming && projectStore.solver.loadCases[0].solved && viewerStore.showDeformedShape
+                "
                 :points="formatResults(element, scale)"
                 vector-effect="non-scaling-stroke"
                 class="deformedShape decoration"

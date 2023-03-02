@@ -1,6 +1,6 @@
 // Utilities
 import { defineStore } from "pinia";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 
 export const useAppStore = defineStore("app", () => {
   const dialogs = reactive({
@@ -10,5 +10,7 @@ export const useAppStore = defineStore("app", () => {
     addElementLoad: false,
   });
 
-  return { dialogs };
+  const zooming = ref(false);
+
+  return { dialogs, zooming };
 });

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { nextTick, onMounted, ref } from "vue";
+import { useAppStore } from "../store/app";
 
 const props = defineProps<{
   onUpdate: (zooming: boolean) => void;
@@ -73,6 +74,8 @@ const onTouchStart = (event: TouchEvent): void => {
   }
 
   if (event.touches.length === 2) {
+    useAppStore().zooming = true;
+
     touchPointer.value.ds = Math.hypot(
       event.touches[0].pageX - event.touches[1].pageX,
       event.touches[0].pageY - event.touches[1].pageY
@@ -89,6 +92,7 @@ const onTouchStart = (event: TouchEvent): void => {
 };
 
 const onTouchEnd = (): void => {
+  useAppStore().zooming = false;
   touchPointer.value.move = false;
   touchPointer.value.pinch = false;
 };
@@ -185,6 +189,14 @@ onMounted(() => {
   });
 });
 
+const onMouseDown = () => {
+  //useAppStore().zooming = true;
+};
+
+const onMouseUp = () => {
+  //useAppStore().zooming = false;
+};
+
 const rootRef = ref<HTMLElement | null>(null);
 const svgRef = ref<SVGElement | null>(null);
 
@@ -199,6 +211,8 @@ defineExpose({ scale, centerContent, fitContent });
     @touchmove="onTouchMove"
     @touchend="onTouchEnd"
     @wheel="onMouseWheel"
+    @mousedown="onMouseDown"
+    @mouseup="onMouseUp"
     @mousemove="onMouseMove"
     @contextmenu.prevent
   >

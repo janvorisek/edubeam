@@ -400,7 +400,7 @@ defineExpose({ centerContent, fitContent });
               />
 
               <polyline
-                v-if="projectStore.solver.loadCases[0].solved && viewerStore.showNormalForce"
+                v-if="!useAppStore().zooming && projectStore.solver.loadCases[0].solved && viewerStore.showNormalForce"
                 :points="formatNormalForces(element, scale)"
                 vector-effect="non-scaling-stroke"
                 class="normal"
@@ -408,7 +408,7 @@ defineExpose({ centerContent, fitContent });
                 stroke-linejoin="round"
               />
               <polyline
-                v-if="projectStore.solver.loadCases[0].solved && viewerStore.showShearForce"
+                v-if="!useAppStore().zooming && projectStore.solver.loadCases[0].solved && viewerStore.showShearForce"
                 :points="formatShearForces(element, scale)"
                 vector-effect="non-scaling-stroke"
                 class="shear"
@@ -416,7 +416,9 @@ defineExpose({ centerContent, fitContent });
                 stroke-linejoin="round"
               />
               <polyline
-                v-if="projectStore.solver.loadCases[0].solved && viewerStore.showBendingMoment"
+                v-if="
+                  !useAppStore().zooming && projectStore.solver.loadCases[0].solved && viewerStore.showBendingMoment
+                "
                 :points="formatMoments(element, scale)"
                 vector-effect="non-scaling-stroke"
                 class="moment"

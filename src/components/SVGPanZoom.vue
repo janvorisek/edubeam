@@ -31,7 +31,6 @@ const onWindowResize = (): void => {
 
 const updateMatrix = (zooming = false): void => {
   const svgEl = svgRef.value as SVGElement;
-
   svgEl.setAttribute("viewBox", `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
   props.onUpdate(zooming);
 };
@@ -59,12 +58,10 @@ const zoom = (mx: number, my: number, deltaY: number): void => {
 };
 
 const onMouseWheel = (event: WheelEvent): void => {
-  event.preventDefault();
   zoom(event.offsetX, event.offsetY, Math.sign(event.deltaY) * 0.05);
 };
 
 const onTouchStart = (event: TouchEvent): void => {
-  //console.log({ touchstart: event.touches.length, pointer: JSON.stringify(touchPointer) })
   if (event.touches.length === 1) {
     touchPointer.value.x = event.touches[0].clientX;
     touchPointer.value.y = event.touches[0].clientY;
@@ -98,7 +95,6 @@ const onTouchEnd = (): void => {
 };
 
 const onTouchMove = (event: TouchEvent): void => {
-  event.preventDefault();
   //console.log({ touchmove: event.touches.length, pointer: JSON.stringify(touchPointer) })
   if (event.touches.length === 1 && touchPointer.value.move) {
     viewBox.x -= (event.touches[0].clientX - touchPointer.value.x) / scale.value;
@@ -207,14 +203,15 @@ defineExpose({ scale, centerContent, fitContent });
   <div
     ref="rootRef"
     class="w-100 fill-height"
-    @touchstart="onTouchStart"
-    @touchmove="onTouchMove"
-    @touchend="onTouchEnd"
-    @wheel="onMouseWheel"
-    @mousedown="onMouseDown"
-    @mouseup="onMouseUp"
-    @mousemove="onMouseMove"
+    @touchstart.prevent="onTouchStart"
+    @touchmove.prevent="onTouchMove"
+    @touchend.prevent="onTouchEnd"
+    @wheel.prevent="onMouseWheel"
+    @mousedown.prevent="onMouseDown"
+    @mouseup.prevent="onMouseUp"
+    @mousemove.prevent="onMouseMove"
     @contextmenu.prevent
+    style="touch-action: none"
   >
     <slot></slot>
   </div>

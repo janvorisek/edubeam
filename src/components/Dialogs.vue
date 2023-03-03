@@ -158,6 +158,82 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
+
+  <v-dialog class="no-overlay" v-model="useAppStore().dialogs.addMaterial" max-width="420">
+    <v-card>
+      <v-card-title class="text-h5"> Add material </v-card-title>
+
+      <v-card-text>
+        <v-form>
+          <v-container>
+            <v-row>
+              <v-col cols="12" md="6">
+                <v-text-field v-model.number="matE" label="E - Young's modulus" required></v-text-field>
+              </v-col>
+
+              <v-col cols="12" md="6">
+                <v-text-field v-model.number="matG" label="G - Shear modulus" required></v-text-field>
+              </v-col>
+
+              <v-col cols="12" md="6">
+                <v-text-field v-model.number="matDensity" label="density" required></v-text-field>
+              </v-col>
+
+              <v-col cols="12" md="6">
+                <v-text-field v-model.number="matAlphaTemp" label="Temperature coefficient" required></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-form>
+      </v-card-text>
+
+      <v-card-actions>
+        <v-spacer></v-spacer>
+
+        <v-btn color="red darken-1" text @click="useAppStore().dialogs.addMaterial = false"> Cancel </v-btn>
+
+        <v-btn color="green darken-1" text @click="addMaterial()"> Add material </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
+  <v-dialog class="no-overlay" v-model="useAppStore().dialogs.addCrossSection" max-width="420">
+    <v-card>
+      <v-card-title class="text-h5"> Add cross section </v-card-title>
+
+      <v-card-text>
+        <v-form>
+          <v-container>
+            <v-row>
+              <v-col cols="12" md="6">
+                <v-text-field v-model.number="csArea" label="A - area" required></v-text-field>
+              </v-col>
+
+              <v-col cols="12" md="6">
+                <v-text-field v-model.number="csIy" label="Iy - second moment of area" required></v-text-field>
+              </v-col>
+
+              <v-col cols="12" md="6">
+                <v-text-field v-model.number="csH" label="h - Height" required></v-text-field>
+              </v-col>
+
+              <v-col cols="12" md="6">
+                <v-text-field v-model.number="csShear" label="Shear coefficient" required></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-form>
+      </v-card-text>
+
+      <v-card-actions>
+        <v-spacer></v-spacer>
+
+        <v-btn color="red darken-1" text @click="useAppStore().dialogs.addCrossSection = false"> Cancel </v-btn>
+
+        <v-btn color="green darken-1" text @click="addCrossSection()"> Add cross section </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup lang="ts">
@@ -177,6 +253,16 @@ const loadElementId = ref(1);
 const loadNodeValueFx = ref(0.0);
 const loadNodeValueFz = ref(0.0);
 const loadNodeValueMy = ref(0.0);
+
+const matE = ref(210000e6);
+const matG = ref(210000e6 / (2 * (1 + 0.2)));
+const matDensity = ref(1000);
+const matAlphaTemp = ref(12e-6);
+
+const csArea = ref(1);
+const csIy = ref(0.0001);
+const csH = ref(1);
+const csShear = ref(1);
 
 const addNode = () => {
   const domain = useProjectStore().solver.domain;
@@ -228,5 +314,25 @@ const addElementLoad = () => {
   useAppStore().dialogs.addElementLoad = false;
 
   useProjectStore().solve();
+};
+
+const addMaterial = () => {
+  const domain = useProjectStore().solver.domain;
+
+  const nid = domain.materials.size + 1;
+
+  domain.createMaterial(nid, { e: matE.value, g: matG.value, alpha: matAlphaTemp.value, d: matDensity.value });
+
+  useAppStore().dialogs.addMaterial = false;
+};
+
+const addCrossSection = () => {
+  const domain = useProjectStore().solver.domain;
+
+  const nid = domain.crossSections.size + 1;
+
+  domain.createCrossSection(nid, { a: csArea.value, iy: csIy.value, h: csH.value, k: csShear.value });
+
+  useAppStore().dialogs.addCrossSection = false;
 };
 </script>

@@ -25,7 +25,7 @@ select.mini-select {
   background: #eee;
 }
 
-input.inline-edit {
+.inline-edit {
   border: thin solid #ddd;
   border-radius: 4px;
   padding: 1px 6px;
@@ -35,7 +35,7 @@ input.inline-edit {
 
 .inline-edit-group {
   display: flex;
-  &:has(.input-before) input.inline-edit {
+  &:has(.input-before) .inline-edit {
     border-left: none;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
@@ -48,7 +48,8 @@ input.inline-edit {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   background: #eee;
-  padding: 0 4px;
+  padding: 0 5px;
+  text-align: center;
   font-weight: 500;
 }
 

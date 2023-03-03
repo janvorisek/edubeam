@@ -190,20 +190,20 @@
 
           <template #item.load.values="{ item }">
             <div class="d-flex" v-if="item.raw.type === 'node'">
-              <div class="inline-edit-group">
+              <div class="inline-edit-group mr-2">
                 <span class="input-before">F<sub>x</sub></span>
                 <input
                   :value="item.raw.ref.values[0]"
                   @change="changeSetArrayItem(item.raw.ref, 'values', 0, $event.target as HTMLInputElement)"
-                  class="inline-edit w-50 mr-2"
+                  class="inline-edit"
                 />
               </div>
-              <div class="inline-edit-group">
+              <div class="inline-edit-group mr-2">
                 <span class="input-before">F<sub>z</sub></span>
                 <input
-                  :value="item.raw.ref.values[1]"
-                  @change="changeSetArrayItem(item.raw.ref, 'values', 1, $event.target as HTMLInputElement)"
-                  class="inline-edit w-50 mr-2"
+                  :value="item.raw.ref.values[2]"
+                  @change="changeSetArrayItem(item.raw.ref, 'values', 2, $event.target as HTMLInputElement)"
+                  class="inline-edit"
                 />
               </div>
               <div class="inline-edit-group">
@@ -211,30 +211,33 @@
                 <input
                   :value="item.raw.ref.values[4]"
                   @change="changeSetArrayItem(item.raw.ref, 'values', 4, $event.target as HTMLInputElement)"
-                  class="inline-edit w-50 mr-2"
+                  class="inline-edit"
                 />
               </div>
             </div>
 
             <div class="d-flex align-content-center" v-if="item.raw.type === 'element'">
-              <div class="inline-edit-group">
+              <div class="inline-edit-group mr-2">
                 <span class="input-before">f<sub>x</sub></span>
                 <input
                   :value="item.raw.ref.values[0]"
                   @change="changeSetArrayItem(item.raw.ref, 'values', 0, $event.target as HTMLInputElement)"
-                  class="inline-edit w-50 mr-2"
+                  class="inline-edit"
                 />
               </div>
-              <div class="inline-edit-group">
+              <div class="inline-edit-group mr-2">
                 <span class="input-before">f<sub>z</sub></span>
                 <input
                   :value="item.raw.ref.values[1]"
                   @change="changeSetArrayItem(item.raw.ref, 'values', 1, $event.target as HTMLInputElement)"
-                  class="inline-edit w-50 mr-2"
+                  class="inline-edit"
                 />
               </div>
-              <div style="min-width: 33.333%">
-                lcs: <input type="checkbox" :checked="item.raw.ref.lcs" @click="toggleBoolean(item.raw.ref, 'lcs')" />
+              <div class="inline-edit-group">
+                <span class="input-before">LCS</span>
+                <div class="inline-edit">
+                  <input type="checkbox" :checked="item.raw.ref.lcs" @click="toggleBoolean(item.raw.ref, 'lcs')" />
+                </div>
               </div>
             </div>
           </template>
@@ -264,15 +267,23 @@
               </option>
             </select>
           </template>
+
+          <template #item.actions="{ item, index }">
+            <v-icon v-if="item.raw.type === 'element'" small @click="deleteElementLoad(index)"> mdi-close </v-icon>
+            <v-icon v-if="item.raw.type === 'node'" small @click="deleteNodalLoad(item)"> mdi-close </v-icon>
+          </template>
         </v-data-table>
       </v-window-item>
 
       <v-window-item :key="'tab-mats'" style="height: 220px" :transition="false">
+        <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addMaterial')">
+          <v-icon small>mdi-plus</v-icon> Add material
+        </v-btn>
         <v-data-table
           :headers="headers.materials"
           :items="materials"
           density="compact"
-          height="220"
+          height="192"
           fixed-header
           :items-per-page="-1"
           disable-pagination
@@ -309,15 +320,21 @@
           <template #item.d="{ item }">
             <input @change="solve" v-model.number="item.raw.d" type="number" class="inline-edit" />
           </template>
+          <template #item.actions="{ item }">
+            <v-icon small @click="deleteMaterial(item.raw.label)"> mdi-close </v-icon>
+          </template>
         </v-data-table>
       </v-window-item>
 
       <v-window-item :key="'tab-cs'" style="height: 220px" :transition="false">
+        <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addCrossSection')">
+          <v-icon small>mdi-plus</v-icon> Add cross section
+        </v-btn>
         <v-data-table
           :headers="headers.crossSections"
           :items="crossSections"
           density="compact"
-          height="220"
+          height="192"
           fixed-header
           :items-per-page="-1"
           disable-pagination
@@ -343,6 +360,9 @@
           </template>
           <template #item.k="{ item }">
             <input @change="solve" v-model.number="item.raw.k" type="number" class="inline-edit" />
+          </template>
+          <template #item.actions="{ item }">
+            <v-icon small @click="deleteCrossSection(item.raw.label)"> mdi-close </v-icon>
           </template>
         </v-data-table>
       </v-window-item>
@@ -377,7 +397,9 @@ onMounted(() => {
   });
 });
 
-const showDialog = (name: "addNode" | "addElement" | "addNodalLoad" | "addElementLoad") => {
+const showDialog = (
+  name: "addNode" | "addElement" | "addNodalLoad" | "addElementLoad" | "addMaterial" | "addCrossSection"
+) => {
   useAppStore().dialogs[name] = true;
 };
 
@@ -517,9 +539,25 @@ const deleteNode = (id: number) => {
   }
 
   useProjectStore().solver.domain.nodes.delete(id);
-  useProjectStore().solver.domain.nodes = new Map(useProjectStore().solver.domain.nodes);
+  //useProjectStore().solver.domain.nodes = new Map(useProjectStore().solver.domain.nodes);
 
   solve();
+};
+
+const deleteMaterial = (id: number) => {
+  useProjectStore().solver.domain.materials.delete(id);
+};
+
+const deleteCrossSection = (id: number) => {
+  useProjectStore().solver.domain.crossSections.delete(id);
+};
+
+const deleteNodalLoad = (id: number) => {
+  console.log(id);
+};
+
+const deleteElementLoad = (id: number) => {
+  console.log(id);
 };
 
 const solve = () => {

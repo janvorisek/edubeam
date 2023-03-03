@@ -14,62 +14,21 @@ onMounted(() => {
   if (domain.nodes.size > 0) return;
 
   //@ts-expect-error ts-fem is wrongly typed
-  domain.createNode("a", [0, 0, 0], [DofID.Dx, DofID.Dz]);
-  domain.createNode(2, [0, 0, -5], []);
-  domain.createNode(3, [0, 0, -9], []);
-  domain.createNode(4, [0, 0, -13], []);
-  domain.createNode(5, [0, 0, -17], []);
-
-  domain.createNode(6, [8, 0, 0], [DofID.Dx, DofID.Dz, DofID.Ry]);
-  domain.createNode(7, [8, 0, -5], []);
-  domain.createNode(8, [8, 0, -9], []);
-  domain.createNode(9, [8, 0, -13], []);
-  domain.createNode(10, [8, 0, -17], []);
-
-  domain.createNode(11, [14, 0, 0], [DofID.Dx, DofID.Dz, DofID.Ry]);
-  domain.createNode(12, [14, 0, -5], []);
+  domain.createNode("a", [0, 0, 0], [DofID.Dx, DofID.Ry, DofID.Dz]);
+  domain.createNode(2, [1, 0, 0], []);
+  domain.createNode(3, [2, 0, 1], []);
+  domain.createNode(4, [3, 0, 1], [DofID.Dz]);
 
   domain.nodes = new Map(domain.nodes);
 
   //@ts-expect-error ts-fem is wrongly typed
-  domain.createBeam2D(1, ["a", 2], 1, 1, [false, true]); // kk
+  domain.createBeam2D(1, ["a", 2], 1, 1, [false, true]);
   domain.createBeam2D(2, [2, 3], 1, 1);
-  domain.createBeam2D(3, [3, 4], 1, 1, [true, false]); // kv
-  domain.createBeam2D(4, [4, 5], 1, 1);
-
-  domain.createBeam2D(5, [6, 7], 1, 1);
-  domain.createBeam2D(6, [7, 8], 1, 1, [true, false]);
-  domain.createBeam2D(7, [8, 9], 1, 1, [true, false]);
-  domain.createBeam2D(8, [9, 10], 1, 1, [true, true]);
-
-  domain.createBeam2D(9, [11, 12], 1, 1, [false, true]);
-  domain.createBeam2D(10, [7, 12], 2, 2);
-
-  domain.createBeam2D(11, [2, 7], 2, 2);
-  domain.createBeam2D(12, [3, 8], 3, 2);
-  domain.createBeam2D(13, [4, 9], 4, 2);
-  domain.createBeam2D(14, [5, 10], 4, 2);
+  domain.createBeam2D(3, [3, 4], 1, 1);
 
   domain.elements = new Map(domain.elements);
 
   domain.createCrossSection(1, {
-    a: 1e32,
-    iy: 8.356e-5,
-    iz: 1.0,
-    dyz: 999991.0,
-    h: 1,
-    k: 1e32,
-    j: 99999.0,
-  });
-
-  domain.createMaterial(1, {
-    e: 7.18e11,
-    g: 7.18e11 / (2 * (1 + 0.2)),
-    alpha: 1.0,
-    d: 0,
-  });
-
-  domain.createCrossSection(2, {
     a: 1,
     iy: 8.356e-5,
     iz: 1.0,
@@ -79,31 +38,17 @@ onMounted(() => {
     j: 99999.0,
   });
 
-  domain.createMaterial(2, {
-    e: 210000e6,
-    g: 210000e6 / (2 * (1 + 0.2)),
-    alpha: 1.0,
-    d: 8000 /*kg/m3!!!*/,
-  });
-
-  domain.createMaterial(3, {
-    e: 210000e6,
-    g: 210000e6 / (2 * (1 + 0.2)),
-    alpha: 1.0,
-    d: 6000 /*kg/m3!!!*/,
-  });
-
-  domain.createMaterial(4, {
+  domain.createMaterial(1, {
     e: 210000e6,
     g: 210000e6 / (2 * (1 + 0.2)),
     alpha: 1.0,
     d: 4000 /*kg/m3!!!*/,
   });
 
-  solver.loadCases[0].createNodalLoad(3, { [DofID.Dx]: 10, [DofID.Dz]: 0 });
-  solver.loadCases[0].createNodalLoad(5, { [DofID.Dx]: 10, [DofID.Dz]: 0 });
+  solver.loadCases[0].createNodalLoad(3, { [DofID.Dx]: 10, [DofID.Dz]: 0, [DofID.Ry]: 10 });
+  //solver.loadCases[0].createNodalLoad(3, { [DofID.Dx]: 0, [DofID.Dz]: 20 });
 
-  solver.loadCases[0].createBeamElementUniformEdgeLoad(14, [0, 10], true);
+  solver.loadCases[0].createBeamElementUniformEdgeLoad(2, [0, 10], false);
 
   domain.materials = new Map(domain.materials);
   domain.crossSections = new Map(domain.crossSections);

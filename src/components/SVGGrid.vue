@@ -27,10 +27,10 @@
       </g>
     </g>
     <g class="cs" :transform="`translate(${csLeft} ${csTop})`">
-      <text fill="red" text-anchor="middle" alignment-baseline="middle" x="60" y="-50"> x </text>
+      <text fill="red" text-anchor="middle" alignment-baseline="middle" x="40" y="-30"> x </text>
       <text fill="green" text-anchor="middle" alignment-baseline="middle" x="10" y="0"> z </text>
-      <line y1="-60" x1="0" y2="0" x2="0" stroke-width="3" stroke="green" stroke-linecap="round" />
-      <line y1="-60" x1="0" y2="-60" x2="60" stroke-width="3" stroke="red" stroke-linecap="round" />
+      <line y1="-40" x1="0" y2="0" x2="0" stroke-width="3" stroke="green" stroke-linecap="round" />
+      <line y1="-40" x1="0" y2="-40" x2="40" stroke-width="3" stroke="red" stroke-linecap="round" />
     </g>
   </g>
 </template>

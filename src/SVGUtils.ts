@@ -171,6 +171,16 @@ export function formatElement(nodes: number[][]) {
   return nodes.map((n: number[]) => `${n[0]},${n[2]}`).join(" ");
 }
 
+export function formatElementFibers(el: Beam2D, scale) {
+  const geo = el.computeGeo();
+  const nz = geo.dx / geo.l;
+  const nx = -geo.dz / geo.l;
+
+  const nodes = [el.domain.nodes.get(el.nodes[0])!.coords, el.domain.nodes.get(el.nodes[1])!.coords];
+
+  return nodes.map((n: number[]) => `${n[0] + (nx * 3) / scale},${n[2] + (nz * 3) / scale}`).join(" ");
+}
+
 export function formatElementAngle(el: Beam2D) {
   return Math.atan2(el.computeGeo().dz, el.computeGeo().dx) * (180 / Math.PI);
 }

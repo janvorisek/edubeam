@@ -7,6 +7,7 @@ import { useViewerStore } from "../store/viewer";
 import {
   formatNode,
   formatElement,
+  formatElementFibers,
   formatElementLoad,
   formatElementLoadHatch,
   formatNodalLoadAngle,
@@ -448,6 +449,13 @@ defineExpose({ centerContent, fitContent });
                 vector-effect="non-scaling-stroke"
                 class="drawable"
                 stroke-linecap="round"
+              />
+
+              <polyline
+                :points="formatElementFibers(element, scale)"
+                class="fibers"
+                stroke-dasharray="5 4"
+                vector-effect="non-scaling-stroke"
               />
 
               <circle

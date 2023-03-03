@@ -11,6 +11,8 @@ import {
   formatElementLoad,
   formatElementLoadHatch,
   formatNodalLoadAngle,
+  formatElementLoadLabel,
+  formatNodalLoad,
   formatElementLabel,
   formatElementAngle,
   formatElementHinge,
@@ -20,9 +22,13 @@ import {
   formatNormalForces,
   formatShearForces,
   formatMoments,
+  formatElementLoadForces,
+  formatElementLoadForcesAngle,
 } from "../SVGUtils";
 import { throttle } from "../utils";
 import { useAppStore } from "@/store/app";
+import { Node, DofID } from "ts-fem";
+import { Matrix } from "mathjs";
 
 enum MouseMode {
   NONE,
@@ -237,6 +243,17 @@ const onMouseUp = () => {
   intersected.index = null;
 };
 
+const isSupported = (node: Node, dof: DofID) => {
+  return node.bcs.has(dof);
+};
+
+const getReaction = (node: Node, dof: DofID) => {
+  const r = node.getReactions(useProjectStore().solver.loadCases[0], true);
+  const i = r.dofs.findIndex((e) => e === dof);
+
+  return "get" in r.values ? (r.values as unknown as Matrix).get([i]) : r.values[i];
+};
+
 defineExpose({ centerContent, fitContent });
 </script>
 
@@ -273,6 +290,82 @@ defineExpose({ centerContent, fitContent });
       <svg ref="svg" @mousemove="mouseMove" @mousedown="onMouseDown" @mouseup="onMouseUp">
         <defs>
           <marker
+            id="arrow"
+            viewBox="0 0 10 10"
+            refX="5"
+            refY="5"
+            markerWidth="12"
+            markerHeight="12"
+            orient="auto-start-reverse"
+            markerUnits="userSpaceOnUse"
+          >
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="red" />
+          </marker>
+          <marker
+            id="arrow_hover"
+            viewBox="0 0 10 10"
+            refX="5"
+            refY="5"
+            markerWidth="12"
+            markerHeight="12"
+            orient="auto-start-reverse"
+            markerUnits="userSpaceOnUse"
+          >
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="blue" />
+          </marker>
+          <marker
+            id="moment_ccw"
+            viewBox="0 0 20 60"
+            refX="10"
+            refY="60"
+            markerWidth="20"
+            markerHeight="50"
+            overflow="visible"
+            markerUnits="strokeWidth"
+            marker-end="url(#arrow)"
+          >
+            <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" fill="none" stroke="red" />
+          </marker>
+          <marker
+            id="moment_cw"
+            viewBox="0 0 20 60"
+            refX="-20"
+            refY="45"
+            markerWidth="20"
+            markerHeight="50"
+            overflow="visible"
+            markerUnits="strokeWidth"
+            marker-end="url(#arrow)"
+          >
+            <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" fill="none" stroke="red" />
+          </marker>
+          <marker
+            id="moment_ccw_hover"
+            viewBox="0 0 20 60"
+            refX="10"
+            refY="60"
+            markerWidth="20"
+            markerHeight="50"
+            overflow="visible"
+            markerUnits="strokeWidth"
+            marker-end="url(#arrow_hover)"
+          >
+            <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" stroke-width="3" fill="none" stroke="blue" />
+          </marker>
+          <marker
+            id="moment_cw_hover"
+            viewBox="0 0 20 60"
+            refX="-20"
+            refY="45"
+            markerWidth="20"
+            markerHeight="50"
+            overflow="visible"
+            markerUnits="strokeWidth"
+            marker-end="url(#arrow_hover)"
+          >
+            <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" stroke-width="3" fill="none" stroke="blue" />
+          </marker>
+          <marker
             id="force"
             viewBox="0 0 20 60"
             refX="10"
@@ -282,8 +375,50 @@ defineExpose({ centerContent, fitContent });
             overflow="visible"
             markerUnits="strokeWidth"
           >
-            <polyline points="2.5,45 10,60 17.5,45" stroke-width="2" fill="transparent" stroke="red" />
-            <line y1="60" x1="10" y2="0" x2="10" stroke-width="2" stroke="red" />
+            <polyline points="5,45 10,55 15,45" stroke-width="1" fill="red" stroke="red" />
+            <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" stroke="red" />
+          </marker>
+
+          <marker
+            id="force_hover"
+            viewBox="0 0 20 60"
+            refX="10"
+            refY="60"
+            markerWidth="20"
+            markerHeight="50"
+            overflow="visible"
+            markerUnits="strokeWidth"
+          >
+            <polyline points="5,45 10,55 15,45" stroke-width="1" fill="blue" stroke="blue" />
+            <line y1="55" x1="10" y2="11" x2="10" stroke-width="3" stroke="blue" />
+          </marker>
+
+          <marker
+            id="force_centered"
+            viewBox="0 0 20 60"
+            refX="10"
+            refY="35"
+            markerWidth="20"
+            markerHeight="50"
+            overflow="visible"
+            markerUnits="strokeWidth"
+          >
+            <polyline points="5,45 10,55 15,45" stroke-width="1" fill="red" stroke="red" />
+            <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" stroke="red" />
+          </marker>
+
+          <marker
+            id="force_centered_hover"
+            viewBox="0 0 20 60"
+            refX="10"
+            refY="35"
+            markerWidth="20"
+            markerHeight="50"
+            overflow="visible"
+            markerUnits="strokeWidth"
+          >
+            <polyline points="5,45 10,55 15,45" stroke-width="1" fill="blue" stroke="blue" />
+            <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" stroke="blue" />
           </marker>
 
           <marker
@@ -296,16 +431,17 @@ defineExpose({ centerContent, fitContent });
             markerUnits="strokeWidth"
             orient="auto"
           >
-            <line y1="6" x1="0" y2="44" x2="0" stroke-width="2" stroke="black" />
+            <line y1="6" x1="0" y2="44" x2="0" stroke-width="1" stroke="black" />
             <line
               v-for="i in 6"
               :key="i"
               :y1="(i * 50) / 7"
               x1="0"
-              :y2="12 + (i * 50) / 7"
-              x2="-14"
-              stroke-width="2"
+              :y2="10 + (i * 50) / 7"
+              x2="-10"
+              stroke-width="1"
               stroke="black"
+              fill="none"
             />
           </marker>
 
@@ -319,7 +455,7 @@ defineExpose({ centerContent, fitContent });
             overflow="visible"
             markerUnits="strokeWidth"
           >
-            <polyline points="10,0 0,20 20,20 10,0" stroke-width="3" fill="transparent" stroke="black" />
+            <polyline points="10,0 -5,20 25,20 10,0" stroke-width="1" fill="transparent" stroke="black" />
           </marker>
 
           <marker
@@ -332,8 +468,8 @@ defineExpose({ centerContent, fitContent });
             overflow="visible"
             markerUnits="strokeWidth"
           >
-            <polyline points="10,0 0,20 20,20 10,0" stroke-width="3" fill="transparent" stroke="black" />
-            <line y1="25" x1="-5" y2="25" x2="25" stroke-width="3" stroke="black" />
+            <polyline points="10,0 -5,20 25,20 10,0" stroke-width="1" fill="transparent" stroke="black" />
+            <line y1="25" x1="-5" y2="25" x2="25" stroke-width="1" stroke="black" />
           </marker>
 
           <marker
@@ -346,8 +482,8 @@ defineExpose({ centerContent, fitContent });
             overflow="visible"
             markerUnits="strokeWidth"
           >
-            <polyline points="0,10 20,0 20,20 0,10" stroke-width="3" fill="transparent" stroke="black" />
-            <line y1="-5" x1="25" y2="25" x2="25" stroke-width="3" stroke="black" />
+            <polyline points="0,10 20,-5 20,25 0,10" stroke-width="1" fill="transparent" stroke="black" />
+            <line y1="-5" x1="25" y2="25" x2="25" stroke-width="1" stroke="black" />
           </marker>
 
           <marker
@@ -480,7 +616,7 @@ defineExpose({ centerContent, fitContent });
 
               <g>
                 <text
-                  v-if="viewerStore.showElementLabels"
+                  v-if="!useAppStore().zooming && viewerStore.showElementLabels"
                   :x="
                     (projectStore.solver.domain.nodes.get(element.nodes[0])!.coords[0] +
                     projectStore.solver.domain.nodes.get(element.nodes[1])!.coords[0]) /
@@ -529,19 +665,66 @@ defineExpose({ centerContent, fitContent });
               />
             </g>
           </g>
-          <g v-if="useViewerStore().showLoads">
+          <g v-if="!useAppStore().zooming && useViewerStore().showLoads">
             <g
               class="element-load load-1d"
               v-for="(eload, index) in useProjectStore().solver.loadCases[0].elementLoadList"
               :key="`element-load-${index}`"
             >
-              <path
+              <g v-if="eload.values[0] !== 0">
+                <polyline
+                  v-for="(load, i) in formatElementLoadForces(eload, scale, 0)"
+                  :key="`load-force-${i}`"
+                  points="0,0 0,0"
+                  vector-effect="non-scaling-stroke"
+                  class="drawable"
+                  :transform="`translate(${load[0]} ${load[1]}) rotate(${formatElementLoadForcesAngle(eload, 0)})`"
+                />
+              </g>
+              <g v-if="eload.values[1] !== 0">
+                <polyline
+                  v-for="(load, i) in formatElementLoadForces(eload, scale, 1)"
+                  :key="`load-force-${i}`"
+                  points="0,0 0,0"
+                  vector-effect="non-scaling-stroke"
+                  class="drawable"
+                  :transform="`translate(${load[0]} ${load[1]}) rotate(${formatElementLoadForcesAngle(eload, 1)})`"
+                />
+              </g>
+              <g v-if="!useAppStore().zooming && viewerStore.showLoads">
+                <text
+                  v-if="eload.values[0] !== 0"
+                  :font-size="13 / scale"
+                  font-weight="normal"
+                  text-anchor="end"
+                  alignment-baseline="middle"
+                  :transform="formatElementLoadLabel(eload, scale, 0)"
+                >
+                  {{ Math.abs(eload.values[0]).toFixed(2) }}
+                </text>
+                <text
+                  v-if="eload.values[1] !== 0"
+                  :font-size="13 / scale"
+                  font-weight="normal"
+                  text-anchor="end"
+                  alignment-baseline="middle"
+                  :transform="formatElementLoadLabel(eload, scale, 1)"
+                >
+                  {{ Math.abs(eload.values[1]).toFixed(2) }}
+                </text>
+              </g>
+              <!--<path
                 :d="formatElementLoadHatch(eload, scale)"
                 vector-effect="non-scaling-stroke"
                 class="drawable"
                 stroke-linecap="round"
+              />-->
+              <polygon
+                :points="formatElementLoad(eload, scale)"
+                fill="transparent"
+                class="drawable"
+                vector-effect="non-scaling-stroke"
               />
-              <polygon :points="formatElementLoad(eload, scale)" class="drawable" vector-effect="non-scaling-stroke" />
             </g>
             <g
               class="nodal-load"
@@ -549,10 +732,10 @@ defineExpose({ centerContent, fitContent });
               :key="`nodal-load-${index}`"
             >
               <polyline
+                v-if="nload.values[0] !== 0 || nload.values[2] !== 0"
                 points="0,0 0,0"
                 vector-effect="non-scaling-stroke"
-                class="decoration"
-                marker-end="url(#force)"
+                class="decoration force"
                 :transform="
                   `translate(${
                     useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0]
@@ -563,14 +746,66 @@ defineExpose({ centerContent, fitContent });
                 "
               />
 
-              <!--<text
-                :font-size="14 / actualScale"
+              <polyline
+                v-if="nload.values[4] !== 0"
+                points="0,0 0,0"
+                vector-effect="non-scaling-stroke"
+                class="decoration moment"
+                :class="{ cw: nload.values[4] < 0, ccw: nload.values[4] > 0 }"
+                :transform="
+                  `translate(${
+                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0]
+                  }
+              ${
+                useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2]
+              })`
+                "
+              />
+
+              <polyline :points="formatNodalLoad(nload, scale)" class="handle" />
+              <polyline
+                :points="formatNode(useProjectStore().solver.domain.nodes.get(nload.target).coords)"
+                class="handle moment"
+              />
+
+              <text
+                v-if="nload.values[4] !== 0"
+                :font-size="13 / scale"
                 font-weight="normal"
-                text-anchor="end"
+                text-anchor="start"
                 alignment-baseline="central"
+                :transform="
+                  `translate(${
+                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0] + 15 / scale
+                  }
+              ${
+                useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2] - 15 / scale
+              })`
+                "
               >
-                aaaa
-              </text>-->
+                {{ Math.abs(nload.values[4]).toFixed(2) }}
+              </text>
+
+              <text
+                v-if="nload.values[0] !== 0 || nload.values[2] !== 0"
+                :font-size="13 / scale"
+                font-weight="normal"
+                :text-anchor="nload.values[0] > 0 ? 'end' : 'start'"
+                alignment-baseline="central"
+                :transform="
+                  `translate(${
+                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0] - 40*nload.values[0] / Math.sqrt(nload.values[0]*nload.values[0] + nload.values[2]*nload.values[2]) / scale
+                  }
+              ${
+                useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2] - 40*nload.values[2] / Math.sqrt(nload.values[0]*nload.values[0] + nload.values[2]*nload.values[2]) / scale
+              })`
+                "
+              >
+                {{ Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2]).toFixed(2) }}
+                <template v-if="nload.values[0] !== 0 && nload.values[2] !== 0">
+                  ({{ nload.values[0].toFixed(2) }}, {{ nload.values[2].toFixed(2) }})
+                </template>
+              </text>
             </g>
           </g>
           <g>
@@ -584,8 +819,105 @@ defineExpose({ centerContent, fitContent });
 
               <polyline :points="formatNode(node.coords)" class="drawable" />
 
+              <polyline
+                v-if="
+                  !useAppStore().zooming &&
+                  projectStore.solver.loadCases[0].solved &&
+                  isSupported(node, DofID.Dz) &&
+                  Math.abs(getReaction(node, DofID.Dz)) > 1e-32
+                "
+                points="0,0 0,0"
+                class="decoration"
+                marker-start="url(#force)"
+                :transform="`translate(${node.coords[0]} ${node.coords[2]}) rotate(${
+                  Math.sign(getReaction(node, DofID.Dz)) >= 0 ? 0 : 180
+                })`"
+              />
+
+              <text
+                v-if="
+                  !useAppStore().zooming &&
+                  projectStore.solver.loadCases[0].solved &&
+                  isSupported(node, DofID.Dz) &&
+                  Math.abs(getReaction(node, DofID.Dz)) > 1e-32
+                "
+                :font-size="13 / scale"
+                fill="red"
+                font-weight="normal"
+                text-anchor="end"
+                alignment-baseline="baseline"
+                :transform="`translate(${node.coords[0]}
+              ${node.coords[2] - (40 * Math.sign(getReaction(node, DofID.Dz))) / scale})`"
+              >
+                {{ Math.abs(getReaction(node, DofID.Dz)).toFixed(2) }}
+              </text>
+
+              <polyline
+                v-if="
+                  !useAppStore().zooming &&
+                  projectStore.solver.loadCases[0].solved &&
+                  isSupported(node, DofID.Dx) &&
+                  Math.abs(getReaction(node, DofID.Dx)) > 1e-32
+                "
+                points="0,0 0,0"
+                class="decoration"
+                marker-start="url(#force)"
+                :transform="`translate(${node.coords[0]} ${node.coords[2]}) rotate(${
+                  -90 * Math.sign(getReaction(node, DofID.Dx))
+                })`"
+              />
+
+              <text
+                v-if="
+                  !useAppStore().zooming &&
+                  projectStore.solver.loadCases[0].solved &&
+                  isSupported(node, DofID.Dx) &&
+                  Math.abs(getReaction(node, DofID.Dx)) > 1e-32
+                "
+                :font-size="13 / scale"
+                fill="red"
+                font-weight="normal"
+                :text-anchor="getReaction(node, DofID.Dx) > 0 ? 'end' : 'start'"
+                alignment-baseline="baseline"
+                :transform="`translate(${node.coords[0] - (Math.sign(getReaction(node, DofID.Dx)) * 40) / scale}
+              ${node.coords[2]})`"
+              >
+                {{ Math.abs(getReaction(node, DofID.Dx)).toFixed(2) }}
+              </text>
+
+              <polyline
+                v-if="
+                  !useAppStore().zooming &&
+                  projectStore.solver.loadCases[0].solved &&
+                  isSupported(node, DofID.Ry) &&
+                  Math.abs(getReaction(node, DofID.Ry)) > 1e-32
+                "
+                points="0,0 0,0"
+                class="decoration"
+                :marker-start="`url(#${getReaction(node, DofID.Ry) > 0 ? 'moment_ccw' : 'moment_cw'})`"
+                :transform="`translate(${node.coords[0]} ${node.coords[2]})`"
+              />
+
+              <text
+                v-if="
+                  !useAppStore().zooming &&
+                  projectStore.solver.loadCases[0].solved &&
+                  isSupported(node, DofID.Ry) &&
+                  Math.abs(getReaction(node, DofID.Ry)) > 1e-32
+                "
+                :font-size="13 / scale"
+                fill="red"
+                font-weight="normal"
+                text-anchor="start"
+                alignment-baseline="baseline"
+                :transform="`translate(${node.coords[0] + 15 / scale}
+              ${node.coords[2] - 15 / scale})`"
+              >
+                {{ Math.abs(getReaction(node, DofID.Ry)).toFixed(2) }}
+              </text>
+
               <g
-                v-if="viewerStore.showNodeLabels"
+                v-if="!useAppStore().zooming && viewerStore.showNodeLabels"
                 :transform="`translate(${(-12 - (node.label.toString().length - 1) * 2) / scale}, ${-12 / scale})`"
               >
                 <circle
@@ -715,22 +1047,33 @@ svg text {
 }
 
 .element-load.load-1d {
+  text {
+    fill: red;
+  }
   pointer-events: all;
   stroke-linecap: butt;
+  &:hover text {
+    fill: blue;
+  }
   &:hover path.drawable,
   &:hover polygon.drawable {
     stroke: blue;
     stroke-width: 3px;
   }
+  &:hover polyline {
+    marker-end: url(#force_centered_hover);
+  }
   polygon,
   path {
-    fill: none;
     stroke: red;
-    stroke-width: 2px;
+    stroke-width: 1px;
     &.handle {
       stroke-width: 12px;
       stroke: transparent;
     }
+  }
+  polyline {
+    marker-end: url(#force_centered);
   }
 }
 
@@ -750,6 +1093,10 @@ svg text {
   &:hover polyline.drawable {
     stroke: blue;
     stroke-width: 5px;
+  }
+  polyline.fibers {
+    stroke: #666;
+    stroke-width: 1px;
   }
   polyline.deformedShape {
     stroke: #555;
@@ -789,6 +1136,46 @@ svg text {
   &:hover polyline.drawable {
     stroke: blue;
     stroke-width: 8px;
+  }
+}
+
+.nodal-load {
+  text {
+    fill: red;
+  }
+  polyline {
+    stroke-linecap: square;
+    vector-effect: non-scaling-stroke;
+    &.decoration.force {
+      marker-end: url(#force);
+    }
+    &.decoration.moment.cw {
+      marker-end: url(#moment_cw);
+    }
+    &.decoration.moment.ccw {
+      marker-end: url(#moment_ccw);
+    }
+    &.handle {
+      stroke: transparent;
+      stroke-width: 24px;
+    }
+
+    &.handle.moment {
+      stroke: transparent;
+      stroke-width: 38px;
+    }
+  }
+  &:hover text {
+    fill: blue;
+  }
+  &:hover polyline.decoration.force {
+    marker-end: url(#force_hover);
+  }
+  &:hover polyline.decoration.moment.cw {
+    marker-end: url(#moment_cw_hover);
+  }
+  &:hover polyline.decoration.moment.ccw {
+    marker-end: url(#moment_ccw_hover);
   }
 }
 

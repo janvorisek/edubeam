@@ -190,45 +190,52 @@
 
           <template #item.load.values="{ item }">
             <div class="d-flex" v-if="item.raw.type === 'node'">
-              <span>F<sub>x</sub>:</span>
-              <input
-                :value="item.raw.ref.values[0]"
-                @change="changeSetArrayItem(item.raw.ref, 'values', 0, $event.target as HTMLInputElement)"
-                type="number"
-                class="inline-edit w-50 mr-2"
-              />
-              <span>F<sub>z</sub>:</span>
-              <input
-                :value="item.raw.ref.values[2]"
-                @change="changeSetArrayItem(item.raw.ref, 'values', 2, $event.target as HTMLInputElement)"
-                type="number"
-                class="inline-edit w-50"
-              />
-              <span>M<sub>y</sub>:</span>
-              <input
-                :value="item.raw.ref.values[4]"
-                @change="changeSetArrayItem(item.raw.ref, 'values', 4, $event.target as HTMLInputElement)"
-                type="number"
-                class="inline-edit w-50"
-              />
+              <div class="inline-edit-group">
+                <span class="input-before">F<sub>x</sub></span>
+                <input
+                  :value="item.raw.ref.values[0]"
+                  @change="changeSetArrayItem(item.raw.ref, 'values', 0, $event.target as HTMLInputElement)"
+                  class="inline-edit w-50 mr-2"
+                />
+              </div>
+              <div class="inline-edit-group">
+                <span class="input-before">F<sub>z</sub></span>
+                <input
+                  :value="item.raw.ref.values[1]"
+                  @change="changeSetArrayItem(item.raw.ref, 'values', 1, $event.target as HTMLInputElement)"
+                  class="inline-edit w-50 mr-2"
+                />
+              </div>
+              <div class="inline-edit-group">
+                <span class="input-before">M<sub>y</sub></span>
+                <input
+                  :value="item.raw.ref.values[4]"
+                  @change="changeSetArrayItem(item.raw.ref, 'values', 4, $event.target as HTMLInputElement)"
+                  class="inline-edit w-50 mr-2"
+                />
+              </div>
             </div>
 
             <div class="d-flex align-content-center" v-if="item.raw.type === 'element'">
-              x:
-              <input
-                :value="item.raw.ref.values[0]"
-                @change="changeSetArrayItem(item.raw.ref, 'values', 0, $event.target as HTMLInputElement)"
-                type="number"
-                class="inline-edit w-50 mr-2"
-              />
-              z:
-              <input
-                :value="item.raw.ref.values[1]"
-                @change="changeSetArrayItem(item.raw.ref, 'values', 1, $event.target as HTMLInputElement)"
-                type="number"
-                class="inline-edit w-50 mr-2"
-              />
-              lcs: <input type="checkbox" :checked="item.raw.ref.lcs" @click="toggleBoolean(item.raw.ref, 'lcs')" />
+              <div class="inline-edit-group">
+                <span class="input-before">f<sub>x</sub></span>
+                <input
+                  :value="item.raw.ref.values[0]"
+                  @change="changeSetArrayItem(item.raw.ref, 'values', 0, $event.target as HTMLInputElement)"
+                  class="inline-edit w-50 mr-2"
+                />
+              </div>
+              <div class="inline-edit-group">
+                <span class="input-before">f<sub>z</sub></span>
+                <input
+                  :value="item.raw.ref.values[1]"
+                  @change="changeSetArrayItem(item.raw.ref, 'values', 1, $event.target as HTMLInputElement)"
+                  class="inline-edit w-50 mr-2"
+                />
+              </div>
+              <div style="min-width: 33.333%">
+                lcs: <input type="checkbox" :checked="item.raw.ref.lcs" @click="toggleBoolean(item.raw.ref, 'lcs')" />
+              </div>
             </div>
           </template>
 

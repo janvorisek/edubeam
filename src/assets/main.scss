@@ -33,6 +33,25 @@ input.inline-edit {
   width: 100%;
 }
 
+.inline-edit-group {
+  display: flex;
+  &:has(.input-before) input.inline-edit {
+    border-left: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+.input-before {
+  border: thin solid #ddd;
+  border-radius: 4px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  background: #eee;
+  padding: 0 4px;
+  font-weight: 500;
+}
+
 select.mini-select {
   background-color: white;
   border: thin solid #ddd;

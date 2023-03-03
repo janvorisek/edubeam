@@ -168,7 +168,7 @@ const mouseMove = (e: MouseEvent) => {
     this.mouseYReal =
       (Math.round(mYReal / (this.stepPx / 4)) * this.stepPx) / 4 / zoom;*/
 
-  const realStep = 1.0;
+  const realStep = 0.1;
   const snapToGrid = true;
 
   mouseXReal = /*Math.round(*/ mXReal; /* / realStep) * realStep;*/

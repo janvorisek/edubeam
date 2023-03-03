@@ -88,37 +88,30 @@
             />
           </template>
           <template #item.type> Beam2D </template>
-          <template #item.nodes[0]="{ item }">
-            <select class="mini-select" v-model="item.raw.nodes[0]" @change="solve" style="width: 100%">
-              <option
-                v-for="node in nodes.filter((e) => e.label != item.raw.nodes[1])"
-                :value="node.label"
-                :key="node.label"
-              >
-                {{ `Node ${node.label}` }}
-              </option>
-            </select>
-            <!--<input
-              v-model.number="item.nodes[0]"
-              type="number"
-              class="inline-edit"
-            />-->
-          </template>
-          <template #item.nodes[1]="{ item }">
-            <select class="mini-select" v-model="item.raw.nodes[1]" @change="solve" style="width: 100%">
-              <option
-                v-for="node in nodes.filter((e) => e.label != item.raw.nodes[0])"
-                :value="node.label"
-                :key="node.label"
-              >
-                {{ `Node ${node.label}` }}
-              </option>
-            </select>
-            <!--<input
-              v-model.number="item.nodes[1]"
-              type="number"
-              class="inline-edit"
-            />-->
+          <template #item.nodes="{ item }">
+            <div class="d-flex">
+              <select class="mini-select" v-model="item.raw.nodes[0]" @change="solve" style="width: 100%">
+                <option
+                  v-for="node in nodes.filter((e) => e.label != item.raw.nodes[1])"
+                  :value="node.label"
+                  :key="node.label"
+                >
+                  {{ `Node ${node.label}` }}
+                </option>
+              </select>
+              <a href="#" class="text-decoration-none text-primary" @click.stop="swapNodes(item.raw)">
+                <v-icon small>mdi-swap-horizontal</v-icon>
+              </a>
+              <select class="mini-select" v-model="item.raw.nodes[1]" @change="solve" style="width: 100%">
+                <option
+                  v-for="node in nodes.filter((e) => e.label != item.raw.nodes[0])"
+                  :value="node.label"
+                  :key="node.label"
+                >
+                  {{ `Node ${node.label}` }}
+                </option>
+              </select>
+            </div>
           </template>
           <template #item.material="{ item }">
             <select class="mini-select" v-model.number="item.raw.mat" @change="solve" style="width: 100%">
@@ -197,23 +190,30 @@
 
           <template #item.load.values="{ item }">
             <div class="d-flex" v-if="item.raw.type === 'node'">
-              x:
+              <span>F<sub>x</sub>:</span>
               <input
                 :value="item.raw.ref.values[0]"
                 @change="changeSetArrayItem(item.raw.ref, 'values', 0, $event.target as HTMLInputElement)"
                 type="number"
                 class="inline-edit w-50 mr-2"
               />
-              z:
+              <span>F<sub>z</sub>:</span>
               <input
                 :value="item.raw.ref.values[2]"
                 @change="changeSetArrayItem(item.raw.ref, 'values', 2, $event.target as HTMLInputElement)"
                 type="number"
                 class="inline-edit w-50"
               />
+              <span>M<sub>y</sub>:</span>
+              <input
+                :value="item.raw.ref.values[4]"
+                @change="changeSetArrayItem(item.raw.ref, 'values', 4, $event.target as HTMLInputElement)"
+                type="number"
+                class="inline-edit w-50"
+              />
             </div>
 
-            <div class="d-flex" v-if="item.raw.type === 'element'">
+            <div class="d-flex align-content-center" v-if="item.raw.type === 'element'">
               x:
               <input
                 :value="item.raw.ref.values[0]"
@@ -226,8 +226,9 @@
                 :value="item.raw.ref.values[1]"
                 @change="changeSetArrayItem(item.raw.ref, 'values', 1, $event.target as HTMLInputElement)"
                 type="number"
-                class="inline-edit w-50"
+                class="inline-edit w-50 mr-2"
               />
+              lcs: <input type="checkbox" :checked="item.raw.ref.lcs" @click="toggleBoolean(item.raw.ref, 'lcs')" />
             </div>
           </template>
 
@@ -373,6 +374,11 @@ const showDialog = (name: "addNode" | "addElement" | "addNodalLoad" | "addElemen
   useAppStore().dialogs[name] = true;
 };
 
+const swapNodes = (el: Element) => {
+  el.nodes = el.nodes.reverse();
+  solve();
+};
+
 const changeSetArrayItem = (item: unknown, set: string, value: number, el?: HTMLInputElement) => {
   setUnsolved();
 
@@ -469,6 +475,12 @@ const toggleArray = (item: unknown, set: string, value: number) => {
   setUnsolved();
   //Vue.set(item[set], value, !item[set][value]);
   item[set][value] = !item[set][value];
+  solve();
+};
+
+const toggleBoolean = (item: unknown, value: string) => {
+  setUnsolved();
+  item[value] = !item[value];
   solve();
 };
 
@@ -667,14 +679,9 @@ const headers = {
       width: 120,
     },
     {
-      title: "From",
-      key: "nodes[0]",
-      width: 120,
-    },
-    {
-      title: "To",
-      key: "nodes[1]",
-      width: 120,
+      title: "Nodes",
+      key: "nodes",
+      width: 240,
     },
     {
       title: "Material",
@@ -718,7 +725,7 @@ const headers = {
     {
       title: "Components",
       key: "load.values",
-      width: 160,
+      width: 280,
     },
     {
       title: "Load case",

@@ -88,37 +88,30 @@
             />
           </template>
           <template #item.type> Beam2D </template>
-          <template #item.nodes[0]="{ item }">
-            <select class="mini-select" v-model="item.raw.nodes[0]" @change="solve" style="width: 100%">
-              <option
-                v-for="node in nodes.filter((e) => e.label != item.raw.nodes[1])"
-                :value="node.label"
-                :key="node.label"
-              >
-                {{ `Node ${node.label}` }}
-              </option>
-            </select>
-            <!--<input
-              v-model.number="item.nodes[0]"
-              type="number"
-              class="inline-edit"
-            />-->
-          </template>
-          <template #item.nodes[1]="{ item }">
-            <select class="mini-select" v-model="item.raw.nodes[1]" @change="solve" style="width: 100%">
-              <option
-                v-for="node in nodes.filter((e) => e.label != item.raw.nodes[0])"
-                :value="node.label"
-                :key="node.label"
-              >
-                {{ `Node ${node.label}` }}
-              </option>
-            </select>
-            <!--<input
-              v-model.number="item.nodes[1]"
-              type="number"
-              class="inline-edit"
-            />-->
+          <template #item.nodes="{ item }">
+            <div class="d-flex">
+              <select class="mini-select" v-model="item.raw.nodes[0]" @change="solve" style="width: 100%">
+                <option
+                  v-for="node in nodes.filter((e) => e.label != item.raw.nodes[1])"
+                  :value="node.label"
+                  :key="node.label"
+                >
+                  {{ `Node ${node.label}` }}
+                </option>
+              </select>
+              <a href="#" class="text-decoration-none text-primary" @click.stop="swapNodes(item.raw)">
+                <v-icon small>mdi-swap-horizontal</v-icon>
+              </a>
+              <select class="mini-select" v-model="item.raw.nodes[1]" @change="solve" style="width: 100%">
+                <option
+                  v-for="node in nodes.filter((e) => e.label != item.raw.nodes[0])"
+                  :value="node.label"
+                  :key="node.label"
+                >
+                  {{ `Node ${node.label}` }}
+                </option>
+              </select>
+            </div>
           </template>
           <template #item.material="{ item }">
             <select class="mini-select" v-model.number="item.raw.mat" @change="solve" style="width: 100%">
@@ -197,37 +190,55 @@
 
           <template #item.load.values="{ item }">
             <div class="d-flex" v-if="item.raw.type === 'node'">
-              x:
-              <input
-                :value="item.raw.ref.values[0]"
-                @change="changeSetArrayItem(item.raw.ref, 'values', 0, $event.target as HTMLInputElement)"
-                type="number"
-                class="inline-edit w-50 mr-2"
-              />
-              z:
-              <input
-                :value="item.raw.ref.values[2]"
-                @change="changeSetArrayItem(item.raw.ref, 'values', 2, $event.target as HTMLInputElement)"
-                type="number"
-                class="inline-edit w-50"
-              />
+              <div class="inline-edit-group mr-2">
+                <span class="input-before">F<sub>x</sub></span>
+                <input
+                  :value="item.raw.ref.values[0]"
+                  @change="changeSetArrayItem(item.raw.ref, 'values', 0, $event.target as HTMLInputElement)"
+                  class="inline-edit"
+                />
+              </div>
+              <div class="inline-edit-group mr-2">
+                <span class="input-before">F<sub>z</sub></span>
+                <input
+                  :value="item.raw.ref.values[2]"
+                  @change="changeSetArrayItem(item.raw.ref, 'values', 2, $event.target as HTMLInputElement)"
+                  class="inline-edit"
+                />
+              </div>
+              <div class="inline-edit-group">
+                <span class="input-before">M<sub>y</sub></span>
+                <input
+                  :value="item.raw.ref.values[4]"
+                  @change="changeSetArrayItem(item.raw.ref, 'values', 4, $event.target as HTMLInputElement)"
+                  class="inline-edit"
+                />
+              </div>
             </div>
 
-            <div class="d-flex" v-if="item.raw.type === 'element'">
-              x:
-              <input
-                :value="item.raw.ref.values[0]"
-                @change="changeSetArrayItem(item.raw.ref, 'values', 0, $event.target as HTMLInputElement)"
-                type="number"
-                class="inline-edit w-50 mr-2"
-              />
-              z:
-              <input
-                :value="item.raw.ref.values[1]"
-                @change="changeSetArrayItem(item.raw.ref, 'values', 1, $event.target as HTMLInputElement)"
-                type="number"
-                class="inline-edit w-50"
-              />
+            <div class="d-flex align-content-center" v-if="item.raw.type === 'element'">
+              <div class="inline-edit-group mr-2">
+                <span class="input-before">f<sub>x</sub></span>
+                <input
+                  :value="item.raw.ref.values[0]"
+                  @change="changeSetArrayItem(item.raw.ref, 'values', 0, $event.target as HTMLInputElement)"
+                  class="inline-edit"
+                />
+              </div>
+              <div class="inline-edit-group mr-2">
+                <span class="input-before">f<sub>z</sub></span>
+                <input
+                  :value="item.raw.ref.values[1]"
+                  @change="changeSetArrayItem(item.raw.ref, 'values', 1, $event.target as HTMLInputElement)"
+                  class="inline-edit"
+                />
+              </div>
+              <div class="inline-edit-group">
+                <span class="input-before">LCS</span>
+                <div class="inline-edit">
+                  <input type="checkbox" :checked="item.raw.ref.lcs" @click="toggleBoolean(item.raw.ref, 'lcs')" />
+                </div>
+              </div>
             </div>
           </template>
 
@@ -256,15 +267,23 @@
               </option>
             </select>
           </template>
+
+          <template #item.actions="{ item, index }">
+            <v-icon v-if="item.raw.type === 'element'" small @click="deleteElementLoad(index)"> mdi-close </v-icon>
+            <v-icon v-if="item.raw.type === 'node'" small @click="deleteNodalLoad(item)"> mdi-close </v-icon>
+          </template>
         </v-data-table>
       </v-window-item>
 
       <v-window-item :key="'tab-mats'" style="height: 220px" :transition="false">
+        <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addMaterial')">
+          <v-icon small>mdi-plus</v-icon> Add material
+        </v-btn>
         <v-data-table
           :headers="headers.materials"
           :items="materials"
           density="compact"
-          height="220"
+          height="192"
           fixed-header
           :items-per-page="-1"
           disable-pagination
@@ -301,15 +320,21 @@
           <template #item.d="{ item }">
             <input @change="solve" v-model.number="item.raw.d" type="number" class="inline-edit" />
           </template>
+          <template #item.actions="{ item }">
+            <v-icon small @click="deleteMaterial(item.raw.label)"> mdi-close </v-icon>
+          </template>
         </v-data-table>
       </v-window-item>
 
       <v-window-item :key="'tab-cs'" style="height: 220px" :transition="false">
+        <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addCrossSection')">
+          <v-icon small>mdi-plus</v-icon> Add cross section
+        </v-btn>
         <v-data-table
           :headers="headers.crossSections"
           :items="crossSections"
           density="compact"
-          height="220"
+          height="192"
           fixed-header
           :items-per-page="-1"
           disable-pagination
@@ -335,6 +360,9 @@
           </template>
           <template #item.k="{ item }">
             <input @change="solve" v-model.number="item.raw.k" type="number" class="inline-edit" />
+          </template>
+          <template #item.actions="{ item }">
+            <v-icon small @click="deleteCrossSection(item.raw.label)"> mdi-close </v-icon>
           </template>
         </v-data-table>
       </v-window-item>
@@ -369,8 +397,15 @@ onMounted(() => {
   });
 });
 
-const showDialog = (name: "addNode" | "addElement" | "addNodalLoad" | "addElementLoad") => {
+const showDialog = (
+  name: "addNode" | "addElement" | "addNodalLoad" | "addElementLoad" | "addMaterial" | "addCrossSection"
+) => {
   useAppStore().dialogs[name] = true;
+};
+
+const swapNodes = (el: Element) => {
+  el.nodes = el.nodes.reverse();
+  solve();
 };
 
 const changeSetArrayItem = (item: unknown, set: string, value: number, el?: HTMLInputElement) => {
@@ -472,6 +507,12 @@ const toggleArray = (item: unknown, set: string, value: number) => {
   solve();
 };
 
+const toggleBoolean = (item: unknown, value: string) => {
+  setUnsolved();
+  item[value] = !item[value];
+  solve();
+};
+
 const deleteElement = (id: number) => {
   // delete element load
   for (const lc of useProjectStore().solver.loadCases) {
@@ -498,9 +539,25 @@ const deleteNode = (id: number) => {
   }
 
   useProjectStore().solver.domain.nodes.delete(id);
-  useProjectStore().solver.domain.nodes = new Map(useProjectStore().solver.domain.nodes);
+  //useProjectStore().solver.domain.nodes = new Map(useProjectStore().solver.domain.nodes);
 
   solve();
+};
+
+const deleteMaterial = (id: number) => {
+  useProjectStore().solver.domain.materials.delete(id);
+};
+
+const deleteCrossSection = (id: number) => {
+  useProjectStore().solver.domain.crossSections.delete(id);
+};
+
+const deleteNodalLoad = (id: number) => {
+  console.log(id);
+};
+
+const deleteElementLoad = (id: number) => {
+  console.log(id);
 };
 
 const solve = () => {
@@ -667,14 +724,9 @@ const headers = {
       width: 120,
     },
     {
-      title: "From",
-      key: "nodes[0]",
-      width: 120,
-    },
-    {
-      title: "To",
-      key: "nodes[1]",
-      width: 120,
+      title: "Nodes",
+      key: "nodes",
+      width: 240,
     },
     {
       title: "Material",
@@ -718,7 +770,7 @@ const headers = {
     {
       title: "Components",
       key: "load.values",
-      width: 160,
+      width: 280,
     },
     {
       title: "Load case",

@@ -8,6 +8,8 @@ export const useAppStore = defineStore("app", () => {
     addElement: false,
     addNodalLoad: false,
     addElementLoad: false,
+    addMaterial: false,
+    addCrossSection: false,
   });
 
   const zooming = ref(false);

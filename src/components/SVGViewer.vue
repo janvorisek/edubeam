@@ -295,6 +295,150 @@ defineExpose({ centerContent, fitContent });
         <SvgViewerDefs />
         <g ref="viewport">
           <g>
+            <g v-if="!useAppStore().zooming && useViewerStore().showLoads">
+              <g
+                class="element-load load-1d"
+                v-for="(eload, index) in useProjectStore().solver.loadCases[0].elementLoadList"
+                :key="`element-load-${index}`"
+              >
+                <g v-if="eload.values[0] !== 0">
+                  <polyline
+                    v-for="(load, i) in formatElementLoadForces(eload, scale, 0)"
+                    :key="`load-force-${i}`"
+                    points="0,0 0,0"
+                    vector-effect="non-scaling-stroke"
+                    class="drawable"
+                    :transform="`translate(${load[0]} ${load[1]}) rotate(${formatElementLoadForcesAngle(eload, 0)})`"
+                  />
+                </g>
+                <g v-if="eload.values[1] !== 0">
+                  <polyline
+                    v-for="(load, i) in formatElementLoadForces(eload, scale, 1)"
+                    :key="`load-force-${i}`"
+                    points="0,0 0,0"
+                    vector-effect="non-scaling-stroke"
+                    class="drawable"
+                    :transform="`translate(${load[0]} ${load[1]}) rotate(${formatElementLoadForcesAngle(eload, 1)})`"
+                  />
+                </g>
+                <g v-if="!useAppStore().zooming && viewerStore.showLoads">
+                  <text
+                    v-if="eload.values[0] !== 0"
+                    :font-size="13 / scale"
+                    font-weight="normal"
+                    text-anchor="end"
+                    alignment-baseline="middle"
+                    :transform="formatElementLoadLabel(eload, scale, 0)"
+                  >
+                    {{ Math.abs(eload.values[0]).toFixed(2) }}
+                  </text>
+                  <text
+                    v-if="eload.values[1] !== 0"
+                    :font-size="13 / scale"
+                    font-weight="normal"
+                    text-anchor="end"
+                    alignment-baseline="middle"
+                    :transform="formatElementLoadLabel(eload, scale, 1)"
+                  >
+                    {{ Math.abs(eload.values[1]).toFixed(2) }}
+                  </text>
+                </g>
+                <!--<path
+                :d="formatElementLoadHatch(eload, scale)"
+                vector-effect="non-scaling-stroke"
+                class="drawable"
+                stroke-linecap="round"
+              />-->
+                <polygon
+                  :points="formatElementLoad(eload, scale)"
+                  fill="transparent"
+                  class="drawable"
+                  vector-effect="non-scaling-stroke"
+                />
+              </g>
+              <g
+                class="nodal-load"
+                v-for="(nload, index) in useProjectStore().solver.loadCases[0].nodalLoadList"
+                :key="`nodal-load-${index}`"
+              >
+                <polyline
+                  v-if="nload.values[0] !== 0 || nload.values[2] !== 0"
+                  points="0,0 0,0"
+                  vector-effect="non-scaling-stroke"
+                  class="decoration force"
+                  :transform="
+                  `translate(${
+                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0]
+                  }
+              ${
+                useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2]
+              }) rotate(${formatNodalLoadAngle(nload)})`
+                "
+                />
+
+                <polyline
+                  v-if="nload.values[4] !== 0"
+                  points="0,0 0,0"
+                  vector-effect="non-scaling-stroke"
+                  class="decoration moment"
+                  :class="{ cw: nload.values[4] < 0, ccw: nload.values[4] > 0 }"
+                  :transform="
+                  `translate(${
+                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0]
+                  }
+              ${
+                useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2]
+              })`
+                "
+                />
+
+                <polyline :points="formatNodalLoad(nload, scale)" class="handle" />
+                <polyline
+                  :points="formatNode(useProjectStore().solver.domain.nodes.get(nload.target).coords)"
+                  class="handle moment"
+                />
+
+                <text
+                  v-if="nload.values[4] !== 0"
+                  :font-size="13 / scale"
+                  font-weight="normal"
+                  text-anchor="start"
+                  alignment-baseline="central"
+                  :transform="
+                  `translate(${
+                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0] + 15 / scale
+                  }
+              ${
+                useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2] - 15 / scale
+              })`
+                "
+                >
+                  {{ Math.abs(nload.values[4]).toFixed(2) }}
+                </text>
+
+                <text
+                  v-if="nload.values[0] !== 0 || nload.values[2] !== 0"
+                  :font-size="13 / scale"
+                  font-weight="normal"
+                  :text-anchor="nload.values[0] > 0 ? 'end' : 'start'"
+                  alignment-baseline="central"
+                  :transform="
+                  `translate(${
+                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0] - 40*nload.values[0] / Math.sqrt(nload.values[0]*nload.values[0] + nload.values[2]*nload.values[2]) / scale
+                  }
+              ${
+                useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2] - 40*nload.values[2] / Math.sqrt(nload.values[0]*nload.values[0] + nload.values[2]*nload.values[2]) / scale
+              })`
+                "
+                >
+                  {{ Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2]).toFixed(2) }}
+                  <template v-if="nload.values[0] !== 0 && nload.values[2] !== 0">
+                    ({{ nload.values[0].toFixed(2) }}, {{ nload.values[2].toFixed(2) }})
+                  </template>
+                </text>
+              </g>
+            </g>
+
             <g class="element element-1d" v-for="(element, index) in projectStore.beams" :key="`element-${index}`">
               <polyline
                 v-if="
@@ -446,149 +590,7 @@ defineExpose({ centerContent, fitContent });
               />
             </g>
           </g>
-          <g v-if="!useAppStore().zooming && useViewerStore().showLoads">
-            <g
-              class="element-load load-1d"
-              v-for="(eload, index) in useProjectStore().solver.loadCases[0].elementLoadList"
-              :key="`element-load-${index}`"
-            >
-              <g v-if="eload.values[0] !== 0">
-                <polyline
-                  v-for="(load, i) in formatElementLoadForces(eload, scale, 0)"
-                  :key="`load-force-${i}`"
-                  points="0,0 0,0"
-                  vector-effect="non-scaling-stroke"
-                  class="drawable"
-                  :transform="`translate(${load[0]} ${load[1]}) rotate(${formatElementLoadForcesAngle(eload, 0)})`"
-                />
-              </g>
-              <g v-if="eload.values[1] !== 0">
-                <polyline
-                  v-for="(load, i) in formatElementLoadForces(eload, scale, 1)"
-                  :key="`load-force-${i}`"
-                  points="0,0 0,0"
-                  vector-effect="non-scaling-stroke"
-                  class="drawable"
-                  :transform="`translate(${load[0]} ${load[1]}) rotate(${formatElementLoadForcesAngle(eload, 1)})`"
-                />
-              </g>
-              <g v-if="!useAppStore().zooming && viewerStore.showLoads">
-                <text
-                  v-if="eload.values[0] !== 0"
-                  :font-size="13 / scale"
-                  font-weight="normal"
-                  text-anchor="end"
-                  alignment-baseline="middle"
-                  :transform="formatElementLoadLabel(eload, scale, 0)"
-                >
-                  {{ Math.abs(eload.values[0]).toFixed(2) }}
-                </text>
-                <text
-                  v-if="eload.values[1] !== 0"
-                  :font-size="13 / scale"
-                  font-weight="normal"
-                  text-anchor="end"
-                  alignment-baseline="middle"
-                  :transform="formatElementLoadLabel(eload, scale, 1)"
-                >
-                  {{ Math.abs(eload.values[1]).toFixed(2) }}
-                </text>
-              </g>
-              <!--<path
-                :d="formatElementLoadHatch(eload, scale)"
-                vector-effect="non-scaling-stroke"
-                class="drawable"
-                stroke-linecap="round"
-              />-->
-              <polygon
-                :points="formatElementLoad(eload, scale)"
-                fill="transparent"
-                class="drawable"
-                vector-effect="non-scaling-stroke"
-              />
-            </g>
-            <g
-              class="nodal-load"
-              v-for="(nload, index) in useProjectStore().solver.loadCases[0].nodalLoadList"
-              :key="`nodal-load-${index}`"
-            >
-              <polyline
-                v-if="nload.values[0] !== 0 || nload.values[2] !== 0"
-                points="0,0 0,0"
-                vector-effect="non-scaling-stroke"
-                class="decoration force"
-                :transform="
-                  `translate(${
-                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0]
-                  }
-              ${
-                useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2]
-              }) rotate(${formatNodalLoadAngle(nload)})`
-                "
-              />
 
-              <polyline
-                v-if="nload.values[4] !== 0"
-                points="0,0 0,0"
-                vector-effect="non-scaling-stroke"
-                class="decoration moment"
-                :class="{ cw: nload.values[4] < 0, ccw: nload.values[4] > 0 }"
-                :transform="
-                  `translate(${
-                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0]
-                  }
-              ${
-                useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2]
-              })`
-                "
-              />
-
-              <polyline :points="formatNodalLoad(nload, scale)" class="handle" />
-              <polyline
-                :points="formatNode(useProjectStore().solver.domain.nodes.get(nload.target).coords)"
-                class="handle moment"
-              />
-
-              <text
-                v-if="nload.values[4] !== 0"
-                :font-size="13 / scale"
-                font-weight="normal"
-                text-anchor="start"
-                alignment-baseline="central"
-                :transform="
-                  `translate(${
-                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0] + 15 / scale
-                  }
-              ${
-                useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2] - 15 / scale
-              })`
-                "
-              >
-                {{ Math.abs(nload.values[4]).toFixed(2) }}
-              </text>
-
-              <text
-                v-if="nload.values[0] !== 0 || nload.values[2] !== 0"
-                :font-size="13 / scale"
-                font-weight="normal"
-                :text-anchor="nload.values[0] > 0 ? 'end' : 'start'"
-                alignment-baseline="central"
-                :transform="
-                  `translate(${
-                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0] - 40*nload.values[0] / Math.sqrt(nload.values[0]*nload.values[0] + nload.values[2]*nload.values[2]) / scale
-                  }
-              ${
-                useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2] - 40*nload.values[2] / Math.sqrt(nload.values[0]*nload.values[0] + nload.values[2]*nload.values[2]) / scale
-              })`
-                "
-              >
-                {{ Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2]).toFixed(2) }}
-                <template v-if="nload.values[0] !== 0 && nload.values[2] !== 0">
-                  ({{ nload.values[0].toFixed(2) }}, {{ nload.values[2].toFixed(2) }})
-                </template>
-              </text>
-            </g>
-          </g>
           <g>
             <g class="node" v-for="(node, index) in projectStore.solver.domain.nodes.values()" :key="`node-${index}`">
               <polyline

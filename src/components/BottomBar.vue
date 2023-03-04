@@ -33,21 +33,27 @@
               class="inline-edit"
             />
           </template>
-          <template #item.coords[0]="{ item }">
-            <input
-              :value="item.raw.coords[0]"
-              @change="changeSetArrayItem(item.raw, 'coords', 0, $event.target as HTMLInputElement)"
-              type="number"
-              class="inline-edit"
-            />
-          </template>
-          <template #item.coords[2]="{ item }">
-            <input
-              :value="item.raw.coords[2]"
-              @change="changeSetArrayItem(item.raw, 'coords', 2, $event.target as HTMLInputElement)"
-              type="number"
-              class="inline-edit"
-            />
+          <template #item.coords="{ item }">
+            <div class="d-flex">
+              <div class="inline-edit-group mr-2">
+                <span class="input-before">x</span>
+                <input
+                  :value="item.raw.coords[0]"
+                  @keydown="checkNumber($event)"
+                  @change="changeSetArrayItem(item.raw, 'coords', 0, $event.target as HTMLInputElement)"
+                  class="inline-edit"
+                />
+              </div>
+              <div class="inline-edit-group mr-2">
+                <span class="input-before">z</span>
+                <input
+                  :value="item.raw.coords[2]"
+                  @keydown="checkNumber($event)"
+                  @change="changeSetArrayItem(item.raw, 'coords', 2, $event.target as HTMLInputElement)"
+                  class="inline-edit"
+                />
+              </div>
+            </div>
           </template>
           <template #item.bcs0="{ item }">
             <input type="checkbox" :checked="item.raw.bcs.has(0)" @click="toggleSet(item.raw, 'bcs', 0)" />
@@ -194,6 +200,7 @@
                 <span class="input-before">F<sub>x</sub></span>
                 <input
                   :value="item.raw.ref.values[0]"
+                  @keydown="checkNumber($event)"
                   @change="changeSetArrayItem(item.raw.ref, 'values', 0, $event.target as HTMLInputElement)"
                   class="inline-edit"
                 />
@@ -202,6 +209,7 @@
                 <span class="input-before">F<sub>z</sub></span>
                 <input
                   :value="item.raw.ref.values[2]"
+                  @keydown="checkNumber($event)"
                   @change="changeSetArrayItem(item.raw.ref, 'values', 2, $event.target as HTMLInputElement)"
                   class="inline-edit"
                 />
@@ -210,6 +218,7 @@
                 <span class="input-before">M<sub>y</sub></span>
                 <input
                   :value="item.raw.ref.values[4]"
+                  @keydown="checkNumber($event)"
                   @change="changeSetArrayItem(item.raw.ref, 'values', 4, $event.target as HTMLInputElement)"
                   class="inline-edit"
                 />
@@ -221,6 +230,7 @@
                 <span class="input-before">f<sub>x</sub></span>
                 <input
                   :value="item.raw.ref.values[0]"
+                  @keydown="checkNumber($event)"
                   @change="changeSetArrayItem(item.raw.ref, 'values', 0, $event.target as HTMLInputElement)"
                   class="inline-edit"
                 />
@@ -229,6 +239,7 @@
                 <span class="input-before">f<sub>z</sub></span>
                 <input
                   :value="item.raw.ref.values[1]"
+                  @keydown="checkNumber($event)"
                   @change="changeSetArrayItem(item.raw.ref, 'values', 1, $event.target as HTMLInputElement)"
                   class="inline-edit"
                 />
@@ -299,10 +310,20 @@
             />
           </template>
           <template #item.e="{ item }">
-            <input @change="solve" v-model.number="item.raw.e" type="number" class="inline-edit" />
+            <input
+              :value="item.raw.e"
+              @keydown="checkNumber($event)"
+              @change="changeItem(item.raw, 'e', $event.target as HTMLInputElement)"
+              class="inline-edit"
+            />
           </template>
           <template #item.g="{ item }">
-            <input @change="solve" v-model.number="item.raw.g" type="number" class="inline-edit" />
+            <input
+              :value="item.raw.g"
+              @keydown="checkNumber($event)"
+              @change="changeItem(item.raw, 'g', $event.target as HTMLInputElement)"
+              class="inline-edit"
+            />
           </template>
           <template #column.alpha="{ column }">
             <v-tooltip :text="column.tooltip" location="bottom">
@@ -315,10 +336,20 @@
             </v-tooltip>
           </template>
           <template #item.alpha="{ item }">
-            <input @change="solve" v-model.number="item.raw.alpha" type="number" class="inline-edit" />
+            <input
+              :value="item.raw.alpha"
+              @keydown="checkNumber($event)"
+              @change="changeItem(item.raw, 'alpha', $event.target as HTMLInputElement)"
+              class="inline-edit"
+            />
           </template>
           <template #item.d="{ item }">
-            <input @change="solve" v-model.number="item.raw.d" type="number" class="inline-edit" />
+            <input
+              :value="item.raw.d"
+              @keydown="checkNumber($event)"
+              @change="changeItem(item.raw, 'd', $event.target as HTMLInputElement)"
+              class="inline-edit"
+            />
           </template>
           <template #item.actions="{ item }">
             <v-icon small @click="deleteMaterial(item.raw.label)"> mdi-close </v-icon>
@@ -350,16 +381,36 @@
             />
           </template>
           <template #item.a="{ item }">
-            <input @change="solve" v-model.number="item.raw.a" type="number" class="inline-edit" />
+            <input
+              :value="item.raw.a"
+              @keydown="checkNumber($event)"
+              @change="changeItem(item.raw, 'a', $event.target as HTMLInputElement)"
+              class="inline-edit"
+            />
           </template>
           <template #item.iy="{ item }">
-            <input @change="solve" v-model.number="item.raw.iy" type="number" class="inline-edit" />
+            <input
+              :value="item.raw.iy"
+              @keydown="checkNumber($event)"
+              @change="changeItem(item.raw, 'iy', $event.target as HTMLInputElement)"
+              class="inline-edit"
+            />
           </template>
           <template #item.h="{ item }">
-            <input @change="solve" v-model.number="item.raw.h" type="number" class="inline-edit" />
+            <input
+              :value="item.raw.h"
+              @keydown="checkNumber($event)"
+              @change="changeItem(item.raw, 'h', $event.target as HTMLInputElement)"
+              class="inline-edit"
+            />
           </template>
           <template #item.k="{ item }">
-            <input @change="solve" v-model.number="item.raw.k" type="number" class="inline-edit" />
+            <input
+              :value="item.raw.k"
+              @keydown="checkNumber($event)"
+              @change="changeItem(item.raw, 'k', $event.target as HTMLInputElement)"
+              class="inline-edit"
+            />
           </template>
           <template #item.actions="{ item }">
             <v-icon small @click="deleteCrossSection(item.raw.label)"> mdi-close </v-icon>
@@ -408,22 +459,48 @@ const swapNodes = (el: Element) => {
   solve();
 };
 
+const checkNumber = (e: KeyboardEvent) => {
+  const isNumber = !isNaN(e.key as unknown as number);
+  const isActionKey =
+    e.key === "Delete" ||
+    e.key === "Backspace" ||
+    e.key === "Enter" ||
+    e.key === "Tab" ||
+    e.key === "ArrowRight" ||
+    e.key === "ArrowLeft" ||
+    e.key === "e" ||
+    e.key === "-";
+
+  const isComma = e.key === "," || e.key === ".";
+
+  if (isNumber || isActionKey || isComma) return;
+
+  e.stopPropagation();
+  e.preventDefault();
+};
+
 const changeSetArrayItem = (item: unknown, set: string, value: number, el?: HTMLInputElement) => {
   setUnsolved();
 
-  if (isNaN(parseFloat(el.value))) return;
+  if (el.value === "") el.value = "0";
 
-  item[set][value] = parseFloat(el.value);
+  const val = parseFloat(el.value.replace(/\s/g, "").replace(",", "."));
+  if (isNaN(val)) return (el.value = item[set][value]);
+
+  item[set][value] = val;
 
   solve();
 };
 
-const changeItem = (item: object, value: number, el?: HTMLInputElement) => {
+const changeItem = (item: object, value: string, el?: HTMLInputElement) => {
   setUnsolved();
 
-  if (isNaN(parseFloat(el.value))) return;
+  if (el.value === "") el.value = "0";
 
-  item[value] = parseFloat(el.value);
+  const val = parseFloat(el.value.replace(/\s/g, "").replace(",", "."));
+  if (isNaN(val)) return (el.value = item[value]);
+
+  item[value] = val;
 
   solve();
 };
@@ -678,14 +755,9 @@ const headers = {
       width: 100,
     },
     {
-      title: "X",
-      key: "coords[0]",
-      width: 90,
-    },
-    {
-      title: "Z",
-      key: "coords[2]",
-      width: 90,
+      title: "Coords",
+      key: "coords",
+      width: 180,
     },
     {
       title: "Ux-bc",
@@ -721,7 +793,7 @@ const headers = {
     {
       title: "Type",
       key: "type",
-      width: 120,
+      width: 100,
     },
     {
       title: "Nodes",
@@ -731,12 +803,12 @@ const headers = {
     {
       title: "Material",
       key: "material",
-      width: 120,
+      width: 140,
     },
     {
       title: "Cross section",
       key: "cs",
-      width: 160,
+      width: 140,
     },
     {
       title: "End hinges",
@@ -748,7 +820,7 @@ const headers = {
     {
       title: "Mass matrix",
       key: "diagonalMassMatrix",
-      width: 160,
+      width: 140,
     },
     {
       title: "Actions",
@@ -770,7 +842,7 @@ const headers = {
     {
       title: "Components",
       key: "load.values",
-      width: 280,
+      width: 320,
     },
     {
       title: "Load case",

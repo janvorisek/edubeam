@@ -112,6 +112,7 @@ const onElementHover = (e: MouseEvent) => {
   tt.style.left = e.offsetX + "px";
   tooltipContent.innerHTML = `Element ${index}`;
   tt.style.display = "block";
+  document.body.style.cursor = "pointer";
 
   if (mouseMode === MouseMode.NONE) mouseMode = MouseMode.HOVER;
 };
@@ -132,6 +133,7 @@ const onNodeHover = (e: MouseEvent) => {
   tt.style.left = e.offsetX + "px";
   tooltipContent.innerHTML = `Node ${index}`;
   tt.style.display = "block";
+  document.body.style.cursor = "pointer";
 
   if (mouseMode === MouseMode.NONE) mouseMode = MouseMode.HOVER;
 };
@@ -139,6 +141,7 @@ const onNodeHover = (e: MouseEvent) => {
 const hideTooltip = () => {
   const tt = tooltip.value as HTMLElement;
   tt.style.display = "none";
+  document.body.style.cursor = "auto";
 
   if ([MouseMode.HOVER, MouseMode.SELECTING].includes(mouseMode)) {
     if (mouseMode === MouseMode.HOVER) mouseMode = MouseMode.NONE;

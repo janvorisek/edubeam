@@ -1083,7 +1083,7 @@ svg text {
     stroke: black;
     stroke-width: 2px;
     &.handle {
-      stroke-width: 12px;
+      stroke-width: 24px;
       stroke: transparent;
     }
     &.decoration {

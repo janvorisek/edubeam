@@ -17,6 +17,8 @@ import "./assets/main.scss";
 
 const app = createApp(App);
 
+app.config.globalProperties.window = window;
+
 registerPlugins(app);
 
 app.mount("#app");

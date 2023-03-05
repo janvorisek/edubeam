@@ -3,8 +3,9 @@ import SvgPanZoom from "./SVGPanZoom.vue";
 import SvgGrid from "./SVGGrid.vue";
 import SvgViewerDefs from "./SVGViewerDefs.vue";
 import { useProjectStore } from "../store/project";
-import { ref, onMounted, computed, nextTick } from "vue";
+import { ref, onMounted, computed, nextTick, markRaw } from "vue";
 import { useViewerStore } from "../store/viewer";
+import { useAppStore } from "@/store/app";
 import {
   formatNode,
   formatElement,
@@ -27,9 +28,10 @@ import {
   formatElementLoadForcesAngle,
 } from "../SVGUtils";
 import { throttle } from "../utils";
-import { useAppStore } from "@/store/app";
 import { Node, DofID } from "ts-fem";
 import { Matrix } from "mathjs";
+
+import StiffnessMatrix from "./StiffnessMatrix.vue";
 
 enum MouseMode {
   NONE,
@@ -46,6 +48,7 @@ let mouseStartY = 0;
 let mouseXReal = 0;
 let mouseYReal = 0;
 
+const appStore = useAppStore();
 const projectStore = useProjectStore();
 const viewerStore = useViewerStore();
 
@@ -153,6 +156,42 @@ const hideTooltip = () => {
   }
 };
 
+const hasMoved = (e: MouseEvent) => {
+  const dx = e.offsetX - mouseStartX;
+  const dy = e.offsetY - mouseStartY;
+  const d = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+  if (d > 10) return true;
+
+  return false;
+};
+
+const onNodeClick = (e: MouseEvent) => {
+  if (hasMoved(e)) return;
+
+  const target = e.target as HTMLElement;
+  const index = target.getAttribute("data-node-id") || "-1";
+
+  useProjectStore().selection.type = "node";
+  useProjectStore().selection.label = isNaN(index as unknown as number) ? index : parseInt(index);
+  //useProjectStore().selection.x = e.offsetX;
+  //useProjectStore().selection.y = e.offsetY;
+
+  useProjectStore().selection.x = target.getBoundingClientRect().left - 100;
+  useProjectStore().selection.y = target.getBoundingClientRect().top - 64;
+};
+
+const onElementClick = (e: MouseEvent) => {
+  if (hasMoved(e)) return;
+
+  const target = e.target as HTMLElement;
+  const index = target.getAttribute("data-element-id") || "-1";
+
+  useProjectStore().selection.type = "element";
+  useProjectStore().selection.label = isNaN(index as unknown as number) ? index : parseInt(index);
+  useProjectStore().selection.x = target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 - 100;
+  useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
+};
+
 const mouseMove = (e: MouseEvent) => {
   mouseX = e.offsetX;
   mouseY = e.offsetY;
@@ -206,8 +245,8 @@ const mouseMove = (e: MouseEvent) => {
     useProjectStore().solver.loadCases[0].solved = false;
     useProjectStore().solve();
 
-    mouseStartX = mouseX;
-    mouseStartY = mouseY;
+    //mouseStartX = mouseX;
+    //mouseStartY = mouseY;
 
     //(this.$root.$children[0] as App).solve();
   }
@@ -215,6 +254,7 @@ const mouseMove = (e: MouseEvent) => {
 
 const onMouseDown = (e: MouseEvent) => {
   //if (this.svgPanZoom == null) return;
+  projectStore.selection.type = null;
 
   if ("activeElement" in document) (document.activeElement as HTMLElement).blur();
 
@@ -290,7 +330,7 @@ defineExpose({ centerContent, fitContent });
     <svg class="w-100 fill-height" style="position: absolute">
       <SvgGrid ref="grid" :svg="svg as SVGSVGElement" :viewport="viewport as SVGGElement" :zoom="scale" />
     </svg>
-    <SvgPanZoom :on-update="onUpdate" ref="panZoom" style="z-index: 50; min-height: 0">
+    <SvgPanZoom :on-update="onUpdate" ref="panZoom" style="overflow: hidden; z-index: 50; min-height: 0">
       <svg ref="svg" @mousemove="mouseMove" @mousedown="onMouseDown" @mouseup="onMouseUp">
         <SvgViewerDefs />
         <g ref="viewport">
@@ -587,6 +627,7 @@ defineExpose({ centerContent, fitContent });
                 :data-element-id="element.label"
                 @mousemove="onElementHover"
                 @mouseleave="hideTooltip"
+                @mouseup="onElementClick"
               />
             </g>
           </g>
@@ -729,12 +770,56 @@ defineExpose({ centerContent, fitContent });
                 :data-node-id="node.label"
                 @mousemove="onNodeHover"
                 @mouseleave="hideTooltip"
+                @mouseup="onNodeClick"
               />
             </g>
           </g>
         </g>
       </svg>
     </SvgPanZoom>
+
+    <div
+      v-if="projectStore.selection.type !== null"
+      class="selection-tooltip elevation-1"
+      :style="`position: absolute; left: ${projectStore.selection.x}px; top: ${projectStore.selection.y}px;`"
+    >
+      <div class="d-flex justify-space-between">
+        <div class="font-weight-medium px-4 py-2">
+          {{ projectStore.selection.type }} {{ projectStore.selection.label }}
+        </div>
+        <v-btn variant="text" icon="mdi-close" size="x-small" @click="projectStore.selection.type = null" />
+      </div>
+      <div>
+        <v-list density="compact" class="py-0">
+          <v-list-item link class="text-body-2" v-if="projectStore.selection.type === 'element'">
+            Analytical solution
+            <template #prepend>
+              <div class="pr-2"><v-icon icon="mdi-function-variant" /></div>
+            </template>
+          </v-list-item>
+          <v-list-item
+            link
+            class="text-body-2"
+            v-if="projectStore.selection.type === 'element'"
+            @click="
+              projectStore.selection.type = null;
+              appStore.tabs.push({
+                title: `stiffness matrix (element ${projectStore.selection.label})`,
+                component: markRaw(StiffnessMatrix),
+                props: markRaw({ label: projectStore.selection.label }),
+                closable: true,
+              });
+              appStore.tab = appStore.tabs.length - 1;
+            "
+          >
+            Stiffness matrix
+            <template #prepend>
+              <div class="pr-2"><v-icon icon="mdi-matrix" /></div>
+            </template>
+          </v-list-item>
+        </v-list>
+      </div>
+    </div>
 
     <div class="d-none d-sm-inline-flex" style="position: absolute; right: 112px; top: 32px; z-index: 60">
       <v-toolbar color="grey-lighten-5" rounded="lg" height="32" class="elevation-1">

@@ -17,6 +17,18 @@ export const useProjectStore = defineStore("project", () => {
 
   const resultsScalePx = ref(64);
 
+  const selection: {
+    label: number | string | null;
+    type: string | null;
+    x: number;
+    y: number;
+  } = {
+    label: null,
+    type: null,
+    x: -999,
+    y: -999,
+  };
+
   const beams = computed(() => {
     const vals = solver.value.domain.elements.values();
     const arr = Array.from(vals);
@@ -119,6 +131,7 @@ export const useProjectStore = defineStore("project", () => {
   return {
     solve,
     model,
+    selection,
     solver,
     nthEigenVector,
     resultsScalePx,

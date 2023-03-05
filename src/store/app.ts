@@ -1,6 +1,10 @@
 // Utilities
 import { defineStore } from "pinia";
-import { reactive, ref } from "vue";
+import { reactive, ref, markRaw } from "vue";
+
+import SVGViewer from "../components/SVGViewer.vue";
+import Results from "../components//Results.vue";
+import Settings from "../components//Settings.vue";
 
 export const useAppStore = defineStore("app", () => {
   const dialogs = reactive({
@@ -14,5 +18,13 @@ export const useAppStore = defineStore("app", () => {
 
   const zooming = ref(false);
 
-  return { dialogs, zooming };
+  const tab = ref(null);
+
+  const tabs = ref([
+    { title: "Viewer", component: markRaw(SVGViewer), props: {}, closable: false },
+    /*{ title: "Results", component: Results, props: {}, closable: true },
+    { title: "Settings", component: Settings, props: {}, closable: true },*/
+  ]);
+
+  return { dialogs, zooming, tab, tabs };
 });

@@ -111,7 +111,7 @@ const onTouchMove = (event: TouchEvent): void => {
       event.touches[0].pageY - event.touches[1].pageY
     );
 
-    zoom(touchPointer.value.x, touchPointer.value.y, Math.sign(touchPointer.value.ds - distance) * 0.05);
+    zoom(touchPointer.value.x, touchPointer.value.y, Math.sign(touchPointer.value.ds - distance) * 0.02);
 
     touchPointer.value.ds = distance;
   }
@@ -137,7 +137,7 @@ const centerContent = (): void => {
 };
 
 const fitContent = (n = 0): void => {
-  if (n > 3) return;
+  if (n > 5) return;
 
   const svgEl = svgRef.value as SVGElement;
   const rootG = svgEl.getElementsByTagName("g")[0] as SVGGElement;

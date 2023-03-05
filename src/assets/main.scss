@@ -90,3 +90,15 @@ select.mini-select {
   justify-content: start;
   align-items: start;
 }
+
+.selection-tooltip {
+  //border: thin solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  z-index: 100;
+  width: 200px;
+}
+
+.v-window__container {
+  transition: none;
+}

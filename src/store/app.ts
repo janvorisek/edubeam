@@ -1,6 +1,6 @@
 // Utilities
 import { defineStore } from "pinia";
-import { reactive, ref, markRaw } from "vue";
+import { reactive, ref, markRaw, type Raw, type Ref } from "vue";
 
 import SVGViewer from "../components/SVGViewer.vue";
 import Results from "../components//Results.vue";
@@ -20,7 +20,14 @@ export const useAppStore = defineStore("app", () => {
 
   const tab = ref(null);
 
-  const tabs = ref([
+  const tabs: Ref<
+    {
+      title: string;
+      component: any;
+      props: unknown;
+      closable: boolean;
+    }[]
+  > = ref([
     { title: "Viewer", component: markRaw(SVGViewer), props: {}, closable: false },
     /*{ title: "Results", component: Results, props: {}, closable: true },
     { title: "Settings", component: Settings, props: {}, closable: true },*/

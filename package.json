@@ -8,12 +8,14 @@
     "lint": "eslint --fix ."
   },
   "dependencies": {
+    "@vueuse/core": "^9.13.0",
     "mathjs": "^11.6.0",
     "pinia": "^2.0.23",
     "pinia-plugin-persistedstate": "^3.1.0",
     "roboto-fontface": "*",
     "ts-fem": "github:janvorisek/ts-fem",
     "vue": "^3.2.38",
+    "vue-gtag": "^2.0.1",
     "vue-router": "^4.0.0",
     "vuetify": "^3.1.7",
     "webfontloader": "^1.0.0"

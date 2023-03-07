@@ -10,7 +10,6 @@ $font: "Barlow", sans-serif;
 .v-main {
   height: 100dvh !important; /* Fallback for browsers that do not support Custom Properties */
   height: calc(var(--dvh, 1dvh) * 100 - 48px) !important;
-
 }
 
 html, body, #app, .v-application, .v-application__wrap, .v-navigation-drawer {
@@ -21,11 +20,28 @@ html, body, #app, .v-application, .v-application__wrap, .v-navigation-drawer {
   overflow: hidden;
 }
 
-select.mini-select {
-  background: #eee;
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #c9d1d4;
+  border-radius: 20px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
 }
 
 .inline-edit {
+  background: #fff;
   border: thin solid #ddd;
   border-radius: 4px;
   padding: 1px 6px;
@@ -101,4 +117,23 @@ select.mini-select {
 
 .v-window__container {
   transition: none;
+}
+
+// Bottom bar table
+.v-table {
+  --v-table-header-height: 42px;
+  --v-table-row-height: 48px;
+  table {
+    border-bottom: 1px solid #ddd;
+  }
+  table tr:nth-child(odd) td {
+    background: #f8f8f8 !important;
+  }
+  table tr:hover td {
+    background: #eee !important;
+  }
+}
+
+.v-table > .v-table__wrapper > table > tbody > tr > td, .v-table > .v-table__wrapper > table > tbody > tr > th, .v-table > .v-table__wrapper > table > thead > tr > td, .v-table > .v-table__wrapper > table > thead > tr > th, .v-table > .v-table__wrapper > table > tfoot > tr > td, .v-table > .v-table__wrapper > table > tfoot > tr > th {
+  //padding: 0 4px;
 }

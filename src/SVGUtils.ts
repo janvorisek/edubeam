@@ -462,3 +462,12 @@ export function formatElementLoadHatch(eload: BeamElementUniformEdgeLoad, scale:
   }
   return result;
 }
+
+export function formatExpValueAsHTML(n: number, decimals: number) {
+  let str = n.toExponential(decimals);
+  str = str.replace("e-", " &middot; 10<sup>-");
+  str = str.replace("e+", " &middot; 10<sup>");
+  str = str + "</sup>"; //.replace('10')
+
+  return str;
+}

@@ -3,7 +3,7 @@ import SvgPanZoom from "./SVGPanZoom.vue";
 import SvgGrid from "./SVGGrid.vue";
 import SvgViewerDefs from "./SVGViewerDefs.vue";
 import { useProjectStore } from "../store/project";
-import { ref, onMounted, computed, nextTick, markRaw } from "vue";
+import { ref, onMounted, computed, nextTick, markRaw, watch } from "vue";
 import { useViewerStore } from "../store/viewer";
 import { useAppStore } from "@/store/app";
 import {
@@ -26,27 +26,22 @@ import {
   formatMoments,
   formatElementLoadForces,
   formatElementLoadForcesAngle,
+  formatExpValueAsHTML,
 } from "../SVGUtils";
 import { throttle } from "../utils";
 import { Node, DofID } from "ts-fem";
 import { Matrix } from "mathjs";
+import { useMagicKeys } from "@vueuse/core";
 
 import StiffnessMatrix from "./StiffnessMatrix.vue";
+import { MouseMode } from "@/mouse";
 
-enum MouseMode {
-  NONE,
-  SELECTING,
-  HOVER,
-  MOVING,
-}
-
-let mouseMode: MouseMode = MouseMode.NONE;
-let mouseX = 0;
-let mouseY = 0;
 let mouseStartX = 0;
 let mouseStartY = 0;
-let mouseXReal = 0;
-let mouseYReal = 0;
+const mouseXReal = ref(0);
+const mouseYReal = ref(0);
+
+const startNode = ref<{ label: string | number; x: number; y: number } | null>(null);
 
 const appStore = useAppStore();
 const projectStore = useProjectStore();
@@ -65,20 +60,20 @@ const scale = computed(() => {
   return 1;
 });
 
-const intersected: {
+const intersected = ref<{
   type: string | null;
   index: number | string | null;
   originalPosition: { x: number; y: number };
-} = {
+}>({
   type: null,
   index: null,
   originalPosition: { x: 0, y: 0 },
-};
+});
 
 onMounted(() => {
   window.setTimeout(() => {
     fitContent();
-  }, 1000);
+  }, 100);
 });
 
 const centerContent = () => {
@@ -99,46 +94,99 @@ const onUpdate = throttle((zooming: boolean) => {
   grid.value!.refreshGrid(zooming);
 }, 100);
 
-const onElementHover = (e: MouseEvent) => {
-  if (mouseMode === MouseMode.MOVING) return;
+const { escape } = useMagicKeys();
+
+watch(escape, (v) => {
+  if (v) {
+    if ("activeElement" in document) (document.activeElement as HTMLElement).blur();
+    appStore.mouseMode = MouseMode.NONE;
+    projectStore.selection.type = null;
+    startNode.value = null;
+  }
+});
+
+const onElementHover = (e: MouseEvent, el: Beam2D) => {
+  if (appStore.mouseMode === MouseMode.MOVING) return;
 
   const tt = tooltip.value as HTMLElement;
   const tooltipContent = tt.querySelector(".content") as HTMLElement;
 
-  const target = e.target as HTMLElement;
-  const index = parseInt(target.getAttribute("data-element-id") || "-1");
-
-  intersected.type = "element";
-  intersected.index = index;
+  intersected.value.type = "element";
+  intersected.value.index = el.label;
 
   tt.style.top = e.offsetY + "px";
   tt.style.left = e.offsetX + "px";
-  tooltipContent.innerHTML = `Element ${index}`;
+  tooltipContent.innerHTML = `<strong>Element ${el.label}</strong>`;
   tt.style.display = "block";
   document.body.style.cursor = "pointer";
 
-  if (mouseMode === MouseMode.NONE) mouseMode = MouseMode.HOVER;
+  if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
 };
 
-const onNodeHover = (e: MouseEvent) => {
-  if (mouseMode === MouseMode.MOVING) return;
+const onNodalDefoHover = (e: MouseEvent, node: Node) => {
+  if (appStore.mouseMode === MouseMode.MOVING) return;
 
   const tt = tooltip.value as HTMLElement;
   const tooltipContent = tt.querySelector(".content") as HTMLElement;
 
-  const target = e.target as HTMLElement;
-  const index = target.getAttribute("data-node-id") || "-1";
-
-  intersected.type = "node";
-  intersected.index = isNaN(index as unknown as number) ? index : parseInt(index);
-
   tt.style.top = e.offsetY + "px";
   tt.style.left = e.offsetX + "px";
-  tooltipContent.innerHTML = `Node ${index}`;
+
+  tooltipContent.innerHTML = `<strong>Node ${node.label}</strong>`;
+  tooltipContent.innerHTML += "<br>";
+  tooltipContent.innerHTML += `u<sub>x</sub> = ${formatExpValueAsHTML(
+    node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]),
+    4
+  )} m`;
+  tooltipContent.innerHTML += "<br>";
+  tooltipContent.innerHTML += `u<sub>z</sub> = ${formatExpValueAsHTML(
+    node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]),
+    4
+  )} m`;
+  tooltipContent.innerHTML += "<br>";
+  tooltipContent.innerHTML += `φ<sub>y</sub> = ${formatExpValueAsHTML(
+    node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry]),
+    4
+  )} m`;
   tt.style.display = "block";
   document.body.style.cursor = "pointer";
 
-  if (mouseMode === MouseMode.NONE) mouseMode = MouseMode.HOVER;
+  if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
+};
+
+const onNodeHover = (e: MouseEvent, node: Node) => {
+  if (appStore.mouseMode === MouseMode.MOVING) return;
+
+  const tt = tooltip.value as HTMLElement;
+  const tooltipContent = tt.querySelector(".content") as HTMLElement;
+
+  intersected.value.type = "node";
+  intersected.value.index = node.label;
+
+  tt.style.top = e.offsetY + "px";
+  tt.style.left = e.offsetX + "px";
+  tooltipContent.innerHTML = `<strong>Node ${node.label}</strong>`;
+  if (projectStore.solver.loadCases[0].solved) {
+    tooltipContent.innerHTML += "<br>";
+    tooltipContent.innerHTML += `u<sub>x</sub> = ${formatExpValueAsHTML(
+      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]),
+      4
+    )} m`;
+    tooltipContent.innerHTML += "<br>";
+    tooltipContent.innerHTML += `u<sub>z</sub> = ${formatExpValueAsHTML(
+      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]),
+      4
+    )} m`;
+    tooltipContent.innerHTML += "<br>";
+    tooltipContent.innerHTML += `φ<sub>y</sub> = ${formatExpValueAsHTML(
+      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry]),
+      4
+    )} m`;
+  }
+  tt.style.display = "block";
+  document.body.style.cursor = "pointer";
+
+  if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
 };
 
 const hideTooltip = () => {
@@ -146,13 +194,11 @@ const hideTooltip = () => {
   tt.style.display = "none";
   document.body.style.cursor = "auto";
 
-  if ([MouseMode.HOVER, MouseMode.SELECTING].includes(mouseMode)) {
-    if (mouseMode === MouseMode.HOVER) mouseMode = MouseMode.NONE;
+  if ([MouseMode.HOVER, MouseMode.SELECTING, MouseMode.ADD_ELEMENT].includes(appStore.mouseMode)) {
+    if (appStore.mouseMode === MouseMode.HOVER) appStore.mouseMode = MouseMode.NONE;
 
-    intersected.type = null;
-    intersected.index = null;
-    //dialog.type = null;
-    //dialog.index = null;
+    intersected.value.type = null;
+    intersected.value.index = null;
   }
 };
 
@@ -167,6 +213,8 @@ const hasMoved = (e: MouseEvent) => {
 
 const onNodeClick = (e: MouseEvent) => {
   if (hasMoved(e)) return;
+
+  appStore.bottomBarTab = 0;
 
   const target = e.target as HTMLElement;
   const index = target.getAttribute("data-node-id") || "-1";
@@ -183,6 +231,8 @@ const onNodeClick = (e: MouseEvent) => {
 const onElementClick = (e: MouseEvent) => {
   if (hasMoved(e)) return;
 
+  appStore.bottomBarTab = 1;
+
   const target = e.target as HTMLElement;
   const index = target.getAttribute("data-element-id") || "-1";
 
@@ -193,12 +243,8 @@ const onElementClick = (e: MouseEvent) => {
 };
 
 const mouseMove = (e: MouseEvent) => {
-  mouseX = e.offsetX;
-  mouseY = e.offsetY;
-
-  //stepPx = (this.$refs.grid as Grid).stepPx;
-  //gridTX = (this.$refs.grid as Grid).gridTX;
-  //gridTY = (this.$refs.grid as Grid).gridTY;
+  appStore.mouse.x = e.offsetX;
+  appStore.mouse.y = e.offsetY;
 
   const matrix = viewport.value!.getCTM() as DOMMatrix;
 
@@ -212,43 +258,30 @@ const mouseMove = (e: MouseEvent) => {
   const mXReal = svgP1.x; // * zoom;
   const mYReal = svgP1.y; // * zoom;
 
-  /*this.mouseXReal =
-      (Math.round(mXReal / (this.stepPx / 4)) * this.stepPx) / 4 / zoom;
-    this.mouseYReal =
-      (Math.round(mYReal / (this.stepPx / 4)) * this.stepPx) / 4 / zoom;*/
-
   const realStep = 0.1;
   const snapToGrid = true;
 
-  mouseXReal = /*Math.round(*/ mXReal; /* / realStep) * realStep;*/
-  mouseYReal = /*Math.round(*/ mYReal; /* / realStep) * realStep;*/
+  mouseXReal.value = /*Math.round(*/ mXReal; /* / realStep) * realStep;*/
+  mouseYReal.value = /*Math.round(*/ mYReal; /* / realStep) * realStep;*/
 
-  if (mouseMode === MouseMode.MOVING) {
-    mouseXReal = Math.round(mXReal / realStep) * realStep;
-    mouseYReal = Math.round(mYReal / realStep) * realStep;
+  mouseXReal.value = Math.round(mXReal / realStep) * realStep;
+  mouseYReal.value = Math.round(mYReal / realStep) * realStep;
 
-    const xReal = snapToGrid ? mouseXReal : mXReal / scale.value;
-    const yReal = snapToGrid ? mouseYReal : mYReal / scale.value;
+  mouseXReal.value = snapToGrid ? mouseXReal.value : mXReal / scale.value;
+  mouseYReal.value = snapToGrid ? mouseYReal.value : mYReal / scale.value;
 
-    const index = intersected.index;
+  if (appStore.mouseMode === MouseMode.MOVING) {
+    const index = intersected.value.index;
     if (index === null) return;
 
-    //Vue.set((this.solver.domain.nodes.get(index) as Node).coords, 0, xReal);
-    //Vue.set((this.solver.domain.nodes.get(index) as Node).coords, 2, yReal);
+    // @ts-expect-error ts-fem is wrongly typed
+    useProjectStore().solver.domain.nodes.get(index)!.coords[0] = mouseXReal.value;
 
     // @ts-expect-error ts-fem is wrongly typed
-    useProjectStore().solver.domain.nodes.get(index)!.coords[0] = xReal;
-
-    // @ts-expect-error ts-fem is wrongly typed
-    useProjectStore().solver.domain.nodes.get(index)!.coords[2] = yReal;
+    useProjectStore().solver.domain.nodes.get(index)!.coords[2] = mouseYReal.value;
 
     useProjectStore().solver.loadCases[0].solved = false;
     useProjectStore().solve();
-
-    //mouseStartX = mouseX;
-    //mouseStartY = mouseY;
-
-    //(this.$root.$children[0] as App).solve();
   }
 };
 
@@ -263,28 +296,50 @@ const onMouseDown = (e: MouseEvent) => {
     mouseStartX = e.offsetX;
     mouseStartY = e.offsetY;
 
-    if (mouseMode === MouseMode.HOVER) {
-      mouseMode = MouseMode.MOVING;
+    if (appStore.mouseMode === MouseMode.ADD_NODE) {
+      mouseStartX = -9999;
+      projectStore.solver.loadCases[0].solved = false;
+      const newNodeId = projectStore.solver.domain.nodes.size + 1;
+      projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
+      return;
+    }
+
+    if (appStore.mouseMode === MouseMode.ADD_ELEMENT) {
+      mouseStartX = -9999;
+      if (startNode.value === null) {
+        startNode.value = { label: intersected.value.index, x: mouseXReal.value, y: mouseYReal.value };
+      } else if (intersected.value.type === "node") {
+        projectStore.solver.loadCases[0].solved = false;
+        const newElId = projectStore.solver.domain.elements.size + 1;
+        const nid = startNode.value.label;
+        projectStore.solver.domain.createBeam2D(newElId, [nid, intersected.value.index], 1, 1);
+
+        startNode.value = { label: intersected.value.index, x: mouseXReal.value, y: mouseYReal.value };
+        projectStore.solve();
+      }
+
+      return;
+    }
+
+    if (appStore.mouseMode === MouseMode.HOVER) {
+      appStore.mouseMode = MouseMode.MOVING;
     } else {
-      mouseMode = MouseMode.SELECTING;
+      appStore.mouseMode = MouseMode.SELECTING;
     }
   } else {
-    mouseMode = MouseMode.NONE;
+    appStore.mouseMode = MouseMode.NONE;
     //svgPanZoom.enablePan();
   }
 };
 
 const onMouseUp = () => {
-  if (intersected.type === "element") {
-    //this.dialog.type = this.intersected.type;
-    //this.dialog.index = this.intersected.index;
-    //this.showDialog = true;
-  }
+  if (appStore.mouseMode === MouseMode.ADD_NODE) return;
+  if (appStore.mouseMode === MouseMode.ADD_ELEMENT) return;
 
-  mouseMode = MouseMode.NONE;
+  appStore.mouseMode = MouseMode.NONE;
 
-  intersected.type = null;
-  intersected.index = null;
+  intersected.value.type = null;
+  intersected.value.index = null;
 };
 
 const isSupported = (node: Node, dof: DofID) => {
@@ -334,6 +389,26 @@ defineExpose({ centerContent, fitContent });
       <svg ref="svg" @mousemove="mouseMove" @mousedown="onMouseDown" @mouseup="onMouseUp">
         <SvgViewerDefs />
         <g ref="viewport">
+          <g v-if="appStore.mouseMode === MouseMode.ADD_NODE">
+            <rect
+              :x="mouseXReal"
+              :y="mouseYReal"
+              :width="8 / scale"
+              :height="8 / scale"
+              :transform="`translate(${-8 / 2 / scale},${-8 / 2 / scale})`"
+              style="fill: #aaa"
+            />
+          </g>
+          <g v-if="appStore.mouseMode === MouseMode.ADD_ELEMENT && startNode !== null">
+            <line
+              :x1="startNode.x"
+              :y1="startNode.y"
+              :x2="mouseXReal"
+              :y2="mouseYReal"
+              :stroke-dasharray="intersected.type === 'node' ? `none` : `5 4`"
+              style="vector-effect: non-scaling-stroke; stroke-width: 2px; stroke: #aaa"
+            />
+          </g>
           <g>
             <g v-if="!useAppStore().zooming && useViewerStore().showLoads">
               <g
@@ -490,7 +565,7 @@ defineExpose({ centerContent, fitContent });
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
-              <polyline
+              <!--<polyline
                 v-if="
                   !useAppStore().zooming && projectStore.solver.loadCases[0].solved && viewerStore.showDeformedShape
                 "
@@ -499,7 +574,7 @@ defineExpose({ centerContent, fitContent });
                 class="deformedShape decoration"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-              />
+              />-->
 
               <polyline
                 v-if="!useAppStore().zooming && projectStore.solver.loadCases[0].solved && viewerStore.showNormalForce"
@@ -625,7 +700,7 @@ defineExpose({ centerContent, fitContent });
                 vector-effect="non-scaling-stroke"
                 class="handle"
                 :data-element-id="element.label"
-                @mousemove="onElementHover"
+                @mousemove="onElementHover($event, element)"
                 @mouseleave="hideTooltip"
                 @mouseup="onElementClick"
               />
@@ -741,6 +816,35 @@ defineExpose({ centerContent, fitContent });
               </text>
 
               <g
+                v-if="
+                  !useAppStore().zooming && projectStore.solver.loadCases[0].solved && viewerStore.showDeformedShape
+                "
+                :transform="`translate(${
+                  node.coords[0] +
+                  (node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]) *
+                    projectStore.defoScale *
+                    projectStore.resultsScalePx) /
+                    scale
+                }, ${
+                  node.coords[2] +
+                  (node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]) *
+                    projectStore.defoScale *
+                    projectStore.resultsScalePx) /
+                    scale
+                })`"
+              >
+                <polyline points="0,0 0,0" class="drawable deformed" />
+
+                <polyline
+                  points="0,0 0 0"
+                  class="handle"
+                  :data-node-id="node.label"
+                  @mousemove="onNodalDefoHover($event, node)"
+                  @mouseleave="hideTooltip"
+                />
+              </g>
+
+              <g
                 v-if="!useAppStore().zooming && viewerStore.showNodeLabels"
                 :transform="`translate(${(-12 - (node.label.toString().length - 1) * 2) / scale}, ${-12 / scale})`"
               >
@@ -768,7 +872,7 @@ defineExpose({ centerContent, fitContent });
                 :points="formatNode(node.coords)"
                 class="handle"
                 :data-node-id="node.label"
-                @mousemove="onNodeHover"
+                @mousemove="onNodeHover($event, node)"
                 @mouseleave="hideTooltip"
                 @mouseup="onNodeClick"
               />
@@ -1000,6 +1104,9 @@ svg text {
     &.decoration {
       stroke-width: 1px;
     }
+    &.drawable.deformed {
+      stroke: #555;
+    }
   }
   &:hover polyline.drawable {
     stroke: blue;
@@ -1059,7 +1166,7 @@ svg text {
   background: rgba(255, 255, 255, 0.9);
   z-index: 100;
   padding: 3px 8px;
-  font-weight: bold;
+  //font-weight: bold;
   box-shadow: 1px 1px 1px #ddd;
 }
 

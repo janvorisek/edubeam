@@ -82,7 +82,7 @@ export function formatResults(el: Beam2D, scale: number) {
 
 export function formatNormalForces(el: Beam2D, scale: number) {
   let result = "";
-  const nseg = 30;
+  const nseg = 1;
   const scaleBy = (useProjectStore().resultsScalePx * useProjectStore().normalForceScale) / scale;
   const n1 = el.domain.getNode(el.nodes[0]);
   const n2 = el.domain.getNode(el.nodes[1]);
@@ -107,7 +107,7 @@ export function formatNormalForces(el: Beam2D, scale: number) {
 
 export function formatShearForces(el: Beam2D, scale: number) {
   let result = "";
-  const nseg = 30;
+  const nseg = 1;
   const scaleBy = (useProjectStore().resultsScalePx * useProjectStore().shearForceScale) / scale;
   const n1 = el.domain.getNode(el.nodes[0]);
   const n2 = el.domain.getNode(el.nodes[1]);
@@ -129,8 +129,14 @@ export function formatShearForces(el: Beam2D, scale: number) {
 }
 
 export function formatMoments(el: Beam2D, scale: number) {
+  let neloads = 0;
+
+  for (const eload of el.domain.solver.loadCases[0].elementLoadList) {
+    if (eload.target === el.label) neloads++;
+  }
+
   let result = "";
-  const nseg = 30;
+  const nseg = neloads === 0 ? 1 : 20;
   const scaleBy = (useProjectStore().resultsScalePx * useProjectStore().bendingMomentScale) / scale;
   const n1 = el.domain.getNode(el.nodes[0]);
   const n2 = el.domain.getNode(el.nodes[1]);

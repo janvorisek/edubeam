@@ -1,16 +1,32 @@
 <template>
   <div style="border-top: 1px solid #ddd">
-    <v-tabs v-model="tab" bg-color="primary" :show-arrows="false" height="36">
+    <v-tabs v-model="appStore.bottomBarTab" bg-color="primary" :show-arrows="false" height="36">
       <v-tab v-for="(tab, index) in tabs" :key="index">
         <v-icon small class="mr-3">{{ tab.icon }}</v-icon>
         {{ tab.title }}
       </v-tab>
     </v-tabs>
-    <v-window v-model="tab" touchless class="text-body-2" style="height: 220px">
-      <v-window-item :key="'tab-nodes'" style="height: 220px" :transition="false" @touchstart.prevent.stop>
-        <div>
+    <v-window v-model="appStore.bottomBarTab" touchless class="text-body-2" style="height: 185px">
+      <v-window-item
+        :key="'tab-nodes'"
+        style="height: 185px"
+        :transition="false"
+        :reverse-transition="false"
+        @touchstart.prevent.stop
+      >
+        <div class="border-b border-t">
           <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addNode')">
             <v-icon small>mdi-plus</v-icon> Add node
+          </v-btn>
+          <v-btn
+            size="small"
+            variant="flat"
+            color="secondary"
+            style="border-left: 1px solid #ccc"
+            :rounded="0"
+            @click.stop="appStore.mouseMode = MouseMode.ADD_NODE"
+          >
+            <v-icon small>mdi-cursor-default-outline</v-icon> Add node
           </v-btn>
         </div>
         <v-data-table
@@ -18,7 +34,7 @@
           :headers="headers.nodes"
           :items="nodes"
           density="compact"
-          height="192"
+          height="155"
           fixed-header
           :items-per-page="-1"
           disable-pagination
@@ -70,15 +86,28 @@
         </v-data-table>
       </v-window-item>
 
-      <v-window-item :key="'tab-elements'" :transition="false" style="height: 220px">
-        <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addElement')">
-          <v-icon small>mdi-plus</v-icon> Add element
-        </v-btn>
+      <v-window-item :key="'tab-elements'" :transition="false" :reverse-transition="false" style="height: 185px">
+        <div class="border-b border-t">
+          <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addElement')">
+            <v-icon small>mdi-plus</v-icon> Add element
+          </v-btn>
+          <v-btn
+            size="small"
+            variant="flat"
+            color="secondary"
+            style="border-left: 1px solid #ccc"
+            :rounded="0"
+            @click.stop="appStore.mouseMode = MouseMode.ADD_ELEMENT"
+          >
+            <v-icon small>mdi-cursor-default-outline</v-icon> Add element
+          </v-btn>
+        </div>
+
         <v-data-table
           :headers="headers.elements"
           :items="elements"
           density="compact"
-          height="192"
+          height="155"
           fixed-header
           :items-per-page="-1"
           disable-pagination
@@ -162,8 +191,8 @@
         </v-data-table>
       </v-window-item>
 
-      <v-window-item :key="'tab-loads'" :transition="false" style="height: 220px">
-        <div>
+      <v-window-item :key="'tab-loads'" :transition="false" :reverse-transition="false" style="height: 185px">
+        <div class="border-b border-t">
           <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addNodalLoad')">
             <v-icon small>mdi-plus</v-icon> Add nodal load
           </v-btn>
@@ -182,7 +211,7 @@
           :headers="headers.loads"
           :items="loads"
           density="compact"
-          height="192"
+          height="155"
           fixed-header
           :items-per-page="-1"
           disable-pagination
@@ -286,15 +315,18 @@
         </v-data-table>
       </v-window-item>
 
-      <v-window-item :key="'tab-mats'" style="height: 220px" :transition="false">
-        <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addMaterial')">
-          <v-icon small>mdi-plus</v-icon> Add material
-        </v-btn>
+      <v-window-item :key="'tab-mats'" style="height: 185px" :transition="false" :reverse-transition="false">
+        <div class="border-b border-t">
+          <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addMaterial')">
+            <v-icon small>mdi-plus</v-icon> Add material
+          </v-btn>
+        </div>
+
         <v-data-table
           :headers="headers.materials"
           :items="materials"
           density="compact"
-          height="192"
+          height="155"
           fixed-header
           :items-per-page="-1"
           disable-pagination
@@ -357,15 +389,18 @@
         </v-data-table>
       </v-window-item>
 
-      <v-window-item :key="'tab-cs'" style="height: 220px" :transition="false">
-        <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addCrossSection')">
-          <v-icon small>mdi-plus</v-icon> Add cross section
-        </v-btn>
+      <v-window-item :key="'tab-cs'" style="height: 185px" :transition="false" :reverse-transition="false">
+        <div class="border-b border-t">
+          <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addCrossSection')">
+            <v-icon small>mdi-plus</v-icon> Add cross section
+          </v-btn>
+        </div>
+
         <v-data-table
           :headers="headers.crossSections"
           :items="crossSections"
           density="compact"
-          height="192"
+          height="155"
           fixed-header
           :items-per-page="-1"
           disable-pagination
@@ -437,8 +472,10 @@ import {
 import { ref, onMounted, computed, watch, nextTick } from "vue";
 import { useProjectStore } from "../store/project";
 import { useAppStore } from "../store/app";
+import { MouseMode } from "../mouse";
 
-const tab = ref(null);
+const appStore = useAppStore();
+const projStore = useProjectStore();
 
 onMounted(() => {
   window.addEventListener("keydown", (e) => {
@@ -451,7 +488,7 @@ onMounted(() => {
 const showDialog = (
   name: "addNode" | "addElement" | "addNodalLoad" | "addElementLoad" | "addMaterial" | "addCrossSection"
 ) => {
-  useAppStore().dialogs[name] = true;
+  appStore.dialogs[name] = true;
 };
 
 const swapNodes = (el: Element) => {
@@ -460,8 +497,11 @@ const swapNodes = (el: Element) => {
 };
 
 const checkNumber = (e: KeyboardEvent) => {
+  if (e.key === "Escape") if ("activeElement" in document) (document.activeElement as HTMLElement).blur();
+
   const isNumber = !isNaN(e.key as unknown as number);
   const isActionKey =
+    e.key === "Escape" ||
     e.key === "Delete" ||
     e.key === "Backspace" ||
     e.key === "Enter" ||
@@ -649,10 +689,14 @@ const setUnsolved = () => {
 
 const nodes = computed(() => {
   const nodeVals = useProjectStore().solver.domain.nodes.values();
-  const display: Node[] = [];
+  let display: Node[] = [];
 
   for (const node of nodeVals) {
     display.push(node);
+  }
+
+  if (projStore.selection.type === "node") {
+    display = display.filter((e) => e.label === projStore.selection.label);
   }
 
   // @ts-expect-error ts-fem is wrongly typed
@@ -661,10 +705,14 @@ const nodes = computed(() => {
 
 const elements = computed(() => {
   const elements = useProjectStore().solver.domain.elements.values();
-  const display: Element[] = [];
+  let display: Element[] = [];
 
   for (const element of elements) {
     display.push(element);
+  }
+
+  if (projStore.selection.type === "element") {
+    display = display.filter((e) => e.label === projStore.selection.label);
   }
 
   return display;

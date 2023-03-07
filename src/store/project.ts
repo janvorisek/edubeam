@@ -29,6 +29,18 @@ export const useProjectStore = defineStore("project", () => {
     y: -999,
   };
 
+  const hover: {
+    label: number | string | null;
+    type: string | null;
+    x: number;
+    y: number;
+  } = {
+    label: null,
+    type: null,
+    x: -999,
+    y: -999,
+  };
+
   const beams = computed(() => {
     const vals = solver.value.domain.elements.values();
     const arr = Array.from(vals);
@@ -132,6 +144,7 @@ export const useProjectStore = defineStore("project", () => {
     solve,
     model,
     selection,
+    hover,
     solver,
     nthEigenVector,
     resultsScalePx,

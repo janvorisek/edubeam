@@ -5,6 +5,7 @@ import { reactive, ref, markRaw, type Raw, type Ref } from "vue";
 import SVGViewer from "../components/SVGViewer.vue";
 import Results from "../components//Results.vue";
 import Settings from "../components//Settings.vue";
+import { MouseMode } from "@/mouse";
 
 export const useAppStore = defineStore("app", () => {
   const dialogs = reactive({
@@ -19,6 +20,10 @@ export const useAppStore = defineStore("app", () => {
   const zooming = ref(false);
 
   const tab = ref(null);
+  const bottomBarTab = ref(null);
+
+  const mouseMode = ref<MouseMode>(MouseMode.NONE);
+  const mouse = ref({ x: 0, y: 0 });
 
   const tabs: Ref<
     {
@@ -33,5 +38,5 @@ export const useAppStore = defineStore("app", () => {
     { title: "Settings", component: Settings, props: {}, closable: true },*/
   ]);
 
-  return { dialogs, zooming, tab, tabs };
+  return { dialogs, zooming, tab, tabs, bottomBarTab, mouseMode, mouse };
 });

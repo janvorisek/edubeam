@@ -93,9 +93,9 @@ export const useProjectStore = defineStore("project", () => {
         );
     }*/
 
-    const r = solver.value.loadCases[0].r as number[];
+    //const r = solver.value.loadCases[0].r as number[];
 
-    let maxDefo = Math.max(Math.abs(max(r)), Math.abs(min(r)));
+    let maxDefo = 0; //Math.max(Math.abs(max(r)), Math.abs(min(r)));
     let maxNormalForce = 0;
     let maxBendingMoment = 0;
     let maxShearForce = 0;

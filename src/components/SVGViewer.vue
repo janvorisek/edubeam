@@ -29,7 +29,7 @@ import {
   formatExpValueAsHTML,
 } from "../SVGUtils";
 import { throttle } from "../utils";
-import { Node, DofID } from "ts-fem";
+import { Node, DofID, Beam2D } from "ts-fem";
 import { Matrix } from "mathjs";
 import { useMagicKeys } from "@vueuse/core";
 
@@ -135,16 +135,19 @@ const onNodalDefoHover = (e: MouseEvent, node: Node) => {
   tooltipContent.innerHTML = `<strong>Node ${node.label}</strong>`;
   tooltipContent.innerHTML += "<br>";
   tooltipContent.innerHTML += `u<sub>x</sub> = ${formatExpValueAsHTML(
+    // @ts-expect-error It return value for single Dof
     node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]),
     4
   )} m`;
   tooltipContent.innerHTML += "<br>";
   tooltipContent.innerHTML += `u<sub>z</sub> = ${formatExpValueAsHTML(
+    // @ts-expect-error It return value for single Dof
     node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]),
     4
   )} m`;
   tooltipContent.innerHTML += "<br>";
   tooltipContent.innerHTML += `φ<sub>y</sub> = ${formatExpValueAsHTML(
+    // @ts-expect-error It return value for single Dof
     node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry]),
     4
   )} m`;
@@ -169,16 +172,19 @@ const onNodeHover = (e: MouseEvent, node: Node) => {
   if (projectStore.solver.loadCases[0].solved) {
     tooltipContent.innerHTML += "<br>";
     tooltipContent.innerHTML += `u<sub>x</sub> = ${formatExpValueAsHTML(
+      // @ts-expect-error It return value for single Dof
       node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]),
       4
     )} m`;
     tooltipContent.innerHTML += "<br>";
     tooltipContent.innerHTML += `u<sub>z</sub> = ${formatExpValueAsHTML(
+      // @ts-expect-error It return value for single Dof
       node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]),
       4
     )} m`;
     tooltipContent.innerHTML += "<br>";
     tooltipContent.innerHTML += `φ<sub>y</sub> = ${formatExpValueAsHTML(
+      // @ts-expect-error It return value for single Dof
       node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry]),
       4
     )} m`;
@@ -312,6 +318,7 @@ const onMouseDown = (e: MouseEvent) => {
         projectStore.solver.loadCases[0].solved = false;
         const newElId = projectStore.solver.domain.elements.size + 1;
         const nid = startNode.value.label;
+        // @ts-expect-error ts-fem is wrongly typed
         projectStore.solver.domain.createBeam2D(newElId, [nid, intersected.value.index], 1, 1);
 
         startNode.value = { label: intersected.value.index, x: mouseXReal.value, y: mouseYReal.value };
@@ -821,12 +828,14 @@ defineExpose({ centerContent, fitContent });
                 "
                 :transform="`translate(${
                   node.coords[0] +
+                  // @ts-expect-error ts-fem is wrongly typed
                   (node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]) *
                     projectStore.defoScale *
                     projectStore.resultsScalePx) /
                     scale
                 }, ${
                   node.coords[2] +
+                  // @ts-expect-error ts-fem is wrongly typed
                   (node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]) *
                     projectStore.defoScale *
                     projectStore.resultsScalePx) /

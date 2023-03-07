@@ -111,7 +111,7 @@ const onTouchMove = (event: TouchEvent): void => {
       event.touches[0].pageY - event.touches[1].pageY
     );
 
-    zoom(touchPointer.value.x, touchPointer.value.y, Math.sign(touchPointer.value.ds - distance) * 0.02);
+    zoom(touchPointer.value.x, touchPointer.value.y, Math.sign(touchPointer.value.ds - distance) * 0.025);
 
     touchPointer.value.ds = distance;
   }

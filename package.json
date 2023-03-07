@@ -5,7 +5,8 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "lint": "eslint --fix ."
+    "lint": "eslint --fix .",
+    "preinstall": "echo \"${SSH_PRIVATE_KEY}\" | ssh-add - "
   },
   "dependencies": {
     "@vueuse/core": "^9.13.0",

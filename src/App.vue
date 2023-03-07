@@ -106,7 +106,7 @@ const app_released = APP_RELEASED;
     <Dialogs />
 
     <div
-      class="d-none d-sm-flex align-center justify-space-between px-3 text-caption bg-secondary"
+      class="d-none d-sm-flex align-center justify-space-between px-3 text-caption bg-secondary border-t"
       style="height: 24px"
     >
       <div>

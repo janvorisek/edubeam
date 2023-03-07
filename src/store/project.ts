@@ -72,8 +72,12 @@ export const useProjectStore = defineStore("project", () => {
 
     if (solver.value.domain.elements.size === 0 || solver.value.domain.nodes.size === 0) return;
 
-    const result = solver.value.solve();
-
+    try {
+      solver.value.solve();
+    } catch (e) {
+      solver.value.loadCases[0].solved = false;
+      return;
+    }
     /*if (this.$store.state.fem.model === "EigenValueDynamicSolver") {
       this.$store.state.settings.showNormalForce = false;
       this.$store.state.settings.showShearForce = false;

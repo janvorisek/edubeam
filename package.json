@@ -21,7 +21,7 @@
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {
-    "@mdi/font": "^7.1.96",
+    "@mdi/font": "^7.2.96",
     "@types/node": "^20.3.2",
     "@types/webfontloader": "^1.6.35",
     "@vitejs/plugin-vue": "^3.0.3",

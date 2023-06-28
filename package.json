@@ -10,7 +10,7 @@
   "dependencies": {
     "@vueuse/core": "^10.2.1",
     "mathjs": "^11.6.0",
-    "pinia": "^2.1.3",
+    "pinia": "^2.1.4",
     "pinia-plugin-persistedstate": "^3.1.0",
     "roboto-fontface": "*",
     "ts-fem": "github:janvorisek/ts-fem",

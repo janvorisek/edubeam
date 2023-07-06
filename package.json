@@ -17,7 +17,7 @@
     "vue": "^3.2.38",
     "vue-gtag": "^2.0.1",
     "vue-router": "^4.2.2",
-    "vuetify": "^3.3.6",
+    "vuetify": "^3.3.7",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {

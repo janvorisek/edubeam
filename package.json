@@ -16,7 +16,7 @@
     "ts-fem": "github:janvorisek/ts-fem",
     "vue": "^3.3.10",
     "vue-gtag": "^2.0.1",
-    "vue-router": "^4.2.2",
+    "vue-router": "^4.2.5",
     "vuetify": "^3.4.6",
     "webfontloader": "^1.0.0"
   },

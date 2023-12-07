@@ -11,7 +11,7 @@
     "@vueuse/core": "^10.7.0",
     "mathjs": "^12.1.0",
     "pinia": "^2.1.7",
-    "pinia-plugin-persistedstate": "^3.1.0",
+    "pinia-plugin-persistedstate": "^3.2.0",
     "roboto-fontface": "*",
     "ts-fem": "github:janvorisek/ts-fem",
     "vue": "^3.3.10",

@@ -24,7 +24,7 @@
     "@mdi/font": "^7.2.96",
     "@types/node": "^20.10.4",
     "@types/webfontloader": "^1.6.38",
-    "@vitejs/plugin-vue": "^3.0.3",
+    "@vitejs/plugin-vue": "^4.5.2",
     "@vue/eslint-config-typescript": "^12.0.0",
     "eslint": "^8.55.0",
     "eslint-config-prettier": "^8.8.0",

@@ -1,0 +1,125 @@
+{
+  "tabView": {
+    "viewer": "Viewer",
+    "settings": "Settings",
+    "results": "Results"
+  },
+  "common": {
+    "label": "label",
+    "node": "node",
+    "element": "element",
+    "crossSection": "cross section",
+    "material": "material",
+    "settings": "settings",
+    "actions": "actions",
+    "coords": "coordinates",
+    "type": "type",
+    "nodes": "nodes",
+    "endHinges": "end hinges",
+    "massMatrix": "mass matrix",
+    "target": "target",
+    "components": "components",
+    "loadCase": "load case"
+  },
+  "nodes": {
+    "addNode": "Add node"
+  },
+  "elements": {
+    "addElement": "Add elements"
+  },
+  "loads": {
+    "addNodalLoad": "Add nodal load",
+    "addElementLoad": "Add element load"
+  },
+  "tabs": {
+    "nodes": "Nodes",
+    "elements": "Elements",
+    "loads": "Loads",
+    "materials": "Materials",
+    "crossSections": "Cross sections",
+    "results": "Results"
+  },
+  "crossSection": {
+    "area": "Area",
+    "h": "Height",
+    "iy": "Iy",
+    "k": "Shear coefficient"
+  },
+  "material": {
+    "e": "E",
+    "g": "G",
+    "density": "Density",
+    "alphaT": "α_T"
+  },
+  "settings": {
+    "results_scale": "Results scale",
+    "grid_snap_step": "Grid snap step",
+    "snap_to_grid": "Snap to grid",
+    "language": "Language",
+    "language_and_locale": "Language & Locale",
+    "show_normal_force": "Show normal force",
+    "show_shear_force": "Show shear force",
+    "show_bending_moment": "Show bending moment",
+    "show_deformed_shape": "Show deformed shape",
+    "show_loads": "Show loads"
+  },
+  "sideSettings": {
+    "showDeformedShape": "Deformed shape",
+    "supports": "Supports",
+    "loads": "Loads",
+    "nodeLabels": "Node labels",
+    "elementLabels": "Element labels",
+    "more_settings": "More settings"
+  },
+  "dofs": {
+    "bcs": "Supported DOFs"
+  },
+  "results": {
+    "results": "Results",
+    "nodal_results": "Nodal results",
+    "element_results": "Element results"
+  },
+  "materials": {
+    "addMaterial": "Add material"
+  },
+  "crossSections": {
+    "addCrossSection": "Add cross section"
+  },
+  "dialogs": {
+    "addNode": {
+      "addNewNode": "Add new node",
+      "coordinate_x": "X-coordinate",
+      "coordinate_z": "Z-coordinate",
+      "addNode": "Add node"
+    },
+    "common": {
+      "cancel": "Cancel"
+    },
+    "addElement": {
+      "fromNodeId": "Initial node",
+      "toNodeId": "End node",
+      "addElement": "Add element",
+      "addNewElement": "Add new element"
+    },
+    "addNodalLoad": {
+      "addNewNodalLoad": "Add new nodal load",
+      "addNodalLoad": "Add nodal load"
+    },
+    "addElementLoad": {
+      "addNewElementLoad": "Add new element load",
+      "addElementLoad": "Add element load"
+    },
+    "addMaterial": {
+      "addNewMaterial": "Add new material",
+      "addMaterial": "Add material",
+      "E": "E - Young's modulus",
+      "G": "G - Shear modulus",
+      "density": "ρ - density",
+      "alphaT": "α - Coefficient of thermal expansion"
+    },
+    "addCrossSection": {
+      "addNewCrossSection": "Add new cross section",
+      "addCrossSection": "Add cross section"
+    }
+  }
+}

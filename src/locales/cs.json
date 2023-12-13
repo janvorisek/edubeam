@@ -1,0 +1,125 @@
+{
+  "common": {
+    "label": "označení",
+    "node": "uzel",
+    "crossSection": "průřez",
+    "element": "prvek",
+    "material": "materiál",
+    "settings": "nastavení",
+    "actions": "akce",
+    "coords": "souřadnice",
+    "components": "složky",
+    "endHinges": "koncové klouby",
+    "loadCase": "zatěžovací stav",
+    "massMatrix": "matice hmotnosti",
+    "nodes": "uzly",
+    "target": "působiště",
+    "type": "typ"
+  },
+  "tabs": {
+    "nodes": "Uzly",
+    "elements": "Prvky",
+    "loads": "Zatížení",
+    "materials": "Materiály",
+    "crossSections": "Průřezy",
+    "results": "Výsledky"
+  },
+  "crossSection": {
+    "area": "Plocha",
+    "h": "Výška",
+    "iy": "Iy",
+    "k": "Smykový součinitel"
+  },
+  "settings": {
+    "results_scale": "Měřítko výsledků",
+    "snap_to_grid": "Přichytávat k mřížce",
+    "grid_snap_step": "Krok příchytu k mřížce",
+    "language": "Jazyk",
+    "show_bending_moment": "Kreslit ohybový moment",
+    "show_deformed_shape": "Kreslit deformovaný tvar",
+    "show_loads": "Kreslit zatížení",
+    "show_normal_force": "Kreslit normálovou sílu",
+    "show_shear_force": "Kreslit posouvající sílu",
+    "language_and_locale": "Jazyk a prostředí"
+  },
+  "elements": {
+    "addElement": "Přidat prvek"
+  },
+  "loads": {
+    "addElementLoad": "Přidat prvkové zatížení",
+    "addNodalLoad": "Přidat uzlové zatížení"
+  },
+  "material": {
+    "alphaT": "α_T",
+    "density": "Hustota",
+    "e": "E",
+    "g": "G"
+  },
+  "nodes": {
+    "addNode": "Přidat uzel"
+  },
+  "tabView": {
+    "results": "Výsledky",
+    "settings": "Nastavení",
+    "viewer": "Konstrukce"
+  },
+  "sideSettings": {
+    "showDeformedShape": "Deformovaný tvar",
+    "elementLabels": "Popisky prvků",
+    "loads": "Zatížení",
+    "nodeLabels": "Popisky uzlů",
+    "supports": "Podpory",
+    "more_settings": "Všechna nastavení"
+  },
+  "dofs": {
+    "bcs": "Podepřené stupně volnosti"
+  },
+  "materials": {
+    "addMaterial": "Přidat materiál"
+  },
+  "crossSections": {
+    "addCrossSection": "Přidat průřez"
+  },
+  "results": {
+    "results": "Výsledky",
+    "nodal_results": "Výsledky v uzlech",
+    "element_results": "Výsledky na prvcích"
+  },
+  "dialogs": {
+    "addNode": {
+      "addNewNode": "Přidat nový uzel",
+      "coordinate_x": "Souřadnice X",
+      "coordinate_z": "Souřadnice Z",
+      "addNode": "Přidat uzel"
+    },
+    "common": {
+      "cancel": "Zrušit"
+    },
+    "addElement": {
+      "fromNodeId": "Počáteční uzel",
+      "toNodeId": "Koncový uzel",
+      "addElement": "Přidat prvek",
+      "addNewElement": "Přidat nový prvek"
+    },
+    "addNodalLoad": {
+      "addNewNodalLoad": "Přidat nové uzlové zatížení",
+      "addNodalLoad": "Přidat uzlové zatížení"
+    },
+    "addElementLoad": {
+      "addNewElementLoad": "Přidat nové prvkové zatížení",
+      "addElementLoad": "Přidat prvkové zatížení"
+    },
+    "addMaterial": {
+      "addNewMaterial": "Přidat nový materiál",
+      "addMaterial": "Přidat materiál",
+      "E": "E - modul pružnosti",
+      "G": "G - Smykový modul",
+      "density": "ρ - hustota",
+      "alphaT": "α - Součinitel teplotní roztažnosti"
+    },
+    "addCrossSection": {
+      "addNewCrossSection": "Přidat nový průřez",
+      "addCrossSection": "Přidat průřez"
+    }
+  }
+}

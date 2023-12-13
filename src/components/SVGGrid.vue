@@ -44,7 +44,6 @@ const props = defineProps<{
   zoom: number;
 }>();
 
-let stepPx = 1;
 const gridPath = ref("");
 const xGridTexts = ref<{ x: number; y: number; value: number }[]>([]);
 const yGridTexts = ref<{ x: number; y: number; value: number; angle: number }[]>([]);
@@ -99,7 +98,7 @@ const refreshGrid = (isZooming = false) => {
   gridTX.value = props.zoom * -offsetX;
   gridTY.value = props.zoom * -offsetY;
 
-  stepPx = stepW * gridZoomW;
+  // const stepPx = stepW * gridZoomW;
 
   const tickCountY = Math.ceil(h / stepW) + 1;
 

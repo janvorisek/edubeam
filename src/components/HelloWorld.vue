@@ -4,7 +4,7 @@
       <div class="" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
         <v-tabs v-model="appStore.tab" height="36" bg-color="secondary">
           <v-tab v-for="(item, index) in appStore.tabs" :key="item.title" :class="{ 'pr-0': item.closable }">
-            {{ item.title }}
+            {{ $t(item.title) }}
             <v-btn
               icon="mdi-close"
               size="x-small"

@@ -24,6 +24,9 @@ import {
   formatNormalForces,
   formatShearForces,
   formatMoments,
+  formatMomentsLabels,
+  formatNormalForceLabels,
+  formatShearForceLabels,
   formatElementLoadForces,
   formatElementLoadForcesAngle,
   formatExpValueAsHTML,
@@ -32,6 +35,9 @@ import { throttle } from "../utils";
 import { Node, DofID, Beam2D } from "ts-fem";
 import { Matrix } from "mathjs";
 import { useMagicKeys } from "@vueuse/core";
+
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 import StiffnessMatrix from "./StiffnessMatrix.vue";
 import { MouseMode } from "@/mouse";
@@ -86,15 +92,30 @@ const centerContent = () => {
 const fitContent = () => {
   if (!panZoom.value) return;
 
-  panZoom.value.fitContent();
-  grid.value!.refreshGrid(true);
+  panZoom.value.onWindowResize();
+
+  requestAnimationFrame(() => {
+    panZoom.value.fitContent();
+    grid.value!.refreshGrid(true);
+  });
 };
 
 const onUpdate = throttle((zooming: boolean) => {
   grid.value!.refreshGrid(zooming);
 }, 100);
 
-const { escape } = useMagicKeys();
+const { escape, f, c } = useMagicKeys();
+
+watch(f, (v) => {
+  console.log(document.activeElement);
+  if ("activeElement" in document && document.activeElement.tagName !== "BODY") return;
+  if (v) fitContent();
+});
+
+watch(c, (v) => {
+  if ("activeElement" in document && document.activeElement.tagName !== "BODY") return;
+  if (v) centerContent();
+});
 
 watch(escape, (v) => {
   if (v) {
@@ -102,6 +123,8 @@ watch(escape, (v) => {
     appStore.mouseMode = MouseMode.NONE;
     projectStore.selection.type = null;
     startNode.value = null;
+
+    viewerStore.settingsOpen = false;
   }
 });
 
@@ -116,7 +139,7 @@ const onElementHover = (e: MouseEvent, el: Beam2D) => {
 
   tt.style.top = e.offsetY + "px";
   tt.style.left = e.offsetX + "px";
-  tooltipContent.innerHTML = `<strong>Element ${el.label}</strong>`;
+  tooltipContent.innerHTML = `<strong>${t("common.element")} ${el.label}</strong>`;
   tt.style.display = "block";
   document.body.style.cursor = "pointer";
 
@@ -168,7 +191,7 @@ const onNodeHover = (e: MouseEvent, node: Node) => {
 
   tt.style.top = e.offsetY + "px";
   tt.style.left = e.offsetX + "px";
-  tooltipContent.innerHTML = `<strong>Node ${node.label}</strong>`;
+  tooltipContent.innerHTML = `<strong>${t("common.node")} ${node.label}</strong>`;
   if (projectStore.solver.loadCases[0].solved) {
     tooltipContent.innerHTML += "<br>";
     tooltipContent.innerHTML += `u<sub>x</sub> = ${formatExpValueAsHTML(
@@ -264,8 +287,7 @@ const mouseMove = (e: MouseEvent) => {
   const mXReal = svgP1.x; // * zoom;
   const mYReal = svgP1.y; // * zoom;
 
-  const realStep = 0.1;
-  const snapToGrid = true;
+  const realStep = viewerStore.gridStep;
 
   mouseXReal.value = /*Math.round(*/ mXReal; /* / realStep) * realStep;*/
   mouseYReal.value = /*Math.round(*/ mYReal; /* / realStep) * realStep;*/
@@ -273,8 +295,8 @@ const mouseMove = (e: MouseEvent) => {
   mouseXReal.value = Math.round(mXReal / realStep) * realStep;
   mouseYReal.value = Math.round(mYReal / realStep) * realStep;
 
-  mouseXReal.value = snapToGrid ? mouseXReal.value : mXReal / scale.value;
-  mouseYReal.value = snapToGrid ? mouseYReal.value : mYReal / scale.value;
+  mouseXReal.value = viewerStore.snapToGrid ? mouseXReal.value : mXReal / scale.value;
+  mouseYReal.value = viewerStore.snapToGrid ? mouseYReal.value : mYReal / scale.value;
 
   if (appStore.mouseMode === MouseMode.MOVING) {
     const index = intersected.value.index;
@@ -365,7 +387,10 @@ defineExpose({ centerContent, fitContent });
 
 <template>
   <div class="d-flex flex-column fill-height">
-    <div class="text-black" style="position: absolute; z-index: 100; top: 32px; right: 32px">
+    <div class="text-sm-body-2" style="position: absolute; z-index: 100; bottom: 24px; right: 24px">
+      {{ projectStore.solver.neq }} free DOFs {{ projectStore.solver.pneq }} supported DOFs
+    </div>
+    <div class="text-black" style="position: absolute; z-index: 100; top: 24px; right: 24px">
       <v-btn
         icon="mdi:mdi-image-filter-center-focus"
         size="32"
@@ -379,9 +404,19 @@ defineExpose({ centerContent, fitContent });
         icon="mdi:mdi-fit-to-screen-outline"
         size="32"
         density="comfortable"
+        class="mr-1"
         rounded="lg"
         title="Fit content to screen"
         @click="fitContent"
+      ></v-btn>
+      <v-btn
+        icon="mdi:mdi-cog"
+        size="32"
+        density="comfortable"
+        rounded="lg"
+        title="Settings"
+        :color="viewerStore.settingsOpen ? 'primary' : 'default'"
+        @click="viewerStore.settingsOpen = !viewerStore.settingsOpen"
       ></v-btn>
     </div>
 
@@ -389,7 +424,7 @@ defineExpose({ centerContent, fitContent });
       <div class="content"></div>
     </div>
 
-    <svg class="w-100 fill-height" style="position: absolute">
+    <svg v-if="viewerStore.showGrid" class="w-100 fill-height" style="position: absolute">
       <SvgGrid ref="grid" :svg="svg as SVGSVGElement" :viewport="viewport as SVGGElement" :zoom="scale" />
     </svg>
     <SvgPanZoom :on-update="onUpdate" ref="panZoom" style="overflow: hidden; z-index: 50; min-height: 0">
@@ -488,14 +523,10 @@ defineExpose({ centerContent, fitContent });
                   points="0,0 0,0"
                   vector-effect="non-scaling-stroke"
                   class="decoration force"
-                  :transform="
-                  `translate(${
-                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0]
-                  }
-              ${
-                useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2]
-              }) rotate(${formatNodalLoadAngle(nload)})`
-                "
+                  :transform="`translate(${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0]}
+              ${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2]}) rotate(${formatNodalLoadAngle(
+                nload
+              )})`"
                 />
 
                 <polyline
@@ -504,14 +535,8 @@ defineExpose({ centerContent, fitContent });
                   vector-effect="non-scaling-stroke"
                   class="decoration moment"
                   :class="{ cw: nload.values[4] < 0, ccw: nload.values[4] > 0 }"
-                  :transform="
-                  `translate(${
-                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0]
-                  }
-              ${
-                useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2]
-              })`
-                "
+                  :transform="`translate(${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0]}
+              ${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2]})`"
                 />
 
                 <polyline :points="formatNodalLoad(nload, scale)" class="handle" />
@@ -526,14 +551,10 @@ defineExpose({ centerContent, fitContent });
                   font-weight="normal"
                   text-anchor="start"
                   alignment-baseline="central"
-                  :transform="
-                  `translate(${
+                  :transform="`translate(${
                     useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0] + 15 / scale
                   }
-              ${
-                useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2] - 15 / scale
-              })`
-                "
+              ${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2] - 15 / scale})`"
                 >
                   {{ Math.abs(nload.values[4]).toFixed(2) }}
                 </text>
@@ -544,14 +565,18 @@ defineExpose({ centerContent, fitContent });
                   font-weight="normal"
                   :text-anchor="nload.values[0] > 0 ? 'end' : 'start'"
                   alignment-baseline="central"
-                  :transform="
-                  `translate(${
-                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0] - 40*nload.values[0] / Math.sqrt(nload.values[0]*nload.values[0] + nload.values[2]*nload.values[2]) / scale
+                  :transform="`translate(${
+                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0] -
+                    (40 * nload.values[0]) /
+                      Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2]) /
+                      scale
                   }
               ${
-                useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2] - 40*nload.values[2] / Math.sqrt(nload.values[0]*nload.values[0] + nload.values[2]*nload.values[2]) / scale
-              })`
-                "
+                useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2] -
+                (40 * nload.values[2]) /
+                  Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2]) /
+                  scale
+              })`"
                 >
                   {{ Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2]).toFixed(2) }}
                   <template v-if="nload.values[0] !== 0 && nload.values[2] !== 0">
@@ -583,32 +608,128 @@ defineExpose({ centerContent, fitContent });
                 stroke-linejoin="round"
               />-->
 
-              <polyline
+              <g
                 v-if="!useAppStore().zooming && projectStore.solver.loadCases[0].solved && viewerStore.showNormalForce"
-                :points="formatNormalForces(element, scale)"
-                vector-effect="non-scaling-stroke"
-                class="normal"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <polyline
-                v-if="!useAppStore().zooming && projectStore.solver.loadCases[0].solved && viewerStore.showShearForce"
-                :points="formatShearForces(element, scale)"
-                vector-effect="non-scaling-stroke"
-                class="shear"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <polyline
+              >
+                <polyline
+                  :points="formatNormalForces(element, scale)"
+                  vector-effect="non-scaling-stroke"
+                  class="normal"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <g
+                  v-for="(mv, mli) in formatNormalForceLabels(element, scale)"
+                  :key="mli"
+                  :transform="`translate(${mv[0] + (mv[2] < 0 ? -4 : 4) / scale} ${
+                    mv[1] + (mv[2] < 0 ? -4 : 4) / scale
+                  })`"
+                >
+                  <text
+                    :font-size="13 / scale"
+                    class="moment-label"
+                    filter="url(#textLabel)"
+                    fill="blue"
+                    font-weight="normal"
+                    :text-anchor="mv[2] < 0 ? 'end' : 'start'"
+                    alignment-baseline="baseline"
+                  >
+                    {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
+                  </text>
+                  <text
+                    :font-size="13 / scale"
+                    class="moment-label"
+                    fill="blue"
+                    font-weight="normal"
+                    :text-anchor="mv[2] < 0 ? 'end' : 'start'"
+                    alignment-baseline="baseline"
+                  >
+                    {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
+                  </text>
+                </g>
+              </g>
+              <g v-if="!useAppStore().zooming && projectStore.solver.loadCases[0].solved && viewerStore.showShearForce">
+                <polyline
+                  :points="formatShearForces(element, scale)"
+                  vector-effect="non-scaling-stroke"
+                  class="shear"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <g
+                  v-for="(mv, mli) in formatShearForceLabels(element, scale)"
+                  :key="mli"
+                  :transform="`translate(${mv[0] + (mv[2] < 0 ? -4 : 4) / scale} ${
+                    mv[1] + (mv[2] < 0 ? -4 : 4) / scale
+                  })`"
+                >
+                  <text
+                    :font-size="13 / scale"
+                    class="moment-label"
+                    filter="url(#textLabel)"
+                    fill="green"
+                    font-weight="normal"
+                    :text-anchor="mv[2] < 0 ? 'end' : 'start'"
+                    alignment-baseline="baseline"
+                  >
+                    {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
+                  </text>
+                  <text
+                    :font-size="13 / scale"
+                    class="moment-label"
+                    fill="green"
+                    font-weight="normal"
+                    :text-anchor="mv[2] < 0 ? 'end' : 'start'"
+                    alignment-baseline="baseline"
+                  >
+                    {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
+                  </text>
+                </g>
+              </g>
+
+              <g
                 v-if="
                   !useAppStore().zooming && projectStore.solver.loadCases[0].solved && viewerStore.showBendingMoment
                 "
-                :points="formatMoments(element, scale)"
-                vector-effect="non-scaling-stroke"
-                class="moment"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
+              >
+                <polyline
+                  :points="formatMoments(element, scale)"
+                  vector-effect="non-scaling-stroke"
+                  class="moment"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <g
+                  v-for="(mv, mli) in formatMomentsLabels(element, scale)"
+                  :key="mli"
+                  :transform="`translate(${mv[0] + (mv[2] < 0 ? -4 : 4) / scale} ${
+                    mv[1] + (mv[2] < 0 ? -4 : 4) / scale
+                  })`"
+                >
+                  <text
+                    :font-size="13 / scale"
+                    class="moment-label"
+                    filter="url(#textLabel)"
+                    fill="red"
+                    font-weight="normal"
+                    :text-anchor="mv[2] < 0 ? 'end' : 'start'"
+                    alignment-baseline="baseline"
+                  >
+                    {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
+                  </text>
+                  <text
+                    :font-size="13 / scale"
+                    class="moment-label"
+                    fill="red"
+                    font-weight="normal"
+                    :text-anchor="mv[2] < 0 ? 'end' : 'start'"
+                    alignment-baseline="baseline"
+                  >
+                    {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
+                  </text>
+                </g>
+              </g>
+
               <!--<polyline
                 :points="
                   formatElement([
@@ -625,8 +746,8 @@ defineExpose({ centerContent, fitContent });
               <polyline
                 :points="
                   formatElement([
-                  projectStore.solver.domain.nodes.get(element.nodes[0])!.coords,
-                  projectStore.solver.domain.nodes.get(element.nodes[1])!.coords
+                    projectStore.solver.domain.nodes.get(element.nodes[0])!.coords,
+                    projectStore.solver.domain.nodes.get(element.nodes[1])!.coords,
                   ])
                 "
                 vector-effect="non-scaling-stroke"
@@ -666,32 +787,27 @@ defineExpose({ centerContent, fitContent });
                   v-if="!useAppStore().zooming && viewerStore.showElementLabels"
                   :x="
                     (projectStore.solver.domain.nodes.get(element.nodes[0])!.coords[0] +
-                    projectStore.solver.domain.nodes.get(element.nodes[1])!.coords[0]) /
-                      2
+                      projectStore.solver.domain.nodes.get(element.nodes[1])!.coords[0]) /
+                    2
                   "
                   :y="
                     (projectStore.solver.domain.nodes.get(element.nodes[0])!.coords[2] +
-                    projectStore.solver.domain.nodes.get(element.nodes[1])!.coords[2]) /
-                      2
+                      projectStore.solver.domain.nodes.get(element.nodes[1])!.coords[2]) /
+                    2
                   "
                   :font-size="14 / scale"
                   font-weight="normal"
                   text-anchor="middle"
                   alignment-baseline="central"
-                  :transform="
-                    `${formatElementLabel(
-                      element,
-                      scale,
-                      10
-                    )} rotate(${formatElementAngle(
-                      element
-                    )} ${(projectStore.solver.domain.nodes.get(element.nodes[0])!.coords[0] +
+                  :transform="`${formatElementLabel(element, scale, 10)} rotate(${formatElementAngle(element)} ${
+                    (projectStore.solver.domain.nodes.get(element.nodes[0])!.coords[0] +
                       projectStore.solver.domain.nodes.get(element.nodes[1])!.coords[0]) /
-                      2} ${(projectStore.solver.domain.nodes.get(element.nodes[0])!
-                      .coords[2] +
+                    2
+                  } ${
+                    (projectStore.solver.domain.nodes.get(element.nodes[0])!.coords[2] +
                       projectStore.solver.domain.nodes.get(element.nodes[1])!.coords[2]) /
-                      2})`
-                  "
+                    2
+                  })`"
                 >
                   {{ element.label }}
                 </text>
@@ -700,8 +816,8 @@ defineExpose({ centerContent, fitContent });
               <polyline
                 :points="
                   formatElement([
-                  projectStore.solver.domain.nodes.get(element.nodes[0])!.coords,
-                  projectStore.solver.domain.nodes.get(element.nodes[1])!.coords
+                    projectStore.solver.domain.nodes.get(element.nodes[0])!.coords,
+                    projectStore.solver.domain.nodes.get(element.nodes[1])!.coords,
                   ])
                 "
                 vector-effect="non-scaling-stroke"
@@ -714,7 +830,7 @@ defineExpose({ centerContent, fitContent });
             </g>
           </g>
 
-          <g>
+          <g class="nodes">
             <g class="node" v-for="(node, index) in projectStore.solver.domain.nodes.values()" :key="`node-${index}`">
               <polyline
                 v-if="viewerStore.showSupports && supportMarker(node) !== 'none'"
@@ -905,7 +1021,7 @@ defineExpose({ centerContent, fitContent });
       <div>
         <v-list density="compact" class="py-0">
           <v-list-item link class="text-body-2" v-if="projectStore.selection.type === 'element'">
-            Analytical solution
+            Show details
             <template #prepend>
               <div class="pr-2"><v-icon icon="mdi-function-variant" /></div>
             </template>
@@ -934,47 +1050,56 @@ defineExpose({ centerContent, fitContent });
       </div>
     </div>
 
-    <div class="d-none d-sm-inline-flex" style="position: absolute; right: 112px; top: 32px; z-index: 60">
-      <v-toolbar color="grey-lighten-5" rounded="lg" height="32" class="elevation-1">
+    <div
+      v-if="viewerStore.settingsOpen"
+      class="d-none d-sm-flex flex-column align-end"
+      style="position: absolute; right: 24px; top: 64px; z-index: 60"
+    >
+      <v-toolbar color="grey-lighten-5" rounded="lg" height="32" class="elevation-1 mb-2 w-auto">
         <v-checkbox
-          label="Deformed shape"
+          :label="$t('sideSettings.showDeformedShape')"
           v-model="useViewerStore().showDeformedShape"
           hide-details
           class="inline-checkbox mr-2"
         />
         <v-checkbox
-          label="N (x)"
+          label=""
           v-model="useViewerStore().showNormalForce"
           hide-details
           class="inline-checkbox mr-2"
           :disabled="useProjectStore().model === 'EigenValueDynamicSolver'"
-        />
+        >
+          <template #label>N (x)</template>
+        </v-checkbox>
         <v-checkbox
           label="Vz (x)"
           v-model="useViewerStore().showShearForce"
           hide-details
           class="inline-checkbox mr-2"
           :disabled="useProjectStore().model === 'EigenValueDynamicSolver'"
-        />
+        >
+          <template #label>V<sub>z</sub>&nbsp;(x)</template>
+        </v-checkbox>
         <v-checkbox
           label="My (x)"
           v-model="useViewerStore().showBendingMoment"
           hide-details
           class="inline-checkbox mr-2"
           :disabled="useProjectStore().model === 'EigenValueDynamicSolver'"
-        />
+        >
+          <template #label>M<sub>y</sub>&nbsp;(x)</template>
+        </v-checkbox>
       </v-toolbar>
-    </div>
-    <div class="d-none d-sm-inline-flex" style="position: absolute; right: 32px; top: 76px; z-index: 60">
-      <v-toolbar color="grey-lighten-5" rounded="lg" height="32" class="elevation-1">
+
+      <v-toolbar color="grey-lighten-5" rounded="lg" height="32" class="elevation-1 mb-2">
         <v-checkbox
-          label="Supports"
+          :label="$t('sideSettings.supports')"
           v-model="useViewerStore().showSupports"
           hide-details
           class="inline-checkbox mr-2"
         />
         <v-checkbox
-          label="Loads"
+          :label="$t('sideSettings.loads')"
           dense
           v-model.number="useViewerStore().showLoads"
           hide-details
@@ -983,18 +1108,24 @@ defineExpose({ centerContent, fitContent });
         />
 
         <v-checkbox
-          label="Node labels"
+          :label="$t('sideSettings.nodeLabels')"
           v-model="useViewerStore().showNodeLabels"
           hide-details
           class="inline-checkbox mr-2"
         />
         <v-checkbox
-          label="Element labels"
+          :label="$t('sideSettings.elementLabels')"
           v-model="useViewerStore().showElementLabels"
           hide-details
           class="inline-checkbox mr-2"
         />
       </v-toolbar>
+
+      <div class="text-right text-sm-body-2">
+        <button class="text-decoration-underline" @click="appStore.openSettings()">
+          {{ $t("sideSettings.more_settings") }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -1007,6 +1138,9 @@ defineExpose({ centerContent, fitContent });
 
 svg {
   display: block;
+  *:hover {
+    transition: all 0.2s ease-out;
+  }
 }
 
 svg text {
@@ -1034,11 +1168,11 @@ svg text {
   pointer-events: all;
   stroke-linecap: butt;
   &:hover text {
-    fill: blue;
+    //fill: blue;
   }
   &:hover path.drawable,
   &:hover polygon.drawable {
-    stroke: blue;
+    //stroke: blue;
     stroke-width: 3px;
   }
   &:hover polyline {
@@ -1064,6 +1198,7 @@ svg text {
     stroke: black;
     stroke-width: 2px;
     &.handle {
+      cursor: pointer;
       stroke-width: 24px;
       stroke: transparent;
     }
@@ -1071,9 +1206,11 @@ svg text {
       stroke-width: 1px;
     }
   }
-  &:hover polyline.drawable {
-    stroke: blue;
-    stroke-width: 5px;
+  &:hover {
+    & polyline.drawable {
+      stroke: black;
+      stroke-width: 5px;
+    }
   }
   polyline.fibers {
     stroke: #666;
@@ -1089,14 +1226,29 @@ svg text {
   polyline.normal {
     stroke: #2222ff;
     stroke-width: 1px;
+    fill: #2222ff;
+    fill-opacity: 0.1;
+    &:hover {
+      fill-opacity: 0.2;
+    }
   }
   polyline.shear {
     stroke: #00af00;
     stroke-width: 1px;
+    fill: #00af00;
+    fill-opacity: 0.1;
+    &:hover {
+      fill-opacity: 0.2;
+    }
   }
   polyline.moment {
     stroke: #ff2222;
     stroke-width: 1px;
+    fill: #ff2222;
+    fill-opacity: 0.1;
+    &:hover {
+      fill-opacity: 0.2;
+    }
   }
 }
 
@@ -1107,6 +1259,7 @@ svg text {
     stroke-width: 6px;
     vector-effect: non-scaling-stroke;
     &.handle {
+      cursor: pointer;
       stroke-width: 24px;
       stroke: transparent;
     }

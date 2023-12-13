@@ -12,7 +12,12 @@ $font: "Barlow", sans-serif;
   height: calc(var(--dvh, 1dvh) * 100 - 48px) !important;
 }
 
-html, body, #app, .v-application, .v-application__wrap, .v-navigation-drawer {
+html,
+body,
+#app,
+.v-application,
+.v-application__wrap,
+.v-navigation-drawer {
   height: 100dvh !important; /* Fallback for browsers that do not support Custom Properties */
   height: calc(var(--dvh, 1dvh) * 100) !important;
   min-height: 100dvh !important; /* Fallback for browsers that do not support Custom Properties */
@@ -23,6 +28,7 @@ html, body, #app, .v-application, .v-application__wrap, .v-navigation-drawer {
 /* custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -47,6 +53,10 @@ html, body, #app, .v-application, .v-application__wrap, .v-navigation-drawer {
   padding: 1px 6px;
   box-sizing: content-box;
   width: 100%;
+}
+
+div.inline-edit.fw {
+  width: 90px;
 }
 
 .inline-edit-group {
@@ -80,8 +90,14 @@ select.mini-select {
 
   background-image: linear-gradient(45deg, transparent 50%, gray 50%),
     linear-gradient(135deg, gray 50%, transparent 50%), linear-gradient(to right, #ccc, #ccc);
-  background-position: calc(100% - 12px) calc(0.5em + 2px), calc(100% - 7px) calc(0.5em + 2px), calc(100% - 1.5em) 0em;
-  background-size: 5px 5px, 5px 5px, 1px 1.75em;
+  background-position:
+    calc(100% - 12px) calc(0.5em + 2px),
+    calc(100% - 7px) calc(0.5em + 2px),
+    calc(100% - 1.5em) 0em;
+  background-size:
+    5px 5px,
+    5px 5px,
+    1px 1.75em;
   background-repeat: no-repeat;
 }
 
@@ -134,6 +150,24 @@ select.mini-select {
   }
 }
 
-.v-table > .v-table__wrapper > table > tbody > tr > td, .v-table > .v-table__wrapper > table > tbody > tr > th, .v-table > .v-table__wrapper > table > thead > tr > td, .v-table > .v-table__wrapper > table > thead > tr > th, .v-table > .v-table__wrapper > table > tfoot > tr > td, .v-table > .v-table__wrapper > table > tfoot > tr > th {
+.v-table > .v-table__wrapper > table > tbody > tr > td,
+.v-table > .v-table__wrapper > table > tbody > tr > th,
+.v-table > .v-table__wrapper > table > thead > tr > td,
+.v-table > .v-table__wrapper > table > thead > tr > th,
+.v-table > .v-table__wrapper > table > tfoot > tr > td,
+.v-table > .v-table__wrapper > table > tfoot > tr > th {
   //padding: 0 4px;
+}
+
+.v-toolbar.w-auto .v-toolbar__content {
+  width: auto !important;
+}
+
+.v-table {
+  //min-width: fit-content !important;
+  overflow-x: auto !important;
+
+  th {
+    white-space: nowrap;
+  }
 }

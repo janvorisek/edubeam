@@ -1,18 +1,27 @@
 <template>
   <v-dialog class="no-overlay" v-model="useAppStore().dialogs.addNode" max-width="420">
     <v-card>
-      <v-card-title class="text-h5"> Add new node </v-card-title>
+      <v-card-title class="text-h5"> {{ $t("dialogs.addNode.addNewNode") }} </v-card-title>
 
       <v-card-text>
         <v-form>
           <v-container>
             <v-row>
               <v-col cols="12" md="6">
-                <v-text-field v-model.number="newNodeX" label="X-coordinate" required></v-text-field>
+                <v-text-field
+                  v-model.number="newNodeX"
+                  :label="$t('dialogs.addNode.coordinate_x')"
+                  autofocus
+                  required
+                ></v-text-field>
               </v-col>
 
               <v-col cols="12" md="6">
-                <v-text-field v-model.number="newNodeZ" label="Z-coordinate" required></v-text-field>
+                <v-text-field
+                  v-model.number="newNodeZ"
+                  :label="$t('dialogs.addNode.coordinate_z')"
+                  required
+                ></v-text-field>
               </v-col>
             </v-row>
           </v-container>
@@ -21,17 +30,17 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-
-        <v-btn color="red darken-1" text @click="useAppStore().dialogs.addNode = false"> Cancel </v-btn>
-
-        <v-btn color="green darken-1" text @click="addNode()"> Add node </v-btn>
+        <v-btn color="green darken-1" @click="addNode()"> {{ $t("dialogs.addNode.addNode") }} </v-btn>
+        <v-btn color="red darken-1" @click="useAppStore().dialogs.addNode = false">
+          {{ $t("dialogs.common.cancel") }}
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 
   <v-dialog class="no-overlay" v-model="useAppStore().dialogs.addElement" max-width="420">
     <v-card>
-      <v-card-title class="text-h5"> Add new element </v-card-title>
+      <v-card-title class="text-h5"> {{ $t("dialogs.addElement.addNewElement") }} </v-card-title>
 
       <v-card-text>
         <v-form>
@@ -43,8 +52,9 @@
                   :items="useProjectStore().solver.domain.nodes.values() as unknown as unknown[]"
                   item-title="label"
                   item-value="label"
-                  label="From node id"
+                  :label="$t('dialogs.addElement.fromNodeId')"
                   required
+                  autofocus
                 />
               </v-col>
 
@@ -54,7 +64,7 @@
                   :items="useProjectStore().solver.domain.nodes.values() as unknown as unknown[]"
                   item-title="label"
                   item-value="label"
-                  label="To node id"
+                  :label="$t('dialogs.addElement.toNodeId')"
                   required
                 />
               </v-col>
@@ -65,17 +75,17 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-
-        <v-btn color="red darken-1" text @click="useAppStore().dialogs.addElement = false"> Cancel </v-btn>
-
-        <v-btn color="green darken-1" text @click="addElement()"> Add element </v-btn>
+        <v-btn color="green darken-1" @click="addElement()"> {{ $t("dialogs.addElement.addElement") }} </v-btn>
+        <v-btn color="red darken-1" @click="useAppStore().dialogs.addElement = false">{{
+          $t("dialogs.common.cancel")
+        }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 
   <v-dialog class="no-overlay" v-model="useAppStore().dialogs.addNodalLoad" max-width="420">
     <v-card>
-      <v-card-title class="text-h5"> Add nodal load </v-card-title>
+      <v-card-title class="text-h5"> {{ $t("dialogs.addNodalLoad.addNewNodalLoad") }} </v-card-title>
 
       <v-card-text>
         <v-form>
@@ -89,6 +99,7 @@
                   item-value="label"
                   label="Node id"
                   required
+                  autofocus
                 />
               </v-col>
 
@@ -110,17 +121,17 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-
-        <v-btn color="red darken-1" text @click="useAppStore().dialogs.addNodalLoad = false"> Cancel </v-btn>
-
-        <v-btn color="green darken-1" text @click="addNodalLoad()"> Add nodal load </v-btn>
+        <v-btn color="green darken-1" @click="addNodalLoad()"> {{ $t("dialogs.addNodalLoad.addNodalLoad") }} </v-btn>
+        <v-btn color="red darken-1" @click="useAppStore().dialogs.addNodalLoad = false">{{
+          $t("dialogs.common.cancel")
+        }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 
   <v-dialog class="no-overlay" v-model="useAppStore().dialogs.addElementLoad" max-width="420">
     <v-card>
-      <v-card-title class="text-h5"> Add element load </v-card-title>
+      <v-card-title class="text-h5"> {{ $t("dialogs.addElementLoad.addNewElementLoad") }} </v-card-title>
 
       <v-card-text>
         <v-form>
@@ -134,6 +145,7 @@
                   item-value="label"
                   label="Element id"
                   required
+                  autofocus
                 />
               </v-col>
 
@@ -151,36 +163,51 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-
-        <v-btn color="red darken-1" text @click="useAppStore().dialogs.addElementLoad = false"> Cancel </v-btn>
-
-        <v-btn color="green darken-1" text @click="addElementLoad()"> Add element load </v-btn>
+        <v-btn color="green darken-1" @click="addElementLoad()">
+          {{ $t("dialogs.addElementLoad.addElementLoad") }}
+        </v-btn>
+        <v-btn color="red darken-1" @click="useAppStore().dialogs.addElementLoad = false">{{
+          $t("dialogs.common.cancel")
+        }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 
   <v-dialog class="no-overlay" v-model="useAppStore().dialogs.addMaterial" max-width="420">
     <v-card>
-      <v-card-title class="text-h5"> Add material </v-card-title>
+      <v-card-title class="text-h5"> {{ $t("dialogs.addMaterial.addNewMaterial") }} </v-card-title>
 
       <v-card-text>
         <v-form>
           <v-container>
             <v-row>
               <v-col cols="12" md="6">
-                <v-text-field v-model.number="matE" label="E - Young's modulus" required></v-text-field>
+                <v-text-field
+                  v-model.number="matE"
+                  :label="$t('dialogs.addMaterial.E')"
+                  required
+                  autofocus
+                ></v-text-field>
               </v-col>
 
               <v-col cols="12" md="6">
-                <v-text-field v-model.number="matG" label="G - Shear modulus" required></v-text-field>
+                <v-text-field v-model.number="matG" :label="$t('dialogs.addMaterial.G')" required></v-text-field>
               </v-col>
 
               <v-col cols="12" md="6">
-                <v-text-field v-model.number="matDensity" label="density" required></v-text-field>
+                <v-text-field
+                  v-model.number="matDensity"
+                  :label="$t('dialogs.addMaterial.density')"
+                  required
+                ></v-text-field>
               </v-col>
 
               <v-col cols="12" md="6">
-                <v-text-field v-model.number="matAlphaTemp" label="Temperature coefficient" required></v-text-field>
+                <v-text-field
+                  v-model.number="matAlphaTemp"
+                  :label="$t('dialogs.addMaterial.alphaT')"
+                  required
+                ></v-text-field>
               </v-col>
             </v-row>
           </v-container>
@@ -189,24 +216,24 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-
-        <v-btn color="red darken-1" text @click="useAppStore().dialogs.addMaterial = false"> Cancel </v-btn>
-
-        <v-btn color="green darken-1" text @click="addMaterial()"> Add material </v-btn>
+        <v-btn color="green darken-1" @click="addMaterial()"> {{ $t("dialogs.addMaterial.addMaterial") }} </v-btn>
+        <v-btn color="red darken-1" @click="useAppStore().dialogs.addMaterial = false">{{
+          $t("dialogs.common.cancel")
+        }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 
   <v-dialog class="no-overlay" v-model="useAppStore().dialogs.addCrossSection" max-width="420">
     <v-card>
-      <v-card-title class="text-h5"> Add cross section </v-card-title>
+      <v-card-title class="text-h5"> {{ $t("dialogs.addCrossSection.addNewCrossSection") }} </v-card-title>
 
       <v-card-text>
         <v-form>
           <v-container>
             <v-row>
               <v-col cols="12" md="6">
-                <v-text-field v-model.number="csArea" label="A - area" required></v-text-field>
+                <v-text-field v-model.number="csArea" label="A - area" required autofocus></v-text-field>
               </v-col>
 
               <v-col cols="12" md="6">
@@ -227,10 +254,12 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-
-        <v-btn color="red darken-1" text @click="useAppStore().dialogs.addCrossSection = false"> Cancel </v-btn>
-
-        <v-btn color="green darken-1" text @click="addCrossSection()"> Add cross section </v-btn>
+        <v-btn color="green darken-1" @click="addCrossSection()">
+          {{ $t("dialogs.addCrossSection.addCrossSection") }}
+        </v-btn>
+        <v-btn color="red darken-1" @click="useAppStore().dialogs.addCrossSection = false">{{
+          $t("dialogs.common.cancel")
+        }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

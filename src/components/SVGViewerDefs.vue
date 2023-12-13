@@ -128,8 +128,8 @@
       overflow="visible"
       markerUnits="strokeWidth"
     >
-      <polyline points="5,45 10,55 15,45" stroke-width="1" fill="blue" stroke="blue" />
-      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" stroke="blue" />
+      <polyline points="5,45 10,55 15,45" stroke-width="1" fill="red" stroke="red" />
+      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" stroke="red" />
     </marker>
 
     <marker
@@ -222,5 +222,9 @@
     >
       <circle r="7" fill="white" stroke="black" stroke-width="2" />
     </marker>
+
+    <filter id="textLabel" x="-5%" width="110%" y="0%" height="100%">
+      <feFlood flood-color="white" flood-opacity="0.75" />
+    </filter>
   </defs>
 </template>

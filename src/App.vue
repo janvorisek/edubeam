@@ -2,10 +2,15 @@
 import { onMounted } from "vue";
 import { Beam2D, DofID, Domain } from "ts-fem";
 import { max, min } from "mathjs";
+import { setLocale, async, availableLocales } from "./plugins/i18n";
 
 import Editor from "@/views/Editor.vue";
 import Dialogs from "@/components/Dialogs.vue";
 import { useProjectStore } from "./store/project";
+import { loadLocaleMessages, i18n } from "./plugins/i18n";
+import { useAppStore } from "./store/app";
+
+const appStore = useAppStore();
 
 onMounted(() => {
   const solver = useProjectStore().solver;
@@ -59,7 +64,11 @@ onMounted(() => {
 });
 
 const solve = () => {
-  _solve();
+  try {
+    _solve();
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 const _solve = () => {
@@ -74,6 +83,11 @@ const clearMesh = () => {
   useProjectStore().solver.domain.nodes.clear();
 };
 
+onMounted(() => {
+  console.log(appStore.locale);
+  setLocale(appStore.locale);
+});
+
 // eslint-disable-next-line no-undef
 const app_version = APP_VERSION;
 
@@ -83,21 +97,36 @@ const app_released = APP_RELEASED;
 
 <template>
   <v-app>
-    <v-app-bar clipped-left clipped-right app color="primary" density="compact">
-      <div class="ml-3 d-flex align-center font-weight-bold text-uppercase">Edubeam 2</div>
+    <v-app-bar clipped-lefs clipped-right app color="primary" density="compact">
+      <v-app-bar-nav-icon @click="appStore.drawerOpen = !appStore.drawerOpen"></v-app-bar-nav-icon>
 
-      <v-btn text class="d-none d-sm-inline-flex ml-3" @click="clearMesh">
+      <div class="ml-3 d-flex align-center font-weight-bold text-uppercase">Edubeam</div>
+
+      <v-btn class="d-none d-sm-inline-flex ml-3" @click="clearMesh">
         <v-icon small>mdi-delete-empty</v-icon>
         <span class="ml-1">Clear mesh</span>
       </v-btn>
 
       <v-spacer></v-spacer>
 
-      <v-btn text class="d-none d-sm-inline-flex">
-        <span class="mr-2">Settings</span>
+      <v-btn class="d-none d-sm-inline-flex" @click="appStore.openSettings()">
+        <span class="mr-2">{{ $t("common.settings") }}</span>
         <v-icon>mdi-cogs</v-icon>
       </v-btn>
     </v-app-bar>
+
+    <v-navigation-drawer v-model="appStore.drawerOpen" temporary>
+      <v-list-item prepend-avatar="https://randomuser.me/api/portraits/women/9.jpg" title="Jane Doe"></v-list-item>
+
+      <v-divider></v-divider>
+
+      <v-list density="compact" nav>
+        <v-list-item prepend-icon="mdi-view-dashboard" title="Home" value="home"></v-list-item>
+        <v-list-item prepend-icon="mdi-forum" title="About" value="about"></v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-navigation-drawer v-model="appStore.rightDrawerOpen" location="right"> availableLocales</v-navigation-drawer>
 
     <v-main>
       <Editor />

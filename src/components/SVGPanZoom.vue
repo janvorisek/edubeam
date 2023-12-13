@@ -139,18 +139,30 @@ const centerContent = (): void => {
 const fitContent = (n = 0): void => {
   if (n > 5) return;
 
+  console.log("fitContent", n);
+
   const svgEl = svgRef.value as SVGElement;
   const rootG = svgEl.getElementsByTagName("g")[0] as SVGGElement;
 
   const rootBBox = svgEl.getBoundingClientRect();
-  const bBox = rootG.getBoundingClientRect();
+  //const bBox = rootG.getBoundingClientRect();
 
-  let zoomBy = bBox.height / (svgEl.clientHeight - 128);
+  const bBoxW = rootG.getBBox().width * scale.value;
+  const bBoxH = rootG.getBBox().height * scale.value;
 
-  const r1 = bBox.width / bBox.height;
+  let zoomBy = bBoxH / (svgEl.clientHeight - 128);
+
+  //console.log(svgEl.clientHeight);
+
+  const r1 = bBoxW / bBoxH;
   const r2 = rootBBox.width / rootBBox.height;
 
-  if (r2 < r1) zoomBy = bBox.width / (svgEl.clientWidth - 128);
+  if (r2 < r1) {
+    zoomBy = bBoxW / (svgEl.clientWidth - 128);
+    console.log({ bBoxW, cw: svgEl.clientWidth - 128, zoomBy });
+  } else {
+    console.log({ bBoxH, cw: svgEl.clientHeight - 128, zoomBy });
+  }
 
   viewBox.h *= zoomBy;
   viewBox.w *= zoomBy;
@@ -166,7 +178,63 @@ const fitContent = (n = 0): void => {
 
   centerContent();
   updateMatrix(true);
-  nextTick(() => fitContent(n + 1));
+
+  requestAnimationFrame(() => fitContent(n + 1));
+  //nextTick(() => fitContent(n + 1));
+};
+
+const fitContent2 = (n = 0): void => {
+  if (n > 5) return;
+
+  const svgEl = svgRef.value as SVGElement;
+  const rootG = svgEl.getElementsByTagName("g")[0] as SVGGElement;
+
+  const rootBBox = svgEl.getBoundingClientRect();
+  //const bBox = rootG.getBoundingClientRect();
+
+  const rootGBBox = rootG.getBBox();
+  const bBoxW = rootGBBox.width * scale.value;
+  const bBoxH = rootGBBox.height * scale.value;
+
+  let zoomBy = bBoxH / (svgEl.clientHeight - 128);
+
+  console.log({ rootG, bBoxW, bBoxH, zoomBy, vw: viewBox.w, vh: viewBox.h });
+
+  // zoom by delta
+  viewBox.h *= zoomBy;
+  viewBox.w *= zoomBy;
+
+  scale.value = svgEl.clientWidth / viewBox.w;
+
+  updateMatrix(true);
+  //requestAnimationFrame(() => centerContent());
+
+  return;
+
+  //console.log(svgEl.clientHeight);
+
+  const r1 = bBoxW / bBoxH;
+  const r2 = rootBBox.width / rootBBox.height;
+
+  if (r2 < r1) zoomBy = bBoxW / (svgEl.clientWidth - 128);
+
+  viewBox.h *= zoomBy;
+  viewBox.w *= zoomBy;
+  /*viewBox.h = bBox.height
+  //viewBox.w = bBox.width
+  const realScale = svgEl.clientHeight / bBox.height
+  viewBox.w = bBox.width / realScale*/
+
+  scale.value = svgEl.clientWidth / viewBox.w;
+
+  //console.log(bBox)
+  //console.log(viewBox)
+
+  centerContent();
+  updateMatrix(true);
+
+  requestAnimationFrame(() => fitContent(n + 1));
+  //nextTick(() => fitContent(n + 1));
 };
 
 onMounted(() => {
@@ -183,6 +251,16 @@ onMounted(() => {
 
     svgRef.value!.setAttribute("overflow", "visible");
   });
+
+  const isFirefox = navigator.userAgent.search("Firefox") > -1;
+  let wheelEventEndTimeout = null;
+  window.addEventListener("wheel", () => {
+    if (isFirefox) useAppStore().zooming = true;
+    clearTimeout(wheelEventEndTimeout);
+    wheelEventEndTimeout = setTimeout(() => {
+      useAppStore().zooming = false;
+    }, 100);
+  });
 });
 
 const onMouseDown = () => {
@@ -196,7 +274,7 @@ const onMouseUp = () => {
 const rootRef = ref<HTMLElement | null>(null);
 const svgRef = ref<SVGElement | null>(null);
 
-defineExpose({ scale, centerContent, fitContent });
+defineExpose({ scale, centerContent, fitContent, fitContent2, updateMatrix, onWindowResize });
 </script>
 
 <template>

@@ -14,8 +14,14 @@ export const useViewerStore = defineStore(
     const showNormalForce = ref(false);
     const showShearForce = ref(false);
     const showBendingMoment = ref(false);
-
     const showDeformedShape = ref(true);
+
+    const showGrid = ref(true);
+    const snapToGrid = ref(true);
+    const gridStep = ref(0.1);
+    const resultsScalePx = ref(128);
+
+    const settingsOpen = ref(false);
 
     return {
       showNodeLabels,
@@ -26,6 +32,13 @@ export const useViewerStore = defineStore(
       showShearForce,
       showBendingMoment,
       showDeformedShape,
+
+      showGrid,
+      snapToGrid,
+      gridStep,
+      resultsScalePx,
+
+      settingsOpen,
     };
   },
   { persist: true }

@@ -157,6 +157,72 @@ export function formatMoments(el: Beam2D, scale: number) {
   return `${n1.coords[0]},${n1.coords[2]} ${result}${n2.coords[0]},${n2.coords[2]}`;
 }
 
+export function formatMomentsLabels(el: Beam2D, scale: number) {
+  const result = [];
+  const nseg = 1;
+  const scaleBy = (useProjectStore().resultsScalePx * useProjectStore().bendingMomentScale) / scale;
+  const n1 = el.domain.getNode(el.nodes[0]);
+  const forces = el.computeBendingMoment(el.domain.solver.loadCases[0], nseg);
+  const geo = el.computeGeo();
+  const cos = geo.dx / geo.l;
+  const sin = geo.dz / geo.l;
+  const nx = -geo.dz / geo.l;
+  const ny = geo.dx / geo.l;
+
+  for (let s = 0; s <= nseg; s++) {
+    const xc = n1.coords[0] + (cos * geo.l * s) / nseg;
+    const zc = n1.coords[2] + (sin * geo.l * s) / nseg;
+
+    result.push([xc + forces.M[s] * nx * scaleBy, zc + forces.M[s] * ny * scaleBy, forces.M[s]]);
+  }
+
+  return result;
+}
+
+export function formatNormalForceLabels(el: Beam2D, scale: number) {
+  const result = [];
+  const nseg = 1;
+  const scaleBy = (useProjectStore().resultsScalePx * useProjectStore().normalForceScale) / scale;
+  const n1 = el.domain.getNode(el.nodes[0]);
+  const forces = el.computeNormalForce(el.domain.solver.loadCases[0], nseg);
+  const geo = el.computeGeo();
+  const cos = geo.dx / geo.l;
+  const sin = geo.dz / geo.l;
+  const nx = -geo.dz / geo.l;
+  const ny = geo.dx / geo.l;
+
+  for (let s = 0; s <= nseg; s++) {
+    const xc = n1.coords[0] + (cos * geo.l * s) / nseg;
+    const zc = n1.coords[2] + (sin * geo.l * s) / nseg;
+
+    result.push([xc - forces.N[s] * nx * scaleBy, zc - forces.N[s] * ny * scaleBy, forces.N[s]]);
+  }
+
+  return result;
+}
+
+export function formatShearForceLabels(el: Beam2D, scale: number) {
+  const result = [];
+  const nseg = 1;
+  const scaleBy = (useProjectStore().resultsScalePx * useProjectStore().shearForceScale) / scale;
+  const n1 = el.domain.getNode(el.nodes[0]);
+  const forces = el.computeShearForce(el.domain.solver.loadCases[0], nseg);
+  const geo = el.computeGeo();
+  const cos = geo.dx / geo.l;
+  const sin = geo.dz / geo.l;
+  const nx = -geo.dz / geo.l;
+  const ny = geo.dx / geo.l;
+
+  for (let s = 0; s <= nseg; s++) {
+    const xc = n1.coords[0] + (cos * geo.l * s) / nseg;
+    const zc = n1.coords[2] + (sin * geo.l * s) / nseg;
+
+    result.push([xc - forces.V[s] * nx * scaleBy, zc - forces.V[s] * ny * scaleBy, forces.V[s]]);
+  }
+
+  return result;
+}
+
 export function elementStartMarker(el: Beam2D) {
   if (el.hinges[0]) {
     return `url(#hinge-start)`;

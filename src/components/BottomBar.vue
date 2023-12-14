@@ -714,7 +714,7 @@ import { useProjectStore } from "../store/project";
 import { useAppStore } from "../store/app";
 import { MouseMode } from "../mouse";
 import { capitalize } from "../utils";
-import { DofID } from "ts-fem";
+import { DofID, Beam2D } from "ts-fem";
 import { formatExpValueAsHTML } from "../SVGUtils";
 
 type EntityWithLabel = { label: string & { [key: string]: unknown } };
@@ -736,8 +736,10 @@ const showDialog = (
   appStore.dialogs[name] = true;
 };
 
-const swapNodes = (el: Element) => {
+const swapNodes = (el: Beam2D) => {
   el.nodes = el.nodes.reverse();
+
+  el.hinges = [el.hinges[1], el.hinges[0]];
   solve();
 };
 

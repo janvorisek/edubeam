@@ -482,7 +482,7 @@
           </template>
           <template #item.e="{ item }">
             <input
-              :value="item.e"
+              :value="formatScientificNumber(item.e)"
               @keydown="checkNumber($event)"
               @change="changeItem(item, 'e', $event.target as HTMLInputElement)"
               class="inline-edit"
@@ -490,7 +490,7 @@
           </template>
           <template #item.g="{ item }">
             <input
-              :value="item.g"
+              :value="formatScientificNumber(item.g)"
               @keydown="checkNumber($event)"
               @change="changeItem(item, 'g', $event.target as HTMLInputElement)"
               class="inline-edit"
@@ -579,7 +579,7 @@
           </template>
           <template #item.a="{ item }">
             <input
-              :value="item.a"
+              :value="formatScientificNumber(item.a)"
               @keydown="checkNumber($event)"
               @change="changeItem(item, 'a', $event.target as HTMLInputElement)"
               class="inline-edit"
@@ -587,7 +587,7 @@
           </template>
           <template #item.iy="{ item }">
             <input
-              :value="item.iy"
+              :value="formatScientificNumber(item.iy)"
               @keydown="checkNumber($event)"
               @change="changeItem(item, 'iy', $event.target as HTMLInputElement)"
               class="inline-edit"
@@ -603,7 +603,7 @@
           </template>
           <template #item.k="{ item }">
             <input
-              :value="item.k"
+              :value="formatScientificNumber(item.k)"
               @keydown="checkNumber($event)"
               @change="changeItem(item, 'k', $event.target as HTMLInputElement)"
               class="inline-edit"
@@ -747,7 +747,9 @@ const checkNumber = (e: KeyboardEvent) => {
   if (e.key === "Escape") if ("activeElement" in document) (document.activeElement as HTMLElement).blur();
 
   const isNumber = !isNaN(e.key as unknown as number);
+
   const isActionKey =
+    (e.ctrlKey && e.key === "a") ||
     e.key === "Escape" ||
     e.key === "Delete" ||
     e.key === "Backspace" ||
@@ -766,6 +768,12 @@ const checkNumber = (e: KeyboardEvent) => {
 
   e.stopPropagation();
   e.preventDefault();
+};
+
+const formatScientificNumber = (n: number) => {
+  if (n > 1000 || n < 0.001) return n.toExponential(4);
+
+  return n;
 };
 
 const changeSetArrayItem = (item: unknown, set: string, value: number, el?: HTMLInputElement) => {

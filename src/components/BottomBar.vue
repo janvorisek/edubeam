@@ -753,6 +753,8 @@ const checkNumber = (e: KeyboardEvent) => {
     e.key === "Tab" ||
     e.key === "ArrowRight" ||
     e.key === "ArrowLeft" ||
+    e.key === "End" ||
+    e.key === "Home" ||
     e.key === "e" ||
     e.key === "-";
 

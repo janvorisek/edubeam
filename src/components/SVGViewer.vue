@@ -864,7 +864,7 @@ defineExpose({ centerContent, fitContent });
                   Math.abs(getReaction(node, DofID.Dz)) > 1e-32
                 "
                 :font-size="13 / scale"
-                fill="red"
+                fill="#FF8700"
                 font-weight="normal"
                 text-anchor="end"
                 alignment-baseline="baseline"
@@ -897,7 +897,7 @@ defineExpose({ centerContent, fitContent });
                   Math.abs(getReaction(node, DofID.Dx)) > 1e-32
                 "
                 :font-size="13 / scale"
-                fill="red"
+                fill="#FF8700"
                 font-weight="normal"
                 :text-anchor="getReaction(node, DofID.Dx) > 0 ? 'end' : 'start'"
                 alignment-baseline="baseline"
@@ -928,7 +928,7 @@ defineExpose({ centerContent, fitContent });
                   Math.abs(getReaction(node, DofID.Ry)) > 1e-32
                 "
                 :font-size="13 / scale"
-                fill="red"
+                fill="#FF8700"
                 font-weight="normal"
                 text-anchor="start"
                 alignment-baseline="baseline"
@@ -1163,7 +1163,7 @@ svg text {
 
 .element-load.load-1d {
   text {
-    fill: red;
+    fill: #ff8700;
   }
   pointer-events: all;
   stroke-linecap: butt;
@@ -1180,7 +1180,7 @@ svg text {
   }
   polygon,
   path {
-    stroke: red;
+    stroke: #ff8700;
     stroke-width: 1px;
     &.handle {
       stroke-width: 12px;
@@ -1278,7 +1278,7 @@ svg text {
 
 .nodal-load {
   text {
-    fill: red;
+    fill: #ff8700;
   }
   polyline {
     stroke-linecap: square;

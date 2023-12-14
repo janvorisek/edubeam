@@ -10,7 +10,7 @@
       orient="auto-start-reverse"
       markerUnits="userSpaceOnUse"
     >
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="red" />
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FF8700" />
     </marker>
     <marker
       id="arrow_hover"
@@ -35,7 +35,7 @@
       markerUnits="strokeWidth"
       marker-end="url(#arrow)"
     >
-      <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" fill="none" stroke="red" />
+      <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" fill="none" stroke="#FF8700" />
     </marker>
     <marker
       id="moment_cw"
@@ -48,7 +48,7 @@
       markerUnits="strokeWidth"
       marker-end="url(#arrow)"
     >
-      <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" fill="none" stroke="red" />
+      <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" fill="none" stroke="#FF8700" />
     </marker>
     <marker
       id="moment_ccw_hover"
@@ -86,8 +86,8 @@
       overflow="visible"
       markerUnits="strokeWidth"
     >
-      <polyline points="5,45 10,55 15,45" stroke-width="1" fill="red" stroke="red" />
-      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" stroke="red" />
+      <polyline points="5,45 10,55 15,45" stroke-width="1" fill="#FF8700" stroke="#FF8700" />
+      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" stroke="#FF8700" />
     </marker>
 
     <marker
@@ -114,8 +114,8 @@
       overflow="visible"
       markerUnits="strokeWidth"
     >
-      <polyline points="5,45 10,55 15,45" stroke-width="1" fill="red" stroke="red" />
-      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" stroke="red" />
+      <polyline points="5,45 10,55 15,45" stroke-width="1" fill="#FF8700" stroke="#FF8700" />
+      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" stroke="#FF8700" />
     </marker>
 
     <marker
@@ -128,8 +128,8 @@
       overflow="visible"
       markerUnits="strokeWidth"
     >
-      <polyline points="5,45 10,55 15,45" stroke-width="1" fill="red" stroke="red" />
-      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" stroke="red" />
+      <polyline points="5,45 10,55 15,45" stroke-width="1" fill="#FF8700" stroke="#FF8700" />
+      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" stroke="#FF8700" />
     </marker>
 
     <marker

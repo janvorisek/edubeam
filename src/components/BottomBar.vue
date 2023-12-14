@@ -1103,11 +1103,11 @@ const headers = {
       width: 140,
       sortable: false,
     },
-    {
+    /*{
       title: "common.massMatrix",
       key: "diagonalMassMatrix",
       width: 180,
-    },
+    },*/
     {
       title: "common.actions",
       key: "actions",

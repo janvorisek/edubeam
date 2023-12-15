@@ -817,7 +817,7 @@ import { ref, onMounted, computed, watch, nextTick, reactive, onUnmounted } from
 import { useProjectStore } from "../store/project";
 import { useAppStore } from "../store/app";
 import { MouseMode } from "../mouse";
-import { capitalize } from "../utils";
+import { capitalize, checkNumber } from "../utils";
 import { DofID, Beam2D } from "ts-fem";
 import { formatExpValueAsHTML, formatMeasureAsHTML } from "../SVGUtils";
 
@@ -852,33 +852,6 @@ const swapNodes = (el: Beam2D) => {
 
   el.hinges = [el.hinges[1], el.hinges[0]];
   solve();
-};
-
-const checkNumber = (e: KeyboardEvent) => {
-  if (e.key === "Escape") if ("activeElement" in document) (document.activeElement as HTMLElement).blur();
-
-  const isNumber = !isNaN(e.key as unknown as number);
-
-  const isActionKey =
-    (e.ctrlKey && e.key === "a") ||
-    e.key === "Escape" ||
-    e.key === "Delete" ||
-    e.key === "Backspace" ||
-    e.key === "Enter" ||
-    e.key === "Tab" ||
-    e.key === "ArrowRight" ||
-    e.key === "ArrowLeft" ||
-    e.key === "End" ||
-    e.key === "Home" ||
-    e.key === "e" ||
-    e.key === "-";
-
-  const isComma = e.key === "," || e.key === ".";
-
-  if (isNumber || isActionKey || isComma) return;
-
-  e.stopPropagation();
-  e.preventDefault();
 };
 
 const formatScientificNumber = (n: number) => {

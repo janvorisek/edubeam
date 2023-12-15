@@ -26,3 +26,30 @@ export const throttle = (fn: Function, wait = 300) => {
 export const capitalize = (s: string) => {
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
+
+export const checkNumber = (e: KeyboardEvent) => {
+  if (e.key === "Escape") if ("activeElement" in document) (document.activeElement as HTMLElement).blur();
+
+  const isNumber = !isNaN(e.key as unknown as number);
+
+  const isActionKey =
+    (e.ctrlKey && e.key === "a") ||
+    e.key === "Escape" ||
+    e.key === "Delete" ||
+    e.key === "Backspace" ||
+    e.key === "Enter" ||
+    e.key === "Tab" ||
+    e.key === "ArrowRight" ||
+    e.key === "ArrowLeft" ||
+    e.key === "End" ||
+    e.key === "Home" ||
+    e.key === "e" ||
+    e.key === "-";
+
+  const isComma = e.key === "," || e.key === ".";
+
+  if (isNumber || isActionKey || isComma) return;
+
+  e.stopPropagation();
+  e.preventDefault();
+};

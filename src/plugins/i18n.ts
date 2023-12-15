@@ -1,5 +1,6 @@
 import { createI18n } from "vue-i18n";
 import messages from "@intlify/unplugin-vue-i18n/messages";
+import * as vloc from "vuetify/locale";
 
 export const availableLocales = [
   { code: "en", name: "English" },
@@ -17,33 +18,11 @@ export const i18n = createI18n({
 
 // Set new locale.
 export async function setLocale(locale: string) {
-  // Load locale if not available yet.
-  if (!i18n.global.availableLocales.includes(locale)) {
-    const messages = await loadLocale(locale);
+  // Add Vuetify translations.
+  i18n.global.setLocaleMessage(locale, { ...i18n.global.getLocaleMessage(locale), $vuetify: { ...vloc[locale] } });
 
-    // fetch() error occurred.
-    if (messages === undefined) {
-      return;
-    }
-
-    // Add locale.
-    i18n.global.setLocaleMessage(locale, messages);
-  }
+  console.log(i18n.global.messages);
 
   // Set locale.
   i18n.global.locale.value = locale;
-}
-
-// Fetch locale.
-function loadLocale(locale: string) {
-  return fetch(`./locales/${locale}.json`)
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error("Language could not be loaded!");
-    })
-    .catch((error) => {
-      console.error(error);
-    });
 }

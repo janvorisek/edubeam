@@ -5,21 +5,22 @@
     "results": "Results"
   },
   "common": {
-    "label": "label",
-    "node": "node",
-    "element": "element",
-    "crossSection": "cross section",
-    "material": "material",
-    "settings": "settings",
-    "actions": "actions",
-    "coords": "coordinates",
-    "type": "type",
-    "nodes": "nodes",
-    "endHinges": "end hinges",
-    "massMatrix": "mass matrix",
-    "target": "target",
-    "components": "components",
-    "loadCase": "load case"
+    "label": "Label",
+    "node": "Node",
+    "element": "Element",
+    "crossSection": "Cross section",
+    "material": "Material",
+    "settings": "Settings",
+    "actions": "Actions",
+    "coords": "Coordinates",
+    "type": "Type",
+    "nodes": "Nodes",
+    "endHinges": "End hinges",
+    "massMatrix": "Mass matrix",
+    "target": "Target",
+    "components": "Components",
+    "loadCase": "Load case",
+    "loads": "Loads"
   },
   "nodes": {
     "addNode": "Add node"
@@ -61,7 +62,24 @@
     "show_shear_force": "Show shear force",
     "show_bending_moment": "Show bending moment",
     "show_deformed_shape": "Show deformed shape",
-    "show_loads": "Show loads"
+    "show_loads": "Show loads",
+    "units": {
+      "units": "Units",
+      "length": "Length",
+      "mass": "Mass",
+      "force": "Force",
+      "pressure": "Pressure",
+      "area": "Area",
+      "areaM2": "Second moment of area"
+    },
+    "grid": "Grid",
+    "show_grid": "Show grid",
+    "mouse": {
+      "mouse": "Mouse",
+      "pan_button": "Pan using",
+      "wheel": "Mouse wheel",
+      "right_button": "Right button"
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Deformed shape",

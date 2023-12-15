@@ -1,20 +1,21 @@
 {
   "common": {
-    "label": "označení",
-    "node": "uzel",
-    "crossSection": "průřez",
-    "element": "prvek",
-    "material": "materiál",
-    "settings": "nastavení",
-    "actions": "akce",
-    "coords": "souřadnice",
-    "components": "složky",
-    "endHinges": "koncové klouby",
-    "loadCase": "zatěžovací stav",
-    "massMatrix": "matice hmotnosti",
-    "nodes": "uzly",
-    "target": "působiště",
-    "type": "typ"
+    "label": "Označení",
+    "node": "Uzel",
+    "crossSection": "Průřez",
+    "element": "Prvek",
+    "material": "Materiál",
+    "settings": "Nastavení",
+    "actions": "Akce",
+    "coords": "Souřadnice",
+    "components": "Složky",
+    "endHinges": "Koncové klouby",
+    "loadCase": "Zatěžovací stav",
+    "massMatrix": "Matice hmotnosti",
+    "nodes": "Uzly",
+    "target": "Působiště",
+    "type": "Typ",
+    "loads": "Zatížení"
   },
   "tabs": {
     "nodes": "Uzly",
@@ -40,7 +41,24 @@
     "show_loads": "Kreslit zatížení",
     "show_normal_force": "Kreslit normálovou sílu",
     "show_shear_force": "Kreslit posouvající sílu",
-    "language_and_locale": "Jazyk a prostředí"
+    "language_and_locale": "Jazyk a prostředí",
+    "grid": "Mřížka",
+    "units": {
+      "area": "Plocha",
+      "areaM2": "Moment setrvačnosti",
+      "length": "Délka",
+      "force": "Síla",
+      "mass": "Hmotnost",
+      "pressure": "Napětí",
+      "units": "Jednotky"
+    },
+    "show_grid": "Zobrazit mřížku",
+    "mouse": {
+      "mouse": "Myš",
+      "pan_button": "Posun zobrazení pomocí",
+      "wheel": "Kolečko myši",
+      "right_button": "Pravé tlačítko"
+    }
   },
   "elements": {
     "addElement": "Přidat prvek"

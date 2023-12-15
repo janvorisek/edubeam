@@ -192,7 +192,7 @@
           item-value="code"
           hide-details="auto"
           :items="[
-            { name: $t('settings.mouse.wheel'), code: 1 },
+            { name: $t('settings.mouse.wheel'), code: 4 },
             { name: $t('settings.mouse.right_button'), code: 2 },
           ]"
           :label="$t('settings.mouse.pan_button')"

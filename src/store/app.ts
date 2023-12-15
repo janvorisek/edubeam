@@ -107,7 +107,7 @@ export const useAppStore = defineStore(
       tab.value = tabs.value.length - 1;
     };
 
-    const panButton = ref(1);
+    const panButton = ref(4);
 
     return {
       drawerOpen,

@@ -21,7 +21,7 @@ export const useViewerStore = defineStore(
     const gridStep = ref(0.1);
     const resultsScalePx = ref(128);
 
-    const settingsOpen = ref(false);
+    const settingsOpen = ref(true);
 
     return {
       showNodeLabels,

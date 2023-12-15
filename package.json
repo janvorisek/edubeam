@@ -12,6 +12,7 @@
   "dependencies": {
     "@intlify/unplugin-vue-i18n": "^1.6.0",
     "@vueuse/core": "^10.7.0",
+    "js-quantities": "^1.8.0",
     "mathjs": "^12.2.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.0",

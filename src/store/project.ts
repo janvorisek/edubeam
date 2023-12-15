@@ -1,7 +1,7 @@
 // Utilities
 import { defineStore } from "pinia";
 import { LinearStaticSolver, Beam2D } from "ts-fem";
-import { ref, computed } from "vue";
+import { ref, computed, reactive } from "vue";
 import { max, min } from "mathjs";
 
 export const useProjectStore = defineStore("project", () => {
@@ -22,12 +22,12 @@ export const useProjectStore = defineStore("project", () => {
     type: string | null;
     x: number;
     y: number;
-  } = {
+  } = reactive({
     label: null,
     type: null,
     x: -999,
     y: -999,
-  };
+  });
 
   const clearSelection = () => {
     selection.label = null;

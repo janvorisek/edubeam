@@ -29,6 +29,13 @@ export const useProjectStore = defineStore("project", () => {
     y: -999,
   };
 
+  const clearSelection = () => {
+    selection.label = null;
+    selection.type = null;
+    selection.x = -999;
+    selection.y = -999;
+  };
+
   const hover: {
     label: number | string | null;
     type: string | null;
@@ -148,6 +155,7 @@ export const useProjectStore = defineStore("project", () => {
     solve,
     model,
     selection,
+    clearSelection,
     hover,
     solver,
     nthEigenVector,

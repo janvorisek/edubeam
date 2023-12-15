@@ -1,11 +1,13 @@
 <template>
-  <div style="border-top: 1px solid #ddd">
+  <div style="border-top: 1px solid #ddd" :style="`min-height: ${props.height}px; overflow: hidden`">
     <div class="d-flex">
       <div class="flex-grow-1">
         <v-tabs v-model="appStore.bottomBarTab" bg-color="primary" :show-arrows="false" height="36">
           <v-tab v-for="(tab, index) in tabs" :key="index">
-            <v-icon small class="mr-3">{{ tab.icon }}</v-icon>
-            {{ $t(tab.title) }}
+            <template #default>
+              <v-icon small class="mr-3">{{ tab.icon }}</v-icon> {{ $t(tab.title) }}</template
+            >
+            <template #append v-if="'count' in tab && tab.count() > 0">{{ tab.count() }}</template>
           </v-tab>
         </v-tabs>
       </div>
@@ -13,10 +15,10 @@
         <v-btn color="primary" density="compact" icon="mdi-window-minimize"></v-btn>
       </div>
     </div>
-    <v-window v-model="appStore.bottomBarTab" touchless class="text-body-2" style="height: 185px">
+    <v-window v-model="appStore.bottomBarTab" touchless class="text-body-2" :style="`height: ${props.height - 36}px`">
       <v-window-item
         :key="'tab-nodes'"
-        style="height: 185px"
+        :style="`height: ${props.height - 36}px`"
         :transition="false"
         :reverse-transition="false"
         @touchstart.prevent.stop
@@ -41,7 +43,7 @@
           :headers="headers.nodes"
           :items="nodes"
           density="compact"
-          height="155"
+          :height="props.height - 36 - 30"
           fixed-header
           :items-per-page="-1"
           disable-pagination
@@ -139,13 +141,30 @@
               </div>
             </div>
           </template>
+          <template #item.loads="{ item }">
+            <div
+              v-if="
+                useProjectStore().solver.loadCases[0].nodalLoadList.filter((nl) => nl.target === item.label).length > 0
+              "
+            >
+              <v-chip-group>
+                <v-chip v-for="nl in formatNodalLoadsAtNode(item)" density="compact"> <span v-html="nl"></span></v-chip>
+              </v-chip-group>
+            </div>
+            <div v-else>-</div>
+          </template>
           <template #item.actions="{ item }">
             <v-btn density="compact" variant="text" @click="deleteNode(item.label)" icon="mdi-close"></v-btn>
           </template>
         </v-data-table>
       </v-window-item>
 
-      <v-window-item :key="'tab-elements'" :transition="false" :reverse-transition="false" style="height: 185px">
+      <v-window-item
+        :key="'tab-elements'"
+        :transition="false"
+        :reverse-transition="false"
+        :style="`height: ${props.height - 36}px`"
+      >
         <div class="border-b border-t">
           <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addElement')">
             <v-icon small>mdi-plus</v-icon> {{ $t("elements.addElement") }}
@@ -166,7 +185,7 @@
           :headers="headers.elements"
           :items="elements"
           density="compact"
-          height="155"
+          :height="props.height - 36 - 30"
           fixed-header
           :items-per-page="-1"
           disable-pagination
@@ -212,7 +231,7 @@
                   :value="node.label"
                   :key="node.label"
                 >
-                  {{ `Node ${node.label}` }}
+                  {{ `${$t("common.node")} ${node.label}` }}
                 </option>
               </select>
               <a href="#" class="text-decoration-none text-primary" @click.stop="swapNodes(item)">
@@ -224,7 +243,7 @@
                   :value="node.label"
                   :key="node.label"
                 >
-                  {{ `Node ${node.label}` }}
+                  {{ `${$t("common.node")} ${node.label}` }}
                 </option>
               </select>
             </div>
@@ -266,13 +285,33 @@
               class="inline-edit"
             />-->
           </template>
+          <template #item.loads="{ item }">
+            <div
+              v-if="
+                useProjectStore().solver.loadCases[0].elementLoadList.filter((nl) => nl.target === item.label).length >
+                0
+              "
+            >
+              <v-chip-group>
+                <v-chip v-for="el in formatElementLoadsAtElement(item)" density="compact">
+                  <span v-html="el"></span
+                ></v-chip>
+              </v-chip-group>
+            </div>
+            <div v-else>-</div>
+          </template>
           <template #item.actions="{ item }">
             <v-btn density="compact" variant="text" @click="deleteElement(item.label)" icon="mdi-close"></v-btn>
           </template>
         </v-data-table>
       </v-window-item>
 
-      <v-window-item :key="'tab-loads'" :transition="false" :reverse-transition="false" style="height: 185px">
+      <v-window-item
+        :key="'tab-loads'"
+        :transition="false"
+        :reverse-transition="false"
+        :style="`height: ${props.height - 36}px`"
+      >
         <div class="border-b border-t">
           <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addNodalLoad')">
             <v-icon small>mdi-plus</v-icon> {{ $t("loads.addNodalLoad") }}
@@ -292,7 +331,7 @@
           :headers="headers.loads"
           :items="loads"
           density="compact"
-          height="155"
+          :height="props.height - 36 - 30"
           fixed-header
           :items-per-page="-1"
           disable-pagination
@@ -308,9 +347,14 @@
                   class="v-data-table__td v-data-table-column--align-start v-data-table__th v-data-table__th--sortable"
                 >
                   <div class="v-data-table-header__content">
-                    <span class="mr-2 cursor-pointer" @click="() => toggleSort(column)">{{
-                      capitalize($t(column.title))
-                    }}</span>
+                    <div class="mr-2 cursor-pointer" @click="() => toggleSort(column)">
+                      {{ capitalize($t(column.title)) }}
+                      <span
+                        class="font-weight-regular"
+                        v-if="column.units"
+                        v-html="`[${formatMeasureAsHTML(appStore.units[column.units])}]`"
+                      ></span>
+                    </div>
                     <v-icon
                       v-if="column.sortable"
                       :icon="getSortIcon(column)"
@@ -332,27 +376,51 @@
               <div class="inline-edit-group mr-2">
                 <label class="input-before">F<sub>x</sub></label>
                 <input
-                  :value="item.ref.values[0]"
+                  :value="appStore.convertForce(item.ref.values[0])"
                   @keydown="checkNumber($event)"
-                  @change="changeSetArrayItem(item.ref, 'values', 0, $event.target as HTMLInputElement)"
+                  @change="
+                    changeSetArrayItem(
+                      item.ref,
+                      'values',
+                      0,
+                      $event.target as HTMLInputElement,
+                      appStore.convertInverseForce
+                    )
+                  "
                   class="inline-edit"
                 />
               </div>
               <div class="inline-edit-group mr-2">
                 <span class="input-before">F<sub>z</sub></span>
                 <input
-                  :value="item.ref.values[2]"
+                  :value="appStore.convertForce(item.ref.values[2])"
                   @keydown="checkNumber($event)"
-                  @change="changeSetArrayItem(item.ref, 'values', 2, $event.target as HTMLInputElement)"
+                  @change="
+                    changeSetArrayItem(
+                      item.ref,
+                      'values',
+                      2,
+                      $event.target as HTMLInputElement,
+                      appStore.convertInverseForce
+                    )
+                  "
                   class="inline-edit"
                 />
               </div>
               <div class="inline-edit-group">
                 <span class="input-before">M<sub>y</sub></span>
                 <input
-                  :value="item.ref.values[4]"
+                  :value="appStore.convertForce(item.ref.values[4])"
                   @keydown="checkNumber($event)"
-                  @change="changeSetArrayItem(item.ref, 'values', 4, $event.target as HTMLInputElement)"
+                  @change="
+                    changeSetArrayItem(
+                      item.ref,
+                      'values',
+                      4,
+                      $event.target as HTMLInputElement,
+                      appStore.convertInverseForce
+                    )
+                  "
                   class="inline-edit"
                 />
               </div>
@@ -362,18 +430,34 @@
               <div class="inline-edit-group mr-2">
                 <span class="input-before">f<sub>x</sub></span>
                 <input
-                  :value="item.ref.values[0]"
+                  :value="appStore.convertForce(item.ref.values[0])"
                   @keydown="checkNumber($event)"
-                  @change="changeSetArrayItem(item.ref, 'values', 0, $event.target as HTMLInputElement)"
+                  @change="
+                    changeSetArrayItem(
+                      item.ref,
+                      'values',
+                      0,
+                      $event.target as HTMLInputElement,
+                      appStore.convertInverseForce
+                    )
+                  "
                   class="inline-edit"
                 />
               </div>
               <div class="inline-edit-group mr-2">
                 <span class="input-before">f<sub>z</sub></span>
                 <input
-                  :value="item.ref.values[1]"
+                  :value="appStore.convertForce(item.ref.values[1])"
                   @keydown="checkNumber($event)"
-                  @change="changeSetArrayItem(item.ref, 'values', 1, $event.target as HTMLInputElement)"
+                  @change="
+                    changeSetArrayItem(
+                      item.ref,
+                      'values',
+                      1,
+                      $event.target as HTMLInputElement,
+                      appStore.convertInverseForce
+                    )
+                  "
                   class="inline-edit"
                 />
               </div>
@@ -431,7 +515,12 @@
         </v-data-table>
       </v-window-item>
 
-      <v-window-item :key="'tab-mats'" style="height: 185px" :transition="false" :reverse-transition="false">
+      <v-window-item
+        :key="'tab-mats'"
+        :style="`height: ${props.height - 36}px`"
+        :transition="false"
+        :reverse-transition="false"
+      >
         <div class="border-b border-t">
           <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addMaterial')">
             <v-icon small>mdi-plus</v-icon> {{ $t("materials.addMaterial") }}
@@ -442,7 +531,7 @@
           :headers="headers.materials"
           :items="materials"
           density="compact"
-          height="155"
+          :height="props.height - 36 - 30"
           fixed-header
           :items-per-page="-1"
           disable-pagination
@@ -458,9 +547,14 @@
                   class="v-data-table__td v-data-table-column--align-start v-data-table__th v-data-table__th--sortable"
                 >
                   <div class="v-data-table-header__content">
-                    <span class="mr-2 cursor-pointer" @click="() => toggleSort(column)">{{
-                      capitalize($t(column.title))
-                    }}</span>
+                    <div class="mr-2 cursor-pointer" @click="() => toggleSort(column)">
+                      {{ capitalize($t(column.title)) }}
+                      <span
+                        class="font-weight-regular"
+                        v-if="column.units"
+                        v-html="`[${formatMeasureAsHTML(appStore.units[column.units])}]`"
+                      ></span>
+                    </div>
                     <v-icon
                       v-if="column.sortable"
                       :icon="getSortIcon(column)"
@@ -482,17 +576,17 @@
           </template>
           <template #item.e="{ item }">
             <input
-              :value="formatScientificNumber(item.e)"
+              :value="formatScientificNumber(appStore.convertPressure(item.e))"
               @keydown="checkNumber($event)"
-              @change="changeItem(item, 'e', $event.target as HTMLInputElement)"
+              @change="changeItem(item, 'e', $event.target as HTMLInputElement, appStore.convertInversePressure)"
               class="inline-edit"
             />
           </template>
           <template #item.g="{ item }">
             <input
-              :value="formatScientificNumber(item.g)"
+              :value="formatScientificNumber(appStore.convertPressure(item.g))"
               @keydown="checkNumber($event)"
-              @change="changeItem(item, 'g', $event.target as HTMLInputElement)"
+              @change="changeItem(item, 'g', $event.target as HTMLInputElement, appStore.convertInversePressure)"
               class="inline-edit"
             />
           </template>
@@ -528,7 +622,12 @@
         </v-data-table>
       </v-window-item>
 
-      <v-window-item :key="'tab-cs'" style="height: 185px" :transition="false" :reverse-transition="false">
+      <v-window-item
+        :key="'tab-cs'"
+        :style="`height: ${props.height - 36}px`"
+        :transition="false"
+        :reverse-transition="false"
+      >
         <div class="border-b border-t">
           <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addCrossSection')">
             <v-icon small>mdi-plus</v-icon> {{ $t("crossSections.addCrossSection") }}
@@ -539,7 +638,7 @@
           :headers="headers.crossSections"
           :items="crossSections"
           density="compact"
-          height="155"
+          :height="props.height - 36 - 30"
           fixed-header
           :items-per-page="-1"
           disable-pagination
@@ -555,9 +654,14 @@
                   class="v-data-table__td v-data-table-column--align-start v-data-table__th v-data-table__th--sortable"
                 >
                   <div class="v-data-table-header__content">
-                    <span class="mr-2 cursor-pointer" @click="() => toggleSort(column)">{{
-                      capitalize($t(column.title))
-                    }}</span>
+                    <div class="mr-2 cursor-pointer" @click="() => toggleSort(column)">
+                      {{ capitalize($t(column.title)) }}
+                      <span
+                        class="font-weight-regular"
+                        v-if="column.units"
+                        v-html="`[${formatMeasureAsHTML(appStore.units[column.units])}]`"
+                      ></span>
+                    </div>
                     <v-icon
                       v-if="column.sortable"
                       :icon="getSortIcon(column)"
@@ -579,17 +683,17 @@
           </template>
           <template #item.a="{ item }">
             <input
-              :value="formatScientificNumber(item.a)"
+              :value="formatScientificNumber(appStore.convertArea(item.a))"
               @keydown="checkNumber($event)"
-              @change="changeItem(item, 'a', $event.target as HTMLInputElement)"
+              @change="changeItem(item, 'a', $event.target as HTMLInputElement, appStore.convertInverseArea)"
               class="inline-edit"
             />
           </template>
           <template #item.iy="{ item }">
             <input
-              :value="formatScientificNumber(item.iy)"
+              :value="formatScientificNumber(appStore.convertAreaM2(item.iy))"
               @keydown="checkNumber($event)"
-              @change="changeItem(item, 'iy', $event.target as HTMLInputElement)"
+              @change="changeItem(item, 'iy', $event.target as HTMLInputElement, appStore.convertInverseAreaM2)"
               class="inline-edit"
             />
           </template>
@@ -616,7 +720,7 @@
       </v-window-item>
       <v-window-item
         :key="'tab-results'"
-        style="height: 185px"
+        :style="`height: ${props.height - 36}px`"
         :transition="false"
         :reverse-transition="false"
         @touchstart.prevent.stop
@@ -634,7 +738,7 @@
           :headers="headers.results"
           :items="nodes"
           density="compact"
-          height="155"
+          :height="props.height - 36 - 30"
           fixed-header
           :items-per-page="-1"
           disable-pagination
@@ -709,18 +813,25 @@ import {
   NodalLoad,
 } from "ts-fem";
 
-import { ref, onMounted, computed, watch, nextTick, reactive } from "vue";
+import { ref, onMounted, computed, watch, nextTick, reactive, onUnmounted } from "vue";
 import { useProjectStore } from "../store/project";
 import { useAppStore } from "../store/app";
 import { MouseMode } from "../mouse";
 import { capitalize } from "../utils";
 import { DofID, Beam2D } from "ts-fem";
-import { formatExpValueAsHTML } from "../SVGUtils";
+import { formatExpValueAsHTML, formatMeasureAsHTML } from "../SVGUtils";
 
 type EntityWithLabel = { label: string & { [key: string]: unknown } };
 
 const appStore = useAppStore();
 const projStore = useProjectStore();
+
+const props = defineProps({
+  height: {
+    type: Number,
+    default: 231,
+  },
+});
 
 onMounted(() => {
   window.addEventListener("keydown", (e) => {
@@ -776,7 +887,13 @@ const formatScientificNumber = (n: number) => {
   return n;
 };
 
-const changeSetArrayItem = (item: unknown, set: string, value: number, el?: HTMLInputElement) => {
+const changeSetArrayItem = (
+  item: unknown,
+  set: string,
+  value: number,
+  el?: HTMLInputElement,
+  formatter?: (v: number) => number
+) => {
   setUnsolved();
 
   if (el.value === "") el.value = "0";
@@ -784,12 +901,13 @@ const changeSetArrayItem = (item: unknown, set: string, value: number, el?: HTML
   const val = parseFloat(el.value.replace(/\s/g, "").replace(",", "."));
   if (isNaN(val)) return (el.value = item[set][value]);
 
-  item[set][value] = val;
+  if (formatter) item[set][value] = formatter(val);
+  else item[set][value] = val;
 
   solve();
 };
 
-const changeItem = (item: object, value: string, el?: HTMLInputElement) => {
+const changeItem = (item: object, value: string, el?: HTMLInputElement, formatter?: (v: number) => number) => {
   setUnsolved();
 
   if (el.value === "") el.value = "0";
@@ -797,7 +915,8 @@ const changeItem = (item: object, value: string, el?: HTMLInputElement) => {
   const val = parseFloat(el.value.replace(/\s/g, "").replace(",", "."));
   if (isNaN(val)) return (el.value = item[value]);
 
-  item[value] = val;
+  if (formatter) item[value] = formatter(val);
+  else item[value] = val;
 
   solve();
 };
@@ -898,6 +1017,7 @@ const deleteElement = (id: number) => {
     }
   }
 
+  setUnsolved();
   useProjectStore().solver.domain.elements.delete(id);
   useProjectStore().solver.domain.elements = new Map(useProjectStore().solver.domain.elements);
 
@@ -912,6 +1032,7 @@ const deleteNode = (id: number) => {
     }
   }
 
+  setUnsolved();
   useProjectStore().solver.domain.nodes.delete(id);
   //useProjectStore().solver.domain.nodes = new Map(useProjectStore().solver.domain.nodes);
 
@@ -919,18 +1040,22 @@ const deleteNode = (id: number) => {
 };
 
 const deleteMaterial = (id: number) => {
+  setUnsolved();
   useProjectStore().solver.domain.materials.delete(id);
 };
 
 const deleteCrossSection = (id: number) => {
+  setUnsolved();
   useProjectStore().solver.domain.crossSections.delete(id);
 };
 
 const deleteNodalLoad = (load: NodalLoad, id: number) => {
+  setUnsolved();
   useProjectStore().solver.loadCases[0].nodalLoadList.splice(id, 1);
 };
 
 const deleteElementLoad = (load: BeamElementUniformEdgeLoad, id: number) => {
+  setUnsolved();
   useProjectStore().solver.loadCases[0].elementLoadList.splice(id, 1);
 };
 
@@ -1032,23 +1157,66 @@ const crossSections = computed(() => {
   return display;
 });
 
+const formatNodalLoadsAtNode = (item: Node) => {
+  const nls = useProjectStore()
+    .solver.loadCases[0].nodalLoadList.filter((nl) => nl.target === item.label)
+    .map((nl) => {
+      return { components: nl.values };
+    });
+
+  return nls.map((nl) => {
+    let tmp = [];
+    if (DofID.Dx in nl.components && Math.abs(nl.components[DofID.Dx]) > 1e-12)
+      tmp.push("F<sub>x</sub> = " + appStore.convertForce(nl.components[DofID.Dx]));
+    if (DofID.Dz in nl.components && Math.abs(nl.components[DofID.Dz]) > 1e-12)
+      tmp.push("F<sub>z</sub> = " + appStore.convertForce(nl.components[DofID.Dz]));
+    if (DofID.Ry in nl.components && Math.abs(nl.components[DofID.Ry]) > 1e-12)
+      tmp.push("M<sub>y</sub> = " + appStore.convertForce(nl.components[DofID.Ry]));
+    return tmp.join(", ");
+  });
+};
+
+const formatElementLoadsAtElement = (item: Beam2D) => {
+  const nls = useProjectStore()
+    .solver.loadCases[0].elementLoadList.filter((nl) => nl.target === item.label)
+    .map((nl) => {
+      return { values: nl.values };
+    });
+
+  return nls.map((nl) => {
+    let tmp = [];
+    if (Math.abs(nl.values[0]) > 1e-12) tmp.push("f<sub>x</sub> = " + appStore.convertForce(nl.values[0]));
+    if (Math.abs(nl.values[1]) > 1e-12) tmp.push("f<sub>z</sub> = " + appStore.convertForce(nl.values[1]));
+    return tmp.join(", ");
+  });
+};
+
 const tabs = reactive([
   {
     id: "nodes",
     title: "tabs.nodes",
     icon: "mdi-square-medium-outline",
+    count: () => projStore.solver.domain.nodes.size,
   },
   {
     id: "elements",
     title: "tabs.elements",
     icon: "mdi-vector-line",
+    count: () => projStore.solver.domain.elements.size,
   },
-  { id: "loads", title: "tabs.loads", icon: "mdi-weight" },
-  { id: "mats", title: "tabs.materials", icon: "mdi-texture-box" },
+  {
+    id: "loads",
+    title: "tabs.loads",
+    icon: "mdi-weight",
+    count: () =>
+      projStore.solver.loadCases[0].nodalLoadList.length + projStore.solver.loadCases[0].elementLoadList.length,
+  },
+  { id: "mats", title: "tabs.materials", icon: "mdi-texture-box", count: () => projStore.solver.domain.materials.size },
   {
     id: "cs",
     title: "tabs.crossSections",
     icon: "mdi-pentagon-outline",
+    count: () => projStore.solver.domain.crossSections.size,
   },
   {
     id: "results",
@@ -1057,7 +1225,7 @@ const tabs = reactive([
   },
 ]);
 
-const headers = {
+const headers = reactive({
   nodes: [
     {
       title: "common.node",
@@ -1072,6 +1240,12 @@ const headers = {
     {
       title: "dofs.bcs",
       key: "bcs",
+      width: 260,
+      sortable: false,
+    },
+    {
+      title: "common.loads",
+      key: "loads",
       width: 260,
       sortable: false,
     },
@@ -1119,6 +1293,12 @@ const headers = {
       width: 180,
     },*/
     {
+      title: "common.loads",
+      key: "loads",
+      width: 260,
+      sortable: false,
+    },
+    {
       title: "common.actions",
       key: "actions",
       sortable: false,
@@ -1137,13 +1317,9 @@ const headers = {
     },
     {
       title: "common.components",
+      units: "Force",
       key: "load.values",
       width: 320,
-    },
-    {
-      title: "common.loadCase",
-      key: "loadCase.label",
-      width: 160,
     },
     {
       title: "common.actions",
@@ -1159,11 +1335,13 @@ const headers = {
     },
     {
       title: "material.e",
+      units: "Pressure",
       key: "e",
       width: 160,
     },
     {
       title: "material.g",
+      units: "Pressure",
       key: "g",
       width: 160,
     },
@@ -1193,12 +1371,14 @@ const headers = {
     },
     {
       title: "crossSection.area",
+      units: "Area",
       key: "a",
       width: 160,
     },
 
     {
       title: "crossSection.iy",
+      units: "AreaM2",
       key: "iy",
       width: 160,
     },
@@ -1227,7 +1407,8 @@ const headers = {
     {
       title: "results.results",
       key: "coords",
+      sortable: false,
     },
   ],
-};
+});
 </script>

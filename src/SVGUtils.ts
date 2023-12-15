@@ -1,5 +1,6 @@
 import { Node, DofID, Beam2D, NodalLoad, BeamElementUniformEdgeLoad } from "ts-fem";
 import { useProjectStore } from "./store/project";
+import { useAppStore } from "./store/app";
 
 export function supportMarker(node: Node) {
   const sdofs = Array.from(node.bcs);
@@ -173,7 +174,13 @@ export function formatMomentsLabels(el: Beam2D, scale: number) {
     const xc = n1.coords[0] + (cos * geo.l * s) / nseg;
     const zc = n1.coords[2] + (sin * geo.l * s) / nseg;
 
-    result.push([xc + forces.M[s] * nx * scaleBy, zc + forces.M[s] * ny * scaleBy, forces.M[s]]);
+    if (Math.abs(forces.M[s]) < 1e-6) continue;
+
+    result.push([
+      xc + forces.M[s] * nx * scaleBy,
+      zc + forces.M[s] * ny * scaleBy,
+      useAppStore().convertForce(forces.M[s]),
+    ]);
   }
 
   return result;
@@ -195,7 +202,11 @@ export function formatNormalForceLabels(el: Beam2D, scale: number) {
     const xc = n1.coords[0] + (cos * geo.l * s) / nseg;
     const zc = n1.coords[2] + (sin * geo.l * s) / nseg;
 
-    result.push([xc - forces.N[s] * nx * scaleBy, zc - forces.N[s] * ny * scaleBy, forces.N[s]]);
+    result.push([
+      xc - forces.N[s] * nx * scaleBy,
+      zc - forces.N[s] * ny * scaleBy,
+      useAppStore().convertForce(forces.N[s]),
+    ]);
   }
 
   return result;
@@ -217,7 +228,11 @@ export function formatShearForceLabels(el: Beam2D, scale: number) {
     const xc = n1.coords[0] + (cos * geo.l * s) / nseg;
     const zc = n1.coords[2] + (sin * geo.l * s) / nseg;
 
-    result.push([xc - forces.V[s] * nx * scaleBy, zc - forces.V[s] * ny * scaleBy, forces.V[s]]);
+    result.push([
+      xc - forces.V[s] * nx * scaleBy,
+      zc - forces.V[s] * ny * scaleBy,
+      useAppStore().convertForce(forces.V[s]),
+    ]);
   }
 
   return result;
@@ -542,4 +557,16 @@ export function formatExpValueAsHTML(n: number, decimals: number) {
   str = str + "</sup>"; //.replace('10')
 
   return str;
+}
+
+export function formatMeasureAsHTML(s: string) {
+  // find string before fist number
+  const n = s.search(/\d/);
+
+  if (n === -1) return s;
+
+  const prefix = s.substring(0, n);
+  const suffix = s.substring(n);
+
+  return `${prefix}<sup>${suffix}</sup>`;
 }

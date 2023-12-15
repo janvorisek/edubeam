@@ -41,6 +41,7 @@ const { t } = useI18n();
 
 import StiffnessMatrix from "./StiffnessMatrix.vue";
 import { MouseMode } from "@/mouse";
+import { formatMeasureAsHTML } from "../SVGUtils";
 
 let mouseStartX = 0;
 let mouseStartY = 0;
@@ -86,7 +87,8 @@ const centerContent = () => {
   if (!panZoom.value) return;
 
   panZoom.value.centerContent();
-  grid.value!.refreshGrid(true);
+
+  if (grid.value) grid.value.refreshGrid(true);
 };
 
 const fitContent = () => {
@@ -96,12 +98,12 @@ const fitContent = () => {
 
   requestAnimationFrame(() => {
     panZoom.value.fitContent();
-    grid.value!.refreshGrid(true);
+    if (grid.value) grid.value.refreshGrid(true);
   });
 };
 
 const onUpdate = throttle((zooming: boolean) => {
-  grid.value!.refreshGrid(zooming);
+  if (grid.value) grid.value.refreshGrid(zooming);
 }, 100);
 
 const { escape, f, c } = useMagicKeys();
@@ -124,7 +126,7 @@ watch(escape, (v) => {
     projectStore.selection.type = null;
     startNode.value = null;
 
-    viewerStore.settingsOpen = false;
+    //viewerStore.settingsOpen = false;
   }
 });
 
@@ -354,6 +356,8 @@ const onMouseDown = (e: MouseEvent) => {
       appStore.mouseMode = MouseMode.MOVING;
     } else {
       appStore.mouseMode = MouseMode.SELECTING;
+      appStore.mouse.sx = e.offsetX;
+      appStore.mouse.sy = e.offsetY;
     }
   } else {
     appStore.mouseMode = MouseMode.NONE;
@@ -361,9 +365,83 @@ const onMouseDown = (e: MouseEvent) => {
   }
 };
 
-const onMouseUp = () => {
+const lineIntersectsrect = (
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  rx1: number,
+  ry1: number,
+  rx2: number,
+  ry2: number
+) => {
+  // completely outside
+  if (x1 < rx1 && x2 < rx1) return false;
+  if (y1 < ry1 && y2 < ry1) return false;
+  if (x1 > rx2 && x2 > rx2) return false;
+  if (y1 > ry2 && y2 > ry2) return false;
+
+  // completely inside
+  if (x1 > rx1 && x1 < rx2 && y1 > ry1 && y1 < ry2) return true;
+  if (x2 > rx1 && x2 < rx2 && y2 > ry1 && y2 < ry2) return true;
+
+  // line intersects rectangle
+  if (x1 > rx1 && x1 < rx2) return true;
+  if (x2 > rx1 && x2 < rx2) return true;
+  if (y1 > ry1 && y1 < ry2) return true;
+  if (y2 > ry1 && y2 < ry2) return true;
+
+  return false;
+};
+
+const onMouseUp = (e: MouseEvent) => {
   if (appStore.mouseMode === MouseMode.ADD_NODE) return;
   if (appStore.mouseMode === MouseMode.ADD_ELEMENT) return;
+
+  if (appStore.mouseMode === MouseMode.SELECTING) {
+    const selectedNodes = [];
+    const selectedElements = [];
+
+    const b = (e.target as HTMLElement).getBoundingClientRect();
+    const rx1 = Math.min(appStore.mouse.sx + b.left, appStore.mouse.x + b.left);
+    const rx2 = Math.max(appStore.mouse.sx + b.left, appStore.mouse.x + b.left);
+    const ry1 = Math.min(appStore.mouse.sy + b.top, appStore.mouse.y + b.top);
+    const ry2 = Math.max(appStore.mouse.sy + b.top, appStore.mouse.y + b.top);
+
+    // Loop over nodes and check if node in rectangle
+    for (const [label, n] of useProjectStore().solver.domain.nodes) {
+      const {
+        top, // x position on viewport (window)
+        left, // y position on viewport (window)
+      } = document.querySelector(`.node .drawable[data-label="${n.label}"]`).getBoundingClientRect();
+
+      console.log({ top, left, m: appStore.mouse });
+
+      if (left > rx1 && left < rx2 && top > ry1 && top < ry2) {
+        selectedNodes.push(label);
+      }
+    }
+
+    // Loop over elements and check if element in rectangle
+    for (const [label, el] of useProjectStore().solver.domain.elements) {
+      const n1 = useProjectStore().solver.domain.nodes.get(el.nodes[0])!;
+      const n2 = useProjectStore().solver.domain.nodes.get(el.nodes[1])!;
+
+      const n1el = document.querySelector(`.node .drawable[data-label="${n1.label}"]`).getBoundingClientRect();
+      const n2el = document.querySelector(`.node .drawable[data-label="${n2.label}"]`).getBoundingClientRect();
+
+      const n1x = n1el.left;
+      const n1y = n1el.top;
+      const n2x = n2el.left;
+      const n2y = n2el.top;
+
+      if (lineIntersectsrect(n1x, n1y, n2x, n2y, rx1, ry1, rx2, ry2)) {
+        selectedElements.push(label);
+      }
+    }
+
+    console.log({ selectedNodes, selectedElements });
+  }
 
   appStore.mouseMode = MouseMode.NONE;
 
@@ -387,10 +465,25 @@ defineExpose({ centerContent, fitContent });
 
 <template>
   <div class="d-flex flex-column fill-height">
-    <div class="text-sm-body-2" style="position: absolute; z-index: 100; bottom: 24px; right: 24px">
-      {{ projectStore.solver.neq }} free DOFs {{ projectStore.solver.pneq }} supported DOFs
+    <div class="text-body-2 d-flex line-height-1" style="position: absolute; z-index: 100; bottom: 24px; right: 24px">
+      <v-chip-group>
+        <v-chip class="justify-end mr-1" density="compact" @click="appStore.openSettings()">
+          <div class="d-flex ga-1">
+            <span v-html="formatMeasureAsHTML(appStore.units.Length)"></span>
+            <span v-html="formatMeasureAsHTML(appStore.units.Area)"></span>
+            <span v-html="formatMeasureAsHTML(appStore.units.Force)"></span>
+            <span v-html="formatMeasureAsHTML(appStore.units.Pressure)"></span>
+          </div>
+        </v-chip>
+      </v-chip-group>
+
+      <v-chip-group>
+        <v-chip density="compact">
+          {{ projectStore.solver.neq }} free DOFs {{ projectStore.solver.pneq }} supported DOFs
+        </v-chip>
+      </v-chip-group>
     </div>
-    <div class="text-black" style="position: absolute; z-index: 100; top: 24px; right: 24px">
+    <div class="text-black d-flex" style="position: absolute; z-index: 100; top: 24px; right: 24px">
       <v-btn
         icon="mdi:mdi-image-filter-center-focus"
         size="32"
@@ -427,6 +520,7 @@ defineExpose({ centerContent, fitContent });
     <svg v-if="viewerStore.showGrid" class="w-100 fill-height" style="position: absolute">
       <SvgGrid ref="grid" :svg="svg as SVGSVGElement" :viewport="viewport as SVGGElement" :zoom="scale" />
     </svg>
+
     <SvgPanZoom :on-update="onUpdate" ref="panZoom" style="overflow: hidden; z-index: 50; min-height: 0">
       <svg ref="svg" @mousemove="mouseMove" @mousedown="onMouseDown" @mouseup="onMouseUp">
         <SvgViewerDefs />
@@ -487,7 +581,7 @@ defineExpose({ centerContent, fitContent });
                     alignment-baseline="middle"
                     :transform="formatElementLoadLabel(eload, scale, 0)"
                   >
-                    {{ Math.abs(eload.values[0]).toFixed(2) }}
+                    {{ Math.abs(appStore.convertForce(eload.values[0])).toFixed(2) }}
                   </text>
                   <text
                     v-if="eload.values[1] !== 0"
@@ -497,7 +591,7 @@ defineExpose({ centerContent, fitContent });
                     alignment-baseline="middle"
                     :transform="formatElementLoadLabel(eload, scale, 1)"
                   >
-                    {{ Math.abs(eload.values[1]).toFixed(2) }}
+                    {{ Math.abs(appStore.convertForce(eload.values[1])).toFixed(2) }}
                   </text>
                 </g>
                 <!--<path
@@ -556,7 +650,7 @@ defineExpose({ centerContent, fitContent });
                   }
               ${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2] - 15 / scale})`"
                 >
-                  {{ Math.abs(nload.values[4]).toFixed(2) }}
+                  {{ Math.abs(appStore.convertForce(nload.values[4])).toFixed(2) }}
                 </text>
 
                 <text
@@ -578,9 +672,14 @@ defineExpose({ centerContent, fitContent });
                   scale
               })`"
                 >
-                  {{ Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2]).toFixed(2) }}
+                  {{
+                    appStore
+                      .convertForce(Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2]))
+                      .toFixed(2)
+                  }}
                   <template v-if="nload.values[0] !== 0 && nload.values[2] !== 0">
-                    ({{ nload.values[0].toFixed(2) }}, {{ nload.values[2].toFixed(2) }})
+                    ({{ appStore.convertForce(nload.values[0]).toFixed(2) }},
+                    {{ appStore.convertForce(nload.values[2]).toFixed(2) }}
                   </template>
                 </text>
               </g>
@@ -839,7 +938,7 @@ defineExpose({ centerContent, fitContent });
                 class="decoration"
               />
 
-              <polyline :points="formatNode(node.coords)" class="drawable" />
+              <polyline :data-label="node.label" :points="formatNode(node.coords)" class="drawable" />
 
               <polyline
                 v-if="
@@ -871,7 +970,7 @@ defineExpose({ centerContent, fitContent });
                 :transform="`translate(${node.coords[0]}
               ${node.coords[2] - (40 * Math.sign(getReaction(node, DofID.Dz))) / scale})`"
               >
-                {{ Math.abs(getReaction(node, DofID.Dz)).toFixed(2) }}
+                {{ appStore.convertForce(Math.abs(getReaction(node, DofID.Dz))).toFixed(2) }}
               </text>
 
               <polyline
@@ -904,7 +1003,7 @@ defineExpose({ centerContent, fitContent });
                 :transform="`translate(${node.coords[0] - (Math.sign(getReaction(node, DofID.Dx)) * 40) / scale}
               ${node.coords[2]})`"
               >
-                {{ Math.abs(getReaction(node, DofID.Dx)).toFixed(2) }}
+                {{ appStore.convertForce(Math.abs(getReaction(node, DofID.Dx))).toFixed(2) }}
               </text>
 
               <polyline
@@ -935,7 +1034,7 @@ defineExpose({ centerContent, fitContent });
                 :transform="`translate(${node.coords[0] + 15 / scale}
               ${node.coords[2] - 15 / scale})`"
               >
-                {{ Math.abs(getReaction(node, DofID.Ry)).toFixed(2) }}
+                {{ appStore.convertForce(Math.abs(getReaction(node, DofID.Ry))).toFixed(2) }}
               </text>
 
               <g
@@ -1006,6 +1105,17 @@ defineExpose({ centerContent, fitContent });
         </g>
       </svg>
     </SvgPanZoom>
+
+    <div
+      v-if="appStore.mouseMode === MouseMode.SELECTING"
+      class="selecting"
+      :style="`left: ${Math.min(appStore.mouse.x, appStore.mouse.sx)}px; top: ${Math.min(
+        appStore.mouse.y,
+        appStore.mouse.sy
+      )}px; width: ${Math.abs(appStore.mouse.x - appStore.mouse.sx)}px; height: ${Math.abs(
+        appStore.mouse.y - appStore.mouse.sy
+      )}px;`"
+    ></div>
 
     <div
       v-if="projectStore.selection.type !== null"
@@ -1131,6 +1241,10 @@ defineExpose({ centerContent, fitContent });
 </template>
 
 <style lang="scss">
+.line-height-1 {
+  line-height: 1 !important;
+}
+
 .svgViewer {
   position: absolute;
   width: 100%;
@@ -1156,9 +1270,9 @@ svg text {
 }
 
 .selecting {
-  stroke-width: 1px;
-  stroke: #2f00ff;
-  fill: rgba(0, 0, 255, 0.2);
+  position: absolute;
+  border: 1px solid #2f00ff;
+  background: rgba(0, 0, 255, 0.2);
 }
 
 .element-load.load-1d {

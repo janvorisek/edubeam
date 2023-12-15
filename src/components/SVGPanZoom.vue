@@ -2,6 +2,8 @@
 import { nextTick, onMounted, ref } from "vue";
 import { useAppStore } from "../store/app";
 
+const appStore = useAppStore();
+
 const props = defineProps<{
   onUpdate: (zooming: boolean) => void;
 }>();
@@ -71,7 +73,7 @@ const onTouchStart = (event: TouchEvent): void => {
   }
 
   if (event.touches.length === 2) {
-    useAppStore().zooming = true;
+    appStore.zooming = true;
 
     touchPointer.value.ds = Math.hypot(
       event.touches[0].pageX - event.touches[1].pageX,
@@ -89,7 +91,7 @@ const onTouchStart = (event: TouchEvent): void => {
 };
 
 const onTouchEnd = (): void => {
-  useAppStore().zooming = false;
+  appStore.zooming = false;
   touchPointer.value.move = false;
   touchPointer.value.pinch = false;
 };
@@ -118,7 +120,7 @@ const onTouchMove = (event: TouchEvent): void => {
 };
 
 const onMouseMove = (event: MouseEvent): void => {
-  if (event.buttons !== 2) return;
+  if (event.buttons !== appStore.panButton) return;
 
   viewBox.x -= (event.movementX * 1) / scale.value;
   viewBox.y -= (event.movementY * 1) / scale.value;
@@ -255,10 +257,10 @@ onMounted(() => {
   const isFirefox = navigator.userAgent.search("Firefox") > -1;
   let wheelEventEndTimeout = null;
   window.addEventListener("wheel", () => {
-    if (isFirefox) useAppStore().zooming = true;
+    if (isFirefox) appStore.zooming = true;
     clearTimeout(wheelEventEndTimeout);
     wheelEventEndTimeout = setTimeout(() => {
-      useAppStore().zooming = false;
+      appStore.zooming = false;
     }, 100);
   });
 });

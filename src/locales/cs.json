@@ -138,6 +138,12 @@
     "addCrossSection": {
       "addNewCrossSection": "Přidat nový průřez",
       "addCrossSection": "Přidat průřez"
+    },
+    "editNodalLoad": {
+      "editNodalLoad": "Upravit uzlové zatížení"
+    },
+    "editElementLoad": {
+      "editElementLoad": "Upravit prvkové zatížení"
     }
   }
 }

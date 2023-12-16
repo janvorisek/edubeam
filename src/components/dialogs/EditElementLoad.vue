@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="open" max-width="420">
     <v-card>
-      <v-card-title class="text-h5"> {{ $t("dialogs.editNodalLoad.editNodalLoad") }} </v-card-title>
+      <v-card-title class="text-h5"> {{ $t("dialogs.editElementLoad.editElementLoad") }} </v-card-title>
 
       <v-card-text>
         <v-form>
@@ -56,7 +56,9 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green darken-1" @click="editNodalLoad()"> {{ $t("dialogs.editNodalLoad.editNodalLoad") }} </v-btn>
+        <v-btn color="green darken-1" @click="editNodalLoad()">
+          {{ $t("dialogs.editElementLoad.editElementLoad") }}
+        </v-btn>
         <v-btn color="red darken-1" @click="closeModal()">{{ $t("dialogs.common.cancel") }}</v-btn>
       </v-card-actions>
     </v-card>

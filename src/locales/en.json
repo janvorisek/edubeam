@@ -138,6 +138,12 @@
     "addCrossSection": {
       "addNewCrossSection": "Add new cross section",
       "addCrossSection": "Add cross section"
+    },
+    "editNodalLoad": {
+      "editNodalLoad": "Edit nodal load"
+    },
+    "editElementLoad": {
+      "editElementLoad": "Edit element load"
     }
   }
 }

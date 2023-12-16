@@ -1,3 +1,12 @@
+<script lang="ts">
+import { container } from "jenesius-vue-modal";
+
+export default {
+  components: { WidgetContainerModal: container },
+  name: "App"
+}
+</script>
+
 <script setup lang="ts">
 import { onMounted } from "vue";
 import { Beam2D, DofID, Domain } from "ts-fem";
@@ -133,6 +142,8 @@ const app_released = APP_RELEASED;
     </v-main>
 
     <Dialogs />
+
+    <widget-container-modal />
 
     <div
       class="d-none d-sm-flex align-center justify-space-between px-3 text-caption bg-secondary border-t"

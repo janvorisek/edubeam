@@ -19,10 +19,13 @@ const mouseMove = (e: MouseEvent) => {
   if (drag.value) {
     const val = appStore.bottomBarHeight - e.movementY;
 
-    if (val < 193 || val > 500) return;
+    document.getSelection().removeAllRanges();
+
+    if (val < 193) return appStore.bottomBarHeight = 193;
+    if (val > window.innerHeight / 2) return appStore.bottomBarHeight = window.innerHeight/2;
 
     appStore.bottomBarHeight = val;
-    document.getSelection().removeAllRanges();
+    
   }
 };
 

@@ -1,7 +1,7 @@
 <template>
   <div class="container px-3 py-3 fill-height overflow-auto">
     <v-row>
-      <v-col cols="6" md="3" lg="2">
+      <v-col cols="6" md="3" lg="3">
         <h3 class="mb-2">{{ $t("settings.language_and_locale") }}</h3>
 
         <h4 class="mb-1">{{ $t("settings.language") }}</h4>
@@ -139,7 +139,7 @@
         </v-expansion-panels>
       </v-col>
 
-      <v-col cols="6" md="3" lg="2">
+      <v-col cols="6" md="3" lg="3">
         <h3 class="mb-2">{{ $t("settings.grid") }}</h3>
 
         <v-checkbox
@@ -183,7 +183,7 @@
 
         <v-slider v-model="projectStore.resultsScalePx" step="1" max="200"></v-slider>
       </v-col>
-      <v-col cols="6" md="3" lg="2">
+      <v-col cols="6" md="3" lg="3">
         <h3 class="mb-2">{{ $t("settings.mouse.mouse") }}</h3>
 
         <v-select

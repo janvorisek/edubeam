@@ -148,7 +148,18 @@
               "
             >
               <v-chip-group>
-                <v-chip v-for="nl in formatNodalLoadsAtNode(item)" density="compact"> <span v-html="nl"></span></v-chip>
+                <v-chip
+                  v-for="(nl, index) in formatNodalLoadsAtNode(item)"
+                  :key="index"
+                  density="compact"
+                  @click="
+                    openModal(EditNodalLoad, {
+                      index: nl[0],
+                    })
+                  "
+                >
+                  <span v-html="nl[1]"></span
+                ></v-chip>
               </v-chip-group>
             </div>
             <div v-else>-</div>
@@ -293,8 +304,13 @@
               "
             >
               <v-chip-group>
-                <v-chip v-for="el in formatElementLoadsAtElement(item)" density="compact">
-                  <span v-html="el"></span
+                <v-chip
+                  v-for="(el, index) in formatElementLoadsAtElement(item)"
+                  :key="index"
+                  density="compact"
+                  @click="openModal(EditElementLoad, { index: el[0] })"
+                >
+                  <span v-html="el[1]"></span
                 ></v-chip>
               </v-chip-group>
             </div>
@@ -820,6 +836,9 @@ import { MouseMode } from "../mouse";
 import { capitalize, checkNumber } from "../utils";
 import { DofID, Beam2D } from "ts-fem";
 import { formatExpValueAsHTML, formatMeasureAsHTML } from "../SVGUtils";
+import { openModal } from "jenesius-vue-modal";
+import EditNodalLoad from "./dialogs/EditNodalLoad.vue";
+import EditElementLoad from "./dialogs/EditElementLoad.vue";
 
 type EntityWithLabel = { label: string & { [key: string]: unknown } };
 
@@ -1025,11 +1044,13 @@ const deleteCrossSection = (id: number) => {
 const deleteNodalLoad = (load: NodalLoad, id: number) => {
   setUnsolved();
   useProjectStore().solver.loadCases[0].nodalLoadList.splice(id, 1);
+  solve();
 };
 
 const deleteElementLoad = (load: BeamElementUniformEdgeLoad, id: number) => {
   setUnsolved();
   useProjectStore().solver.loadCases[0].elementLoadList.splice(id, 1);
+  solve();
 };
 
 const solve = () => {
@@ -1130,37 +1151,37 @@ const crossSections = computed(() => {
   return display;
 });
 
-const formatNodalLoadsAtNode = (item: Node) => {
+const formatNodalLoadsAtNode = (item: Node): [number, string][] => {
   const nls = useProjectStore()
-    .solver.loadCases[0].nodalLoadList.filter((nl) => nl.target === item.label)
-    .map((nl) => {
-      return { components: nl.values };
-    });
+    .solver.loadCases[0].nodalLoadList.map((nl, index) => {
+      return { index, target: nl.target, components: nl.values };
+    })
+    .filter((nl) => nl.target === item.label);
 
   return nls.map((nl) => {
-    let tmp = [];
+    const tmp = [];
     if (DofID.Dx in nl.components && Math.abs(nl.components[DofID.Dx]) > 1e-12)
       tmp.push("F<sub>x</sub> = " + appStore.convertForce(nl.components[DofID.Dx]));
     if (DofID.Dz in nl.components && Math.abs(nl.components[DofID.Dz]) > 1e-12)
       tmp.push("F<sub>z</sub> = " + appStore.convertForce(nl.components[DofID.Dz]));
     if (DofID.Ry in nl.components && Math.abs(nl.components[DofID.Ry]) > 1e-12)
       tmp.push("M<sub>y</sub> = " + appStore.convertForce(nl.components[DofID.Ry]));
-    return tmp.join(", ");
+    return [nl.index, tmp.join(", ")];
   });
 };
 
-const formatElementLoadsAtElement = (item: Beam2D) => {
+const formatElementLoadsAtElement = (item: Beam2D): [number, string][] => {
   const nls = useProjectStore()
-    .solver.loadCases[0].elementLoadList.filter((nl) => nl.target === item.label)
-    .map((nl) => {
-      return { values: nl.values };
-    });
+    .solver.loadCases[0].elementLoadList.map((nl, index) => {
+      return { index, target: nl.target, values: nl.values };
+    })
+    .filter((nl) => nl.target === item.label);
 
   return nls.map((nl) => {
-    let tmp = [];
+    const tmp = [];
     if (Math.abs(nl.values[0]) > 1e-12) tmp.push("f<sub>x</sub> = " + appStore.convertForce(nl.values[0]));
     if (Math.abs(nl.values[1]) > 1e-12) tmp.push("f<sub>z</sub> = " + appStore.convertForce(nl.values[1]));
-    return tmp.join(", ");
+    return [nl.index, tmp.join(", ")];
   });
 };
 

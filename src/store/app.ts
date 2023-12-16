@@ -3,11 +3,12 @@ import { defineStore } from "pinia";
 import { reactive, ref, markRaw, type Raw, type Ref, watch } from "vue";
 
 import SVGViewer from "../components/SVGViewer.vue";
-import Results from "../components//Results.vue";
-import Settings from "../components//Settings.vue";
+import Results from "../components/Results.vue";
+import Settings from "../components/Settings.vue";
 import { MouseMode } from "@/mouse";
 import { setLocale } from "@/plugins/i18n";
-
+import { openModal } from "jenesius-vue-modal";
+import SettingsModal from "../components/dialogs/Settings.vue";
 import Qty from "js-quantities/esm";
 
 export const useAppStore = defineStore(
@@ -95,7 +96,8 @@ export const useAppStore = defineStore(
     ]);
 
     const openSettings = () => {
-      const si = tabs.value.findIndex((t) => t.title === "tabView.settings");
+      openModal(SettingsModal);
+      /*const si = tabs.value.findIndex((t) => t.title === "tabView.settings");
 
       // If settings already open, switch to it
       if (si !== -1) {
@@ -104,7 +106,7 @@ export const useAppStore = defineStore(
       }
 
       tabs.value.push({ title: "tabView.settings", component: markRaw(Settings), props: {}, closable: true });
-      tab.value = tabs.value.length - 1;
+      tab.value = tabs.value.length - 1;*/
     };
 
     const panButton = ref(4);

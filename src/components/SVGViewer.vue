@@ -43,6 +43,10 @@ import StiffnessMatrix from "./StiffnessMatrix.vue";
 import { MouseMode } from "@/mouse";
 import { formatMeasureAsHTML } from "../SVGUtils";
 
+import { openModal } from "jenesius-vue-modal";
+import AddNodalLoadDialog from "./dialogs/AddNodalLoad.vue";
+import AddElementLoadDialog from "./dialogs/AddElementLoad.vue";
+
 let mouseStartX = 0;
 let mouseStartY = 0;
 const mouseXReal = ref(0);
@@ -123,7 +127,7 @@ watch(escape, (v) => {
   if (v) {
     if ("activeElement" in document) (document.activeElement as HTMLElement).blur();
     appStore.mouseMode = MouseMode.NONE;
-    projectStore.selection.type = null;
+    projectStore.clearSelection();
     startNode.value = null;
 
     //viewerStore.settingsOpen = false;
@@ -1130,6 +1134,28 @@ defineExpose({ centerContent, fitContent });
       </div>
       <div>
         <v-list density="compact" class="py-0">
+          <v-list-item
+            v-if="projectStore.selection.type === 'node'"
+            link
+            class="text-body-2"
+            @click="openModal(AddNodalLoadDialog, { label: projectStore.selection.label })"
+          >
+            <template #prepend>
+              <div class="pr-2"><v-icon icon="mdi-weight" /></div>
+            </template>
+            Add load
+          </v-list-item>
+          <v-list-item
+            v-if="projectStore.selection.type === 'element'"
+            link
+            class="text-body-2"
+            @click="openModal(AddElementLoadDialog, { label: projectStore.selection.label })"
+          >
+            <template #prepend>
+              <div class="pr-2"><v-icon icon="mdi-weight" /></div>
+            </template>
+            Add load
+          </v-list-item>
           <v-list-item link class="text-body-2" v-if="projectStore.selection.type === 'element'">
             Show details
             <template #prepend>

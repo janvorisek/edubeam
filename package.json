@@ -13,7 +13,7 @@
     "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
-    "@intlify/unplugin-vue-i18n": "^1.6.0",
+    "@intlify/unplugin-vue-i18n": "^2.0.0",
     "@vueuse/core": "^10.7.0",
     "jenesius-vue-modal": "^1.10.3",
     "js-quantities": "^1.8.0",

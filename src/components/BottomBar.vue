@@ -3,7 +3,7 @@
     <div class="d-flex">
       <div class="flex-grow-1">
         <v-tabs v-model="appStore.bottomBarTab" bg-color="primary" :show-arrows="false" height="36">
-          <v-tab v-for="(tab, index) in tabs" :key="index">
+          <v-tab v-for="(tab, index) in tabs" :key="index" @click="appStore.bottomBarOpen = true">
             <template #default>
               <v-icon small class="mr-3">{{ tab.icon }}</v-icon> {{ $t(tab.title) }}</template
             >

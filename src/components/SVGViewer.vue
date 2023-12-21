@@ -469,7 +469,7 @@ defineExpose({ centerContent, fitContent });
 
 <template>
   <div class="d-flex flex-column fill-height">
-    <div class="text-body-2 d-flex line-height-1" style="position: absolute; z-index: 100; bottom: 24px; right: 24px">
+    <div class="text-body-2 d-flex line-height-1" style="position: absolute; z-index: 10; bottom: 24px; right: 24px">
       <v-chip-group>
         <v-chip class="justify-end mr-1" density="compact" @click="appStore.openSettings()">
           <div class="d-flex ga-1">
@@ -1186,81 +1186,89 @@ defineExpose({ centerContent, fitContent });
       </div>
     </div>
 
-    <div
-      v-if="viewerStore.settingsOpen"
-      class="d-none d-sm-flex flex-column align-end"
-      style="position: absolute; right: 24px; top: 64px; z-index: 60"
-    >
-      <v-toolbar color="grey-lighten-5" rounded="lg" height="32" class="elevation-1 mb-2 w-auto">
-        <v-checkbox
-          :label="$t('sideSettings.showDeformedShape')"
-          v-model="useViewerStore().showDeformedShape"
-          hide-details
-          class="inline-checkbox mr-2"
-        />
-        <v-checkbox
-          label=""
-          v-model="useViewerStore().showNormalForce"
-          hide-details
-          class="inline-checkbox mr-2"
-          :disabled="useProjectStore().model === 'EigenValueDynamicSolver'"
+    <div v-if="viewerStore.settingsOpen" class="w-auto" style="position: absolute; right: 24px; top: 64px; z-index: 60">
+      <div class="overflow-y-auto" style="max-height: 65vh; z-index: 30">
+        <div
+          color="grey-lighten-5"
+          rounded="lg"
+          height="32"
+          class="d-sm-flex bg-grey-lighten-5 elevation-1 mb-2 rounded"
         >
-          <template #label>N (x)</template>
-        </v-checkbox>
-        <v-checkbox
-          label="Vz (x)"
-          v-model="useViewerStore().showShearForce"
-          hide-details
-          class="inline-checkbox mr-2"
-          :disabled="useProjectStore().model === 'EigenValueDynamicSolver'"
+          <v-checkbox
+            :label="$t('sideSettings.showDeformedShape')"
+            v-model="useViewerStore().showDeformedShape"
+            hide-details
+            class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
+          />
+          <v-checkbox
+            label=""
+            v-model="useViewerStore().showNormalForce"
+            hide-details
+            class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
+            :disabled="useProjectStore().model === 'EigenValueDynamicSolver'"
+          >
+            <template #label>N (x)</template>
+          </v-checkbox>
+          <v-checkbox
+            label="Vz (x)"
+            v-model="useViewerStore().showShearForce"
+            hide-details
+            class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
+            :disabled="useProjectStore().model === 'EigenValueDynamicSolver'"
+          >
+            <template #label>V<sub>z</sub>&nbsp;(x)</template>
+          </v-checkbox>
+          <v-checkbox
+            label="My (x)"
+            v-model="useViewerStore().showBendingMoment"
+            hide-details
+            class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
+            :disabled="useProjectStore().model === 'EigenValueDynamicSolver'"
+          >
+            <template #label>M<sub>y</sub>&nbsp;(x)</template>
+          </v-checkbox>
+        </div>
+
+        <div
+          color="grey-lighten-5"
+          rounded="lg"
+          height="32"
+          class="d-sm-flex bg-grey-lighten-5 elevation-1 mb-2 rounded"
         >
-          <template #label>V<sub>z</sub>&nbsp;(x)</template>
-        </v-checkbox>
-        <v-checkbox
-          label="My (x)"
-          v-model="useViewerStore().showBendingMoment"
-          hide-details
-          class="inline-checkbox mr-2"
-          :disabled="useProjectStore().model === 'EigenValueDynamicSolver'"
-        >
-          <template #label>M<sub>y</sub>&nbsp;(x)</template>
-        </v-checkbox>
-      </v-toolbar>
+          <v-checkbox
+            :label="$t('sideSettings.supports')"
+            v-model="useViewerStore().showSupports"
+            hide-details
+            class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
+          />
+          <v-checkbox
+            :label="$t('sideSettings.loads')"
+            dense
+            v-model.number="useViewerStore().showLoads"
+            hide-details
+            class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
+            :disabled="useProjectStore().model === 'EigenValueDynamicSolver'"
+          />
 
-      <v-toolbar color="grey-lighten-5" rounded="lg" height="32" class="elevation-1 mb-2">
-        <v-checkbox
-          :label="$t('sideSettings.supports')"
-          v-model="useViewerStore().showSupports"
-          hide-details
-          class="inline-checkbox mr-2"
-        />
-        <v-checkbox
-          :label="$t('sideSettings.loads')"
-          dense
-          v-model.number="useViewerStore().showLoads"
-          hide-details
-          class="inline-checkbox mr-2"
-          :disabled="useProjectStore().model === 'EigenValueDynamicSolver'"
-        />
+          <v-checkbox
+            :label="$t('sideSettings.nodeLabels')"
+            v-model="useViewerStore().showNodeLabels"
+            hide-details
+            class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
+          />
+          <v-checkbox
+            :label="$t('sideSettings.elementLabels')"
+            v-model="useViewerStore().showElementLabels"
+            hide-details
+            class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
+          />
+        </div>
 
-        <v-checkbox
-          :label="$t('sideSettings.nodeLabels')"
-          v-model="useViewerStore().showNodeLabels"
-          hide-details
-          class="inline-checkbox mr-2"
-        />
-        <v-checkbox
-          :label="$t('sideSettings.elementLabels')"
-          v-model="useViewerStore().showElementLabels"
-          hide-details
-          class="inline-checkbox mr-2"
-        />
-      </v-toolbar>
-
-      <div class="text-right text-sm-body-2">
-        <button class="text-decoration-underline" @click="appStore.openSettings()">
-          {{ $t("sideSettings.more_settings") }}
-        </button>
+        <div class="text-right text-sm-body-2">
+          <button class="text-decoration-underline" @click="appStore.openSettings()">
+            {{ $t("sideSettings.more_settings") }}
+          </button>
+        </div>
       </div>
     </div>
   </div>

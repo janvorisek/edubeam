@@ -2,18 +2,22 @@
   <div class="d-flex flex-column fill-height">
     <HelloWorld class="fill-height" style="min-height: 0" />
     <div class="resizer" data-direction="vertical"></div>
-    <BottomBar :height="appStore.bottomBarHeight" class="d-none d-sm-block" />
+    <BottomBar :height="computedBottomBarHeight" class="d-block" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import HelloWorld from "@/components/HelloWorld.vue";
 import BottomBar from "@/components/BottomBar.vue";
-import { onMounted, onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, ref, computed } from "vue";
 import { useAppStore } from "@/store/app";
 
 const appStore = useAppStore();
 const drag = ref(false);
+
+const computedBottomBarHeight = computed(() => {
+  return window.innerWidth > 768 ? appStore.bottomBarHeight : appStore.bottomBarOpen ? appStore.bottomBarHeight : 36;
+});
 
 const mouseMove = (e: MouseEvent) => {
   if (drag.value) {
@@ -21,11 +25,10 @@ const mouseMove = (e: MouseEvent) => {
 
     document.getSelection().removeAllRanges();
 
-    if (val < 193) return appStore.bottomBarHeight = 193;
-    if (val > window.innerHeight / 2) return appStore.bottomBarHeight = window.innerHeight/2;
+    if (val < 193) return (appStore.bottomBarHeight = 193);
+    if (val > window.innerHeight / 2) return (appStore.bottomBarHeight = window.innerHeight / 2);
 
     appStore.bottomBarHeight = val;
-    
   }
 };
 

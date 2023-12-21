@@ -141,7 +141,7 @@ const centerContent = (): void => {
 const fitContent = (n = 0): void => {
   if (n > 5) return;
 
-  console.log("fitContent", n);
+  const FIT_CONTENT_PADDING = window.innerWidth > 768 ? 128 : 6;
 
   const svgEl = svgRef.value as SVGElement;
   const rootG = svgEl.getElementsByTagName("g")[0] as SVGGElement;
@@ -152,7 +152,7 @@ const fitContent = (n = 0): void => {
   const bBoxW = rootG.getBBox().width * scale.value;
   const bBoxH = rootG.getBBox().height * scale.value;
 
-  let zoomBy = bBoxH / (svgEl.clientHeight - 128);
+  let zoomBy = bBoxH / (svgEl.clientHeight - FIT_CONTENT_PADDING);
 
   //console.log(svgEl.clientHeight);
 
@@ -160,10 +160,10 @@ const fitContent = (n = 0): void => {
   const r2 = rootBBox.width / rootBBox.height;
 
   if (r2 < r1) {
-    zoomBy = bBoxW / (svgEl.clientWidth - 128);
-    console.log({ bBoxW, cw: svgEl.clientWidth - 128, zoomBy });
+    zoomBy = bBoxW / (svgEl.clientWidth - FIT_CONTENT_PADDING);
+    console.log({ bBoxW, cw: svgEl.clientWidth - FIT_CONTENT_PADDING, zoomBy });
   } else {
-    console.log({ bBoxH, cw: svgEl.clientHeight - 128, zoomBy });
+    console.log({ bBoxH, cw: svgEl.clientHeight - FIT_CONTENT_PADDING, zoomBy });
   }
 
   viewBox.h *= zoomBy;

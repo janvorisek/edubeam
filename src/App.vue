@@ -3,8 +3,8 @@ import { container } from "jenesius-vue-modal";
 
 export default {
   components: { WidgetContainerModal: container },
-  name: "App"
-}
+  name: "App",
+};
 </script>
 
 <script setup lang="ts">
@@ -29,16 +29,16 @@ onMounted(() => {
 
   //@ts-expect-error ts-fem is wrongly typed
   domain.createNode("a", [0, 0, 0], [DofID.Dx, DofID.Ry, DofID.Dz]);
-  domain.createNode(2, [1, 0, 0], []);
-  domain.createNode(3, [2, 0, 1], []);
-  domain.createNode(4, [3, 0, 1], [DofID.Dz]);
+  domain.createNode(2, [0, 0, -3], []);
+  domain.createNode(3, [3, 0, -3], []);
+  domain.createNode(4, [3, 0, 0], [DofID.Dx, DofID.Dz]);
 
   domain.nodes = new Map(domain.nodes);
 
   //@ts-expect-error ts-fem is wrongly typed
   domain.createBeam2D(1, ["a", 2], 1, 1, [false, true]);
   domain.createBeam2D(2, [2, 3], 1, 1);
-  domain.createBeam2D(3, [3, 4], 1, 1);
+  domain.createBeam2D(3, [4, 3], 1, 1);
 
   domain.elements = new Map(domain.elements);
 
@@ -59,10 +59,10 @@ onMounted(() => {
     d: 4000 /*kg/m3!!!*/,
   });
 
-  solver.loadCases[0].createNodalLoad(3, { [DofID.Dx]: 10, [DofID.Dz]: 0, [DofID.Ry]: 10 });
+  //solver.loadCases[0].createNodalLoad(3, { [DofID.Dx]: 10000, [DofID.Dz]: 0, [DofID.Ry]: 10000 });
   //solver.loadCases[0].createNodalLoad(3, { [DofID.Dx]: 0, [DofID.Dz]: 20 });
 
-  solver.loadCases[0].createBeamElementUniformEdgeLoad(2, [0, 10], false);
+  solver.loadCases[0].createBeamElementUniformEdgeLoad(2, [0, 10000], true);
 
   domain.materials = new Map(domain.materials);
   domain.crossSections = new Map(domain.crossSections);

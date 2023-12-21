@@ -17,7 +17,7 @@
     "@vueuse/core": "^10.7.0",
     "jenesius-vue-modal": "^1.10.3",
     "js-quantities": "^1.8.0",
-    "mathjs": "^12.2.0",
+    "mathjs": "^12.2.1",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "roboto-fontface": "*",

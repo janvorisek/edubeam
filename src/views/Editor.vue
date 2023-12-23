@@ -16,7 +16,7 @@ const appStore = useAppStore();
 const drag = ref(false);
 
 const computedBottomBarHeight = computed(() => {
-  return window.innerWidth > 768 ? appStore.bottomBarHeight : appStore.bottomBarOpen ? appStore.bottomBarHeight : 36;
+  return appStore.bottomBarOpen ? appStore.bottomBarHeight : 36;
 });
 
 const mouseMove = (e: MouseEvent) => {
@@ -46,6 +46,8 @@ onMounted(() => {
   window.addEventListener("mousemove", mouseMove);
   window.addEventListener("mouseup", onMouseUp);
   window.addEventListener("mousedown", onMouseDown);
+
+  if (window.innerWidth < 768) appStore.bottomBarOpen = false;
 });
 
 onUnmounted(() => {

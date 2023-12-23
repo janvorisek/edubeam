@@ -1,27 +1,30 @@
 <template>
   <div style="border-top: 1px solid #ddd" :style="`min-height: ${props.height}px; overflow: hidden`">
-    <div class="d-flex">
-      <div class="flex-grow-1">
-        <v-tabs v-model="appStore.bottomBarTab" bg-color="primary" :show-arrows="false" height="36">
-          <v-tab v-for="(tab, index) in tabs" :key="index" @click="appStore.bottomBarOpen = true">
-            <template #default>
-              <v-icon small class="mr-3">{{ tab.icon }}</v-icon> {{ $t(tab.title) }}</template
-            >
-            <template #append v-if="'count' in tab && tab.count() > 0">{{ tab.count() }}</template>
-          </v-tab>
-        </v-tabs>
-      </div>
+    <div class="d-flex justify-space-between bg-primary">
+      <v-tabs v-model="appStore.bottomBarTab" bg-color="primary" :show-arrows="false" height="36">
+        <v-tab v-for="(tab, index) in tabs" :key="index" @click="appStore.bottomBarOpen = true">
+          <template #default>
+            <v-icon small class="mr-3">{{ tab.icon }}</v-icon> {{ $t(tab.title) }}</template
+          >
+          <template #append v-if="'count' in tab && tab.count() > 0">{{ tab.count() }}</template>
+        </v-tab>
+      </v-tabs>
       <div class="bg-primary d-flex align-center">
-        <v-btn color="primary" density="compact" icon="mdi-window-minimize"></v-btn>
+        <v-btn
+          color="primary"
+          density="compact"
+          icon="mdi-window-minimize"
+          @click="appStore.bottomBarOpen = !appStore.bottomBarOpen"
+        ></v-btn>
       </div>
     </div>
-    <v-window v-model="appStore.bottomBarTab" touchless class="text-body-2" :style="`height: ${props.height - 36}px`">
+    <v-window v-model="appStore.bottomBarTab" disabled class="text-body-2" :style="`height: ${props.height - 36}px`">
       <v-window-item
         :key="'tab-nodes'"
         :style="`height: ${props.height - 36}px`"
         :transition="false"
         :reverse-transition="false"
-        @touchstart.prevent.stop
+        @touchstart.stop
       >
         <div class="border-b border-t">
           <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addNode')">
@@ -82,7 +85,7 @@
           </template>
           <template #item.coords="{ item }">
             <div class="d-flex">
-              <div class="inline-edit-group mr-2">
+              <div class="inline-edit-group mr-2" style="min-width: 64px">
                 <label :for="`coords0-${item.label}`" class="input-before">x</label>
                 <input
                   :id="`coords0-${item.label}`"
@@ -92,7 +95,7 @@
                   class="inline-edit"
                 />
               </div>
-              <div class="inline-edit-group mr-2">
+              <div class="inline-edit-group mr-2" style="min-width: 64px">
                 <label :for="`coords2-${item.label}`" class="input-before">z</label>
                 <input
                   :id="`coords2-${item.label}`"
@@ -384,12 +387,12 @@
           </template>
 
           <template #item.type="{ item }">
-            {{ item.type === "node" ? "Nodal load" : "Element load" }}
+            <span class="text-no-wrap"> {{ item.type === "node" ? "Nodal load" : "Element load" }}</span>
           </template>
 
           <template #item.load.values="{ item }">
             <div class="d-flex" v-if="item.type === 'node'">
-              <div class="inline-edit-group mr-2">
+              <div class="inline-edit-group mr-2" style="min-width: 64px">
                 <label class="input-before">F<sub>x</sub></label>
                 <input
                   :value="appStore.convertForce(item.ref.values[0])"
@@ -406,7 +409,7 @@
                   class="inline-edit"
                 />
               </div>
-              <div class="inline-edit-group mr-2">
+              <div class="inline-edit-group mr-2" style="min-width: 64px">
                 <span class="input-before">F<sub>z</sub></span>
                 <input
                   :value="appStore.convertForce(item.ref.values[2])"
@@ -423,7 +426,7 @@
                   class="inline-edit"
                 />
               </div>
-              <div class="inline-edit-group">
+              <div class="inline-edit-group" style="min-width: 64px">
                 <span class="input-before">M<sub>y</sub></span>
                 <input
                   :value="appStore.convertForce(item.ref.values[4])"
@@ -443,7 +446,7 @@
             </div>
 
             <div class="d-flex align-content-center" v-if="item.type === 'element'">
-              <div class="inline-edit-group mr-2">
+              <div class="inline-edit-group mr-2" style="min-width: 64px">
                 <span class="input-before">f<sub>x</sub></span>
                 <input
                   :value="appStore.convertForce(item.ref.values[0])"
@@ -460,7 +463,7 @@
                   class="inline-edit"
                 />
               </div>
-              <div class="inline-edit-group mr-2">
+              <div class="inline-edit-group mr-2" style="min-width: 64px">
                 <span class="input-before">f<sub>z</sub></span>
                 <input
                   :value="appStore.convertForce(item.ref.values[1])"
@@ -739,7 +742,6 @@
         :style="`height: ${props.height - 36}px`"
         :transition="false"
         :reverse-transition="false"
-        @touchstart.prevent.stop
       >
         <div class="border-b border-t">
           <v-btn size="small" variant="flat" color="secondary" :rounded="0">

@@ -259,7 +259,12 @@ const onNodeClick = (e: MouseEvent) => {
   //useProjectStore().selection.x = e.offsetX;
   //useProjectStore().selection.y = e.offsetY;
 
-  useProjectStore().selection.x = target.getBoundingClientRect().left - 100;
+  let nx = target.getBoundingClientRect().left - 100;
+
+  if (nx < 0) nx = 24;
+  if (nx > window.innerWidth - 200 - 24) nx = window.innerWidth - 200 - 24;
+
+  useProjectStore().selection.x = nx;
   useProjectStore().selection.y = target.getBoundingClientRect().top - 64;
 };
 
@@ -271,9 +276,14 @@ const onElementClick = (e: MouseEvent) => {
   const target = e.target as HTMLElement;
   const index = target.getAttribute("data-element-id") || "-1";
 
+  let nx = target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 - 100;
+
+  if (nx < 0) nx = 24;
+  if (nx > window.innerWidth - 200 - 24) nx = window.innerWidth - 200 - 24;
+
   useProjectStore().selection.type = "element";
   useProjectStore().selection.label = isNaN(index as unknown as number) ? index : parseInt(index);
-  useProjectStore().selection.x = target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 - 100;
+  useProjectStore().selection.x = nx;
   useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
 };
 
@@ -319,9 +329,11 @@ const mouseMove = (e: MouseEvent) => {
   }
 };
 
-const onMouseDown = (e: MouseEvent) => {
+const onMouseDown = (e: PointerEvent) => {
   //if (this.svgPanZoom == null) return;
   projectStore.selection.type = null;
+
+  console.log(e);
 
   if ("activeElement" in document) (document.activeElement as HTMLElement).blur();
 
@@ -358,7 +370,7 @@ const onMouseDown = (e: MouseEvent) => {
 
     if (appStore.mouseMode === MouseMode.HOVER) {
       appStore.mouseMode = MouseMode.MOVING;
-    } else {
+    } else if (e.pointerType === "mouse") {
       appStore.mouseMode = MouseMode.SELECTING;
       appStore.mouse.sx = e.offsetX;
       appStore.mouse.sy = e.offsetY;
@@ -526,7 +538,7 @@ defineExpose({ centerContent, fitContent });
     </svg>
 
     <SvgPanZoom :on-update="onUpdate" ref="panZoom" style="overflow: visible; z-index: 50; min-height: 0">
-      <svg ref="svg" @mousemove="mouseMove" @mousedown="onMouseDown" @mouseup="onMouseUp">
+      <svg ref="svg" @pointermove="mouseMove" @pointerdown="onMouseDown" @pointerup="onMouseUp">
         <SvgViewerDefs />
         <g ref="viewport">
           <g v-if="appStore.mouseMode === MouseMode.ADD_NODE">
@@ -928,7 +940,7 @@ defineExpose({ centerContent, fitContent });
                 :data-element-id="element.label"
                 @mousemove="onElementHover($event, element)"
                 @mouseleave="hideTooltip"
-                @mouseup="onElementClick"
+                @pointerup="onElementClick"
               />
             </g>
           </g>
@@ -1102,7 +1114,7 @@ defineExpose({ centerContent, fitContent });
                 :data-node-id="node.label"
                 @mousemove="onNodeHover($event, node)"
                 @mouseleave="hideTooltip"
-                @mouseup="onNodeClick"
+                @pointerup="onNodeClick"
               />
             </g>
           </g>
@@ -1233,12 +1245,7 @@ defineExpose({ centerContent, fitContent });
           </v-checkbox>
         </div>
 
-        <div
-          color="grey-lighten-5"
-          rounded="lg"
-          height="32"
-          class="d-sm-flex bg-grey-lighten-5 elevation-1 mb-2 rounded"
-        >
+        <div color="grey-lighten-5" rounded="lg" height="32" class="d-sm-flex bg-grey-lighten-5 elevation-1 rounded">
           <v-checkbox
             :label="$t('sideSettings.supports')"
             v-model="useViewerStore().showSupports"
@@ -1273,7 +1280,7 @@ defineExpose({ centerContent, fitContent });
         </div>
       </div>
       <div class="text-right text-sm-body-2">
-        <button class="text-decoration-underline" @click="appStore.openSettings()">
+        <button class="text-decoration-underline bg-white" @click="appStore.openSettings()">
           {{ $t("sideSettings.more_settings") }}
         </button>
       </div>

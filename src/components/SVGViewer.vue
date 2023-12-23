@@ -1191,7 +1191,7 @@ defineExpose({ centerContent, fitContent });
         <div
           color="grey-lighten-5"
           rounded="lg"
-          class="d-sm-flex bg-grey-lighten-5 elevation-1 mb-2 rounded"
+          class="d-sm-flex bg-grey-lighten-5 elevation-1 rounded"
           style="width: fit-content"
         >
           <v-checkbox

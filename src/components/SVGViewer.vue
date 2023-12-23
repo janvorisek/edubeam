@@ -525,7 +525,7 @@ defineExpose({ centerContent, fitContent });
       <SvgGrid ref="grid" :svg="svg as SVGSVGElement" :viewport="viewport as SVGGElement" :zoom="scale" />
     </svg>
 
-    <SvgPanZoom :on-update="onUpdate" ref="panZoom" style="overflow: hidden; z-index: 50; min-height: 0">
+    <SvgPanZoom :on-update="onUpdate" ref="panZoom" style="overflow: visible; z-index: 50; min-height: 0">
       <svg ref="svg" @mousemove="mouseMove" @mousedown="onMouseDown" @mouseup="onMouseUp">
         <SvgViewerDefs />
         <g ref="viewport">
@@ -1186,24 +1186,26 @@ defineExpose({ centerContent, fitContent });
       </div>
     </div>
 
-    <div v-if="viewerStore.settingsOpen" class="w-auto" style="position: absolute; right: 24px; top: 64px; z-index: 60">
-      <div class="overflow-y-auto" style="max-height: 65vh; z-index: 30">
+    <div v-if="viewerStore.settingsOpen" class="" style="position: absolute; right: 24px; top: 64px; z-index: 600">
+      <div class="d-flex flex-sm-column pa-1 overflow-y-auto ga-2 align-end justify-end">
         <div
           color="grey-lighten-5"
           rounded="lg"
-          height="32"
           class="d-sm-flex bg-grey-lighten-5 elevation-1 mb-2 rounded"
+          style="width: fit-content"
         >
           <v-checkbox
             :label="$t('sideSettings.showDeformedShape')"
             v-model="useViewerStore().showDeformedShape"
             hide-details
+            density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
           />
           <v-checkbox
             label=""
             v-model="useViewerStore().showNormalForce"
             hide-details
+            density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
             :disabled="useProjectStore().model === 'EigenValueDynamicSolver'"
           >
@@ -1213,6 +1215,7 @@ defineExpose({ centerContent, fitContent });
             label="Vz (x)"
             v-model="useViewerStore().showShearForce"
             hide-details
+            density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
             :disabled="useProjectStore().model === 'EigenValueDynamicSolver'"
           >
@@ -1222,6 +1225,7 @@ defineExpose({ centerContent, fitContent });
             label="My (x)"
             v-model="useViewerStore().showBendingMoment"
             hide-details
+            density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
             :disabled="useProjectStore().model === 'EigenValueDynamicSolver'"
           >
@@ -1239,6 +1243,7 @@ defineExpose({ centerContent, fitContent });
             :label="$t('sideSettings.supports')"
             v-model="useViewerStore().showSupports"
             hide-details
+            density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
           />
           <v-checkbox
@@ -1246,6 +1251,7 @@ defineExpose({ centerContent, fitContent });
             dense
             v-model.number="useViewerStore().showLoads"
             hide-details
+            density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
             :disabled="useProjectStore().model === 'EigenValueDynamicSolver'"
           />
@@ -1254,21 +1260,22 @@ defineExpose({ centerContent, fitContent });
             :label="$t('sideSettings.nodeLabels')"
             v-model="useViewerStore().showNodeLabels"
             hide-details
+            density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
           />
           <v-checkbox
             :label="$t('sideSettings.elementLabels')"
             v-model="useViewerStore().showElementLabels"
             hide-details
+            density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
           />
         </div>
-
-        <div class="text-right text-sm-body-2">
-          <button class="text-decoration-underline" @click="appStore.openSettings()">
-            {{ $t("sideSettings.more_settings") }}
-          </button>
-        </div>
+      </div>
+      <div class="text-right text-sm-body-2">
+        <button class="text-decoration-underline" @click="appStore.openSettings()">
+          {{ $t("sideSettings.more_settings") }}
+        </button>
       </div>
     </div>
   </div>

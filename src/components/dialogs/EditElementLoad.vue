@@ -13,7 +13,7 @@
                   :items="useProjectStore().solver.domain.nodes.values() as unknown as unknown[]"
                   item-title="label"
                   item-value="label"
-                  label="Node id"
+                  label="Element id"
                   required
                   disabled
                   autofocus

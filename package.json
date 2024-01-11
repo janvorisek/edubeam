@@ -43,7 +43,7 @@
     "prettier": "^3.1.1",
     "sass": "^1.69.5",
     "typescript": "^5.3.3",
-    "vite": "^5.0.8",
+    "vite": "^5.0.11",
     "vite-plugin-vuetify": "^2.0.1",
     "vitepress": "^1.0.0-rc.32",
     "vue-eslint-parser": "^9.4.0",

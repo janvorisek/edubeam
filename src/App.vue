@@ -118,9 +118,13 @@ const app_released = APP_RELEASED;
 
       <v-spacer></v-spacer>
 
-      <v-btn class="d-none d-sm-inline-flex" @click="appStore.openSettings()">
-        <span class="mr-2">{{ $t("common.settings") }}</span>
-        <v-icon>mdi-cogs</v-icon>
+      <v-btn class="d-none d-sm-inline-flex" href="https://edubeam.app" target="_blank">
+        Documentation
+        <v-icon class="ml-1">mdi-open-in-new</v-icon>
+      </v-btn>
+
+      <v-btn class="d-none d-sm-inline-flex" icon href="https://github.com/janvorisek/edubeam" target="_blank">
+        <v-icon>mdi-github</v-icon>
       </v-btn>
     </v-app-bar>
 
@@ -150,8 +154,18 @@ const app_released = APP_RELEASED;
       style="height: 24px"
     >
       <div>
-        <a class="text-black text-decoration-none font-weight-medium" href="#">Report issue</a>
-        <a class="text-black text-decoration-none font-weight-medium ml-3" href="#">Request feature</a>
+        <a
+          class="text-black text-decoration-none font-weight-medium"
+          href="https://github.com/janvorisek/edubeam/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=%5BBUG%5D"
+          target="_blank"
+          >Report issue</a
+        >
+        <a
+          class="text-black text-decoration-none font-weight-medium ml-3"
+          href="https://github.com/janvorisek/edubeam/issues/new?assignees=&labels=&projects=&template=feature_request.md&title="
+          target="_blank"
+          >Request feature</a
+        >
       </div>
       <div>edubeam v{{ app_version }} released on {{ app_released }}</div>
     </div>

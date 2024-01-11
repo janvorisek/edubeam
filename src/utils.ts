@@ -1,3 +1,5 @@
+import { Beam2D, LinearStaticSolver, Node } from "ts-fem";
+
 export const throttle = (fn: Function, wait = 300) => {
   let inThrottle: boolean, lastFn: ReturnType<typeof setTimeout>, lastTime: number;
   return function (this: any) {
@@ -52,4 +54,101 @@ export const checkNumber = (e: KeyboardEvent) => {
 
   e.stopPropagation();
   e.preventDefault();
+};
+
+function objectToBase64(obj: unknown) {
+  try {
+    // Convert the object to a JSON string
+    const jsonString = JSON.stringify(obj);
+
+    // Use btoa to convert the JSON string to base64
+    const base64String = btoa(jsonString);
+
+    return base64String;
+  } catch (error) {
+    console.error("Error converting object to base64:", error);
+    return null;
+  }
+}
+
+function base64ToObject(base64String) {
+  try {
+    // Use atob to decode the base64 string
+    const jsonString = atob(base64String);
+
+    // Parse the JSON string to get the original object
+    const obj = JSON.parse(jsonString);
+
+    return obj;
+  } catch (error) {
+    console.error("Error decoding base64 to object:", error);
+    return null;
+  }
+}
+
+export const serializeModel = (ls: LinearStaticSolver) => {
+  const _nodes = [];
+  const _elements = [];
+  const _materials = [];
+  const _css = [];
+  const eloads = [];
+  const nloads = [];
+
+  ls.domain.nodes.forEach((node, id) => {
+    _nodes.push([id, node.coords, Array.from(node.bcs.values())]);
+  });
+
+  ls.domain.elements.forEach((element: Beam2D, id) => {
+    _elements.push([id, element.nodes, element.mat, element.cs, element.hinges]);
+  });
+
+  ls.domain.materials.forEach((material, id) => {
+    _materials.push([id, material.d, material.e, material.g, material.alpha]);
+  });
+
+  ls.domain.crossSections.forEach((cs, id) => {
+    _css.push([id, cs.a, cs.iy, cs.h, cs.k]);
+  });
+
+  ls.loadCases[0].elementLoadList.forEach((load) => {
+    eloads.push([load.target, load.values]);
+  });
+
+  ls.loadCases[0].nodalLoadList.forEach((load) => {
+    nloads.push([load.target, load.values]);
+  });
+
+  return objectToBase64({ n: _nodes, e: _elements, m: _materials, cs: _css, el: eloads, nl: nloads });
+};
+
+export const deserializeModel = (base64String: string, ls: LinearStaticSolver) => {
+  const tmp = base64ToObject(base64String);
+  console.log(tmp);
+
+  ls.domain.nodes.clear();
+  ls.domain.elements.clear();
+
+  for (const e of tmp.n) {
+    ls.domain.createNode(e[0], e[1], e[2]);
+  }
+
+  for (const e of tmp.e) {
+    ls.domain.createBeam2D(e[0], e[1], e[2], e[3], e[4]);
+  }
+
+  for (const e of tmp.m) {
+    ls.domain.createMaterial(e[0], { d: e[1], e: e[2], g: e[3], alpha: e[4] });
+  }
+
+  for (const e of tmp.cs) {
+    ls.domain.createCrossSection(e[0], { a: e[1], iy: e[2], h: e[3], k: e[4] });
+  }
+
+  for (const e of tmp.el) {
+    ls.loadCases[0].createBeamElementUniformEdgeLoad(e[0], e[1], true);
+  }
+
+  for (const e of tmp.nl) {
+    ls.loadCases[0].createNodalLoad(e[0], e[1]);
+  }
 };

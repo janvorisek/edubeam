@@ -107,7 +107,7 @@ const app_released = APP_RELEASED;
 <template>
   <v-app>
     <v-app-bar clipped-lefs clipped-right app color="primary" density="compact">
-      <v-app-bar-nav-icon @click="appStore.drawerOpen = !appStore.drawerOpen"></v-app-bar-nav-icon>
+      <!-- <v-app-bar-nav-icon @click="appStore.drawerOpen = !appStore.drawerOpen"></v-app-bar-nav-icon> -->
 
       <div class="ml-3 d-flex align-center font-weight-bold text-uppercase">Edubeam</div>
 
@@ -139,7 +139,9 @@ const app_released = APP_RELEASED;
       </v-list>
     </v-navigation-drawer>
 
-    <v-navigation-drawer v-model="appStore.rightDrawerOpen" location="right"> availableLocales</v-navigation-drawer>
+    <v-navigation-drawer v-model="appStore.rightDrawerOpen" location="right" temporary>
+      availableLocales</v-navigation-drawer
+    >
 
     <v-main>
       <Editor />

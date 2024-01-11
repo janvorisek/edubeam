@@ -1168,12 +1168,12 @@ defineExpose({ centerContent, fitContent });
             </template>
             Add load
           </v-list-item>
-          <v-list-item link class="text-body-2" v-if="projectStore.selection.type === 'element'">
+          <!-- <v-list-item link class="text-body-2" v-if="projectStore.selection.type === 'element'">
             Show details
             <template #prepend>
               <div class="pr-2"><v-icon icon="mdi-function-variant" /></div>
             </template>
-          </v-list-item>
+          </v-list-item> -->
           <v-list-item
             link
             class="text-body-2"

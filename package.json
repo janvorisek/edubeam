@@ -23,7 +23,7 @@
     "pinia-plugin-persistedstate": "^3.2.1",
     "roboto-fontface": "*",
     "ts-fem": "github:janvorisek/ts-fem#72ec2f65d46bda5101ada9e6e63dcf7638504415",
-    "vue": "^3.4.10",
+    "vue": "^3.4.13",
     "vue-gtag": "^2.0.1",
     "vue-i18n": "^9.9.0",
     "vue-router": "^4.2.5",

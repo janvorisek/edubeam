@@ -154,7 +154,12 @@
           </template>
           <template #item.loads="{ item }">
             <div class="d-flex align-center">
-              <v-btn icon="mdi-plus-circle" density="compact" variant="text" @click="showDialog('addNodalLoad')">
+              <v-btn
+                icon="mdi-plus-circle"
+                density="compact"
+                variant="text"
+                @click="openModal(AddNodalLoad, { label: item.label })"
+              >
               </v-btn>
               <div
                 v-if="
@@ -326,7 +331,12 @@
           </template>
           <template #item.loads="{ item }">
             <div class="d-flex align-center">
-              <v-btn icon="mdi-plus-circle" density="compact" variant="text" @click="showDialog('addElementLoad')">
+              <v-btn
+                icon="mdi-plus-circle"
+                density="compact"
+                variant="text"
+                @click="openModal(AddElementLoad, { label: item.label })"
+              >
               </v-btn>
               <div
                 v-if="
@@ -593,6 +603,16 @@
           <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addMaterial')">
             <v-icon small>mdi-plus</v-icon> {{ $t("materials.addMaterial") }}
           </v-btn>
+          <v-btn
+            size="small"
+            variant="flat"
+            color="secondary"
+            :rounded="0"
+            style="border-left: 1px solid #ccc"
+            @click.stop="showDialog('addMaterial')"
+          >
+            <v-icon small>mdi-database-search-outline</v-icon> {{ $t("materials.material_library") }}
+          </v-btn>
         </div>
 
         <v-data-table
@@ -693,6 +713,16 @@
         <div class="border-b border-t">
           <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addCrossSection')">
             <v-icon small>mdi-plus</v-icon> {{ $t("crossSections.addCrossSection") }}
+          </v-btn>
+          <v-btn
+            size="small"
+            variant="flat"
+            color="secondary"
+            :rounded="0"
+            style="border-left: 1px solid #ccc"
+            @click.stop="showDialog('addMaterial')"
+          >
+            <v-icon small>mdi-database-search-outline</v-icon> {{ $t("materials.section_library") }}
           </v-btn>
         </div>
 
@@ -882,6 +912,8 @@ import { capitalize, checkNumber } from "../utils";
 import { DofID, Beam2D } from "ts-fem";
 import { formatExpValueAsHTML, formatMeasureAsHTML } from "../SVGUtils";
 import { openModal } from "jenesius-vue-modal";
+import AddNodalLoad from "./dialogs/AddNodalLoad.vue";
+import AddElementLoad from "./dialogs/AddElementLoad.vue";
 import EditNodalLoad from "./dialogs/EditNodalLoad.vue";
 import EditElementLoad from "./dialogs/EditElementLoad.vue";
 import StiffnessMatrix from "./StiffnessMatrix.vue";

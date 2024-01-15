@@ -93,7 +93,9 @@
     "bcs": "Podepřené stupně volnosti"
   },
   "materials": {
-    "addMaterial": "Přidat materiál"
+    "addMaterial": "Přidat materiál",
+    "material_library": "Knihovna materiálů",
+    "section_library": "Knihovna průřezů"
   },
   "crossSections": {
     "addCrossSection": "Přidat průřez"
@@ -144,6 +146,14 @@
     },
     "editElementLoad": {
       "editElementLoad": "Upravit prvkové zatížení"
+    }
+  },
+  "tooltip": {
+    "material": {
+      "alphaT": " Teplotní součinitel délkové roztažnosti popisuje, jak se mění délkové rozměry tělesa změnou teploty.",
+      "density": "Hustota je mírou toho, kolik hmoty je obsaženo v daném objemu látky.",
+      "e": "Youngův modul pružnosti vyjadřuje závilosti mezi napětím a deformací v tahu a tlaku.",
+      "g": "Smykový modul je vlastnost, která měří odolnost vůči deformaci při smykovém napětí, indikující tuhost materiálu v reakci na síly působící rovnoběžně s jeho povrchem."
     }
   }
 }

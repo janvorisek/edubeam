@@ -24,119 +24,113 @@
 
         <h4 class="mb-1 mt-2">{{ $t("settings.units.units") }}</h4>
 
-        <v-select
-          v-model="unitSystem"
-          item-title="name"
-          item-value="code"
-          hide-details="auto"
-          :items="[
-            { name: 'SI Units', code: 'si' },
-            { name: 'Imperial', code: 'imperial' },
-          ]"
-          :label="$t('settings.units.length')"
-        >
-        </v-select>
+        <v-row no-gutters>
+          <v-col cols="6">
+            <v-select
+              v-model="appStore.units.Length"
+              item-title="name"
+              item-value="code"
+              hide-details="auto"
+              :items="[
+                { name: 'm', code: 'm' },
+                { name: 'cm', code: 'cm' },
+                { name: 'mm', code: 'mm' },
+                { name: 'in', code: 'in' },
+                { name: 'ft', code: 'ft' },
+              ]"
+              :label="$t('settings.units.length')"
+            >
+            </v-select>
+          </v-col>
+          <v-col cols="6">
+            <v-select
+              v-model="appStore.units.Area"
+              item-title="name"
+              item-value="code"
+              hide-details="auto"
+              :items="[
+                { name: 'm²', code: 'm2' },
+                { name: 'cm²', code: 'cm2' },
+                { name: 'mm²', code: 'mm2' },
+                { name: 'in²', code: 'in2' },
+                { name: 'ft²', code: 'ft2' },
+              ]"
+              :label="$t('settings.units.area')"
+            ></v-select> </v-col
+          ><v-col cols="6">
+            <v-select
+              v-model="appStore.units.AreaM2"
+              item-title="name"
+              item-value="code"
+              hide-details="auto"
+              :items="[
+                { name: 'm4', code: 'm4' },
+                { name: 'cm4', code: 'cm4' },
+                { name: 'mm4', code: 'mm4' },
+                { name: 'in4', code: 'in4' },
+                { name: 'ft4', code: 'ft4' },
+              ]"
+              :label="$t('settings.units.areaM2')"
+            >
+              <template #item="{ item, props }">
+                <v-list-item v-bind="props">
+                  <template #title><span v-html="formatMeasureAsHTML(item.title)"></span></template>
+                </v-list-item>
+              </template>
 
-        <v-expansion-panels>
-          <v-expansion-panel title="More settings" density="compact">
-            <template #text>
-              <v-select
-                v-model="appStore.units.Length"
-                item-title="name"
-                item-value="code"
-                hide-details="auto"
-                :items="[
-                  { name: 'm', code: 'm' },
-                  { name: 'cm', code: 'cm' },
-                  { name: 'mm', code: 'mm' },
-                  { name: 'in', code: 'in' },
-                  { name: 'ft', code: 'ft' },
-                ]"
-                :label="$t('settings.units.length')"
-              >
-              </v-select>
-              <v-select
-                v-model="appStore.units.Area"
-                item-title="name"
-                item-value="code"
-                hide-details="auto"
-                :items="[
-                  { name: 'm²', code: 'm2' },
-                  { name: 'cm²', code: 'cm2' },
-                  { name: 'mm²', code: 'mm2' },
-                  { name: 'in²', code: 'in2' },
-                  { name: 'ft²', code: 'ft2' },
-                ]"
-                :label="$t('settings.units.area')"
-              ></v-select>
-              <v-select
-                v-model="appStore.units.AreaM2"
-                item-title="name"
-                item-value="code"
-                hide-details="auto"
-                :items="[
-                  { name: 'm4', code: 'm4' },
-                  { name: 'cm4', code: 'cm4' },
-                  { name: 'mm4', code: 'mm4' },
-                  { name: 'in4', code: 'in4' },
-                  { name: 'ft4', code: 'ft4' },
-                ]"
-                :label="$t('settings.units.areaM2')"
-              >
-                <template #item="{ item, props }">
-                  <v-list-item v-bind="props">
-                    <template #title><span v-html="formatMeasureAsHTML(item.title)"></span></template>
-                  </v-list-item>
-                </template>
+              <template #selection="{ item }">
+                <span v-html="formatMeasureAsHTML(item.title)"></span>
+              </template> </v-select
+          ></v-col>
+          <v-col cols="6"
+            ><v-select
+              v-model="appStore.units.Mass"
+              item-title="name"
+              item-value="code"
+              hide-details="auto"
+              :items="[
+                { name: 'kg', code: 'kg' },
+                { name: 'lb', code: 'lb' },
+              ]"
+              :label="$t('settings.units.mass')"
+            >
+            </v-select
+          ></v-col>
 
-                <template #selection="{ item }">
-                  <span v-html="formatMeasureAsHTML(item.title)"></span>
-                </template>
-              </v-select>
-              <v-select
-                v-model="appStore.units.Mass"
-                item-title="name"
-                item-value="code"
-                hide-details="auto"
-                :items="[
-                  { name: 'kg', code: 'kg' },
-                  { name: 'lb', code: 'lb' },
-                ]"
-                :label="$t('settings.units.mass')"
-              >
-              </v-select>
-              <v-select
-                v-model="appStore.units.Force"
-                item-title="name"
-                item-value="code"
-                hide-details="auto"
-                :items="[
-                  { name: 'N', code: 'N' },
-                  { name: 'kN', code: 'kN' },
-                  { name: 'MN', code: 'MN' },
-                  { name: 'lbf', code: 'lbf' },
-                ]"
-                :label="$t('settings.units.force')"
-              >
-              </v-select>
-              <v-select
-                v-model="appStore.units.Pressure"
-                item-title="name"
-                item-value="code"
-                hide-details="auto"
-                :items="[
-                  { name: 'Pa', code: 'Pa' },
-                  { name: 'kPa', code: 'kPa' },
-                  { name: 'MPa', code: 'MPa' },
-                  { name: 'GPa', code: 'GPa' },
-                  { name: 'psi', code: 'psi' },
-                ]"
-                :label="$t('settings.units.pressure')"
-              >
-              </v-select>
-            </template>
-          </v-expansion-panel>
-        </v-expansion-panels>
+          <v-col cols="6"
+            ><v-select
+              v-model="appStore.units.Force"
+              item-title="name"
+              item-value="code"
+              hide-details="auto"
+              :items="[
+                { name: 'N', code: 'N' },
+                { name: 'kN', code: 'kN' },
+                { name: 'MN', code: 'MN' },
+                { name: 'lbf', code: 'lbf' },
+              ]"
+              :label="$t('settings.units.force')"
+            >
+            </v-select
+          ></v-col>
+          <v-col cols="6"
+            ><v-select
+              v-model="appStore.units.Pressure"
+              item-title="name"
+              item-value="code"
+              hide-details="auto"
+              :items="[
+                { name: 'Pa', code: 'Pa' },
+                { name: 'kPa', code: 'kPa' },
+                { name: 'MPa', code: 'MPa' },
+                { name: 'GPa', code: 'GPa' },
+                { name: 'psi', code: 'psi' },
+              ]"
+              :label="$t('settings.units.pressure')"
+            >
+            </v-select
+          ></v-col>
+        </v-row>
       </v-col>
 
       <v-col cols="6" md="3" lg="3">

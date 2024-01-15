@@ -551,7 +551,8 @@ export function formatElementLoadHatch(eload: BeamElementUniformEdgeLoad, scale:
 }
 
 export function formatExpValueAsHTML(n: number, decimals: number) {
-  let str = n.toExponential(decimals);
+  let str = n >= 0 ? '<span style=" width: 5px;"></span>' : "";
+  str += n.toExponential(decimals);
   str = str.replace("e-", " &middot; 10<sup>-");
   str = str.replace("e+", " &middot; 10<sup>");
   str = str + "</sup>"; //.replace('10')
@@ -560,6 +561,8 @@ export function formatExpValueAsHTML(n: number, decimals: number) {
 }
 
 export function formatMeasureAsHTML(s: string) {
+  if (s === "1/K") return "K<sup>-1</sup>";
+
   // find string before fist number
   const n = s.search(/\d/);
 

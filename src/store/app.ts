@@ -28,6 +28,7 @@ export const useAppStore = defineStore(
       Mass: "kg",
       Force: "N",
       Pressure: "Pa",
+      ThermalExpansion: "1/K",
     });
 
     let _convertArea = Qty.swiftConverter("m2", units.Area);

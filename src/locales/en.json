@@ -98,7 +98,9 @@
     "element_results": "Element results"
   },
   "materials": {
-    "addMaterial": "Add material"
+    "addMaterial": "Add material",
+    "material_library": "Material library",
+    "section_library": "Section library"
   },
   "crossSections": {
     "addCrossSection": "Add cross section"
@@ -144,6 +146,15 @@
     },
     "editElementLoad": {
       "editElementLoad": "Edit element load"
+    }
+  },
+  "tooltip": {
+    "materials": {},
+    "material": {
+      "alphaT": "The coefficient of thermal expansion describes how the size of an object changes with a change in temperature.",
+      "e": "Young's modulus measures the tensile or compressive stiffness when the force is applied lengthwise.",
+      "g": "The shear modulus is a property that measures resistance to deformation under shear stress, indicating the material's stiffness in response to forces applied parallel to its surface.",
+      "density": "Density is a measure of how much mass is contained in a given volume of a substance. "
     }
   }
 }

@@ -62,9 +62,14 @@
                   class="v-data-table__td v-data-table-column--align-start v-data-table__th v-data-table__th--sortable"
                 >
                   <div class="v-data-table-header__content">
-                    <span class="mr-2 cursor-pointer" @click="() => toggleSort(column)">{{
-                      capitalize($t(column.title))
-                    }}</span>
+                    <div class="mr-2 cursor-pointer" @click="() => toggleSort(column)">
+                      {{ capitalize($t(column.title)) }}
+                      <span
+                        class="font-weight-regular"
+                        v-if="column.units"
+                        v-html="`[${formatMeasureAsHTML(appStore.units[column.units])}]`"
+                      ></span>
+                    </div>
                     <v-icon
                       v-if="column.sortable"
                       :icon="getSortIcon(column)"
@@ -112,10 +117,11 @@
               <div class="inline-edit-group">
                 <label :for="`bcs0-${item.label}`" class="input-before">U<sub>x</sub></label>
                 <div class="inline-edit">
-                  <input
+                  <v-checkbox-btn
                     :id="`bcs0-${item.label}`"
-                    type="checkbox"
-                    :checked="item.bcs.has(0)"
+                    density="compact"
+                    inline
+                    :model-value="item.bcs.has(0)"
                     @click="toggleSet(item, 'bcs', 0)"
                   />
                 </div>
@@ -123,10 +129,11 @@
               <div class="inline-edit-group mx-2">
                 <label :for="`bcs1-${item.label}`" class="input-before">U<sub>z</sub></label>
                 <div class="inline-edit">
-                  <input
-                    :id="`bcs1-${item.label}`"
-                    type="checkbox"
-                    :checked="item.bcs.has(2)"
+                  <v-checkbox-btn
+                    :id="`bcs0-${item.label}`"
+                    density="compact"
+                    inline
+                    :model-value="item.bcs.has(2)"
                     @click="toggleSet(item, 'bcs', 2)"
                   />
                 </div>
@@ -134,10 +141,11 @@
               <div class="inline-edit-group">
                 <label :for="`bcs2-${item.label}`" class="input-before">R<sub>y</sub></label>
                 <div class="inline-edit">
-                  <input
-                    :id="`bcs2-${item.label}`"
-                    type="checkbox"
-                    :checked="item.bcs.has(4)"
+                  <v-checkbox-btn
+                    :id="`bcs0-${item.label}`"
+                    density="compact"
+                    inline
+                    :model-value="item.bcs.has(4)"
                     @click="toggleSet(item, 'bcs', 4)"
                   />
                 </div>
@@ -145,27 +153,32 @@
             </div>
           </template>
           <template #item.loads="{ item }">
-            <div
-              v-if="
-                useProjectStore().solver.loadCases[0].nodalLoadList.filter((nl) => nl.target === item.label).length > 0
-              "
-            >
-              <v-chip-group>
-                <v-chip
-                  v-for="(nl, index) in formatNodalLoadsAtNode(item)"
-                  :key="index"
-                  density="compact"
-                  @click="
-                    openModal(EditNodalLoad, {
-                      index: nl[0],
-                    })
-                  "
-                >
-                  <span v-html="nl[1]"></span
-                ></v-chip>
-              </v-chip-group>
+            <div class="d-flex align-center">
+              <v-btn icon="mdi-plus-circle" density="compact" variant="text" @click="showDialog('addNodalLoad')">
+              </v-btn>
+              <div
+                v-if="
+                  useProjectStore().solver.loadCases[0].nodalLoadList.filter((nl) => nl.target === item.label).length >
+                  0
+                "
+              >
+                <v-chip-group>
+                  <v-chip
+                    v-for="(nl, index) in formatNodalLoadsAtNode(item)"
+                    :key="index"
+                    density="compact"
+                    @click="
+                      openModal(EditNodalLoad, {
+                        index: nl[0],
+                      })
+                    "
+                  >
+                    <span v-html="nl[1]"></span
+                  ></v-chip>
+                </v-chip-group>
+              </div>
+              <div v-else></div>
             </div>
-            <div v-else>-</div>
           </template>
           <template #item.actions="{ item }">
             <v-btn density="compact" variant="text" @click="deleteNode(item.label)" icon="mdi-close"></v-btn>
@@ -282,11 +295,23 @@
             </select>
           </template>
           <template #item.hinges[0]="{ item }">
-            <input type="checkbox" :checked="item.hinges[0]" @click="toggleArray(item, 'hinges', 0)" />&mdash;<input
-              type="checkbox"
-              :checked="item.hinges[1]"
-              @click="toggleArray(item, 'hinges', 1)"
-            />
+            <div class="d-flex hinges">
+              <v-checkbox-btn
+                :id="`bcs0-${item.label}`"
+                density="compact"
+                inline
+                :model-value="item.hinges[0]"
+                @click="toggleArray(item, 'hinges', 0)"
+              />
+              <v-icon icon="mdi-minus" :size="20" />
+              <v-checkbox-btn
+                :id="`bcs0-${item.label}`"
+                density="compact"
+                inline
+                :model-value="item.hinges[1]"
+                @click="toggleArray(item, 'hinges', 1)"
+              />
+            </div>
           </template>
           <template #item.diagonalMassMatrix="{ item }">
             <select class="mini-select" v-model="item.diagonalMassMatrix" @change="solve" style="width: 100%">
@@ -300,26 +325,44 @@
             />-->
           </template>
           <template #item.loads="{ item }">
-            <div
-              v-if="
-                useProjectStore().solver.loadCases[0].elementLoadList.filter((nl) => nl.target === item.label).length >
-                0
-              "
-            >
-              <v-chip-group>
-                <v-chip
-                  v-for="(el, index) in formatElementLoadsAtElement(item)"
-                  :key="index"
-                  density="compact"
-                  @click="openModal(EditElementLoad, { index: el[0] })"
-                >
-                  <span v-html="el[1]"></span
-                ></v-chip>
-              </v-chip-group>
+            <div class="d-flex align-center">
+              <v-btn icon="mdi-plus-circle" density="compact" variant="text" @click="showDialog('addElementLoad')">
+              </v-btn>
+              <div
+                v-if="
+                  useProjectStore().solver.loadCases[0].elementLoadList.filter((nl) => nl.target === item.label)
+                    .length > 0
+                "
+              >
+                <v-chip-group>
+                  <v-chip
+                    v-for="(el, index) in formatElementLoadsAtElement(item)"
+                    :key="index"
+                    density="compact"
+                    @click="openModal(EditElementLoad, { index: el[0] })"
+                  >
+                    <span v-html="el[1]"></span
+                  ></v-chip>
+                </v-chip-group>
+              </div>
+              <div v-else></div>
             </div>
-            <div v-else>-</div>
           </template>
           <template #item.actions="{ item }">
+            <v-btn
+              density="compact"
+              variant="text"
+              @click="
+                appStore.tabs.push({
+                  title: `stiffness matrix (element ${item.label})`,
+                  component: markRaw(StiffnessMatrix),
+                  props: markRaw({ label: item.label }),
+                  closable: true,
+                });
+                appStore.tab = appStore.tabs.length - 1;
+              "
+              icon="mdi-matrix"
+            ></v-btn>
             <v-btn density="compact" variant="text" @click="deleteElement(item.label)" icon="mdi-close"></v-btn>
           </template>
         </v-data-table>
@@ -483,7 +526,13 @@
               <div class="inline-edit-group">
                 <span class="input-before">LCS</span>
                 <div class="inline-edit">
-                  <input type="checkbox" :checked="item.ref.lcs" @click="toggleBoolean(item.ref, 'lcs')" />
+                  <v-checkbox-btn
+                    :id="`bcs0-${item.label}`"
+                    density="compact"
+                    inline
+                    :model-value="item.ref.lcs"
+                    @click="toggleBoolean(item.ref, 'lcs')"
+                  />
                 </div>
               </div>
             </div>
@@ -567,12 +616,16 @@
                 >
                   <div class="v-data-table-header__content">
                     <div class="mr-2 cursor-pointer" @click="() => toggleSort(column)">
-                      {{ capitalize($t(column.title)) }}
+                      <span v-html="column.key !== 'alpha' ? capitalize($t(column.title)) : 'α<sub>T</sub>'"></span
+                      >&nbsp;
                       <span
                         class="font-weight-regular"
                         v-if="column.units"
                         v-html="`[${formatMeasureAsHTML(appStore.units[column.units])}]`"
                       ></span>
+                      <v-tooltip v-if="column.tooltip" activator="parent" location="top" :max-width="320">{{
+                        $t(column.tooltip)
+                      }}</v-tooltip>
                     </div>
                     <v-icon
                       v-if="column.sortable"
@@ -608,16 +661,6 @@
               @change="changeItem(item, 'g', $event.target as HTMLInputElement, appStore.convertInversePressure)"
               class="inline-edit"
             />
-          </template>
-          <template #column.alpha="{ column }">
-            <v-tooltip :text="column.tooltip" location="bottom">
-              <template #activator="{ props }">
-                <div v-bind="props" class="d-flex align-center">
-                  {{ column.title }}
-                  <v-icon icon="mdi-help" size="12" />
-                </div>
-              </template>
-            </v-tooltip>
           </template>
           <template #item.alpha="{ item }">
             <input
@@ -788,25 +831,25 @@
           </template>
 
           <template #item.coords="{ item }">
-            <div class="d-flex">
+            <div class="d-flex text-right" style="font-variant-numeric: tabular-nums">
               <div class="inline-edit-group mr-2">
                 <label class="input-before">D<sub>x</sub></label>
                 <div
-                  class="inline-edit fw"
+                  class="inline-edit fw pl-1"
                   v-html="formatExpValueAsHTML(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dx]), 4)"
                 />
               </div>
               <div class="inline-edit-group mr-2">
                 <label class="input-before">D<sub>z</sub></label>
                 <div
-                  class="inline-edit fw"
+                  class="inline-edit fw pl-1"
                   v-html="formatExpValueAsHTML(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dz]), 4)"
                 />
               </div>
               <div class="inline-edit-group mr-2">
                 <label class="input-before">R<sub>y</sub></label>
                 <div
-                  class="inline-edit fw"
+                  class="inline-edit fw pl-1"
                   v-html="formatExpValueAsHTML(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Ry]), 4)"
                 />
               </div>
@@ -831,7 +874,7 @@ import {
   NodalLoad,
 } from "ts-fem";
 
-import { ref, onMounted, computed, watch, nextTick, reactive, onUnmounted } from "vue";
+import { onMounted, computed, markRaw, nextTick, reactive } from "vue";
 import { useProjectStore } from "../store/project";
 import { useAppStore } from "../store/app";
 import { MouseMode } from "../mouse";
@@ -841,6 +884,7 @@ import { formatExpValueAsHTML, formatMeasureAsHTML } from "../SVGUtils";
 import { openModal } from "jenesius-vue-modal";
 import EditNodalLoad from "./dialogs/EditNodalLoad.vue";
 import EditElementLoad from "./dialogs/EditElementLoad.vue";
+import StiffnessMatrix from "./StiffnessMatrix.vue";
 
 type EntityWithLabel = { label: string & { [key: string]: unknown } };
 
@@ -1230,6 +1274,7 @@ const headers = reactive({
     },
     {
       title: "common.coords",
+      units: "Length",
       key: "coords",
       width: 180,
     },
@@ -1331,25 +1376,29 @@ const headers = reactive({
     },
     {
       title: "material.e",
+      tooltip: "tooltip.material.e",
       units: "Pressure",
       key: "e",
       width: 160,
     },
     {
       title: "material.g",
+      tooltip: "tooltip.material.g",
       units: "Pressure",
       key: "g",
       width: 160,
     },
     {
       title: "material.alphaT",
-      tooltip: "Temperature coefficient",
+      tooltip: "tooltip.material.alphaT",
+      units: "ThermalExpansion",
       key: "alpha",
       width: 120,
     },
 
     {
       title: "material.density",
+      tooltip: "tooltip.material.density",
       key: "d",
       width: 120,
     },

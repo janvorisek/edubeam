@@ -47,12 +47,33 @@ body,
 }
 
 .inline-edit {
+  display: flex;
+  align-items: center;
   background: #fff;
   border: thin solid #ddd;
   border-radius: 4px;
-  padding: 1px 6px;
   box-sizing: content-box;
   width: 100%;
+
+  .v-selection-control--density-compact {
+    margin-right: 8px;
+    height: 20px !important;
+    width: 20px !important;
+  }
+}
+
+.hinges .v-selection-control--density-compact {
+  height: 20px !important;
+  width: 20px !important;
+
+  > * {
+    height: 20px !important;
+    width: 20px !important;
+  }
+}
+
+input.inline-edit  {
+  padding: 1px 6px;
 }
 
 div.inline-edit.fw {

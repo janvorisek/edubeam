@@ -1,5 +1,7 @@
 <script lang="ts">
-import { container } from "jenesius-vue-modal";
+import { container, openModal } from "jenesius-vue-modal";
+import { serializeModel, deserializeModel } from "./utils";
+import { watch } from "vue";
 
 export default {
   components: { WidgetContainerModal: container },
@@ -13,6 +15,7 @@ import { Beam2D, DofID, Domain } from "ts-fem";
 import { max, min } from "mathjs";
 import { setLocale, async, availableLocales } from "./plugins/i18n";
 
+import Share from "@/components/dialogs/Share.vue";
 import Editor from "@/views/Editor.vue";
 import Dialogs from "@/components/Dialogs.vue";
 import { useProjectStore } from "./store/project";
@@ -24,6 +27,19 @@ const appStore = useAppStore();
 onMounted(() => {
   const solver = useProjectStore().solver;
   const domain = solver.domain;
+
+  const params = new URL(document.location as unknown as URL).searchParams;
+  const name = params.get("model");
+
+  if (name) {
+    deserializeModel(name, solver);
+    _solve();
+
+    const url = document.location.href;
+    window.history.pushState({}, "", url.split("?")[0]);
+
+    return;
+  }
 
   if (domain.nodes.size > 0) return;
 
@@ -92,6 +108,10 @@ const clearMesh = () => {
   useProjectStore().solver.domain.nodes.clear();
 };
 
+const shareMesh = () => {
+  openModal(Share);
+};
+
 onMounted(() => {
   console.log(appStore.locale);
   setLocale(appStore.locale);
@@ -115,6 +135,8 @@ const app_released = APP_RELEASED;
         <v-icon small>mdi-delete-empty</v-icon>
         <span class="ml-1">Clear mesh</span>
       </v-btn>
+
+      <v-btn class="d-none d-sm-inline-flex" @click="shareMesh"> <v-icon small>mdi-share</v-icon> Share model </v-btn>
 
       <v-spacer></v-spacer>
 

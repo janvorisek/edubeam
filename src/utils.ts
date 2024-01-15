@@ -1,4 +1,5 @@
 import { Beam2D, LinearStaticSolver, Node } from "ts-fem";
+import { Ref } from "vue";
 
 export const throttle = (fn: Function, wait = 300) => {
   let inThrottle: boolean, lastFn: ReturnType<typeof setTimeout>, lastTime: number;

@@ -385,7 +385,7 @@
         :style="`height: ${props.height - 36}px`"
       >
         <div class="border-b border-t">
-          <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addNodalLoad')">
+          <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="openModal(AddNodalLoad)">
             <v-icon small>mdi-plus</v-icon> {{ $t("loads.addNodalLoad") }}
           </v-btn>
           <v-btn
@@ -394,7 +394,7 @@
             color="secondary"
             style="border-left: 1px solid #ccc"
             :rounded="0"
-            @click.stop="showDialog('addElementLoad')"
+            @click.stop="openModal(AddElementLoad)"
           >
             <v-icon small>mdi-plus</v-icon> {{ $t("loads.addElementLoad") }}
           </v-btn>

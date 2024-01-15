@@ -1,6 +1,6 @@
 // Utilities
 import { defineStore } from "pinia";
-import { reactive, ref, markRaw, type Raw, type Ref, watch } from "vue";
+import { reactive, ref, markRaw, type Ref, watch } from "vue";
 
 import SVGViewer from "../components/SVGViewer.vue";
 import Results from "../components/Results.vue";
@@ -9,7 +9,7 @@ import { MouseMode } from "@/mouse";
 import { setLocale } from "@/plugins/i18n";
 import { openModal } from "jenesius-vue-modal";
 import SettingsModal from "../components/dialogs/Settings.vue";
-import Qty from "js-quantities/esm";
+import Qty from "js-quantities";
 
 export const useAppStore = defineStore(
   "app",
@@ -88,6 +88,7 @@ export const useAppStore = defineStore(
     const tabs: Ref<
       {
         title: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         component: any;
         props: unknown;
         closable: boolean;

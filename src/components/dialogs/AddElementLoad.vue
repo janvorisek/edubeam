@@ -23,7 +23,11 @@
                 <v-text-field
                   :model-value="appStore.convertForce(loadElementValueFx)"
                   @keydown="checkNumber($event)"
-                  @input="loadElementValueFx = appStore.convertInverseForce(parseFloat($event.target.value))"
+                  @input="
+                    loadElementValueFx = appStore.convertInverseForce(
+                      $event.target.value !== '' ? parseFloat($event.target.value) : 0
+                    )
+                  "
                   label="Fx"
                   required
                 ></v-text-field>
@@ -33,7 +37,11 @@
                 <v-text-field
                   :model-value="appStore.convertForce(loadElementValueFz)"
                   @keydown="checkNumber($event)"
-                  @input="loadElementValueFz = appStore.convertInverseForce(parseFloat($event.target.value))"
+                  @input="
+                    loadElementValueFz = appStore.convertInverseForce(
+                      $event.target.value !== '' ? parseFloat($event.target.value) : 0
+                    )
+                  "
                   label="Fz"
                   required
                 ></v-text-field>
@@ -71,7 +79,7 @@ const props = defineProps<{
 }>();
 
 const open = ref(true);
-const loadElementId = ref(props.label);
+const loadElementId = ref(props.label ?? [...useProjectStore().solver.domain.elements.values()][0].label);
 const loadElementValueFx = ref(0.0);
 const loadElementValueFz = ref(0.0);
 

@@ -24,7 +24,11 @@
                 <v-text-field
                   :model-value="appStore.convertForce(elementNodeValueFx)"
                   @keydown="checkNumber($event)"
-                  @input="elementNodeValueFx = appStore.convertInverseForce(parseFloat($event.target.value))"
+                  @input="
+                    elementNodeValueFx = appStore.convertInverseForce(
+                      $event.target.value !== '' ? parseFloat($event.target.value) : 0
+                    )
+                  "
                   label="fx"
                   required
                 ></v-text-field>
@@ -34,7 +38,11 @@
                 <v-text-field
                   :model-value="appStore.convertForce(elementNodeValueFz)"
                   @keydown="checkNumber($event)"
-                  @input="elementNodeValueFz = appStore.convertInverseForce(parseFloat($event.target.value))"
+                  @input="
+                    elementNodeValueFz = appStore.convertInverseForce(
+                      $event.target.value !== '' ? parseFloat($event.target.value) : 0
+                    )
+                  "
                   label="fz"
                   required
                 ></v-text-field>
@@ -44,7 +52,11 @@
                 <v-text-field
                   :model-value="appStore.convertForce(elementNodeValueMy)"
                   @keydown="checkNumber($event)"
-                  @input="elementNodeValueMy = appStore.convertInverseForce(parseFloat($event.target.value))"
+                  @input="
+                    elementNodeValueMy = appStore.convertInverseForce(
+                      $event.target.value !== '' ? parseFloat($event.target.value) : 0
+                    )
+                  "
                   label="my"
                   required
                 ></v-text-field>

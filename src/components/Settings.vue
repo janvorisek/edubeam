@@ -16,7 +16,7 @@
           <template #item="{ item, props }">
             <v-list-item v-bind="props" color="primary">
               <template #prepend>
-                <img :src="getImageUrl(item.raw.code + '.svg')" class="mr-3" />
+                <img :src="getImageUrl(item.raw.code)" class="mr-3" height="24" />
               </template>
             </v-list-item>
           </template>
@@ -211,9 +211,17 @@ const viewerStore = useViewerStore();
 
 const unitSystem = ref("si");
 
-// updated with your project's assets folder setup
+import English from "language-icons/icons/en.svg";
+import Czech from "language-icons/icons/cs.svg";
+import German from "language-icons/icons/de.svg";
+import Spanish from "language-icons/icons/es.svg";
+import French from "language-icons/icons/fr.svg";
+import Chinese from "language-icons/icons/zh.svg";
+
+const flags = { en: English, cs: Czech, de: German, es: Spanish, fr: French, cn: Chinese };
+
 function getImageUrl(name) {
-  return new URL(`../assets/images/flags/${name}`, import.meta.url).href;
+  return flags[name];
 }
 
 // showNodeLabels,

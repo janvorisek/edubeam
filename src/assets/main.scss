@@ -7,6 +7,10 @@ $font: "Barlow", sans-serif;
 
 @import url("https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,200;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,200;1,300;1,500;1,600;1,900&family=Inter:wght@100;300;400;700&display=swap");
 
+:root {
+  --mx-menu-backgroud-radius: 8px;
+}
+
 .v-main {
   height: 100dvh !important; /* Fallback for browsers that do not support Custom Properties */
   height: calc(var(--dvh, 1dvh) * 100 - 48px) !important;
@@ -195,4 +199,46 @@ select.mini-select {
 
 .widget__modal-container__item.modal-container {
   display: none;
+}
+
+.draggable .drag-handle {
+  cursor: pointer;
+}
+
+.draggable {
+  top: 0;
+  position: absolute;
+
+  z-index: 300 !important;
+  &:hover {
+    z-index: 1000 !important;
+  }
+}
+
+.menu-select .v-field {
+  border-radius: 0 !important;
+}
+
+.mx-context-menu {
+  padding: 0;
+  //overflow: hidden;
+  box-shadow: 0px 2px 1px -1px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)), 0px 1px 1px 0px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)), 0px 1px 3px 0px var(--v-shadow-key-ambient-opacity, rgba(0, 0, 0, 0.12)) !important;
+  .mx-context-menu-items {
+    .mx-context-menu-item-wrapper:first-child .mx-context-menu-item {
+      border-top-left-radius: var(--mx-menu-backgroud-radius);
+      border-top-right-radius: var(--mx-menu-backgroud-radius);
+    }
+    .mx-context-menu-item-wrapper:last-child .mx-context-menu-item {
+      border-bottom-left-radius: var(--mx-menu-backgroud-radius);
+      border-bottom-right-radius: var(--mx-menu-backgroud-radius);
+    }
+  }
+
+  .mx-context-menu-item-sperator {
+    padding: 0;
+  }
+
+  .mx-context-menu-item .mx-item-row:first-child {
+    flex-grow: 1;
+  }
 }

@@ -4,9 +4,18 @@ import { useAppStore } from "../store/app";
 
 const appStore = useAppStore();
 
-const props = defineProps<{
-  onUpdate: (zooming: boolean) => void;
-}>();
+const props = withDefaults(
+  defineProps<{
+    onUpdate: (zooming: boolean) => void;
+    padding: number;
+    mobilePadding: number;
+  }>(),
+  {
+    onUpdate: () => {},
+    padding: 0,
+    mobilePadding: 0,
+  }
+);
 
 let viewBox = { x: 0, y: 0, w: 0, h: 0 };
 const scale = ref(1);
@@ -141,7 +150,7 @@ const centerContent = (): void => {
 const fitContent = (n = 0): void => {
   if (n > 5) return;
 
-  const FIT_CONTENT_PADDING = window.innerWidth > 768 ? 128 : 6;
+  const FIT_CONTENT_PADDING = window.innerWidth > 768 ? props.padding : props.mobilePadding;
 
   const svgEl = svgRef.value as SVGElement;
   const rootG = svgEl.getElementsByTagName("g")[0] as SVGGElement;
@@ -161,64 +170,10 @@ const fitContent = (n = 0): void => {
 
   if (r2 < r1) {
     zoomBy = bBoxW / (svgEl.clientWidth - FIT_CONTENT_PADDING);
-    console.log({ bBoxW, cw: svgEl.clientWidth - FIT_CONTENT_PADDING, zoomBy });
-  } else {
-    console.log({ bBoxH, cw: svgEl.clientHeight - FIT_CONTENT_PADDING, zoomBy });
+    //   console.log({ bBoxW, cw: svgEl.clientWidth - FIT_CONTENT_PADDING, zoomBy });
+    // } else {
+    //   console.log({ bBoxH, cw: svgEl.clientHeight - FIT_CONTENT_PADDING, zoomBy });
   }
-
-  viewBox.h *= zoomBy;
-  viewBox.w *= zoomBy;
-  /*viewBox.h = bBox.height
-  //viewBox.w = bBox.width
-  const realScale = svgEl.clientHeight / bBox.height
-  viewBox.w = bBox.width / realScale*/
-
-  scale.value = svgEl.clientWidth / viewBox.w;
-
-  //console.log(bBox)
-  //console.log(viewBox)
-
-  centerContent();
-  updateMatrix(true);
-
-  requestAnimationFrame(() => fitContent(n + 1));
-  //nextTick(() => fitContent(n + 1));
-};
-
-const fitContent2 = (n = 0): void => {
-  if (n > 5) return;
-
-  const svgEl = svgRef.value as SVGElement;
-  const rootG = svgEl.getElementsByTagName("g")[0] as SVGGElement;
-
-  const rootBBox = svgEl.getBoundingClientRect();
-  //const bBox = rootG.getBoundingClientRect();
-
-  const rootGBBox = rootG.getBBox();
-  const bBoxW = rootGBBox.width * scale.value;
-  const bBoxH = rootGBBox.height * scale.value;
-
-  let zoomBy = bBoxH / (svgEl.clientHeight - 128);
-
-  console.log({ rootG, bBoxW, bBoxH, zoomBy, vw: viewBox.w, vh: viewBox.h });
-
-  // zoom by delta
-  viewBox.h *= zoomBy;
-  viewBox.w *= zoomBy;
-
-  scale.value = svgEl.clientWidth / viewBox.w;
-
-  updateMatrix(true);
-  //requestAnimationFrame(() => centerContent());
-
-  return;
-
-  //console.log(svgEl.clientHeight);
-
-  const r1 = bBoxW / bBoxH;
-  const r2 = rootBBox.width / rootBBox.height;
-
-  if (r2 < r1) zoomBy = bBoxW / (svgEl.clientWidth - 128);
 
   viewBox.h *= zoomBy;
   viewBox.w *= zoomBy;
@@ -276,7 +231,7 @@ const onMouseUp = () => {
 const rootRef = ref<HTMLElement | null>(null);
 const svgRef = ref<SVGElement | null>(null);
 
-defineExpose({ scale, centerContent, fitContent, fitContent2, updateMatrix, onWindowResize });
+defineExpose({ scale, centerContent, fitContent, updateMatrix, onWindowResize });
 </script>
 
 <template>

@@ -29,11 +29,22 @@ export const useProjectStore = defineStore("project", () => {
     y: -999,
   });
 
+  const selection2 = reactive<{ nodes: string[]; elements: string[] }>({ nodes: [], elements: [] });
+
   const clearSelection = () => {
     selection.label = null;
     selection.type = null;
     selection.x = -999;
     selection.y = -999;
+  };
+
+  const clearSelection2 = () => {
+    selection2.nodes = [];
+    selection2.elements = [];
+  };
+
+  const isAnythingSelected2 = () => {
+    return selection2.nodes.length > 0 || selection2.elements.length > 0;
   };
 
   const hover: {
@@ -151,11 +162,52 @@ export const useProjectStore = defineStore("project", () => {
     useProjectStore().shearForceScale = 1 / maxShearForce;
   };
 
+  const selectAll2 = () => {
+    selection2.nodes = [];
+    selection2.elements = [];
+
+    for (const node of solver.value.domain.nodes.values()) {
+      selection2.nodes.push(node.label);
+    }
+
+    for (const element of solver.value.domain.elements.values()) {
+      selection2.elements.push(element.label);
+    }
+  };
+
+  const deleteSelection2 = () => {
+    for (const element of selection2.elements) {
+      solver.value.domain.elements.delete(element);
+
+      // delete all loads on this element
+      for (const loadCase of solver.value.loadCases) {
+        loadCase.solved = false;
+        for (let i = loadCase.elementLoadList.length - 1; i >= 0; i--) {
+          if (loadCase.elementLoadList[i].target === element) {
+            loadCase.elementLoadList.splice(i, 1);
+          }
+        }
+      }
+    }
+
+    for (const node of selection2.nodes) {
+      solver.value.domain.nodes.delete(node);
+    }
+
+    selection2.nodes = [];
+    selection2.elements = [];
+  };
+
   return {
     solve,
     model,
     selection,
+    selection2,
     clearSelection,
+    clearSelection2,
+    deleteSelection2,
+    selectAll2,
+    isAnythingSelected2,
     hover,
     solver,
     nthEigenVector,

@@ -32,6 +32,8 @@ export const useAppStore = defineStore(
       ThermalExpansion: "1/K",
     });
 
+    let _convertLength = Qty.swiftConverter("m", units.Length);
+    let _convertInverseLength = Qty.swiftConverter(units.Length, "m");
     let _convertArea = Qty.swiftConverter("m2", units.Area);
     let _convertInverseArea = Qty.swiftConverter(units.Area, "m2");
     let _convertAreaM2 = Qty.swiftConverter("m4", units.AreaM2);
@@ -44,6 +46,8 @@ export const useAppStore = defineStore(
     watch(
       units,
       (newUnits) => {
+        _convertLength = Qty.swiftConverter("m", newUnits.Length);
+        _convertInverseLength = Qty.swiftConverter(newUnits.Length, "m");
         _convertArea = Qty.swiftConverter("m2", newUnits.Area);
         _convertInverseArea = Qty.swiftConverter(newUnits.Area, "m2");
         _convertAreaM2 = Qty.swiftConverter("m4", newUnits.AreaM2);
@@ -56,6 +60,8 @@ export const useAppStore = defineStore(
       { immediate: true }
     );
 
+    const convertLength = (value: number) => _convertLength(value);
+    const convertInverseLength = (value: number) => _convertInverseLength(value);
     const convertArea = (value: number) => _convertArea(value);
     const convertInverseArea = (value: number) => _convertInverseArea(value);
     const convertAreaM2 = (value: number) => _convertAreaM2(value);
@@ -135,6 +141,8 @@ export const useAppStore = defineStore(
       panButton,
 
       // Convert units
+      convertLength,
+      convertInverseLength,
       convertArea,
       convertInverseArea,
       convertAreaM2,

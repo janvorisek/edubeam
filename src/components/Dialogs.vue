@@ -6,20 +6,22 @@
       <v-card-text>
         <v-form>
           <v-container>
-            <v-row>
-              <v-col cols="12" md="6">
+            <v-row no-gutters>
+              <v-col cols="6" md="6">
                 <v-text-field
                   v-model.number="newNodeX"
                   :label="$t('dialogs.addNode.coordinate_x')"
+                  hide-details="auto"
                   autofocus
                   required
                 ></v-text-field>
               </v-col>
 
-              <v-col cols="12" md="6">
+              <v-col cols="6" md="6">
                 <v-text-field
                   v-model.number="newNodeZ"
                   :label="$t('dialogs.addNode.coordinate_z')"
+                  hide-details="auto"
                   required
                 ></v-text-field>
               </v-col>
@@ -45,26 +47,28 @@
       <v-card-text>
         <v-form>
           <v-container>
-            <v-row>
-              <v-col cols="12" md="6">
+            <v-row no-gutters>
+              <v-col cols="6" md="6">
                 <v-select
                   v-model="newElementFrom"
                   :items="useProjectStore().solver.domain.nodes.values() as unknown as unknown[]"
                   item-title="label"
                   item-value="label"
                   :label="$t('dialogs.addElement.fromNodeId')"
+                  hide-details="auto"
                   required
                   autofocus
                 />
               </v-col>
 
-              <v-col cols="12" md="6">
+              <v-col cols="6" md="6">
                 <v-select
                   v-model="newElementTo"
                   :items="useProjectStore().solver.domain.nodes.values() as unknown as unknown[]"
                   item-title="label"
                   item-value="label"
                   :label="$t('dialogs.addElement.toNodeId')"
+                  hide-details="auto"
                   required
                 />
               </v-col>
@@ -180,24 +184,31 @@
       <v-card-text>
         <v-form>
           <v-container>
-            <v-row>
+            <v-row no-gutters>
               <v-col cols="12" md="6">
                 <v-text-field
                   v-model.number="matE"
                   :label="$t('dialogs.addMaterial.E')"
+                  hide-details="auto"
                   required
                   autofocus
                 ></v-text-field>
               </v-col>
 
               <v-col cols="12" md="6">
-                <v-text-field v-model.number="matG" :label="$t('dialogs.addMaterial.G')" required></v-text-field>
+                <v-text-field
+                  v-model.number="matG"
+                  :label="$t('dialogs.addMaterial.G')"
+                  hide-details="auto"
+                  required
+                ></v-text-field>
               </v-col>
 
               <v-col cols="12" md="6">
                 <v-text-field
                   v-model.number="matDensity"
                   :label="$t('dialogs.addMaterial.density')"
+                  hide-details="auto"
                   required
                 ></v-text-field>
               </v-col>
@@ -206,6 +217,7 @@
                 <v-text-field
                   v-model.number="matAlphaTemp"
                   :label="$t('dialogs.addMaterial.alphaT')"
+                  hide-details="auto"
                   required
                 ></v-text-field>
               </v-col>
@@ -231,21 +243,37 @@
       <v-card-text>
         <v-form>
           <v-container>
-            <v-row>
+            <v-row no-gutters>
               <v-col cols="12" md="6">
-                <v-text-field v-model.number="csArea" label="A - area" required autofocus></v-text-field>
+                <v-text-field
+                  v-model.number="csArea"
+                  label="A - area"
+                  hide-details="auto"
+                  required
+                  autofocus
+                ></v-text-field>
               </v-col>
 
               <v-col cols="12" md="6">
-                <v-text-field v-model.number="csIy" label="Iy - second moment of area" required></v-text-field>
+                <v-text-field
+                  v-model.number="csIy"
+                  label="Iy - second moment of area"
+                  hide-details="auto"
+                  required
+                ></v-text-field>
               </v-col>
 
               <v-col cols="12" md="6">
-                <v-text-field v-model.number="csH" label="h - Height" required></v-text-field>
+                <v-text-field v-model.number="csH" label="h - Height" hide-details="auto" required></v-text-field>
               </v-col>
 
               <v-col cols="12" md="6">
-                <v-text-field v-model.number="csShear" label="Shear coefficient" required></v-text-field>
+                <v-text-field
+                  v-model.number="csShear"
+                  label="Shear coefficient"
+                  hide-details="auto"
+                  required
+                ></v-text-field>
               </v-col>
             </v-row>
           </v-container>

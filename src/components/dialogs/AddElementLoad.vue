@@ -6,7 +6,7 @@
       <v-card-text>
         <v-form>
           <v-container>
-            <v-row>
+            <v-row no-gutters="">
               <v-col cols="12" md="12">
                 <v-select
                   v-model="loadElementId"
@@ -14,6 +14,7 @@
                   item-title="label"
                   item-value="label"
                   label="Element id"
+                  hide-details="auto"
                   required
                   autofocus
                 />
@@ -29,6 +30,7 @@
                     )
                   "
                   label="Fx"
+                  hide-details="auto"
                   required
                 ></v-text-field>
               </v-col>
@@ -43,6 +45,7 @@
                     )
                   "
                   label="Fz"
+                  hide-details="auto"
                   required
                 ></v-text-field>
               </v-col>
@@ -56,9 +59,7 @@
         <v-btn color="green darken-1" @click="addElementLoad()">
           {{ $t("dialogs.addElementLoad.addElementLoad") }}
         </v-btn>
-        <v-btn color="red darken-1" @click="useAppStore().dialogs.addElementLoad = false">{{
-          $t("dialogs.common.cancel")
-        }}</v-btn>
+        <v-btn color="red darken-1" @click="closeModal">{{ $t("dialogs.common.cancel") }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -84,6 +85,7 @@ const loadElementValueFx = ref(0.0);
 const loadElementValueFz = ref(0.0);
 
 const addElementLoad = () => {
+  useProjectStore().solver.loadCases[0].solved = false;
   useProjectStore().solver.loadCases[0].createBeamElementUniformEdgeLoad(
     loadElementId.value,
     [loadElementValueFx.value, loadElementValueFz.value],

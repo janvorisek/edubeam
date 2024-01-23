@@ -1,7 +1,13 @@
 <template>
   <div style="border-top: 1px solid #ddd" :style="`min-height: ${props.height}px; overflow: hidden`">
     <div class="d-flex justify-space-between bg-primary">
-      <v-tabs v-model="appStore.bottomBarTab" bg-color="primary" :show-arrows="false" height="36">
+      <v-tabs
+        v-model="appStore.bottomBarTab"
+        bg-color="primary"
+        :show-arrows="false"
+        height="36"
+        :hide-slider="props.height === 36"
+      >
         <v-tab v-for="(tab, index) in tabs" :key="index" @click="appStore.bottomBarOpen = true">
           <template #default>
             <v-icon small class="mr-3">{{ tab.icon }}</v-icon> {{ $t(tab.title) }}</template
@@ -13,7 +19,7 @@
         <v-btn
           color="primary"
           density="compact"
-          icon="mdi-window-minimize"
+          :icon="appStore.bottomBarOpen ? 'mdi-window-minimize' : 'mdi-window-maximize'"
           @click="appStore.bottomBarOpen = !appStore.bottomBarOpen"
         ></v-btn>
       </div>
@@ -27,8 +33,9 @@
         @touchstart.stop
       >
         <div class="border-b border-t">
-          <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addNode')">
+          <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="openModal(AddNodeDialog, {})">
             <v-icon small>mdi-plus</v-icon> {{ $t("nodes.addNode") }}
+            <v-tooltip :text="$t('common.addUsingDialog')" location="bottom" activator="parent"></v-tooltip>
           </v-btn>
           <v-btn
             size="small"
@@ -39,6 +46,7 @@
             @click.stop="appStore.mouseMode = MouseMode.ADD_NODE"
           >
             <v-icon small>mdi-cursor-default-outline</v-icon> {{ $t("nodes.addNode") }}
+            <v-tooltip :text="$t('common.addUsingMouse')" location="bottom" activator="parent"></v-tooltip>
           </v-btn>
         </div>
         <v-data-table
@@ -115,7 +123,7 @@
           <template #item.bcs="{ item }">
             <div class="d-flex">
               <div class="inline-edit-group">
-                <label :for="`bcs0-${item.label}`" class="input-before">U<sub>x</sub></label>
+                <label :for="`bcs0-${item.label}`" class="input-before">D<sub>x</sub></label>
                 <div class="inline-edit">
                   <v-checkbox-btn
                     :id="`bcs0-${item.label}`"
@@ -127,10 +135,10 @@
                 </div>
               </div>
               <div class="inline-edit-group mx-2">
-                <label :for="`bcs1-${item.label}`" class="input-before">U<sub>z</sub></label>
+                <label :for="`bcs1-${item.label}`" class="input-before">D<sub>z</sub></label>
                 <div class="inline-edit">
                   <v-checkbox-btn
-                    :id="`bcs0-${item.label}`"
+                    :id="`bcs1-${item.label}`"
                     density="compact"
                     inline
                     :model-value="item.bcs.has(2)"
@@ -142,7 +150,7 @@
                 <label :for="`bcs2-${item.label}`" class="input-before">R<sub>y</sub></label>
                 <div class="inline-edit">
                   <v-checkbox-btn
-                    :id="`bcs0-${item.label}`"
+                    :id="`bcs2-${item.label}`"
                     density="compact"
                     inline
                     :model-value="item.bcs.has(4)"
@@ -198,8 +206,9 @@
         :style="`height: ${props.height - 36}px`"
       >
         <div class="border-b border-t">
-          <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addElement')">
+          <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="openModal(AddNodeDialog, {})">
             <v-icon small>mdi-plus</v-icon> {{ $t("elements.addElement") }}
+            <v-tooltip :text="$t('common.addUsingDialog')" location="bottom" activator="parent"></v-tooltip>
           </v-btn>
           <v-btn
             size="small"
@@ -210,6 +219,7 @@
             @click.stop="appStore.mouseMode = MouseMode.ADD_ELEMENT"
           >
             <v-icon small>mdi-cursor-default-outline</v-icon> {{ $t("elements.addElement") }}
+            <v-tooltip :text="$t('common.addUsingMouse')" location="bottom" activator="parent"></v-tooltip>
           </v-btn>
         </div>
 
@@ -268,6 +278,7 @@
               </select>
               <a href="#" class="text-decoration-none text-primary" @click.stop="swapNodes(item)">
                 <v-icon small>mdi-swap-horizontal</v-icon>
+                <v-tooltip :text="$t('elements.swapNodeOrder')" location="bottom" activator="parent"></v-tooltip>
               </a>
               <select class="mini-select flex-shrink-0" v-model="item.nodes[1]" @change="solve" style="width: 100px">
                 <option
@@ -359,21 +370,15 @@
             </div>
           </template>
           <template #item.actions="{ item }">
-            <v-btn
-              density="compact"
-              variant="text"
-              @click="
-                appStore.tabs.push({
-                  title: `stiffness matrix (element ${item.label})`,
-                  component: markRaw(StiffnessMatrix),
-                  props: markRaw({ label: item.label }),
-                  closable: true,
-                });
-                appStore.tab = appStore.tabs.length - 1;
-              "
-              icon="mdi-matrix"
-            ></v-btn>
-            <v-btn density="compact" variant="text" @click="deleteElement(item.label)" icon="mdi-close"></v-btn>
+            <div class="text-no-wrap">
+              <v-btn
+                density="compact"
+                variant="text"
+                @click="layoutStore.openWidget('Stiffnes matrix', StiffnessMatrix, { label: item.label })"
+                icon="mdi-matrix"
+              ></v-btn>
+              <v-btn density="compact" variant="text" @click="deleteElement(item.label)" icon="mdi-close"></v-btn>
+            </div>
           </template>
         </v-data-table>
       </v-window-item>
@@ -440,7 +445,9 @@
           </template>
 
           <template #item.type="{ item }">
-            <span class="text-no-wrap"> {{ item.type === "node" ? "Nodal load" : "Element load" }}</span>
+            <span class="text-no-wrap" v-if="item.type === 'node'">{{ $t("loads.nodalLoad") }}</span>
+            <span class="text-no-wrap" v-if="item.type === 'element'">{{ $t("loads.elementLoad") }}</span>
+            <span class="text-no-wrap" v-if="item.type === 'prescribed'">{{ $t("loads.prescribedDisplacement") }}</span>
           </template>
 
           <template #item.load.values="{ item }">
@@ -492,6 +499,42 @@
                       $event.target as HTMLInputElement,
                       appStore.convertInverseForce
                     )
+                  "
+                  class="inline-edit"
+                />
+              </div>
+            </div>
+
+            <div class="d-flex" v-if="item.type === 'prescribed'">
+              <div class="inline-edit-group mr-2" style="min-width: 64px">
+                <label class="input-before">D<sub>x</sub></label>
+                <input
+                  :value="item.ref.prescribedValues[0]"
+                  @keydown="checkNumber($event)"
+                  @change="
+                    changeSetArrayItem(item.ref, 'prescribedValues', 0, $event.target as HTMLInputElement, (v) => v)
+                  "
+                  class="inline-edit"
+                />
+              </div>
+              <div class="inline-edit-group mr-2" style="min-width: 64px">
+                <span class="input-before">D<sub>z</sub></span>
+                <input
+                  :value="item.ref.prescribedValues[2]"
+                  @keydown="checkNumber($event)"
+                  @change="
+                    changeSetArrayItem(item.ref, 'prescribedValues', 2, $event.target as HTMLInputElement, (v) => v)
+                  "
+                  class="inline-edit"
+                />
+              </div>
+              <div class="inline-edit-group" style="min-width: 64px">
+                <span class="input-before">R<sub>y</sub></span>
+                <input
+                  :value="item.ref.prescribedValues[4]"
+                  @keydown="checkNumber($event)"
+                  @change="
+                    changeSetArrayItem(item.ref, 'prescribedValues', 4, $event.target as HTMLInputElement, (v) => v)
                   "
                   class="inline-edit"
                 />
@@ -563,7 +606,19 @@
 
             <select
               class="mini-select"
-              v-if="item.type === 'element'"
+              v-else-if="item.type === 'prescribed'"
+              v-model="item.ref.target"
+              @change="solve"
+              style="width: 100%"
+            >
+              <option v-for="node in nodes.filter((n) => n.bcs.size > 0)" :value="node.label" :key="node.label">
+                {{ `${$t("common.node")} ${node.label}` }}
+              </option>
+            </select>
+
+            <select
+              class="mini-select"
+              v-else-if="item.type === 'element'"
               v-model="item.ref.target"
               @change="solve"
               style="width: 100%"
@@ -586,7 +641,14 @@
               v-if="item.type === 'node'"
               density="compact"
               variant="text"
-              @click="deleteNodalLoad(item, item)"
+              @click="deleteNodalLoad(item, index)"
+              icon="mdi-close"
+            ></v-btn>
+            <v-btn
+              v-if="item.type === 'prescribed'"
+              density="compact"
+              variant="text"
+              @click="deletePrescribedDisplacement(item, index)"
               icon="mdi-close"
             ></v-btn>
           </template>
@@ -909,19 +971,25 @@ import { useProjectStore } from "../store/project";
 import { useAppStore } from "../store/app";
 import { MouseMode } from "../mouse";
 import { capitalize, checkNumber } from "../utils";
-import { DofID, Beam2D } from "ts-fem";
+import { DofID, Beam2D, PrescribedDisplacement } from "ts-fem";
 import { formatExpValueAsHTML, formatMeasureAsHTML } from "../SVGUtils";
+
 import { openModal } from "jenesius-vue-modal";
 import AddNodalLoad from "./dialogs/AddNodalLoad.vue";
 import AddElementLoad from "./dialogs/AddElementLoad.vue";
 import EditNodalLoad from "./dialogs/EditNodalLoad.vue";
 import EditElementLoad from "./dialogs/EditElementLoad.vue";
-import StiffnessMatrix from "./StiffnessMatrix.vue";
+import AddElementDialog from "./dialogs/AddElement.vue";
+import AddNodeDialog from "./dialogs/AddNode.vue";
+
+import { useLayoutStore } from "@/store/layout";
+import StiffnessMatrix from "@/components/StiffnessMatrix.vue";
 
 type EntityWithLabel = { label: string & { [key: string]: unknown } };
 
 const appStore = useAppStore();
 const projStore = useProjectStore();
+const layoutStore = useLayoutStore();
 
 const props = defineProps({
   height: {
@@ -1131,6 +1199,12 @@ const deleteElementLoad = (load: BeamElementUniformEdgeLoad, id: number) => {
   solve();
 };
 
+const deletePrescribedDisplacement = (load: BeamElementUniformEdgeLoad, id: number) => {
+  setUnsolved();
+  useProjectStore().solver.loadCases[0].prescribedBC.splice(id, 1);
+  solve();
+};
+
 const solve = () => {
   nextTick(() => {
     useProjectStore().solve();
@@ -1179,7 +1253,7 @@ const loads = computed(() => {
     type: string;
     loadCase: LoadCase;
     values: unknown;
-    ref: BeamElementUniformEdgeLoad | NodalLoad;
+    ref: BeamElementUniformEdgeLoad | NodalLoad | PrescribedDisplacement;
   }[] = [];
 
   for (const item of items) {
@@ -1189,6 +1263,16 @@ const loads = computed(() => {
         type: "element",
         loadCase: item,
         values: load.values,
+        ref: load,
+      });
+    }
+
+    for (const load of item.prescribedBC) {
+      display.push({
+        target: load.target,
+        type: "prescribed",
+        loadCase: item,
+        values: load.prescribedValues,
         ref: load,
       });
     }

@@ -10,6 +10,7 @@ import { setLocale } from "@/plugins/i18n";
 import { openModal } from "jenesius-vue-modal";
 import SettingsModal from "../components/dialogs/Settings.vue";
 import Qty from "js-quantities";
+import { suggestLanguage } from "@/utils";
 
 export const useAppStore = defineStore(
   "app",
@@ -20,7 +21,7 @@ export const useAppStore = defineStore(
     const bottomBarOpen = ref(true);
     const bottomBarHeight = ref(226);
 
-    const locale = ref("en");
+    const locale = ref(suggestLanguage());
     const units = reactive({
       Length: "m",
       Area: "m2",

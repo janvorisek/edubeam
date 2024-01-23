@@ -2,6 +2,7 @@
 import { container, openModal } from "jenesius-vue-modal";
 import { serializeModel, deserializeModel } from "./utils";
 import { watch } from "vue";
+import { useMagicKeys } from "@vueuse/core";
 
 export default {
   components: { WidgetContainerModal: container },

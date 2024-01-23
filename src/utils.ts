@@ -1,5 +1,6 @@
 import { Beam2D, LinearStaticSolver, Node } from "ts-fem";
 import { Ref } from "vue";
+import { availableLocales } from "./plugins/i18n";
 
 export const throttle = (fn: Function, wait = 300) => {
   let inThrottle: boolean, lastFn: ReturnType<typeof setTimeout>, lastTime: number;
@@ -152,4 +153,14 @@ export const deserializeModel = (base64String: string, ls: LinearStaticSolver) =
   for (const e of tmp.nl) {
     ls.loadCases[0].createNodalLoad(e[0], e[1]);
   }
+};
+
+export const suggestLanguage = () => {
+  const langs = navigator.languages || [navigator.language];
+
+  for (const lang of langs) {
+    if (availableLocales.some((l) => l.code === lang)) return lang;
+  }
+
+  return "en";
 };

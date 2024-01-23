@@ -1,6 +1,6 @@
 // Utilities
 import { defineStore } from "pinia";
-import { reactive, ref, markRaw, type Ref, watch } from "vue";
+import { reactive, ref, markRaw, type Ref, watch, Raw, Component } from "vue";
 
 import SVGViewer from "../components/SVGViewer.vue";
 import Results from "../components/Results.vue";
@@ -95,14 +95,13 @@ export const useAppStore = defineStore(
     const tabs: Ref<
       {
         title: string;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        component: any;
+        component: Raw<Component>;
         props: unknown;
         closable: boolean;
       }[]
     > = ref([
       { title: "tabView.viewer", component: markRaw(SVGViewer), props: {}, closable: false },
-      { title: "tabView.results", component: markRaw(Results), props: {}, closable: true },
+      //{ title: "tabView.results", component: markRaw(Results), props: {}, closable: true },
       { title: "tabView.settings", component: markRaw(Settings), props: {}, closable: true },
     ]);
 

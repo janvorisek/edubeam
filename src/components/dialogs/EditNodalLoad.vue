@@ -6,7 +6,7 @@
       <v-card-text>
         <v-form>
           <v-container>
-            <v-row>
+            <v-row no-gutters>
               <v-col cols="12" md="12">
                 <v-select
                   v-model="nodeId"

@@ -1,7 +1,12 @@
 <template>
   <v-dialog v-model="open" max-width="1080">
     <v-card class="pa-1">
-      <v-card-title class="text-h5">Share model via URL</v-card-title>
+      <v-card-title class="text-h5">
+        <div class="d-flex">
+          <div class="flex-grow-1">{{ $t("sharing.shareViaURL") }}</div>
+          <v-btn icon="mdi-close" size="small" variant="text" @click.prevent.stop="closeModal()" small class="ml-1" />
+        </div>
+      </v-card-title>
       <v-textarea v-model="val" readonly no-resize variant="outlined" hide-details></v-textarea>
     </v-card>
   </v-dialog>

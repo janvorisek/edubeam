@@ -130,19 +130,26 @@ const app_released = APP_RELEASED;
     <v-app-bar clipped-lefs clipped-right app color="primary" density="compact">
       <!-- <v-app-bar-nav-icon @click="appStore.drawerOpen = !appStore.drawerOpen"></v-app-bar-nav-icon> -->
 
-      <div class="ml-3 d-flex align-center font-weight-bold text-uppercase">Edubeam</div>
+      <div class="ml-3 d-flex align-center font-weight-bold text-uppercase" style="user-select: none">
+        Edubeam
+        <v-tooltip activator="parent" location="bottom">
+          v{{ app_version }} {{ $t("footer.released") }} {{ app_released }}
+        </v-tooltip>
+      </div>
 
       <v-btn class="d-none d-sm-inline-flex ml-3" @click="clearMesh">
         <v-icon small>mdi-delete-empty</v-icon>
-        <span class="ml-1">Clear mesh</span>
+        <span class="ml-1">{{ $t("common.clearMesh") }}</span>
       </v-btn>
 
-      <v-btn class="d-none d-sm-inline-flex" @click="shareMesh"> <v-icon small>mdi-share</v-icon> Share model </v-btn>
+      <v-btn class="d-none d-sm-inline-flex" @click="shareMesh">
+        <v-icon small>mdi-share</v-icon> {{ $t("common.shareModel") }}
+      </v-btn>
 
       <v-spacer></v-spacer>
 
       <v-btn class="d-none d-sm-inline-flex" href="https://edubeam.app" target="_blank">
-        Documentation
+        {{ $t("common.documentation") }}
         <v-icon class="ml-1">mdi-open-in-new</v-icon>
       </v-btn>
 
@@ -162,9 +169,9 @@ const app_released = APP_RELEASED;
       </v-list>
     </v-navigation-drawer>
 
-    <v-navigation-drawer v-model="appStore.rightDrawerOpen" location="right" temporary>
-      availableLocales</v-navigation-drawer
-    >
+    <v-navigation-drawer v-model="appStore.rightDrawerOpen" location="right" temporary :scrim="false">
+      -
+    </v-navigation-drawer>
 
     <v-main>
       <Editor />
@@ -174,7 +181,7 @@ const app_released = APP_RELEASED;
 
     <widget-container-modal />
 
-    <div
+    <!-- <div
       class="d-none d-sm-flex align-center justify-space-between px-3 text-caption bg-secondary border-t"
       style="height: 24px"
     >
@@ -183,16 +190,16 @@ const app_released = APP_RELEASED;
           class="text-black text-decoration-none font-weight-medium"
           href="https://github.com/janvorisek/edubeam/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=%5BBUG%5D"
           target="_blank"
-          >Report issue</a
+          >{{ $t("footer.reportIssue") }}</a
         >
         <a
           class="text-black text-decoration-none font-weight-medium ml-3"
           href="https://github.com/janvorisek/edubeam/issues/new?assignees=&labels=&projects=&template=feature_request.md&title="
           target="_blank"
-          >Request feature</a
+          >{{ $t("footer.requestFeature") }}</a
         >
       </div>
-      <div>edubeam v{{ app_version }} released on {{ app_released }}</div>
-    </div>
+      <div>edubeam v{{ app_version }} {{ $t("footer.released") }} {{ app_released }}</div>
+    </div> -->
   </v-app>
 </template>

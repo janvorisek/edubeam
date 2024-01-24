@@ -134,8 +134,8 @@ const app_released = APP_RELEASED;
     <v-app-bar clipped-lefs clipped-right app color="primary" density="compact">
       <!-- <v-app-bar-nav-icon @click="appStore.drawerOpen = !appStore.drawerOpen"></v-app-bar-nav-icon> -->
 
-      <div class="ml-3 d-flex align-center font-weight-bold text-uppercase" style="user-select: none">
-        Edubeam
+      <div class="app-title ml-3 d-flex align-center font-weight-bold" style="user-select: none">
+        edubeam
         <v-tooltip activator="parent" location="bottom">
           v{{ app_version }} {{ $t("footer.released") }} {{ app_released }}
         </v-tooltip>

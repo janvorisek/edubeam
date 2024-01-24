@@ -19,7 +19,7 @@
         <v-btn
           color="primary"
           density="compact"
-          :icon="appStore.bottomBarOpen ? 'mdi-window-minimize' : 'mdi-window-maximize'"
+          :icon="'mdi-window-minimize'"
           @click="appStore.bottomBarOpen = !appStore.bottomBarOpen"
         ></v-btn>
       </div>

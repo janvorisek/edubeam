@@ -1,8 +1,6 @@
 <script lang="ts">
 import { container, openModal } from "jenesius-vue-modal";
-import { serializeModel, deserializeModel } from "./utils";
-import { watch } from "vue";
-import { useMagicKeys } from "@vueuse/core";
+import { deserializeModel } from "./utils";
 
 export default {
   components: { WidgetContainerModal: container },
@@ -11,22 +9,32 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
-import { Beam2D, DofID, Domain } from "ts-fem";
-import { max, min } from "mathjs";
-import { setLocale, async, availableLocales } from "./plugins/i18n";
+import { onMounted, ref } from "vue";
+import { DofID } from "ts-fem";
+import { setLocale, availableLocales } from "./plugins/i18n";
 
 import Share from "@/components/dialogs/Share.vue";
 import Editor from "@/views/Editor.vue";
 import Dialogs from "@/components/Dialogs.vue";
 import { useProjectStore } from "./store/project";
-import { loadLocaleMessages, i18n } from "./plugins/i18n";
 import { useAppStore } from "./store/app";
 
 const appStore = useAppStore();
-const projectStore = useProjectStore();
 
-const { escape } = useMagicKeys();
+const menu = ref([
+  {
+    title: "common.clearMesh",
+    action: () => {
+      clearMesh();
+    },
+  },
+  {
+    title: "common.shareModel",
+    action: () => {
+      shareMesh();
+    },
+  },
+]);
 
 onMounted(() => {
   const solver = useProjectStore().solver;
@@ -149,17 +157,17 @@ const app_released = APP_RELEASED;
       </div>
 
       <v-btn class="d-none d-sm-inline-flex ml-3" @click="clearMesh">
-        <v-icon small>mdi-delete-empty</v-icon>
-        <span class="ml-1">{{ $t("common.clearMesh") }}</span>
+        <v-icon>mdi-delete-empty</v-icon>
+        <span>{{ $t("common.clearMesh") }}</span>
       </v-btn>
 
       <v-btn class="d-none d-sm-inline-flex" @click="shareMesh">
-        <v-icon small>mdi-share</v-icon> {{ $t("common.shareModel") }}
+        <v-icon>mdi-share</v-icon> {{ $t("common.shareModel") }}
       </v-btn>
 
       <v-spacer></v-spacer>
 
-      <v-btn class="d-none d-sm-inline-flex" href="https://edubeam.app" target="_blank">
+      <v-btn class="d-inline-flex" href="https://edubeam.app" target="_blank">
         {{ $t("common.documentation") }}
         <v-icon class="ml-1">mdi-open-in-new</v-icon>
       </v-btn>
@@ -167,6 +175,19 @@ const app_released = APP_RELEASED;
       <v-btn class="d-none d-sm-inline-flex" icon href="https://github.com/janvorisek/edubeam" target="_blank">
         <v-icon>mdi-github</v-icon>
       </v-btn>
+
+      <template #append>
+        <v-btn icon>
+          <v-icon>mdi-dots-vertical</v-icon>
+          <v-menu activator="parent">
+            <v-list>
+              <v-list-item v-for="(item, index) in menu" :key="index" :value="index" @click="item.action">
+                <v-list-item-title>{{ $t(item.title) }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-btn>
+      </template>
     </v-app-bar>
 
     <v-navigation-drawer v-model="appStore.drawerOpen" temporary>

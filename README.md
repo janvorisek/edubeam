@@ -13,7 +13,7 @@
     <a href="https://edubeam.app"><strong>Explore the docs »</strong></a>
     <br/>
     <br/>
-    <a href="https://github.com/janvorisek/edubeam">Run edubeam</a>
+    <a href="https://run.edubeam.app">Run edubeam</a>
     ·
     <a href="https://github.com/janvorisek/edubeam/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=%5BBUG%5D">Report Bug</a>
     ·

@@ -38,6 +38,9 @@ export const checkNumber = (e: KeyboardEvent) => {
 
   const isActionKey =
     (e.ctrlKey && e.key === "a") ||
+    (e.ctrlKey && e.key === "c") ||
+    (e.ctrlKey && e.key === "v") ||
+    (e.ctrlKey && e.key === "x") ||
     e.key === "Escape" ||
     e.key === "Delete" ||
     e.key === "Backspace" ||

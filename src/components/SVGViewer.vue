@@ -128,6 +128,7 @@ const { escape, f, c, _delete } = useMagicKeys({
 const { ctrl_a } = useMagicKeys({
   passive: false,
   onEventFired(e) {
+    if ("activeElement" in document && document.activeElement.tagName !== "BODY") return;
     if (e.ctrlKey && e.key === "a" && e.type === "keydown") e.preventDefault();
   },
 });

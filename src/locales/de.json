@@ -1,0 +1,168 @@
+{
+    "tabView": {
+      "viewer": "Ansicht",
+      "settings": "Einstellungen",
+      "results": "Ergebnisse"
+    },
+    "common": {
+      "label": "Bezeichnung",
+      "node": "Knoten",
+      "element": "Element",
+      "crossSection": "Querschnitt",
+      "material": "Material",
+      "settings": "Einstellungen",
+      "actions": "Aktionen",
+      "coords": "Koordinaten",
+      "type": "Typ",
+      "nodes": "Knotenpunkte",
+      "endHinges": "Endgelenke",
+      "massMatrix": "Massenmatrix",
+      "target": "Ziel",
+      "components": "Komponenten",
+      "loadCase": "Lastfall",
+      "loads": "Lasten",
+      "clearMesh": "Netz löschen",
+      "shareModel": "Modell teilen",
+      "documentation": "Dokumentation"
+    },
+    "nodes": {
+      "addNode": "Knoten hinzufügen"
+    },
+    "elements": {
+      "addElement": "Elemente hinzufügen"
+    },
+    "loads": {
+      "addNodalLoad": "Knotenlast hinzufügen",
+      "addElementLoad": "Elementlast hinzufügen"
+    },
+    "tabs": {
+      "nodes": "Knoten",
+      "elements": "Elemente",
+      "loads": "Lasten",
+      "materials": "Materialien",
+      "crossSections": "Querschnitte",
+      "results": "Ergebnisse"
+    },
+    "crossSection": {
+      "area": "Fläche",
+      "h": "Höhe",
+      "iy": "Iy",
+      "k": "Schubkoeffizient"
+    },
+    "material": {
+      "e": "E",
+      "g": "G",
+      "density": "Dichte",
+      "alphaT": "α_T"
+    },
+    "settings": {
+      "results_scale": "Ergebnisskala",
+      "grid_snap_step": "Raster Schrittweite",
+      "snap_to_grid": "Am Raster ausrichten",
+      "language": "Sprache",
+      "language_and_locale": "Sprache & Ort",
+      "show_normal_force": "Normalkraft anzeigen",
+      "show_shear_force": "Scherkraft anzeigen",
+      "show_bending_moment": "Biegemoment anzeigen",
+      "show_deformed_shape": "Verformte Form anzeigen",
+      "show_loads": "Lasten anzeigen",
+      "units": {
+        "units": "Einheiten",
+        "length": "Länge",
+        "mass": "Masse",
+        "force": "Kraft",
+        "pressure": "Druck",
+        "area": "Fläche",
+        "areaM2": "Flächenträgheitsmoment"
+      },
+      "grid": "Raster",
+      "show_grid": "Raster anzeigen",
+      "mouse": {
+        "mouse": "Maus",
+        "pan_button": "Verschieben mit",
+        "wheel": "Mausrad",
+        "right_button": "Rechte Taste"
+      }
+    },
+    "sideSettings": {
+      "showDeformedShape": "Verformte Form",
+      "supports": "Auflager",
+      "loads": "Lasten",
+      "nodeLabels": "Knotenbezeichnungen",
+      "elementLabels": "Elementbezeichnungen",
+      "more_settings": "Weitere Einstellungen"
+    },
+    "dofs": {
+      "bcs": "Unterstützte Freiheitsgrade"
+    },
+    "results": {
+      "results": "Ergebnisse",
+      "nodal_results": "Knotenergebnisse",
+      "element_results": "Elementergebnisse"
+    },
+    "materials": {
+      "addMaterial": "Material hinzufügen",
+      "material_library": "Materialbibliothek",
+      "section_library": "Sektionsbibliothek"
+    },
+    "crossSections": {
+      "addCrossSection": "Querschnitt hinzufügen"
+    },
+    "dialogs": {
+      "addNode": {
+        "addNewNode": "Neuen Knoten hinzufügen",
+        "coordinate_x": "X-Koordinate",
+        "coordinate_z": "Z-Koordinate",
+        "addNode": "Knoten hinzufügen"
+      },
+      "common": {
+        "cancel": "Abbrechen"
+      },
+      "addElement": {
+        "fromNodeId": "Anfangsknoten",
+        "toNodeId": "Endknoten",
+        "addElement": "Element hinzufügen",
+        "addNewElement": "Neues Element hinzufügen"
+      },
+      "addNodalLoad": {
+        "addNewNodalLoad": "Neue Knotenlast hinzufügen",
+        "addNodalLoad": "Knotenlast hinzufügen"
+      },
+      "addElementLoad": {
+        "addNewElementLoad": "Neue Elementlast hinzufügen",
+        "addElementLoad": "Elementlast hinzufügen"
+      },
+      "addMaterial": {
+        "addNewMaterial": "Neues Material hinzufügen",
+        "addMaterial": "Material hinzufügen",
+        "E": "E - Elastizitätsmodul",
+        "G": "G - Schubmodul",
+        "density": "ρ - Dichte",
+        "alphaT": "α - Temperaturausdehnungskoeffizient"
+      },
+      "addCrossSection": {
+        "addNewCrossSection": "Neuen Querschnitt hinzufügen",
+        "addCrossSection": "Querschnitt hinzufügen"
+      },
+      "editNodalLoad": {
+        "editNodalLoad": "Knotenlast bearbeiten"
+      },
+      "editElementLoad": {
+        "editElementLoad": "Elementlast bearbeiten"
+      }
+    },
+    "tooltip": {
+      "materials": {},
+      "material": {
+        "alphaT": "Der Temperaturausdehnungskoeffizient beschreibt, wie sich die Größe eines Objekts mit einer Änderung der Temperatur verändert.",
+        "e": "Das Elastizitätsmodul misst die Zug- oder Drucksteifigkeit, wenn die Kraft längs angewendet wird.",
+        "g": "Das Schubmodul ist eine Eigenschaft, die den Widerstand gegen Verformung unter Scherspannung misst und die Steifigkeit des Materials bei auf seine Oberfläche wirkenden Kräften anzeigt.",
+        "density": "Die Dichte ist ein Maß dafür, wie viel Masse in einem bestimmten Volumen einer Substanz enthalten ist."
+      }
+    },
+    "footer": {
+      "reportIssue": "Problem melden",
+      "requestFeature": "Feature anfragen",
+      "released": "veröffentlicht"
+    }
+  }

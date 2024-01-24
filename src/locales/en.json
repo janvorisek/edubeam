@@ -20,17 +20,33 @@
     "target": "Target",
     "components": "Components",
     "loadCase": "Load case",
-    "loads": "Loads"
+    "loads": "Loads",
+    "clearMesh": "Clear mesh",
+    "shareModel": "Share model",
+    "documentation": "Docs",
+    "addUsingDialog": "Add using dialog",
+    "addUsingMouse": "Add using mouse",
+    "edit": "Edit",
+    "copy": "Copy",
+    "delete": "Delete",
+    "stiffnessMatrix": "Stiffness matrix"
   },
   "nodes": {
-    "addNode": "Add node"
+    "addNode": "Add node",
+    "editNode": "Edit node"
   },
   "elements": {
-    "addElement": "Add elements"
+    "addElement": "Add elements",
+    "editElement": "Edit element",
+    "swapNodeOrder": "Swap nodes"
   },
   "loads": {
     "addNodalLoad": "Add nodal load",
-    "addElementLoad": "Add element load"
+    "addElementLoad": "Add element load",
+    "addLoad": "Add load",
+    "nodalLoad": "Nodal load",
+    "elementLoad": "Element load",
+    "prescribedDisplacement": "Prescribed displacement"
   },
   "tabs": {
     "nodes": "Nodes",
@@ -156,5 +172,13 @@
       "g": "The shear modulus is a property that measures resistance to deformation under shear stress, indicating the material's stiffness in response to forces applied parallel to its surface.",
       "density": "Density is a measure of how much mass is contained in a given volume of a substance. "
     }
+  },
+  "footer": {
+    "reportIssue": "Report issue",
+    "requestFeature": "Request feature",
+    "released": "released"
+  },
+  "sharing": {
+    "shareViaURL": "Share model via URL"
   }
 }

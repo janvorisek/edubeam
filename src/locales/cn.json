@@ -1,0 +1,168 @@
+{
+  "tabView": {
+    "viewer": "查看器",
+    "settings": "设置",
+    "results": "结果"
+  },
+  "common": {
+    "label": "标签",
+    "node": "节点",
+    "element": "单元",
+    "crossSection": "横截面",
+    "material": "材料",
+    "settings": "设置",
+    "actions": "操作",
+    "coords": "坐标",
+    "type": "类型",
+    "nodes": "节点",
+    "endHinges": "端部铰支",
+    "massMatrix": "质量矩阵",
+    "target": "目标",
+    "components": "组件",
+    "loadCase": "荷载工况",
+    "loads": "荷载",
+    "clearMesh": "清除网格",
+    "shareModel": "共享模型",
+    "documentation": "文档"
+  },
+  "nodes": {
+    "addNode": "添加节点"
+  },
+  "elements": {
+    "addElement": "添加单元"
+  },
+  "loads": {
+    "addNodalLoad": "添加节点荷载",
+    "addElementLoad": "添加单元荷载"
+  },
+  "tabs": {
+    "nodes": "节点",
+    "elements": "单元",
+    "loads": "荷载",
+    "materials": "材料",
+    "crossSections": "横截面",
+    "results": "结果"
+  },
+  "crossSection": {
+    "area": "面积",
+    "h": "高度",
+    "iy": "惯性矩",
+    "k": "剪切系数"
+  },
+  "material": {
+    "e": "弹性模量 E",
+    "g": "剪切模量 G",
+    "density": "密度",
+    "alphaT": "热膨胀系数 α_T"
+  },
+  "settings": {
+    "results_scale": "结果比例",
+    "grid_snap_step": "网格吸附步长",
+    "snap_to_grid": "吸附到网格",
+    "language": "语言",
+    "language_and_locale": "语言和区域",
+    "show_normal_force": "显示法向力",
+    "show_shear_force": "显示剪力",
+    "show_bending_moment": "显示弯矩",
+    "show_deformed_shape": "显示变形形状",
+    "show_loads": "显示荷载",
+    "units": {
+      "units": "单位",
+      "length": "长度",
+      "mass": "质量",
+      "force": "力",
+      "pressure": "压力",
+      "area": "面积",
+      "areaM2": "截面二阶矩"
+    },
+    "grid": "网格",
+    "show_grid": "显示网格",
+    "mouse": {
+      "mouse": "鼠标",
+      "pan_button": "使用平移",
+      "wheel": "鼠标滚轮",
+      "right_button": "右键"
+    }
+  },
+  "sideSettings": {
+    "showDeformedShape": "变形形状",
+    "supports": "支持",
+    "loads": "荷载",
+    "nodeLabels": "节点标签",
+    "elementLabels": "单元标签",
+    "more_settings": "更多设置"
+  },
+  "dofs": {
+    "bcs": "支持的自由度"
+  },
+  "results": {
+    "results": "结果",
+    "nodal_results": "节点结果",
+    "element_results": "单元结果"
+  },
+  "materials": {
+    "addMaterial": "添加材料",
+    "material_library": "材料库",
+    "section_library": "截面库"
+  },
+  "crossSections": {
+    "addCrossSection": "添加横截面"
+  },
+  "dialogs": {
+    "addNode": {
+      "addNewNode": "添加新节点",
+      "coordinate_x": "X坐标",
+      "coordinate_z": "Z坐标",
+      "addNode": "添加节点"
+    },
+    "common": {
+      "cancel": "取消"
+    },
+    "addElement": {
+      "fromNodeId": "起始节点",
+      "toNodeId": "结束节点",
+      "addElement": "添加单元",
+      "addNewElement": "添加新单元"
+    },
+    "addNodalLoad": {
+      "addNewNodalLoad": "添加新节点荷载",
+      "addNodalLoad": "添加节点荷载"
+    },
+    "addElementLoad": {
+      "addNewElementLoad": "添加新单元荷载",
+      "addElementLoad": "添加单元荷载"
+    },
+    "addMaterial": {
+      "addNewMaterial": "添加新材料",
+      "addMaterial": "添加材料",
+      "E": "E - 弹性模量",
+      "G": "G - 剪切模量",
+      "density": "ρ - 密度",
+      "alphaT": "α - 热膨胀系数"
+    },
+    "addCrossSection": {
+      "addNewCrossSection": "添加新横截面",
+      "addCrossSection": "添加横截面"
+    },
+    "editNodalLoad": {
+      "editNodalLoad": "编辑节点荷载"
+    },
+    "editElementLoad": {
+      "editElementLoad": "编辑单元荷载"
+    }
+  },
+  "tooltip": {
+    "materials": {},
+    "material": {
+      "alphaT": "热膨胀系数描述物体在温度变化时尺寸的变化。",
+      "e": "弹性模量测量在拉伸或压缩时的刚度，当力沿长度方向施加时。",
+      "g": "剪切模量是一种测量在剪切应力下变形抵抗的特性，表明材料对施加在其表面的力的响应中的刚度。",
+      "density": "密度是物质在给定体积内包含多少质量的度量。"
+    }
+  },
+  "footer": {
+    "reportIssue": "报告问题",
+    "requestFeature": "请求功能",
+    "released": "发布"
+  }
+}

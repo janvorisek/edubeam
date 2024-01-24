@@ -5,6 +5,10 @@ import * as vloc from "vuetify/locale";
 export const availableLocales = [
   { code: "en", name: "English" },
   { code: "cs", name: "Čeština" },
+  { code: "de", name: "Deutsch" },
+  { code: "fr", name: "Français" },
+  { code: "es", name: "Español" },
+  { code: "cn", name: "汉语" },
 ];
 
 // Create Vue I18n instance.

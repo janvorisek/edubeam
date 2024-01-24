@@ -15,7 +15,14 @@
     "nodes": "Uzly",
     "target": "Působiště",
     "type": "Typ",
-    "loads": "Zatížení"
+    "loads": "Zatížení",
+    "clearMesh": "Smazat konstrukci",
+    "documentation": "Docs",
+    "shareModel": "Sdílet konstrukci",
+    "delete": "Smazat",
+    "copy": "Kopírovat",
+    "edit": "Upravit",
+    "stiffnessMatrix": "Matice tuhosti"
   },
   "tabs": {
     "nodes": "Uzly",
@@ -61,11 +68,17 @@
     }
   },
   "elements": {
-    "addElement": "Přidat prvek"
+    "addElement": "Přidat prvek",
+    "swapNodeOrder": "Přehodit pořadí uzlů",
+    "editElement": "Upravit prvek"
   },
   "loads": {
     "addElementLoad": "Přidat prvkové zatížení",
-    "addNodalLoad": "Přidat uzlové zatížení"
+    "addNodalLoad": "Přidat uzlové zatížení",
+    "nodalLoad": "Uzlové zatížení",
+    "elementLoad": "Prvkové zatížení",
+    "prescribedDisplacement": "Předepsané posunutí",
+    "addLoad": "Přidat zatížení"
   },
   "material": {
     "alphaT": "α_T",
@@ -155,5 +168,13 @@
       "e": "Youngův modul pružnosti vyjadřuje závilosti mezi napětím a deformací v tahu a tlaku.",
       "g": "Smykový modul je vlastnost, která měří odolnost vůči deformaci při smykovém napětí, indikující tuhost materiálu v reakci na síly působící rovnoběžně s jeho povrchem."
     }
+  },
+  "footer": {
+    "released": "vydáno",
+    "reportIssue": "Nahlásit problém",
+    "requestFeature": "Navrhnout novou funkci"
+  },
+  "sharing": {
+    "shareViaURL": "Sdílejte konstrukci pomocí odkazu"
   }
 }

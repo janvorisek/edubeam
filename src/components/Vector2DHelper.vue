@@ -33,12 +33,29 @@ const center = computed(() => {
   return { x: end.value.x / 2, y: end.value.y / 2 };
 });
 
+const center2 = computed(() => {
+  let y = loadNodeValueFxInUnits.value / flen.value;
+  let x = -(loadNodeValueFzInUnits.value / flen.value);
+
+  if (props.fx < 0) {
+    x *= -1;
+    y *= -1;
+  }
+
+  if (props.fz < 0) {
+    x *= -2 / 10;
+    y *= -2 / 10;
+  }
+
+  return { x: center.value.x + x * 10, y: center.value.y + y * 10 };
+});
+
 const vbox = computed(() => {
   return `${center.value.x - 60} ${center.value.y - 60} ${WIDTH - 40} ${HEIGHT - 40}`;
 });
 
 const angle = computed(() => {
-  return Math.atan2(props.fz, props.fx);
+  return (Math.atan2(props.fz, props.fx) * 180) / Math.PI;
 });
 </script>
 
@@ -96,36 +113,35 @@ const angle = computed(() => {
     />
 
     <text
-      v-if="Math.abs(props.fx) > 1e-6"
+      v-if="Math.abs(props.fx) > 1e-6 && Math.abs(props.fz) > 1e-6"
       :x="end.x / 2"
-      :y="props.fz < 0 ? 10 : -10"
+      :y="props.fz < 0 ? 5 : -5"
       fill="red"
       font-size="10"
       text-anchor="middle"
       alignment-baseline="middle"
     >
-      {{ Math.abs(loadNodeValueFxInUnits) }}
+      {{ Math.abs(loadNodeValueFxInUnits).toFixed(2) }}
     </text>
     <text
-      v-if="Math.abs(props.fz) > 1e-6"
-      :x="props.fx < 0 ? end.x - 5 : end.x + 5"
+      v-if="Math.abs(props.fx) > 1e-6 && Math.abs(props.fz) > 1e-6"
+      :x="props.fx < 0 ? end.x - 3 : end.x + 3"
       :y="end.y / 2"
       fill="blue"
       font-size="10"
       :text-anchor="props.fx < 0 ? 'end' : 'start'"
       alignment-baseline="middle"
     >
-      {{ Math.abs(loadNodeValueFzInUnits) }}
+      {{ Math.abs(loadNodeValueFzInUnits).toFixed(2) }}
     </text>
     <g>
       <text
-        :x="center.x"
-        :y="center.y"
+        :x="center2.x"
+        :y="center2.y"
         fill="black"
         font-size="10"
         text-anchor="middle"
-        alignment-baseline="baseline"
-        :transform="`rotate(${(angle * 180) / Math.PI}, ${center.x}, ${center.y})`"
+        :transform="`rotate(${props.fx < 0 ? 180 + angle : angle}, ${center2.x}, ${center2.y})`"
       >
         {{ flen.toFixed(2) }}
       </text>

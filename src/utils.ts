@@ -164,3 +164,18 @@ export const suggestLanguage = () => {
 
   return "en";
 };
+
+export const parseFloat2 = (s: string | number) => {
+  s = s.toString();
+
+  if (s === "") return 0;
+  if (s === "-") return 0;
+
+  s = s.replaceAll(/\s/g, "");
+
+  let tmp = parseFloat(s.replace(",", "."));
+
+  tmp = isNaN(tmp) ? 0 : tmp;
+
+  return tmp;
+};

@@ -34,6 +34,7 @@ onMounted(() => {
 
   const params = new URL(document.location as unknown as URL).searchParams;
   const name = params.get("model");
+  const lang = params.get("lang");
 
   if (name) {
     deserializeModel(name, solver);
@@ -43,6 +44,12 @@ onMounted(() => {
     window.history.pushState({}, "", url.split("?")[0]);
 
     return;
+  }
+
+  if (lang && availableLocales.findIndex((l) => l.code === lang) > 0) {
+    appStore.locale = lang;
+    const url = document.location.href;
+    window.history.pushState({}, "", url.split("?")[0]);
   }
 
   if (domain.nodes.size > 0) return;

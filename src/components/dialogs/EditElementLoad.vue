@@ -20,44 +20,22 @@
                 />
               </v-col>
 
-              <v-col cols="12" md="4">
+              <v-col cols="12" md="6">
                 <v-text-field
-                  :model-value="appStore.convertForce(elementNodeValueFx)"
+                  v-model="elementNodeValueFx"
                   @keydown="checkNumber($event)"
-                  @input="
-                    elementNodeValueFx = appStore.convertInverseForce(
-                      $event.target.value !== '' ? parseFloat($event.target.value) : 0
-                    )
-                  "
                   label="fx"
+                  :suffix="`${appStore.units.Force}/m`"
                   required
                 ></v-text-field>
               </v-col>
 
-              <v-col cols="12" md="4">
+              <v-col cols="12" md="6">
                 <v-text-field
-                  :model-value="appStore.convertForce(elementNodeValueFz)"
+                  v-model="elementNodeValueFz"
                   @keydown="checkNumber($event)"
-                  @input="
-                    elementNodeValueFz = appStore.convertInverseForce(
-                      $event.target.value !== '' ? parseFloat($event.target.value) : 0
-                    )
-                  "
                   label="fz"
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <v-col cols="12" md="4">
-                <v-text-field
-                  :model-value="appStore.convertForce(elementNodeValueMy)"
-                  @keydown="checkNumber($event)"
-                  @input="
-                    elementNodeValueMy = appStore.convertInverseForce(
-                      $event.target.value !== '' ? parseFloat($event.target.value) : 0
-                    )
-                  "
-                  label="my"
+                  :suffix="`${appStore.units.Force}/m`"
                   required
                 ></v-text-field>
               </v-col>
@@ -80,11 +58,10 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useProjectStore } from "@/store/project";
-import { DofID } from "ts-fem";
 import { closeModal } from "jenesius-vue-modal";
 import { onMounted } from "vue";
 import { useAppStore } from "@/store/app";
-import { checkNumber } from "@/utils";
+import { checkNumber, parseFloat2 } from "@/utils";
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
@@ -94,23 +71,25 @@ const props = defineProps<{
 }>();
 
 const open = ref(true);
-const elementNodeValueFx = ref(0.0);
-const elementNodeValueFz = ref(0.0);
-const elementNodeValueMy = ref(0.0);
+const elementNodeValueFx = ref("0.0");
+const elementNodeValueFz = ref("0.0");
+
+const realFx = computed(() => appStore.convertInverseForce(parseFloat2(elementNodeValueFx.value)));
+const realFz = computed(() => appStore.convertInverseForce(parseFloat2(elementNodeValueFz.value)));
 
 onMounted(() => {
   const load = useProjectStore().solver.loadCases[0].elementLoadList[props.index];
 
-  elementNodeValueFx.value = load.values[0];
-  elementNodeValueFz.value = load.values[1];
+  elementNodeValueFx.value = appStore.convertForce(load.values[0]).toFixed();
+  elementNodeValueFz.value = appStore.convertForce(load.values[1]).toFixed();
   //elementNodeValueMy.value = load.values[DofID.Ry];
 });
 
 const editNodalLoad = () => {
   const load = useProjectStore().solver.loadCases[0].elementLoadList[props.index];
 
-  load.values[0] = elementNodeValueFx.value;
-  load.values[1] = elementNodeValueFz.value;
+  load.values[0] = realFx.value;
+  load.values[1] = realFz.value;
   //load.values[DofID.Ry] = loadNodeValueMy.value;
 
   useProjectStore().solve();

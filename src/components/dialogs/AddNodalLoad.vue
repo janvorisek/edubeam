@@ -9,7 +9,7 @@
             <v-row no-gutters>
               <v-col cols="6" align-self="center">
                 <div class="d-flex justify-center">
-                  <Vector2DHelper :fx="loadNodeValueFx" :fz="loadNodeValueFz" :my="loadNodeValueMy" />
+                  <Vector2DHelper :fx="realFx" :fz="realFz" :my="realMy" />
                 </div>
               </v-col>
 
@@ -29,13 +29,8 @@
                   </v-col>
                   <v-col cols="12">
                     <v-text-field
-                      :model-value="appStore.convertForce(loadNodeValueFx)"
+                      v-model="loadNodeValueFx"
                       @keydown="checkNumber($event)"
-                      @input="
-                        loadNodeValueFx = appStore.convertInverseForce(
-                          $event.target.value !== '' ? parseFloat($event.target.value) : 0
-                        )
-                      "
                       label="Fx"
                       hide-details="auto"
                       :suffix="appStore.units.Force"
@@ -45,13 +40,8 @@
 
                   <v-col cols="12">
                     <v-text-field
-                      :model-value="appStore.convertForce(loadNodeValueFz)"
+                      v-model="loadNodeValueFz"
                       @keydown="checkNumber($event)"
-                      @input="
-                        loadNodeValueFz = appStore.convertInverseForce(
-                          $event.target.value !== '' ? parseFloat($event.target.value) : 0
-                        )
-                      "
                       label="Fz"
                       hide-details="auto"
                       :suffix="appStore.units.Force"
@@ -61,16 +51,11 @@
 
                   <v-col cols="12">
                     <v-text-field
-                      :model-value="appStore.convertForce(loadNodeValueMy)"
+                      v-model="loadNodeValueMy"
                       @keydown="checkNumber($event)"
-                      @input="
-                        loadNodeValueMy = appStore.convertInverseForce(
-                          $event.target.value !== '' ? parseFloat($event.target.value) : 0
-                        )
-                      "
                       label="My"
                       hide-details="auto"
-                      :suffix="appStore.units.Force"
+                      :suffix="`${appStore.units.Force}m`"
                       required
                     >
                     </v-text-field>
@@ -97,7 +82,7 @@ import { useProjectStore } from "../../store/project";
 import { DofID, NodalLoad } from "ts-fem";
 import { closeModal } from "jenesius-vue-modal";
 import { useAppStore } from "@/store/app";
-import { checkNumber } from "@/utils";
+import { checkNumber, parseFloat2 } from "@/utils";
 import Vector2DHelper from "../Vector2DHelper.vue";
 
 const projectStore = useProjectStore();
@@ -109,16 +94,20 @@ const props = defineProps<{
 
 const open = ref(true);
 const loadNodeId = ref(props.label ?? [...useProjectStore().solver.domain.nodes.values()][0].label);
-const loadNodeValueFx = ref(3000.0);
-const loadNodeValueFz = ref(4000.0);
-const loadNodeValueMy = ref(0.0);
+const loadNodeValueFx = ref(appStore.convertForce(4000));
+const loadNodeValueFz = ref(appStore.convertForce(3000));
+const loadNodeValueMy = ref("0.0");
+
+const realFx = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueFx.value)));
+const realFz = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueFz.value)));
+const realMy = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueMy.value)));
 
 const addNodalLoad = () => {
   useProjectStore().solver.loadCases[0].solved = false;
   useProjectStore().solver.loadCases[0].createNodalLoad(loadNodeId.value, {
-    [DofID.Dx]: loadNodeValueFx.value,
-    [DofID.Dz]: loadNodeValueFz.value,
-    [DofID.Ry]: loadNodeValueMy.value,
+    [DofID.Dx]: realFx.value,
+    [DofID.Dz]: realFz.value,
+    [DofID.Ry]: realMy.value,
   });
 
   useProjectStore().solve();

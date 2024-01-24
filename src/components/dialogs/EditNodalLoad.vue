@@ -7,59 +7,61 @@
         <v-form>
           <v-container>
             <v-row no-gutters>
-              <v-col cols="12" md="12">
-                <v-select
-                  v-model="nodeId"
-                  :items="useProjectStore().solver.domain.nodes.values() as unknown as unknown[]"
-                  item-title="label"
-                  item-value="label"
-                  label="Node id"
-                  required
-                  disabled
-                  autofocus
-                />
+              <v-col cols="6" align-self="center">
+                <div class="d-flex justify-center">
+                  <Vector2DHelper :fx="realFx" :fz="realFz" :my="realMy" />
+                </div>
               </v-col>
 
-              <v-col cols="12" md="4">
-                <v-text-field
-                  :model-value="appStore.convertForce(loadNodeValueFx)"
-                  @keydown="checkNumber($event)"
-                  @input="
-                    loadNodeValueFx = appStore.convertInverseForce(
-                      $event.target.value !== '' ? parseFloat($event.target.value) : 0
-                    )
-                  "
-                  label="Fx"
-                  required
-                ></v-text-field>
-              </v-col>
+              <v-col cols="6">
+                <v-row no-gutters>
+                  <v-col cols="12">
+                    <v-select
+                      v-model="nodeId"
+                      :items="useProjectStore().solver.domain.nodes.values() as unknown as unknown[]"
+                      item-title="label"
+                      item-value="label"
+                      label="Node id"
+                      hide-details="auto"
+                      required
+                      disabled
+                      autofocus
+                    />
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="loadNodeValueFx"
+                      @keydown="checkNumber($event)"
+                      label="Fx"
+                      hide-details="auto"
+                      :suffix="appStore.units.Force"
+                      required
+                    ></v-text-field>
+                  </v-col>
 
-              <v-col cols="12" md="4">
-                <v-text-field
-                  :model-value="appStore.convertForce(loadNodeValueFz)"
-                  @keydown="checkNumber($event)"
-                  @input="
-                    loadNodeValueFz = appStore.convertInverseForce(
-                      $event.target.value !== '' ? parseFloat($event.target.value) : 0
-                    )
-                  "
-                  label="Fz"
-                  required
-                ></v-text-field>
-              </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="loadNodeValueFz"
+                      @keydown="checkNumber($event)"
+                      label="Fz"
+                      hide-details="auto"
+                      :suffix="appStore.units.Force"
+                      required
+                    ></v-text-field>
+                  </v-col>
 
-              <v-col cols="12" md="4">
-                <v-text-field
-                  :model-value="appStore.convertForce(loadNodeValueMy)"
-                  @keydown="checkNumber($event)"
-                  @input="
-                    loadNodeValueMy = appStore.convertInverseForce(
-                      $event.target.value !== '' ? parseFloat($event.target.value) : 0
-                    )
-                  "
-                  label="My"
-                  required
-                ></v-text-field>
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="loadNodeValueMy"
+                      @keydown="checkNumber($event)"
+                      label="My"
+                      hide-details="auto"
+                      :suffix="`${appStore.units.Force}m`"
+                      required
+                    >
+                    </v-text-field>
+                  </v-col>
+                </v-row>
               </v-col>
             </v-row>
           </v-container>
@@ -76,13 +78,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import { useProjectStore } from "@/store/project";
-import { DofID } from "ts-fem";
+import { onMounted, ref, reactive, computed } from "vue";
+import { useProjectStore } from "../../store/project";
+import { DofID, NodalLoad } from "ts-fem";
 import { closeModal } from "jenesius-vue-modal";
-import { onMounted } from "vue";
 import { useAppStore } from "@/store/app";
-import { checkNumber } from "@/utils";
+import { checkNumber, parseFloat2 } from "@/utils";
+import Vector2DHelper from "../Vector2DHelper.vue";
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
@@ -92,24 +94,28 @@ const props = defineProps<{
 }>();
 
 const open = ref(true);
-const loadNodeValueFx = ref(0.0);
-const loadNodeValueFz = ref(0.0);
-const loadNodeValueMy = ref(0.0);
+const loadNodeValueFx = ref("");
+const loadNodeValueFz = ref("");
+const loadNodeValueMy = ref("");
+
+const realFx = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueFx.value)));
+const realFz = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueFz.value)));
+const realMy = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueMy.value)));
 
 onMounted(() => {
   const load = useProjectStore().solver.loadCases[0].nodalLoadList[props.index];
 
-  loadNodeValueFx.value = load.values[DofID.Dx];
-  loadNodeValueFz.value = load.values[DofID.Dz];
-  loadNodeValueMy.value = load.values[DofID.Ry];
+  loadNodeValueFx.value = appStore.convertForce(load.values[DofID.Dx]).toString();
+  loadNodeValueFz.value = appStore.convertForce(load.values[DofID.Dz]).toString();
+  loadNodeValueMy.value = appStore.convertForce(load.values[DofID.Ry]).toString();
 });
 
 const editNodalLoad = () => {
   const load = useProjectStore().solver.loadCases[0].nodalLoadList[props.index];
 
-  load.values[DofID.Dx] = loadNodeValueFx.value;
-  load.values[DofID.Dz] = loadNodeValueFz.value;
-  load.values[DofID.Ry] = loadNodeValueMy.value;
+  load.values[DofID.Dx] = realFx.value;
+  load.values[DofID.Dz] = realFz.value;
+  load.values[DofID.Ry] = realMy.value;
 
   useProjectStore().solve();
   projectStore.clearSelection();

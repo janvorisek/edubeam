@@ -22,30 +22,22 @@
 
               <v-col cols="12" md="6">
                 <v-text-field
-                  :model-value="appStore.convertForce(loadElementValueFx)"
+                  v-model="loadNodeValueFx"
                   @keydown="checkNumber($event)"
-                  @input="
-                    loadElementValueFx = appStore.convertInverseForce(
-                      $event.target.value !== '' ? parseFloat($event.target.value) : 0
-                    )
-                  "
-                  label="Fx"
+                  label="fx"
                   hide-details="auto"
+                  :suffix="`${appStore.units.Force}/m`"
                   required
                 ></v-text-field>
               </v-col>
 
               <v-col cols="12" md="6">
                 <v-text-field
-                  :model-value="appStore.convertForce(loadElementValueFz)"
+                  v-model="loadNodeValueFz"
                   @keydown="checkNumber($event)"
-                  @input="
-                    loadElementValueFz = appStore.convertInverseForce(
-                      $event.target.value !== '' ? parseFloat($event.target.value) : 0
-                    )
-                  "
-                  label="Fz"
+                  label="fz"
                   hide-details="auto"
+                  :suffix="`${appStore.units.Force}/m`"
                   required
                 ></v-text-field>
               </v-col>
@@ -66,11 +58,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useProjectStore } from "../../store/project";
 import { useAppStore } from "../../store/app";
 import { closeModal } from "jenesius-vue-modal";
-import { checkNumber } from "@/utils";
+import { checkNumber, parseFloat2 } from "@/utils";
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
@@ -81,14 +73,17 @@ const props = defineProps<{
 
 const open = ref(true);
 const loadElementId = ref(props.label ?? [...useProjectStore().solver.domain.elements.values()][0].label);
-const loadElementValueFx = ref(0.0);
-const loadElementValueFz = ref(0.0);
+const loadNodeValueFx = ref(appStore.convertForce(4000));
+const loadNodeValueFz = ref(appStore.convertForce(3000));
+
+const realFx = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueFx.value)));
+const realFz = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueFz.value)));
 
 const addElementLoad = () => {
   useProjectStore().solver.loadCases[0].solved = false;
   useProjectStore().solver.loadCases[0].createBeamElementUniformEdgeLoad(
     loadElementId.value,
-    [loadElementValueFx.value, loadElementValueFz.value],
+    [realFx.value, realFz.value],
     true
   );
 

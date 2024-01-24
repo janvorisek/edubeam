@@ -46,7 +46,7 @@ onMounted(() => {
     return;
   }
 
-  if (lang && availableLocales.findIndex((l) => l.code === lang) > 0) {
+  if (lang && availableLocales.findIndex((l) => l.code === lang) >= 0) {
     appStore.locale = lang;
     const url = document.location.href;
     window.history.pushState({}, "", url.split("?")[0]);

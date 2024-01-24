@@ -246,3 +246,7 @@ select.mini-select {
     flex-grow: 1;
   }
 }
+
+.v-list-item--density-compact.v-list-item--one-line {
+  min-height: 33px;
+}

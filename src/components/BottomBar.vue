@@ -1363,7 +1363,7 @@ const tabs = reactive([
   {
     id: "loads",
     title: "tabs.loads",
-    icon: "mdi-weight",
+    icon: "mdi-arrow-down-thin",
     count: () =>
       projStore.solver.loadCases[0].nodalLoadList.length + projStore.solver.loadCases[0].elementLoadList.length,
   },

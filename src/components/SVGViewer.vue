@@ -73,6 +73,7 @@ const grid = ref<InstanceType<typeof SvgGrid> | null>(null);
 const svg = ref<SVGSVGElement>();
 const viewport = ref<SVGGElement>();
 const tooltip = ref<Element>();
+const actionTooltip = ref<Element>();
 
 const scale = computed(() => {
   if (panZoom.value) return panZoom.value.scale;
@@ -318,6 +319,10 @@ const onElementClick = (e: MouseEvent) => {
   useProjectStore().selection.label = isNaN(index as unknown as number) ? index : parseInt(index);
   useProjectStore().selection.x = nx;
   useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
+
+  // Show action tooltip
+  const att = actionTooltip.value as HTMLElement;
+  att.style.display = "block";
 };
 
 const mouseMove = (e: MouseEvent) => {
@@ -666,6 +671,68 @@ defineExpose({ centerContent, fitContent });
 
     <div class="tooltip body-2 black--text" ref="tooltip" style="display: none">
       <div class="content"></div>
+    </div>
+
+    <div
+      class="actionTooltip"
+      ref="actionTooltip"
+      v-if="projectStore.selection.type === 'element' && 1 == 2"
+      :style="`left: ${projectStore.selection.x + 30}px; top: ${projectStore.selection.y}px;`"
+    >
+      <div class="content d-flex elevation-3 rounded">
+        <v-btn
+          icon
+          size="24"
+          density="comfortable"
+          class="mr-1"
+          rounded="lg"
+          variant="text"
+          title="Center content"
+          @click.native="centerContent"
+        >
+          <v-icon icon="mdi-pencil" size="24" />
+          <v-tooltip activator="parent" location="bottom">Edit element</v-tooltip>
+        </v-btn>
+        <v-btn
+          icon
+          size="24"
+          density="comfortable"
+          class="mr-1"
+          rounded="lg"
+          variant="text"
+          title="Center content"
+          @click.native="centerContent"
+        >
+          <v-icon icon="mdi-arrow-down-thin" size="24" />
+          <v-tooltip activator="parent" location="bottom">Add load</v-tooltip>
+        </v-btn>
+        <v-btn
+          icon
+          size="24"
+          density="comfortable"
+          class="mr-1"
+          rounded="lg"
+          variant="text"
+          title="Center content"
+          @click.native="centerContent"
+        >
+          <v-icon icon="mdi-matrix" size="24" />
+          <v-tooltip activator="parent" location="bottom">Stiffness matrix</v-tooltip>
+        </v-btn>
+        <v-btn
+          icon
+          size="24"
+          density="comfortable"
+          class="mr-1"
+          rounded="lg"
+          variant="text"
+          title="Center content"
+          @click.native="centerContent"
+        >
+          <v-icon icon="mdi-delete" size="24" />
+          <v-tooltip activator="parent" location="bottom">Delete element</v-tooltip>
+        </v-btn>
+      </div>
     </div>
 
     <svg v-if="viewerStore.showGrid" class="w-100 fill-height" style="position: absolute">
@@ -1312,7 +1379,7 @@ defineExpose({ centerContent, fitContent });
       :style="`position: absolute; left: ${projectStore.selection.x}px; top: ${projectStore.selection.y}px;`"
     >
       <div class="d-flex justify-space-between">
-        <div class="font-weight-medium px-4 py-2">
+        <div class="font-weight-medium text-body-2 px-4 pt-2">
           {{ projectStore.selection.type }} {{ projectStore.selection.label }}
         </div>
         <v-btn variant="text" icon="mdi-close" size="x-small" @click="projectStore.selection.type = null" />
@@ -1611,6 +1678,17 @@ svg text {
   }
   &:hover polyline.decoration.moment.ccw {
     marker-end: url(#moment_ccw_hover);
+  }
+}
+
+.actionTooltip {
+  position: absolute;
+  padding: 12px;
+  margin: -12px -12px 0 0;
+  z-index: 101;
+  .content {
+    padding: 4px;
+    background: rgba(255, 255, 255, 0.9);
   }
 }
 

@@ -2,6 +2,7 @@
 import vue from "@vitejs/plugin-vue";
 import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
+import { VitePWA } from "vite-plugin-pwa";
 
 import { resolve, dirname } from "node:path";
 import packageJson from "./package.json";
@@ -25,6 +26,7 @@ export default defineConfig({
       runtimeOnly: false,
       strictMessage: false,
     }),
+    VitePWA({ registerType: "autoUpdate" }),
   ],
   define: {
     "process.env": {},

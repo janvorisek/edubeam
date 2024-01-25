@@ -95,12 +95,12 @@ Here are some ways you can get involved and contribute to <Edubeam />:
 
 1. **Contribute Code:**
 
-   - Explore our [GitHub repository](link_to_repository) and contribute to code development.
+   - Explore our [GitHub repository](https://github.com/janvorisek/edubeam) and contribute to code development.
    - Choose from a variety of tasks, from basic structural analysis to advanced feature implementation.
 
 2. **Testing and Bug Reporting:**
 
-   - Test <Edubeam /> and report any bugs or issues on our [issue tracker](link_to_issue_tracker).
+   - Test <Edubeam /> and report any bugs or issues on our [issue tracker](https://github.com/janvorisek/edubeam/issues).
    - Your feedback is crucial for improving the reliability and functionality of <Edubeam />.
 
 3. **Documentation:**

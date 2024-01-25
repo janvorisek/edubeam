@@ -97,6 +97,7 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: "Home", link: "/" },
+      { text: "FAQ", link: "/faq" },
       { text: "Examples", link: "/examples" },
     ],
     sidebar: [
@@ -104,13 +105,14 @@ export default defineConfig({
         text: "Getting started",
         items: [
           { text: "Introduction", link: "/guide/introduction" },
-          { text: "Quick start", link: "/guide/user-interface" },
+          { text: "User Interface", link: "/guide/user-interface" },
           { text: "Examples", link: "/examples" },
         ],
       },
       {
         text: "Essentials",
         items: [
+          { text: "Results", link: "/essentials/results" },
           { text: "Import, Export & Sharing", link: "/essentials/import-export" },
         ],
       },

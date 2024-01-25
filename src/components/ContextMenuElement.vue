@@ -18,7 +18,7 @@ const element = computed(() => {
   <v-list density="compact" class="py-0">
     <v-list-item v-if="projectStore.selection.type === 'element'" link class="text-body-2">
       <template #prepend>
-        <div class="pr-2"><v-icon size="x-small" icon="mdi-pencil" /></div>
+        <div class="pr-2"><v-icon size="16" icon="mdi-pencil" /></div>
       </template>
       {{ $t("elements.editElement") }}
       <v-menu activator="parent" open-on-hover location="end" :close-on-content-click="false">
@@ -87,7 +87,7 @@ const element = computed(() => {
       "
     >
       <template #prepend>
-        <div class="pr-2"><v-icon size="x-small" icon="mdi-arrow-down-thin" /></div>
+        <div class="pr-2"><v-icon size="16" icon="mdi-arrow-down-thin" /></div>
       </template>
       {{ $t("loads.addLoad") }}
     </v-list-item>
@@ -102,7 +102,7 @@ const element = computed(() => {
     >
       {{ $t("common.stiffnessMatrix") }}
       <template #prepend>
-        <div class="pr-2"><v-icon size="x-small" icon="mdi-matrix" /></div>
+        <div class="pr-2"><v-icon size="16" icon="mdi-matrix" /></div>
       </template>
     </v-list-item>
   </v-list>

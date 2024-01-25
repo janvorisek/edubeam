@@ -17,7 +17,7 @@ const projectStore = useProjectStore();
       "
     >
       <template #prepend>
-        <div class="pr-2"><v-icon size="x-small" icon="mdi-arrow-down-thin" /></div>
+        <div class="pr-2"><v-icon size="16" icon="mdi-arrow-down-thin" /></div>
       </template>
       {{ $t("loads.addLoad") }}
     </v-list-item>

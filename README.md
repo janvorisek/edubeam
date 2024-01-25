@@ -30,16 +30,10 @@
 ## Table Of Contents
 
 - [About the Project](#about-the-project)
-- [Built With](#built-with)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Usage](#usage)
+- [Start developing](#usage)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
-- [Authors](#authors)
-- [Acknowledgements](#acknowledgements)
 
 ## About The Project
 

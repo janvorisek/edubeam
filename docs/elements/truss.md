@@ -1,5 +1,16 @@
 # Truss Element
 
+A truss element is a structural component designed to bear only axial forces, commonly used in bridges and buildings.
+
+<TrussElement :hinges="[true, true]"  caption="Schematic of 2D truss element" />
+
+## Degrees of Freedom
+
+The 2D Truss Element features two DOFs at each of the nodes:
+
+- **Translation (Dx):** Displacement along the X-axis.
+- **Translation (Dz):** Displacement along the Z-axis.
+
 ## Local Stiffness Matrix
 
 The local stiffness matrix of a truss element is given by:

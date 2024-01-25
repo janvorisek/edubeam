@@ -4,9 +4,11 @@ import type { Theme } from "vitepress";
 import DefaultTheme from "vitepress/theme";
 import MyLayout from "./MyLayout.vue";
 
-import Edubeam from "../../edubeam.vue"
+import Edubeam from "../../components/edubeam.vue"
+import TrussElement from "../../components/TrussElement.vue";
 
 import "./style.css";
+import component from '../../../src/vite-env';
 
 export default {
   extends: DefaultTheme,
@@ -15,5 +17,6 @@ export default {
   Layout: MyLayout,
   enhanceApp({ app, router, siteData }) {
     app.component('Edubeam', Edubeam);
+    app.component('TrussElement', TrussElement);
   },
 } satisfies Theme;

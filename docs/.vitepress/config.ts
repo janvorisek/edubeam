@@ -1,5 +1,6 @@
 import { defineConfig } from "vitepress";
 import markdownItKatex from "markdown-it-katex";
+import implicitFigures from 'markdown-it-implicit-figures'
 
 const customElements = [
   "math",
@@ -112,6 +113,8 @@ export default defineConfig({
       {
         text: "Essentials",
         items: [
+          { text: "Elements", link: "/essentials/elements" },
+          { text: "Loads", link: "/essentials/loads" },
           { text: "Results", link: "/essentials/results" },
           { text: "Import, Export & Sharing", link: "/essentials/import-export" },
         ],
@@ -146,6 +149,10 @@ export default defineConfig({
   markdown: {
     config: (md) => {
       md.use(markdownItKatex);
+      md.use(implicitFigures, {
+        figcaption: true,
+        copyAttrs: '^class$'
+      })
     },
   },
   vue: {

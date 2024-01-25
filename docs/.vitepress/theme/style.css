@@ -179,8 +179,23 @@
 
 .katex { font-size: 1em; }
 
-.main img {
+.main figure {
+ margin: 0 auto;
+ text-align: center;
+ figcaption {
+  font-size: 0.8em;
+  margin-top: 6px;
+ }
+}
+
+.main img, .main svg {
   padding: 4px;
+  background-color: white;
   box-shadow: 0 0 2px rgba(0,0,0,0.2);
   border-radius: 8px;
+  margin: 0 auto;
+}
+
+.dark .main svg {
+  filter: invert(100%);
 }

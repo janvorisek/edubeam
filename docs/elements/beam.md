@@ -1,11 +1,29 @@
 # Beam Element
 
+Timoshenko beam theory accommodates shear deformation and rotational bending in thick beams and high-frequency situations.
+
+<TrussElement :moment="true" caption="Schematic of 2D Timoshenko beam" />
+
+## Degrees of Freedom
+
+The 2D Timoshenko Beam, with three degrees of freedom (DOFs) at each node:
+
+- **Translation (Dx):** Displacement along the X-axis.
+- **Translation (Dz):** Displacement along the Z-axis.
+- **Rotation (Ry):** Rotation about the Y-axis.
+
+The loads are specified in the direction of the DOFs:
+
+- **Horizontal Force (Fx):** Force applied along the X-axis.
+- **Vertical Force (Fz):** Force applied along the Z-axis.
+- **Moment (My):** Moment applied about the Y-axis.
+
 ## Local Stiffness Matrix
 
 The beam stiffness matrix in the local coordinates is given by:
 
 $$
-\mathbf{K_l} = 
+\mathbf{K_l} =
 \begin{pmatrix}
   \frac{EA}{L} & 0 & 0 & -\frac{EA}{L} & 0 & 0 & \\[2ex]
   0 & \frac{12 EI_y}{ L^3 (1+\varphi)} & \frac{-6 EI_y}{L^2 (1+\varphi)} & 0 & \frac{-12  EI_y}{L^3 (1+\varphi)} & \frac{-6  EI_y}{L^2 (1+\varphi)} &\\[3ex]
@@ -17,6 +35,7 @@ $$
 $$
 
 where:
+
 - $E$ is the Young's modulus of the material
 - $A$ is the cross-sectional area of the beam
 - $L$ is the length of the beam
@@ -45,5 +64,3 @@ The global stiffness matrix, $\mathbf{K_g}$, is obtained by multiplying the elem
 $$
 \mathbf{K_g} = \mathbf{T}^\mathsf{T} \cdot \mathbf{K_l} \cdot \mathbf{T}
 $$
-
-

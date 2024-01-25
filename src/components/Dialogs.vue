@@ -1,7 +1,7 @@
 <template>
   <v-dialog class="no-overlay" v-model="useAppStore().dialogs.addNode" max-width="420">
     <v-card>
-      <v-card-title class="text-h5"> {{ $t("dialogs.addNode.addNewNode") }} </v-card-title>
+      <v-card-title> {{ $t("dialogs.addNode.addNewNode") }} </v-card-title>
 
       <v-card-text>
         <v-form>
@@ -42,7 +42,7 @@
 
   <v-dialog class="no-overlay" v-model="useAppStore().dialogs.addElement" max-width="420">
     <v-card>
-      <v-card-title class="text-h5"> {{ $t("dialogs.addElement.addNewElement") }} </v-card-title>
+      <v-card-title> {{ $t("dialogs.addElement.addNewElement") }} </v-card-title>
 
       <v-card-text>
         <v-form>
@@ -89,7 +89,7 @@
 
   <v-dialog class="no-overlay" v-model="useAppStore().dialogs.addNodalLoad" max-width="420">
     <v-card>
-      <v-card-title class="text-h5"> {{ $t("dialogs.addNodalLoad.addNewNodalLoad") }} </v-card-title>
+      <v-card-title> {{ $t("dialogs.addNodalLoad.addNewNodalLoad") }} </v-card-title>
 
       <v-card-text>
         <v-form>
@@ -135,7 +135,7 @@
 
   <v-dialog class="no-overlay" v-model="useAppStore().dialogs.addElementLoad" max-width="420">
     <v-card>
-      <v-card-title class="text-h5"> {{ $t("dialogs.addElementLoad.addNewElementLoad") }} </v-card-title>
+      <v-card-title> {{ $t("dialogs.addElementLoad.addNewElementLoad") }} </v-card-title>
 
       <v-card-text>
         <v-form>
@@ -179,7 +179,7 @@
 
   <v-dialog class="no-overlay" v-model="useAppStore().dialogs.addMaterial" max-width="420">
     <v-card>
-      <v-card-title class="text-h5"> {{ $t("dialogs.addMaterial.addNewMaterial") }} </v-card-title>
+      <v-card-title> {{ $t("dialogs.addMaterial.addNewMaterial") }} </v-card-title>
 
       <v-card-text>
         <v-form>
@@ -238,7 +238,7 @@
 
   <v-dialog class="no-overlay" v-model="useAppStore().dialogs.addCrossSection" max-width="420">
     <v-card>
-      <v-card-title class="text-h5"> {{ $t("dialogs.addCrossSection.addNewCrossSection") }} </v-card-title>
+      <v-card-title> {{ $t("dialogs.addCrossSection.addNewCrossSection") }} </v-card-title>
 
       <v-card-text>
         <v-form>

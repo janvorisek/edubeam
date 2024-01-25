@@ -1,168 +1,207 @@
 {
-    "tabView": {
-      "viewer": "Visionneuse",
-      "settings": "Paramètres",
-      "results": "Résultats"
+  "tabView": {
+    "viewer": "Visionneuse",
+    "settings": "Paramètres",
+    "results": "Résultats"
+  },
+  "common": {
+    "label": "Étiquette",
+    "node": "Nœud",
+    "element": "Élément",
+    "crossSection": "Section",
+    "material": "Matériau",
+    "settings": "Paramètres",
+    "actions": "Actions",
+    "coords": "Coordonnées",
+    "type": "Type",
+    "nodes": "Nœuds",
+    "endHinges": "Articulations finales",
+    "massMatrix": "Matrice de masse",
+    "target": "Cible",
+    "components": "Composants",
+    "loadCase": "Cas de charge",
+    "loads": "Charges",
+    "clearMesh": "Effacer le maillage",
+    "shareModel": "Partager le modèle",
+    "documentation": "Documentation",
+    "addUsingDialog": "Ajouter via la boîte de dialogue",
+    "addUsingMouse": "Ajouter avec la souris",
+    "edit": "Modifier",
+    "copy": "Copier",
+    "delete": "Supprimer",
+    "stiffnessMatrix": "Matrice de rigidité"
+  },
+  "nodes": {
+    "addNode": "Ajouter un nœud",
+    "editNode": "Modifier le nœud"
+  },
+  "elements": {
+    "addElement": "Ajouter des éléments",
+    "editElement": "Modifier l'élément",
+    "swapNodeOrder": "Permuter les nœuds"
+  },
+  "loads": {
+    "addNodalLoad": "Ajouter une charge nodale",
+    "addElementLoad": "Ajouter une charge d'élément",
+    "addLoad": "Ajouter une charge",
+    "nodalLoad": "Charge nodale",
+    "elementLoad": "Charge d'élément",
+    "prescribedDisplacement": "Déplacement prescrit"
+  },
+  "tabs": {
+    "nodes": "Nœuds",
+    "elements": "Éléments",
+    "loads": "Charges",
+    "materials": "Matériaux",
+    "crossSections": "Sections",
+    "results": "Résultats"
+  },
+  "crossSection": {
+    "area": "Surface",
+    "h": "Hauteur",
+    "iy": "Iy",
+    "k": "Coefficient de cisaillement"
+  },
+  "material": {
+    "e": "E",
+    "g": "G",
+    "density": "Densité",
+    "alphaT": "α_T"
+  },
+  "settings": {
+    "results_scale": "Échelle des résultats",
+    "grid_snap_step": "Pas de grille magnétique",
+    "snap_to_grid": "Magnétisme à la grille",
+    "language": "Langue",
+    "language_and_locale": "Langue & Locale",
+    "show_normal_force": "Afficher la force normale",
+    "show_shear_force": "Afficher la force de cisaillement",
+    "show_bending_moment": "Afficher le moment de flexion",
+    "show_deformed_shape": "Afficher la forme déformée",
+    "show_loads": "Afficher les charges",
+    "units": {
+      "units": "Unités",
+      "length": "Longueur",
+      "mass": "Masse",
+      "force": "Force",
+      "pressure": "Pression",
+      "area": "Surface",
+      "areaM2": "Moment quadratique"
     },
-    "common": {
-      "label": "Étiquette",
-      "node": "Nœud",
-      "element": "Élément",
-      "crossSection": "Section transversale",
-      "material": "Matériau",
-      "settings": "Paramètres",
-      "actions": "Actions",
-      "coords": "Coordonnées",
-      "type": "Type",
-      "nodes": "Nœuds",
-      "endHinges": "Articulations d'extrémité",
-      "massMatrix": "Matrice de masse",
-      "target": "Cible",
-      "components": "Composants",
-      "loadCase": "Cas de charge",
-      "loads": "Charges",
-      "clearMesh": "Effacer le maillage",
-      "shareModel": "Partager le modèle",
-      "documentation": "Docs"
-    },
-    "nodes": {
+    "grid": "Grille",
+    "show_grid": "Afficher la grille",
+    "mouse": {
+      "mouse": "Souris",
+      "pan_button": "Déplacer avec",
+      "wheel": "Roulette de la souris",
+      "right_button": "Bouton droit"
+    }
+  },
+  "sideSettings": {
+    "showDeformedShape": "Forme déformée",
+    "supports": "Supports",
+    "loads": "Charges",
+    "nodeLabels": "Étiquettes des nœuds",
+    "elementLabels": "Étiquettes des éléments",
+    "more_settings": "Plus de paramètres"
+  },
+  "dofs": {
+    "bcs": "DDL soutenus"
+  },
+  "results": {
+    "results": "Résultats",
+    "nodal_results": "Résultats nodaux",
+    "element_results": "Résultats d'éléments"
+  },
+  "materials": {
+    "addMaterial": "Ajouter un matériau",
+    "material_library": "Bibliothèque de matériaux",
+    "section_library": "Bibliothèque de sections"
+  },
+  "crossSections": {
+    "addCrossSection": "Ajouter une section"
+  },
+  "dialogs": {
+    "addNode": {
+      "addNewNode": "Ajouter un nouveau nœud",
+      "coordinate_x": "Coordonnée X",
+      "coordinate_z": "Coordonnée Z",
       "addNode": "Ajouter un nœud"
     },
-    "elements": {
-      "addElement": "Ajouter des éléments"
+    "common": {
+      "cancel": "Annuler"
     },
-    "loads": {
-      "addNodalLoad": "Ajouter une charge nodale",
+    "addElement": {
+      "fromNodeId": "Nœud initial",
+      "toNodeId": "Nœud final",
+      "addElement": "Ajouter un élément",
+      "addNewElement": "Ajouter un nouvel élément"
+    },
+    "addNodalLoad": {
+      "addNewNodalLoad": "Ajouter une nouvelle charge nodale",
+      "addNodalLoad": "Ajouter une charge nodale"
+    },
+    "addElementLoad": {
+      "addNewElementLoad": "Ajouter une nouvelle charge d'élément",
       "addElementLoad": "Ajouter une charge d'élément"
     },
-    "tabs": {
-      "nodes": "Nœuds",
-      "elements": "Éléments",
-      "loads": "Charges",
-      "materials": "Matériaux",
-      "crossSections": "Sections transversales",
-      "results": "Résultats"
-    },
-    "crossSection": {
-      "area": "Surface",
-      "h": "Hauteur",
-      "iy": "Iy",
-      "k": "Coefficient de cisaillement"
-    },
-    "material": {
-      "e": "E",
-      "g": "G",
-      "density": "Densité",
-      "alphaT": "α_T"
-    },
-    "settings": {
-      "results_scale": "Échelle des résultats",
-      "grid_snap_step": "Pas de l'aimantation",
-      "snap_to_grid": "Aligner sur la grille",
-      "language": "Langue",
-      "language_and_locale": "Langue & Région",
-      "show_normal_force": "Afficher la force normale",
-      "show_shear_force": "Afficher la force de cisaillement",
-      "show_bending_moment": "Afficher le moment de flexion",
-      "show_deformed_shape": "Afficher la forme déformée",
-      "show_loads": "Afficher les charges",
-      "units": {
-        "units": "Unités",
-        "length": "Longueur",
-        "mass": "Masse",
-        "force": "Force",
-        "pressure": "Pression",
-        "area": "Surface",
-        "areaM2": "Moment d'inertie"
-      },
-      "grid": "Grille",
-      "show_grid": "Afficher la grille",
-      "mouse": {
-        "mouse": "Souris",
-        "pan_button": "Déplacer avec",
-        "wheel": "Molette de la souris",
-        "right_button": "Bouton droit"
-      }
-    },
-    "sideSettings": {
-      "showDeformedShape": "Forme déformée",
-      "supports": "Appuis",
-      "loads": "Charges",
-      "nodeLabels": "Étiquettes des nœuds",
-      "elementLabels": "Étiquettes des éléments",
-      "more_settings": "Plus de paramètres"
-    },
-    "dofs": {
-      "bcs": "DDL supportés"
-    },
-    "results": {
-      "results": "Résultats",
-      "nodal_results": "Résultats nodaux",
-      "element_results": "Résultats d'éléments"
-    },
-    "materials": {
+    "addMaterial": {
+      "addNewMaterial": "Ajouter un nouveau matériau",
       "addMaterial": "Ajouter un matériau",
-      "material_library": "Bibliothèque de matériaux",
-      "section_library": "Bibliothèque de sections"
+      "E": "E - Module d'Young",
+      "G": "G - Module de cisaillement",
+      "density": "ρ - Densité",
+      "alphaT": "α - Coefficient de dilatation thermique"
     },
-    "crossSections": {
-      "addCrossSection": "Ajouter une section transversale"
+    "addCrossSection": {
+      "addNewCrossSection": "Ajouter une nouvelle section",
+      "addCrossSection": "Ajouter une section"
     },
-    "dialogs": {
-      "addNode": {
-        "addNewNode": "Ajouter un nouveau nœud",
-        "coordinate_x": "Coordonnée X",
-        "coordinate_z": "Coordonnée Z",
-        "addNode": "Ajouter un nœud"
-      },
-      "common": {
-        "cancel": "Annuler"
-      },
-      "addElement": {
-        "fromNodeId": "Nœud initial",
-        "toNodeId": "Nœud final",
-        "addElement": "Ajouter un élément",
-        "addNewElement": "Ajouter un nouvel élément"
-      },
-      "addNodalLoad": {
-        "addNewNodalLoad": "Ajouter une nouvelle charge nodale",
-        "addNodalLoad": "Ajouter une charge nodale"
-      },
-      "addElementLoad": {
-        "addNewElementLoad": "Ajouter une nouvelle charge d'élément",
-        "addElementLoad": "Ajouter une charge d'élément"
-      },
-      "addMaterial": {
-        "addNewMaterial": "Ajouter un nouveau matériau",
-        "addMaterial": "Ajouter un matériau",
-        "E": "E - Module de Young",
-        "G": "G - Module de cisaillement",
-        "density": "ρ - Densité",
-        "alphaT": "α - Coefficient de dilatation thermique"
-      },
-      "addCrossSection": {
-        "addNewCrossSection": "Ajouter une nouvelle section transversale",
-        "addCrossSection": "Ajouter une section transversale"
-      },
-      "editNodalLoad": {
-        "editNodalLoad": "Modifier la charge nodale"
-      },
-      "editElementLoad": {
-        "editElementLoad": "Modifier la charge d'élément"
-      }
+    "editNodalLoad": {
+      "editNodalLoad": "Modifier la charge nodale"
     },
-    "tooltip": {
-      "materials": {},
-      "material": {
-        "alphaT": "Le coefficient de dilatation thermique décrit comment la taille d'un objet change avec une variation de température.",
-        "e": "Le module de Young mesure la rigidité en traction ou compression lorsque la force est appliquée dans le sens de la longueur.",
-        "g": "Le module de cisaillement est une propriété qui mesure la résistance à la déformation sous contrainte de cisaillement, indiquant la rigidité du matériau en réponse aux forces appliquées parallèlement à sa surface.",
-        "density": "La densité est une mesure de la quantité de masse contenue dans un volume donné d'une substance."
-      }
-    },
-    "footer": {
-      "reportIssue": "Signaler un problème",
-      "requestFeature": "Demander une fonctionnalité",
-      "released": "publiée"
+    "editElementLoad": {
+      "editElementLoad": "Modifier la charge d'élément"
     }
+  },
+  "tooltip": {
+    "materials": {},
+    "material": {
+      "alphaT": "Le coefficient de dilatation thermique décrit la variation de taille d'un objet en fonction de la température.",
+      "e": "Le module d'Young mesure la rigidité en traction ou compression lorsque la force est appliquée dans le sens de la longueur.",
+      "g": "Le module de cisaillement est une propriété qui mesure la résistance à la déformation sous contrainte de cisaillement, indiquant la rigidité du matériau en réponse aux forces appliquées parallèlement à sa surface.",
+      "density": "La densité est une mesure de la quantité de masse contenue dans un volume donné d'une substance."
+    }
+  },
+  "footer": {
+    "reportIssue": "Signaler un problème",
+    "requestFeature": "Demander une fonctionnalité",
+    "released": "version"
+  },
+  "sharing": {
+    "shareViaURL": "Partager le modèle via URL"
+  },
+  "tour": {
+    "startTour": "Commencer la visite",
+    "skipTour": "Passer pour le moment",
+    "viewerControls": {
+      "title": "Boutons de la visionneuse",
+      "description": "Les commandes de la visionneuse permettent de centrer ou d'ajuster la structure à l'écran, et de choisir ce qu'il faut afficher."
+    },
+    "viewerSettings": {
+      "title": "Options d'affichage personnalisées",
+      "description": "Choisissez ce qu'il faut afficher, que ce soit la force normale, la force de cisaillement, le moment de flexion, la forme déformée ou tout à la fois."
+    },
+    "bottomBar": {
+      "title": "Ajouter, supprimer et modifier des entités",
+      "description": "Le hub central où chaque aspect de votre structure peut être transformé sans effort. Des nœuds aux éléments, en passant par les charges, les matériaux et les sections, c'est l'endroit idéal pour des modifications rapides et complètes."
+    },
+    "previousButton": "Précédent",
+    "nextButton": "Suivant",
+    "finishButton": "Terminer"
+  },
+  "welcome": {
+    "title": "Bienvenue sur <span class=\"edubeam\">edubeam</span> ! 🚀",
+    "description": "Pour vous aider à démarrer, nous avons préparé une visite guidée rapide qui vous guidera à travers les fonctionnalités de notre programme."
   }
+}

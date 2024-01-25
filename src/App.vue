@@ -1,6 +1,7 @@
 <script lang="ts">
 import { container, openModal } from "jenesius-vue-modal";
 import { deserializeModel } from "./utils";
+import { provide } from "vue";
 
 export default {
   components: { WidgetContainerModal: container },
@@ -9,16 +10,53 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { DofID } from "ts-fem";
 import { setLocale, availableLocales } from "./plugins/i18n";
 
+import Welcome from "@/components/dialogs/Welcome.vue";
 import Share from "@/components/dialogs/Share.vue";
 import Editor from "@/views/Editor.vue";
 import Dialogs from "@/components/Dialogs.vue";
 import { useProjectStore } from "./store/project";
 import { useAppStore } from "./store/app";
 
+import { VOnboardingWrapper, VOnboardingStep } from "v-onboarding";
+import "v-onboarding/dist/style.css";
+
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
+const onboardingWrapper = ref(null);
+provide("onboardingWrapper", onboardingWrapper);
+
+const steps = computed(() => [
+  {
+    attachTo: { element: "#viewerControls" },
+    content: {
+      title: t("tour.viewerControls.title"),
+      description: t("tour.viewerControls.description"),
+    },
+  },
+  {
+    attachTo: { element: "#viewerSettings" },
+    content: {
+      title: t("tour.viewerSettings.title"),
+      description: t("tour.viewerSettings.description"),
+    },
+  },
+  {
+    attachTo: { element: "#bottomBar" },
+    content: {
+      title: t("tour.bottomBar.title"),
+      description: t("tour.bottomBar.description"),
+    },
+  },
+]);
+
+onMounted(() => {
+  if (!appStore.onboardingFinished) openModal(Welcome);
+});
 const appStore = useAppStore();
 
 const menu = ref([
@@ -146,6 +184,55 @@ const app_released = APP_RELEASED;
 
 <template>
   <v-app>
+    <VOnboardingWrapper
+      ref="onboardingWrapper"
+      :steps="steps"
+      :options="{
+        popper: {
+          modifiers: [
+            {
+              name: 'offset',
+              options: {
+                offset: [0, 10],
+              },
+            },
+          ],
+        },
+        scrollToStep: {
+          enabled: false,
+        },
+      }"
+    >
+      <template #default="{ previous, next, step, exit, isFirst, isLast, index }">
+        <VOnboardingStep>
+          <div class="bg-white shadow rounded-lg" style="max-width: 400px">
+            <div class="px-4 py-5 sm:p-6">
+              <div class="sm:flex sm:items-center sm:justify-between">
+                <div v-if="step.content">
+                  <h3 v-if="step.content.title" class="text-lg font-medium leading-6 text-gray-900">
+                    {{ step.content.title }}
+                  </h3>
+                  <div v-if="step.content.description" class="mt-2 max-w-xl text-sm text-gray-500">
+                    <p>{{ step.content.description }}</p>
+                  </div>
+                </div>
+                <div class="mt-5 space-x-4 sm:mt-0 sm:ml-6 sm:flex sm:flex-shrink-0 sm:items-center relative">
+                  <template v-if="!isFirst">
+                    <v-btn @click="previous" type="button" flat color="grey-lighten-3">
+                      {{ $t("tour.previousButton") }}
+                    </v-btn>
+                  </template>
+                  <v-btn @click="next" type="button" color="primary" flat class="ml-1">
+                    {{ isLast ? $t("tour.finishButton") : $t("tour.nextButton") }}
+                  </v-btn>
+                </div>
+              </div>
+            </div>
+          </div>
+        </VOnboardingStep>
+      </template>
+    </VOnboardingWrapper>
+
     <v-app-bar clipped-lefs clipped-right app color="primary" density="compact">
       <!-- <v-app-bar-nav-icon @click="appStore.drawerOpen = !appStore.drawerOpen"></v-app-bar-nav-icon> -->
 

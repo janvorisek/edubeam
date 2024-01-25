@@ -1,5 +1,5 @@
 <template>
-  <div style="border-top: 1px solid #ddd" :style="`min-height: ${props.height}px; overflow: hidden`">
+  <div id="bottomBar" style="border-top: 1px solid #ddd" :style="`min-height: ${props.height}px; overflow: hidden`">
     <div class="d-flex justify-space-between bg-primary">
       <v-tabs
         v-model="appStore.bottomBarTab"

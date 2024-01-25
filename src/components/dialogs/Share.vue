@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="open" max-width="1080">
     <v-card class="pa-1">
-      <v-card-title class="text-h5">
+      <v-card-title>
         <div class="d-flex">
           <div class="flex-grow-1">{{ $t("sharing.shareViaURL") }}</div>
           <v-btn icon="mdi-close" size="small" variant="text" @click.prevent.stop="closeModal()" small class="ml-1" />

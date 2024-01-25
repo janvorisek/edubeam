@@ -16,7 +16,7 @@ $font: "Barlow", sans-serif;
   height: calc(var(--dvh, 1dvh) * 100 - 48px) !important;
 }
 
-.app-title {
+.app-title, .edubeam {
   font-family: "Lobster", "Barlow", sans-serif;
 }
 
@@ -249,4 +249,21 @@ select.mini-select {
 
 .v-list-item--density-compact.v-list-item--one-line {
   min-height: 33px;
+}
+
+// fix dialog
+.v-dialog > .v-overlay__content > .v-card > .v-card-text, .v-dialog > .v-overlay__content > form > .v-card > .v-card-text {
+  padding: 0px 16px 10px;
+  letter-spacing: normal;
+}
+
+.v-dialog > .v-overlay__content > .v-card > .v-card-title {
+  font-weight: bold;
+}
+
+
+// onboarding
+:root {
+  --v-onboarding-overlay-z: 1000;
+  --v-onboarding-step-z: 1001;
 }

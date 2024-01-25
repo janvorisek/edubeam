@@ -1,168 +1,207 @@
 {
-    "tabView": {
-      "viewer": "Visor",
-      "settings": "Configuración",
-      "results": "Resultados"
+  "tabView": {
+    "viewer": "Visor",
+    "settings": "Configuración",
+    "results": "Resultados"
+  },
+  "common": {
+    "label": "Etiqueta",
+    "node": "Nodo",
+    "element": "Elemento",
+    "crossSection": "Sección transversal",
+    "material": "Material",
+    "settings": "Configuración",
+    "actions": "Acciones",
+    "coords": "Coordenadas",
+    "type": "Tipo",
+    "nodes": "Nodos",
+    "endHinges": "Articulaciones extremas",
+    "massMatrix": "Matriz de masa",
+    "target": "Objetivo",
+    "components": "Componentes",
+    "loadCase": "Caso de carga",
+    "loads": "Cargas",
+    "clearMesh": "Limpiar malla",
+    "shareModel": "Compartir modelo",
+    "documentation": "Documentación",
+    "stiffnessMatrix": "Matriz de rigidez",
+    "edit": "Editar",
+    "delete": "Borrar",
+    "copy": "Copiar",
+    "addUsingMouse": "Añadir con el ratón",
+    "addUsingDialog": "Añadir mediante diálogo"
+  },
+  "nodes": {
+    "addNode": "Agregar nodo",
+    "editNode": "Editar nodo"
+  },
+  "elements": {
+    "addElement": "Agregar elementos",
+    "swapNodeOrder": "Intercambiar nodos",
+    "editElement": "Editar elemento"
+  },
+  "loads": {
+    "addNodalLoad": "Agregar carga nodal",
+    "addElementLoad": "Agregar carga de elemento",
+    "prescribedDisplacement": "Desplazamiento prescrito",
+    "nodalLoad": "Carga nodal",
+    "elementLoad": "Carga elemental",
+    "addLoad": "Añadir carga"
+  },
+  "tabs": {
+    "nodes": "Nodos",
+    "elements": "Elementos",
+    "loads": "Cargas",
+    "materials": "Materiales",
+    "crossSections": "Secciones transversales",
+    "results": "Resultados"
+  },
+  "crossSection": {
+    "area": "Área",
+    "h": "Altura",
+    "iy": "Iy",
+    "k": "Coeficiente de corte"
+  },
+  "material": {
+    "e": "E",
+    "g": "G",
+    "density": "Densidad",
+    "alphaT": "α_T"
+  },
+  "settings": {
+    "results_scale": "Escala de resultados",
+    "grid_snap_step": "Paso de cuadrícula",
+    "snap_to_grid": "Alinear a la cuadrícula",
+    "language": "Idioma",
+    "language_and_locale": "Idioma y región",
+    "show_normal_force": "Mostrar fuerza normal",
+    "show_shear_force": "Mostrar fuerza de corte",
+    "show_bending_moment": "Mostrar momento flector",
+    "show_deformed_shape": "Mostrar forma deformada",
+    "show_loads": "Mostrar cargas",
+    "units": {
+      "units": "Unidades",
+      "length": "Longitud",
+      "mass": "Masa",
+      "force": "Fuerza",
+      "pressure": "Presión",
+      "area": "Área",
+      "areaM2": "Segundo momento de área"
     },
-    "common": {
-      "label": "Etiqueta",
-      "node": "Nodo",
-      "element": "Elemento",
-      "crossSection": "Sección transversal",
-      "material": "Material",
-      "settings": "Configuración",
-      "actions": "Acciones",
-      "coords": "Coordenadas",
-      "type": "Tipo",
-      "nodes": "Nodos",
-      "endHinges": "Articulaciones extremas",
-      "massMatrix": "Matriz de masa",
-      "target": "Objetivo",
-      "components": "Componentes",
-      "loadCase": "Caso de carga",
-      "loads": "Cargas",
-      "clearMesh": "Limpiar malla",
-      "shareModel": "Compartir modelo",
-      "documentation": "Docs"
-    },
-    "nodes": {
+    "grid": "Cuadrícula",
+    "show_grid": "Mostrar cuadrícula",
+    "mouse": {
+      "mouse": "Ratón",
+      "pan_button": "Desplazar con",
+      "wheel": "Rueda del ratón",
+      "right_button": "Botón derecho"
+    }
+  },
+  "sideSettings": {
+    "showDeformedShape": "Forma deformada",
+    "supports": "Apoyos",
+    "loads": "Cargas",
+    "nodeLabels": "Etiquetas de nodos",
+    "elementLabels": "Etiquetas de elementos",
+    "more_settings": "Más configuraciones"
+  },
+  "dofs": {
+    "bcs": "Grados de libertad soportados"
+  },
+  "results": {
+    "results": "Resultados",
+    "nodal_results": "Resultados nodales",
+    "element_results": "Resultados de elementos"
+  },
+  "materials": {
+    "addMaterial": "Agregar material",
+    "material_library": "Biblioteca de materiales",
+    "section_library": "Biblioteca de secciones"
+  },
+  "crossSections": {
+    "addCrossSection": "Agregar sección transversal"
+  },
+  "dialogs": {
+    "addNode": {
+      "addNewNode": "Agregar nuevo nodo",
+      "coordinate_x": "Coordenada X",
+      "coordinate_z": "Coordenada Z",
       "addNode": "Agregar nodo"
     },
-    "elements": {
-      "addElement": "Agregar elementos"
+    "common": {
+      "cancel": "Cancelar"
     },
-    "loads": {
-      "addNodalLoad": "Agregar carga nodal",
+    "addElement": {
+      "fromNodeId": "Nodo inicial",
+      "toNodeId": "Nodo final",
+      "addElement": "Agregar elemento",
+      "addNewElement": "Agregar nuevo elemento"
+    },
+    "addNodalLoad": {
+      "addNewNodalLoad": "Agregar nueva carga nodal",
+      "addNodalLoad": "Agregar carga nodal"
+    },
+    "addElementLoad": {
+      "addNewElementLoad": "Agregar nueva carga de elemento",
       "addElementLoad": "Agregar carga de elemento"
     },
-    "tabs": {
-      "nodes": "Nodos",
-      "elements": "Elementos",
-      "loads": "Cargas",
-      "materials": "Materiales",
-      "crossSections": "Secciones transversales",
-      "results": "Resultados"
-    },
-    "crossSection": {
-      "area": "Área",
-      "h": "Altura",
-      "iy": "Iy",
-      "k": "Coeficiente de corte"
-    },
-    "material": {
-      "e": "E",
-      "g": "G",
-      "density": "Densidad",
-      "alphaT": "α_T"
-    },
-    "settings": {
-      "results_scale": "Escala de resultados",
-      "grid_snap_step": "Paso de cuadrícula",
-      "snap_to_grid": "Alinear a la cuadrícula",
-      "language": "Idioma",
-      "language_and_locale": "Idioma y región",
-      "show_normal_force": "Mostrar fuerza normal",
-      "show_shear_force": "Mostrar fuerza de corte",
-      "show_bending_moment": "Mostrar momento flector",
-      "show_deformed_shape": "Mostrar forma deformada",
-      "show_loads": "Mostrar cargas",
-      "units": {
-        "units": "Unidades",
-        "length": "Longitud",
-        "mass": "Masa",
-        "force": "Fuerza",
-        "pressure": "Presión",
-        "area": "Área",
-        "areaM2": "Segundo momento de área"
-      },
-      "grid": "Cuadrícula",
-      "show_grid": "Mostrar cuadrícula",
-      "mouse": {
-        "mouse": "Ratón",
-        "pan_button": "Desplazar con",
-        "wheel": "Rueda del ratón",
-        "right_button": "Botón derecho"
-      }
-    },
-    "sideSettings": {
-      "showDeformedShape": "Forma deformada",
-      "supports": "Apoyos",
-      "loads": "Cargas",
-      "nodeLabels": "Etiquetas de nodos",
-      "elementLabels": "Etiquetas de elementos",
-      "more_settings": "Más configuraciones"
-    },
-    "dofs": {
-      "bcs": "Grados de libertad soportados"
-    },
-    "results": {
-      "results": "Resultados",
-      "nodal_results": "Resultados nodales",
-      "element_results": "Resultados de elementos"
-    },
-    "materials": {
+    "addMaterial": {
+      "addNewMaterial": "Agregar nuevo material",
       "addMaterial": "Agregar material",
-      "material_library": "Biblioteca de materiales",
-      "section_library": "Biblioteca de secciones"
+      "E": "E - Módulo de elasticidad",
+      "G": "G - Módulo de corte",
+      "density": "ρ - Densidad",
+      "alphaT": "α - Coeficiente de expansión térmica"
     },
-    "crossSections": {
+    "addCrossSection": {
+      "addNewCrossSection": "Agregar nueva sección transversal",
       "addCrossSection": "Agregar sección transversal"
     },
-    "dialogs": {
-      "addNode": {
-        "addNewNode": "Agregar nuevo nodo",
-        "coordinate_x": "Coordenada X",
-        "coordinate_z": "Coordenada Z",
-        "addNode": "Agregar nodo"
-      },
-      "common": {
-        "cancel": "Cancelar"
-      },
-      "addElement": {
-        "fromNodeId": "Nodo inicial",
-        "toNodeId": "Nodo final",
-        "addElement": "Agregar elemento",
-        "addNewElement": "Agregar nuevo elemento"
-      },
-      "addNodalLoad": {
-        "addNewNodalLoad": "Agregar nueva carga nodal",
-        "addNodalLoad": "Agregar carga nodal"
-      },
-      "addElementLoad": {
-        "addNewElementLoad": "Agregar nueva carga de elemento",
-        "addElementLoad": "Agregar carga de elemento"
-      },
-      "addMaterial": {
-        "addNewMaterial": "Agregar nuevo material",
-        "addMaterial": "Agregar material",
-        "E": "E - Módulo de elasticidad",
-        "G": "G - Módulo de corte",
-        "density": "ρ - Densidad",
-        "alphaT": "α - Coeficiente de expansión térmica"
-      },
-      "addCrossSection": {
-        "addNewCrossSection": "Agregar nueva sección transversal",
-        "addCrossSection": "Agregar sección transversal"
-      },
-      "editNodalLoad": {
-        "editNodalLoad": "Editar carga nodal"
-      },
-      "editElementLoad": {
-        "editElementLoad": "Editar carga de elemento"
-      }
+    "editNodalLoad": {
+      "editNodalLoad": "Editar carga nodal"
     },
-    "tooltip": {
-      "materials": {},
-      "material": {
-        "alphaT": "El coeficiente de expansión térmica describe cómo cambia el tamaño de un objeto con un cambio de temperatura.",
-        "e": "El módulo de elasticidad mide la rigidez a la tracción o compresión cuando la fuerza se aplica en longitud.",
-        "g": "El módulo de corte es una propiedad que mide la resistencia a la deformación bajo esfuerzo cortante, indicando la rigidez del material en respuesta a fuerzas aplicadas paralelas a su superficie.",
-        "density": "La densidad es una medida de cuánta masa está contenida en un volumen dado de una sustancia."
-      }
-    },
-    "footer": {
-      "reportIssue": "Informar problema",
-      "requestFeature": "Solicitar función",
-      "released": "lanzado"
+    "editElementLoad": {
+      "editElementLoad": "Editar carga de elemento"
     }
+  },
+  "tooltip": {
+    "materials": {},
+    "material": {
+      "alphaT": "El coeficiente de expansión térmica describe cómo cambia el tamaño de un objeto con un cambio de temperatura.",
+      "e": "El módulo de elasticidad mide la rigidez a la tracción o compresión cuando la fuerza se aplica en longitud.",
+      "g": "El módulo de corte es una propiedad que mide la resistencia a la deformación bajo esfuerzo cortante, indicando la rigidez del material en respuesta a fuerzas aplicadas paralelas a su superficie.",
+      "density": "La densidad es una medida de cuánta masa está contenida en un volumen dado de una sustancia."
+    }
+  },
+  "footer": {
+    "reportIssue": "Informar problema",
+    "requestFeature": "Solicitar función",
+    "released": "lanzado"
+  },
+  "tour": {
+    "nextButton": "Siguiente",
+    "previousButton": "Anterior",
+    "startTour": "Start the Tour",
+    "skipTour": "Omitir por ahora",
+    "viewerSettings": {
+      "title": "Personalizar opciones de visualización",
+      "description": "Elija lo que desea visualizar: fuerza normal, fuerza cortante, momento flector, forma deformada o todo junto."
+    },
+    "viewerControls": {
+      "title": "Botones de visualización",
+      "description": "Los controles del visor sirven para centrar o ajustar la estructura a la pantalla, y para seleccionar qué mostrar."
+    },
+    "finishButton": "Finalizar recorrido",
+    "bottomBar": {
+      "title": "Añadir, eliminar y modificar entidades",
+      "description": "El eje central donde todos los aspectos de su estructura pueden transformarse sin esfuerzo. Desde nodos a elementos, cargas, materiales y secciones transversales, es el lugar al que acudir para realizar cambios rápidos y completos."
+    }
+  },
+  "welcome": {
+    "title": "¡Bienvenido a <span class=\"edubeam\">edubeam</span>! 🚀",
+    "description": "Para ayudarle a empezar, hemos preparado un rápido recorrido que le guiará a través de las características y funcionalidades de nuestro programa."
+  },
+  "sharing": {
+    "shareViaURL": "Compartir modelo mediante URL"
   }
+}

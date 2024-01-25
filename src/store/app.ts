@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { reactive, ref, markRaw, type Ref, watch, Raw, Component } from "vue";
 
 import SVGViewer from "../components/SVGViewer.vue";
-import Results from "../components/Results.vue";
+// import Results from "../components/Results.vue";
 import Settings from "../components/Settings.vue";
 import { MouseMode } from "@/mouse";
 import { setLocale } from "@/plugins/i18n";
@@ -71,6 +71,8 @@ export const useAppStore = defineStore(
     const convertForce = (value: number) => _convertForce(value);
     const convertInverseForce = (value: number) => _convertInverseForce(value);
 
+    const onboardingFinished = ref(false);
+
     watch(locale, (newLocale) => {
       setLocale(newLocale);
     });
@@ -122,6 +124,7 @@ export const useAppStore = defineStore(
     const panButton = ref(4);
 
     return {
+      onboardingFinished,
       drawerOpen,
       rightDrawerOpen,
       bottomBarOpen,
@@ -152,5 +155,10 @@ export const useAppStore = defineStore(
       convertInverseForce,
     };
   },
-  { persist: { storage: localStorage, paths: ["locale", "tab", "bottomBarHeight", "units", "panButton"] } }
+  {
+    persist: {
+      storage: localStorage,
+      paths: ["onboardingFinished", "locale", "tab", "bottomBarHeight", "units", "panButton"],
+    },
+  }
 );

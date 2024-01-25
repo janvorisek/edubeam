@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="open" max-width="420">
     <v-card>
-      <v-card-title class="text-h5"> {{ $t("dialogs.addElementLoad.addNewElementLoad") }} </v-card-title>
+      <v-card-title> {{ $t("dialogs.addElementLoad.addNewElementLoad") }} </v-card-title>
 
       <v-card-text>
         <v-form>

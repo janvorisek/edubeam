@@ -583,7 +583,7 @@ defineExpose({ centerContent, fitContent });
         </v-chip>
       </v-chip-group> -->
     </div>
-    <div class="text-black d-flex" style="position: absolute; z-index: 100; top: 24px; right: 24px">
+    <div id="viewerControls" class="text-black d-flex" style="position: absolute; z-index: 100; top: 24px; right: 24px">
       <v-btn
         icon="mdi:mdi-image-filter-center-focus"
         size="32"
@@ -1391,7 +1391,7 @@ defineExpose({ centerContent, fitContent });
     </div>
 
     <div v-if="viewerStore.settingsOpen" class="" style="position: absolute; right: 24px; top: 64px; z-index: 600">
-      <div class="d-flex flex-sm-column pa-1 overflow-y-auto ga-2 align-end justify-end">
+      <div id="viewerSettings" class="d-flex flex-sm-column pa-1 overflow-y-auto ga-2 align-end justify-end">
         <div
           color="grey-lighten-5"
           rounded="lg"

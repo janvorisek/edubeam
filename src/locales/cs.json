@@ -17,12 +17,14 @@
     "type": "Typ",
     "loads": "Zatížení",
     "clearMesh": "Smazat konstrukci",
-    "documentation": "Docs",
+    "documentation": "Dokumentace",
     "shareModel": "Sdílet konstrukci",
     "delete": "Smazat",
     "copy": "Kopírovat",
     "edit": "Upravit",
-    "stiffnessMatrix": "Matice tuhosti"
+    "stiffnessMatrix": "Matice tuhosti",
+    "addUsingDialog": "Přidat dialogem",
+    "addUsingMouse": "Přidat myší"
   },
   "tabs": {
     "nodes": "Uzly",
@@ -87,7 +89,8 @@
     "g": "G"
   },
   "nodes": {
-    "addNode": "Přidat uzel"
+    "addNode": "Přidat uzel",
+    "editNode": "Upravit uzel"
   },
   "tabView": {
     "results": "Výsledky",
@@ -176,5 +179,28 @@
   },
   "sharing": {
     "shareViaURL": "Sdílejte konstrukci pomocí odkazu"
+  },
+  "tour": {
+    "skipTour": "Přeskočit",
+    "startTour": "Začít prohlídku",
+    "viewerControls": {
+      "title": "Tlačítka zobrazení",
+      "description": "Ovládací prvky zobrazení slouží k vycentrování nebo přizpůsobení konstrukce obrazovce a k výběru toho, co se má zobrazovat."
+    },
+    "viewerSettings": {
+      "title": "Přizpůsobit možnosti zobrazení",
+      "description": "Vyberte, co se má zobrazit - normálová síla, posouvající síla, ohybový moment, deformovaný tvar, nebo vše dohromady."
+    },
+    "bottomBar": {
+      "title": "Přidávání, odebírání a úprava entit",
+      "description": " Ústředí edubeamu, kde lze jednodušše měnit každý aspekt vaší konstrukce. Od uzlů po prvky, zatížení, materiály a průřezy - je to místo, kde můžete provádět rychlé a komplexní změny."
+    },
+    "previousButton": "Předchozí",
+    "nextButton": "Další",
+    "finishButton": "Dokončit prohlídku"
+  },
+  "welcome": {
+    "title": "Vítejte v <span class=\"edubeam\">edubeamu</span>! 🚀",
+    "description": "Abychom vám usnadnili začátek, připravili jsme pro vás rychlou úvodní prohlídku, která vás seznámí s vlastnostmi a funkcemi našeho programu."
   }
 }

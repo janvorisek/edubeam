@@ -23,7 +23,7 @@
     "loads": "Loads",
     "clearMesh": "Clear mesh",
     "shareModel": "Share model",
-    "documentation": "Docs",
+    "documentation": "Documentation",
     "addUsingDialog": "Add using dialog",
     "addUsingMouse": "Add using mouse",
     "edit": "Edit",
@@ -180,5 +180,28 @@
   },
   "sharing": {
     "shareViaURL": "Share model via URL"
+  },
+  "tour": {
+    "startTour": "Start the Tour",
+    "skipTour": "Skip for Now",
+    "viewerControls": {
+      "title": "Viewer buttons",
+      "description": "The viewer controls are the way to center or fit the structure to screen, and to select what to display."
+    },
+    "viewerSettings": {
+      "title": "Customize Display Options",
+      "description": "Choose what to display – be it normal force, shear force, bending moment, deformed shape, or everything together."
+    },
+    "bottomBar": {
+      "title": "Add, remove & modify entities",
+      "description": "The central hub where every aspect of your structure can be effortlessly transformed. From nodes to elements, loads, materials, and cross-sections, it's the go-to place for swift and comprehensive changes."
+    },
+    "previousButton": "Previous",
+    "nextButton": "Next",
+    "finishButton": "Finish"
+  },
+  "welcome": {
+    "title": "Welcome to <span class=\"edubeam\">edubeam</span>! 🚀",
+    "description": "To help you get started, we've prepared a quick onboarding tour that will guide you through the features and functionalities of our program."
   }
 }

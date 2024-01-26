@@ -37,7 +37,7 @@
 
 ## About The Project
 
-![Screen Shot](docs/public/download.png)
+[![EduBeam Live](docs/public/download.png)](https://run.edubeam.app)
 
 Welcome to EduBeam, an innovative educational project dedicated to simplifying structural analysis for 2D structures. Developed with students and educators in mind, EduBeam provides a user-friendly web-based platform for hands-on learning in structural mechanics. Dive into the world of engineering with ease as you navigate and analyze 2D structures directly in your web browser. This project is an open invitation for collaboration, allowing students to modify and extend the code, reinforcing their understanding of structural analysis and coding principles. Join us in building a community where knowledge and creativity intersect, shaping the future of structural education.
 

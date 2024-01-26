@@ -94,6 +94,9 @@ const customElements = [
 export default defineConfig({
   title: "edubeam",
   description: "Learn, Contribute, Excel in Structural Analysis!",
+  sitemap: {
+    hostname: 'https://www.edubeam.app'
+  },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [

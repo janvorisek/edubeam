@@ -29,7 +29,7 @@
     "ts-fem": "github:janvorisek/ts-fem#72ec2f65d46bda5101ada9e6e63dcf7638504415",
     "v-onboarding": "^2.6.0",
     "vue": "^3.4.15",
-    "vue-draggable-resizable": "^3.0.0-beta.2",
+    "vue-draggable-resizable": "^3.0.0",
     "vue-gtag": "^2.0.1",
     "vue-i18n": "^9.9.1",
     "vue-router": "^4.2.5",

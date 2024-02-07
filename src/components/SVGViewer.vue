@@ -373,10 +373,13 @@ const onMouseDown = (e: PointerEvent) => {
 
   if ("activeElement" in document) (document.activeElement as HTMLElement).blur();
 
+  mouseStartX = e.offsetX;
+  mouseStartY = e.offsetY;
+
   if (e.button === 0 /* && typeof e.button !== "undefined" */) {
     //this.svgPanZoom.disablePan();
-    mouseStartX = e.offsetX;
-    mouseStartY = e.offsetY;
+    //mouseStartX = e.offsetX;
+    //mouseStartY = e.offsetY;
 
     if (appStore.mouseMode === MouseMode.ADD_NODE) {
       mouseStartX = -9999;
@@ -542,6 +545,8 @@ const optionsCtxMenu = reactive({
 });
 
 const openCtxMenu = (e: MouseEvent) => {
+  if (hasMoved(e)) return;
+
   optionsCtxMenu.x = e.clientX;
   optionsCtxMenu.y = e.clientY;
 

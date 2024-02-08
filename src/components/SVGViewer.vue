@@ -117,6 +117,12 @@ onMounted(() => {
   }, 100);
 });
 
+const solve = () => {
+  nextTick(() => {
+    useProjectStore().solve();
+  });
+};
+
 const centerContent = () => {
   if (!panZoom.value) return;
 
@@ -166,7 +172,10 @@ watch(c, (v) => {
 
 watch(_delete, (v) => {
   if ("activeElement" in document && document.activeElement.tagName !== "BODY") return;
-  if (v) projectStore.deleteSelection2();
+  if (v) {
+    projectStore.deleteSelection2();
+    solve();
+  }
 });
 
 watch(ctrl_a, (v) => {
@@ -421,6 +430,7 @@ const onMouseDown = (e: PointerEvent) => {
       projectStore.solver.loadCases[0].solved = false;
       const newNodeId = projectStore.solver.domain.nodes.size + 1;
       projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
+      solve();
       return;
     }
 
@@ -436,7 +446,7 @@ const onMouseDown = (e: PointerEvent) => {
         projectStore.solver.domain.createBeam2D(newElId, [nid, intersected.value.index], 1, 1);
 
         startNode.value = { label: intersected.value.index, x: mouseXReal.value, y: mouseYReal.value };
-        projectStore.solve();
+        solve();
       }
 
       return;
@@ -701,7 +711,10 @@ defineExpose({ centerContent, fitContent });
       <context-menu-item
         :label="$t('common.delete')"
         :disabled="!projectStore.isAnythingSelected2()"
-        @click="projectStore.deleteSelection2()"
+        @click="
+          projectStore.deleteSelection2();
+          solve();
+        "
       >
         <template #icon>
           <v-icon size="x-small">mdi-delete</v-icon>
@@ -711,68 +724,6 @@ defineExpose({ centerContent, fitContent });
 
     <div class="tooltip body-2 black--text" ref="tooltip" style="display: none">
       <div class="content"></div>
-    </div>
-
-    <div
-      class="actionTooltip"
-      ref="actionTooltip"
-      v-if="projectStore.selection.type === 'element' && 1 == 2"
-      :style="`left: ${projectStore.selection.x + 30}px; top: ${projectStore.selection.y}px;`"
-    >
-      <div class="content d-flex elevation-3 rounded">
-        <v-btn
-          icon
-          size="24"
-          density="comfortable"
-          class="mr-1"
-          rounded="lg"
-          variant="text"
-          title="Center content"
-          @click.native="centerContent"
-        >
-          <v-icon icon="mdi-pencil" size="24" />
-          <v-tooltip activator="parent" location="bottom">Edit element</v-tooltip>
-        </v-btn>
-        <v-btn
-          icon
-          size="24"
-          density="comfortable"
-          class="mr-1"
-          rounded="lg"
-          variant="text"
-          title="Center content"
-          @click.native="centerContent"
-        >
-          <v-icon icon="mdi-arrow-down-thin" size="24" />
-          <v-tooltip activator="parent" location="bottom">Add load</v-tooltip>
-        </v-btn>
-        <v-btn
-          icon
-          size="24"
-          density="comfortable"
-          class="mr-1"
-          rounded="lg"
-          variant="text"
-          title="Center content"
-          @click.native="centerContent"
-        >
-          <v-icon icon="mdi-matrix" size="24" />
-          <v-tooltip activator="parent" location="bottom">Stiffness matrix</v-tooltip>
-        </v-btn>
-        <v-btn
-          icon
-          size="24"
-          density="comfortable"
-          class="mr-1"
-          rounded="lg"
-          variant="text"
-          title="Center content"
-          @click.native="centerContent"
-        >
-          <v-icon icon="mdi-delete" size="24" />
-          <v-tooltip activator="parent" location="bottom">Delete element</v-tooltip>
-        </v-btn>
-      </div>
     </div>
 
     <svg v-if="viewerStore.showGrid" class="w-100 fill-height" style="position: absolute">

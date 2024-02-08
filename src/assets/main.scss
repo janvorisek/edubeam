@@ -267,3 +267,8 @@ select.mini-select {
   --v-onboarding-overlay-z: 1000;
   --v-onboarding-step-z: 1001;
 }
+
+// TODO: Hack, v-window-item has inline style of display none, unable to determine why
+.v-window-item.v-window-item--active {
+  display: block !important;
+}

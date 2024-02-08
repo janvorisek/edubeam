@@ -66,8 +66,10 @@ onMounted(() => {
   document.addEventListener(
     "wheel",
     function (e) {
-      e.preventDefault();
-      e.stopPropagation();
+      if (e.ctrlKey) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
     },
     { passive: false }
   );

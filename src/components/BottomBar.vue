@@ -8,7 +8,12 @@
         height="36"
         :hide-slider="props.height === 36"
       >
-        <v-tab v-for="(tab, index) in tabs" :key="index" @click="appStore.bottomBarOpen = true">
+        <v-tab
+          v-for="(tab, index) in tabs"
+          :key="index"
+          :value="`tab-${tab.id}`"
+          @click="appStore.bottomBarOpen = true"
+        >
           <template #default>
             <v-icon small class="mr-3">{{ tab.icon }}</v-icon> {{ $t(tab.title) }}</template
           >
@@ -26,7 +31,7 @@
     </div>
     <v-window v-model="appStore.bottomBarTab" disabled class="text-body-2" :style="`height: ${props.height - 36}px`">
       <v-window-item
-        :key="'tab-nodes'"
+        :value="'tab-nodes'"
         :style="`height: ${props.height - 36}px`"
         :transition="false"
         :reverse-transition="false"
@@ -200,7 +205,7 @@
       </v-window-item>
 
       <v-window-item
-        :key="'tab-elements'"
+        :value="'tab-elements'"
         :transition="false"
         :reverse-transition="false"
         :style="`height: ${props.height - 36}px`"
@@ -384,7 +389,7 @@
       </v-window-item>
 
       <v-window-item
-        :key="'tab-loads'"
+        :value="'tab-loads'"
         :transition="false"
         :reverse-transition="false"
         :style="`height: ${props.height - 36}px`"
@@ -656,7 +661,7 @@
       </v-window-item>
 
       <v-window-item
-        :key="'tab-mats'"
+        :value="'tab-mats'"
         :style="`height: ${props.height - 36}px`"
         :transition="false"
         :reverse-transition="false"
@@ -767,7 +772,7 @@
       </v-window-item>
 
       <v-window-item
-        :key="'tab-cs'"
+        :value="'tab-cs'"
         :style="`height: ${props.height - 36}px`"
         :transition="false"
         :reverse-transition="false"
@@ -873,7 +878,7 @@
         </v-data-table>
       </v-window-item>
       <v-window-item
-        :key="'tab-results'"
+        :value="'tab-results'"
         :style="`height: ${props.height - 36}px`"
         :transition="false"
         :reverse-transition="false"

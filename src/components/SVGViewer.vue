@@ -216,24 +216,29 @@ const onNodalDefoHover = (e: MouseEvent, node: Node) => {
   tt.style.left = e.offsetX + "px";
 
   tooltipContent.innerHTML = `<strong>Node ${node.label}</strong>`;
-  tooltipContent.innerHTML += "<br>";
-  tooltipContent.innerHTML += `u<sub>x</sub> = ${formatExpValueAsHTML(
-    // @ts-expect-error It return value for single Dof
-    node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]),
-    4
-  )} m`;
-  tooltipContent.innerHTML += "<br>";
-  tooltipContent.innerHTML += `u<sub>z</sub> = ${formatExpValueAsHTML(
-    // @ts-expect-error It return value for single Dof
-    node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]),
-    4
-  )} m`;
-  tooltipContent.innerHTML += "<br>";
-  tooltipContent.innerHTML += `φ<sub>y</sub> = ${formatExpValueAsHTML(
-    // @ts-expect-error It return value for single Dof
-    node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry]),
-    4
-  )} m`;
+  if (
+    projectStore.solver.loadCases[0].solved &&
+    projectStore.beams.some((element) => element.nodes.includes(node.label))
+  ) {
+    tooltipContent.innerHTML += "<br>";
+    tooltipContent.innerHTML += `u<sub>x</sub> = ${formatExpValueAsHTML(
+      // @ts-expect-error It return value for single Dof
+      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]),
+      4
+    )} m`;
+    tooltipContent.innerHTML += "<br>";
+    tooltipContent.innerHTML += `u<sub>z</sub> = ${formatExpValueAsHTML(
+      // @ts-expect-error It return value for single Dof
+      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]),
+      4
+    )} m`;
+    tooltipContent.innerHTML += "<br>";
+    tooltipContent.innerHTML += `φ<sub>y</sub> = ${formatExpValueAsHTML(
+      // @ts-expect-error It return value for single Dof
+      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry]),
+      4
+    )} m`;
+  }
   tt.style.display = "block";
   document.body.style.cursor = "pointer";
 
@@ -252,7 +257,10 @@ const onNodeHover = (e: MouseEvent, node: Node) => {
   tt.style.top = e.offsetY + "px";
   tt.style.left = e.offsetX + "px";
   tooltipContent.innerHTML = `<strong>${t("common.node")} ${node.label}</strong>`;
-  if (projectStore.solver.loadCases[0].solved) {
+  if (
+    projectStore.solver.loadCases[0].solved &&
+    projectStore.beams.some((element) => element.nodes.includes(node.label))
+  ) {
     tooltipContent.innerHTML += "<br>";
     tooltipContent.innerHTML += `u<sub>x</sub> = ${formatExpValueAsHTML(
       // @ts-expect-error It return value for single Dof
@@ -1328,7 +1336,9 @@ defineExpose({ centerContent, fitContent });
                   !useAppStore().zooming &&
                   isLoaded &&
                   projectStore.solver.loadCases[0].solved &&
-                  viewerStore.showDeformedShape
+                  viewerStore.showDeformedShape &&
+                  // check if node is connected to anything
+                  projectStore.beams.some((element) => element.nodes.includes(node.label))
                 "
                 :transform="`translate(${
                   node.coords[0] +

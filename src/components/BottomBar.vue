@@ -932,23 +932,38 @@
               <div class="inline-edit-group mr-2">
                 <label class="input-before">D<sub>x</sub></label>
                 <div
+                  v-if="
+                    projStore.solver.loadCases[0].solved &&
+                    projStore.beams.some((element) => element.nodes.includes(item.label))
+                  "
                   class="inline-edit fw pl-1"
                   v-html="formatExpValueAsHTML(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dx]), 4)"
                 />
+                <div class="inline-edit fw pl-1" v-else v-html="formatExpValueAsHTML(0, 4)"></div>
               </div>
               <div class="inline-edit-group mr-2">
                 <label class="input-before">D<sub>z</sub></label>
                 <div
+                  v-if="
+                    projStore.solver.loadCases[0].solved &&
+                    projStore.beams.some((element) => element.nodes.includes(item.label))
+                  "
                   class="inline-edit fw pl-1"
                   v-html="formatExpValueAsHTML(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dz]), 4)"
                 />
+                <div class="inline-edit fw pl-1" v-else v-html="formatExpValueAsHTML(0, 4)"></div>
               </div>
               <div class="inline-edit-group mr-2">
                 <label class="input-before">R<sub>y</sub></label>
                 <div
+                  v-if="
+                    projStore.solver.loadCases[0].solved &&
+                    projStore.beams.some((element) => element.nodes.includes(item.label))
+                  "
                   class="inline-edit fw pl-1"
                   v-html="formatExpValueAsHTML(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Ry]), 4)"
                 />
+                <div class="inline-edit fw pl-1" v-else v-html="formatExpValueAsHTML(0, 4)"></div>
               </div>
             </div>
           </template>

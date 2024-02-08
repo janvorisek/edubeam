@@ -290,6 +290,10 @@ const onNodeClick = (e: MouseEvent) => {
 
   useProjectStore().selection.type = "node";
   useProjectStore().selection.label = isNaN(index as unknown as number) ? index : parseInt(index);
+
+  projectStore.selection2.elements = [];
+  projectStore.selection2.nodes = [useProjectStore().selection.label];
+
   //useProjectStore().selection.x = e.offsetX;
   //useProjectStore().selection.y = e.offsetY;
 
@@ -319,6 +323,9 @@ const onElementClick = (e: MouseEvent) => {
   useProjectStore().selection.label = isNaN(index as unknown as number) ? index : parseInt(index);
   useProjectStore().selection.x = nx;
   useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
+
+  projectStore.selection2.elements = [useProjectStore().selection.label];
+  projectStore.selection2.nodes = [];
 
   // Show action tooltip
   const att = actionTooltip.value as HTMLElement;

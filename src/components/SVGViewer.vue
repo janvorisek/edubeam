@@ -799,7 +799,7 @@ defineExpose({ centerContent, fitContent });
                     :font-size="13 / scale"
                     font-weight="normal"
                     text-anchor="end"
-                    alignment-baseline="middle"
+                    dominant-baseline="middle"
                     :transform="formatElementLoadLabel(eload, scale, 0)"
                   >
                     {{ Math.abs(appStore.convertForce(eload.values[0])).toFixed(2) }}
@@ -809,7 +809,7 @@ defineExpose({ centerContent, fitContent });
                     :font-size="13 / scale"
                     font-weight="normal"
                     text-anchor="end"
-                    alignment-baseline="middle"
+                    dominant-baseline="middle"
                     :transform="formatElementLoadLabel(eload, scale, 1)"
                   >
                     {{ Math.abs(appStore.convertForce(eload.values[1])).toFixed(2) }}
@@ -865,7 +865,7 @@ defineExpose({ centerContent, fitContent });
                   :font-size="13 / scale"
                   font-weight="normal"
                   text-anchor="start"
-                  alignment-baseline="central"
+                  dominant-baseline="central"
                   :transform="`translate(${
                     useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0] + 15 / scale
                   }
@@ -879,7 +879,7 @@ defineExpose({ centerContent, fitContent });
                   :font-size="13 / scale"
                   font-weight="normal"
                   :text-anchor="nload.values[0] > 0 ? 'end' : 'start'"
-                  alignment-baseline="central"
+                  dominant-baseline="central"
                   :transform="`translate(${
                     useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0] -
                     (40 * nload.values[0]) /
@@ -955,7 +955,7 @@ defineExpose({ centerContent, fitContent });
                     fill="blue"
                     font-weight="normal"
                     :text-anchor="mv[2] < 0 ? 'end' : 'start'"
-                    alignment-baseline="baseline"
+                    dominant-baseline="baseline"
                   >
                     {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
                   </text>
@@ -965,7 +965,7 @@ defineExpose({ centerContent, fitContent });
                     fill="blue"
                     font-weight="normal"
                     :text-anchor="mv[2] < 0 ? 'end' : 'start'"
-                    alignment-baseline="baseline"
+                    dominant-baseline="baseline"
                   >
                     {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
                   </text>
@@ -1000,7 +1000,7 @@ defineExpose({ centerContent, fitContent });
                     fill="green"
                     font-weight="normal"
                     :text-anchor="mv[2] < 0 ? 'end' : 'start'"
-                    alignment-baseline="baseline"
+                    dominant-baseline="baseline"
                   >
                     {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
                   </text>
@@ -1010,7 +1010,7 @@ defineExpose({ centerContent, fitContent });
                     fill="green"
                     font-weight="normal"
                     :text-anchor="mv[2] < 0 ? 'end' : 'start'"
-                    alignment-baseline="baseline"
+                    dominant-baseline="baseline"
                   >
                     {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
                   </text>
@@ -1046,7 +1046,7 @@ defineExpose({ centerContent, fitContent });
                     fill="red"
                     font-weight="normal"
                     :text-anchor="mv[2] < 0 ? 'end' : 'start'"
-                    alignment-baseline="baseline"
+                    dominant-baseline="baseline"
                   >
                     {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
                   </text>
@@ -1056,7 +1056,7 @@ defineExpose({ centerContent, fitContent });
                     fill="red"
                     font-weight="normal"
                     :text-anchor="mv[2] < 0 ? 'end' : 'start'"
-                    alignment-baseline="baseline"
+                    dominant-baseline="baseline"
                   >
                     {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
                   </text>
@@ -1131,7 +1131,7 @@ defineExpose({ centerContent, fitContent });
                   :font-size="14 / scale"
                   font-weight="normal"
                   text-anchor="middle"
-                  alignment-baseline="central"
+                  dominant-baseline="central"
                   :transform="`${formatElementLabel(element, scale, 10)} rotate(${formatElementAngle(element)} ${
                     (projectStore.solver.domain.nodes.get(element.nodes[0])!.coords[0] +
                       projectStore.solver.domain.nodes.get(element.nodes[1])!.coords[0]) /
@@ -1207,7 +1207,7 @@ defineExpose({ centerContent, fitContent });
                 fill="#FF8700"
                 font-weight="normal"
                 text-anchor="end"
-                alignment-baseline="baseline"
+                dominant-baseline="baseline"
                 :transform="`translate(${node.coords[0]}
               ${node.coords[2] - (40 * Math.sign(getReaction(node, DofID.Dz))) / scale})`"
               >
@@ -1242,7 +1242,7 @@ defineExpose({ centerContent, fitContent });
                 fill="#FF8700"
                 font-weight="normal"
                 :text-anchor="getReaction(node, DofID.Dx) > 0 ? 'end' : 'start'"
-                alignment-baseline="baseline"
+                dominant-baseline="baseline"
                 :transform="`translate(${node.coords[0] - (Math.sign(getReaction(node, DofID.Dx)) * 40) / scale}
               ${node.coords[2]})`"
               >
@@ -1275,7 +1275,7 @@ defineExpose({ centerContent, fitContent });
                 fill="#FF8700"
                 font-weight="normal"
                 text-anchor="start"
-                alignment-baseline="baseline"
+                dominant-baseline="baseline"
                 :transform="`translate(${node.coords[0] + 15 / scale}
               ${node.coords[2] - 15 / scale})`"
               >
@@ -1336,7 +1336,7 @@ defineExpose({ centerContent, fitContent });
                   :font-size="14 / scale"
                   font-weight="normal"
                   text-anchor="middle"
-                  alignment-baseline="central"
+                  dominant-baseline="central"
                 >
                   {{ node.label }}
                 </text>

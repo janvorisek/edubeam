@@ -231,7 +231,7 @@ const onMouseUp = () => {
 const rootRef = ref<HTMLElement | null>(null);
 const svgRef = ref<SVGElement | null>(null);
 
-defineExpose({ scale, centerContent, fitContent, updateMatrix, onWindowResize });
+defineExpose({ scale, centerContent, fitContent, updateMatrix, onWindowResize, zoom });
 </script>
 
 <template>

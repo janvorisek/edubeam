@@ -56,7 +56,23 @@ const steps = computed(() => [
 
 onMounted(() => {
   if (!appStore.onboardingFinished) openModal(Welcome);
+
+  document.addEventListener("keydown", function (e) {
+    if (e.ctrlKey && (e.key === "+" || e.key === "=" || e.key === "-")) {
+      e.preventDefault();
+    }
+  });
+
+  document.addEventListener(
+    "wheel",
+    function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    },
+    { passive: false }
+  );
 });
+
 const appStore = useAppStore();
 
 const menu = ref([

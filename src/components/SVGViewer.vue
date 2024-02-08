@@ -4,7 +4,7 @@ import SvgPanZoom from "./SVGPanZoom.vue";
 import SvgGrid from "./SVGGrid.vue";
 import SvgViewerDefs from "./SVGViewerDefs.vue";
 import { useProjectStore } from "../store/project";
-import { ref, onMounted, computed, nextTick, markRaw, watch, reactive } from "vue";
+import { ref, onMounted, computed, nextTick, markRaw, watch, reactive, onUnmounted } from "vue";
 import { useViewerStore } from "../store/viewer";
 import { useAppStore } from "@/store/app";
 
@@ -89,6 +89,26 @@ const intersected = ref<{
   type: null,
   index: null,
   originalPosition: { x: 0, y: 0 },
+});
+
+const zoom = (e: KeyboardEvent) => {
+  if (e.ctrlKey && e.code === "Equal") {
+    panZoom.value?.zoom(svg.value.clientWidth / 2, svg.value.clientHeight / 2, -0.1);
+    e.preventDefault();
+  }
+
+  if (e.ctrlKey && e.code === "Minus") {
+    panZoom.value?.zoom(svg.value.clientWidth / 2, svg.value.clientHeight / 2, 0.1);
+    e.preventDefault();
+  }
+};
+
+onMounted(() => {
+  window.addEventListener("keydown", zoom);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("keydown", zoom);
 });
 
 onMounted(() => {

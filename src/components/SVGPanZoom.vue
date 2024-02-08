@@ -68,7 +68,15 @@ const zoom = (mx: number, my: number, deltaY: number): void => {
   updateMatrix(true);
 };
 
+let wheelEventEndTimeout = null;
+const isFirefox = navigator.userAgent.search("Firefox") > -1;
 const onMouseWheel = (event: WheelEvent): void => {
+  if (isFirefox) appStore.zooming = true;
+  clearTimeout(wheelEventEndTimeout);
+  wheelEventEndTimeout = setTimeout(() => {
+    appStore.zooming = false;
+  }, 100);
+
   zoom(event.offsetX, event.offsetY, Math.sign(event.deltaY) * 0.05);
 };
 
@@ -209,15 +217,20 @@ onMounted(() => {
     svgRef.value!.setAttribute("overflow", "visible");
   });
 
-  const isFirefox = navigator.userAgent.search("Firefox") > -1;
+  /* const isFirefox = navigator.userAgent.search("Firefox") > -1;
   let wheelEventEndTimeout = null;
-  window.addEventListener("wheel", () => {
-    if (isFirefox) appStore.zooming = true;
-    clearTimeout(wheelEventEndTimeout);
-    wheelEventEndTimeout = setTimeout(() => {
-      appStore.zooming = false;
-    }, 100);
-  });
+  window.addEventListener(
+    "wheel",
+    () => {
+      console.log("wheel");
+      if (isFirefox) appStore.zooming = true;
+      clearTimeout(wheelEventEndTimeout);
+      wheelEventEndTimeout = setTimeout(() => {
+        appStore.zooming = false;
+      }, 100);
+    },
+    { passive: false }
+  );*/
 });
 
 const onMouseDown = () => {

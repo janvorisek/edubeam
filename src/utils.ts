@@ -27,6 +27,18 @@ export const throttle = (fn: Function, wait = 300) => {
   };
 };
 
+export const debounce = (fn: Function, wait = 300) => {
+  let timeout: ReturnType<typeof setTimeout>;
+  return function (this: any) {
+    const context = this,
+      args = arguments;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      fn.apply(context, args);
+    }, wait);
+  };
+};
+
 export const capitalize = (s: string) => {
   return s.charAt(0).toUpperCase() + s.slice(1);
 };

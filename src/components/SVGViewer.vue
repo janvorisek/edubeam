@@ -36,7 +36,7 @@ import {
   formatElementLoadForcesAngle,
   formatExpValueAsHTML,
 } from "../SVGUtils";
-import { throttle } from "../utils";
+import { debounce, throttle } from "../utils";
 import { Node, DofID, Beam2D } from "ts-fem";
 import { Matrix } from "mathjs";
 import { useMagicKeys } from "@vueuse/core";
@@ -54,6 +54,7 @@ import Selection from "./Selection.vue";
 
 import { useLayoutStore } from "@/store/layout";
 import AddNodeVue from "./dialogs/AddNode.vue";
+import { Command, IKeyValue, undoRedoManager } from "../CommandManager";
 
 let mouseStartX = 0;
 let mouseStartY = 0;
@@ -116,6 +117,10 @@ onMounted(() => {
     fitContent();
   }, 100);
 });
+
+const setUnsolved = () => {
+  useProjectStore().solver.loadCases[0].solved = false;
+};
 
 const solve = () => {
   nextTick(() => {
@@ -369,6 +374,37 @@ const onElementClick = (e: MouseEvent) => {
   att.style.display = "block";
 };
 
+let drgNode = null;
+let origX = 0;
+let origZ = 0;
+let finalX = 0;
+let finalZ = 0;
+
+const moveNode = debounce(() => {
+  // undo/redo
+  {
+    const setCommand = new Command<IKeyValue>(
+      (value) => {
+        setUnsolved();
+        value.item.coords[0] = value.next.x;
+        value.item.coords[2] = value.next.z;
+        solve();
+      },
+      (value) => {
+        setUnsolved();
+        value.item.coords[0] = value.prev.x;
+        value.item.coords[2] = value.prev.z;
+        solve();
+      },
+      { item: drgNode, prev: { x: origX, z: origZ }, next: { x: finalX, z: finalZ } }
+    );
+
+    undoRedoManager.executeCommand(setCommand); // execute command
+  }
+
+  drgNode = null;
+}, 500);
+
 const mouseMove = (e: MouseEvent) => {
   appStore.mouse.x = e.clientX;
   appStore.mouse.y = e.clientY;
@@ -400,11 +436,24 @@ const mouseMove = (e: MouseEvent) => {
     const index = intersected.value.index;
     if (index === null) return;
 
+    const item = useProjectStore().solver.domain.nodes.get(index)!;
+
+    if (drgNode === null) {
+      drgNode = item;
+      origX = item.coords[0];
+      origZ = item.coords[2];
+    }
+
     // @ts-expect-error ts-fem is wrongly typed
     useProjectStore().solver.domain.nodes.get(index)!.coords[0] = mouseXReal.value;
 
     // @ts-expect-error ts-fem is wrongly typed
     useProjectStore().solver.domain.nodes.get(index)!.coords[2] = mouseYReal.value;
+
+    finalX = mouseXReal.value;
+    finalZ = mouseYReal.value;
+
+    moveNode();
 
     useProjectStore().solver.loadCases[0].solved = false;
     useProjectStore().solve();
@@ -632,6 +681,26 @@ defineExpose({ centerContent, fitContent });
           {{ projectStore.solver.neq }} free DOFs {{ projectStore.solver.pneq }} supported DOFs
         </v-chip>
       </v-chip-group> -->
+    </div>
+    <div id="undoRedo" style="position: absolute; top: 24px; left: 24px; z-index: 100">
+      <v-btn
+        icon="mdi:mdi-undo"
+        size="32"
+        density="comfortable"
+        class="mr-1"
+        rounded="lg"
+        title="Center content"
+        @click.native="undoRedoManager.undo()"
+      ></v-btn>
+      <v-btn
+        icon="mdi:mdi-redo"
+        size="32"
+        density="comfortable"
+        class="mr-1"
+        rounded="lg"
+        title="Center content"
+        @click.native="undoRedoManager.redo()"
+      ></v-btn>
     </div>
     <div id="viewerControls" class="text-black d-flex" style="position: absolute; z-index: 100; top: 24px; right: 24px">
       <v-btn

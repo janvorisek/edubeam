@@ -1004,6 +1004,7 @@ import AddNodeDialog from "./dialogs/AddNode.vue";
 
 import { useLayoutStore } from "@/store/layout";
 import StiffnessMatrix from "@/components/StiffnessMatrix.vue";
+import { Command, IKeyValue, undoRedoManager } from "@/CommandManager";
 
 type EntityWithLabel = { label: string & { [key: string]: unknown } };
 
@@ -1054,6 +1055,8 @@ const changeSetArrayItem = (
 ) => {
   setUnsolved();
 
+  const prevVal = item[set][value];
+
   if (el.value === "") el.value = "0";
 
   const val = parseFloat(el.value.replace(/\s/g, "").replace(",", "."));
@@ -1062,11 +1065,30 @@ const changeSetArrayItem = (
   if (formatter) item[set][value] = formatter(val);
   else item[set][value] = val;
 
+  // undo/redo
+  {
+    const setCommand = new Command<IKeyValue>(
+      (value) => {
+        value.item[value.set][value.value] = value.next as number;
+        solve();
+      },
+      (value) => {
+        value.item[value.set][value.value] = value.prev as number;
+        solve();
+      },
+      { item, set, value, prev: prevVal, next: val }
+    );
+
+    undoRedoManager.executeCommand(setCommand); // execute command
+  }
+
   solve();
 };
 
 const changeItem = (item: object, value: string, el?: HTMLInputElement, formatter?: (v: number) => number) => {
   setUnsolved();
+
+  const prevVal = item[value];
 
   if (el.value === "") el.value = "0";
 
@@ -1075,6 +1097,23 @@ const changeItem = (item: object, value: string, el?: HTMLInputElement, formatte
 
   if (formatter) item[value] = formatter(val);
   else item[value] = val;
+
+  // undo/redo
+  {
+    const setCommand = new Command<IKeyValue>(
+      (value) => {
+        value.item[value.value] = value.next as number;
+        solve();
+      },
+      (value) => {
+        value.item[value.value] = value.prev as number;
+        solve();
+      },
+      { item, value, prev: prevVal, next: val }
+    );
+
+    undoRedoManager.executeCommand(setCommand); // execute command
+  }
 
   solve();
 };
@@ -1143,24 +1182,90 @@ const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputElement) 
 const toggleSet = (item: unknown, set: string, value: number) => {
   setUnsolved();
 
+  const prevVal = new Set(Array.from(item[set]));
+
   if (item[set].has(value)) item[set].delete(value);
   else item[set].add(value);
 
   item[set] = new Set(item[set].values());
+
+  const nextVal = new Set(Array.from(item[set]));
+
+  // undo/redo
+  {
+    const setCommand = new Command<IKeyValue>(
+      (value) => {
+        setUnsolved();
+        value.item[value.set] = value.next;
+        solve();
+      },
+      (value) => {
+        setUnsolved();
+        value.item[value.set] = value.prev;
+        solve();
+      },
+      { item, set, prev: prevVal, next: nextVal }
+    );
+
+    undoRedoManager.executeCommand(setCommand); // execute command
+  }
 
   solve();
 };
 
 const toggleArray = (item: unknown, set: string, value: number) => {
   setUnsolved();
-  //Vue.set(item[set], value, !item[set][value]);
+
+  const prevVal = item[set][value];
   item[set][value] = !item[set][value];
+
+  // undo/redo
+  {
+    const setCommand = new Command<IKeyValue>(
+      (value) => {
+        setUnsolved();
+        value.item[value.set][value.value] = value.next as number;
+        solve();
+      },
+      (value) => {
+        setUnsolved();
+        value.item[value.set][value.value] = value.prev as number;
+        solve();
+      },
+      { item, set, value, prev: prevVal, next: item[set][value] }
+    );
+
+    undoRedoManager.executeCommand(setCommand); // execute command
+  }
+
   solve();
 };
 
 const toggleBoolean = (item: unknown, value: string) => {
   setUnsolved();
+  const prevVal = item[value];
+
   item[value] = !item[value];
+
+  // undo/redo
+  {
+    const setCommand = new Command<IKeyValue>(
+      (value) => {
+        setUnsolved();
+        value.item[value.value] = value.next as number;
+        solve();
+      },
+      (value) => {
+        setUnsolved();
+        value.item[value.value] = value.prev as number;
+        solve();
+      },
+      { item, value, prev: prevVal, next: item[value] }
+    );
+
+    undoRedoManager.executeCommand(setCommand); // execute command
+  }
+
   solve();
 };
 

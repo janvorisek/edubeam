@@ -2,6 +2,7 @@
 import { container, openModal } from "jenesius-vue-modal";
 import { deserializeModel } from "./utils";
 import { provide } from "vue";
+import { Command, CommandManager, IKeyValue, undoRedoManager } from "./CommandManager";
 
 export default {
   components: { WidgetContainerModal: container },
@@ -60,6 +61,18 @@ onMounted(() => {
   document.addEventListener("keydown", function (e) {
     if (e.ctrlKey && (e.key === "+" || e.key === "=" || e.key === "-")) {
       e.preventDefault();
+    }
+
+    // If CTRL+Z undo
+    if (e.ctrlKey && !e.shiftKey && e.code === "KeyZ") {
+      e.preventDefault();
+      undoRedoManager.undo();
+    }
+
+    // If CTRL+SHIFT+Z redo
+    if (e.ctrlKey && e.shiftKey && e.code === "KeyZ") {
+      e.preventDefault();
+      undoRedoManager.redo();
     }
   });
 

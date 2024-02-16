@@ -26,7 +26,7 @@
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "roboto-fontface": "*",
-    "ts-fem": "github:janvorisek/ts-fem#72ec2f65d46bda5101ada9e6e63dcf7638504415",
+    "ts-fem": "github:janvorisek/ts-fem#ec52c0496f64a338ad1735aec1584194d4a483ed",
     "v-onboarding": "^2.6.0",
     "vue": "^3.4.16",
     "vue-draggable-resizable": "^3.0.0",

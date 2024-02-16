@@ -251,7 +251,7 @@ const onNodalDefoHover = (e: MouseEvent, node: Node) => {
       // @ts-expect-error It return value for single Dof
       node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry]),
       4
-    )} m`;
+    )} rad`;
   }
   tt.style.display = "block";
   document.body.style.cursor = "pointer";
@@ -292,7 +292,7 @@ const onNodeHover = (e: MouseEvent, node: Node) => {
       // @ts-expect-error It return value for single Dof
       node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry]),
       4
-    )} m`;
+    )} rad`;
   }
   tt.style.display = "block";
   document.body.style.cursor = "pointer";

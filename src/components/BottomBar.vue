@@ -211,7 +211,13 @@
         :style="`height: ${props.height - 36}px`"
       >
         <div class="border-b border-t">
-          <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="openModal(AddNodeDialog, {})">
+          <v-btn
+            size="small"
+            variant="flat"
+            color="secondary"
+            :rounded="0"
+            @click.stop="openModal(AddElementDialog, {})"
+          >
             <v-icon small>mdi-plus</v-icon> {{ $t("elements.addElement") }}
             <v-tooltip :text="$t('common.addUsingDialog')" location="bottom" activator="parent"></v-tooltip>
           </v-btn>

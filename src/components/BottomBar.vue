@@ -1011,6 +1011,7 @@ import AddNodeDialog from "./dialogs/AddNode.vue";
 import { useLayoutStore } from "@/store/layout";
 import StiffnessMatrix from "@/components/StiffnessMatrix.vue";
 import { Command, IKeyValue, undoRedoManager } from "@/CommandManager";
+import { useViewerStore } from "@/store/viewer";
 
 type EntityWithLabel = { label: string & { [key: string]: unknown } };
 
@@ -1127,6 +1128,9 @@ const changeItem = (item: object, value: string, el?: HTMLInputElement, formatte
 const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputElement) => {
   setUnsolved();
 
+  const _showLoads = useViewerStore().showLoads;
+  useViewerStore().showLoads = false;
+
   //if (isNaN(parseInt(el.value))) return;
   if (useProjectStore().solver.domain[map].has(el.value)) {
     alert("ERROR: Label " + el.value + " already used!");
@@ -1137,7 +1141,7 @@ const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputElement) 
   const prevId = item.label;
 
   // @ts-expect-error ts-fem is wrongly typed
-  item.label = isNaN(el.value) ? el.value : parseInt(el.value);
+  item.label = el.value;
   useProjectStore().solver.domain[map].set(item.label, item);
 
   if (map === "nodes") {
@@ -1181,6 +1185,8 @@ const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputElement) 
 
   // delete current
   useProjectStore().solver.domain[map].delete(prevId);
+
+  useViewerStore().showLoads = _showLoads;
 
   solve();
 };

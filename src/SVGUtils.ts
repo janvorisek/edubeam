@@ -373,8 +373,10 @@ export function formatElementLoad(eload: BeamElementUniformEdgeLoad, scale: numb
 
 export function formatElementLoadForces(eload: BeamElementUniformEdgeLoad, scale: number, component: number) {
   const target = eload.domain.elements.get(eload.target) as Beam2D;
+  if (!target) return [];
 
   const n1 = eload.domain.nodes.get(target.nodes[0]) as Node;
+  if (!n1) return [];
 
   const geo = target.computeGeo();
   const nx = geo.dz / geo.l / scale;

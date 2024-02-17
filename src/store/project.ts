@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import { LinearStaticSolver, Beam2D } from "ts-fem";
 import { ref, computed, reactive } from "vue";
 import { max, min } from "mathjs";
+import { throttle } from "@/utils";
 
 export const useProjectStore = defineStore("project", () => {
   const model = ref("LinearStaticSolver");
@@ -62,10 +63,11 @@ export const useProjectStore = defineStore("project", () => {
   const beams = computed(() => {
     const vals = solver.value.domain.elements.values();
     const arr = Array.from(vals);
-    return arr.filter((e) => e instanceof Beam2D) as Beam2D[];
+    const d = solver.value.domain;
+    return arr.filter((e) => e instanceof Beam2D && d.nodes.has(e.nodes[0]) && d.nodes.has(e.nodes[1])) as Beam2D[];
   });
 
-  const solve = () => {
+  const _solve = () => {
     /*if (model === "LinearStaticSolver") {
       const tmp = new LinearStaticSolver();
       tmp.domain = solver.domain;
@@ -84,8 +86,8 @@ export const useProjectStore = defineStore("project", () => {
 
     //this.$store.state.fem.solver = solver;
 
-    solver.value.nodeCodeNumbers = new Map();
-    solver.value.loadCases[0].solved = false;
+    //solver.value.nodeCodeNumbers = new Map();
+    //solver.value.loadCases[0].solved = false;
     solver.value.codeNumberGenerated = false;
 
     if (solver.value.domain.elements.size === 0 || solver.value.domain.nodes.size === 0) return;
@@ -161,6 +163,8 @@ export const useProjectStore = defineStore("project", () => {
     useProjectStore().bendingMomentScale = 1 / maxBendingMoment;
     useProjectStore().shearForceScale = 1 / maxShearForce;
   };
+
+  const solve = throttle(_solve, 50);
 
   const selectAll2 = () => {
     selection2.nodes = [];

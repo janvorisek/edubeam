@@ -6,13 +6,13 @@ import { watch } from "vue";
 const projStore = useProjectStore();
 
 const props = defineProps<{
-  label: string | number;
+  label: string;
 }>();
 
 const size = ref(0);
 
 const update = () => {
-  const el = projStore.solver.domain.elements.get(props.label as number);
+  const el = projStore.solver.domain.getElement(props.label);
 
   if (!el) return;
 

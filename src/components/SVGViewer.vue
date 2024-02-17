@@ -74,7 +74,6 @@ const grid = ref<InstanceType<typeof SvgGrid> | null>(null);
 const svg = ref<SVGSVGElement>();
 const viewport = ref<SVGGElement>();
 const tooltip = ref<Element>();
-const actionTooltip = ref<Element>();
 
 const scale = computed(() => {
   if (panZoom.value) return panZoom.value.scale;
@@ -149,7 +148,7 @@ const fitContent = () => {
 
 const onUpdate = throttle((zooming: boolean) => {
   if (grid.value) grid.value.refreshGrid(zooming);
-}, 100);
+}, 1000 / 30);
 
 const { escape, f, c, _delete } = useMagicKeys({
   aliasMap: {
@@ -331,7 +330,7 @@ const onNodeClick = (e: MouseEvent) => {
   const index = target.getAttribute("data-node-id") || "-1";
 
   useProjectStore().selection.type = "node";
-  useProjectStore().selection.label = isNaN(index as unknown as number) ? index : parseInt(index);
+  useProjectStore().selection.label = index;
 
   projectStore.selection2.elements = [];
   projectStore.selection2.nodes = [useProjectStore().selection.label];
@@ -362,16 +361,12 @@ const onElementClick = (e: MouseEvent) => {
   if (nx > window.innerWidth - 200 - 24) nx = window.innerWidth - 200 - 24;
 
   useProjectStore().selection.type = "element";
-  useProjectStore().selection.label = isNaN(index as unknown as number) ? index : parseInt(index);
+  useProjectStore().selection.label = index;
   useProjectStore().selection.x = nx;
   useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
 
   projectStore.selection2.elements = [useProjectStore().selection.label];
   projectStore.selection2.nodes = [];
-
-  // Show action tooltip
-  const att = actionTooltip.value as HTMLElement;
-  att.style.display = "block";
 };
 
 let drgNode = null;
@@ -380,7 +375,9 @@ let origZ = 0;
 let finalX = 0;
 let finalZ = 0;
 
-const moveNode = debounce(() => {
+const moveNode = () => {
+  if (!drgNode) return;
+
   // undo/redo
   {
     const setCommand = new Command<IKeyValue>(
@@ -403,7 +400,7 @@ const moveNode = debounce(() => {
   }
 
   drgNode = null;
-}, 500);
+};
 
 const mouseMove = (e: MouseEvent) => {
   appStore.mouse.x = e.clientX;
@@ -453,9 +450,7 @@ const mouseMove = (e: MouseEvent) => {
     finalX = mouseXReal.value;
     finalZ = mouseYReal.value;
 
-    moveNode();
-
-    useProjectStore().solver.loadCases[0].solved = false;
+    //useProjectStore().solver.loadCases[0].solved = false;
     useProjectStore().solve();
   }
 };
@@ -566,6 +561,10 @@ const clientToSvgCoords = (ecoords: { x: number; y: number }, svgElement: SVGSVG
 const onMouseUp = (e: MouseEvent) => {
   if (appStore.mouseMode === MouseMode.ADD_NODE) return;
   if (appStore.mouseMode === MouseMode.ADD_ELEMENT) return;
+
+  if (appStore.mouseMode === MouseMode.MOVING) {
+    moveNode();
+  }
 
   if (appStore.mouseMode === MouseMode.SELECTING) {
     const selectedNodes = [];
@@ -1740,17 +1739,6 @@ svg text {
   }
   &:hover polyline.decoration.moment.ccw {
     marker-end: url(#moment_ccw_hover);
-  }
-}
-
-.actionTooltip {
-  position: absolute;
-  padding: 12px;
-  margin: -12px -12px 0 0;
-  z-index: 101;
-  .content {
-    padding: 4px;
-    background: rgba(255, 255, 255, 0.9);
   }
 }
 

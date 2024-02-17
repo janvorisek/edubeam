@@ -28,7 +28,7 @@ export const useAppStore = defineStore(
       AreaM2: "m4",
       Mass: "kg",
       Force: "kN",
-      Pressure: "Pa",
+      Pressure: "MPa",
       ThermalExpansion: "1/K",
     });
 

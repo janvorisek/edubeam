@@ -1163,6 +1163,16 @@ const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputElement) 
     }
   }
 
+  if (map === "elements") {
+    for (const load of useProjectStore().solver.loadCases[0].elementLoadList) {
+      // @ts-expect-error ts-fem is wrongly typed
+      if (load.target == prevId) {
+        // @ts-expect-error ts-fem is wrongly typed
+        load.target = item.label;
+      }
+    }
+  }
+
   if (map === "materials") {
     for (const [key, element] of useProjectStore().solver.domain.elements) {
       // @ts-expect-error ts-fem is wrongly typed

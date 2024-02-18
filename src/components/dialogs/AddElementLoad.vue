@@ -13,7 +13,7 @@
                   :items="useProjectStore().solver.domain.elements.values() as unknown as unknown[]"
                   item-title="label"
                   item-value="label"
-                  label="Element id"
+                  :label="$t('common.element')"
                   hide-details="auto"
                   required
                   autofocus

@@ -1076,7 +1076,7 @@ const changeSetArrayItem = (
   {
     const setCommand = new Command<IKeyValue>(
       (value) => {
-        value.item[value.set][value.value] = value.next as number;
+        value.item[value.set][value.value] = formatter(value.next) as number;
         solve();
       },
       (value) => {

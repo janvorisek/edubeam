@@ -996,7 +996,24 @@ import { onMounted, computed, markRaw, nextTick, reactive } from "vue";
 import { useProjectStore } from "../store/project";
 import { useAppStore } from "../store/app";
 import { MouseMode } from "../mouse";
-import { capitalize, checkNumber } from "../utils";
+import {
+  capitalize,
+  changeItem,
+  changeLabel,
+  changeSetArrayItem,
+  checkNumber,
+  deleteCrossSection,
+  deleteElement,
+  deleteElementLoad,
+  deleteMaterial,
+  deleteNodalLoad,
+  deletePrescribedDisplacement,
+  formatScientificNumber,
+  setUnsolved,
+  solve,
+  swapNodes,
+  toggleArray,
+} from "../utils";
 import { DofID, Beam2D, PrescribedDisplacement } from "ts-fem";
 import { formatExpValueAsHTML, formatMeasureAsHTML } from "../SVGUtils";
 
@@ -1010,10 +1027,6 @@ import AddNodeDialog from "./dialogs/AddNode.vue";
 
 import { useLayoutStore } from "@/store/layout";
 import StiffnessMatrix from "@/components/StiffnessMatrix.vue";
-import { Command, IKeyValue, undoRedoManager } from "@/CommandManager";
-import { useViewerStore } from "@/store/viewer";
-
-type EntityWithLabel = { label: string & { [key: string]: unknown } };
 
 const appStore = useAppStore();
 const projStore = useProjectStore();
@@ -1038,328 +1051,6 @@ const showDialog = (
   name: "addNode" | "addElement" | "addNodalLoad" | "addElementLoad" | "addMaterial" | "addCrossSection"
 ) => {
   appStore.dialogs[name] = true;
-};
-
-const swapNodes = (el: Beam2D) => {
-  el.nodes = el.nodes.reverse();
-
-  el.hinges = [el.hinges[1], el.hinges[0]];
-  solve();
-};
-
-const formatScientificNumber = (n: number) => {
-  if (n > 1000 || n < 0.001) return n.toExponential(4);
-
-  return n;
-};
-
-const changeSetArrayItem = (
-  item: unknown,
-  set: string,
-  value: number,
-  el?: HTMLInputElement,
-  formatter?: (v: number) => number
-) => {
-  setUnsolved();
-
-  const prevVal = item[set][value];
-
-  if (el.value === "") el.value = "0";
-
-  const val = parseFloat(el.value.replace(/\s/g, "").replace(",", "."));
-  if (isNaN(val)) return (el.value = item[set][value]);
-
-  if (formatter) item[set][value] = formatter(val);
-  else item[set][value] = val;
-
-  // undo/redo
-  {
-    const setCommand = new Command<IKeyValue>(
-      (value) => {
-        value.item[value.set][value.value] = formatter(value.next) as number;
-        solve();
-      },
-      (value) => {
-        value.item[value.set][value.value] = value.prev as number;
-        solve();
-      },
-      { item, set, value, prev: prevVal, next: val }
-    );
-
-    undoRedoManager.executeCommand(setCommand); // execute command
-  }
-
-  solve();
-};
-
-const changeItem = (item: object, value: string, el?: HTMLInputElement, formatter?: (v: number) => number) => {
-  setUnsolved();
-
-  const prevVal = item[value];
-
-  if (el.value === "") el.value = "0";
-
-  const val = parseFloat(el.value.replace(/\s/g, "").replace(",", "."));
-  if (isNaN(val)) return (el.value = item[value]);
-
-  if (formatter) item[value] = formatter(val);
-  else item[value] = val;
-
-  // undo/redo
-  {
-    const setCommand = new Command<IKeyValue>(
-      (value) => {
-        value.item[value.value] = value.next as number;
-        solve();
-      },
-      (value) => {
-        value.item[value.value] = value.prev as number;
-        solve();
-      },
-      { item, value, prev: prevVal, next: val }
-    );
-
-    undoRedoManager.executeCommand(setCommand); // execute command
-  }
-
-  solve();
-};
-
-const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputElement) => {
-  setUnsolved();
-
-  const _showLoads = useViewerStore().showLoads;
-  useViewerStore().showLoads = false;
-
-  //if (isNaN(parseInt(el.value))) return;
-  if (useProjectStore().solver.domain[map].has(el.value)) {
-    alert("ERROR: Label " + el.value + " already used!");
-    el.value = item.label;
-    return;
-  }
-
-  const prevId = item.label;
-
-  // @ts-expect-error ts-fem is wrongly typed
-  item.label = el.value;
-  useProjectStore().solver.domain[map].set(item.label, item);
-
-  if (map === "nodes") {
-    for (const [key, element] of useProjectStore().solver.domain.elements) {
-      // @ts-expect-error ts-fem is wrongly typed
-      const idtomodify = element.nodes.findIndex((nid) => nid == prevId);
-      if (idtomodify > -1) {
-        // @ts-expect-error ts-fem is wrongly typed
-        element.nodes[idtomodify] = item.label;
-      }
-    }
-
-    for (const load of useProjectStore().solver.loadCases[0].nodalLoadList) {
-      // @ts-expect-error ts-fem is wrongly typed
-      if (load.target == prevId) {
-        // @ts-expect-error ts-fem is wrongly typed
-        load.target = item.label;
-      }
-    }
-  }
-
-  if (map === "elements") {
-    for (const load of useProjectStore().solver.loadCases[0].elementLoadList) {
-      // @ts-expect-error ts-fem is wrongly typed
-      if (load.target == prevId) {
-        // @ts-expect-error ts-fem is wrongly typed
-        load.target = item.label;
-      }
-    }
-  }
-
-  if (map === "materials") {
-    for (const [key, element] of useProjectStore().solver.domain.elements) {
-      // @ts-expect-error ts-fem is wrongly typed
-      if (element.mat == prevId) {
-        // @ts-expect-error ts-fem is wrongly typed
-        element.mat = item.label;
-      }
-    }
-  }
-
-  if (map === "crossSections") {
-    for (const [key, element] of useProjectStore().solver.domain.elements) {
-      // @ts-expect-error ts-fem is wrongly typed
-      if (element.cs == prevId) {
-        // @ts-expect-error ts-fem is wrongly typed
-        element.cs = item.label;
-      }
-    }
-  }
-
-  // delete current
-  useProjectStore().solver.domain[map].delete(prevId);
-
-  useViewerStore().showLoads = _showLoads;
-
-  solve();
-};
-
-const toggleSet = (item: unknown, set: string, value: number) => {
-  setUnsolved();
-
-  const prevVal = new Set(Array.from(item[set]));
-
-  if (item[set].has(value)) item[set].delete(value);
-  else item[set].add(value);
-
-  item[set] = new Set(item[set].values());
-
-  const nextVal = new Set(Array.from(item[set]));
-
-  // undo/redo
-  {
-    const setCommand = new Command<IKeyValue>(
-      (value) => {
-        setUnsolved();
-        value.item[value.set] = value.next;
-        solve();
-      },
-      (value) => {
-        setUnsolved();
-        value.item[value.set] = value.prev;
-        solve();
-      },
-      { item, set, prev: prevVal, next: nextVal }
-    );
-
-    undoRedoManager.executeCommand(setCommand); // execute command
-  }
-
-  solve();
-};
-
-const toggleArray = (item: unknown, set: string, value: number) => {
-  setUnsolved();
-
-  const prevVal = item[set][value];
-  item[set][value] = !item[set][value];
-
-  // undo/redo
-  {
-    const setCommand = new Command<IKeyValue>(
-      (value) => {
-        setUnsolved();
-        value.item[value.set][value.value] = value.next as number;
-        solve();
-      },
-      (value) => {
-        setUnsolved();
-        value.item[value.set][value.value] = value.prev as number;
-        solve();
-      },
-      { item, set, value, prev: prevVal, next: item[set][value] }
-    );
-
-    undoRedoManager.executeCommand(setCommand); // execute command
-  }
-
-  solve();
-};
-
-const toggleBoolean = (item: unknown, value: string) => {
-  setUnsolved();
-  const prevVal = item[value];
-
-  item[value] = !item[value];
-
-  // undo/redo
-  {
-    const setCommand = new Command<IKeyValue>(
-      (value) => {
-        setUnsolved();
-        value.item[value.value] = value.next as number;
-        solve();
-      },
-      (value) => {
-        setUnsolved();
-        value.item[value.value] = value.prev as number;
-        solve();
-      },
-      { item, value, prev: prevVal, next: item[value] }
-    );
-
-    undoRedoManager.executeCommand(setCommand); // execute command
-  }
-
-  solve();
-};
-
-const deleteElement = (id: number) => {
-  // delete element load
-  for (const lc of useProjectStore().solver.loadCases) {
-    for (let i = 0; i < lc.elementLoadList.length; i++) {
-      if (lc.elementLoadList[i].target === id) {
-        lc.elementLoadList.splice(i, 1);
-        i--;
-      }
-    }
-  }
-
-  setUnsolved();
-  useProjectStore().solver.domain.elements.delete(id);
-  useProjectStore().solver.domain.elements = new Map(useProjectStore().solver.domain.elements);
-
-  solve();
-};
-
-const deleteNode = (id: number) => {
-  // delete elements first
-  for (const [key, value] of useProjectStore().solver.domain.elements) {
-    if (value.nodes[0] === id || value.nodes[1] === id) {
-      deleteElement(key);
-    }
-  }
-
-  setUnsolved();
-  useProjectStore().solver.domain.nodes.delete(id);
-  //useProjectStore().solver.domain.nodes = new Map(useProjectStore().solver.domain.nodes);
-
-  solve();
-};
-
-const deleteMaterial = (id: number) => {
-  setUnsolved();
-  useProjectStore().solver.domain.materials.delete(id);
-};
-
-const deleteCrossSection = (id: number) => {
-  setUnsolved();
-  useProjectStore().solver.domain.crossSections.delete(id);
-};
-
-const deleteNodalLoad = (load: NodalLoad, id: number) => {
-  setUnsolved();
-  useProjectStore().solver.loadCases[0].nodalLoadList.splice(id, 1);
-  solve();
-};
-
-const deleteElementLoad = (load: BeamElementUniformEdgeLoad, id: number) => {
-  setUnsolved();
-  useProjectStore().solver.loadCases[0].elementLoadList.splice(id, 1);
-  solve();
-};
-
-const deletePrescribedDisplacement = (load: BeamElementUniformEdgeLoad, id: number) => {
-  setUnsolved();
-  useProjectStore().solver.loadCases[0].prescribedBC.splice(id, 1);
-  solve();
-};
-
-const solve = () => {
-  nextTick(() => {
-    useProjectStore().solve();
-  });
-};
-
-const setUnsolved = () => {
-  useProjectStore().solver.loadCases[0].solved = false;
 };
 
 const nodes = computed(() => {

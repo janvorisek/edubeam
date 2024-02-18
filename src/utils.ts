@@ -1,6 +1,11 @@
-import { Beam2D, LinearStaticSolver, Node } from "ts-fem";
+import { Beam2D, BeamElementUniformEdgeLoad, LinearStaticSolver, NodalLoad, Node } from "ts-fem";
 import { Ref } from "vue";
 import { availableLocales } from "./plugins/i18n";
+import { useProjectStore } from "./store/project";
+import { Command, IKeyValue, undoRedoManager } from "./CommandManager";
+import { useViewerStore } from "./store/viewer";
+
+export type EntityWithLabel = { label: string & { [key: string]: unknown } };
 
 export const throttle = (fn: Function, wait = 300) => {
   let inThrottle: boolean, lastFn: ReturnType<typeof setTimeout>, lastTime: number;
@@ -193,4 +198,313 @@ export const parseFloat2 = (s: string | number) => {
   tmp = isNaN(tmp) ? 0 : tmp;
 
   return tmp;
+};
+
+export const setUnsolved = () => {
+  useProjectStore().solver.loadCases[0].solved = false;
+};
+
+export const solve = () => {
+  useProjectStore().solve();
+};
+
+export const swapNodes = (el: Beam2D) => {
+  el.nodes = el.nodes.reverse();
+
+  el.hinges = [el.hinges[1], el.hinges[0]];
+  solve();
+};
+
+export const formatScientificNumber = (n: number) => {
+  if (n > 1000 || n < 0.001) return n.toExponential(4);
+
+  return n;
+};
+
+export const changeSetArrayItem = (
+  item: unknown,
+  set: string,
+  value: number,
+  el?: HTMLInputElement,
+  formatter?: (v: number) => number
+) => {
+  setUnsolved();
+
+  const prevVal = item[set][value];
+
+  if (el.value === "") el.value = "0";
+
+  const val = parseFloat(el.value.replace(/\s/g, "").replace(",", "."));
+  if (isNaN(val)) return (el.value = item[set][value]);
+
+  if (formatter) item[set][value] = formatter(val);
+  else item[set][value] = val;
+
+  // undo/redo
+  {
+    const setCommand = new Command<IKeyValue>(
+      (value) => {
+        value.item[value.set][value.value] = formatter(value.next) as number;
+        solve();
+      },
+      (value) => {
+        value.item[value.set][value.value] = value.prev as number;
+        solve();
+      },
+      { item, set, value, prev: prevVal, next: val }
+    );
+
+    undoRedoManager.executeCommand(setCommand); // execute command
+  }
+
+  solve();
+};
+
+export const changeItem = (item: object, value: string, el?: HTMLInputElement, formatter?: (v: number) => number) => {
+  setUnsolved();
+
+  const prevVal = item[value];
+
+  if (el.value === "") el.value = "0";
+
+  const val = parseFloat(el.value.replace(/\s/g, "").replace(",", "."));
+  if (isNaN(val)) return (el.value = item[value]);
+
+  if (formatter) item[value] = formatter(val);
+  else item[value] = val;
+
+  // undo/redo
+  {
+    const setCommand = new Command<IKeyValue>(
+      (value) => {
+        value.item[value.value] = value.next as number;
+        solve();
+      },
+      (value) => {
+        value.item[value.value] = value.prev as number;
+        solve();
+      },
+      { item, value, prev: prevVal, next: val }
+    );
+
+    undoRedoManager.executeCommand(setCommand); // execute command
+  }
+
+  solve();
+};
+
+export const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputElement) => {
+  setUnsolved();
+
+  const _showLoads = useViewerStore().showLoads;
+  useViewerStore().showLoads = false;
+
+  //if (isNaN(parseInt(el.value))) return;
+  if (useProjectStore().solver.domain[map].has(el.value)) {
+    alert("ERROR: Label " + el.value + " already used!");
+    el.value = item.label;
+    return;
+  }
+
+  const prevId = item.label;
+
+  item.label = el.value;
+  useProjectStore().solver.domain[map].set(item.label, item);
+
+  if (map === "nodes") {
+    for (const [key, element] of useProjectStore().solver.domain.elements) {
+      const idtomodify = element.nodes.findIndex((nid) => nid == prevId);
+      if (idtomodify > -1) {
+        element.nodes[idtomodify] = item.label;
+      }
+    }
+
+    for (const load of useProjectStore().solver.loadCases[0].nodalLoadList) {
+      if (load.target == prevId) {
+        load.target = item.label;
+      }
+    }
+  }
+
+  if (map === "elements") {
+    for (const load of useProjectStore().solver.loadCases[0].elementLoadList) {
+      if (load.target == prevId) {
+        load.target = item.label;
+      }
+    }
+  }
+
+  if (map === "materials") {
+    for (const [key, element] of useProjectStore().solver.domain.elements) {
+      if (element.mat == prevId) {
+        element.mat = item.label;
+      }
+    }
+  }
+
+  if (map === "crossSections") {
+    for (const [key, element] of useProjectStore().solver.domain.elements) {
+      if (element.cs == prevId) {
+        element.cs = item.label;
+      }
+    }
+  }
+
+  // delete current
+  useProjectStore().solver.domain[map].delete(prevId);
+
+  useViewerStore().showLoads = _showLoads;
+
+  solve();
+};
+
+export const toggleSet = (item: unknown, set: string, value: number) => {
+  setUnsolved();
+
+  const prevVal = new Set(Array.from(item[set]));
+
+  if (item[set].has(value)) item[set].delete(value);
+  else item[set].add(value);
+
+  item[set] = new Set(item[set].values());
+
+  const nextVal = new Set(Array.from(item[set]));
+
+  // undo/redo
+  {
+    const setCommand = new Command<IKeyValue>(
+      (value) => {
+        setUnsolved();
+        value.item[value.set] = value.next;
+        solve();
+      },
+      (value) => {
+        setUnsolved();
+        value.item[value.set] = value.prev;
+        solve();
+      },
+      { item, set, prev: prevVal, next: nextVal }
+    );
+
+    undoRedoManager.executeCommand(setCommand); // execute command
+  }
+
+  solve();
+};
+
+export const toggleArray = (item: unknown, set: string, value: number) => {
+  setUnsolved();
+
+  const prevVal = item[set][value];
+  item[set][value] = !item[set][value];
+
+  // undo/redo
+  {
+    const setCommand = new Command<IKeyValue>(
+      (value) => {
+        setUnsolved();
+        value.item[value.set][value.value] = value.next as number;
+        solve();
+      },
+      (value) => {
+        setUnsolved();
+        value.item[value.set][value.value] = value.prev as number;
+        solve();
+      },
+      { item, set, value, prev: prevVal, next: item[set][value] }
+    );
+
+    undoRedoManager.executeCommand(setCommand); // execute command
+  }
+
+  solve();
+};
+
+export const toggleBoolean = (item: unknown, value: string) => {
+  setUnsolved();
+  const prevVal = item[value];
+
+  item[value] = !item[value];
+
+  // undo/redo
+  {
+    const setCommand = new Command<IKeyValue>(
+      (value) => {
+        setUnsolved();
+        value.item[value.value] = value.next as number;
+        solve();
+      },
+      (value) => {
+        setUnsolved();
+        value.item[value.value] = value.prev as number;
+        solve();
+      },
+      { item, value, prev: prevVal, next: item[value] }
+    );
+
+    undoRedoManager.executeCommand(setCommand); // execute command
+  }
+
+  solve();
+};
+
+export const deleteElement = (id: number) => {
+  // delete element load
+  for (const lc of useProjectStore().solver.loadCases) {
+    for (let i = 0; i < lc.elementLoadList.length; i++) {
+      if (lc.elementLoadList[i].target === id) {
+        lc.elementLoadList.splice(i, 1);
+        i--;
+      }
+    }
+  }
+
+  setUnsolved();
+  useProjectStore().solver.domain.elements.delete(id);
+  useProjectStore().solver.domain.elements = new Map(useProjectStore().solver.domain.elements);
+
+  solve();
+};
+
+export const deleteNode = (id: number) => {
+  // delete elements first
+  for (const [key, value] of useProjectStore().solver.domain.elements) {
+    if (value.nodes[0] === id || value.nodes[1] === id) {
+      deleteElement(key);
+    }
+  }
+
+  setUnsolved();
+  useProjectStore().solver.domain.nodes.delete(id);
+  //useProjectStore().solver.domain.nodes = new Map(useProjectStore().solver.domain.nodes);
+
+  solve();
+};
+
+export const deleteMaterial = (id: number) => {
+  setUnsolved();
+  useProjectStore().solver.domain.materials.delete(id);
+};
+
+export const deleteCrossSection = (id: number) => {
+  setUnsolved();
+  useProjectStore().solver.domain.crossSections.delete(id);
+};
+
+export const deleteNodalLoad = (load: NodalLoad, id: number) => {
+  setUnsolved();
+  useProjectStore().solver.loadCases[0].nodalLoadList.splice(id, 1);
+  solve();
+};
+
+export const deleteElementLoad = (load: BeamElementUniformEdgeLoad, id: number) => {
+  setUnsolved();
+  useProjectStore().solver.loadCases[0].elementLoadList.splice(id, 1);
+  solve();
+};
+
+export const deletePrescribedDisplacement = (load: BeamElementUniformEdgeLoad, id: number) => {
+  setUnsolved();
+  useProjectStore().solver.loadCases[0].prescribedBC.splice(id, 1);
+  solve();
 };

@@ -4,15 +4,13 @@
       <v-card-title> {{ $t("dialogs.addNodalLoad.addNewNodalLoad") }} </v-card-title>
 
       <div>
-        <v-radio-group
-          v-model="loadType"
-          v-if="projectStore.solver.domain.nodes.get(props.label).bcs.size > 0"
-          inline
-          density="compact"
-          class="mx-3"
-        >
-          <v-radio label="Force" value="force"></v-radio>
-          <v-radio label="Prescribed displacement" value="displacement"></v-radio>
+        <v-radio-group v-model="loadType" inline density="compact" class="mx-3">
+          <v-radio :label="$t('loads.forceMoment')" value="force"></v-radio>
+          <v-radio
+            :label="$t('loads.prescribedDisplacement')"
+            value="displacement"
+            :disabled="projectStore.solver.domain.nodes.get(loadNodeId).bcs.size === 0"
+          ></v-radio>
         </v-radio-group>
         <v-form>
           <v-container>
@@ -45,6 +43,9 @@
                       hide-details="auto"
                       :suffix="mainUnits"
                       required
+                      :disabled="
+                        loadType === 'displacement' && !projectStore.solver.domain.nodes.get(loadNodeId).bcs.has(0)
+                      "
                     ></v-text-field>
                   </v-col>
 
@@ -56,6 +57,9 @@
                       hide-details="auto"
                       :suffix="mainUnits"
                       required
+                      :disabled="
+                        loadType === 'displacement' && !projectStore.solver.domain.nodes.get(loadNodeId).bcs.has(2)
+                      "
                     ></v-text-field>
                   </v-col>
 
@@ -67,6 +71,9 @@
                       hide-details="auto"
                       :suffix="`${momentUnits}`"
                       required
+                      :disabled="
+                        loadType === 'displacement' && !projectStore.solver.domain.nodes.get(loadNodeId).bcs.has(4)
+                      "
                     >
                     </v-text-field>
                   </v-col>
@@ -95,6 +102,7 @@ import { useAppStore } from "@/store/app";
 import { checkNumber, parseFloat2 } from "@/utils";
 import Vector2DHelper from "../Vector2DHelper.vue";
 import { onMounted } from "vue";
+import { watch } from "vue";
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
@@ -115,6 +123,12 @@ const loadNodeId = ref(props.label ?? [...useProjectStore().solver.domain.nodes.
 const loadNodeValueFx = ref(appStore.convertForce(4000));
 const loadNodeValueFz = ref(appStore.convertForce(3000));
 const loadNodeValueMy = ref("0.0");
+
+watch(loadNodeId, () => {
+  if (projectStore.solver.domain.nodes.get(loadNodeId.value).bcs.size === 0) {
+    loadType.value = "force";
+  }
+});
 
 const mainLabel = computed(() => (loadType.value === "force" ? "F" : "D"));
 const momentLabel = computed(() => (loadType.value === "force" ? "M" : "R"));

@@ -80,7 +80,8 @@
     "nodalLoad": "Uzlové zatížení",
     "elementLoad": "Prvkové zatížení",
     "prescribedDisplacement": "Předepsané posunutí",
-    "addLoad": "Přidat zatížení"
+    "addLoad": "Přidat zatížení",
+    "addPrescribedDisplacement": "Předepsat posunutí"
   },
   "material": {
     "alphaT": "α_T",

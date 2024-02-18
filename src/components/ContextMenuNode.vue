@@ -21,5 +21,19 @@ const projectStore = useProjectStore();
       </template>
       {{ $t("loads.addLoad") }}
     </v-list-item>
+    <v-list-item
+      v-if="projectStore.solver.domain.nodes.get(projectStore.selection.label).bcs.size > 0"
+      link
+      class="text-body-2"
+      @click="
+        openModal(AddNodalLoadDialog, { label: projectStore.selection.label, type: 'displacement' });
+        projectStore.selection.type = null;
+      "
+    >
+      <template #prepend>
+        <div class="pr-2"><v-icon size="16" icon="mdi-arrow-down-thin" /></div>
+      </template>
+      {{ $t("loads.addPrescribedDisplacement") }}
+    </v-list-item>
   </v-list>
 </template>

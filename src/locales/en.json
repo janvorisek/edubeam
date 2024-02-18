@@ -46,7 +46,8 @@
     "addLoad": "Add load",
     "nodalLoad": "Nodal load",
     "elementLoad": "Element load",
-    "prescribedDisplacement": "Prescribed displacement"
+    "prescribedDisplacement": "Prescribed displacement",
+    "addPrescribedDisplacement": "Prescribe displacement"
   },
   "tabs": {
     "nodes": "Nodes",

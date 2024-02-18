@@ -37,7 +37,7 @@ import {
   formatExpValueAsHTML,
 } from "../SVGUtils";
 import { debounce, throttle } from "../utils";
-import { Node, DofID, Beam2D } from "ts-fem";
+import { Node, DofID, Beam2D, BeamElementLoad, NodalLoad } from "ts-fem";
 import { Matrix } from "mathjs";
 import { useMagicKeys } from "@vueuse/core";
 
@@ -219,6 +219,62 @@ const onElementHover = (e: MouseEvent, el: Beam2D) => {
   if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
 };
 
+const onElementLoadHover = (e: MouseEvent, el: BeamElementLoad) => {
+  if (appStore.mouseMode === MouseMode.MOVING) return;
+
+  const tt = tooltip.value as HTMLElement;
+  const tooltipContent = tt.querySelector(".content") as HTMLElement;
+
+  //intersected.value.type = "element";
+  //intersected.value.index = el.label;
+
+  tt.style.top = e.offsetY + "px";
+  tt.style.left = e.offsetX + "px";
+  tooltipContent.innerHTML = `<strong>${t("loads.UDL")}</strong><br>`;
+  if (Math.abs(el.values[0]) > 1e-32) {
+    tooltipContent.innerHTML += `f<sub>x</sub> = ${appStore.convertForce(el.values[0])} ${appStore.units.Force}/${appStore.units.Length}<br>`;
+  }
+
+  if (Math.abs(el.values[1]) > 1e-32) {
+    tooltipContent.innerHTML += `f<sub>z</sub> = ${appStore.convertForce(el.values[1])} ${appStore.units.Force}/${appStore.units.Length}`;
+  }
+
+  tt.style.display = "block";
+  document.body.style.cursor = "pointer";
+
+  if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
+};
+
+const onNodalLoadHover = (e: MouseEvent, el: NodalLoad) => {
+  if (appStore.mouseMode === MouseMode.MOVING) return;
+
+  const tt = tooltip.value as HTMLElement;
+  const tooltipContent = tt.querySelector(".content") as HTMLElement;
+
+  //intersected.value.type = "element";
+  //intersected.value.index = el.label;
+
+  tt.style.top = e.offsetY + "px";
+  tt.style.left = e.offsetX + "px";
+  tooltipContent.innerHTML = `<strong>${t("loads.nodalLoad")}</strong><br>`;
+  if (Math.abs(el.values[0]) > 1e-32) {
+    tooltipContent.innerHTML += `F<sub>x</sub> = ${appStore.convertForce(el.values[0])} ${appStore.units.Force}<br>`;
+  }
+
+  if (Math.abs(el.values[2]) > 1e-32) {
+    tooltipContent.innerHTML += `F<sub>z</sub> = ${appStore.convertForce(el.values[2])} ${appStore.units.Force}<br>`;
+  }
+
+  if (Math.abs(el.values[4]) > 1e-32) {
+    tooltipContent.innerHTML += `M<sub>y</sub> = ${appStore.convertForce(el.values[4])} ${appStore.units.Force}${appStore.units.Length}`;
+  }
+
+  tt.style.display = "block";
+  document.body.style.cursor = "pointer";
+
+  if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
+};
+
 const onNodalDefoHover = (e: MouseEvent, node: Node) => {
   if (appStore.mouseMode === MouseMode.MOVING) return;
 
@@ -228,7 +284,7 @@ const onNodalDefoHover = (e: MouseEvent, node: Node) => {
   tt.style.top = e.offsetY + "px";
   tt.style.left = e.offsetX + "px";
 
-  tooltipContent.innerHTML = `<strong>Node ${node.label}</strong>`;
+  tooltipContent.innerHTML = `<strong>${t("common.node")} ${node.label}</strong>`;
   if (
     projectStore.solver.loadCases[0].solved &&
     projectStore.beams.some((element) => element.nodes.includes(node.label))
@@ -367,6 +423,50 @@ const onElementClick = (e: MouseEvent) => {
 
   projectStore.selection2.elements = [useProjectStore().selection.label];
   projectStore.selection2.nodes = [];
+};
+
+const onElementLoadClick = (e: MouseEvent) => {
+  if (hasMoved(e)) return;
+
+  appStore.bottomBarTab = 2;
+
+  /*const target = e.target as HTMLElement;
+  const index = target.getAttribute("data-element-id") || "-1";
+
+  let nx = target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 - 100;
+
+  if (nx < 0) nx = 24;
+  if (nx > window.innerWidth - 200 - 24) nx = window.innerWidth - 200 - 24;
+
+  useProjectStore().selection.type = "element-load";
+  useProjectStore().selection.label = index;
+  useProjectStore().selection.x = nx;
+  useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
+
+  projectStore.selection2.elements = [useProjectStore().selection.label];
+  projectStore.selection2.nodes = [];*/
+};
+
+const onNodalLoadClick = (e: MouseEvent) => {
+  if (hasMoved(e)) return;
+
+  appStore.bottomBarTab = 2;
+
+  /*const target = e.target as HTMLElement;
+  const index = target.getAttribute("data-element-id") || "-1";
+
+  let nx = target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 - 100;
+
+  if (nx < 0) nx = 24;
+  if (nx > window.innerWidth - 200 - 24) nx = window.innerWidth - 200 - 24;
+
+  useProjectStore().selection.type = "element-load";
+  useProjectStore().selection.label = index;
+  useProjectStore().selection.x = nx;
+  useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
+
+  projectStore.selection2.elements = [useProjectStore().selection.label];
+  projectStore.selection2.nodes = [];*/
 };
 
 let drgNode = null;
@@ -838,6 +938,9 @@ defineExpose({ centerContent, fitContent });
             <g v-if="!useAppStore().zooming && useViewerStore().showLoads">
               <g
                 class="element-load load-1d"
+                @mousemove="onElementLoadHover($event, eload)"
+                @mouseleave="hideTooltip"
+                @pointerup="onElementLoadClick"
                 v-for="(eload, index) in useProjectStore().solver.loadCases[0].elementLoadList"
                 :key="`element-load-${index}`"
               >
@@ -898,6 +1001,9 @@ defineExpose({ centerContent, fitContent });
               </g>
               <g
                 class="nodal-load"
+                @mousemove="onNodalLoadHover($event, nload)"
+                @mouseleave="hideTooltip"
+                @pointerup="onNodalLoadClick"
                 v-for="(nload, index) in useProjectStore().solver.loadCases[0].nodalLoadList"
                 :key="`nodal-load-${index}`"
               >
@@ -1448,6 +1554,8 @@ defineExpose({ centerContent, fitContent });
       <div>
         <ContextMenuNode v-if="projectStore.selection.type === 'node'"></ContextMenuNode>
         <ContextMenuElement v-if="projectStore.selection.type === 'element'"></ContextMenuElement>
+        <!-- <ContextMenuNodalLoad v-if="projectStore.selection.type === 'nodal-load'"></ContextMenuNodalLoad>
+        <ContextMenuElementLoad v-if="projectStore.selection.type === 'element-load'"></ContextMenuElementLoad> -->
       </div>
     </div>
 

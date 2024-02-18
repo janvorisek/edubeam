@@ -429,7 +429,7 @@ const mouseMove = (e: MouseEvent) => {
   mouseXReal.value = viewerStore.snapToGrid ? mouseXReal.value : mXReal / scale.value;
   mouseYReal.value = viewerStore.snapToGrid ? mouseYReal.value : mYReal / scale.value;
 
-  if (appStore.mouseMode === MouseMode.MOVING) {
+  if (appStore.mouseMode === MouseMode.MOVING && intersected.value.type === "node") {
     const index = intersected.value.index;
     if (index === null) return;
 

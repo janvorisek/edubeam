@@ -33,7 +33,8 @@
   },
   "nodes": {
     "addNode": "Add node",
-    "editNode": "Edit node"
+    "editNode": "Edit node",
+    "defineSupports": "Node supports"
   },
   "elements": {
     "addElement": "Add element",
@@ -47,7 +48,9 @@
     "nodalLoad": "Nodal load",
     "elementLoad": "Element load",
     "prescribedDisplacement": "Prescribed displacement",
-    "addPrescribedDisplacement": "Prescribe displacement"
+    "addPrescribedDisplacement": "Prescribe displacement",
+    "UDL": "UDL",
+    "forceMoment": "Force/Moment"
   },
   "tabs": {
     "nodes": "Nodes",

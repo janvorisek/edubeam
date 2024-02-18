@@ -81,7 +81,8 @@
     "elementLoad": "Prvkové zatížení",
     "prescribedDisplacement": "Předepsané posunutí",
     "addLoad": "Přidat zatížení",
-    "addPrescribedDisplacement": "Předepsat posunutí"
+    "addPrescribedDisplacement": "Předepsat posunutí",
+    "forceMoment": "Síla/moment"
   },
   "material": {
     "alphaT": "α_T",
@@ -91,7 +92,8 @@
   },
   "nodes": {
     "addNode": "Přidat uzel",
-    "editNode": "Upravit uzel"
+    "editNode": "Upravit uzel",
+    "defineSupports": "Podepření uzlu"
   },
   "tabView": {
     "results": "Výsledky",

@@ -4,7 +4,13 @@
       <v-card-title> {{ $t("dialogs.addNodalLoad.addNewNodalLoad") }} </v-card-title>
 
       <div>
-        <v-radio-group v-model="loadType" inline density="compact" class="mx-3">
+        <v-radio-group
+          v-model="loadType"
+          v-if="projectStore.solver.domain.nodes.get(props.label).bcs.size > 0"
+          inline
+          density="compact"
+          class="mx-3"
+        >
           <v-radio label="Force" value="force"></v-radio>
           <v-radio label="Prescribed displacement" value="displacement"></v-radio>
         </v-radio-group>

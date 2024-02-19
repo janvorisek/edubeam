@@ -43,6 +43,11 @@ export class CommandManager<T> {
     command.execute(command.value);
     this.history.push(command);
   }
+
+  clearHistory(): void {
+    this.history = [];
+    this.redoStack = [];
+  }
 }
 
 export interface IKeyValue {

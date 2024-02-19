@@ -198,6 +198,8 @@ const clearMesh = () => {
   useProjectStore().solver.loadCases[0].elementLoadList = [];
   useProjectStore().solver.domain.elements.clear();
   useProjectStore().solver.domain.nodes.clear();
+
+  undoRedoManager.clearHistory();
 };
 
 const shareMesh = () => {

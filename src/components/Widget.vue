@@ -29,6 +29,7 @@ const props = withDefaults(
             <SVGElementViewer
               v-if="projectStore.solver.domain.elements.has(props.widget.props.label)"
               class="overflow-hidden pa-1"
+              :solver="projectStore.solver"
               :nodes="[]"
               :elements="[projectStore.solver.domain.getElement(props.widget.props.label)]"
               :padding="1"

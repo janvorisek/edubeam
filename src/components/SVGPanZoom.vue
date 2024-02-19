@@ -23,6 +23,8 @@ const scale = ref(1);
 const touchPointer = ref({ x: 0, y: 0, ds: 0, move: false, pinch: false });
 
 const onWindowResize = (): void => {
+  if (!rootRef.value) return;
+
   if (rootRef.value!.offsetWidth === 0) return;
 
   const dX = rootRef.value!.offsetWidth - svgRef.value!.getBoundingClientRect().width;

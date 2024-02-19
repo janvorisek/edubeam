@@ -32,7 +32,7 @@ import {
   formatExpValueAsHTML,
 } from "../SVGUtils";
 import { throttle } from "../utils";
-import { Node, DofID, Beam2D, Element, NodalLoad, BeamElementLoad } from "ts-fem";
+import { Node, DofID, Beam2D, Element, NodalLoad, BeamElementLoad, LinearStaticSolver } from "ts-fem";
 import { Matrix } from "mathjs";
 import { useMagicKeys } from "@vueuse/core";
 
@@ -49,23 +49,25 @@ import AddElementLoadDialog from "./dialogs/AddElementLoad.vue";
 
 const props = withDefaults(
   defineProps<{
-    showGrid: boolean;
-    showElements: boolean;
-    showNodes: boolean;
-    showLoads: boolean;
-    showSupports: boolean;
-    showNodeLabels: boolean;
-    showElementLabels: boolean;
-    showDeformedShape: boolean;
-    showNormalForce: boolean;
-    showShearForce: boolean;
-    showMoments: boolean;
+    solver: LinearStaticSolver;
+    showGrid?: boolean;
+    showElements?: boolean;
+    showNodes?: boolean;
+    showLoads?: boolean;
+    showSupports?: boolean;
+    showNodeLabels?: boolean;
+    showElementLabels?: boolean;
+    showDeformedShape?: boolean;
+    showNormalForce?: boolean;
+    showShearForce?: boolean;
+    showMoments?: boolean;
+    showReactions?: boolean;
     elements: Element[];
     nodes: Node[];
-    nodalLoads: NodalLoad[];
-    elementLoads: BeamElementLoad[];
-    padding: number;
-    mobilePadding: number;
+    nodalLoads?: NodalLoad[];
+    elementLoads?: BeamElementLoad[];
+    padding?: number;
+    mobilePadding?: number;
   }>(),
   {
     showGrid: false,
@@ -79,6 +81,7 @@ const props = withDefaults(
     showNormalForce: false,
     showShearForce: false,
     showMoments: false,
+    showReactions: false,
     elements: () => [],
     nodes: () => [],
     nodalLoads: () => [],
@@ -88,8 +91,8 @@ const props = withDefaults(
   }
 );
 
-let mouseStartX = 0;
-let mouseStartY = 0;
+const mouseStartX = 0;
+const mouseStartY = 0;
 const mouseXReal = ref(0);
 const mouseYReal = ref(0);
 
@@ -106,7 +109,7 @@ const svg = ref<SVGSVGElement>();
 const viewport = ref<SVGGElement>();
 const tooltip = ref<Element>();
 
-watch(projectStore.solver, () => {
+watch(props.solver, () => {
   fitContent();
 });
 
@@ -155,276 +158,6 @@ const onUpdate = throttle((zooming: boolean) => {
   if (grid.value) grid.value.refreshGrid(zooming);
 }, 100);
 
-const { escape, f, c } = useMagicKeys();
-
-watch(f, (v) => {
-  if ("activeElement" in document && document.activeElement.tagName !== "BODY") return;
-  if (v) fitContent();
-});
-
-watch(c, (v) => {
-  if ("activeElement" in document && document.activeElement.tagName !== "BODY") return;
-  if (v) centerContent();
-});
-
-watch(escape, (v) => {
-  if (v) {
-    if ("activeElement" in document) (document.activeElement as HTMLElement).blur();
-    appStore.mouseMode = MouseMode.NONE;
-    projectStore.clearSelection();
-    startNode.value = null;
-
-    //viewerStore.settingsOpen = false;
-  }
-});
-
-const onElementHover = (e: MouseEvent, el: Beam2D) => {
-  if (appStore.mouseMode === MouseMode.MOVING) return;
-
-  const tt = tooltip.value as HTMLElement;
-  const tooltipContent = tt.querySelector(".content") as HTMLElement;
-
-  intersected.value.type = "element";
-  intersected.value.index = el.label;
-
-  tt.style.top = e.offsetY + "px";
-  tt.style.left = e.offsetX + "px";
-  tooltipContent.innerHTML = `<strong>${t("common.element")} ${el.label}</strong>`;
-  tt.style.display = "block";
-  document.body.style.cursor = "pointer";
-
-  if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
-};
-
-const onNodalDefoHover = (e: MouseEvent, node: Node) => {
-  if (appStore.mouseMode === MouseMode.MOVING) return;
-
-  const tt = tooltip.value as HTMLElement;
-  const tooltipContent = tt.querySelector(".content") as HTMLElement;
-
-  tt.style.top = e.offsetY + "px";
-  tt.style.left = e.offsetX + "px";
-
-  tooltipContent.innerHTML = `<strong>Node ${node.label}</strong>`;
-  tooltipContent.innerHTML += "<br>";
-  tooltipContent.innerHTML += `u<sub>x</sub> = ${formatExpValueAsHTML(
-    // @ts-expect-error It return value for single Dof
-    node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]),
-    4
-  )} m`;
-  tooltipContent.innerHTML += "<br>";
-  tooltipContent.innerHTML += `u<sub>z</sub> = ${formatExpValueAsHTML(
-    // @ts-expect-error It return value for single Dof
-    node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]),
-    4
-  )} m`;
-  tooltipContent.innerHTML += "<br>";
-  tooltipContent.innerHTML += `φ<sub>y</sub> = ${formatExpValueAsHTML(
-    // @ts-expect-error It return value for single Dof
-    node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry]),
-    4
-  )} m`;
-  tt.style.display = "block";
-  document.body.style.cursor = "pointer";
-
-  if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
-};
-
-const onNodeHover = (e: MouseEvent, node: Node) => {
-  if (appStore.mouseMode === MouseMode.MOVING) return;
-
-  const tt = tooltip.value as HTMLElement;
-  const tooltipContent = tt.querySelector(".content") as HTMLElement;
-
-  intersected.value.type = "node";
-  intersected.value.index = node.label;
-
-  tt.style.top = e.offsetY + "px";
-  tt.style.left = e.offsetX + "px";
-  tooltipContent.innerHTML = `<strong>${t("common.node")} ${node.label}</strong>`;
-  if (projectStore.solver.loadCases[0].solved) {
-    tooltipContent.innerHTML += "<br>";
-    tooltipContent.innerHTML += `u<sub>x</sub> = ${formatExpValueAsHTML(
-      // @ts-expect-error It return value for single Dof
-      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]),
-      4
-    )} m`;
-    tooltipContent.innerHTML += "<br>";
-    tooltipContent.innerHTML += `u<sub>z</sub> = ${formatExpValueAsHTML(
-      // @ts-expect-error It return value for single Dof
-      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]),
-      4
-    )} m`;
-    tooltipContent.innerHTML += "<br>";
-    tooltipContent.innerHTML += `φ<sub>y</sub> = ${formatExpValueAsHTML(
-      // @ts-expect-error It return value for single Dof
-      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry]),
-      4
-    )} m`;
-  }
-  tt.style.display = "block";
-  document.body.style.cursor = "pointer";
-
-  if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
-};
-
-const hideTooltip = () => {
-  const tt = tooltip.value as HTMLElement;
-  tt.style.display = "none";
-  document.body.style.cursor = "auto";
-
-  if ([MouseMode.HOVER, MouseMode.SELECTING, MouseMode.ADD_ELEMENT].includes(appStore.mouseMode)) {
-    if (appStore.mouseMode === MouseMode.HOVER) appStore.mouseMode = MouseMode.NONE;
-
-    intersected.value.type = null;
-    intersected.value.index = null;
-  }
-};
-
-const hasMoved = (e: MouseEvent) => {
-  const dx = e.offsetX - mouseStartX;
-  const dy = e.offsetY - mouseStartY;
-  const d = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-  if (d > 10) return true;
-
-  return false;
-};
-
-const onNodeClick = (e: MouseEvent) => {
-  if (hasMoved(e)) return;
-
-  appStore.bottomBarTab = 0;
-
-  const target = e.target as HTMLElement;
-  const index = target.getAttribute("data-node-id") || "-1";
-
-  useProjectStore().selection.type = "node";
-  useProjectStore().selection.label = isNaN(index as unknown as number) ? index : parseInt(index);
-  //useProjectStore().selection.x = e.offsetX;
-  //useProjectStore().selection.y = e.offsetY;
-
-  let nx = target.getBoundingClientRect().left - 100;
-
-  if (nx < 0) nx = 24;
-  if (nx > window.innerWidth - 200 - 24) nx = window.innerWidth - 200 - 24;
-
-  useProjectStore().selection.x = nx;
-  useProjectStore().selection.y = target.getBoundingClientRect().top - 64;
-};
-
-const onElementClick = (e: MouseEvent) => {
-  if (hasMoved(e)) return;
-
-  appStore.bottomBarTab = 1;
-
-  const target = e.target as HTMLElement;
-  const index = target.getAttribute("data-element-id") || "-1";
-
-  let nx = target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 - 100;
-
-  if (nx < 0) nx = 24;
-  if (nx > window.innerWidth - 200 - 24) nx = window.innerWidth - 200 - 24;
-
-  useProjectStore().selection.type = "element";
-  useProjectStore().selection.label = isNaN(index as unknown as number) ? index : parseInt(index);
-  useProjectStore().selection.x = nx;
-  useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
-};
-
-const mouseMove = (e: MouseEvent) => {
-  appStore.mouse.x = e.offsetX;
-  appStore.mouse.y = e.offsetY;
-
-  const matrix = viewport.value!.getCTM() as DOMMatrix;
-
-  const leftTop = svg.value!.createSVGPoint();
-  leftTop.x = e.offsetX; //svgBB.left;
-  leftTop.y = e.offsetY; //svgBB.top;
-
-  const inv = matrix.inverse();
-  const svgP1 = leftTop.matrixTransform(inv);
-
-  const mXReal = svgP1.x; // * zoom;
-  const mYReal = svgP1.y; // * zoom;
-
-  const realStep = viewerStore.gridStep;
-
-  mouseXReal.value = /*Math.round(*/ mXReal; /* / realStep) * realStep;*/
-  mouseYReal.value = /*Math.round(*/ mYReal; /* / realStep) * realStep;*/
-
-  mouseXReal.value = Math.round(mXReal / realStep) * realStep;
-  mouseYReal.value = Math.round(mYReal / realStep) * realStep;
-
-  mouseXReal.value = viewerStore.snapToGrid ? mouseXReal.value : mXReal / scale.value;
-  mouseYReal.value = viewerStore.snapToGrid ? mouseYReal.value : mYReal / scale.value;
-
-  if (appStore.mouseMode === MouseMode.MOVING) {
-    const index = intersected.value.index;
-    if (index === null) return;
-
-    // @ts-expect-error ts-fem is wrongly typed
-    useProjectStore().solver.domain.nodes.get(index)!.coords[0] = mouseXReal.value;
-
-    // @ts-expect-error ts-fem is wrongly typed
-    useProjectStore().solver.domain.nodes.get(index)!.coords[2] = mouseYReal.value;
-
-    useProjectStore().solver.loadCases[0].solved = false;
-    useProjectStore().solve();
-  }
-};
-
-const onMouseDown = (e: PointerEvent) => {
-  //if (this.svgPanZoom == null) return;
-  projectStore.selection.type = null;
-
-  console.log(e);
-
-  if ("activeElement" in document) (document.activeElement as HTMLElement).blur();
-
-  if (e.button === 0 /* && typeof e.button !== "undefined" */) {
-    //this.svgPanZoom.disablePan();
-    mouseStartX = e.offsetX;
-    mouseStartY = e.offsetY;
-
-    if (appStore.mouseMode === MouseMode.ADD_NODE) {
-      mouseStartX = -9999;
-      projectStore.solver.loadCases[0].solved = false;
-      const newNodeId = projectStore.solver.domain.nodes.size + 1;
-      projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
-      return;
-    }
-
-    if (appStore.mouseMode === MouseMode.ADD_ELEMENT) {
-      mouseStartX = -9999;
-      if (startNode.value === null) {
-        startNode.value = { label: intersected.value.index, x: mouseXReal.value, y: mouseYReal.value };
-      } else if (intersected.value.type === "node") {
-        projectStore.solver.loadCases[0].solved = false;
-        const newElId = projectStore.solver.domain.elements.size + 1;
-        const nid = startNode.value.label;
-        // @ts-expect-error ts-fem is wrongly typed
-        projectStore.solver.domain.createBeam2D(newElId, [nid, intersected.value.index], 1, 1);
-
-        startNode.value = { label: intersected.value.index, x: mouseXReal.value, y: mouseYReal.value };
-        projectStore.solve();
-      }
-
-      return;
-    }
-
-    if (appStore.mouseMode === MouseMode.HOVER) {
-      appStore.mouseMode = MouseMode.MOVING;
-    } else if (e.pointerType === "mouse") {
-      appStore.mouseMode = MouseMode.SELECTING;
-      appStore.mouse.sx = e.offsetX;
-      appStore.mouse.sy = e.offsetY;
-    }
-  } else {
-    appStore.mouseMode = MouseMode.NONE;
-    //svgPanZoom.enablePan();
-  }
-};
-
 const lineIntersectsrect = (
   x1: number,
   y1: number,
@@ -454,71 +187,24 @@ const lineIntersectsrect = (
   return false;
 };
 
-const onMouseUp = (e: MouseEvent) => {
-  if (appStore.mouseMode === MouseMode.ADD_NODE) return;
-  if (appStore.mouseMode === MouseMode.ADD_ELEMENT) return;
-
-  if (appStore.mouseMode === MouseMode.SELECTING) {
-    const selectedNodes = [];
-    const selectedElements = [];
-
-    const b = (e.target as HTMLElement).getBoundingClientRect();
-    const rx1 = Math.min(appStore.mouse.sx + b.left, appStore.mouse.x + b.left);
-    const rx2 = Math.max(appStore.mouse.sx + b.left, appStore.mouse.x + b.left);
-    const ry1 = Math.min(appStore.mouse.sy + b.top, appStore.mouse.y + b.top);
-    const ry2 = Math.max(appStore.mouse.sy + b.top, appStore.mouse.y + b.top);
-
-    // Loop over nodes and check if node in rectangle
-    for (const [label, n] of useProjectStore().solver.domain.nodes) {
-      const {
-        top, // x position on viewport (window)
-        left, // y position on viewport (window)
-      } = document.querySelector(`.node .drawable[data-label="${n.label}"]`).getBoundingClientRect();
-
-      console.log({ top, left, m: appStore.mouse });
-
-      if (left > rx1 && left < rx2 && top > ry1 && top < ry2) {
-        selectedNodes.push(label);
-      }
-    }
-
-    // Loop over elements and check if element in rectangle
-    for (const [label, el] of useProjectStore().solver.domain.elements) {
-      const n1 = useProjectStore().solver.domain.nodes.get(el.nodes[0])!;
-      const n2 = useProjectStore().solver.domain.nodes.get(el.nodes[1])!;
-
-      const n1el = document.querySelector(`.node .drawable[data-label="${n1.label}"]`).getBoundingClientRect();
-      const n2el = document.querySelector(`.node .drawable[data-label="${n2.label}"]`).getBoundingClientRect();
-
-      const n1x = n1el.left;
-      const n1y = n1el.top;
-      const n2x = n2el.left;
-      const n2y = n2el.top;
-
-      if (lineIntersectsrect(n1x, n1y, n2x, n2y, rx1, ry1, rx2, ry2)) {
-        selectedElements.push(label);
-      }
-    }
-
-    console.log({ selectedNodes, selectedElements });
-  }
-
-  appStore.mouseMode = MouseMode.NONE;
-
-  intersected.value.type = null;
-  intersected.value.index = null;
-};
-
 const isSupported = (node: Node, dof: DofID) => {
   return node.bcs.has(dof);
 };
 
 const getReaction = (node: Node, dof: DofID) => {
-  const r = node.getReactions(useProjectStore().solver.loadCases[0], true);
+  const r = node.getReactions(props.solver.loadCases[0], true);
   const i = r.dofs.findIndex((e) => e === dof);
 
   return "get" in r.values ? (r.values as unknown as Matrix).get([i]) : r.values[i];
 };
+
+const isLoaded = computed(() => {
+  return (
+    props.solver.loadCases[0].nodalLoadList.length > 0 ||
+    props.solver.loadCases[0].elementLoadList.length > 0 ||
+    props.solver.loadCases[0].prescribedBC.length > 0
+  );
+});
 
 defineExpose({ centerContent, fitContent });
 </script>
@@ -536,16 +222,12 @@ defineExpose({ centerContent, fitContent });
       :mobile-padding="props.mobilePadding"
       style="overflow: visible; z-index: 50; min-height: 0"
     >
-      <svg ref="svg" @pointermove="mouseMove" @pointerdown="onMouseDown" @pointerup="onMouseUp">
+      <svg ref="svg">
         <SvgViewerDefs />
         <g ref="viewport">
           <g>
-            <g v-if="!useAppStore().zooming && props.showLoads">
-              <g
-                class="element-load load-1d"
-                v-for="(eload, index) in props.elementLoads"
-                :key="`element-load-${index}`"
-              >
+            <g v-if="!useAppStore().zooming && useViewerStore().showLoads">
+              <g class="element-load load-1d" v-for="(eload, index) in elementLoads" :key="`element-load-${index}`">
                 <g v-if="eload.values[0] !== 0">
                   <polyline
                     v-for="(load, i) in formatElementLoadForces(eload, scale, 0)"
@@ -572,7 +254,7 @@ defineExpose({ centerContent, fitContent });
                     :font-size="13 / scale"
                     font-weight="normal"
                     text-anchor="end"
-                    alignment-baseline="middle"
+                    dominant-baseline="middle"
                     :transform="formatElementLoadLabel(eload, scale, 0)"
                   >
                     {{ Math.abs(appStore.convertForce(eload.values[0])).toFixed(2) }}
@@ -582,7 +264,7 @@ defineExpose({ centerContent, fitContent });
                     :font-size="13 / scale"
                     font-weight="normal"
                     text-anchor="end"
-                    alignment-baseline="middle"
+                    dominant-baseline="middle"
                     :transform="formatElementLoadLabel(eload, scale, 1)"
                   >
                     {{ Math.abs(appStore.convertForce(eload.values[1])).toFixed(2) }}
@@ -601,16 +283,16 @@ defineExpose({ centerContent, fitContent });
                   vector-effect="non-scaling-stroke"
                 />
               </g>
-              <g class="nodal-load" v-for="(nload, index) in props.nodalLoads" :key="`nodal-load-${index}`">
+              <g class="nodal-load" v-for="(nload, index) in nodalLoads" :key="`nodal-load-${index}`">
                 <polyline
                   v-if="nload.values[0] !== 0 || nload.values[2] !== 0"
                   points="0,0 0,0"
                   vector-effect="non-scaling-stroke"
                   class="decoration force"
-                  :transform="`translate(${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0]}
-              ${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2]}) rotate(${formatNodalLoadAngle(
-                nload
-              )})`"
+                  :transform="`translate(${solver.domain.nodes.get(nload.target)!.coords[0]}
+                                  ${solver.domain.nodes.get(nload.target)!.coords[2]}) rotate(${formatNodalLoadAngle(
+                                    nload
+                                  )})`"
                 />
 
                 <polyline
@@ -619,26 +301,21 @@ defineExpose({ centerContent, fitContent });
                   vector-effect="non-scaling-stroke"
                   class="decoration moment"
                   :class="{ cw: nload.values[4] < 0, ccw: nload.values[4] > 0 }"
-                  :transform="`translate(${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0]}
-              ${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2]})`"
+                  :transform="`translate(${solver.domain.nodes.get(nload.target)!.coords[0]}
+                                  ${solver.domain.nodes.get(nload.target)!.coords[2]})`"
                 />
 
                 <polyline :points="formatNodalLoad(nload, scale)" class="handle" />
-                <polyline
-                  :points="formatNode(useProjectStore().solver.domain.nodes.get(nload.target).coords)"
-                  class="handle moment"
-                />
+                <polyline :points="formatNode(solver.domain.nodes.get(nload.target).coords)" class="handle moment" />
 
                 <text
                   v-if="nload.values[4] !== 0"
                   :font-size="13 / scale"
                   font-weight="normal"
                   text-anchor="start"
-                  alignment-baseline="central"
-                  :transform="`translate(${
-                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0] + 15 / scale
-                  }
-              ${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2] - 15 / scale})`"
+                  dominant-baseline="central"
+                  :transform="`translate(${solver.domain.nodes.get(nload.target)!.coords[0] + 15 / scale}
+                                  ${solver.domain.nodes.get(nload.target)!.coords[2] - 15 / scale})`"
                 >
                   {{ Math.abs(appStore.convertForce(nload.values[4])).toFixed(2) }}
                 </text>
@@ -648,19 +325,19 @@ defineExpose({ centerContent, fitContent });
                   :font-size="13 / scale"
                   font-weight="normal"
                   :text-anchor="nload.values[0] > 0 ? 'end' : 'start'"
-                  alignment-baseline="central"
+                  dominant-baseline="central"
                   :transform="`translate(${
-                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0] -
+                    solver.domain.nodes.get(nload.target)!.coords[0] -
                     (40 * nload.values[0]) /
                       Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2]) /
                       scale
                   }
-              ${
-                useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2] -
-                (40 * nload.values[2]) /
-                  Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2]) /
-                  scale
-              })`"
+                                  ${
+                                    solver.domain.nodes.get(nload.target)!.coords[2] -
+                                    (40 * nload.values[2]) /
+                                      Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2]) /
+                                      scale
+                                  })`"
                 >
                   {{
                     appStore
@@ -675,9 +352,9 @@ defineExpose({ centerContent, fitContent });
               </g>
             </g>
 
-            <g class="element element-1d" v-for="(element, index) in props.elements" :key="`element-${index}`">
+            <g class="element element-1d" v-for="(element, index) in elements" :key="`element-${index}`">
               <polyline
-                v-if="!useAppStore().zooming && projectStore.solver.loadCases[0].solved && props.showDeformedShape"
+                v-if="!useAppStore().zooming && props.solver.loadCases[0].solved && props.showDeformedShape"
                 :points="formatResults(element, scale)"
                 vector-effect="non-scaling-stroke"
                 class="deformedShape"
@@ -686,7 +363,7 @@ defineExpose({ centerContent, fitContent });
               />
               <!--<polyline
                 v-if="
-                  !useAppStore().zooming && projectStore.solver.loadCases[0].solved && props.showDeformedShape
+                  !useAppStore().zooming && props.solver.loadCases[0].solved && props.showDeformedShape
                 "
                 :points="formatResults(element, scale)"
                 vector-effect="non-scaling-stroke"
@@ -695,7 +372,7 @@ defineExpose({ centerContent, fitContent });
                 stroke-linejoin="round"
               />-->
 
-              <g v-if="!useAppStore().zooming && projectStore.solver.loadCases[0].solved && props.showNormalForce">
+              <g v-if="!useAppStore().zooming && props.solver.loadCases[0].solved && props.showNormalForce">
                 <polyline
                   :points="formatNormalForces(element, scale)"
                   vector-effect="non-scaling-stroke"
@@ -733,7 +410,7 @@ defineExpose({ centerContent, fitContent });
                   </text>
                 </g>
               </g>
-              <g v-if="!useAppStore().zooming && projectStore.solver.loadCases[0].solved && props.showShearForce">
+              <g v-if="!useAppStore().zooming && props.solver.loadCases[0].solved && props.showShearForce">
                 <polyline
                   :points="formatShearForces(element, scale)"
                   vector-effect="non-scaling-stroke"
@@ -772,7 +449,7 @@ defineExpose({ centerContent, fitContent });
                 </g>
               </g>
 
-              <g v-if="!useAppStore().zooming && projectStore.solver.loadCases[0].solved && props.showBendingMoment">
+              <g v-if="!useAppStore().zooming && props.solver.loadCases[0].solved && props.showMoments">
                 <polyline
                   :points="formatMoments(element, scale)"
                   vector-effect="non-scaling-stroke"
@@ -827,8 +504,8 @@ defineExpose({ centerContent, fitContent });
               <polyline
                 :points="
                   formatElement([
-                    projectStore.solver.domain.nodes.get(element.nodes[0])!.coords,
-                    projectStore.solver.domain.nodes.get(element.nodes[1])!.coords,
+                    props.solver.domain.nodes.get(element.nodes[0])!.coords,
+                    props.solver.domain.nodes.get(element.nodes[1])!.coords,
                   ])
                 "
                 vector-effect="non-scaling-stroke"
@@ -867,13 +544,13 @@ defineExpose({ centerContent, fitContent });
                 <text
                   v-if="!useAppStore().zooming && props.showElementLabels"
                   :x="
-                    (projectStore.solver.domain.nodes.get(element.nodes[0])!.coords[0] +
-                      projectStore.solver.domain.nodes.get(element.nodes[1])!.coords[0]) /
+                    (props.solver.domain.nodes.get(element.nodes[0])!.coords[0] +
+                      props.solver.domain.nodes.get(element.nodes[1])!.coords[0]) /
                     2
                   "
                   :y="
-                    (projectStore.solver.domain.nodes.get(element.nodes[0])!.coords[2] +
-                      projectStore.solver.domain.nodes.get(element.nodes[1])!.coords[2]) /
+                    (props.solver.domain.nodes.get(element.nodes[0])!.coords[2] +
+                      props.solver.domain.nodes.get(element.nodes[1])!.coords[2]) /
                     2
                   "
                   :font-size="14 / scale"
@@ -881,12 +558,12 @@ defineExpose({ centerContent, fitContent });
                   text-anchor="middle"
                   alignment-baseline="central"
                   :transform="`${formatElementLabel(element, scale, 10)} rotate(${formatElementAngle(element)} ${
-                    (projectStore.solver.domain.nodes.get(element.nodes[0])!.coords[0] +
-                      projectStore.solver.domain.nodes.get(element.nodes[1])!.coords[0]) /
+                    (props.solver.domain.nodes.get(element.nodes[0])!.coords[0] +
+                      props.solver.domain.nodes.get(element.nodes[1])!.coords[0]) /
                     2
                   } ${
-                    (projectStore.solver.domain.nodes.get(element.nodes[0])!.coords[2] +
-                      projectStore.solver.domain.nodes.get(element.nodes[1])!.coords[2]) /
+                    (props.solver.domain.nodes.get(element.nodes[0])!.coords[2] +
+                      props.solver.domain.nodes.get(element.nodes[1])!.coords[2]) /
                     2
                   })`"
                 >
@@ -897,8 +574,8 @@ defineExpose({ centerContent, fitContent });
               <polyline
                 :points="
                   formatElement([
-                    projectStore.solver.domain.nodes.get(element.nodes[0])!.coords,
-                    projectStore.solver.domain.nodes.get(element.nodes[1])!.coords,
+                    props.solver.domain.nodes.get(element.nodes[0])!.coords,
+                    props.solver.domain.nodes.get(element.nodes[1])!.coords,
                   ])
                 "
                 vector-effect="non-scaling-stroke"
@@ -909,7 +586,7 @@ defineExpose({ centerContent, fitContent });
           </g>
 
           <g class="nodes">
-            <g class="node" v-for="(node, index) in props.nodes" :key="`node-${index}`">
+            <g class="node" v-for="(node, index) in nodes" :key="`node-${index}`">
               <polyline
                 v-if="viewerStore.showSupports && supportMarker(node) !== 'none'"
                 :points="formatSupportNode(node)"
@@ -922,14 +599,15 @@ defineExpose({ centerContent, fitContent });
               <polyline
                 v-if="
                   !useAppStore().zooming &&
-                  projectStore.solver.loadCases[0].solved &&
+                  isLoaded &&
+                  solver.loadCases[0].solved &&
+                  props.showReactions &&
                   isSupported(node, DofID.Dz) &&
-                  props.showLoads &&
                   Math.abs(getReaction(node, DofID.Dz)) > 1e-32
                 "
                 points="0,0 0,0"
                 class="decoration"
-                marker-start="url(#force)"
+                marker-start="url(#reaction)"
                 :transform="`translate(${node.coords[0]} ${node.coords[2]}) rotate(${
                   Math.sign(getReaction(node, DofID.Dz)) >= 0 ? 0 : 180
                 })`"
@@ -938,18 +616,19 @@ defineExpose({ centerContent, fitContent });
               <text
                 v-if="
                   !useAppStore().zooming &&
-                  projectStore.solver.loadCases[0].solved &&
+                  isLoaded &&
+                  solver.loadCases[0].solved &&
+                  props.showReactions &&
                   isSupported(node, DofID.Dz) &&
-                  props.showLoads &&
                   Math.abs(getReaction(node, DofID.Dz)) > 1e-32
                 "
                 :font-size="13 / scale"
-                fill="#FF8700"
+                :fill="viewerStore.colors.reactions"
                 font-weight="normal"
                 text-anchor="end"
-                alignment-baseline="baseline"
+                dominant-baseline="baseline"
                 :transform="`translate(${node.coords[0]}
-              ${node.coords[2] - (40 * Math.sign(getReaction(node, DofID.Dz))) / scale})`"
+                                ${node.coords[2] - (40 * Math.sign(getReaction(node, DofID.Dz))) / scale})`"
               >
                 {{ appStore.convertForce(Math.abs(getReaction(node, DofID.Dz))).toFixed(2) }}
               </text>
@@ -957,14 +636,15 @@ defineExpose({ centerContent, fitContent });
               <polyline
                 v-if="
                   !useAppStore().zooming &&
-                  projectStore.solver.loadCases[0].solved &&
+                  isLoaded &&
+                  solver.loadCases[0].solved &&
+                  props.showReactions &&
                   isSupported(node, DofID.Dx) &&
-                  props.showLoads &&
                   Math.abs(getReaction(node, DofID.Dx)) > 1e-32
                 "
                 points="0,0 0,0"
                 class="decoration"
-                marker-start="url(#force)"
+                marker-start="url(#reaction)"
                 :transform="`translate(${node.coords[0]} ${node.coords[2]}) rotate(${
                   -90 * Math.sign(getReaction(node, DofID.Dx))
                 })`"
@@ -973,18 +653,19 @@ defineExpose({ centerContent, fitContent });
               <text
                 v-if="
                   !useAppStore().zooming &&
-                  projectStore.solver.loadCases[0].solved &&
+                  isLoaded &&
+                  solver.loadCases[0].solved &&
+                  props.showReactions &&
                   isSupported(node, DofID.Dx) &&
-                  props.showLoads &&
                   Math.abs(getReaction(node, DofID.Dx)) > 1e-32
                 "
                 :font-size="13 / scale"
-                fill="#FF8700"
+                :fill="viewerStore.colors.reactions"
                 font-weight="normal"
                 :text-anchor="getReaction(node, DofID.Dx) > 0 ? 'end' : 'start'"
-                alignment-baseline="baseline"
+                dominant-baseline="baseline"
                 :transform="`translate(${node.coords[0] - (Math.sign(getReaction(node, DofID.Dx)) * 40) / scale}
-              ${node.coords[2]})`"
+                                ${node.coords[2]})`"
               >
                 {{ appStore.convertForce(Math.abs(getReaction(node, DofID.Dx))).toFixed(2) }}
               </text>
@@ -992,49 +673,58 @@ defineExpose({ centerContent, fitContent });
               <polyline
                 v-if="
                   !useAppStore().zooming &&
-                  projectStore.solver.loadCases[0].solved &&
+                  isLoaded &&
+                  solver.loadCases[0].solved &&
+                  props.showReactions &&
                   isSupported(node, DofID.Ry) &&
-                  props.showLoads &&
                   Math.abs(getReaction(node, DofID.Ry)) > 1e-32
                 "
                 points="0,0 0,0"
                 class="decoration"
-                :marker-start="`url(#${getReaction(node, DofID.Ry) > 0 ? 'moment_ccw' : 'moment_cw'})`"
+                :marker-start="`url(#${getReaction(node, DofID.Ry) > 0 ? 'moment_reaction_ccw' : 'moment_reaction_cw'})`"
                 :transform="`translate(${node.coords[0]} ${node.coords[2]})`"
               />
 
               <text
                 v-if="
                   !useAppStore().zooming &&
-                  projectStore.solver.loadCases[0].solved &&
+                  isLoaded &&
+                  solver.loadCases[0].solved &&
+                  props.showReactions &&
                   isSupported(node, DofID.Ry) &&
-                  props.showLoads &&
                   Math.abs(getReaction(node, DofID.Ry)) > 1e-32
                 "
                 :font-size="13 / scale"
-                fill="#FF8700"
+                :fill="viewerStore.colors.reactions"
                 font-weight="normal"
                 text-anchor="start"
-                alignment-baseline="baseline"
+                dominant-baseline="baseline"
                 :transform="`translate(${node.coords[0] + 15 / scale}
-              ${node.coords[2] - 15 / scale})`"
+                                ${node.coords[2] - 15 / scale})`"
               >
                 {{ appStore.convertForce(Math.abs(getReaction(node, DofID.Ry))).toFixed(2) }}
               </text>
 
               <g
-                v-if="!useAppStore().zooming && projectStore.solver.loadCases[0].solved && props.showDeformedShape"
+                v-if="
+                  !useAppStore().zooming &&
+                  isLoaded &&
+                  solver.loadCases[0].solved &&
+                  props.showDeformedShape &&
+                  // check if node is connected to anything
+                  elements.some((element) => element.nodes.includes(node.label))
+                "
                 :transform="`translate(${
                   node.coords[0] +
                   // @ts-expect-error ts-fem is wrongly typed
-                  (node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]) *
+                  (node.getUnknowns(solver.loadCases[0], [DofID.Dx]) *
                     projectStore.defoScale *
                     projectStore.resultsScalePx) /
                     scale
                 }, ${
                   node.coords[2] +
                   // @ts-expect-error ts-fem is wrongly typed
-                  (node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]) *
+                  (node.getUnknowns(solver.loadCases[0], [DofID.Dz]) *
                     projectStore.defoScale *
                     projectStore.resultsScalePx) /
                     scale
@@ -1046,7 +736,7 @@ defineExpose({ centerContent, fitContent });
               </g>
 
               <g
-                v-if="!useAppStore().zooming && props.showNodeLabels"
+                v-if="!useAppStore().zooming && viewerStore.showNodeLabels"
                 :transform="`translate(${(-12 - (node.label.toString().length - 1) * 2) / scale}, ${-12 / scale})`"
               >
                 <circle
@@ -1063,7 +753,7 @@ defineExpose({ centerContent, fitContent });
                   :font-size="14 / scale"
                   font-weight="normal"
                   text-anchor="middle"
-                  alignment-baseline="central"
+                  dominant-baseline="central"
                 >
                   {{ node.label }}
                 </text>

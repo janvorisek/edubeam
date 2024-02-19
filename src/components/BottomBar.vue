@@ -107,9 +107,17 @@
                 <label :for="`coords0-${item.label}`" class="input-before">x</label>
                 <input
                   :id="`coords0-${item.label}`"
-                  :value="item.coords[0]"
+                  :value="appStore.convertLength(item.coords[0])"
                   @keydown="checkNumber($event)"
-                  @change="changeSetArrayItem(item, 'coords', 0, $event.target as HTMLInputElement)"
+                  @change="
+                    changeSetArrayItem(
+                      item,
+                      'coords',
+                      0,
+                      $event.target as HTMLInputElement,
+                      appStore.convertInverseLength
+                    )
+                  "
                   class="inline-edit"
                 />
               </div>
@@ -117,9 +125,17 @@
                 <label :for="`coords2-${item.label}`" class="input-before">z</label>
                 <input
                   :id="`coords2-${item.label}`"
-                  :value="item.coords[2]"
+                  :value="appStore.convertLength(item.coords[2])"
                   @keydown="checkNumber($event)"
-                  @change="changeSetArrayItem(item, 'coords', 2, $event.target as HTMLInputElement)"
+                  @change="
+                    changeSetArrayItem(
+                      item,
+                      'coords',
+                      2,
+                      $event.target as HTMLInputElement,
+                      appStore.convertInverseLength
+                    )
+                  "
                   class="inline-edit"
                 />
               </div>
@@ -967,7 +983,10 @@
                       "
                       class="inline-edit fw pl-1"
                       v-html="
-                        formatExpValueAsHTML(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dx]), 4)
+                        formatExpValueAsHTML(
+                          appStore.convertLength(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dx])),
+                          4
+                        )
                       "
                     />
                     <div class="inline-edit fw pl-1" v-else v-html="formatExpValueAsHTML(0, 4)"></div>
@@ -982,7 +1001,10 @@
                       "
                       class="inline-edit fw pl-1"
                       v-html="
-                        formatExpValueAsHTML(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dz]), 4)
+                        formatExpValueAsHTML(
+                          appStore.convertLength(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dz])),
+                          4
+                        )
                       "
                     />
                     <div class="inline-edit fw pl-1" v-else v-html="formatExpValueAsHTML(0, 4)"></div>
@@ -1342,7 +1364,7 @@ const headers = reactive({
       title: "common.coords",
       units: "Length",
       key: "coords",
-      width: 180,
+      width: 200,
     },
     {
       title: "dofs.bcs",

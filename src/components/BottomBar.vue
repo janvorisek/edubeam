@@ -1115,12 +1115,15 @@ import {
   deleteElementLoad,
   deleteMaterial,
   deleteNodalLoad,
+  deleteNode,
   deletePrescribedDisplacement,
   formatScientificNumber,
   setUnsolved,
   solve,
   swapNodes,
   toggleArray,
+  toggleBoolean,
+  toggleSet,
 } from "../utils";
 import { DofID, Beam2D, PrescribedDisplacement } from "ts-fem";
 import { formatExpValueAsHTML, formatMeasureAsHTML } from "../SVGUtils";

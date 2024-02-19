@@ -30,7 +30,8 @@
     "reactions": "Reakce",
     "normalForce": "Normálová síla",
     "deformedShape": "Deformovaný tvar",
-    "bendingMoment": "Ohybový moment"
+    "bendingMoment": "Ohybový moment",
+    "confirm": "Potvrdit"
   },
   "tabs": {
     "nodes": "Uzly",
@@ -228,5 +229,15 @@
   "welcome": {
     "title": "Vítejte v <span class=\"edubeam\">edubeamu</span>! 🚀",
     "description": "Abychom vám usnadnili začátek, připravili jsme pro vás rychlou úvodní prohlídku, která vás seznámí s vlastnostmi a funkcemi našeho programu."
+  },
+  "confirmation": {
+    "clearMesh": {
+      "title": "Smazat konstrukci?",
+      "message": "Jste si jisti, že chcete smazat konstrukci? Tuto akci nelze vrátit zpět."
+    },
+    "resetSettings": {
+      "message": "Opravdu chcete obnovit všechna výchozí nastavení? Tuto akci nelze vrátit zpět.",
+      "title": "Obnovit výchozí nastavení?"
+    }
   }
 }

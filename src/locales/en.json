@@ -35,7 +35,8 @@
     "bendingMoment": "Bending moment",
     "deformedShape": "Deformed shape",
     "reactions": "Reactions",
-    "elements": "Elements"
+    "elements": "Elements",
+    "confirm": "Confirm"
   },
   "nodes": {
     "addNode": "Add node",
@@ -230,5 +231,15 @@
   "welcome": {
     "title": "Welcome to <span class=\"edubeam\">edubeam</span>! 🚀",
     "description": "To help you get started, we've prepared a quick onboarding tour that will guide you through the features and functionalities of our program."
+  },
+  "confirmation": {
+    "clearMesh": {
+      "message": "Are you sure you want to clear the mesh? This action cannot be undone.",
+      "title": "Clear mesh?"
+    },
+    "resetSettings": {
+      "title": "Reset settings?",
+      "message": "Are you sure you want to reset all settings to default? This action cannot be undone."
+    }
   }
 }

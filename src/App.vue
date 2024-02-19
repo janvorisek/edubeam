@@ -4,6 +4,7 @@ import { deserializeModel } from "./utils";
 import { provide } from "vue";
 import { Command, CommandManager, IKeyValue, undoRedoManager } from "./CommandManager";
 import { useViewerStore } from "./store/viewer";
+import Confirmation from "./components/dialogs/Confirmation.vue";
 
 export default {
   components: { WidgetContainerModal: container },
@@ -279,7 +280,16 @@ const app_released = APP_RELEASED;
         </v-tooltip>
       </div>
 
-      <v-btn class="d-none d-sm-inline-flex ml-3" @click="clearMesh">
+      <v-btn
+        class="d-none d-sm-inline-flex ml-3"
+        @click="
+          openModal(Confirmation, {
+            title: t('confirmation.clearMesh.title'),
+            message: t('confirmation.clearMesh.message'),
+            success: clearMesh,
+          })
+        "
+      >
         <v-icon>mdi-delete-empty</v-icon>
         <span>{{ $t("common.clearMesh") }}</span>
       </v-btn>

@@ -46,7 +46,20 @@
 
             <v-divider></v-divider>
 
-            <v-btn class="mt-3" prepend-icon="mdi-restart" variant="text"> {{ $t("settings.reset_settings") }} </v-btn>
+            <v-btn
+              class="mt-3"
+              prepend-icon="mdi-restart"
+              variant="text"
+              @click="
+                openModal(Confirmation, {
+                  title: t('confirmation.resetSettings.title'),
+                  message: t('confirmation.resetSettings.message'),
+                  success: resetSettings,
+                })
+              "
+            >
+              {{ $t("settings.reset_settings") }}
+            </v-btn>
           </v-list>
         </v-sheet>
       </v-col>
@@ -82,6 +95,12 @@ import LanguageUnits from "@/components/settings/LanguageUnits.vue";
 import Appearance from "@/components/settings/Appearance.vue";
 import KeyboardMouse from "@/components/settings/KeyboardMouse.vue";
 
+import { openModal } from "jenesius-vue-modal";
+import Confirmation from "../dialogs/Confirmation.vue";
+
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 const appStore = useAppStore();
 const projectStore = useProjectStore();
 const viewerStore = useViewerStore();
@@ -89,6 +108,12 @@ const viewerStore = useViewerStore();
 const unitSystem = ref("si");
 
 const tab = ref("lang");
+
+const resetSettings = () => {
+  //appStore.reset();
+  //projectStore.reset();
+  //viewerStore.reset();
+};
 </script>
 
 <style>

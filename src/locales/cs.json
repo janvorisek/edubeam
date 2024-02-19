@@ -24,7 +24,13 @@
     "edit": "Upravit",
     "stiffnessMatrix": "Matice tuhosti",
     "addUsingDialog": "Přidat dialogem",
-    "addUsingMouse": "Přidat myší"
+    "addUsingMouse": "Přidat myší",
+    "elements": "Prvky",
+    "shearForce": "Posouvající síla",
+    "reactions": "Reakce",
+    "normalForce": "Normálová síla",
+    "deformedShape": "Deformovaný tvar",
+    "bendingMoment": "Ohybový moment"
   },
   "tabs": {
     "nodes": "Uzly",
@@ -67,6 +73,12 @@
       "pan_button": "Posun zobrazení pomocí",
       "wheel": "Kolečko myši",
       "right_button": "Pravé tlačítko"
+    },
+    "results": {
+      "results": "Výsledky"
+    },
+    "colors": {
+      "colors": "Barvy"
     }
   },
   "elements": {
@@ -106,7 +118,8 @@
     "loads": "Zatížení",
     "nodeLabels": "Popisky uzlů",
     "supports": "Podpory",
-    "more_settings": "Všechna nastavení"
+    "more_settings": "Všechna nastavení",
+    "showReactions": "Reakce"
   },
   "dofs": {
     "bcs": "Podepřené stupně volnosti"

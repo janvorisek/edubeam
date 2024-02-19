@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+import { useViewerStore } from "../store/viewer";
+
+const viewerStore = useViewerStore();
+</script>
+
 <template>
   <defs>
     <marker
@@ -10,7 +16,19 @@
       orient="auto-start-reverse"
       markerUnits="userSpaceOnUse"
     >
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FF8700" />
+      <path d="M 0 0 L 10 5 L 0 10 z" :fill="viewerStore.colors.loads" />
+    </marker>
+    <marker
+      id="arrow_reaction"
+      viewBox="0 0 10 10"
+      refX="5"
+      refY="5"
+      markerWidth="12"
+      markerHeight="12"
+      orient="auto-start-reverse"
+      markerUnits="userSpaceOnUse"
+    >
+      <path d="M 0 0 L 10 5 L 0 10 z" :fill="viewerStore.colors.reactions" />
     </marker>
     <marker
       id="arrow_hover"
@@ -25,6 +43,32 @@
       <path d="M 0 0 L 10 5 L 0 10 z" fill="blue" />
     </marker>
     <marker
+      id="moment_reaction_ccw"
+      viewBox="0 0 20 60"
+      refX="10"
+      refY="60"
+      markerWidth="20"
+      markerHeight="50"
+      overflow="visible"
+      markerUnits="strokeWidth"
+      marker-end="url(#arrow_reaction)"
+    >
+      <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" fill="none" :stroke="viewerStore.colors.reactions" />
+    </marker>
+    <marker
+      id="moment_reaction_cw"
+      viewBox="0 0 20 60"
+      refX="-20"
+      refY="45"
+      markerWidth="20"
+      markerHeight="50"
+      overflow="visible"
+      markerUnits="strokeWidth"
+      marker-end="url(#arrow_reaction)"
+    >
+      <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" fill="none" :stroke="viewerStore.colors.reactions" />
+    </marker>
+    <marker
       id="moment_ccw"
       viewBox="0 0 20 60"
       refX="10"
@@ -35,7 +79,7 @@
       markerUnits="strokeWidth"
       marker-end="url(#arrow)"
     >
-      <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" fill="none" stroke="#FF8700" />
+      <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" fill="none" :stroke="viewerStore.colors.loads" />
     </marker>
     <marker
       id="moment_cw"
@@ -48,7 +92,7 @@
       markerUnits="strokeWidth"
       marker-end="url(#arrow)"
     >
-      <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" fill="none" stroke="#FF8700" />
+      <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" fill="none" :stroke="viewerStore.colors.loads" />
     </marker>
     <marker
       id="moment_ccw_hover"
@@ -86,10 +130,32 @@
       overflow="visible"
       markerUnits="strokeWidth"
     >
-      <polyline points="5,45 10,55 15,45" stroke-width="1" fill="#FF8700" stroke="#FF8700" />
-      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" stroke="#FF8700" />
+      <polyline
+        points="5,45 10,55 15,45"
+        stroke-width="1"
+        :fill="viewerStore.colors.loads"
+        :stroke="viewerStore.colors.loads"
+      />
+      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" :stroke="viewerStore.colors.loads" />
     </marker>
-
+    <marker
+      id="reaction"
+      viewBox="0 0 20 60"
+      refX="10"
+      refY="60"
+      markerWidth="20"
+      markerHeight="50"
+      overflow="visible"
+      markerUnits="strokeWidth"
+    >
+      <polyline
+        points="5,45 10,55 15,45"
+        stroke-width="1"
+        :fill="viewerStore.colors.reactions"
+        :stroke="viewerStore.colors.reactions"
+      />
+      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" :stroke="viewerStore.colors.reactions" />
+    </marker>
     <marker
       id="force_hover"
       viewBox="0 0 20 60"
@@ -114,8 +180,13 @@
       overflow="visible"
       markerUnits="strokeWidth"
     >
-      <polyline points="5,45 10,55 15,45" stroke-width="1" fill="#FF8700" stroke="#FF8700" />
-      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" stroke="#FF8700" />
+      <polyline
+        points="5,45 10,55 15,45"
+        stroke-width="1"
+        :fill="viewerStore.colors.loads"
+        :stroke="viewerStore.colors.loads"
+      />
+      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" :stroke="viewerStore.colors.loads" />
     </marker>
 
     <marker
@@ -128,8 +199,13 @@
       overflow="visible"
       markerUnits="strokeWidth"
     >
-      <polyline points="5,45 10,55 15,45" stroke-width="1" fill="#FF8700" stroke="#FF8700" />
-      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" stroke="#FF8700" />
+      <polyline
+        points="5,45 10,55 15,45"
+        stroke-width="1"
+        :fill="viewerStore.colors.loads"
+        :stroke="viewerStore.colors.loads"
+      />
+      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" :stroke="viewerStore.colors.loads" />
     </marker>
 
     <marker

@@ -1,6 +1,6 @@
 // Utilities
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 
 export const useViewerStore = defineStore(
   "viewer",
@@ -15,6 +15,18 @@ export const useViewerStore = defineStore(
     const showShearForce = ref(false);
     const showBendingMoment = ref(false);
     const showDeformedShape = ref(true);
+    const showReactions = ref(true);
+
+    const colors = reactive({
+      normalForce: "#2222ff", // used
+      shearForce: "#00af00", // used
+      bendingMoment: "#ff2222", // used
+      deformedShape: "#555555", // used
+      loads: "#ff8700", // used
+      nodes: "#000000",
+      elements: "#000000",
+      reactions: "#a020f0", // used
+    });
 
     const showGrid = ref(true);
     const snapToGrid = ref(true);
@@ -24,6 +36,7 @@ export const useViewerStore = defineStore(
     const settingsOpen = ref(true);
 
     return {
+      colors,
       showNodeLabels,
       showLoads,
       showElementLabels,
@@ -32,6 +45,7 @@ export const useViewerStore = defineStore(
       showShearForce,
       showBendingMoment,
       showDeformedShape,
+      showReactions,
 
       showGrid,
       snapToGrid,
@@ -40,6 +54,6 @@ export const useViewerStore = defineStore(
 
       settingsOpen,
     };
-  },
-  { persist: true }
+  }
+  //{ persist: true }
 );

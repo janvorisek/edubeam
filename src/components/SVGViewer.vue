@@ -1126,7 +1126,7 @@ defineExpose({ centerContent, fitContent });
                     :font-size="13 / scale"
                     class="moment-label"
                     filter="url(#textLabel)"
-                    fill="blue"
+                    :fill="viewerStore.colors.normalForce"
                     font-weight="normal"
                     :text-anchor="mv[2] < 0 ? 'end' : 'start'"
                     dominant-baseline="baseline"
@@ -1136,7 +1136,7 @@ defineExpose({ centerContent, fitContent });
                   <text
                     :font-size="13 / scale"
                     class="moment-label"
-                    fill="blue"
+                    :fill="viewerStore.colors.normalForce"
                     font-weight="normal"
                     :text-anchor="mv[2] < 0 ? 'end' : 'start'"
                     dominant-baseline="baseline"
@@ -1171,7 +1171,7 @@ defineExpose({ centerContent, fitContent });
                     :font-size="13 / scale"
                     class="moment-label"
                     filter="url(#textLabel)"
-                    fill="green"
+                    :fill="viewerStore.colors.shearForce"
                     font-weight="normal"
                     :text-anchor="mv[2] < 0 ? 'end' : 'start'"
                     dominant-baseline="baseline"
@@ -1181,7 +1181,7 @@ defineExpose({ centerContent, fitContent });
                   <text
                     :font-size="13 / scale"
                     class="moment-label"
-                    fill="green"
+                    :fill="viewerStore.colors.shearForce"
                     font-weight="normal"
                     :text-anchor="mv[2] < 0 ? 'end' : 'start'"
                     dominant-baseline="baseline"
@@ -1217,7 +1217,7 @@ defineExpose({ centerContent, fitContent });
                     :font-size="13 / scale"
                     class="moment-label"
                     filter="url(#textLabel)"
-                    fill="red"
+                    :fill="viewerStore.colors.bendingMoment"
                     font-weight="normal"
                     :text-anchor="mv[2] < 0 ? 'end' : 'start'"
                     dominant-baseline="baseline"
@@ -1227,7 +1227,7 @@ defineExpose({ centerContent, fitContent });
                   <text
                     :font-size="13 / scale"
                     class="moment-label"
-                    fill="red"
+                    :fill="viewerStore.colors.bendingMoment"
                     font-weight="normal"
                     :text-anchor="mv[2] < 0 ? 'end' : 'start'"
                     dominant-baseline="baseline"
@@ -1358,12 +1358,13 @@ defineExpose({ centerContent, fitContent });
                   !useAppStore().zooming &&
                   isLoaded &&
                   projectStore.solver.loadCases[0].solved &&
+                  viewerStore.showReactions &&
                   isSupported(node, DofID.Dz) &&
                   Math.abs(getReaction(node, DofID.Dz)) > 1e-32
                 "
                 points="0,0 0,0"
                 class="decoration"
-                marker-start="url(#force)"
+                marker-start="url(#reaction)"
                 :transform="`translate(${node.coords[0]} ${node.coords[2]}) rotate(${
                   Math.sign(getReaction(node, DofID.Dz)) >= 0 ? 0 : 180
                 })`"
@@ -1374,11 +1375,12 @@ defineExpose({ centerContent, fitContent });
                   !useAppStore().zooming &&
                   isLoaded &&
                   projectStore.solver.loadCases[0].solved &&
+                  viewerStore.showReactions &&
                   isSupported(node, DofID.Dz) &&
                   Math.abs(getReaction(node, DofID.Dz)) > 1e-32
                 "
                 :font-size="13 / scale"
-                fill="#FF8700"
+                :fill="viewerStore.colors.reactions"
                 font-weight="normal"
                 text-anchor="end"
                 dominant-baseline="baseline"
@@ -1393,12 +1395,13 @@ defineExpose({ centerContent, fitContent });
                   !useAppStore().zooming &&
                   isLoaded &&
                   projectStore.solver.loadCases[0].solved &&
+                  viewerStore.showReactions &&
                   isSupported(node, DofID.Dx) &&
                   Math.abs(getReaction(node, DofID.Dx)) > 1e-32
                 "
                 points="0,0 0,0"
                 class="decoration"
-                marker-start="url(#force)"
+                marker-start="url(#reaction)"
                 :transform="`translate(${node.coords[0]} ${node.coords[2]}) rotate(${
                   -90 * Math.sign(getReaction(node, DofID.Dx))
                 })`"
@@ -1409,11 +1412,12 @@ defineExpose({ centerContent, fitContent });
                   !useAppStore().zooming &&
                   isLoaded &&
                   projectStore.solver.loadCases[0].solved &&
+                  viewerStore.showReactions &&
                   isSupported(node, DofID.Dx) &&
                   Math.abs(getReaction(node, DofID.Dx)) > 1e-32
                 "
                 :font-size="13 / scale"
-                fill="#FF8700"
+                :fill="viewerStore.colors.reactions"
                 font-weight="normal"
                 :text-anchor="getReaction(node, DofID.Dx) > 0 ? 'end' : 'start'"
                 dominant-baseline="baseline"
@@ -1428,12 +1432,13 @@ defineExpose({ centerContent, fitContent });
                   !useAppStore().zooming &&
                   isLoaded &&
                   projectStore.solver.loadCases[0].solved &&
+                  viewerStore.showReactions &&
                   isSupported(node, DofID.Ry) &&
                   Math.abs(getReaction(node, DofID.Ry)) > 1e-32
                 "
                 points="0,0 0,0"
                 class="decoration"
-                :marker-start="`url(#${getReaction(node, DofID.Ry) > 0 ? 'moment_ccw' : 'moment_cw'})`"
+                :marker-start="`url(#${getReaction(node, DofID.Ry) > 0 ? 'moment_reaction_ccw' : 'moment_reaction_cw'})`"
                 :transform="`translate(${node.coords[0]} ${node.coords[2]})`"
               />
 
@@ -1442,11 +1447,12 @@ defineExpose({ centerContent, fitContent });
                   !useAppStore().zooming &&
                   isLoaded &&
                   projectStore.solver.loadCases[0].solved &&
+                  viewerStore.showReactions &&
                   isSupported(node, DofID.Ry) &&
                   Math.abs(getReaction(node, DofID.Ry)) > 1e-32
                 "
                 :font-size="13 / scale"
-                fill="#FF8700"
+                :fill="viewerStore.colors.reactions"
                 font-weight="normal"
                 text-anchor="start"
                 dominant-baseline="baseline"
@@ -1604,6 +1610,13 @@ defineExpose({ centerContent, fitContent });
           >
             <template #label>M<sub>y</sub>&nbsp;(x)</template>
           </v-checkbox>
+          <v-checkbox
+            :label="$t('sideSettings.showReactions')"
+            v-model="useViewerStore().showReactions"
+            hide-details
+            density="compact"
+            class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
+          />
         </div>
 
         <div color="grey-lighten-5" rounded="lg" height="32" class="d-sm-flex bg-grey-lighten-5 elevation-1 rounded">
@@ -1686,7 +1699,7 @@ svg text {
 
 .element-load.load-1d {
   text {
-    fill: #ff8700;
+    fill: v-bind("viewerStore.colors.loads");
   }
   pointer-events: all;
   stroke-linecap: butt;
@@ -1703,7 +1716,7 @@ svg text {
   }
   polygon,
   path {
-    stroke: #ff8700;
+    stroke: v-bind("viewerStore.colors.loads");
     stroke-width: 1px;
     &.handle {
       stroke-width: 12px;
@@ -1754,27 +1767,27 @@ svg text {
     }
   }
   polyline.normal {
-    stroke: #2222ff;
+    stroke: v-bind("viewerStore.colors.normalForce");
     stroke-width: 1px;
-    fill: #2222ff;
+    fill: v-bind("viewerStore.colors.normalForce");
     fill-opacity: 0.1;
     &:hover {
       fill-opacity: 0.2;
     }
   }
   polyline.shear {
-    stroke: #00af00;
+    stroke: v-bind("viewerStore.colors.shearForce");
     stroke-width: 1px;
-    fill: #00af00;
+    fill: v-bind("viewerStore.colors.shearForce");
     fill-opacity: 0.1;
     &:hover {
       fill-opacity: 0.2;
     }
   }
   polyline.moment {
-    stroke: #ff2222;
+    stroke: v-bind("viewerStore.colors.bendingMoment");
     stroke-width: 1px;
-    fill: #ff2222;
+    fill: v-bind("viewerStore.colors.bendingMoment");
     fill-opacity: 0.1;
     &:hover {
       fill-opacity: 0.2;
@@ -1812,7 +1825,7 @@ svg text {
 
 .nodal-load {
   text {
-    fill: #ff8700;
+    fill: v-bind("viewerStore.colors.loads");
   }
   polyline {
     stroke-linecap: square;

@@ -29,7 +29,13 @@
     "edit": "Edit",
     "copy": "Copy",
     "delete": "Delete",
-    "stiffnessMatrix": "Stiffness matrix"
+    "stiffnessMatrix": "Stiffness matrix",
+    "normalForce": "Normal force",
+    "shearForce": "Shear force",
+    "bendingMoment": "Bending moment",
+    "deformedShape": "Deformed shape",
+    "reactions": "Reactions",
+    "elements": "Elements"
   },
   "nodes": {
     "addNode": "Add node",
@@ -99,6 +105,12 @@
       "pan_button": "Pan using",
       "wheel": "Mouse wheel",
       "right_button": "Right button"
+    },
+    "colors": {
+      "colors": "Colors"
+    },
+    "results": {
+      "results": "Results"
     }
   },
   "sideSettings": {
@@ -107,7 +119,8 @@
     "loads": "Loads",
     "nodeLabels": "Node labels",
     "elementLabels": "Element labels",
-    "more_settings": "More settings"
+    "more_settings": "More settings",
+    "showReactions": "Reactions"
   },
   "dofs": {
     "bcs": "Supported DOFs"

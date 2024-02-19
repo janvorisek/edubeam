@@ -115,7 +115,8 @@
   "results": {
     "results": "Results",
     "nodal_results": "Nodal results",
-    "element_results": "Element results"
+    "element_results": "Element results",
+    "end_forces": "End forces"
   },
   "materials": {
     "addMaterial": "Add material",

@@ -79,7 +79,16 @@
     },
     "colors": {
       "colors": "Barvy"
-    }
+    },
+    "viewer_settings": "Nastavení zobrazení",
+    "controls_and_shortcuts": "Ovládání & zkratky",
+    "controls_and_shortcuts_subtitle": "Nastavení klávesnice a myši",
+    "language_and_locale_subtitle": "Nastavení jazyka, lokalizace a jednotek",
+    "viewer_settings_subtitle": "Měřítko, barvy, mřížka a další",
+    "viewer_preview": "Náhled zobrazení",
+    "language_description": "Vyberte preferovaný jazyk uživatelského prostředí.",
+    "units_description": "Vyberte si vámi preferované měrné jednotky.",
+    "reset_settings": "Obnovit výchozí nastavení"
   },
   "elements": {
     "addElement": "Přidat prvek",

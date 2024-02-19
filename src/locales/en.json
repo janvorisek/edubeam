@@ -111,7 +111,16 @@
     },
     "results": {
       "results": "Results"
-    }
+    },
+    "viewer_settings": "Viewer settings",
+    "controls_and_shortcuts": "Controls & Shortcuts",
+    "language_and_locale_subtitle": "Language, localization and unit settings",
+    "viewer_settings_subtitle": "Scale, colors, grid and more",
+    "controls_and_shortcuts_subtitle": "Keyboard and mouse settings",
+    "viewer_preview": "Viewer preview",
+    "language_description": "Select your preferred language for the interface.",
+    "units_description": "Choose your preferred measurement units.",
+    "reset_settings": "Reset settings"
   },
   "sideSettings": {
     "showDeformedShape": "Deformed shape",

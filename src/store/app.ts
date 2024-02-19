@@ -4,7 +4,7 @@ import { reactive, ref, markRaw, type Ref, watch, Raw, Component, computed } fro
 
 import SVGViewer from "../components/SVGViewer.vue";
 // import Results from "../components/Results.vue";
-import Settings from "../components/Settings.vue";
+import Settings from "../components/settings/Settings.vue";
 import { MouseMode } from "@/mouse";
 import { setLocale } from "@/plugins/i18n";
 import { openModal } from "jenesius-vue-modal";
@@ -98,16 +98,19 @@ export const useAppStore = defineStore(
 
     const tabs: Ref<
       {
+        id: string;
         title: string;
         component: Raw<Component>;
-        props: unknown;
+        props: { id?: string };
         closable: boolean;
       }[]
     > = ref([
-      { title: "tabView.viewer", component: markRaw(SVGViewer), props: {}, closable: false },
+      { title: "tabView.viewer", component: markRaw(SVGViewer), props: { id: "viewer" }, closable: false },
       //{ title: "tabView.results", component: markRaw(Results), props: {}, closable: true },
-      { title: "tabView.settings", component: markRaw(Settings), props: {}, closable: true },
+      { title: "tabView.settings", component: markRaw(Settings), props: { id: "settings" }, closable: true },
     ]);
+
+    const openedTab = computed(() => tabs.value[tab.value] || null);
 
     const openSettings = () => {
       openModal(SettingsModal);
@@ -136,6 +139,7 @@ export const useAppStore = defineStore(
       dialogs,
       zooming,
       tab,
+      openedTab,
       tabs,
       bottomBarTab,
       mouseMode,

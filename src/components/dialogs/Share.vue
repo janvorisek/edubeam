@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { closeModal } from "jenesius-vue-modal";
-import Settings from "../Settings.vue";
+import Settings from "../settings/Settings.vue";
 import { serializeModel } from "@/utils";
 import { useProjectStore } from "@/store/project";
 import { onMounted } from "vue";

@@ -1,5 +1,13 @@
 <template>
-  <v-dialog v-model="open" max-width="1080">
+  <v-dialog v-model="open" max-width="1150">
+    <v-btn
+      icon="mdi-close"
+      size="small"
+      variant="text"
+      @click.prevent.stop="closeModal"
+      small
+      style="position: absolute; right: 0; z-index: 10"
+    />
     <v-card>
       <Settings />
     </v-card>
@@ -9,7 +17,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { closeModal } from "jenesius-vue-modal";
-import Settings from "../Settings.vue";
+import Settings from "../settings/Settings.vue";
 
 const open = ref(true);
 </script>

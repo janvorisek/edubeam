@@ -479,6 +479,7 @@
                   "
                   class="inline-edit"
                 />
+                <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Force)"></div>
               </div>
               <div class="inline-edit-group mr-2" style="min-width: 64px">
                 <span class="input-before">F<sub>z</sub></span>
@@ -496,6 +497,7 @@
                   "
                   class="inline-edit"
                 />
+                <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Force)"></div>
               </div>
               <div class="inline-edit-group" style="min-width: 64px">
                 <span class="input-before">M<sub>y</sub></span>
@@ -513,6 +515,7 @@
                   "
                   class="inline-edit"
                 />
+                <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Force)"></div>
               </div>
             </div>
 
@@ -527,6 +530,7 @@
                   "
                   class="inline-edit"
                 />
+                <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
               </div>
               <div class="inline-edit-group mr-2" style="min-width: 64px">
                 <span class="input-before">D<sub>z</sub></span>
@@ -538,6 +542,7 @@
                   "
                   class="inline-edit"
                 />
+                <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
               </div>
               <div class="inline-edit-group" style="min-width: 64px">
                 <span class="input-before">R<sub>y</sub></span>
@@ -549,6 +554,7 @@
                   "
                   class="inline-edit"
                 />
+                <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Angle)"></div>
               </div>
             </div>
 
@@ -569,6 +575,7 @@
                   "
                   class="inline-edit"
                 />
+                <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.ForceDistance)"></div>
               </div>
               <div class="inline-edit-group mr-2" style="min-width: 64px">
                 <span class="input-before">f<sub>z</sub></span>
@@ -586,6 +593,7 @@
                   "
                   class="inline-edit"
                 />
+                <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.ForceDistance)"></div>
               </div>
               <div class="inline-edit-group">
                 <span class="input-before">LCS</span>
@@ -890,90 +898,190 @@
         :reverse-transition="false"
       >
         <div class="border-b border-t">
-          <v-btn size="small" variant="flat" color="secondary" :rounded="0">
+          <v-btn
+            size="small"
+            variant="flat"
+            color="secondary"
+            :rounded="0"
+            @click="layoutStore.bottomBarResultsTab = 'nodes'"
+          >
             <v-icon small>mdi-square-medium-outline</v-icon> {{ $t("results.nodal_results") }}
           </v-btn>
-          <v-btn size="small" variant="flat" color="secondary" style="border-left: 1px solid #ccc" :rounded="0">
+          <v-btn
+            size="small"
+            variant="flat"
+            color="secondary"
+            style="border-left: 1px solid #ccc"
+            :rounded="0"
+            @click="layoutStore.bottomBarResultsTab = 'elements'"
+          >
             <v-icon small>mdi-vector-line</v-icon> {{ $t("results.element_results") }}
           </v-btn>
         </div>
-        <v-data-table
-          ref="table-results"
-          :headers="headers.results"
-          :items="nodes"
-          density="compact"
-          :height="props.height - 36 - 30"
-          fixed-header
-          :items-per-page="-1"
-          disable-pagination
-          hide-default-footer
-          mobile-breakpoint="0"
-          item-key="label"
-        >
-          <template #headers="{ columns, isSorted, getSortIcon, toggleSort }">
-            <tr>
-              <template v-for="column in columns" :key="column.key">
-                <th
-                  :class="{ 'v-data-table__th--sorted': isSorted(column) }"
-                  class="v-data-table__td v-data-table-column--align-start v-data-table__th v-data-table__th--sortable"
-                >
-                  <div class="v-data-table-header__content">
-                    <span class="mr-2 cursor-pointer" @click="() => toggleSort(column)">{{
-                      capitalize($t(column.title))
-                    }}</span>
-                    <v-icon
-                      v-if="column.sortable"
-                      :icon="getSortIcon(column)"
-                      class="v-data-table-header__sort-icon"
-                    ></v-icon>
-                    <v-icon v-if="column.removable" icon="$close" @click="() => remove(column.key)"></v-icon>
-                  </div>
-                </th>
+        <v-window v-model="layoutStore.bottomBarResultsTab">
+          <v-window-item value="nodes">
+            <v-data-table
+              ref="table-results"
+              :headers="headers.results"
+              :items="nodes"
+              density="compact"
+              :height="props.height - 36 - 30"
+              fixed-header
+              :items-per-page="-1"
+              disable-pagination
+              hide-default-footer
+              mobile-breakpoint="0"
+              item-key="label"
+            >
+              <template #headers="{ columns, isSorted, getSortIcon, toggleSort }">
+                <tr>
+                  <template v-for="column in columns" :key="column.key">
+                    <th
+                      :class="{ 'v-data-table__th--sorted': isSorted(column) }"
+                      class="v-data-table__td v-data-table-column--align-start v-data-table__th v-data-table__th--sortable"
+                    >
+                      <div class="v-data-table-header__content">
+                        <span class="mr-2 cursor-pointer" @click="() => toggleSort(column)">{{
+                          capitalize($t(column.title))
+                        }}</span>
+                        <v-icon
+                          v-if="column.sortable"
+                          :icon="getSortIcon(column)"
+                          class="v-data-table-header__sort-icon"
+                        ></v-icon>
+                        <v-icon v-if="column.removable" icon="$close" @click="() => remove(column.key)"></v-icon>
+                      </div>
+                    </th>
+                  </template>
+                </tr>
               </template>
-            </tr>
-          </template>
 
-          <template #item.coords="{ item }">
-            <div class="d-flex text-right" style="font-variant-numeric: tabular-nums">
-              <div class="inline-edit-group mr-2">
-                <label class="input-before">D<sub>x</sub></label>
-                <div
-                  v-if="
-                    projStore.solver.loadCases[0].solved &&
-                    projStore.beams.some((element) => element.nodes.includes(item.label))
-                  "
-                  class="inline-edit fw pl-1"
-                  v-html="formatExpValueAsHTML(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dx]), 4)"
-                />
-                <div class="inline-edit fw pl-1" v-else v-html="formatExpValueAsHTML(0, 4)"></div>
-              </div>
-              <div class="inline-edit-group mr-2">
-                <label class="input-before">D<sub>z</sub></label>
-                <div
-                  v-if="
-                    projStore.solver.loadCases[0].solved &&
-                    projStore.beams.some((element) => element.nodes.includes(item.label))
-                  "
-                  class="inline-edit fw pl-1"
-                  v-html="formatExpValueAsHTML(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dz]), 4)"
-                />
-                <div class="inline-edit fw pl-1" v-else v-html="formatExpValueAsHTML(0, 4)"></div>
-              </div>
-              <div class="inline-edit-group mr-2">
-                <label class="input-before">R<sub>y</sub></label>
-                <div
-                  v-if="
-                    projStore.solver.loadCases[0].solved &&
-                    projStore.beams.some((element) => element.nodes.includes(item.label))
-                  "
-                  class="inline-edit fw pl-1"
-                  v-html="formatExpValueAsHTML(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Ry]), 4)"
-                />
-                <div class="inline-edit fw pl-1" v-else v-html="formatExpValueAsHTML(0, 4)"></div>
-              </div>
-            </div>
-          </template>
-        </v-data-table>
+              <template #item.coords="{ item }">
+                <div class="d-flex text-right" style="font-variant-numeric: tabular-nums">
+                  <div class="inline-edit-group mr-2">
+                    <label class="input-before">D<sub>x</sub></label>
+                    <div
+                      v-if="
+                        projStore.solver.loadCases[0].solved &&
+                        projStore.beams.some((element) => element.nodes.includes(item.label))
+                      "
+                      class="inline-edit fw pl-1"
+                      v-html="
+                        formatExpValueAsHTML(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dx]), 4)
+                      "
+                    />
+                    <div class="inline-edit fw pl-1" v-else v-html="formatExpValueAsHTML(0, 4)"></div>
+                    <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
+                  </div>
+                  <div class="inline-edit-group mr-2">
+                    <label class="input-before">D<sub>z</sub></label>
+                    <div
+                      v-if="
+                        projStore.solver.loadCases[0].solved &&
+                        projStore.beams.some((element) => element.nodes.includes(item.label))
+                      "
+                      class="inline-edit fw pl-1"
+                      v-html="
+                        formatExpValueAsHTML(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dz]), 4)
+                      "
+                    />
+                    <div class="inline-edit fw pl-1" v-else v-html="formatExpValueAsHTML(0, 4)"></div>
+                    <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
+                  </div>
+                  <div class="inline-edit-group mr-2">
+                    <label class="input-before">R<sub>y</sub></label>
+                    <div
+                      v-if="
+                        projStore.solver.loadCases[0].solved &&
+                        projStore.beams.some((element) => element.nodes.includes(item.label))
+                      "
+                      class="inline-edit fw pl-1"
+                      v-html="
+                        formatExpValueAsHTML(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Ry]), 4)
+                      "
+                    />
+                    <div class="inline-edit fw pl-1" v-else v-html="formatExpValueAsHTML(0, 4)"></div>
+                    <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
+                  </div>
+                </div>
+              </template>
+            </v-data-table>
+          </v-window-item>
+          <v-window-item value="elements">
+            <v-data-table
+              ref="table-results2"
+              :headers="headers.results2"
+              :items="elements"
+              density="compact"
+              :height="props.height - 36 - 30"
+              fixed-header
+              :items-per-page="-1"
+              disable-pagination
+              hide-default-footer
+              mobile-breakpoint="0"
+              item-key="label"
+            >
+              <template #headers="{ columns, isSorted, getSortIcon, toggleSort }">
+                <tr>
+                  <template v-for="column in columns" :key="column.key">
+                    <th
+                      :class="{ 'v-data-table__th--sorted': isSorted(column) }"
+                      class="v-data-table__td v-data-table-column--align-start v-data-table__th v-data-table__th--sortable"
+                    >
+                      <div class="v-data-table-header__content">
+                        <div class="mr-2 cursor-pointer" @click="() => toggleSort(column)">
+                          {{ capitalize($t(column.title)) }}
+                          <span
+                            class="font-weight-regular"
+                            v-if="column.units"
+                            v-html="`[${formatMeasureAsHTML(appStore.units[column.units])}]`"
+                          ></span>
+                        </div>
+                        <v-icon
+                          v-if="column.sortable"
+                          :icon="getSortIcon(column)"
+                          class="v-data-table-header__sort-icon"
+                        ></v-icon>
+                        <v-icon v-if="column.removable" icon="$close" @click="() => remove(column.key)"></v-icon>
+                      </div>
+                    </th>
+                  </template>
+                </tr>
+              </template>
+              <template #item.end_forces="{ item }">
+                <div class="d-flex" style="font-variant-numeric: tabular-nums">
+                  <div
+                    class="inline-edit-group mr-2"
+                    v-for="(f, i) in item
+                      .computeEndForces(useProjectStore().solver.loadCases[0])
+                      .map((v) => appStore.convertForce(v))"
+                    :key="i"
+                  >
+                    <label class="input-before">
+                      {{ nameBeamForce(i) }}<sub>{{ i < 3 ? "12" : "21" }}</sub>
+                    </label>
+                    <div
+                      v-if="projStore.solver.loadCases[0].solved"
+                      class="inline-edit fw pl-1"
+                      v-html="formatExpValueAsHTML(f.value, 4)"
+                    />
+                    <div class="inline-edit fw pl-1" v-else>-</div>
+                    <div
+                      class="input-after"
+                      v-if="nameBeamForce(i) !== 'M'"
+                      v-html="formatMeasureAsHTML(appStore.units.Force)"
+                    ></div>
+                    <div
+                      class="input-after"
+                      v-else
+                      v-html="formatMeasureAsHTML(appStore.units.Force) + formatMeasureAsHTML(appStore.units.Length)"
+                    ></div>
+                  </div>
+                </div>
+              </template>
+            </v-data-table>
+          </v-window-item>
+        </v-window>
       </v-window-item>
     </v-window>
   </div>
@@ -1027,6 +1135,7 @@ import AddNodeDialog from "./dialogs/AddNode.vue";
 
 import { useLayoutStore } from "@/store/layout";
 import StiffnessMatrix from "@/components/StiffnessMatrix.vue";
+import { nameBeamForce } from "../utils";
 
 const appStore = useAppStore();
 const projStore = useProjectStore();
@@ -1314,7 +1423,7 @@ const headers = reactive({
       title: "common.components",
       units: "Force",
       key: "load.values",
-      width: 320,
+      width: 360,
     },
     {
       title: "common.actions",
@@ -1406,6 +1515,18 @@ const headers = reactive({
     {
       title: "results.results",
       key: "coords",
+      sortable: false,
+    },
+  ],
+  results2: [
+    {
+      title: "common.element",
+      key: "label",
+      width: 100,
+    },
+    {
+      title: "results.end_forces",
+      key: "end_forces",
       sortable: false,
     },
   ],

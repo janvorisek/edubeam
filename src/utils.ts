@@ -508,3 +508,13 @@ export const deletePrescribedDisplacement = (load: BeamElementUniformEdgeLoad, i
   useProjectStore().solver.loadCases[0].prescribedBC.splice(id, 1);
   solve();
 };
+
+export const nameBeamForce = (dof: number) => {
+  if (dof === 0) return "X";
+  if (dof === 1) return "Z";
+  if (dof === 2) return "M";
+  if (dof === 3) return "X";
+  if (dof === 4) return "Z";
+  if (dof === 5) return "M";
+  return "";
+};

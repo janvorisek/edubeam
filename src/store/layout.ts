@@ -29,10 +29,13 @@ export const useLayoutStore = defineStore(
       return id;
     };
 
+    const bottomBarResultsTab = ref<"nodes" | "elements">("nodes");
+
     return {
       widgets,
       openWidget,
       removeWidget,
+      bottomBarResultsTab,
     };
   },
   {

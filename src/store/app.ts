@@ -1,6 +1,6 @@
 // Utilities
 import { defineStore } from "pinia";
-import { reactive, ref, markRaw, type Ref, watch, Raw, Component } from "vue";
+import { reactive, ref, markRaw, type Ref, watch, Raw, Component, computed } from "vue";
 
 import SVGViewer from "../components/SVGViewer.vue";
 // import Results from "../components/Results.vue";
@@ -30,6 +30,8 @@ export const useAppStore = defineStore(
       Force: "kN",
       Pressure: "MPa",
       ThermalExpansion: "1/K",
+      Angle: "rad",
+      ForceDistance: computed(() => `${units.Force}/${units.Length}`),
     });
 
     let _convertLength = Qty.swiftConverter("m", units.Length);

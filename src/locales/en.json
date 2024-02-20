@@ -245,7 +245,13 @@
     "resetSettings": {
       "title": "Reset settings?",
       "message": "Are you sure you want to reset all settings to default? This action cannot be undone."
-    }
+    },
+    "splitElementAndPlaceNode": {
+      "title": "Node Placement Confirmation",
+      "message": "<p>It seems you're placing a node on the beam {label}.</p><p class=\"mt-3\">Would you like to split the element and connect the node, or place the node unconnected onto the structure?</p>",
+      "split": "Connect to structure"
+    },
+    "placeIndividualNode": "Place individual node"
   },
   "selection": {
     "node": "Node",

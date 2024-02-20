@@ -243,7 +243,13 @@
     "resetSettings": {
       "message": "Opravdu chcete obnovit všechna výchozí nastavení? Tuto akci nelze vrátit zpět.",
       "title": "Obnovit výchozí nastavení?"
-    }
+    },
+    "splitElementAndPlaceNode": {
+      "message": "<p>Vypadá to, že umisťujete uzel na nosník {label}.</p><p class=\"mt-3\">Chcete prvek rozdělit a uzel připojit, nebo umístit uzel nepřipojený na konstrukci?</p>",
+      "title": "Potvrdit umístění uzlu",
+      "split": "Připojit ke konstrukci"
+    },
+    "placeIndividualNode": "Umístit samostatný uzel"
   },
   "selection": {
     "element": "Prvek",

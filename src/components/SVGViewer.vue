@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { openModal } from "jenesius-vue-modal";
+import { closeModal, openModal } from "jenesius-vue-modal";
 import SvgPanZoom from "./SVGPanZoom.vue";
 import SvgGrid from "./SVGGrid.vue";
 import SvgViewerDefs from "./SVGViewerDefs.vue";
@@ -10,6 +10,7 @@ import { useAppStore } from "@/store/app";
 
 import AddElementDialog from "./dialogs/AddElement.vue";
 import AddNodeDialog from "./dialogs/AddNode.vue";
+import Confirmation from "./dialogs/Confirmation.vue";
 
 import {
   formatNode,
@@ -575,9 +576,112 @@ const onMouseDown = (e: PointerEvent) => {
 
     if (appStore.mouseMode === MouseMode.ADD_NODE) {
       mouseStartX = -9999;
-      projectStore.solver.loadCases[0].solved = false;
-      const newNodeId = projectStore.solver.domain.nodes.size + 1;
+
+      let newNodeId = projectStore.solver.domain.nodes.size + 1;
+
+      while (projectStore.solver.domain.nodes.has(newNodeId.toString())) {
+        newNodeId++;
+      }
+
+      // Check whether the node is being placed onto some of the existing elements
+      // If so, we need to ask the user if they want split the existing element or place individual node
+      for (const [label, el] of projectStore.solver.domain.elements) {
+        const n1 = projectStore.solver.domain.nodes.get(el.nodes[0])!;
+        const n2 = projectStore.solver.domain.nodes.get(el.nodes[1])!;
+
+        const dist = distanceToLineSegment(
+          { x: mouseXReal.value, y: mouseYReal.value },
+          { x: n1.coords[0], y: n1.coords[2] },
+          { x: n2.coords[0], y: n2.coords[2] }
+        );
+
+        if (dist < 0.1) {
+          openModal(Confirmation, {
+            title: t("confirmation.splitElementAndPlaceNode.title"),
+            message: t("confirmation.splitElementAndPlaceNode.message", { label: el.label }),
+            actions: [
+              {
+                label: t("confirmation.splitElementAndPlaceNode.split"),
+                color: "green darken-1",
+                action: () => {
+                  projectStore.solver.loadCases[0].solved = false;
+
+                  // Create the new node
+                  projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
+
+                  const prevHinges = el.hinges;
+
+                  // Add two new elements
+                  projectStore.solver.domain.createBeam2D(el.label + "a", [el.nodes[0], newNodeId], el.mat, el.cs, [
+                    prevHinges[0],
+                    false,
+                  ]);
+
+                  projectStore.solver.domain.createBeam2D(el.label + "b", [newNodeId, el.nodes[1]], el.mat, el.cs, [
+                    false,
+                    prevHinges[1],
+                  ]);
+
+                  // Move old load to new elements
+                  for (const loadCase of projectStore.solver.loadCases) {
+                    loadCase.solved = false;
+                    for (let i = loadCase.elementLoadList.length - 1; i >= 0; i--) {
+                      if (loadCase.elementLoadList[i].target === el.label) {
+                        //loadCase.elementLoadList.splice(i, 1);
+
+                        loadCase.elementLoadList[i].target = el.label + "a";
+                        loadCase.createBeamElementUniformEdgeLoad(
+                          el.label + "b",
+                          loadCase.elementLoadList[i].values,
+                          loadCase.elementLoadList[i].lcs
+                        );
+                      }
+                    }
+                  }
+
+                  // Remove old element
+                  projectStore.solver.domain.elements.delete(el.label);
+
+                  appStore.mouseMode = MouseMode.NONE;
+                  solve();
+                  closeModal();
+                },
+              },
+              {
+                label: t("confirmation.placeIndividualNode"),
+                color: "blue darken-1",
+                action: () => {
+                  projectStore.solver.loadCases[0].solved = false;
+
+                  // Just add the node, its up to the user to connect it wherever he wants to
+                  projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
+
+                  appStore.mouseMode = MouseMode.NONE;
+                  solve();
+                  closeModal();
+                },
+              },
+              {
+                label: t("dialogs.common.cancel"),
+                color: "red darken-1",
+                action: () => {
+                  closeModal();
+                },
+              },
+            ],
+            minWidth: 480,
+          });
+
+          e.stopPropagation();
+          e.preventDefault();
+          return;
+        }
+      }
+
+      // No existing element was found, just add the node
       projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
+
+      appStore.mouseMode = MouseMode.NONE;
       solve();
       return;
     }
@@ -616,6 +720,17 @@ const onMouseDown = (e: PointerEvent) => {
 interface Point {
   x: number;
   y: number;
+}
+
+function distanceToLineSegment(point: Point, lineStart: Point, lineEnd: Point): number {
+  const lengthSquared = (v: Point) => v.x * v.x + v.y * v.y;
+  const dot = (v: Point, w: Point) => v.x * w.x + v.y * w.y;
+  const sub = (v: Point, w: Point) => ({ x: v.x - w.x, y: v.y - w.y });
+  const l2 = lengthSquared(sub(lineStart, lineEnd));
+  if (l2 === 0) return Math.sqrt(lengthSquared(sub(point, lineStart))); // Line is a point.
+  const t = Math.max(0, Math.min(1, dot(sub(point, lineStart), sub(lineEnd, lineStart)) / l2));
+  const projection = { x: lineStart.x + t * (lineEnd.x - lineStart.x), y: lineStart.y + t * (lineEnd.y - lineStart.y) };
+  return Math.sqrt(lengthSquared(sub(point, projection)));
 }
 
 const isIntersecting = (lineStart: Point, lineEnd: Point, rectStart: Point, rectEnd: Point): boolean => {

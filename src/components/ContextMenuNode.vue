@@ -32,14 +32,7 @@ const node = computed(() => {
         <div class="pr-2"><v-icon size="16" icon="mdi-triangle-outline" /></div>
       </template>
       {{ $t("nodes.defineSupports") }}
-      <v-menu
-        activator="parent"
-        open-on-hover
-        open-on-click
-        min-width="150"
-        location="end"
-        :close-on-content-click="false"
-      >
+      <v-menu activator="parent" open-on-click min-width="150" location="end" :close-on-content-click="false">
         <v-list density="compact" class="py-0">
           <v-row no-gutters class="px-1">
             <v-col>

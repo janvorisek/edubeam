@@ -89,7 +89,11 @@
     "viewer_preview": "Náhled zobrazení",
     "language_description": "Vyberte preferovaný jazyk uživatelského prostředí.",
     "units_description": "Vyberte si vámi preferované měrné jednotky.",
-    "reset_settings": "Obnovit výchozí nastavení"
+    "reset_settings": "Obnovit výchozí nastavení",
+    "sizes": {
+      "sizes": "Velikost",
+      "supportSize": "Velikost podpor"
+    }
   },
   "elements": {
     "addElement": "Přidat prvek",

@@ -121,7 +121,11 @@
     "viewer_preview": "Viewer preview",
     "language_description": "Select your preferred language for the interface.",
     "units_description": "Choose your preferred measurement units.",
-    "reset_settings": "Reset settings"
+    "reset_settings": "Reset settings",
+    "sizes": {
+      "sizes": "Sizes",
+      "supportSize": "Support size"
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Deformed shape",

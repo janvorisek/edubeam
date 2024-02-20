@@ -213,9 +213,8 @@ const viewerStore = useViewerStore();
       viewBox="-20 -10 20 70"
       refX="0"
       refY="24.5"
-      markerWidth="40"
-      markerHeight="80"
-      markerUnits="strokeWidth"
+      :markerWidth="viewerStore.supportSize * 20"
+      :markerHeight="viewerStore.supportSize * 80"
       orient="auto"
     >
       <line y1="6" x1="0" y2="44" x2="0" stroke-width="1" stroke="black" />
@@ -237,8 +236,8 @@ const viewerStore = useViewerStore();
       viewBox="0 0 20 20"
       refX="10"
       refY="0"
-      markerWidth="20"
-      markerHeight="20"
+      :markerWidth="viewerStore.supportSize * 20"
+      :markerHeight="viewerStore.supportSize * 20"
       overflow="visible"
       markerUnits="strokeWidth"
     >
@@ -250,8 +249,8 @@ const viewerStore = useViewerStore();
       viewBox="0 0 20 20"
       refX="10"
       refY="0"
-      markerWidth="20"
-      markerHeight="20"
+      :markerWidth="viewerStore.supportSize * 20"
+      :markerHeight="viewerStore.supportSize * 20"
       overflow="visible"
       markerUnits="strokeWidth"
     >
@@ -264,8 +263,8 @@ const viewerStore = useViewerStore();
       viewBox="0 0 20 20"
       refX="0"
       refY="10"
-      markerWidth="20"
-      markerHeight="20"
+      :markerWidth="viewerStore.supportSize * 20"
+      :markerHeight="viewerStore.supportSize * 20"
       overflow="visible"
       markerUnits="strokeWidth"
     >

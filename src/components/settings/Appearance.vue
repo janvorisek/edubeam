@@ -24,23 +24,26 @@
 
       <h3 class="mb-2">{{ $t("settings.grid") }}</h3>
 
-      <v-checkbox
-        class="mt-0"
-        :label="$t('settings.show_grid')"
-        v-model="viewerStore.showGrid"
-        hide-details="auto"
-        density="compact"
-      />
-
-      <h4 class="mb-1 mt-3">{{ $t("settings.snap_to_grid") }}</h4>
-
-      <v-checkbox
-        class="mt-0"
-        :label="$t('settings.snap_to_grid')"
-        v-model="viewerStore.snapToGrid"
-        hide-details="auto"
-        density="compact"
-      />
+      <v-row>
+        <v-col>
+          <v-checkbox
+            class="mt-0"
+            :label="$t('settings.show_grid')"
+            v-model="viewerStore.showGrid"
+            hide-details="auto"
+            density="compact"
+          />
+        </v-col>
+        <v-col>
+          <v-checkbox
+            class="mt-0"
+            :label="$t('settings.snap_to_grid')"
+            v-model="viewerStore.snapToGrid"
+            hide-details="auto"
+            density="compact"
+          />
+        </v-col>
+      </v-row>
 
       <v-text-field
         :label="$t('settings.grid_snap_step')"
@@ -52,21 +55,18 @@
       />
     </div>
     <div>
-      <h3 class="mb-2">{{ $t("settings.results.results") }}</h3>
+      <h3 class="mb-2">{{ $t("settings.sizes.sizes") }}</h3>
 
-      <h4 class="mb-1 mt-2">{{ $t("settings.results_scale") }}</h4>
-
-      <v-text-field
-        :label="$t('settings.results_scale')"
-        v-model.number="projectStore.resultsScalePx"
-        hide-details="auto"
-        type="number"
-        step="10"
-        min="0"
-        suffix="px"
-      />
-
-      <v-slider v-model="projectStore.resultsScalePx" step="1" max="120"></v-slider>
+      <v-row>
+        <v-col>
+          <h4 class="mb-1">{{ $t("settings.results_scale") }}</h4>
+          <v-slider v-model="projectStore.resultsScalePx" step="1" max="120" thumb-label></v-slider>
+        </v-col>
+        <v-col>
+          <h4 class="mb-1">{{ $t("settings.sizes.supportSize") }}</h4>
+          <v-slider v-model="viewerStore.supportSize" step="0.1" max="1.5" min="0.5" thumb-label></v-slider>
+        </v-col>
+      </v-row>
 
       <h3 class="mb-2">{{ $t("settings.colors.colors") }}</h3>
 

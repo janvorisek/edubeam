@@ -46,6 +46,8 @@ const { t } = useI18n();
 
 import ContextMenuElement from "./ContextMenuElement.vue";
 import ContextMenuNode from "./ContextMenuNode.vue";
+import ContextMenuElementLoad from "./ContextMenuElementLoad.vue";
+import ContextMenuNodalLoad from "./ContextMenuNodalLoad.vue";
 
 import { MouseMode } from "@/mouse";
 import { formatMeasureAsHTML } from "../SVGUtils";
@@ -429,13 +431,12 @@ const onElementClick = (e: MouseEvent) => {
   projectStore.selection2.nodes = [];
 };
 
-const onElementLoadClick = (e: MouseEvent) => {
+const onElementLoadClick = (e: MouseEvent, index: number) => {
   if (hasMoved(e)) return;
 
   appStore.bottomBarTab = 2;
 
-  /*const target = e.target as HTMLElement;
-  const index = target.getAttribute("data-element-id") || "-1";
+  const target = e.target as HTMLElement;
 
   let nx = target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 - 100;
 
@@ -447,30 +448,29 @@ const onElementLoadClick = (e: MouseEvent) => {
   useProjectStore().selection.x = nx;
   useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
 
-  projectStore.selection2.elements = [useProjectStore().selection.label];
-  projectStore.selection2.nodes = [];*/
+  //projectStore.selection2.elements = [useProjectStore().selection.label];
+  //projectStore.selection2.nodes = [];
 };
 
-const onNodalLoadClick = (e: MouseEvent) => {
+const onNodalLoadClick = (e: MouseEvent, index: number) => {
   if (hasMoved(e)) return;
 
   appStore.bottomBarTab = 2;
 
-  /*const target = e.target as HTMLElement;
-  const index = target.getAttribute("data-element-id") || "-1";
+  const target = e.target as HTMLElement;
 
   let nx = target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 - 100;
 
   if (nx < 0) nx = 24;
   if (nx > window.innerWidth - 200 - 24) nx = window.innerWidth - 200 - 24;
 
-  useProjectStore().selection.type = "element-load";
+  useProjectStore().selection.type = "nodal-load";
   useProjectStore().selection.label = index;
   useProjectStore().selection.x = nx;
   useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
 
-  projectStore.selection2.elements = [useProjectStore().selection.label];
-  projectStore.selection2.nodes = [];*/
+  //projectStore.selection2.elements = [useProjectStore().selection.label];
+  //projectStore.selection2.nodes = [];
 };
 
 let drgNode = null;
@@ -944,9 +944,10 @@ defineExpose({ centerContent, fitContent });
                 class="element-load load-1d"
                 @mousemove="onElementLoadHover($event, eload)"
                 @mouseleave="hideTooltip"
-                @pointerup="onElementLoadClick"
+                @pointerup="onElementLoadClick($event, index)"
                 v-for="(eload, index) in useProjectStore().solver.loadCases[0].elementLoadList"
                 :key="`element-load-${index}`"
+                :data-element-load-id="index"
               >
                 <g v-if="eload.values[0] !== 0">
                   <polyline
@@ -1007,7 +1008,7 @@ defineExpose({ centerContent, fitContent });
                 class="nodal-load"
                 @mousemove="onNodalLoadHover($event, nload)"
                 @mouseleave="hideTooltip"
-                @pointerup="onNodalLoadClick"
+                @pointerup="onNodalLoadClick($event, index)"
                 v-for="(nload, index) in useProjectStore().solver.loadCases[0].nodalLoadList"
                 :key="`nodal-load-${index}`"
               >
@@ -1564,6 +1565,8 @@ defineExpose({ centerContent, fitContent });
       <div>
         <ContextMenuNode v-if="projectStore.selection.type === 'node'"></ContextMenuNode>
         <ContextMenuElement v-if="projectStore.selection.type === 'element'"></ContextMenuElement>
+        <ContextMenuElementLoad v-if="projectStore.selection.type === 'element-load'"></ContextMenuElementLoad>
+        <ContextMenuNodalLoad v-if="projectStore.selection.type === 'nodal-load'"></ContextMenuNodalLoad>
         <!-- <ContextMenuNodalLoad v-if="projectStore.selection.type === 'nodal-load'"></ContextMenuNodalLoad>
         <ContextMenuElementLoad v-if="projectStore.selection.type === 'element-load'"></ContextMenuElementLoad> -->
       </div>

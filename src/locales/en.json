@@ -57,7 +57,8 @@
     "prescribedDisplacement": "Prescribed displacement",
     "addPrescribedDisplacement": "Prescribe displacement",
     "UDL": "UDL",
-    "forceMoment": "Force/Moment"
+    "forceMoment": "Force/Moment",
+    "editLoad": "Edit load"
   },
   "tabs": {
     "nodes": "Nodes",

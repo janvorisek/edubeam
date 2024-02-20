@@ -11,7 +11,9 @@
         <v-btn v-for="action in acs" :key="action.label" :color="action.color" @click="action.action">
           {{ action.label }}
         </v-btn>
-        <v-btn v-if="props.cancel" color="red darken-1" @click="cancel">{{ $t("dialogs.common.cancel") }}</v-btn>
+        <v-btn v-if="props.cancel || acs.length === 0" color="red darken-1" @click="cancel">{{
+          $t("dialogs.common.cancel")
+        }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

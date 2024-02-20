@@ -108,7 +108,8 @@
     "prescribedDisplacement": "Předepsané posunutí",
     "addLoad": "Přidat zatížení",
     "addPrescribedDisplacement": "Předepsat posunutí",
-    "forceMoment": "Síla/moment"
+    "forceMoment": "Síla/moment",
+    "editLoad": "Upravit zatížení"
   },
   "material": {
     "alphaT": "α_T",
@@ -243,5 +244,11 @@
       "message": "Opravdu chcete obnovit všechna výchozí nastavení? Tuto akci nelze vrátit zpět.",
       "title": "Obnovit výchozí nastavení?"
     }
+  },
+  "selection": {
+    "element": "Prvek",
+    "node": "Uzel",
+    "nodal-load": "Uzlové zatížení",
+    "element-load": "Prvkové zatížení"
   }
 }

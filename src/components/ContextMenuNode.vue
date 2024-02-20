@@ -14,6 +14,19 @@ const node = computed(() => {
 
 <template>
   <v-list density="compact" class="py-0">
+    <v-list-item
+      link
+      class="text-body-2"
+      @click="
+        openModal(AddNodalLoadDialog, { label: projectStore.selection.label });
+        projectStore.selection.type = null;
+      "
+    >
+      <template #prepend>
+        <div class="pr-2"><v-icon size="16" icon="mdi-arrow-down-thin" /></div>
+      </template>
+      {{ $t("loads.addLoad") }}
+    </v-list-item>
     <v-list-item link class="text-body-2">
       <template #prepend>
         <div class="pr-2"><v-icon size="16" icon="mdi-triangle-outline" /></div>
@@ -59,19 +72,6 @@ const node = computed(() => {
           </v-row>
         </v-list>
       </v-menu>
-    </v-list-item>
-    <v-list-item
-      link
-      class="text-body-2"
-      @click="
-        openModal(AddNodalLoadDialog, { label: projectStore.selection.label });
-        projectStore.selection.type = null;
-      "
-    >
-      <template #prepend>
-        <div class="pr-2"><v-icon size="16" icon="mdi-arrow-down-thin" /></div>
-      </template>
-      {{ $t("loads.addLoad") }}
     </v-list-item>
     <v-list-item
       v-if="projectStore.solver.domain.nodes.get(projectStore.selection.label).bcs.size > 0"

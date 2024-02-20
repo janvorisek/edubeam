@@ -57,7 +57,8 @@
     "prescribedDisplacement": "Prescribed displacement",
     "addPrescribedDisplacement": "Prescribe displacement",
     "UDL": "UDL",
-    "forceMoment": "Force/Moment"
+    "forceMoment": "Force/Moment",
+    "editLoad": "Edit load"
   },
   "tabs": {
     "nodes": "Nodes",
@@ -245,5 +246,11 @@
       "title": "Reset settings?",
       "message": "Are you sure you want to reset all settings to default? This action cannot be undone."
     }
+  },
+  "selection": {
+    "node": "Node",
+    "element": "Element",
+    "nodal-load": "Nodal load",
+    "element-load": "Element load"
   }
 }

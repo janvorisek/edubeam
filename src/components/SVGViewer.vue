@@ -1558,7 +1558,10 @@ defineExpose({ centerContent, fitContent });
     >
       <div class="d-flex justify-space-between">
         <div class="font-weight-medium text-body-2 px-4 pt-2">
-          {{ projectStore.selection.type }} {{ projectStore.selection.label }}
+          {{ $t("selection." + projectStore.selection.type) }}
+          <span v-if="['node', 'element'].includes(projectStore.selection.type)">{{
+            projectStore.selection.label
+          }}</span>
         </div>
         <v-btn variant="text" icon="mdi-close" size="x-small" @click="projectStore.selection.type = null" />
       </div>

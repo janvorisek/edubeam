@@ -21,7 +21,7 @@ const element = computed(() => {
         <div class="pr-2"><v-icon size="16" icon="mdi-pencil" /></div>
       </template>
       {{ $t("elements.editElement") }}
-      <v-menu activator="parent" open-on-hover location="end" :close-on-content-click="false">
+      <v-menu activator="parent" open-on-hover open-on-click location="end" :close-on-content-click="false">
         <v-list density="compact" class="py-0">
           <v-row no-gutters>
             <v-col>

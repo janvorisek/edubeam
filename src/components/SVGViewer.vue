@@ -726,6 +726,10 @@ const isSupported = (node: Node, dof: DofID) => {
   return node.bcs.has(dof);
 };
 
+const isConnected = (node: Node) => {
+  return [...projectStore.solver.domain.elements.values()].some((el) => el.nodes.includes(node.label));
+};
+
 const getReaction = (node: Node, dof: DofID) => {
   const r = node.getReactions(useProjectStore().solver.loadCases[0], true);
   const i = r.dofs.findIndex((e) => e === dof);
@@ -1364,6 +1368,7 @@ defineExpose({ centerContent, fitContent });
                   projectStore.solver.loadCases[0].solved &&
                   viewerStore.showReactions &&
                   isSupported(node, DofID.Dz) &&
+                  isConnected(node) &&
                   Math.abs(getReaction(node, DofID.Dz)) > 1e-32
                 "
                 points="0,0 0,0"
@@ -1381,6 +1386,7 @@ defineExpose({ centerContent, fitContent });
                   projectStore.solver.loadCases[0].solved &&
                   viewerStore.showReactions &&
                   isSupported(node, DofID.Dz) &&
+                  isConnected(node) &&
                   Math.abs(getReaction(node, DofID.Dz)) > 1e-32
                 "
                 :font-size="13 / scale"
@@ -1401,6 +1407,7 @@ defineExpose({ centerContent, fitContent });
                   projectStore.solver.loadCases[0].solved &&
                   viewerStore.showReactions &&
                   isSupported(node, DofID.Dx) &&
+                  isConnected(node) &&
                   Math.abs(getReaction(node, DofID.Dx)) > 1e-32
                 "
                 points="0,0 0,0"
@@ -1418,6 +1425,7 @@ defineExpose({ centerContent, fitContent });
                   projectStore.solver.loadCases[0].solved &&
                   viewerStore.showReactions &&
                   isSupported(node, DofID.Dx) &&
+                  isConnected(node) &&
                   Math.abs(getReaction(node, DofID.Dx)) > 1e-32
                 "
                 :font-size="13 / scale"
@@ -1438,6 +1446,7 @@ defineExpose({ centerContent, fitContent });
                   projectStore.solver.loadCases[0].solved &&
                   viewerStore.showReactions &&
                   isSupported(node, DofID.Ry) &&
+                  isConnected(node) &&
                   Math.abs(getReaction(node, DofID.Ry)) > 1e-32
                 "
                 points="0,0 0,0"
@@ -1453,6 +1462,7 @@ defineExpose({ centerContent, fitContent });
                   projectStore.solver.loadCases[0].solved &&
                   viewerStore.showReactions &&
                   isSupported(node, DofID.Ry) &&
+                  isConnected(node) &&
                   Math.abs(getReaction(node, DofID.Ry)) > 1e-32
                 "
                 :font-size="13 / scale"

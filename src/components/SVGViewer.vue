@@ -680,8 +680,6 @@ const onMouseDown = (e: PointerEvent) => {
 
       // No existing element was found, just add the node
       projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
-
-      appStore.mouseMode = MouseMode.NONE;
       solve();
       return;
     }

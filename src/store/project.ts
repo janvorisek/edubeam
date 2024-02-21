@@ -226,12 +226,22 @@ export const useProjectStore = defineStore("project", () => {
   const deleteSelection2 = () => {
     console.log("deleteselection2");
     // Delete selected elements and corresponding element loads
+    let toDelete = [];
     for (const element of selection2.elements) {
+      toDelete.push(element);
+    }
+
+    for (const element of toDelete) {
       deleteElement(element);
     }
 
     // Delete selected nodes and corresponding elements & nodal loads
+    toDelete = [];
     for (const node of selection2.nodes) {
+      toDelete.push(node);
+    }
+
+    for (const node of toDelete) {
       deleteNode(node);
     }
 

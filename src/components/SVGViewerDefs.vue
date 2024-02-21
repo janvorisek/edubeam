@@ -14,7 +14,7 @@ const viewerStore = useViewerStore();
       markerWidth="12"
       markerHeight="12"
       orient="auto-start-reverse"
-      markerUnits="userSpaceOnUse"
+      markerUnits="strokeWidth"
     >
       <path d="M 0 0 L 10 5 L 0 10 z" :fill="viewerStore.colors.loads" />
     </marker>
@@ -26,7 +26,7 @@ const viewerStore = useViewerStore();
       markerWidth="12"
       markerHeight="12"
       orient="auto-start-reverse"
-      markerUnits="userSpaceOnUse"
+      markerUnits="strokeWidth"
     >
       <path d="M 0 0 L 10 5 L 0 10 z" :fill="viewerStore.colors.reactions" />
     </marker>
@@ -38,7 +38,7 @@ const viewerStore = useViewerStore();
       markerWidth="12"
       markerHeight="12"
       orient="auto-start-reverse"
-      markerUnits="userSpaceOnUse"
+      markerUnits="strokeWidth"
     >
       <path d="M 0 0 L 10 5 L 0 10 z" fill="blue" />
     </marker>

@@ -748,7 +748,12 @@ const onMouseDown = (e: PointerEvent) => {
         startNode.value = { label: intersected.value.index, x: mouseXReal.value, y: mouseYReal.value };
       } else if (intersected.value.type === "node") {
         projectStore.solver.loadCases[0].solved = false;
-        const newElId = projectStore.solver.domain.elements.size + 1;
+        let newElId = projectStore.solver.domain.elements.size + 1;
+
+        while (projectStore.solver.domain.elements.has(newElId.toString())) {
+          newElId++;
+        }
+
         const nid = startNode.value.label;
         // @ts-expect-error ts-fem is wrongly typed
         projectStore.solver.domain.createBeam2D(newElId, [nid, intersected.value.index], 1, 1);

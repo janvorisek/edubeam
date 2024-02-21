@@ -75,7 +75,11 @@ const addNode = () => {
   useProjectStore().solver.loadCases[0].solved = false;
   const domain = projectStore.solver.domain;
 
-  const nid = domain.nodes.size + 1; //Math.round(Date.now() / 1000);
+  let nid = domain.nodes.size + 1; //Math.round(Date.now() / 1000);
+
+  while (projectStore.solver.domain.nodes.has(nid.toString())) {
+    nid++;
+  }
 
   domain.createNode(nid, [newNodeX.value, 0.0, newNodeZ.value]);
 

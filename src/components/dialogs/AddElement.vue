@@ -71,7 +71,11 @@ const addElement = () => {
 
   //if (domain.elements.has(999)) return alert("Element id 999 already exists");
 
-  const nid = domain.elements.size + 1;
+  let nid = domain.elements.size + 1;
+
+  while (projectStore.solver.domain.nodes.has(nid.toString())) {
+    nid++;
+  }
 
   domain.createBeam2D(nid, [newElementFrom.value, newElementTo.value], 1, 1);
 

@@ -14,19 +14,24 @@ import { fileURLToPath, URL } from "node:url";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue({
-    template: { transformAssetUrls },
-  }), // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
-  vuetify({
-    autoImport: true,
-  }), VueI18nPlugin({
-    include: resolve(dirname(fileURLToPath(import.meta.url)), "./src/locales/**"),
-    runtimeOnly: false,
-    strictMessage: false,
-  }), VitePWA({ registerType: "autoUpdate" }), sentryVitePlugin({
-    org: "ctu-prague",
-    project: "javascript-vue"
-  })],
+  plugins: [
+    vue({
+      template: { transformAssetUrls },
+    }), // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
+    vuetify({
+      autoImport: true,
+    }),
+    VueI18nPlugin({
+      include: resolve(dirname(fileURLToPath(import.meta.url)), "./src/locales/**"),
+      runtimeOnly: false,
+      strictMessage: false,
+    }),
+    VitePWA({ registerType: "autoUpdate" }),
+    sentryVitePlugin({
+      org: "ctu-prague",
+      project: "edubeam-app",
+    }),
+  ],
 
   define: {
     "process.env": {},
@@ -46,6 +51,6 @@ export default defineConfig({
   },
 
   build: {
-    sourcemap: true
-  }
+    sourcemap: true,
+  },
 });

@@ -30,11 +30,18 @@ export const useProjectStore = defineStore("project", () => {
     y: -999,
   });
 
-  const selection2 = reactive<{ nodes: string[]; elements: string[]; nodalLoads: number[]; elementLoads: number[] }>({
+  const selection2 = reactive<{
+    nodes: string[];
+    elements: string[];
+    nodalLoads: number[];
+    elementLoads: number[];
+    prescribedBC: number[];
+  }>({
     nodes: [],
     elements: [],
     nodalLoads: [],
     elementLoads: [],
+    prescribedBC: [],
   });
 
   const clearSelection = () => {
@@ -49,6 +56,7 @@ export const useProjectStore = defineStore("project", () => {
     selection2.elements = [];
     selection2.nodalLoads = [];
     selection2.elementLoads = [];
+    selection2.prescribedBC = [];
   };
 
   const isAnythingSelected2 = () => {
@@ -56,7 +64,8 @@ export const useProjectStore = defineStore("project", () => {
       selection2.nodes.length > 0 ||
       selection2.elements.length > 0 ||
       selection2.nodalLoads.length > 0 ||
-      selection2.elementLoads.length > 0
+      selection2.elementLoads.length > 0 ||
+      selection2.prescribedBC.length > 0
     );
   };
 
@@ -179,8 +188,7 @@ export const useProjectStore = defineStore("project", () => {
   const solve = throttle(_solve, 50);
 
   const selectAll2 = () => {
-    selection2.nodes = [];
-    selection2.elements = [];
+    clearSelection2();
 
     for (const node of solver.value.domain.nodes.values()) {
       selection2.nodes.push(node.label);
@@ -188,6 +196,18 @@ export const useProjectStore = defineStore("project", () => {
 
     for (const element of solver.value.domain.elements.values()) {
       selection2.elements.push(element.label);
+    }
+
+    for (let i = 0; i < solver.value.loadCases[0].nodalLoadList.length; i++) {
+      selection2.nodalLoads.push(i);
+    }
+
+    for (let i = 0; i < solver.value.loadCases[0].elementLoadList.length; i++) {
+      selection2.elementLoads.push(i);
+    }
+
+    for (let i = 0; i < solver.value.loadCases[0].prescribedBC.length; i++) {
+      selection2.prescribedBC.push(i);
     }
   };
 
@@ -218,6 +238,12 @@ export const useProjectStore = defineStore("project", () => {
             loadCase.nodalLoadList.splice(i, 1);
           }
         }
+
+        for (let i = loadCase.prescribedBC.length - 1; i >= 0; i--) {
+          if (loadCase.prescribedBC[i].target === node) {
+            loadCase.prescribedBC.splice(i, 1);
+          }
+        }
       }
 
       solver.value.domain.nodes.delete(node);
@@ -235,6 +261,12 @@ export const useProjectStore = defineStore("project", () => {
     for (const i of selection2.elementLoads.sort((a, b) => b - a)) {
       loadCase.solved = false;
       loadCase.elementLoadList.splice(i, 1);
+    }
+
+    // Delete selected prescribed BCs
+    for (const i of selection2.prescribedBC.sort((a, b) => b - a)) {
+      loadCase.solved = false;
+      loadCase.prescribedBC.splice(i, 1);
     }
 
     clearSelection();

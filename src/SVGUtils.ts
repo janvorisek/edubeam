@@ -1,4 +1,4 @@
-import { Node, DofID, Beam2D, NodalLoad, BeamElementUniformEdgeLoad } from "ts-fem";
+import { Node, DofID, Beam2D, NodalLoad, BeamElementUniformEdgeLoad, PrescribedDisplacement } from "ts-fem";
 import { useProjectStore } from "./store/project";
 import { useAppStore } from "./store/app";
 
@@ -305,17 +305,13 @@ export function formatNodalLoad(nl: NodalLoad, scale: number) {
 }
 
 export function formatNodalLoadAngle(nl: NodalLoad) {
-  /*const dofs = this.domain.solver.getNodeDofIDs(nl.target);
-  const ans = Array<number>();
-  for (const idof of dofs) {
-    if (idof in nl.values) {
-      ans.push(nl.values[idof]);
-    } else {
-      ans.push(0.0);
-    }
-  }*/
-
   const angle = -(Math.atan2(nl.values[0]!, nl.values[2]!) * 180) / Math.PI;
+
+  return angle;
+}
+
+export function formatPrescribedBCAngle(nl: PrescribedDisplacement) {
+  const angle = -(Math.atan2(nl.prescribedValues[0]!, nl.prescribedValues[2]!) * 180) / Math.PI;
 
   return angle;
 }

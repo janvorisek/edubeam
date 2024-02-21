@@ -41,9 +41,10 @@ import {
   formatElementLoadForces,
   formatElementLoadForcesAngle,
   formatExpValueAsHTML,
+  formatPrescribedBCAngle,
 } from "../SVGUtils";
 import { debounce, throttle } from "../utils";
-import { Node, DofID, Beam2D, BeamElementLoad, NodalLoad } from "ts-fem";
+import { Node, DofID, Beam2D, BeamElementLoad, NodalLoad, PrescribedDisplacement } from "ts-fem";
 import { Matrix } from "mathjs";
 import { useMagicKeys } from "@vueuse/core";
 
@@ -287,6 +288,36 @@ const onNodalLoadHover = (e: MouseEvent, el: NodalLoad) => {
   if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
 };
 
+const onPrescribedBCHover = (e: MouseEvent, el: PrescribedDisplacement) => {
+  if (appStore.mouseMode === MouseMode.MOVING) return;
+
+  const tt = tooltip.value as HTMLElement;
+  const tooltipContent = tt.querySelector(".content") as HTMLElement;
+
+  //intersected.value.type = "element";
+  //intersected.value.index = el.label;
+
+  tt.style.top = e.offsetY + "px";
+  tt.style.left = e.offsetX + "px";
+  tooltipContent.innerHTML = `<strong>${t("loads.prescribedDisplacement")}</strong><br>`;
+  if (Math.abs(el.prescribedValues[0]) > 1e-32) {
+    tooltipContent.innerHTML += `D<sub>x</sub> = ${appStore.convertForce(el.prescribedValues[0])} ${appStore.units.Length}<br>`;
+  }
+
+  if (Math.abs(el.prescribedValues[2]) > 1e-32) {
+    tooltipContent.innerHTML += `D<sub>z</sub> = ${appStore.convertForce(el.prescribedValues[2])} ${appStore.units.Length}<br>`;
+  }
+
+  if (Math.abs(el.prescribedValues[4]) > 1e-32) {
+    tooltipContent.innerHTML += `R<sub>y</sub> = ${appStore.convertForce(el.prescribedValues[4])} ${appStore.units.Angle}`;
+  }
+
+  tt.style.display = "block";
+  document.body.style.cursor = "pointer";
+
+  if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
+};
+
 const onNodalDefoHover = (e: MouseEvent, node: Node) => {
   if (appStore.mouseMode === MouseMode.MOVING) return;
 
@@ -389,6 +420,7 @@ const hasMoved = (e: MouseEvent) => {
   return false;
 };
 
+const TTWIDTH = 210;
 const onNodeClick = (e: MouseEvent) => {
   if (hasMoved(e)) return;
 
@@ -406,10 +438,10 @@ const onNodeClick = (e: MouseEvent) => {
   //useProjectStore().selection.x = e.offsetX;
   //useProjectStore().selection.y = e.offsetY;
 
-  let nx = target.getBoundingClientRect().left - 100;
+  let nx = target.getBoundingClientRect().left - TTWIDTH / 2;
 
   if (nx < 0) nx = 24;
-  if (nx > window.innerWidth - 200 - 24) nx = window.innerWidth - 200 - 24;
+  if (nx > window.innerWidth - TTWIDTH - 24) nx = window.innerWidth - TTWIDTH - 24;
 
   useProjectStore().selection.x = nx;
   useProjectStore().selection.y = target.getBoundingClientRect().top - 64;
@@ -423,10 +455,10 @@ const onElementClick = (e: MouseEvent) => {
   const target = e.target as HTMLElement;
   const index = target.getAttribute("data-element-id") || "-1";
 
-  let nx = target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 - 100;
+  let nx = target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 - TTWIDTH / 2;
 
   if (nx < 0) nx = 24;
-  if (nx > window.innerWidth - 200 - 24) nx = window.innerWidth - 200 - 24;
+  if (nx > window.innerWidth - TTWIDTH - 24) nx = window.innerWidth - TTWIDTH - 24;
 
   useProjectStore().selection.type = "element";
   useProjectStore().selection.label = index;
@@ -444,10 +476,10 @@ const onElementLoadClick = (e: MouseEvent, index: number) => {
 
   const target = e.target as HTMLElement;
 
-  let nx = target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 - 100;
+  let nx = target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 - TTWIDTH / 2;
 
   if (nx < 0) nx = 24;
-  if (nx > window.innerWidth - 200 - 24) nx = window.innerWidth - 200 - 24;
+  if (nx > window.innerWidth - TTWIDTH - 24) nx = window.innerWidth - TTWIDTH - 24;
 
   useProjectStore().selection.type = "element-load";
   useProjectStore().selection.label = index;
@@ -465,10 +497,10 @@ const onNodalLoadClick = (e: MouseEvent, index: number) => {
 
   const target = e.target as HTMLElement;
 
-  let nx = target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 - 100;
+  let nx = target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 - TTWIDTH / 2;
 
   if (nx < 0) nx = 24;
-  if (nx > window.innerWidth - 200 - 24) nx = window.innerWidth - 200 - 24;
+  if (nx > window.innerWidth - TTWIDTH - 24) nx = window.innerWidth - TTWIDTH - 24;
 
   useProjectStore().selection.type = "nodal-load";
   useProjectStore().selection.label = index;
@@ -477,6 +509,27 @@ const onNodalLoadClick = (e: MouseEvent, index: number) => {
 
   projectStore.clearSelection2();
   projectStore.selection2.nodalLoads = [index];
+};
+
+const onPrescribedBCClick = (e: MouseEvent, index: number) => {
+  if (hasMoved(e)) return;
+
+  appStore.bottomBarTab = 2;
+
+  const target = e.target as HTMLElement;
+
+  let nx = target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 - TTWIDTH / 2;
+
+  if (nx < 0) nx = 24;
+  if (nx > window.innerWidth - TTWIDTH - 24) nx = window.innerWidth - TTWIDTH - 24;
+
+  useProjectStore().selection.type = "prescribedbc-load";
+  useProjectStore().selection.label = index;
+  useProjectStore().selection.x = nx;
+  useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
+
+  projectStore.clearSelection2();
+  projectStore.selection2.prescribedBC = [index];
 };
 
 let drgNode = null;
@@ -1214,6 +1267,56 @@ defineExpose({ centerContent, fitContent });
                     ({{ appStore.convertForce(nload.values[0]).toFixed(2) }},
                     {{ appStore.convertForce(nload.values[2]).toFixed(2) }})
                   </template>
+                </text>
+              </g>
+              <g
+                class="nodal-load"
+                :class="{ selected: projectStore.selection2.nodalLoads.includes(index) }"
+                @mousemove="onPrescribedBCHover($event, nload)"
+                @mouseleave="hideTooltip"
+                @pointerup="onPrescribedBCClick($event, index)"
+                @dblclick="
+                  openModal(EditNodalLoadDialog, { index });
+                  projectStore.clearSelection();
+                "
+                v-for="(nload, index) in useProjectStore().solver.loadCases[0].prescribedBC"
+                :key="`nodal-load-${index}`"
+              >
+                <polyline
+                  v-if="nload.prescribedValues[0] !== 0 || nload.prescribedValues[2] !== 0"
+                  :points="`${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0]},${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2]} ${
+                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0] +
+                    (nload.prescribedValues[0] * projectStore.defoScale * projectStore.resultsScalePx) / scale
+                  } ${
+                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2] +
+                    (nload.prescribedValues[2] * projectStore.defoScale * projectStore.resultsScalePx) / scale
+                  }`"
+                  :stroke="viewerStore.colors.loads"
+                  vector-effect="non-scaling-stroke"
+                  stroke-dasharray="2,4"
+                  marker-end="url(#forceTip)"
+                  class="decoration"
+                />
+
+                <text
+                  v-if="nload.prescribedValues[0] !== 0 || nload.prescribedValues[2] !== 0"
+                  :font-size="13 / scale"
+                  font-weight="normal"
+                  :text-anchor="nload.prescribedValues[0] > 0 ? 'start' : 'end'"
+                  dominant-baseline="central"
+                  :transform="`translate(${
+                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0] +
+                    (nload.prescribedValues[0] > 0 ? 10 / scale : -10 / scale) +
+                    (nload.prescribedValues[0] * projectStore.defoScale * projectStore.resultsScalePx) / scale
+                  }
+              ${
+                useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2] +
+                (nload.prescribedValues[2] * projectStore.defoScale * projectStore.resultsScalePx) / scale
+              })`"
+                >
+                  {{ appStore.convertLength(nload.prescribedValues[0]).toFixed(2) }},
+                  {{ appStore.convertLength(nload.prescribedValues[2]).toFixed(2) }},
+                  {{ appStore.convertLength(nload.prescribedValues[4]).toFixed(2) }}
                 </text>
               </g>
             </g>

@@ -121,6 +121,24 @@ const viewerStore = useViewerStore();
       <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" stroke-width="3" fill="none" stroke="blue" />
     </marker>
     <marker
+      id="forceTip"
+      viewBox="0 0 20 60"
+      refX="60"
+      refY="10"
+      markerWidth="20"
+      markerHeight="50"
+      overflow="visible"
+      markerUnits="strokeWidth"
+      orient="auto"
+    >
+      <polyline
+        points="45,5 55,10 45,15"
+        stroke-width="1"
+        :fill="viewerStore.colors.loads"
+        :stroke="viewerStore.colors.loads"
+      />
+    </marker>
+    <marker
       id="force"
       viewBox="0 0 20 60"
       refX="10"

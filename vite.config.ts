@@ -1,3 +1,4 @@
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 // Plugins
 import vue from "@vitejs/plugin-vue";
 import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
@@ -13,33 +14,38 @@ import { fileURLToPath, URL } from "node:url";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    vue({
-      template: { transformAssetUrls },
-    }),
-    // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
-    vuetify({
-      autoImport: true,
-    }),
-    VueI18nPlugin({
-      include: resolve(dirname(fileURLToPath(import.meta.url)), "./src/locales/**"),
-      runtimeOnly: false,
-      strictMessage: false,
-    }),
-    VitePWA({ registerType: "autoUpdate" }),
-  ],
+  plugins: [vue({
+    template: { transformAssetUrls },
+  }), // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
+  vuetify({
+    autoImport: true,
+  }), VueI18nPlugin({
+    include: resolve(dirname(fileURLToPath(import.meta.url)), "./src/locales/**"),
+    runtimeOnly: false,
+    strictMessage: false,
+  }), VitePWA({ registerType: "autoUpdate" }), sentryVitePlugin({
+    org: "ctu-prague",
+    project: "javascript-vue"
+  })],
+
   define: {
     "process.env": {},
     APP_VERSION: JSON.stringify(packageJson.version),
     APP_RELEASED: JSON.stringify(new Date().toLocaleDateString("en")),
   },
+
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
     extensions: [".js", ".json", ".jsx", ".mjs", ".ts", ".tsx", ".vue"],
   },
+
   server: {
     port: 3000,
   },
+
+  build: {
+    sourcemap: true
+  }
 });

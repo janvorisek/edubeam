@@ -12,6 +12,11 @@ import AddElementDialog from "./dialogs/AddElement.vue";
 import AddNodeDialog from "./dialogs/AddNode.vue";
 import Confirmation from "./dialogs/Confirmation.vue";
 
+//import EditElementDialog from "./dialogs/EditElement.vue";
+//import EditNodeDialog from "./dialogs/EditNode.vue";
+import EditNodalLoadDialog from "./dialogs/EditNodalLoad.vue";
+import EditElementLoadDialog from "./dialogs/EditElementLoad.vue";
+
 import {
   formatNode,
   formatElement,
@@ -395,7 +400,7 @@ const onNodeClick = (e: MouseEvent) => {
   useProjectStore().selection.type = "node";
   useProjectStore().selection.label = index;
 
-  projectStore.selection2.elements = [];
+  projectStore.clearSelection2();
   projectStore.selection2.nodes = [useProjectStore().selection.label];
 
   //useProjectStore().selection.x = e.offsetX;
@@ -428,8 +433,8 @@ const onElementClick = (e: MouseEvent) => {
   useProjectStore().selection.x = nx;
   useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
 
+  projectStore.clearSelection2();
   projectStore.selection2.elements = [useProjectStore().selection.label];
-  projectStore.selection2.nodes = [];
 };
 
 const onElementLoadClick = (e: MouseEvent, index: number) => {
@@ -449,8 +454,8 @@ const onElementLoadClick = (e: MouseEvent, index: number) => {
   useProjectStore().selection.x = nx;
   useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
 
-  //projectStore.selection2.elements = [useProjectStore().selection.label];
-  //projectStore.selection2.nodes = [];
+  projectStore.clearSelection2();
+  projectStore.selection2.elementLoads = [index];
 };
 
 const onNodalLoadClick = (e: MouseEvent, index: number) => {
@@ -470,8 +475,8 @@ const onNodalLoadClick = (e: MouseEvent, index: number) => {
   useProjectStore().selection.x = nx;
   useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
 
-  //projectStore.selection2.elements = [useProjectStore().selection.label];
-  //projectStore.selection2.nodes = [];
+  projectStore.clearSelection2();
+  projectStore.selection2.nodalLoads = [index];
 };
 
 let drgNode = null;
@@ -825,6 +830,7 @@ const onMouseUp = (e: MouseEvent) => {
       appStore.rightDrawerOpen = false;
     }*/
 
+    projectStore.clearSelection2();
     projectStore.selection2.elements = selectedElements;
     projectStore.selection2.nodes = selectedNodes;
   }
@@ -1059,9 +1065,14 @@ defineExpose({ centerContent, fitContent });
             <g v-if="!useAppStore().zooming && useViewerStore().showLoads">
               <g
                 class="element-load load-1d"
+                :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
                 @mousemove="onElementLoadHover($event, eload)"
                 @mouseleave="hideTooltip"
                 @pointerup="onElementLoadClick($event, index)"
+                @dblclick="
+                  openModal(EditElementLoadDialog, { index });
+                  projectStore.clearSelection();
+                "
                 v-for="(eload, index) in useProjectStore().solver.loadCases[0].elementLoadList"
                 :key="`element-load-${index}`"
                 :data-element-load-id="index"
@@ -1123,9 +1134,14 @@ defineExpose({ centerContent, fitContent });
               </g>
               <g
                 class="nodal-load"
+                :class="{ selected: projectStore.selection2.nodalLoads.includes(index) }"
                 @mousemove="onNodalLoadHover($event, nload)"
                 @mouseleave="hideTooltip"
                 @pointerup="onNodalLoadClick($event, index)"
+                @dblclick="
+                  openModal(EditNodalLoadDialog, { index });
+                  projectStore.clearSelection();
+                "
                 v-for="(nload, index) in useProjectStore().solver.loadCases[0].nodalLoadList"
                 :key="`nodal-load-${index}`"
               >

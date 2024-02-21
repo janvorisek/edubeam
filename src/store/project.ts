@@ -30,7 +30,12 @@ export const useProjectStore = defineStore("project", () => {
     y: -999,
   });
 
-  const selection2 = reactive<{ nodes: string[]; elements: string[] }>({ nodes: [], elements: [] });
+  const selection2 = reactive<{ nodes: string[]; elements: string[]; nodalLoads: number[]; elementLoads: number[] }>({
+    nodes: [],
+    elements: [],
+    nodalLoads: [],
+    elementLoads: [],
+  });
 
   const clearSelection = () => {
     selection.label = null;
@@ -42,10 +47,17 @@ export const useProjectStore = defineStore("project", () => {
   const clearSelection2 = () => {
     selection2.nodes = [];
     selection2.elements = [];
+    selection2.nodalLoads = [];
+    selection2.elementLoads = [];
   };
 
   const isAnythingSelected2 = () => {
-    return selection2.nodes.length > 0 || selection2.elements.length > 0;
+    return (
+      selection2.nodes.length > 0 ||
+      selection2.elements.length > 0 ||
+      selection2.nodalLoads.length > 0 ||
+      selection2.elementLoads.length > 0
+    );
   };
 
   const hover: {
@@ -180,9 +192,9 @@ export const useProjectStore = defineStore("project", () => {
   };
 
   const deleteSelection2 = () => {
+    console.log("deleteselection2");
+    // Delete selected elements and corresponding element loads
     for (const element of selection2.elements) {
-      solver.value.domain.elements.delete(element);
-
       // delete all loads on this element
       for (const loadCase of solver.value.loadCases) {
         loadCase.solved = false;
@@ -192,14 +204,41 @@ export const useProjectStore = defineStore("project", () => {
           }
         }
       }
+
+      solver.value.domain.elements.delete(element);
     }
 
+    // Delete selected nodes and corresponding nodal loads
     for (const node of selection2.nodes) {
+      // delete all loads on this node
+      for (const loadCase of solver.value.loadCases) {
+        loadCase.solved = false;
+        for (let i = loadCase.nodalLoadList.length - 1; i >= 0; i--) {
+          if (loadCase.nodalLoadList[i].target === node) {
+            loadCase.nodalLoadList.splice(i, 1);
+          }
+        }
+      }
+
       solver.value.domain.nodes.delete(node);
     }
 
-    selection2.nodes = [];
-    selection2.elements = [];
+    // Delete selected nodal loads
+    const loadCase = solver.value.loadCases[0];
+    console.log(selection2.nodalLoads.sort((a, b) => b - a));
+    for (const i of selection2.nodalLoads.sort((a, b) => b - a)) {
+      loadCase.solved = false;
+      loadCase.nodalLoadList.splice(i, 1);
+    }
+
+    // Delete selected element loads
+    for (const i of selection2.elementLoads.sort((a, b) => b - a)) {
+      loadCase.solved = false;
+      loadCase.elementLoadList.splice(i, 1);
+    }
+
+    clearSelection();
+    clearSelection2();
   };
 
   return {

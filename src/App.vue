@@ -433,6 +433,16 @@ svg text {
   polyline {
     marker-end: url(#force_centered);
   }
+
+  &.selected {
+    text {
+      fill: rgb(0, 55, 149);
+    }
+    polygon {
+      stroke-linejoin: round;
+      fill: rgba(0, 55, 149, 0.1);
+    }
+  }
 }
 
 .element.element-1d {
@@ -567,6 +577,11 @@ svg text {
   }
   &:hover polyline.decoration.moment.ccw {
     marker-end: url(#moment_ccw_hover);
+  }
+  &.selected {
+    text {
+      fill: rgb(0, 55, 149);
+    }
   }
 }
 

@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { LinearStaticSolver, Beam2D } from "ts-fem";
 import { ref, computed, reactive } from "vue";
 import { max, min } from "mathjs";
-import { throttle } from "@/utils";
+import { deleteElement, deleteNode, throttle } from "@/utils";
 
 export const useProjectStore = defineStore("project", () => {
   const model = ref("LinearStaticSolver");
@@ -227,56 +227,36 @@ export const useProjectStore = defineStore("project", () => {
     console.log("deleteselection2");
     // Delete selected elements and corresponding element loads
     for (const element of selection2.elements) {
-      // delete all loads on this element
-      for (const loadCase of solver.value.loadCases) {
-        loadCase.solved = false;
-        for (let i = loadCase.elementLoadList.length - 1; i >= 0; i--) {
-          if (loadCase.elementLoadList[i].target === element) {
-            loadCase.elementLoadList.splice(i, 1);
-          }
-        }
-      }
-
-      solver.value.domain.elements.delete(element);
+      deleteElement(element);
     }
 
-    // Delete selected nodes and corresponding nodal loads
+    // Delete selected nodes and corresponding elements & nodal loads
     for (const node of selection2.nodes) {
-      // delete all loads on this node
-      for (const loadCase of solver.value.loadCases) {
-        loadCase.solved = false;
-        for (let i = loadCase.nodalLoadList.length - 1; i >= 0; i--) {
-          if (loadCase.nodalLoadList[i].target === node) {
-            loadCase.nodalLoadList.splice(i, 1);
-          }
-        }
-
-        for (let i = loadCase.prescribedBC.length - 1; i >= 0; i--) {
-          if (loadCase.prescribedBC[i].target === node) {
-            loadCase.prescribedBC.splice(i, 1);
-          }
-        }
-      }
-
-      solver.value.domain.nodes.delete(node);
+      deleteNode(node);
     }
 
     // Delete selected nodal loads
     const loadCase = solver.value.loadCases[0];
     console.log(selection2.nodalLoads.sort((a, b) => b - a));
     for (const i of selection2.nodalLoads.sort((a, b) => b - a)) {
+      if (loadCase.nodalLoadList[i] === undefined) continue;
+
       loadCase.solved = false;
       loadCase.nodalLoadList.splice(i, 1);
     }
 
     // Delete selected element loads
     for (const i of selection2.elementLoads.sort((a, b) => b - a)) {
+      if (loadCase.elementLoadList[i] === undefined) continue;
+
       loadCase.solved = false;
       loadCase.elementLoadList.splice(i, 1);
     }
 
     // Delete selected prescribed BCs
     for (const i of selection2.prescribedBC.sort((a, b) => b - a)) {
+      if (loadCase.prescribedBC[i] === undefined) continue;
+
       loadCase.solved = false;
       loadCase.prescribedBC.splice(i, 1);
     }

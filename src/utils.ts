@@ -448,7 +448,9 @@ export const toggleBoolean = (item: unknown, value: string) => {
   solve();
 };
 
-export const deleteElement = (id: number) => {
+export const deleteElement = (id: string) => {
+  setUnsolved();
+
   // delete element load
   for (const lc of useProjectStore().solver.loadCases) {
     for (let i = 0; i < lc.elementLoadList.length; i++) {
@@ -459,14 +461,20 @@ export const deleteElement = (id: number) => {
     }
   }
 
-  setUnsolved();
+  // Remove from selections
+  const index = useProjectStore().selection2.elements.indexOf(id);
+  if (index > -1) useProjectStore().selection2.elements.splice(index, 1);
+  useProjectStore().clearSelection();
+
   useProjectStore().solver.domain.elements.delete(id);
-  useProjectStore().solver.domain.elements = new Map(useProjectStore().solver.domain.elements);
 
   solve();
 };
 
-export const deleteNode = (id: number) => {
+export const deleteNode = (id: string) => {
+  setUnsolved();
+  useProjectStore().clearSelection();
+
   // delete elements first
   for (const [key, value] of useProjectStore().solver.domain.elements) {
     if (value.nodes[0] === id || value.nodes[1] === id) {
@@ -474,37 +482,59 @@ export const deleteNode = (id: number) => {
     }
   }
 
-  setUnsolved();
+  // delete all loads on this node
+  for (const loadCase of useProjectStore().solver.loadCases) {
+    loadCase.solved = false;
+    for (let i = loadCase.nodalLoadList.length - 1; i >= 0; i--) {
+      if (loadCase.nodalLoadList[i].target === id) {
+        loadCase.nodalLoadList.splice(i, 1);
+      }
+    }
+
+    for (let i = loadCase.prescribedBC.length - 1; i >= 0; i--) {
+      if (loadCase.prescribedBC[i].target === id) {
+        loadCase.prescribedBC.splice(i, 1);
+      }
+    }
+  }
+
+  // Remove from selections
+  const index = useProjectStore().selection2.nodes.indexOf(id);
+  if (index > -1) useProjectStore().selection2.nodes.splice(index, 1);
+  useProjectStore().clearSelection();
+
   useProjectStore().solver.domain.nodes.delete(id);
-  //useProjectStore().solver.domain.nodes = new Map(useProjectStore().solver.domain.nodes);
 
   solve();
 };
 
-export const deleteMaterial = (id: number) => {
+export const deleteMaterial = (id: string) => {
   setUnsolved();
   useProjectStore().solver.domain.materials.delete(id);
 };
 
-export const deleteCrossSection = (id: number) => {
+export const deleteCrossSection = (id: string) => {
   setUnsolved();
   useProjectStore().solver.domain.crossSections.delete(id);
 };
 
 export const deleteNodalLoad = (load: NodalLoad, id: number) => {
   setUnsolved();
+  useProjectStore().clearSelection();
   useProjectStore().solver.loadCases[0].nodalLoadList.splice(id, 1);
   solve();
 };
 
 export const deleteElementLoad = (load: BeamElementUniformEdgeLoad, id: number) => {
   setUnsolved();
+  useProjectStore().clearSelection();
   useProjectStore().solver.loadCases[0].elementLoadList.splice(id, 1);
   solve();
 };
 
 export const deletePrescribedDisplacement = (load: BeamElementUniformEdgeLoad, id: number) => {
   setUnsolved();
+  useProjectStore().clearSelection();
   useProjectStore().solver.loadCases[0].prescribedBC.splice(id, 1);
   solve();
 };

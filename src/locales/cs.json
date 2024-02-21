@@ -255,6 +255,7 @@
     "element": "Prvek",
     "node": "Uzel",
     "nodal-load": "Uzlové zatížení",
-    "element-load": "Prvkové zatížení"
+    "element-load": "Prvkové zatížení",
+    "prescribedbc-load": "Předepsané posunutí"
   }
 }

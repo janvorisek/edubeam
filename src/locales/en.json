@@ -257,6 +257,7 @@
     "node": "Node",
     "element": "Element",
     "nodal-load": "Nodal load",
-    "element-load": "Element load"
+    "element-load": "Element load",
+    "prescribedbc-load": "Prescribed displacement"
   }
 }

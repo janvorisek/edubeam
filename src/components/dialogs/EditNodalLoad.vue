@@ -9,7 +9,7 @@
             <v-row no-gutters>
               <v-col cols="6" align-self="center">
                 <div class="d-flex justify-center">
-                  <Vector2DHelper :fx="realFx" :fz="realFz" :my="realMy" />
+                  <Vector2DHelper v-if="loadType === 'force'" :fx="realFx" :fz="realFz" :my="realMy" />
                 </div>
               </v-col>
 
@@ -17,13 +17,12 @@
                 <v-row no-gutters>
                   <v-col cols="12">
                     <v-select
-                      v-model="nodeId"
-                      :items="useProjectStore().solver.domain.nodes.values() as unknown as unknown[]"
+                      v-model="loadNodeId"
+                      :items="projectStore.nodes"
                       item-title="label"
                       item-value="label"
-                      label="Node id"
+                      :label="$t('common.node')"
                       hide-details="auto"
-                      required
                       disabled
                       autofocus
                     />
@@ -32,10 +31,12 @@
                     <v-text-field
                       v-model="loadNodeValueFx"
                       @keydown="checkNumber($event)"
-                      label="Fx"
+                      :label="`${mainLabel}x`"
                       hide-details="auto"
-                      :suffix="appStore.units.Force"
-                      required
+                      :suffix="mainUnits"
+                      :disabled="
+                        loadType === 'displacement' && !projectStore.solver.domain.nodes.get(loadNodeId).bcs.has(0)
+                      "
                     ></v-text-field>
                   </v-col>
 
@@ -43,10 +44,12 @@
                     <v-text-field
                       v-model="loadNodeValueFz"
                       @keydown="checkNumber($event)"
-                      label="Fz"
+                      :label="`${mainLabel}z`"
                       hide-details="auto"
-                      :suffix="appStore.units.Force"
-                      required
+                      :suffix="mainUnits"
+                      :disabled="
+                        loadType === 'displacement' && !projectStore.solver.domain.nodes.get(loadNodeId).bcs.has(2)
+                      "
                     ></v-text-field>
                   </v-col>
 
@@ -54,10 +57,12 @@
                     <v-text-field
                       v-model="loadNodeValueMy"
                       @keydown="checkNumber($event)"
-                      label="My"
+                      :label="`${momentLabel}y`"
                       hide-details="auto"
-                      :suffix="`${appStore.units.Force}m`"
-                      required
+                      :suffix="`${momentUnits}`"
+                      :disabled="
+                        loadType === 'displacement' && !projectStore.solver.domain.nodes.get(loadNodeId).bcs.has(4)
+                      "
                     >
                     </v-text-field>
                   </v-col>
@@ -93,11 +98,18 @@ import Vector2DHelper from "../Vector2DHelper.vue";
 const projectStore = useProjectStore();
 const appStore = useAppStore();
 
-const props = defineProps<{
-  index: number;
-}>();
+const props = withDefaults(
+  defineProps<{
+    index: number;
+    type?: "force" | "displacement";
+  }>(),
+  {
+    type: "force",
+  }
+);
 
 const open = ref(true);
+const loadType = ref("force");
 const loadNodeValueFx = ref("");
 const loadNodeValueFz = ref("");
 const loadNodeValueMy = ref("");
@@ -106,27 +118,51 @@ const realFx = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeV
 const realFz = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueFz.value)));
 const realMy = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueMy.value)));
 
-onMounted(() => {
-  const load = useProjectStore().solver.loadCases[0].nodalLoadList[props.index];
+const mainLabel = computed(() => (loadType.value === "force" ? "F" : "D"));
+const momentLabel = computed(() => (loadType.value === "force" ? "M" : "R"));
 
-  loadNodeValueFx.value = appStore.convertForce(load.values[DofID.Dx]).toString();
-  loadNodeValueFz.value = appStore.convertForce(load.values[DofID.Dz]).toString();
-  loadNodeValueMy.value = appStore.convertForce(load.values[DofID.Ry]).toString();
+const mainUnits = computed(() => (loadType.value === "force" ? appStore.units.Force : appStore.units.Length));
+const momentUnits = computed(() => (loadType.value === "force" ? appStore.units.Force + "m" : "rad"));
+
+onMounted(() => {
+  if (props.type === "displacement") {
+    loadType.value = "displacement";
+  }
+
+  if (props.type === "displacement") {
+    const load = useProjectStore().solver.loadCases[0].prescribedBC[props.index];
+    loadNodeValueFx.value = appStore.convertLength(load.prescribedValues[DofID.Dx]).toString();
+    loadNodeValueFz.value = appStore.convertLength(load.prescribedValues[DofID.Dz]).toString();
+    loadNodeValueMy.value = appStore.convertLength(load.prescribedValues[DofID.Ry]).toString();
+  } else {
+    const load = useProjectStore().solver.loadCases[0].nodalLoadList[props.index];
+    loadNodeValueFx.value = appStore.convertForce(load.values[DofID.Dx]).toString();
+    loadNodeValueFz.value = appStore.convertForce(load.values[DofID.Dz]).toString();
+    loadNodeValueMy.value = appStore.convertForce(load.values[DofID.Ry]).toString();
+  }
 });
 
 const editNodalLoad = () => {
-  const load = useProjectStore().solver.loadCases[0].nodalLoadList[props.index];
-
-  load.values[DofID.Dx] = realFx.value;
-  load.values[DofID.Dz] = realFz.value;
-  load.values[DofID.Ry] = realMy.value;
+  if (props.type === "displacement") {
+    const load = useProjectStore().solver.loadCases[0].prescribedBC[props.index];
+    load.prescribedValues[DofID.Dx] = realFx.value;
+    load.prescribedValues[DofID.Dz] = realFz.value;
+    load.prescribedValues[DofID.Ry] = realMy.value;
+  } else {
+    const load = useProjectStore().solver.loadCases[0].nodalLoadList[props.index];
+    load.values[DofID.Dx] = realFx.value;
+    load.values[DofID.Dz] = realFz.value;
+    load.values[DofID.Ry] = realMy.value;
+  }
 
   useProjectStore().solve();
   projectStore.clearSelection();
   closeModal();
 };
 
-const nodeId = computed(() => {
+const loadNodeId = computed(() => {
+  if (props.type === "displacement") return useProjectStore().solver.loadCases[0].prescribedBC[props.index].target;
+
   return useProjectStore().solver.loadCases[0].nodalLoadList[props.index].target;
 });
 </script>

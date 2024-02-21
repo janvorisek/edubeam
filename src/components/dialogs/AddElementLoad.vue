@@ -10,7 +10,7 @@
               <v-col cols="12" md="12">
                 <v-select
                   v-model="loadElementId"
-                  :items="useProjectStore().solver.domain.elements.values() as unknown as unknown[]"
+                  :items="projectStore.beams"
                   item-title="label"
                   item-value="label"
                   :label="$t('common.element')"
@@ -27,7 +27,6 @@
                   label="fx"
                   hide-details="auto"
                   :suffix="`${appStore.units.Force}/m`"
-                  required
                 ></v-text-field>
               </v-col>
 
@@ -38,7 +37,6 @@
                   label="fz"
                   hide-details="auto"
                   :suffix="`${appStore.units.Force}/m`"
-                  required
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -70,7 +68,7 @@ const projectStore = useProjectStore();
 const appStore = useAppStore();
 
 const props = defineProps<{
-  label: string | number;
+  label?: string | number;
 }>();
 
 const open = ref(true);

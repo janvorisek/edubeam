@@ -81,6 +81,18 @@ export const useProjectStore = defineStore("project", () => {
     y: -999,
   };
 
+  const nodes = computed(() => {
+    return [...solver.value.domain.nodes.values()];
+  });
+
+  const materials = computed(() => {
+    return [...solver.value.domain.materials.values()];
+  });
+
+  const crossSections = computed(() => {
+    return [...solver.value.domain.crossSections.values()];
+  });
+
   const beams = computed(() => {
     const vals = solver.value.domain.elements.values();
     const arr = Array.from(vals);
@@ -291,6 +303,10 @@ export const useProjectStore = defineStore("project", () => {
     normalForceScale,
     bendingMomentScale,
     shearForceScale,
+
+    nodes,
     beams,
+    materials,
+    crossSections,
   };
 });

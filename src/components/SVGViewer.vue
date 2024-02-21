@@ -1276,7 +1276,7 @@ defineExpose({ centerContent, fitContent });
                 @mouseleave="hideTooltip"
                 @pointerup="onPrescribedBCClick($event, index)"
                 @dblclick="
-                  openModal(EditNodalLoadDialog, { index });
+                  openModal(EditNodalLoadDialog, { index, type: 'displacement' });
                   projectStore.clearSelection();
                 "
                 v-for="(nload, index) in useProjectStore().solver.loadCases[0].prescribedBC"

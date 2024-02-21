@@ -10,7 +10,7 @@
               <v-col cols="6" md="6">
                 <v-select
                   v-model="newElementFrom"
-                  :items="useProjectStore().solver.domain.nodes.values() as unknown as unknown[]"
+                  :items="projectStore.nodes"
                   item-title="label"
                   item-value="label"
                   :label="$t('dialogs.addElement.fromNodeId')"
@@ -23,7 +23,7 @@
               <v-col cols="6" md="6">
                 <v-select
                   v-model="newElementTo"
-                  :items="useProjectStore().solver.domain.nodes.values() as unknown as unknown[]"
+                  :items="projectStore.nodes"
                   item-title="label"
                   item-value="label"
                   :label="$t('dialogs.addElement.toNodeId')"

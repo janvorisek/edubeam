@@ -26,7 +26,6 @@
                   @keydown="checkNumber($event)"
                   label="fx"
                   :suffix="`${appStore.units.Force}/m`"
-                  required
                 ></v-text-field>
               </v-col>
 
@@ -36,7 +35,6 @@
                   @keydown="checkNumber($event)"
                   label="fz"
                   :suffix="`${appStore.units.Force}/m`"
-                  required
                 ></v-text-field>
               </v-col>
             </v-row>

@@ -32,7 +32,7 @@ const element = computed(() => {
                 hide-details="auto"
                 item-title="label"
                 item-value="label"
-                :items="projectStore.solver.domain.nodes.values()"
+                :items="projectStore.nodes"
                 class="menu-select"
               ></v-select>
             </v-col>
@@ -44,7 +44,7 @@ const element = computed(() => {
                 hide-details="auto"
                 item-title="label"
                 item-value="label"
-                :items="projectStore.solver.domain.nodes.values()"
+                :items="projectStore.nodes"
                 class="menu-select"
               ></v-select>
             </v-col>
@@ -58,7 +58,7 @@ const element = computed(() => {
                 hide-details="auto"
                 item-title="label"
                 item-value="label"
-                :items="projectStore.solver.domain.materials.values()"
+                :items="projectStore.materials"
                 class="menu-select"
               ></v-select>
             </v-col>
@@ -70,7 +70,7 @@ const element = computed(() => {
                 hide-details="auto"
                 item-title="label"
                 item-value="label"
-                :items="projectStore.solver.domain.crossSections.values()"
+                :items="projectStore.crossSections"
                 class="menu-select"
               ></v-select>
             </v-col> </v-row

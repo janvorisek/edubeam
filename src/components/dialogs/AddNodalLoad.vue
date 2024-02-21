@@ -26,7 +26,7 @@
                   <v-col cols="12">
                     <v-select
                       v-model="loadNodeId"
-                      :items="useProjectStore().solver.domain.nodes.values() as unknown as unknown[]"
+                      :items="projectStore.nodes"
                       item-title="label"
                       item-value="label"
                       :label="$t('common.node')"
@@ -42,7 +42,6 @@
                       :label="`${mainLabel}x`"
                       hide-details="auto"
                       :suffix="mainUnits"
-                      required
                       :disabled="
                         loadType === 'displacement' && !projectStore.solver.domain.nodes.get(loadNodeId).bcs.has(0)
                       "
@@ -56,7 +55,6 @@
                       :label="`${mainLabel}z`"
                       hide-details="auto"
                       :suffix="mainUnits"
-                      required
                       :disabled="
                         loadType === 'displacement' && !projectStore.solver.domain.nodes.get(loadNodeId).bcs.has(2)
                       "
@@ -70,7 +68,6 @@
                       :label="`${momentLabel}y`"
                       hide-details="auto"
                       :suffix="`${momentUnits}`"
-                      required
                       :disabled="
                         loadType === 'displacement' && !projectStore.solver.domain.nodes.get(loadNodeId).bcs.has(4)
                       "

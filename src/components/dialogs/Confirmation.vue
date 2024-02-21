@@ -7,11 +7,19 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn v-if="props.success" color="green darken-1" @click="_success"> {{ $t("common.confirm") }} </v-btn>
-        <v-btn v-for="action in acs" :key="action.label" :color="action.color" @click="action.action">
+        <v-btn v-if="props.success" color="green darken-1" @click="_success" @keydown.enter="_success">
+          {{ $t("common.confirm") }}
+        </v-btn>
+        <v-btn
+          v-for="action in acs"
+          :key="action.label"
+          :color="action.color"
+          @click="action.action"
+          @keydown.enter="action.action"
+        >
           {{ action.label }}
         </v-btn>
-        <v-btn v-if="props.cancel || acs.length === 0" color="red darken-1" @click="cancel">{{
+        <v-btn v-if="props.cancel || acs.length === 0" color="red darken-1" @click="cancel" @keydown.enter="cancel">{{
           $t("dialogs.common.cancel")
         }}</v-btn>
       </v-card-actions>

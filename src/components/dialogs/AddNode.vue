@@ -44,8 +44,10 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green darken-1" @click="addNode"> {{ $t("dialogs.addNode.addNode") }} </v-btn>
-        <v-btn color="red darken-1" @click="closeModal">
+        <v-btn color="green darken-1" @click="addNode" @keydown.enter="addNode">
+          {{ $t("dialogs.addNode.addNode") }}
+        </v-btn>
+        <v-btn color="red darken-1" @click="closeModal" @keydown.enter="closeModal">
           {{ $t("dialogs.common.cancel") }}
         </v-btn>
       </v-card-actions>
@@ -80,5 +82,6 @@ const addNode = () => {
   domain.nodes = new Map(domain.nodes);
 
   closeModal();
+  useProjectStore().solver.solve();
 };
 </script>

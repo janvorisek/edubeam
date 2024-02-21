@@ -46,10 +46,12 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green darken-1" @click="editNodalLoad()">
+        <v-btn color="green darken-1" @click="editNodalLoad()" @keydown.enter="editNodalLoad">
           {{ $t("dialogs.editElementLoad.editElementLoad") }}
         </v-btn>
-        <v-btn color="red darken-1" @click="closeModal()">{{ $t("dialogs.common.cancel") }}</v-btn>
+        <v-btn color="red darken-1" @click="closeModal()" @keydown.enter="closeModal">{{
+          $t("dialogs.common.cancel")
+        }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

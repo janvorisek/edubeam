@@ -86,6 +86,6 @@ const addNode = () => {
   domain.nodes = new Map(domain.nodes);
 
   closeModal();
-  useProjectStore().solver.solve();
+  useProjectStore().solve();
 };
 </script>

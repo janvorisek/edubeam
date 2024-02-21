@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { nextTick, onMounted, ref } from "vue";
-import { useAppStore } from "../store/app";
+import { useAppStore } from "@/store/app";
+import { useProjectStore } from "@/store/project";
 
 const appStore = useAppStore();
+const projectStore = useProjectStore();
 
 const props = withDefaults(
   defineProps<{
@@ -159,6 +161,8 @@ const centerContent = (): void => {
 
 const fitContent = (n = 0): void => {
   if (n > 5) return;
+
+  if (projectStore.solver.domain.nodes.size < 2) return;
 
   const FIT_CONTENT_PADDING = window.innerWidth > 768 ? props.padding : props.mobilePadding;
 

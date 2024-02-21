@@ -232,7 +232,7 @@
             variant="flat"
             color="secondary"
             :rounded="0"
-            @click.stop="openModal(AddElementDialog, {})"
+            @click.stop="if (useProjectStore().solver.domain.nodes.size >= 2) openModal(AddElementDialog, {});"
           >
             <v-icon small>mdi-plus</v-icon> {{ $t("elements.addElement") }}
             <v-tooltip :text="$t('common.addUsingDialog')" location="bottom" activator="parent"></v-tooltip>
@@ -243,7 +243,9 @@
             color="secondary"
             style="border-left: 1px solid #ccc"
             :rounded="0"
-            @click.stop="appStore.mouseMode = MouseMode.ADD_ELEMENT"
+            @click.stop="
+              if (useProjectStore().solver.domain.nodes.size >= 2) appStore.mouseMode = MouseMode.ADD_ELEMENT;
+            "
           >
             <v-icon small>mdi-cursor-default-outline</v-icon> {{ $t("elements.addElement") }}
             <v-tooltip :text="$t('common.addUsingMouse')" location="bottom" activator="parent"></v-tooltip>
@@ -417,7 +419,13 @@
         :style="`height: ${props.height - 36}px`"
       >
         <div class="border-b border-t">
-          <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="openModal(AddNodalLoad)">
+          <v-btn
+            size="small"
+            variant="flat"
+            color="secondary"
+            :rounded="0"
+            @click.stop="if (useProjectStore().solver.domain.nodes.size > 0) openModal(AddNodalLoad);"
+          >
             <v-icon small>mdi-plus</v-icon> {{ $t("loads.addNodalLoad") }}
           </v-btn>
           <v-btn
@@ -426,7 +434,7 @@
             color="secondary"
             style="border-left: 1px solid #ccc"
             :rounded="0"
-            @click.stop="openModal(AddElementLoad)"
+            @click.stop="if (useProjectStore().solver.domain.elements.size > 0) openModal(AddElementLoad);"
           >
             <v-icon small>mdi-plus</v-icon> {{ $t("loads.addElementLoad") }}
           </v-btn>

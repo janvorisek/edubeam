@@ -56,14 +56,22 @@ import { DofID, NodalLoad } from "ts-fem";
 import { closeModal } from "jenesius-vue-modal";
 import { useAppStore } from "@/store/app";
 import { checkNumber } from "@/utils";
+import { onMounted } from "vue";
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
 
 const open = ref(true);
 
-const newElementFrom = ref(0);
-const newElementTo = ref(0);
+const newElementFrom = ref("");
+const newElementTo = ref("");
+
+onMounted(() => {
+  if (projectStore.solver.domain.nodes.size >= 2) {
+    newElementFrom.value = [...useProjectStore().solver.domain.nodes.values()][0].label;
+    newElementTo.value = [...useProjectStore().solver.domain.nodes.values()][1].label;
+  }
+});
 
 const addElement = () => {
   useProjectStore().solver.loadCases[0].solved = false;

@@ -114,9 +114,29 @@ const loadNodeValueFx = ref("");
 const loadNodeValueFz = ref("");
 const loadNodeValueMy = ref("");
 
-const realFx = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueFx.value)));
-const realFz = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueFz.value)));
-const realMy = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueMy.value)));
+const realFx = computed(() => {
+  if (loadType.value === "force") {
+    return appStore.convertInverseForce(parseFloat2(loadNodeValueFx.value));
+  }
+
+  return appStore.convertInverseLength(parseFloat2(loadNodeValueFx.value));
+});
+
+const realFz = computed(() => {
+  if (loadType.value === "force") {
+    return appStore.convertInverseForce(parseFloat2(loadNodeValueFz.value));
+  }
+
+  return appStore.convertInverseLength(parseFloat2(loadNodeValueFz.value));
+});
+
+const realMy = computed(() => {
+  if (loadType.value === "force") {
+    return appStore.convertInverseForce(parseFloat2(loadNodeValueMy.value));
+  }
+
+  return appStore.convertInverseLength(parseFloat2(loadNodeValueMy.value));
+});
 
 const mainLabel = computed(() => (loadType.value === "force" ? "F" : "D"));
 const momentLabel = computed(() => (loadType.value === "force" ? "M" : "R"));

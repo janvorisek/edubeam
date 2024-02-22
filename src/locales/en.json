@@ -259,5 +259,9 @@
     "nodal-load": "Nodal load",
     "element-load": "Element load",
     "prescribedbc-load": "Prescribed displacement"
+  },
+  "validators": {
+    "enterValue": "Enter a value",
+    "invalidNumber": "Invalid number"
   }
 }

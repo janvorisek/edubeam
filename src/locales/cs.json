@@ -257,5 +257,9 @@
     "nodal-load": "Uzlové zatížení",
     "element-load": "Prvkové zatížení",
     "prescribedbc-load": "Předepsané posunutí"
+  },
+  "validators": {
+    "enterValue": "Zadejte hodnotu",
+    "invalidNumber": "Neplatné číslo"
   }
 }

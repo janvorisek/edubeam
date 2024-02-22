@@ -4,7 +4,7 @@
       <v-card-title> {{ $t("dialogs.addElementLoad.addNewElementLoad") }} </v-card-title>
 
       <v-card-text>
-        <v-form>
+        <v-form v-model="valid">
           <v-container>
             <v-row no-gutters="">
               <v-col cols="12" md="12">
@@ -26,6 +26,7 @@
                   @keydown="checkNumber($event)"
                   label="fx"
                   hide-details="auto"
+                  :rules="numberRules"
                   :suffix="`${appStore.units.Force}/m`"
                 ></v-text-field>
               </v-col>
@@ -36,6 +37,7 @@
                   @keydown="checkNumber($event)"
                   label="fz"
                   hide-details="auto"
+                  :rules="numberRules"
                   :suffix="`${appStore.units.Force}/m`"
                 ></v-text-field>
               </v-col>
@@ -63,6 +65,7 @@ import { useProjectStore } from "../../store/project";
 import { useAppStore } from "../../store/app";
 import { closeModal } from "jenesius-vue-modal";
 import { checkNumber, parseFloat2 } from "@/utils";
+import { numberRules } from "../../utils";
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
@@ -72,14 +75,18 @@ const props = defineProps<{
 }>();
 
 const open = ref(true);
+const valid = ref(false);
+
 const loadElementId = ref(props.label ?? [...useProjectStore().solver.domain.elements.values()][0].label);
-const loadNodeValueFx = ref(appStore.convertForce(4000));
-const loadNodeValueFz = ref(appStore.convertForce(3000));
+const loadNodeValueFx = ref(`${appStore.convertForce(4000)}`);
+const loadNodeValueFz = ref(`${appStore.convertForce(3000)}`);
 
 const realFx = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueFx.value)));
 const realFz = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueFz.value)));
 
 const addElementLoad = () => {
+  if (valid.value === false) return;
+
   useProjectStore().solver.loadCases[0].solved = false;
   useProjectStore().solver.loadCases[0].createBeamElementUniformEdgeLoad(
     loadElementId.value,

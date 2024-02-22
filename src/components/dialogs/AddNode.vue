@@ -4,7 +4,7 @@
       <v-card-title> {{ $t("dialogs.addNode.addNewNode") }} </v-card-title>
 
       <v-card-text>
-        <v-form>
+        <v-form v-model="valid">
           <v-container>
             <v-row no-gutters>
               <v-col cols="6" md="6">
@@ -13,6 +13,7 @@
                   @keydown="checkNumber($event)"
                   :label="$t('dialogs.addNode.coordinate_x')"
                   hide-details="auto"
+                  :rules="numberRules"
                   autofocus
                   required
                 ></v-text-field>
@@ -24,6 +25,7 @@
                   @keydown="checkNumber($event)"
                   :label="$t('dialogs.addNode.coordinate_z')"
                   hide-details="auto"
+                  :rules="numberRules"
                   required
                 ></v-text-field>
               </v-col>
@@ -52,17 +54,20 @@ import { DofID, NodalLoad } from "ts-fem";
 import { closeModal } from "jenesius-vue-modal";
 import { useAppStore } from "@/store/app";
 import { checkNumber } from "@/utils";
-import { changeRefNumValue } from "../../utils";
+import { changeRefNumValue, numberRules } from "../../utils";
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
 
 const open = ref(true);
+const valid = ref(false);
 
 const newNodeX = ref("0");
 const newNodeZ = ref("0");
 
 const addNode = () => {
+  if (valid.value === false) return;
+
   useProjectStore().solver.loadCases[0].solved = false;
   const domain = projectStore.solver.domain;
 

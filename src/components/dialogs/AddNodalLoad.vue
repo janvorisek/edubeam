@@ -12,7 +12,7 @@
             :disabled="projectStore.solver.domain.nodes.get(loadNodeId).bcs.size === 0"
           ></v-radio>
         </v-radio-group>
-        <v-form>
+        <v-form v-model="valid">
           <v-container>
             <v-row no-gutters>
               <v-col cols="6" align-self="center">
@@ -41,6 +41,7 @@
                       @keydown="checkNumber($event)"
                       :label="`${mainLabel}x`"
                       hide-details="auto"
+                      :rules="numberRules"
                       :suffix="mainUnits"
                       :disabled="
                         loadType === 'displacement' && !projectStore.solver.domain.nodes.get(loadNodeId).bcs.has(0)
@@ -54,6 +55,7 @@
                       @keydown="checkNumber($event)"
                       :label="`${mainLabel}z`"
                       hide-details="auto"
+                      :rules="numberRules"
                       :suffix="mainUnits"
                       :disabled="
                         loadType === 'displacement' && !projectStore.solver.domain.nodes.get(loadNodeId).bcs.has(2)
@@ -67,6 +69,7 @@
                       @keydown="checkNumber($event)"
                       :label="`${momentLabel}y`"
                       hide-details="auto"
+                      :rules="numberRules"
                       :suffix="`${momentUnits}`"
                       :disabled="
                         loadType === 'displacement' && !projectStore.solver.domain.nodes.get(loadNodeId).bcs.has(4)
@@ -104,6 +107,7 @@ import { checkNumber, parseFloat2 } from "@/utils";
 import Vector2DHelper from "../Vector2DHelper.vue";
 import { onMounted } from "vue";
 import { watch } from "vue";
+import { numberRules } from "../../utils";
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
@@ -119,11 +123,13 @@ const props = withDefaults(
 );
 
 const open = ref(true);
+const valid = ref(false);
+
 const loadType = ref("force");
 const loadNodeId = ref(props.label ?? [...useProjectStore().solver.domain.nodes.values()][0].label);
-const loadNodeValueFx = ref(appStore.convertForce(4000));
-const loadNodeValueFz = ref(appStore.convertForce(3000));
-const loadNodeValueMy = ref("0.0");
+const loadNodeValueFx = ref(`${appStore.convertForce(4000)}`);
+const loadNodeValueFz = ref(`${appStore.convertForce(3000)}`);
+const loadNodeValueMy = ref("0");
 
 watch(loadNodeId, () => {
   if (projectStore.solver.domain.nodes.get(loadNodeId.value).bcs.size === 0) {
@@ -152,6 +158,8 @@ onMounted(() => {
 });
 
 const addNodalLoad = () => {
+  if (valid.value === false) return;
+
   useProjectStore().solver.loadCases[0].solved = false;
 
   if (loadType.value === "force") {

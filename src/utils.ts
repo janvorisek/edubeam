@@ -4,6 +4,7 @@ import { availableLocales } from "./plugins/i18n";
 import { useProjectStore } from "./store/project";
 import { Command, IKeyValue, undoRedoManager } from "./CommandManager";
 import { useViewerStore } from "./store/viewer";
+import { useI18n } from "vue-i18n";
 
 export type EntityWithLabel = { label: string & { [key: string]: unknown } };
 
@@ -266,6 +267,21 @@ export const changeRefNumValue = (value: string) => {
 
   return val;
 };
+
+export const numberRules = [
+  (v: string) => {
+    const { t } = useI18n();
+
+    if (v === "") return t("validators.enterValue");
+
+    const tmp = v.replace(/\s/g, "").replace(",", ".");
+
+    // isNaN accepts a string, the types are wrong
+    if (isNaN(tmp as unknown as number)) return t("validators.invalidNumber");
+
+    return true;
+  },
+];
 
 export const changeItem = (item: object, value: string, el?: HTMLInputElement, formatter?: (v: number) => number) => {
   setUnsolved();

@@ -13,6 +13,9 @@ import { registerPlugins } from "@/plugins";
 // Sentry
 import * as Sentry from "@sentry/vue";
 
+// Service Worker
+import { registerSW } from "virtual:pwa-register";
+
 import "./assets/main.scss";
 
 const app = createApp(App);
@@ -50,6 +53,31 @@ if (import.meta.env.PROD) {
     },*/
   });
 }
+
+const intervalMS = 60 * 60 * 1000;
+
+const updateSW = registerSW({
+  onRegisteredSW(swUrl, r) {
+    r &&
+      setInterval(async () => {
+        if (!(!r.installing && navigator)) return;
+
+        if ("connection" in navigator && !navigator.onLine) return;
+
+        const resp = await fetch(swUrl, {
+          cache: "no-store",
+          headers: {
+            cache: "no-store",
+            "cache-control": "no-cache",
+          },
+        });
+
+        if (resp?.status === 200) await r.update();
+      }, intervalMS);
+  },
+});
+
+updateSW();
 
 registerPlugins(app);
 

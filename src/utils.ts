@@ -260,6 +260,13 @@ export const changeSetArrayItem = (
   solve();
 };
 
+export const changeRefNumValue = (value: string) => {
+  const val = parseFloat(value.replace(/\s/g, "").replace(",", "."));
+  if (isNaN(val)) return 0;
+
+  return val;
+};
+
 export const changeItem = (item: object, value: string, el?: HTMLInputElement, formatter?: (v: number) => number) => {
   setUnsolved();
 

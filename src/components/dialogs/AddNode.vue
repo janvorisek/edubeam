@@ -9,13 +9,8 @@
             <v-row no-gutters>
               <v-col cols="6" md="6">
                 <v-text-field
-                  :model-value="appStore.convertLength(newNodeX)"
+                  v-model="newNodeX"
                   @keydown="checkNumber($event)"
-                  @input="
-                    newNodeX = appStore.convertInverseLength(
-                      $event.target.value !== '' ? parseFloat($event.target.value) : 0
-                    )
-                  "
                   :label="$t('dialogs.addNode.coordinate_x')"
                   hide-details="auto"
                   autofocus
@@ -25,13 +20,8 @@
 
               <v-col cols="6" md="6">
                 <v-text-field
-                  :model-value="appStore.convertLength(newNodeZ)"
+                  v-model="newNodeZ"
                   @keydown="checkNumber($event)"
-                  @input="
-                    newNodeZ = appStore.convertInverseLength(
-                      $event.target.value !== '' ? parseFloat($event.target.value) : 0
-                    )
-                  "
                   :label="$t('dialogs.addNode.coordinate_z')"
                   hide-details="auto"
                   required
@@ -62,14 +52,15 @@ import { DofID, NodalLoad } from "ts-fem";
 import { closeModal } from "jenesius-vue-modal";
 import { useAppStore } from "@/store/app";
 import { checkNumber } from "@/utils";
+import { changeRefNumValue } from "../../utils";
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
 
 const open = ref(true);
 
-const newNodeX = ref(0.0);
-const newNodeZ = ref(0.0);
+const newNodeX = ref("0");
+const newNodeZ = ref("0");
 
 const addNode = () => {
   useProjectStore().solver.loadCases[0].solved = false;
@@ -81,7 +72,10 @@ const addNode = () => {
     nid++;
   }
 
-  domain.createNode(nid, [newNodeX.value, 0.0, newNodeZ.value]);
+  const nx = appStore.convertInverseLength(changeRefNumValue(newNodeX.value.toString()));
+  const nz = appStore.convertInverseLength(changeRefNumValue(newNodeZ.value.toString()));
+
+  domain.createNode(nid, [nx, 0.0, nz]);
 
   domain.nodes = new Map(domain.nodes);
 

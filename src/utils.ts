@@ -244,14 +244,14 @@ export const changeSetArrayItem = (
   {
     const setCommand = new Command<IKeyValue>(
       (value) => {
-        value.item[value.set][value.value] = formatter(value.next) as number;
+        value.item[value.set][value.value] = value.next as number;
         solve();
       },
       (value) => {
         value.item[value.set][value.value] = value.prev as number;
         solve();
       },
-      { item, set, value, prev: prevVal, next: val }
+      { item, set, value, prev: prevVal, next: item[set][value] }
     );
 
     undoRedoManager.executeCommand(setCommand); // execute command
@@ -268,7 +268,7 @@ export const changeItem = (item: object, value: string, el?: HTMLInputElement, f
   if (el.value === "") el.value = "0";
 
   const val = parseFloat(el.value.replace(/\s/g, "").replace(",", "."));
-  if (isNaN(val)) return (el.value = item[value]);
+  //if (isNaN(val)) return (el.value = item[value]);
 
   if (formatter) item[value] = formatter(val);
   else item[value] = val;
@@ -284,7 +284,7 @@ export const changeItem = (item: object, value: string, el?: HTMLInputElement, f
         value.item[value.value] = value.prev as number;
         solve();
       },
-      { item, value, prev: prevVal, next: val }
+      { item, value, prev: prevVal, next: item[value] }
     );
 
     undoRedoManager.executeCommand(setCommand); // execute command

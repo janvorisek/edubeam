@@ -1,10 +1,9 @@
 import { Beam2D, BeamElementUniformEdgeLoad, LinearStaticSolver, NodalLoad, Node } from "ts-fem";
 import { Ref } from "vue";
-import { availableLocales } from "./plugins/i18n";
+import { availableLocales, i18n } from "./plugins/i18n";
 import { useProjectStore } from "./store/project";
 import { Command, IKeyValue, undoRedoManager } from "./CommandManager";
 import { useViewerStore } from "./store/viewer";
-import { useI18n } from "vue-i18n";
 
 export type EntityWithLabel = { label: string & { [key: string]: unknown } };
 
@@ -270,14 +269,12 @@ export const changeRefNumValue = (value: string) => {
 
 export const numberRules = [
   (v: string) => {
-    const { t } = useI18n();
-
-    if (v === "") return t("validators.enterValue");
+    if (v === "") return i18n.global.t("validators.enterValue");
 
     const tmp = v.replace(/\s/g, "").replace(",", ".");
 
     // isNaN accepts a string, the types are wrong
-    if (isNaN(tmp as unknown as number)) return t("validators.invalidNumber");
+    if (isNaN(tmp as unknown as number)) return i18n.global.t("validators.invalidNumber");
 
     return true;
   },

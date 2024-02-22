@@ -1,6 +1,6 @@
 // Utilities
 import { defineStore } from "pinia";
-import { reactive, ref, markRaw, type Ref, watch, Raw, Component, computed } from "vue";
+import { reactive, ref, markRaw, type Ref, watch, Raw, Component, computed, nextTick } from "vue";
 
 import SVGViewer from "../components/SVGViewer.vue";
 // import Results from "../components/Results.vue";
@@ -58,6 +58,11 @@ export const useAppStore = defineStore(
         _convertInversePressure = Qty.swiftConverter(newUnits.Pressure, "Pa");
         _convertForce = Qty.swiftConverter("N", newUnits.Force);
         _convertInverseForce = Qty.swiftConverter(newUnits.Force, "N");
+
+        if (useAppStore().bottomBarOpen) useAppStore().bottomBarOpen = false;
+        nextTick(() => {
+          useAppStore().bottomBarOpen = true;
+        });
       },
       { immediate: true }
     );

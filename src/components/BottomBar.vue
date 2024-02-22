@@ -445,7 +445,7 @@
               <v-btn
                 density="compact"
                 variant="text"
-                @click="layoutStore.openWidget('Stiffnes matrix', StiffnessMatrix, { label: item.label })"
+                @click="layoutStore.openWidget($t('common.stiffnessMatrix'), StiffnessMatrix, { label: item.label })"
                 icon="mdi-matrix"
               ></v-btn>
               <v-btn density="compact" variant="text" @click="deleteElement(item.label)" icon="mdi-close"></v-btn>

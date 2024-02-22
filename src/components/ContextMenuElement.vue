@@ -4,13 +4,28 @@ import AddElementLoadDialog from "./dialogs/AddElementLoad.vue";
 import { useProjectStore } from "@/store/project";
 import { useLayoutStore } from "@/store/layout";
 import StiffnessMatrix from "./StiffnessMatrix.vue";
-import { computed } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
+import { setUnsolved, solve } from "../utils";
 
 const projectStore = useProjectStore();
 const layoutStore = useLayoutStore();
 
+const n1 = ref("");
+const n2 = ref("");
+
 const element = computed(() => {
   return useProjectStore().solver.domain.getElement(projectStore.selection.label);
+});
+
+onMounted(() => {
+  n1.value = element.value.nodes[0];
+  n2.value = element.value.nodes[1];
+});
+
+watch([n1, n2], () => {
+  setUnsolved();
+  element.value.nodes = [n1.value, n2.value];
+  solve();
 });
 </script>
 
@@ -26,7 +41,7 @@ const element = computed(() => {
           <v-row no-gutters>
             <v-col>
               <v-select
-                v-model="element.nodes[0]"
+                v-model="n1"
                 density="compact"
                 label="From"
                 hide-details="auto"
@@ -38,7 +53,7 @@ const element = computed(() => {
             </v-col>
             <v-col>
               <v-select
-                v-model="element.nodes[1]"
+                v-model="n2"
                 density="compact"
                 label="To"
                 hide-details="auto"

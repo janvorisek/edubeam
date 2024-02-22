@@ -296,7 +296,16 @@
           <template #item.type> Beam2D </template>
           <template #item.nodes="{ item }">
             <div class="d-flex">
-              <select class="mini-select flex-shrink-0" v-model="item.nodes[0]" @change="solve" style="width: 100px">
+              <select
+                class="mini-select flex-shrink-0"
+                :value="item.nodes[0]"
+                @change="
+                  setUnsolved();
+                  item.nodes[0] = $event.target.value;
+                  solve();
+                "
+                style="width: 100px"
+              >
                 <option
                   v-for="node in nodes.filter((e) => e.label != item.nodes[1])"
                   :value="node.label"
@@ -309,7 +318,16 @@
                 <v-icon small>mdi-swap-horizontal</v-icon>
                 <v-tooltip :text="$t('elements.swapNodeOrder')" location="bottom" activator="parent"></v-tooltip>
               </a>
-              <select class="mini-select flex-shrink-0" v-model="item.nodes[1]" @change="solve" style="width: 100px">
+              <select
+                class="mini-select flex-shrink-0"
+                :value="item.nodes[1]"
+                @change="
+                  setUnsolved();
+                  item.nodes[1] = $event.target.value;
+                  solve();
+                "
+                style="width: 100px"
+              >
                 <option
                   v-for="node in nodes.filter((e) => e.label != item.nodes[0])"
                   :value="node.label"
@@ -321,7 +339,15 @@
             </div>
           </template>
           <template #item.material="{ item }">
-            <select class="mini-select" v-model.number="item.mat" @change="solve" style="width: 100%">
+            <select
+              class="mini-select"
+              v-model.number="item.mat"
+              @change="
+                setUnsolved();
+                solve();
+              "
+              style="width: 100%"
+            >
               <option v-for="node in materials" :value="node.label" :key="node.label">
                 {{ node.label }}
               </option>
@@ -333,7 +359,15 @@
             />-->
           </template>
           <template #item.cs="{ item }">
-            <select class="mini-select" v-model.number="item.cs" @change="solve" style="width: 100%">
+            <select
+              class="mini-select"
+              v-model.number="item.cs"
+              @change="
+                setUnsolved();
+                solve();
+              "
+              style="width: 100%"
+            >
               <option v-for="node in crossSections" :value="node.label" :key="node.label">
                 {{ node.label }}
               </option>
@@ -359,7 +393,15 @@
             </div>
           </template>
           <template #item.diagonalMassMatrix="{ item }">
-            <select class="mini-select" v-model="item.diagonalMassMatrix" @change="solve" style="width: 100%">
+            <select
+              class="mini-select"
+              v-model="item.diagonalMassMatrix"
+              @change="
+                setUnsolved();
+                solve();
+              "
+              style="width: 100%"
+            >
               <option :value="false">consistent</option>
               <option :value="true">lumped</option>
             </select>
@@ -639,7 +681,10 @@
               class="mini-select"
               v-if="item.type === 'node'"
               v-model="item.ref.target"
-              @change="solve"
+              @change="
+                setUnsolved();
+                solve();
+              "
               style="width: 100%"
             >
               <option v-for="node in nodes" :value="node.label" :key="node.label">
@@ -651,7 +696,10 @@
               class="mini-select"
               v-else-if="item.type === 'prescribed'"
               v-model="item.ref.target"
-              @change="solve"
+              @change="
+                setUnsolved();
+                solve();
+              "
               style="width: 100%"
             >
               <option v-for="node in nodes.filter((n) => n.bcs.size > 0)" :value="node.label" :key="node.label">
@@ -663,7 +711,10 @@
               class="mini-select"
               v-else-if="item.type === 'element'"
               v-model="item.ref.target"
-              @change="solve"
+              @change="
+                setUnsolved();
+                solve();
+              "
               style="width: 100%"
             >
               <option v-for="node in elements" :value="node.label" :key="node.label">

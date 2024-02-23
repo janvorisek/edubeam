@@ -25,7 +25,10 @@ async function close() {
 }
 
 async function update() {
-  await updateServiceWorker(true);
+  updateServiceWorker(true);
+
+  // Todo: sometimes, the previous line doesnt work across all tabs
+  needRefresh.value = false;
 }
 </script>
 

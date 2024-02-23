@@ -115,6 +115,7 @@ export const serializeModel = (ls: LinearStaticSolver) => {
   const _css = [];
   const eloads = [];
   const nloads = [];
+  const pd = [];
 
   ls.domain.nodes.forEach((node, id) => {
     _nodes.push([id, node.coords, Array.from(node.bcs.values())]);
@@ -140,7 +141,11 @@ export const serializeModel = (ls: LinearStaticSolver) => {
     nloads.push([load.target, load.values]);
   });
 
-  return objectToBase64({ n: _nodes, e: _elements, m: _materials, cs: _css, el: eloads, nl: nloads });
+  ls.loadCases[0].prescribedBC.forEach((load) => {
+    pd.push([load.target, load.prescribedValues]);
+  });
+
+  return objectToBase64({ n: _nodes, e: _elements, m: _materials, cs: _css, el: eloads, nl: nloads, pd });
 };
 
 export const deserializeModel = (base64String: string, ls: LinearStaticSolver) => {
@@ -172,6 +177,12 @@ export const deserializeModel = (base64String: string, ls: LinearStaticSolver) =
 
   for (const e of tmp.nl) {
     ls.loadCases[0].createNodalLoad(e[0], e[1]);
+  }
+
+  if ("pd" in tmp) {
+    for (const e of tmp.pd) {
+      ls.loadCases[0].createPrescribedDisplacement(e[0], e[1]);
+    }
   }
 };
 

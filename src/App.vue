@@ -2,7 +2,7 @@
 import { container, openModal } from "jenesius-vue-modal";
 import { deserializeModel } from "./utils";
 import { provide } from "vue";
-import { Command, CommandManager, IKeyValue, undoRedoManager } from "./CommandManager";
+import { undoRedoManager } from "./CommandManager";
 import { useViewerStore } from "./store/viewer";
 import Confirmation from "./components/dialogs/Confirmation.vue";
 
@@ -135,16 +135,14 @@ onMounted(() => {
 
   if (domain.nodes.size > 0) return;
 
-  //@ts-expect-error ts-fem is wrongly typed
-  domain.createNode("a", [0, 0, 0], [DofID.Dx, DofID.Ry, DofID.Dz]);
+  domain.createNode(1, [0, 0, 0], [DofID.Dx, DofID.Ry, DofID.Dz]);
   domain.createNode(2, [0, 0, -3], []);
   domain.createNode(3, [3, 0, -3], []);
   domain.createNode(4, [3, 0, 0], [DofID.Dx, DofID.Dz]);
 
   domain.nodes = new Map(domain.nodes);
 
-  //@ts-expect-error ts-fem is wrongly typed
-  domain.createBeam2D(1, ["a", 2], 1, 1, [false, true]);
+  domain.createBeam2D(1, [1, 2], 1, 1, [false, true]);
   domain.createBeam2D(2, [2, 3], 1, 1);
   domain.createBeam2D(3, [4, 3], 1, 1);
 

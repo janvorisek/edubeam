@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { useRegisterSW } from "virtual:pwa-register/vue";
-import { ref } from "vue";
-
-const open = ref(true);
 
 const { offlineReady, needRefresh, updateServiceWorker } = useRegisterSW({
   immediate: true,
@@ -26,14 +23,11 @@ async function close() {
 
 async function update() {
   updateServiceWorker(true);
-
-  // Todo: sometimes, the previous line doesnt work across all tabs
-  needRefresh.value = false;
 }
 </script>
 
 <template>
-  <v-dialog v-model="open" max-width="420" v-if="needRefresh">
+  <v-dialog v-model="needRefresh" max-width="420">
     <v-card>
       <v-card-title> {{ $t("dialogs.update.title") }} </v-card-title>
 

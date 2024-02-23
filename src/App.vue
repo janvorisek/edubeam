@@ -5,6 +5,7 @@ import { provide } from "vue";
 import { undoRedoManager } from "./CommandManager";
 import { useViewerStore } from "./store/viewer";
 import Confirmation from "./components/dialogs/Confirmation.vue";
+import ReloadPrompt from "./components/ReloadPrompt.vue";
 
 export default {
   components: { WidgetContainerModal: container },
@@ -364,6 +365,7 @@ const app_released = APP_RELEASED;
       </div>
       <div>edubeam v{{ app_version }} {{ $t("footer.released") }} {{ app_released }}</div>
     </div> -->
+    <ReloadPrompt />
   </v-app>
 </template>
 

@@ -58,6 +58,7 @@
           ref="table-nodes"
           :headers="headers.nodes"
           :items="nodes"
+          :row-props="nodeRowProps"
           density="compact"
           :height="props.height - 36 - 30"
           fixed-header
@@ -1248,18 +1249,27 @@ const showDialog = (
 
 const nodes = computed(() => {
   const nodeVals = useProjectStore().solver.domain.nodes.values();
-  let display: Node[] = [];
+  const display: Node[] = [];
+  const displaySelected: Node[] = [];
 
   for (const node of nodeVals) {
-    display.push(node);
+    if (useProjectStore().selection2.nodes.includes(node.label)) {
+      displaySelected.push(node);
+    } else {
+      display.push(node);
+    }
   }
 
-  if (projStore.selection.type === "node") {
-    display = display.filter((e) => e.label === projStore.selection.label);
-  }
+  //if (projStore.selection.type === "node") {
+  //  display = display.filter((e) => e.label === projStore.selection.label);
+  //}
 
-  // @ts-expect-error ts-fem is wrongly typed
-  return display.sort((a, b) => ("" + a.label).localeCompare(b.label, undefined, { numeric: true }));
+  const sortDisplay = display.sort((a, b) => ("" + a.label).localeCompare(b.label, undefined, { numeric: true }));
+  const sortDisplaySelected = displaySelected.sort((a, b) =>
+    ("" + a.label).localeCompare(b.label, undefined, { numeric: true })
+  );
+
+  return [...sortDisplaySelected, ...sortDisplay];
 });
 
 const elements = computed(() => {
@@ -1344,6 +1354,12 @@ const crossSections = computed(() => {
   return display;
 });
 
+function nodeRowProps(item) {
+  if (useProjectStore().selection2.nodes.includes(item.item.label)) {
+    return { class: "selected" };
+  }
+}
+
 const formatNodalLoadsAtNode = (item: Node): [number, string][] => {
   const nls = useProjectStore()
     .solver.loadCases[0].nodalLoadList.map((nl, index) => {
@@ -1396,7 +1412,9 @@ const tabs = reactive([
     title: "tabs.loads",
     icon: "mdi-arrow-down-thin",
     count: () =>
-      projStore.solver.loadCases[0].nodalLoadList.length + projStore.solver.loadCases[0].elementLoadList.length,
+      projStore.solver.loadCases[0].nodalLoadList.length +
+      projStore.solver.loadCases[0].elementLoadList.length +
+      projStore.solver.loadCases[0].prescribedBC.length,
   },
   { id: "mats", title: "tabs.materials", icon: "mdi-texture-box", count: () => projStore.solver.domain.materials.size },
   {

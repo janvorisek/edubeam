@@ -256,6 +256,7 @@
         <v-data-table
           :headers="headers.elements"
           :items="elements"
+          :row-props="elementRowProps"
           density="compact"
           :height="props.height - 36 - 30"
           fixed-header
@@ -1274,17 +1275,28 @@ const nodes = computed(() => {
 
 const elements = computed(() => {
   const elements = useProjectStore().solver.domain.elements.values();
-  let display: Element[] = [];
+
+  const display: Element[] = [];
+  const displaySelected: Element[] = [];
 
   for (const element of elements) {
-    display.push(element);
+    if (useProjectStore().selection2.elements.includes(element.label)) {
+      displaySelected.push(element);
+    } else {
+      display.push(element);
+    }
   }
 
-  if (projStore.selection.type === "element") {
-    display = display.filter((e) => e.label === projStore.selection.label);
-  }
+  // if (projStore.selection.type === "element") {
+  //   display = display.filter((e) => e.label === projStore.selection.label);
+  // }
 
-  return display;
+  const sortDisplay = display.sort((a, b) => ("" + a.label).localeCompare(b.label, undefined, { numeric: true }));
+  const sortDisplaySelected = displaySelected.sort((a, b) =>
+    ("" + a.label).localeCompare(b.label, undefined, { numeric: true })
+  );
+
+  return [...sortDisplaySelected, ...sortDisplay];
 });
 
 const loads = computed(() => {
@@ -1356,6 +1368,12 @@ const crossSections = computed(() => {
 
 function nodeRowProps(item) {
   if (useProjectStore().selection2.nodes.includes(item.item.label)) {
+    return { class: "selected" };
+  }
+}
+
+function elementRowProps(item) {
+  if (useProjectStore().selection2.elements.includes(item.item.label)) {
     return { class: "selected" };
   }
 }

@@ -541,7 +541,11 @@ export const deleteCrossSection = (id: string) => {
 export const deleteNodalLoad = (load: NodalLoad, id: number) => {
   setUnsolved();
   useProjectStore().clearSelection();
-  useProjectStore().solver.loadCases[0].nodalLoadList.splice(id, 1);
+  const _id =
+    id -
+    useProjectStore().solver.loadCases[0].elementLoadList.length -
+    useProjectStore().solver.loadCases[0].prescribedBC.length;
+  useProjectStore().solver.loadCases[0].nodalLoadList.splice(_id, 1);
   solve();
 };
 
@@ -555,7 +559,8 @@ export const deleteElementLoad = (load: BeamElementUniformEdgeLoad, id: number) 
 export const deletePrescribedDisplacement = (load: BeamElementUniformEdgeLoad, id: number) => {
   setUnsolved();
   useProjectStore().clearSelection();
-  useProjectStore().solver.loadCases[0].prescribedBC.splice(id, 1);
+  const _id = id - useProjectStore().solver.loadCases[0].elementLoadList.length;
+  useProjectStore().solver.loadCases[0].prescribedBC.splice(_id, 1);
   solve();
 };
 

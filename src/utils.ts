@@ -145,7 +145,25 @@ export const serializeModel = (ls: LinearStaticSolver) => {
     pd.push([load.target, load.prescribedValues]);
   });
 
-  return objectToBase64({ n: _nodes, e: _elements, m: _materials, cs: _css, el: eloads, nl: nloads, pd });
+  const obj: {
+    n?: unknown[];
+    e?: unknown[];
+    m?: unknown[];
+    cs?: unknown[];
+    el?: unknown[];
+    nl?: unknown[];
+    pd?: unknown[];
+  } = {};
+
+  if (_nodes.length > 0) obj.n = _nodes;
+  if (_elements.length > 0) obj.e = _elements;
+  if (_materials.length > 0) obj.m = _materials;
+  if (_css.length > 0) obj.cs = _css;
+  if (eloads.length > 0) obj.el = eloads;
+  if (nloads.length > 0) obj.nl = nloads;
+  if (pd.length > 0) obj.pd = pd;
+
+  return objectToBase64(obj);
 };
 
 export const deserializeModel = (base64String: string, ls: LinearStaticSolver) => {
@@ -155,28 +173,40 @@ export const deserializeModel = (base64String: string, ls: LinearStaticSolver) =
   ls.domain.nodes.clear();
   ls.domain.elements.clear();
 
-  for (const e of tmp.n) {
-    ls.domain.createNode(e[0], e[1], e[2]);
+  if ("n" in tmp) {
+    for (const e of tmp.n) {
+      ls.domain.createNode(e[0], e[1], e[2]);
+    }
   }
 
-  for (const e of tmp.e) {
-    ls.domain.createBeam2D(e[0], e[1], e[2], e[3], e[4]);
+  if ("e" in tmp) {
+    for (const e of tmp.e) {
+      ls.domain.createBeam2D(e[0], e[1], e[2], e[3], e[4]);
+    }
   }
 
-  for (const e of tmp.m) {
-    ls.domain.createMaterial(e[0], { d: e[1], e: e[2], g: e[3], alpha: e[4] });
+  if ("m" in tmp) {
+    for (const e of tmp.m) {
+      ls.domain.createMaterial(e[0], { d: e[1], e: e[2], g: e[3], alpha: e[4] });
+    }
   }
 
-  for (const e of tmp.cs) {
-    ls.domain.createCrossSection(e[0], { a: e[1], iy: e[2], h: e[3], k: e[4] });
+  if ("cs" in tmp) {
+    for (const e of tmp.cs) {
+      ls.domain.createCrossSection(e[0], { a: e[1], iy: e[2], h: e[3], k: e[4] });
+    }
   }
 
-  for (const e of tmp.el) {
-    ls.loadCases[0].createBeamElementUniformEdgeLoad(e[0], e[1], true);
+  if ("el" in tmp) {
+    for (const e of tmp.el) {
+      ls.loadCases[0].createBeamElementUniformEdgeLoad(e[0], e[1], true);
+    }
   }
 
-  for (const e of tmp.nl) {
-    ls.loadCases[0].createNodalLoad(e[0], e[1]);
+  if ("nl" in tmp) {
+    for (const e of tmp.nl) {
+      ls.loadCases[0].createNodalLoad(e[0], e[1]);
+    }
   }
 
   if ("pd" in tmp) {

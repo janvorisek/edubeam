@@ -216,8 +216,6 @@ const app_version = APP_VERSION;
 
 // eslint-disable-next-line no-undef
 const app_released = APP_RELEASED;
-
-const testUpdate = false;
 </script>
 
 <template>

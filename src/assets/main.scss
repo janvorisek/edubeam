@@ -194,6 +194,10 @@ select.mini-select {
   }
 }
 
+.v-table table tr.selected td {
+  background: #ecedf7 !important;
+}
+
 .v-table > .v-table__wrapper > table > tbody > tr > td,
 .v-table > .v-table__wrapper > table > tbody > tr > th,
 .v-table > .v-table__wrapper > table > thead > tr > td,

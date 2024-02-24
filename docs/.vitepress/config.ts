@@ -133,7 +133,7 @@ export default defineConfig({
       
     ],
 
-    socialLinks: [{ icon: "github", link: "https://github.com/janvorisek/edubeam" }],
+    socialLinks: [{ icon: "github", link: "https://github.com/janvorisek/edubeam" }, { icon: "twitter", link: "https://twitter.com/EdubeamApp" }],
   },
   head: [
     ['link', { rel: 'icon', href: '/logo.png' }],

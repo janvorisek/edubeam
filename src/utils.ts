@@ -1,6 +1,6 @@
 import { Beam2D, BeamElementUniformEdgeLoad, LinearStaticSolver, NodalLoad, Node } from "ts-fem";
 import { Ref } from "vue";
-import { availableLocales } from "./plugins/i18n";
+import { availableLocales, i18n } from "./plugins/i18n";
 import { useProjectStore } from "./store/project";
 import { Command, IKeyValue, undoRedoManager } from "./CommandManager";
 import { useViewerStore } from "./store/viewer";
@@ -115,6 +115,7 @@ export const serializeModel = (ls: LinearStaticSolver) => {
   const _css = [];
   const eloads = [];
   const nloads = [];
+  const pd = [];
 
   ls.domain.nodes.forEach((node, id) => {
     _nodes.push([id, node.coords, Array.from(node.bcs.values())]);
@@ -140,7 +141,29 @@ export const serializeModel = (ls: LinearStaticSolver) => {
     nloads.push([load.target, load.values]);
   });
 
-  return objectToBase64({ n: _nodes, e: _elements, m: _materials, cs: _css, el: eloads, nl: nloads });
+  ls.loadCases[0].prescribedBC.forEach((load) => {
+    pd.push([load.target, load.prescribedValues]);
+  });
+
+  const obj: {
+    n?: unknown[];
+    e?: unknown[];
+    m?: unknown[];
+    cs?: unknown[];
+    el?: unknown[];
+    nl?: unknown[];
+    pd?: unknown[];
+  } = {};
+
+  if (_nodes.length > 0) obj.n = _nodes;
+  if (_elements.length > 0) obj.e = _elements;
+  if (_materials.length > 0) obj.m = _materials;
+  if (_css.length > 0) obj.cs = _css;
+  if (eloads.length > 0) obj.el = eloads;
+  if (nloads.length > 0) obj.nl = nloads;
+  if (pd.length > 0) obj.pd = pd;
+
+  return objectToBase64(obj);
 };
 
 export const deserializeModel = (base64String: string, ls: LinearStaticSolver) => {
@@ -150,28 +173,46 @@ export const deserializeModel = (base64String: string, ls: LinearStaticSolver) =
   ls.domain.nodes.clear();
   ls.domain.elements.clear();
 
-  for (const e of tmp.n) {
-    ls.domain.createNode(e[0], e[1], e[2]);
+  if ("n" in tmp) {
+    for (const e of tmp.n) {
+      ls.domain.createNode(e[0], e[1], e[2]);
+    }
   }
 
-  for (const e of tmp.e) {
-    ls.domain.createBeam2D(e[0], e[1], e[2], e[3], e[4]);
+  if ("e" in tmp) {
+    for (const e of tmp.e) {
+      ls.domain.createBeam2D(e[0], e[1], e[2], e[3], e[4]);
+    }
   }
 
-  for (const e of tmp.m) {
-    ls.domain.createMaterial(e[0], { d: e[1], e: e[2], g: e[3], alpha: e[4] });
+  if ("m" in tmp) {
+    for (const e of tmp.m) {
+      ls.domain.createMaterial(e[0], { d: e[1], e: e[2], g: e[3], alpha: e[4] });
+    }
   }
 
-  for (const e of tmp.cs) {
-    ls.domain.createCrossSection(e[0], { a: e[1], iy: e[2], h: e[3], k: e[4] });
+  if ("cs" in tmp) {
+    for (const e of tmp.cs) {
+      ls.domain.createCrossSection(e[0], { a: e[1], iy: e[2], h: e[3], k: e[4] });
+    }
   }
 
-  for (const e of tmp.el) {
-    ls.loadCases[0].createBeamElementUniformEdgeLoad(e[0], e[1], true);
+  if ("el" in tmp) {
+    for (const e of tmp.el) {
+      ls.loadCases[0].createBeamElementUniformEdgeLoad(e[0], e[1], true);
+    }
   }
 
-  for (const e of tmp.nl) {
-    ls.loadCases[0].createNodalLoad(e[0], e[1]);
+  if ("nl" in tmp) {
+    for (const e of tmp.nl) {
+      ls.loadCases[0].createNodalLoad(e[0], e[1]);
+    }
+  }
+
+  if ("pd" in tmp) {
+    for (const e of tmp.pd) {
+      ls.loadCases[0].createPrescribedDisplacement(e[0], e[1]);
+    }
   }
 };
 
@@ -244,14 +285,14 @@ export const changeSetArrayItem = (
   {
     const setCommand = new Command<IKeyValue>(
       (value) => {
-        value.item[value.set][value.value] = formatter(value.next) as number;
+        value.item[value.set][value.value] = value.next as number;
         solve();
       },
       (value) => {
         value.item[value.set][value.value] = value.prev as number;
         solve();
       },
-      { item, set, value, prev: prevVal, next: val }
+      { item, set, value, prev: prevVal, next: item[set][value] }
     );
 
     undoRedoManager.executeCommand(setCommand); // execute command
@@ -259,6 +300,26 @@ export const changeSetArrayItem = (
 
   solve();
 };
+
+export const changeRefNumValue = (value: string) => {
+  const val = parseFloat(value.replace(/\s/g, "").replace(",", "."));
+  if (isNaN(val)) return 0;
+
+  return val;
+};
+
+export const numberRules = [
+  (v: string) => {
+    if (v === "") return i18n.global.t("validators.enterValue");
+
+    const tmp = v.replace(/\s/g, "").replace(",", ".");
+
+    // isNaN accepts a string, the types are wrong
+    if (isNaN(tmp as unknown as number)) return i18n.global.t("validators.invalidNumber");
+
+    return true;
+  },
+];
 
 export const changeItem = (item: object, value: string, el?: HTMLInputElement, formatter?: (v: number) => number) => {
   setUnsolved();
@@ -268,7 +329,7 @@ export const changeItem = (item: object, value: string, el?: HTMLInputElement, f
   if (el.value === "") el.value = "0";
 
   const val = parseFloat(el.value.replace(/\s/g, "").replace(",", "."));
-  if (isNaN(val)) return (el.value = item[value]);
+  //if (isNaN(val)) return (el.value = item[value]);
 
   if (formatter) item[value] = formatter(val);
   else item[value] = val;
@@ -284,7 +345,7 @@ export const changeItem = (item: object, value: string, el?: HTMLInputElement, f
         value.item[value.value] = value.prev as number;
         solve();
       },
-      { item, value, prev: prevVal, next: val }
+      { item, value, prev: prevVal, next: item[value] }
     );
 
     undoRedoManager.executeCommand(setCommand); // execute command
@@ -521,7 +582,11 @@ export const deleteCrossSection = (id: string) => {
 export const deleteNodalLoad = (load: NodalLoad, id: number) => {
   setUnsolved();
   useProjectStore().clearSelection();
-  useProjectStore().solver.loadCases[0].nodalLoadList.splice(id, 1);
+  const _id =
+    id -
+    useProjectStore().solver.loadCases[0].elementLoadList.length -
+    useProjectStore().solver.loadCases[0].prescribedBC.length;
+  useProjectStore().solver.loadCases[0].nodalLoadList.splice(_id, 1);
   solve();
 };
 
@@ -535,7 +600,8 @@ export const deleteElementLoad = (load: BeamElementUniformEdgeLoad, id: number) 
 export const deletePrescribedDisplacement = (load: BeamElementUniformEdgeLoad, id: number) => {
   setUnsolved();
   useProjectStore().clearSelection();
-  useProjectStore().solver.loadCases[0].prescribedBC.splice(id, 1);
+  const _id = id - useProjectStore().solver.loadCases[0].elementLoadList.length;
+  useProjectStore().solver.loadCases[0].prescribedBC.splice(_id, 1);
   solve();
 };
 

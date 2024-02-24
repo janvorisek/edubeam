@@ -25,8 +25,6 @@ export async function setLocale(locale: string) {
   // Add Vuetify translations.
   i18n.global.setLocaleMessage(locale, { ...i18n.global.getLocaleMessage(locale), $vuetify: { ...vloc[locale] } });
 
-  console.log(i18n.global.messages);
-
   // Set locale.
   i18n.global.locale.value = locale;
 }

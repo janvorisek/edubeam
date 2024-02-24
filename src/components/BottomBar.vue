@@ -58,6 +58,7 @@
           ref="table-nodes"
           :headers="headers.nodes"
           :items="nodes"
+          :row-props="nodeRowProps"
           density="compact"
           :height="props.height - 36 - 30"
           fixed-header
@@ -255,6 +256,7 @@
         <v-data-table
           :headers="headers.elements"
           :items="elements"
+          :row-props="elementRowProps"
           density="compact"
           :height="props.height - 36 - 30"
           fixed-header
@@ -296,7 +298,16 @@
           <template #item.type> Beam2D </template>
           <template #item.nodes="{ item }">
             <div class="d-flex">
-              <select class="mini-select flex-shrink-0" v-model="item.nodes[0]" @change="solve" style="width: 100px">
+              <select
+                class="mini-select flex-shrink-0"
+                :value="item.nodes[0]"
+                @change="
+                  setUnsolved();
+                  item.nodes[0] = $event.target.value;
+                  solve();
+                "
+                style="width: 100px"
+              >
                 <option
                   v-for="node in nodes.filter((e) => e.label != item.nodes[1])"
                   :value="node.label"
@@ -309,7 +320,16 @@
                 <v-icon small>mdi-swap-horizontal</v-icon>
                 <v-tooltip :text="$t('elements.swapNodeOrder')" location="bottom" activator="parent"></v-tooltip>
               </a>
-              <select class="mini-select flex-shrink-0" v-model="item.nodes[1]" @change="solve" style="width: 100px">
+              <select
+                class="mini-select flex-shrink-0"
+                :value="item.nodes[1]"
+                @change="
+                  setUnsolved();
+                  item.nodes[1] = $event.target.value;
+                  solve();
+                "
+                style="width: 100px"
+              >
                 <option
                   v-for="node in nodes.filter((e) => e.label != item.nodes[0])"
                   :value="node.label"
@@ -321,7 +341,15 @@
             </div>
           </template>
           <template #item.material="{ item }">
-            <select class="mini-select" v-model.number="item.mat" @change="solve" style="width: 100%">
+            <select
+              class="mini-select"
+              v-model.number="item.mat"
+              @change="
+                setUnsolved();
+                solve();
+              "
+              style="width: 100%"
+            >
               <option v-for="node in materials" :value="node.label" :key="node.label">
                 {{ node.label }}
               </option>
@@ -333,7 +361,15 @@
             />-->
           </template>
           <template #item.cs="{ item }">
-            <select class="mini-select" v-model.number="item.cs" @change="solve" style="width: 100%">
+            <select
+              class="mini-select"
+              v-model.number="item.cs"
+              @change="
+                setUnsolved();
+                solve();
+              "
+              style="width: 100%"
+            >
               <option v-for="node in crossSections" :value="node.label" :key="node.label">
                 {{ node.label }}
               </option>
@@ -359,7 +395,15 @@
             </div>
           </template>
           <template #item.diagonalMassMatrix="{ item }">
-            <select class="mini-select" v-model="item.diagonalMassMatrix" @change="solve" style="width: 100%">
+            <select
+              class="mini-select"
+              v-model="item.diagonalMassMatrix"
+              @change="
+                setUnsolved();
+                solve();
+              "
+              style="width: 100%"
+            >
               <option :value="false">consistent</option>
               <option :value="true">lumped</option>
             </select>
@@ -403,7 +447,7 @@
               <v-btn
                 density="compact"
                 variant="text"
-                @click="layoutStore.openWidget('Stiffnes matrix', StiffnessMatrix, { label: item.label })"
+                @click="layoutStore.openWidget($t('common.stiffnessMatrix'), StiffnessMatrix, { label: item.label })"
                 icon="mdi-matrix"
               ></v-btn>
               <v-btn density="compact" variant="text" @click="deleteElement(item.label)" icon="mdi-close"></v-btn>
@@ -639,7 +683,10 @@
               class="mini-select"
               v-if="item.type === 'node'"
               v-model="item.ref.target"
-              @change="solve"
+              @change="
+                setUnsolved();
+                solve();
+              "
               style="width: 100%"
             >
               <option v-for="node in nodes" :value="node.label" :key="node.label">
@@ -651,7 +698,10 @@
               class="mini-select"
               v-else-if="item.type === 'prescribed'"
               v-model="item.ref.target"
-              @change="solve"
+              @change="
+                setUnsolved();
+                solve();
+              "
               style="width: 100%"
             >
               <option v-for="node in nodes.filter((n) => n.bcs.size > 0)" :value="node.label" :key="node.label">
@@ -663,7 +713,10 @@
               class="mini-select"
               v-else-if="item.type === 'element'"
               v-model="item.ref.target"
-              @change="solve"
+              @change="
+                setUnsolved();
+                solve();
+              "
               style="width: 100%"
             >
               <option v-for="node in elements" :value="node.label" :key="node.label">
@@ -1197,33 +1250,53 @@ const showDialog = (
 
 const nodes = computed(() => {
   const nodeVals = useProjectStore().solver.domain.nodes.values();
-  let display: Node[] = [];
+  const display: Node[] = [];
+  const displaySelected: Node[] = [];
 
   for (const node of nodeVals) {
-    display.push(node);
+    if (useProjectStore().selection2.nodes.includes(node.label)) {
+      displaySelected.push(node);
+    } else {
+      display.push(node);
+    }
   }
 
-  if (projStore.selection.type === "node") {
-    display = display.filter((e) => e.label === projStore.selection.label);
-  }
+  //if (projStore.selection.type === "node") {
+  //  display = display.filter((e) => e.label === projStore.selection.label);
+  //}
 
-  // @ts-expect-error ts-fem is wrongly typed
-  return display.sort((a, b) => ("" + a.label).localeCompare(b.label, undefined, { numeric: true }));
+  const sortDisplay = display.sort((a, b) => ("" + a.label).localeCompare(b.label, undefined, { numeric: true }));
+  const sortDisplaySelected = displaySelected.sort((a, b) =>
+    ("" + a.label).localeCompare(b.label, undefined, { numeric: true })
+  );
+
+  return [...sortDisplaySelected, ...sortDisplay];
 });
 
 const elements = computed(() => {
   const elements = useProjectStore().solver.domain.elements.values();
-  let display: Element[] = [];
+
+  const display: Element[] = [];
+  const displaySelected: Element[] = [];
 
   for (const element of elements) {
-    display.push(element);
+    if (useProjectStore().selection2.elements.includes(element.label)) {
+      displaySelected.push(element);
+    } else {
+      display.push(element);
+    }
   }
 
-  if (projStore.selection.type === "element") {
-    display = display.filter((e) => e.label === projStore.selection.label);
-  }
+  // if (projStore.selection.type === "element") {
+  //   display = display.filter((e) => e.label === projStore.selection.label);
+  // }
 
-  return display;
+  const sortDisplay = display.sort((a, b) => ("" + a.label).localeCompare(b.label, undefined, { numeric: true }));
+  const sortDisplaySelected = displaySelected.sort((a, b) =>
+    ("" + a.label).localeCompare(b.label, undefined, { numeric: true })
+  );
+
+  return [...sortDisplaySelected, ...sortDisplay];
 });
 
 const loads = computed(() => {
@@ -1293,6 +1366,18 @@ const crossSections = computed(() => {
   return display;
 });
 
+function nodeRowProps(item) {
+  if (useProjectStore().selection2.nodes.includes(item.item.label)) {
+    return { class: "selected" };
+  }
+}
+
+function elementRowProps(item) {
+  if (useProjectStore().selection2.elements.includes(item.item.label)) {
+    return { class: "selected" };
+  }
+}
+
 const formatNodalLoadsAtNode = (item: Node): [number, string][] => {
   const nls = useProjectStore()
     .solver.loadCases[0].nodalLoadList.map((nl, index) => {
@@ -1345,7 +1430,9 @@ const tabs = reactive([
     title: "tabs.loads",
     icon: "mdi-arrow-down-thin",
     count: () =>
-      projStore.solver.loadCases[0].nodalLoadList.length + projStore.solver.loadCases[0].elementLoadList.length,
+      projStore.solver.loadCases[0].nodalLoadList.length +
+      projStore.solver.loadCases[0].elementLoadList.length +
+      projStore.solver.loadCases[0].prescribedBC.length,
   },
   { id: "mats", title: "tabs.materials", icon: "mdi-texture-box", count: () => projStore.solver.domain.materials.size },
   {

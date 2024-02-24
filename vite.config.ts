@@ -26,7 +26,11 @@ export default defineConfig({
       runtimeOnly: false,
       strictMessage: false,
     }),
-    VitePWA({ registerType: "autoUpdate" }),
+    VitePWA({
+      mode: "development",
+      //registerType: "autoUpdate",
+      injectRegister: "script",
+    }),
     sentryVitePlugin({
       org: "ctu-prague",
       project: "edubeam-app",

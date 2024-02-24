@@ -4,7 +4,7 @@
       <v-card-title> {{ $t("dialogs.editNodalLoad.editNodalLoad") }} </v-card-title>
 
       <v-card-text>
-        <v-form>
+        <v-form v-model="valid">
           <v-container>
             <v-row no-gutters>
               <v-col cols="6" align-self="center">
@@ -33,6 +33,7 @@
                       @keydown="checkNumber($event)"
                       :label="`${mainLabel}x`"
                       hide-details="auto"
+                      :rules="numberRules"
                       :suffix="mainUnits"
                       :disabled="
                         loadType === 'displacement' && !projectStore.solver.domain.nodes.get(loadNodeId).bcs.has(0)
@@ -46,6 +47,7 @@
                       @keydown="checkNumber($event)"
                       :label="`${mainLabel}z`"
                       hide-details="auto"
+                      :rules="numberRules"
                       :suffix="mainUnits"
                       :disabled="
                         loadType === 'displacement' && !projectStore.solver.domain.nodes.get(loadNodeId).bcs.has(2)
@@ -59,6 +61,7 @@
                       @keydown="checkNumber($event)"
                       :label="`${momentLabel}y`"
                       hide-details="auto"
+                      :rules="numberRules"
                       :suffix="`${momentUnits}`"
                       :disabled="
                         loadType === 'displacement' && !projectStore.solver.domain.nodes.get(loadNodeId).bcs.has(4)
@@ -94,6 +97,7 @@ import { closeModal } from "jenesius-vue-modal";
 import { useAppStore } from "@/store/app";
 import { checkNumber, parseFloat2 } from "@/utils";
 import Vector2DHelper from "../Vector2DHelper.vue";
+import { numberRules } from "../../utils";
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
@@ -109,6 +113,8 @@ const props = withDefaults(
 );
 
 const open = ref(true);
+const valid = ref(false);
+
 const loadType = ref("force");
 const loadNodeValueFx = ref("");
 const loadNodeValueFz = ref("");
@@ -163,6 +169,8 @@ onMounted(() => {
 });
 
 const editNodalLoad = () => {
+  if (valid.value === false) return;
+
   if (props.type === "displacement") {
     const load = useProjectStore().solver.loadCases[0].prescribedBC[props.index];
     load.prescribedValues[DofID.Dx] = realFx.value;

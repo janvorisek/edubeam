@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useAppStore } from "@/store/app";
 import { computed } from "vue";
+import { useViewerStore } from "../store/viewer";
 
 const props = defineProps<{
   fx: number;
@@ -9,6 +10,7 @@ const props = defineProps<{
 }>();
 
 const appStore = useAppStore();
+const viewerStore = useViewerStore();
 
 const WIDTH = 160;
 const HEIGHT = 160;
@@ -19,6 +21,10 @@ const loadNodeValueFxInUnits = computed(() => {
 
 const loadNodeValueFzInUnits = computed(() => {
   return appStore.convertForce(props.fz);
+});
+
+const loadNodeValueMyInUnits = computed(() => {
+  return appStore.convertForce(props.my);
 });
 
 const flen = computed(() => appStore.convertForce(Math.sqrt(props.fx ** 2 + props.fz ** 2)));
@@ -89,7 +95,7 @@ const angle = computed(() => {
           refY="3.5"
           orient="auto"
         >
-          <polygon points="0 0, 10 3.5, 0 7" vector-effect="non-scaling-stroke" fill="black" />
+          <polygon points="3 1, 10 3.5, 3 6" vector-effect="non-scaling-stroke" fill="black" />
         </marker>
       </defs>
 
@@ -116,6 +122,25 @@ const angle = computed(() => {
         stroke-dasharray="5"
         vector-effect="non-scaling-stroke"
       />
+
+      <g v-if="Math.abs(props.my) > 1e-32">
+        <polyline
+          points="0,0 0,0"
+          :marker-end="`url(${props.my > 0 ? '#moment_ccw' : '#moment_cw'})`"
+          fill="none"
+          :transform="`translate(${end.x} ${end.y})`"
+        />
+        <text
+          :x="end.x"
+          :y="end.y + (props.fz < 0 ? -5 : 7)"
+          :fill="viewerStore.colors.loads"
+          font-size="10"
+          :text-anchor="'middle'"
+          alignment-baseline="middle"
+        >
+          {{ Math.abs(loadNodeValueMyInUnits).toFixed(2) }}
+        </text>
+      </g>
 
       <text
         v-if="Math.abs(props.fx) > 1e-6 && Math.abs(props.fz) > 1e-6"

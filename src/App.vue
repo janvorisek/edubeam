@@ -250,6 +250,7 @@ function openFile(e) {
     clearMesh();
     importJSON(JSON.parse(text));
     _solve();
+    appStore.drawerOpen = false;
   };
   reader.readAsText(file);
 }

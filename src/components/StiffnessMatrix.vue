@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useProjectStore } from "../store/project";
 import { watch } from "vue";
 
@@ -12,6 +12,8 @@ const props = defineProps<{
 const size = ref(0);
 
 const update = () => {
+  if (!elementHasMaterialAndCS.value) return;
+
   const el = projStore.solver.domain.getElement(props.label);
 
   if (!el) return;
@@ -26,11 +28,24 @@ onMounted(() => {
 watch(projStore.solver, () => {
   update();
 });
+
+const elementHasMaterialAndCS = computed(() => {
+  const el = projStore.solver.domain.getElement(props.label);
+
+  if (!el) return false;
+
+  const mat = projStore.solver.domain.materials.get(el.mat);
+  const cs = projStore.solver.domain.crossSections.get(el.cs);
+
+  if (!mat || !cs) return false;
+
+  return true;
+});
 </script>
 
 <template>
   <div class="fill-height" style="overflow: auto">
-    <v-table class="border-t text-right" density="compact">
+    <v-table class="border-t text-right" density="compact" v-if="elementHasMaterialAndCS">
       <tbody>
         <tr v-for="i in size">
           <td v-for="j in size" :class="{ 'bg-grey-lighten-3 font-weight-medium': i === j }" class="px-1">
@@ -45,6 +60,7 @@ watch(projStore.solver, () => {
         </tr>
       </tbody>
     </v-table>
+    <div class="pa-3" v-else>Element does not specify material or cross section.</div>
   </div>
 </template>
 

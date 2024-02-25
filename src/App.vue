@@ -119,6 +119,7 @@ onMounted(() => {
   const lang = params.get("lang");
 
   if (name) {
+    clearMesh();
     deserializeModel(name, solver);
     _solve();
 
@@ -134,7 +135,7 @@ onMounted(() => {
     window.history.pushState({}, "", url.split("?")[0]);
   }
 
-  if (domain.nodes.size > 0) return;
+  if (domain.nodes.size > 0) return _solve();
 
   domain.createNode(1, [0, 0, 0], [DofID.Dx, DofID.Ry, DofID.Dz]);
   domain.createNode(2, [0, 0, -3], []);

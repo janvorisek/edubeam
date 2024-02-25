@@ -200,7 +200,8 @@
     "update": {
       "title": "Aktualizace je k dispozici",
       "text1": " K dispozici je aktualizace, která vyžaduje restartování aplikace. To znamená, že veškeré úpravy budou ztraceny.",
-      "text2": "Pokud si přejete zachovat svůj aktuální postup, můžete aktualizaci zrušit."
+      "text2": "Pokud si přejete zachovat svůj aktuální postup, můžete aktualizaci zrušit.",
+      "update": "Aktualizovat"
     }
   },
   "tooltip": {

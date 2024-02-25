@@ -21,7 +21,13 @@ const props = withDefaults(
 </script>
 
 <template>
-  <vue-draggable-resizable :w="400" :x="32" :y="64" :parent="true" drag-handle=".drag-handle">
+  <vue-draggable-resizable
+    :w="400"
+    :x="props.widget.props.x"
+    :y="props.widget.props.y"
+    :parent="true"
+    drag-handle=".drag-handle"
+  >
     <v-card style="pointer-events: auto">
       <div class="d-flex drag-handle">
         <div class="d-flex align-center flex-grow-1">
@@ -39,7 +45,7 @@ const props = withDefaults(
           <div class="d-flex flex-column w-100 mb-1 px-3">
             <div class="text-h6" v-if="props.widget.title">{{ props.widget.title }}</div>
             <div class="d-flex" v-if="props.widget.props.label">
-              <div>Element {{ props.widget.props.label }}</div>
+              <div>Element {{ props.widget.props.label }} {{ props.x }}</div>
               <!-- <div class="ml-1">
                 <v-btn icon="mdi-content-copy" size="small" density="compact" variant="text"> </v-btn>
               </div> -->

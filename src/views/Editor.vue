@@ -1,7 +1,9 @@
 <template>
   <div class="d-flex flex-column fill-height">
     <div style="height: 100%; width: 100%; position: absolute; pointer-events: none">
-      <Widget v-for="widget of layoutStore.widgets" :key="widget.title" :widget="widget" />
+      <TransitionGroup name="fade">
+        <Widget v-for="widget of layoutStore.widgets" :key="widget.title" :widget="widget" />
+      </TransitionGroup>
     </div>
     <HelloWorld class="fill-height" style="min-height: 0" />
     <div class="resizer" data-direction="vertical"></div>

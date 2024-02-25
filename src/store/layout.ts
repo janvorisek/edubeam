@@ -25,6 +25,15 @@ export const useLayoutStore = defineStore(
 
     const openWidget = (title: string, component: Component, props: unknown, closable = true) => {
       const id = new Date().getTime().toString();
+
+      props.x = 32;
+      props.y = 64;
+
+      if (widgets.value.length > 0) {
+        props.x += 12 * widgets.value.length;
+        props.y += 12 * widgets.value.length;
+      }
+
       widgets.value.push({ id, title, component: markRaw(component), props, closable });
       return id;
     };

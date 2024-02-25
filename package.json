@@ -1,6 +1,6 @@
 {
   "name": "edubeam",
-  "version": "1.0.0-alpha-1",
+  "version": "1.0.0-beta-1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -19,6 +19,7 @@
     "@sentry/vue": "^7.102.0",
     "@types/js-quantities": "^1.6.6",
     "@vueuse/core": "^10.7.2",
+    "fast-xml-parser": "^4.3.5",
     "jenesius-vue-modal": "^1.11.0",
     "js-quantities": "^1.8.0",
     "language-icons": "^0.3.0",

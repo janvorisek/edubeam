@@ -1,6 +1,6 @@
 <script lang="ts">
 import { container, openModal } from "jenesius-vue-modal";
-import { deserializeModel } from "./utils";
+import { deserializeModel, download, exportJSON, importJSON } from "./utils";
 import { provide } from "vue";
 import { undoRedoManager } from "./CommandManager";
 import { useViewerStore } from "./store/viewer";
@@ -194,6 +194,7 @@ const _solve = () => {
 
 const clearMesh = () => {
   useProjectStore().solver.loadCases[0].solved = false;
+  useProjectStore().solver.loadCases[0].prescribedBC = [];
   useProjectStore().solver.loadCases[0].nodalLoadList = [];
   useProjectStore().solver.loadCases[0].elementLoadList = [];
   useProjectStore().solver.domain.elements.clear();
@@ -211,15 +212,54 @@ onMounted(() => {
   setLocale(appStore.locale);
 });
 
-// eslint-disable-next-line no-undef
-const app_version = APP_VERSION;
+function preventDefaults(e) {
+  e.preventDefault();
+}
 
-// eslint-disable-next-line no-undef
+const events = ["dragenter", "dragover", "dragleave", "drop"];
+
+onMounted(() => {
+  events.forEach((eventName) => {
+    document.body.addEventListener(eventName, preventDefaults);
+  });
+});
+
+function onDrop(e) {
+  for (let i = 0; i < e.dataTransfer.files.length; i++) {
+    const file = e.dataTransfer.files[i];
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const text = e.target.result.toString();
+      clearMesh();
+      importJSON(JSON.parse(text));
+      _solve();
+    };
+    reader.readAsText(file);
+  }
+}
+
+function openFile(e) {
+  // check if no file uploaded
+  if (!e.target.files.length) return;
+
+  const file = e.target.files[0];
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const text = e.target.result.toString();
+    clearMesh();
+    importJSON(JSON.parse(text));
+    _solve();
+  };
+  reader.readAsText(file);
+}
+
+const app_version = APP_VERSION;
 const app_released = APP_RELEASED;
+const app_commit = APP_COMMIT;
 </script>
 
 <template>
-  <v-app>
+  <v-app @drop.prevent="onDrop">
     <VOnboardingWrapper
       ref="onboardingWrapper"
       :steps="steps"
@@ -270,7 +310,7 @@ const app_released = APP_RELEASED;
     </VOnboardingWrapper>
 
     <v-app-bar clipped-lefs clipped-right app color="primary" density="compact">
-      <!-- <v-app-bar-nav-icon @click="appStore.drawerOpen = !appStore.drawerOpen"></v-app-bar-nav-icon> -->
+      <v-app-bar-nav-icon @click="appStore.drawerOpen = !appStore.drawerOpen"></v-app-bar-nav-icon>
 
       <div class="app-title ml-3 d-flex align-center" style="user-select: none">
         edubeam
@@ -307,30 +347,51 @@ const app_released = APP_RELEASED;
       <v-btn class="d-none d-sm-inline-flex" icon href="https://github.com/janvorisek/edubeam" target="_blank">
         <v-icon>mdi-github</v-icon>
       </v-btn>
-
-      <template #append>
-        <v-btn icon>
-          <v-icon>mdi-dots-vertical</v-icon>
-          <v-menu activator="parent">
-            <v-list>
-              <v-list-item v-for="(item, index) in menu" :key="index" :value="index" @click="item.action">
-                <v-list-item-title>{{ $t(item.title) }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </v-btn>
-      </template>
     </v-app-bar>
 
     <v-navigation-drawer v-model="appStore.drawerOpen" temporary>
-      <v-list-item prepend-avatar="https://randomuser.me/api/portraits/women/9.jpg" title="Jane Doe"></v-list-item>
+      <!-- <v-list-item prepend-avatar="https://randomuser.me/api/portraits/women/9.jpg" title="Jane Doe"></v-list-item> -->
 
       <v-divider></v-divider>
 
       <v-list density="compact" nav>
-        <v-list-item prepend-icon="mdi-view-dashboard" title="Home" value="home"></v-list-item>
-        <v-list-item prepend-icon="mdi-forum" title="About" value="about"></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-folder-open-outline"
+          :title="$t('common.openProject')"
+          value="home"
+          @click="$refs.file.click()"
+        ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-folder-arrow-down-outline"
+          :title="$t('common.saveProject')"
+          value="about"
+          @click="download('example.json', JSON.stringify(exportJSON()))"
+        ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-share"
+          :title="$t('common.shareModel')"
+          value="share"
+          @click="shareMesh"
+        ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-delete-empty"
+          :title="$t('common.clearMesh')"
+          value="clear"
+          @click="
+            openModal(Confirmation, {
+              title: t('confirmation.clearMesh.title'),
+              message: t('confirmation.clearMesh.message'),
+              success: clearMesh,
+            })
+          "
+        ></v-list-item>
       </v-list>
+      <v-divider />
+      <div class="pa-3 text-grey-darken-2" style="font-size: 12px">
+        v{{ app_version }}<br />{{ new Date(app_released).toLocaleDateString(appStore.locale) }}
+        {{ new Date(app_released).toLocaleTimeString(appStore.locale) }}<br />
+        <span style="font-size: 10px">{{ app_commit }}</span>
+      </div>
     </v-navigation-drawer>
 
     <v-navigation-drawer v-model="appStore.rightDrawerOpen" location="right" temporary :scrim="false">
@@ -366,6 +427,7 @@ const app_released = APP_RELEASED;
       <div>edubeam v{{ app_version }} {{ $t("footer.released") }} {{ app_released }}</div>
     </div> -->
     <ReloadPrompt />
+    <input type="file" ref="file" style="display: none" @change="openFile" />
   </v-app>
 </template>
 

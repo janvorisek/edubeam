@@ -31,7 +31,9 @@
     "normalForce": "Normálová síla",
     "deformedShape": "Deformovaný tvar",
     "bendingMoment": "Ohybový moment",
-    "confirm": "Potvrdit"
+    "confirm": "Potvrdit",
+    "openProject": "Otevřít projekt",
+    "saveProject": "Uložit projekt"
   },
   "tabs": {
     "nodes": "Uzly",

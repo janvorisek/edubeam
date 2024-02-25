@@ -11,6 +11,10 @@ import packageJson from "./package.json";
 // Utilities
 import { defineConfig } from "vite";
 import { fileURLToPath, URL } from "node:url";
+import { execSync } from "child_process";
+
+const commitDate = execSync("git log -1 --format=%cI").toString().trimEnd();
+const commitHash = execSync("git rev-parse HEAD").toString().trimEnd();
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -40,7 +44,8 @@ export default defineConfig({
   define: {
     "process.env": {},
     APP_VERSION: JSON.stringify(packageJson.version),
-    APP_RELEASED: JSON.stringify(new Date().toLocaleDateString("en")),
+    APP_RELEASED: JSON.stringify(commitDate),
+    APP_COMMIT: JSON.stringify(commitHash),
   },
 
   resolve: {

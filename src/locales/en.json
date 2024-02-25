@@ -36,7 +36,9 @@
     "deformedShape": "Deformed shape",
     "reactions": "Reactions",
     "elements": "Elements",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "saveProject": "Save project",
+    "openProject": "Open project"
   },
   "nodes": {
     "addNode": "Add node",

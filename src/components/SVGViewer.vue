@@ -64,6 +64,7 @@ import Selection from "./Selection.vue";
 import { useLayoutStore } from "@/store/layout";
 import AddNodeVue from "./dialogs/AddNode.vue";
 import { Command, IKeyValue, undoRedoManager } from "../CommandManager";
+import { EventType, eventBus } from "../EventBus";
 
 const props = defineProps<{
   id: string;
@@ -154,10 +155,15 @@ const fitContent = () => {
   panZoom.value.onWindowResize();
 
   requestAnimationFrame(() => {
+    if (!panZoom.value) return;
     panZoom.value.fitContent();
     if (grid.value) grid.value.refreshGrid(true);
   });
 };
+
+eventBus.on(EventType.FIT_CONTENT, () => {
+  fitContent();
+});
 
 const onUpdate = throttle((zooming: boolean) => {
   if (grid.value) grid.value.refreshGrid(zooming);

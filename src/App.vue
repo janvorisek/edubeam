@@ -29,6 +29,7 @@ import { VOnboardingWrapper, VOnboardingStep } from "v-onboarding";
 import "v-onboarding/dist/style.css";
 
 import { useI18n } from "vue-i18n";
+import { eventBus, EventType } from "./EventBus";
 const { t } = useI18n();
 
 const viewerStore = useViewerStore();
@@ -250,7 +251,9 @@ function openFile(e) {
     clearMesh();
     importJSON(JSON.parse(text));
     _solve();
+    appStore.tab = 0;
     appStore.drawerOpen = false;
+    eventBus.emit(EventType.FIT_CONTENT);
   };
   reader.readAsText(file);
 }

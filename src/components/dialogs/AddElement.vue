@@ -81,7 +81,7 @@ const addElement = () => {
 
   let nid = domain.elements.size + 1;
 
-  while (projectStore.solver.domain.nodes.has(nid.toString())) {
+  while (projectStore.solver.domain.elements.has(nid.toString())) {
     nid++;
   }
 

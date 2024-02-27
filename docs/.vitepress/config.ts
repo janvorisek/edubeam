@@ -98,7 +98,9 @@ export default defineConfig({
     hostname: 'https://www.edubeam.app'
   },
   themeConfig: {
-    // https://vitepress.dev/reference/default-theme-config
+    search: {
+      provider: 'local'
+    },
     nav: [
       { text: "Home", link: "/" },
       { text: "FAQ", link: "/faq" },

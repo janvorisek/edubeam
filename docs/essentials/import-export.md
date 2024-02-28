@@ -4,13 +4,13 @@
 
 ## Import Structure
 
-Effortlessly bring your structural model into <Edubeam/> by importing it in JSON format. Use the **Import** feature to load previously saved configurations, enabling a smooth transition between projects and enhancing workflow efficiency.
+Effortlessly bring your structural model into <Edubeam/> by importing it in JSON format. Use the **Open project** feature to load previously saved configurations, enabling a smooth transition between projects and enhancing workflow efficiency.
 
 <!-- ![Import Structure](/import.png) -->
 
 ## Export Structure
 
-Preserve and share your work by exporting your current structural model in JSON format. The **Export** feature allows you to create a snapshot of your project, making it easy to archive, share, or collaborate with others.
+Preserve and share your work by exporting your current structural model in JSON format. The **Save project** feature allows you to create a snapshot of your project, making it easy to archive, share, or collaborate with others.
 
 <!-- ![Export Structure](/export.png) -->
 

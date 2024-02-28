@@ -1,7 +1,34 @@
 <script lang="ts" setup>
-import { useViewerStore } from "../store/viewer";
-
-const viewerStore = useViewerStore();
+const props = withDefaults(
+  defineProps<{
+    colors?: {
+      normalForce: string;
+      shearForce: string;
+      bendingMoment: string;
+      deformedShape: string;
+      loads: string;
+      nodes: string;
+      elements: string;
+      reactions: string;
+    };
+    supportSize?: number;
+  }>(),
+  {
+    colors: () => {
+      return {
+        normalForce: "#2222ff",
+        shearForce: "#00af00",
+        bendingMoment: "#ff2222",
+        deformedShape: "#555555",
+        loads: "#ff8700",
+        nodes: "#000000",
+        elements: "#000000",
+        reactions: "#a020f0",
+      };
+    },
+    supportSize: 1,
+  }
+);
 </script>
 
 <template>
@@ -16,7 +43,7 @@ const viewerStore = useViewerStore();
       orient="auto-start-reverse"
       markerUnits="strokeWidth"
     >
-      <path d="M 0 0 L 10 5 L 0 10 z" :fill="viewerStore.colors.loads" />
+      <path d="M 0 0 L 10 5 L 0 10 z" :fill="colors.loads" />
     </marker>
     <marker
       id="arrow_reaction"
@@ -28,7 +55,7 @@ const viewerStore = useViewerStore();
       orient="auto-start-reverse"
       markerUnits="strokeWidth"
     >
-      <path d="M 0 0 L 10 5 L 0 10 z" :fill="viewerStore.colors.reactions" />
+      <path d="M 0 0 L 10 5 L 0 10 z" :fill="colors.reactions" />
     </marker>
     <marker
       id="arrow_hover"
@@ -53,7 +80,7 @@ const viewerStore = useViewerStore();
       markerUnits="strokeWidth"
       marker-end="url(#arrow_reaction)"
     >
-      <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" fill="none" :stroke="viewerStore.colors.reactions" />
+      <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" fill="none" :stroke="colors.reactions" />
     </marker>
     <marker
       id="moment_reaction_cw"
@@ -66,7 +93,7 @@ const viewerStore = useViewerStore();
       markerUnits="strokeWidth"
       marker-end="url(#arrow_reaction)"
     >
-      <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" fill="none" :stroke="viewerStore.colors.reactions" />
+      <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" fill="none" :stroke="colors.reactions" />
     </marker>
     <marker
       id="moment_ccw"
@@ -79,7 +106,7 @@ const viewerStore = useViewerStore();
       markerUnits="strokeWidth"
       marker-end="url(#arrow)"
     >
-      <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" fill="none" :stroke="viewerStore.colors.loads" />
+      <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" fill="none" :stroke="colors.loads" />
     </marker>
     <marker
       id="moment_cw"
@@ -92,7 +119,7 @@ const viewerStore = useViewerStore();
       markerUnits="strokeWidth"
       marker-end="url(#arrow)"
     >
-      <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" fill="none" :stroke="viewerStore.colors.loads" />
+      <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" fill="none" :stroke="colors.loads" />
     </marker>
     <marker
       id="moment_ccw_hover"
@@ -131,12 +158,7 @@ const viewerStore = useViewerStore();
       markerUnits="strokeWidth"
       orient="auto"
     >
-      <polyline
-        points="45,5 55,10 45,15"
-        stroke-width="1"
-        :fill="viewerStore.colors.loads"
-        :stroke="viewerStore.colors.loads"
-      />
+      <polyline points="45,5 55,10 45,15" stroke-width="1" :fill="colors.loads" :stroke="colors.loads" />
     </marker>
     <marker
       id="force"
@@ -148,13 +170,8 @@ const viewerStore = useViewerStore();
       overflow="visible"
       markerUnits="strokeWidth"
     >
-      <polyline
-        points="5,45 10,55 15,45"
-        stroke-width="1"
-        :fill="viewerStore.colors.loads"
-        :stroke="viewerStore.colors.loads"
-      />
-      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" :stroke="viewerStore.colors.loads" />
+      <polyline points="5,45 10,55 15,45" stroke-width="1" :fill="colors.loads" :stroke="colors.loads" />
+      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" :stroke="colors.loads" />
     </marker>
     <marker
       id="reaction"
@@ -166,13 +183,8 @@ const viewerStore = useViewerStore();
       overflow="visible"
       markerUnits="strokeWidth"
     >
-      <polyline
-        points="5,45 10,55 15,45"
-        stroke-width="1"
-        :fill="viewerStore.colors.reactions"
-        :stroke="viewerStore.colors.reactions"
-      />
-      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" :stroke="viewerStore.colors.reactions" />
+      <polyline points="5,45 10,55 15,45" stroke-width="1" :fill="colors.reactions" :stroke="colors.reactions" />
+      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" :stroke="colors.reactions" />
     </marker>
     <marker
       id="force_hover"
@@ -198,13 +210,8 @@ const viewerStore = useViewerStore();
       overflow="visible"
       markerUnits="strokeWidth"
     >
-      <polyline
-        points="5,45 10,55 15,45"
-        stroke-width="1"
-        :fill="viewerStore.colors.loads"
-        :stroke="viewerStore.colors.loads"
-      />
-      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" :stroke="viewerStore.colors.loads" />
+      <polyline points="5,45 10,55 15,45" stroke-width="1" :fill="colors.loads" :stroke="colors.loads" />
+      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" :stroke="colors.loads" />
     </marker>
 
     <marker
@@ -217,13 +224,8 @@ const viewerStore = useViewerStore();
       overflow="visible"
       markerUnits="strokeWidth"
     >
-      <polyline
-        points="5,45 10,55 15,45"
-        stroke-width="1"
-        :fill="viewerStore.colors.loads"
-        :stroke="viewerStore.colors.loads"
-      />
-      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" :stroke="viewerStore.colors.loads" />
+      <polyline points="5,45 10,55 15,45" stroke-width="1" :fill="colors.loads" :stroke="colors.loads" />
+      <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" :stroke="colors.loads" />
     </marker>
 
     <marker
@@ -231,8 +233,8 @@ const viewerStore = useViewerStore();
       viewBox="-20 -10 20 70"
       refX="0"
       refY="24.5"
-      :markerWidth="viewerStore.supportSize * 20"
-      :markerHeight="viewerStore.supportSize * 80"
+      :markerWidth="supportSize * 20"
+      :markerHeight="supportSize * 80"
       orient="auto"
     >
       <line y1="6" x1="0" y2="44" x2="0" stroke-width="1" stroke="black" />
@@ -254,8 +256,8 @@ const viewerStore = useViewerStore();
       viewBox="0 0 20 20"
       refX="10"
       refY="0"
-      :markerWidth="viewerStore.supportSize * 20"
-      :markerHeight="viewerStore.supportSize * 20"
+      :markerWidth="supportSize * 20"
+      :markerHeight="supportSize * 20"
       overflow="visible"
       markerUnits="strokeWidth"
     >
@@ -267,8 +269,8 @@ const viewerStore = useViewerStore();
       viewBox="0 0 20 20"
       refX="10"
       refY="0"
-      :markerWidth="viewerStore.supportSize * 20"
-      :markerHeight="viewerStore.supportSize * 20"
+      :markerWidth="supportSize * 20"
+      :markerHeight="supportSize * 20"
       overflow="visible"
       markerUnits="strokeWidth"
     >
@@ -281,8 +283,8 @@ const viewerStore = useViewerStore();
       viewBox="0 0 20 20"
       refX="0"
       refY="10"
-      :markerWidth="viewerStore.supportSize * 20"
-      :markerHeight="viewerStore.supportSize * 20"
+      :markerWidth="supportSize * 20"
+      :markerHeight="supportSize * 20"
       overflow="visible"
       markerUnits="strokeWidth"
     >

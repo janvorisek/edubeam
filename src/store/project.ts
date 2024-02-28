@@ -19,8 +19,6 @@ export const useProjectStore = defineStore(
     const bendingMomentScale = ref(1);
     const shearForceScale = ref(1);
 
-    const resultsScalePx = ref(64);
-
     const selection: {
       label: number | string | null;
       type: string | null;
@@ -292,7 +290,6 @@ export const useProjectStore = defineStore(
       _solver,
       solver,
       nthEigenVector,
-      resultsScalePx,
       defoScale,
       normalForceScale,
       bendingMomentScale,

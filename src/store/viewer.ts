@@ -31,7 +31,7 @@ export const useViewerStore = defineStore(
     const showGrid = ref(true);
     const snapToGrid = ref(true);
     const gridStep = ref(0.1);
-    const resultsScalePx = ref(128);
+    const resultsScalePx_ = ref(48);
     const supportSize = ref(1);
 
     const settingsOpen = ref(true);
@@ -51,7 +51,7 @@ export const useViewerStore = defineStore(
       showGrid,
       snapToGrid,
       gridStep,
-      resultsScalePx,
+      resultsScalePx_: resultsScalePx_,
 
       supportSize,
 

@@ -12,8 +12,6 @@ import AddElementDialog from "./dialogs/AddElement.vue";
 import AddNodeDialog from "./dialogs/AddNode.vue";
 import Confirmation from "./dialogs/Confirmation.vue";
 
-//import EditElementDialog from "./dialogs/EditElement.vue";
-//import EditNodeDialog from "./dialogs/EditNode.vue";
 import EditNodalLoadDialog from "./dialogs/EditNodalLoad.vue";
 import EditElementLoadDialog from "./dialogs/EditElementLoad.vue";
 
@@ -1094,6 +1092,7 @@ defineExpose({ centerContent, fitContent });
       ref="panZoom"
       :padding="128"
       :mobile-padding="32"
+      :can-fit-content="projectStore.solver.domain.nodes.size >= 2"
       style="overflow: visible; z-index: 50; min-height: 0"
     >
       <svg
@@ -1103,7 +1102,11 @@ defineExpose({ centerContent, fitContent });
         @pointerdown="onMouseDown"
         @pointerup="onMouseUp"
       >
-        <SvgViewerDefs v-if="props.id === appStore.openedTab!.props.id" />
+        <SvgViewerDefs
+          v-if="props.id === appStore.openedTab!.props.id"
+          :colors="viewerStore.colors"
+          :support-size="viewerStore.supportSize"
+        />
         <g ref="viewport">
           <g v-if="appStore.mouseMode === MouseMode.ADD_NODE">
             <rect
@@ -1297,10 +1300,10 @@ defineExpose({ centerContent, fitContent });
                   v-if="nload.prescribedValues[0] !== 0 || nload.prescribedValues[2] !== 0"
                   :points="`${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0]},${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2]} ${
                     useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0] +
-                    (nload.prescribedValues[0] * projectStore.defoScale * projectStore.resultsScalePx) / scale
+                    (nload.prescribedValues[0] * projectStore.defoScale * viewerStore.resultsScalePx_) / scale
                   } ${
                     useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2] +
-                    (nload.prescribedValues[2] * projectStore.defoScale * projectStore.resultsScalePx) / scale
+                    (nload.prescribedValues[2] * projectStore.defoScale * viewerStore.resultsScalePx_) / scale
                   }`"
                   :stroke="viewerStore.colors.loads"
                   vector-effect="non-scaling-stroke"
@@ -1318,11 +1321,11 @@ defineExpose({ centerContent, fitContent });
                   :transform="`translate(${
                     useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0] +
                     (nload.prescribedValues[0] > 0 ? 10 / scale : -10 / scale) +
-                    (nload.prescribedValues[0] * projectStore.defoScale * projectStore.resultsScalePx) / scale
+                    (nload.prescribedValues[0] * projectStore.defoScale * viewerStore.resultsScalePx_) / scale
                   }
               ${
                 useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2] +
-                (nload.prescribedValues[2] * projectStore.defoScale * projectStore.resultsScalePx) / scale
+                (nload.prescribedValues[2] * projectStore.defoScale * viewerStore.resultsScalePx_) / scale
               })`"
                 >
                   {{ appStore.convertLength(nload.prescribedValues[0]).toFixed(2) }},
@@ -1345,7 +1348,7 @@ defineExpose({ centerContent, fitContent });
                   projectStore.solver.loadCases[0].solved &&
                   viewerStore.showDeformedShape
                 "
-                :points="formatResults(element, scale)"
+                :points="formatResults(element, scale, projectStore.defoScale, viewerStore.resultsScalePx_)"
                 vector-effect="non-scaling-stroke"
                 class="deformedShape"
                 stroke-linecap="round"
@@ -1361,14 +1364,22 @@ defineExpose({ centerContent, fitContent });
                 "
               >
                 <polyline
-                  :points="formatNormalForces(element, scale)"
+                  :points="
+                    formatNormalForces(element, scale, projectStore.normalForceScale, viewerStore.resultsScalePx_)
+                  "
                   vector-effect="non-scaling-stroke"
                   class="normal"
                   stroke-linecap="round"
                   stroke-linejoin="round"
                 />
                 <g
-                  v-for="(mv, mli) in formatNormalForceLabels(element, scale)"
+                  v-for="(mv, mli) in formatNormalForceLabels(
+                    element,
+                    scale,
+                    projectStore.normalForceScale,
+                    appStore.convertForce,
+                    viewerStore.resultsScalePx_
+                  )"
                   :key="mli"
                   :transform="`translate(${mv[0] + (mv[2] < 0 ? -4 : 4) / scale} ${
                     mv[1] + (mv[2] < 0 ? -4 : 4) / scale
@@ -1406,14 +1417,20 @@ defineExpose({ centerContent, fitContent });
                 "
               >
                 <polyline
-                  :points="formatShearForces(element, scale)"
+                  :points="formatShearForces(element, scale, projectStore.shearForceScale, viewerStore.resultsScalePx_)"
                   vector-effect="non-scaling-stroke"
                   class="shear"
                   stroke-linecap="round"
                   stroke-linejoin="round"
                 />
                 <g
-                  v-for="(mv, mli) in formatShearForceLabels(element, scale)"
+                  v-for="(mv, mli) in formatShearForceLabels(
+                    element,
+                    scale,
+                    projectStore.shearForceScale,
+                    appStore.convertForce,
+                    viewerStore.resultsScalePx_
+                  )"
                   :key="mli"
                   :transform="`translate(${mv[0] + (mv[2] < 0 ? -4 : 4) / scale} ${
                     mv[1] + (mv[2] < 0 ? -4 : 4) / scale
@@ -1452,14 +1469,20 @@ defineExpose({ centerContent, fitContent });
                 "
               >
                 <polyline
-                  :points="formatMoments(element, scale)"
+                  :points="formatMoments(element, scale, projectStore.bendingMomentScale, viewerStore.resultsScalePx_)"
                   vector-effect="non-scaling-stroke"
                   class="moment"
                   stroke-linecap="round"
                   stroke-linejoin="round"
                 />
                 <g
-                  v-for="(mv, mli) in formatMomentsLabels(element, scale)"
+                  v-for="(mv, mli) in formatMomentsLabels(
+                    element,
+                    scale,
+                    projectStore.bendingMomentScale,
+                    appStore.convertForce,
+                    viewerStore.resultsScalePx_
+                  )"
                   :key="mli"
                   :transform="`translate(${mv[0] + (mv[2] < 0 ? -4 : 4) / scale} ${
                     mv[1] + (mv[2] < 0 ? -4 : 4) / scale
@@ -1734,14 +1757,14 @@ defineExpose({ centerContent, fitContent });
                   // @ts-expect-error ts-fem is wrongly typed
                   (node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]) *
                     projectStore.defoScale *
-                    projectStore.resultsScalePx) /
+                    viewerStore.resultsScalePx_) /
                     scale
                 }, ${
                   node.coords[2] +
                   // @ts-expect-error ts-fem is wrongly typed
                   (node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]) *
                     projectStore.defoScale *
-                    projectStore.resultsScalePx) /
+                    viewerStore.resultsScalePx_) /
                     scale
                 })`"
               >
@@ -1924,3 +1947,4 @@ defineExpose({ centerContent, fitContent });
     </div>
   </div>
 </template>
+../utils/utils

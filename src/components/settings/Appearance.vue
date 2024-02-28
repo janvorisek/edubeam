@@ -19,6 +19,9 @@
           :show-shear-force="showQuantity === 'shearForce'"
           :padding="48"
           :mobile-padding="48"
+          :results-scale-px="viewerStore.resultsScalePx_"
+          :colors="viewerStore.colors"
+          :support-size="viewerStore.supportSize"
         />
       </div>
 
@@ -60,7 +63,7 @@
       <v-row>
         <v-col>
           <h4 class="mb-1">{{ $t("settings.results_scale") }}</h4>
-          <v-slider v-model="projectStore.resultsScalePx" step="1" max="120" thumb-label></v-slider>
+          <v-slider v-model="viewerStore.resultsScalePx_" step="1" max="120" thumb-label></v-slider>
         </v-col>
         <v-col>
           <h4 class="mb-1">{{ $t("settings.sizes.supportSize") }}</h4>

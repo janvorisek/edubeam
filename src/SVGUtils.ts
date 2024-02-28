@@ -1,6 +1,4 @@
 import { Node, DofID, Beam2D, NodalLoad, BeamElementUniformEdgeLoad, PrescribedDisplacement } from "ts-fem";
-import { useProjectStore } from "./store/project";
-import { useAppStore } from "./store/app";
 
 export function supportMarker(node: Node) {
   const sdofs = Array.from(node.bcs);
@@ -54,19 +52,19 @@ export function formatSupportNode(node: Node): string {
   return `${node.coords[0]},${node.coords[2]} ${node.coords[0]},${node.coords[2]}`;
 }
 
-export function formatResults(el: Beam2D, scale: number) {
+export function formatResults(el: Beam2D, scale: number, defoScale: number = 1, resultsScalePx = 42) {
   let result = "";
-  let nseg = 20;
-  const scaleBy = (useProjectStore().resultsScalePx * useProjectStore().defoScale) / scale;
+  const nseg = 20;
+  const scaleBy = (resultsScalePx * defoScale) / scale;
   const n1 = el.domain.getNode(el.nodes[0]);
   let def = null;
 
-  if (useProjectStore().model === "LinearStaticSolver") {
-    def = el.computeGlobalDefl(el.domain.solver.loadCases[0], nseg);
-  } else {
-    nseg = 10;
-    def = el.computeGlobalEigenMode(el.domain.solver.loadCases[0], useProjectStore().nthEigenVector - 1, nseg);
-  }
+  //if (useProjectStore().model === "LinearStaticSolver") {
+  def = el.computeGlobalDefl(el.domain.solver.loadCases[0], nseg);
+  // } else {
+  //   nseg = 10;
+  //   def = el.computeGlobalEigenMode(el.domain.solver.loadCases[0], useProjectStore().nthEigenVector - 1, nseg);
+  // }
 
   const geo = el.computeGeo();
   const cos = geo.dx / geo.l;
@@ -81,10 +79,10 @@ export function formatResults(el: Beam2D, scale: number) {
   return result;
 }
 
-export function formatNormalForces(el: Beam2D, scale: number) {
+export function formatNormalForces(el: Beam2D, scale: number, normalForceScale: number = 1, resultsScalePx = 42) {
   let result = "";
   const nseg = 1;
-  const scaleBy = (useProjectStore().resultsScalePx * useProjectStore().normalForceScale) / scale;
+  const scaleBy = (resultsScalePx * normalForceScale) / scale;
   const n1 = el.domain.getNode(el.nodes[0]);
   const n2 = el.domain.getNode(el.nodes[1]);
   const forces = el.computeNormalForce(el.domain.solver.loadCases[0], nseg);
@@ -106,10 +104,10 @@ export function formatNormalForces(el: Beam2D, scale: number) {
   return `${n1.coords[0]},${n1.coords[2]} ${result}${n2.coords[0]},${n2.coords[2]}`;
 }
 
-export function formatShearForces(el: Beam2D, scale: number) {
+export function formatShearForces(el: Beam2D, scale: number, shearForceScale: number = 1, resultsScalePx = 42) {
   let result = "";
   const nseg = 1;
-  const scaleBy = (useProjectStore().resultsScalePx * useProjectStore().shearForceScale) / scale;
+  const scaleBy = (resultsScalePx * shearForceScale) / scale;
   const n1 = el.domain.getNode(el.nodes[0]);
   const n2 = el.domain.getNode(el.nodes[1]);
   const forces = el.computeShearForce(el.domain.solver.loadCases[0], nseg);
@@ -129,7 +127,7 @@ export function formatShearForces(el: Beam2D, scale: number) {
   return `${n1.coords[0]},${n1.coords[2]} ${result}${n2.coords[0]},${n2.coords[2]}`;
 }
 
-export function formatMoments(el: Beam2D, scale: number) {
+export function formatMoments(el: Beam2D, scale: number, bendingMomentScale: number = 1, resultsScalePx = 42) {
   let neloads = 0;
 
   for (const eload of el.domain.solver.loadCases[0].elementLoadList) {
@@ -138,7 +136,7 @@ export function formatMoments(el: Beam2D, scale: number) {
 
   let result = "";
   const nseg = neloads === 0 ? 1 : 20;
-  const scaleBy = (useProjectStore().resultsScalePx * useProjectStore().bendingMomentScale) / scale;
+  const scaleBy = (resultsScalePx * bendingMomentScale) / scale;
   const n1 = el.domain.getNode(el.nodes[0]);
   const n2 = el.domain.getNode(el.nodes[1]);
   const forces = el.computeBendingMoment(el.domain.solver.loadCases[0], nseg);
@@ -158,10 +156,16 @@ export function formatMoments(el: Beam2D, scale: number) {
   return `${n1.coords[0]},${n1.coords[2]} ${result}${n2.coords[0]},${n2.coords[2]}`;
 }
 
-export function formatMomentsLabels(el: Beam2D, scale: number) {
+export function formatMomentsLabels(
+  el: Beam2D,
+  scale: number,
+  bendingMomentScale: number = 1,
+  convertForce = (v: number) => v,
+  resultsScalePx = 42
+) {
   const result = [];
   const nseg = 1;
-  const scaleBy = (useProjectStore().resultsScalePx * useProjectStore().bendingMomentScale) / scale;
+  const scaleBy = (resultsScalePx * bendingMomentScale) / scale;
   const n1 = el.domain.getNode(el.nodes[0]);
   const forces = el.computeBendingMoment(el.domain.solver.loadCases[0], nseg);
   const geo = el.computeGeo();
@@ -176,20 +180,22 @@ export function formatMomentsLabels(el: Beam2D, scale: number) {
 
     if (Math.abs(forces.M[s]) < 1e-6) continue;
 
-    result.push([
-      xc + forces.M[s] * nx * scaleBy,
-      zc + forces.M[s] * ny * scaleBy,
-      useAppStore().convertForce(forces.M[s]),
-    ]);
+    result.push([xc + forces.M[s] * nx * scaleBy, zc + forces.M[s] * ny * scaleBy, convertForce(forces.M[s])]);
   }
 
   return result;
 }
 
-export function formatNormalForceLabels(el: Beam2D, scale: number) {
+export function formatNormalForceLabels(
+  el: Beam2D,
+  scale: number,
+  normalForceScale: number = 1,
+  convertForce = (v: number) => v,
+  resultsScalePx = 42
+) {
   const result = [];
   const nseg = 1;
-  const scaleBy = (useProjectStore().resultsScalePx * useProjectStore().normalForceScale) / scale;
+  const scaleBy = (resultsScalePx * normalForceScale) / scale;
   const n1 = el.domain.getNode(el.nodes[0]);
   const forces = el.computeNormalForce(el.domain.solver.loadCases[0], nseg);
   const geo = el.computeGeo();
@@ -202,20 +208,22 @@ export function formatNormalForceLabels(el: Beam2D, scale: number) {
     const xc = n1.coords[0] + (cos * geo.l * s) / nseg;
     const zc = n1.coords[2] + (sin * geo.l * s) / nseg;
 
-    result.push([
-      xc - forces.N[s] * nx * scaleBy,
-      zc - forces.N[s] * ny * scaleBy,
-      useAppStore().convertForce(forces.N[s]),
-    ]);
+    result.push([xc - forces.N[s] * nx * scaleBy, zc - forces.N[s] * ny * scaleBy, convertForce(forces.N[s])]);
   }
 
   return result;
 }
 
-export function formatShearForceLabels(el: Beam2D, scale: number) {
+export function formatShearForceLabels(
+  el: Beam2D,
+  scale: number,
+  shearForceScale: number = 1,
+  convertForce = (v: number) => v,
+  resultsScalePx = 42
+) {
   const result = [];
   const nseg = 1;
-  const scaleBy = (useProjectStore().resultsScalePx * useProjectStore().shearForceScale) / scale;
+  const scaleBy = (resultsScalePx * shearForceScale) / scale;
   const n1 = el.domain.getNode(el.nodes[0]);
   const forces = el.computeShearForce(el.domain.solver.loadCases[0], nseg);
   const geo = el.computeGeo();
@@ -228,11 +236,7 @@ export function formatShearForceLabels(el: Beam2D, scale: number) {
     const xc = n1.coords[0] + (cos * geo.l * s) / nseg;
     const zc = n1.coords[2] + (sin * geo.l * s) / nseg;
 
-    result.push([
-      xc - forces.V[s] * nx * scaleBy,
-      zc - forces.V[s] * ny * scaleBy,
-      useAppStore().convertForce(forces.V[s]),
-    ]);
+    result.push([xc - forces.V[s] * nx * scaleBy, zc - forces.V[s] * ny * scaleBy, convertForce(forces.V[s])]);
   }
 
   return result;

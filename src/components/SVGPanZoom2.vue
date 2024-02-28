@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { nextTick, onMounted, ref } from "vue";
-import { useAppStore } from "@/store/app";
-
-const appStore = useAppStore();
 
 const props = withDefaults(
   defineProps<{
@@ -10,12 +7,16 @@ const props = withDefaults(
     padding?: number;
     mobilePadding?: number;
     canFitContent?: boolean;
+    panButton?: number;
+    zoomEnabled?: boolean;
   }>(),
   {
     onUpdate: () => {},
     padding: 0,
     mobilePadding: 0,
     canFitContent: true,
+    panButton: 4,
+    zoomEnabled: true,
   }
 );
 
@@ -51,7 +52,7 @@ const updateMatrix = (zooming = false): void => {
 };
 
 const zoom = (mx: number, my: number, deltaY: number): void => {
-  if (deltaY === 0) return;
+  if (deltaY === 0 || !props.zoomEnabled) return;
 
   const svgEl = svgRef.value as SVGElement;
 
@@ -72,15 +73,7 @@ const zoom = (mx: number, my: number, deltaY: number): void => {
   updateMatrix(true);
 };
 
-let wheelEventEndTimeout = null;
-const isFirefox = navigator.userAgent.search("Firefox") > -1;
 const onMouseWheel = (event: WheelEvent): void => {
-  if (isFirefox) appStore.zooming = true;
-  clearTimeout(wheelEventEndTimeout);
-  wheelEventEndTimeout = setTimeout(() => {
-    appStore.zooming = false;
-  }, 100);
-
   zoom(event.offsetX, event.offsetY, Math.sign(event.deltaY) * 0.05);
 };
 
@@ -94,8 +87,6 @@ const onTouchStart = (event: TouchEvent): void => {
   }
 
   if (event.touches.length === 2) {
-    appStore.zooming = true;
-
     touchPointer.value.ds = Math.hypot(
       event.touches[0].pageX - event.touches[1].pageX,
       event.touches[0].pageY - event.touches[1].pageY
@@ -112,7 +103,6 @@ const onTouchStart = (event: TouchEvent): void => {
 };
 
 const onTouchEnd = (): void => {
-  appStore.zooming = false;
   touchPointer.value.move = false;
   touchPointer.value.pinch = false;
 };
@@ -141,7 +131,7 @@ const onTouchMove = (event: TouchEvent): void => {
 };
 
 const onMouseMove = (event: MouseEvent): void => {
-  if (event.buttons !== appStore.panButton) return;
+  if (event.buttons !== props.panButton) return;
 
   viewBox.x -= (event.movementX * 1) / scale.value;
   viewBox.y -= (event.movementY * 1) / scale.value;

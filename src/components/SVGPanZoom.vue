@@ -162,7 +162,7 @@ const centerContent = (): void => {
 const fitContent = (n = 0): void => {
   if (n > 5) return;
 
-  if (!props.canFitContent) return;
+  if (!props.canFitContent) return centerContent();
 
   const FIT_CONTENT_PADDING = window.innerWidth > 768 ? props.padding : props.mobilePadding;
 

@@ -90,7 +90,6 @@ export const serializeModel = (ls: LinearStaticSolver) => {
 
 export const deserializeModel = (base64String: string, ls: LinearStaticSolver) => {
   const tmp = base64ToObject(base64String);
-  console.log(tmp);
 
   ls.domain.nodes.clear();
   ls.domain.elements.clear();

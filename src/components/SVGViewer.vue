@@ -4,7 +4,7 @@ import SvgPanZoom from "./SVGPanZoom.vue";
 import SvgGrid from "./SVGGrid.vue";
 import SvgViewerDefs from "./SVGViewerDefs.vue";
 import { useProjectStore } from "../store/project";
-import { ref, onMounted, computed, nextTick, markRaw, watch, reactive, onUnmounted } from "vue";
+import { ref, onMounted, computed, nextTick, markRaw, watch, reactive, onUnmounted, onUpdated } from "vue";
 import { useViewerStore } from "../store/viewer";
 import { useAppStore } from "@/store/app";
 
@@ -14,6 +14,12 @@ import Confirmation from "./dialogs/Confirmation.vue";
 
 import EditNodalLoadDialog from "./dialogs/EditNodalLoad.vue";
 import EditElementLoadDialog from "./dialogs/EditElementLoad.vue";
+
+import SVGElementLoad from "./svg/ElementLoad.vue";
+import SVGNodalLoad from "./svg/NodalLoad.vue";
+import SVGPrescribedDisplacement from "./svg/PrescribedDisplacement.vue";
+import SVGNode from "./svg/Node.vue";
+import SVGElement from "./svg/Element.vue";
 
 import {
   formatNode,
@@ -117,15 +123,17 @@ const zoom = (e: KeyboardEvent) => {
 
 onMounted(() => {
   window.addEventListener("keydown", zoom);
+  eventBus.on(EventType.FIT_CONTENT, fitContent);
 });
 
 onUnmounted(() => {
   window.removeEventListener("keydown", zoom);
+  eventBus.off(EventType.FIT_CONTENT, fitContent);
 });
 
 onMounted(() => {
   window.setTimeout(() => {
-    fitContent();
+    //fitContent();
   }, 100);
 });
 
@@ -151,17 +159,8 @@ const fitContent = () => {
   if (!panZoom.value) return;
 
   panZoom.value.onWindowResize();
-
-  requestAnimationFrame(() => {
-    if (!panZoom.value) return;
-    panZoom.value.fitContent();
-    if (grid.value) grid.value.refreshGrid(true);
-  });
+  panZoom.value.fitContent();
 };
-
-eventBus.on(EventType.FIT_CONTENT, () => {
-  fitContent();
-});
 
 const onUpdate = throttle((zooming: boolean) => {
   if (grid.value) grid.value.refreshGrid(zooming);
@@ -316,45 +315,6 @@ const onPrescribedBCHover = (e: MouseEvent, el: PrescribedDisplacement) => {
     tooltipContent.innerHTML += `R<sub>y</sub> = ${appStore.convertForce(el.prescribedValues[4])} ${appStore.units.Angle}`;
   }
 
-  tt.style.display = "block";
-  document.body.style.cursor = "pointer";
-
-  if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
-};
-
-const onNodalDefoHover = (e: MouseEvent, node: Node) => {
-  if (appStore.mouseMode === MouseMode.MOVING) return;
-
-  const tt = tooltip.value as HTMLElement;
-  const tooltipContent = tt.querySelector(".content") as HTMLElement;
-
-  tt.style.top = e.offsetY + "px";
-  tt.style.left = e.offsetX + "px";
-
-  tooltipContent.innerHTML = `<strong>${t("common.node")} ${node.label}</strong>`;
-  if (
-    projectStore.solver.loadCases[0].solved &&
-    projectStore.beams.some((element) => element.nodes.includes(node.label))
-  ) {
-    tooltipContent.innerHTML += "<br>";
-    tooltipContent.innerHTML += `u<sub>x</sub> = ${formatExpValueAsHTML(
-      // @ts-expect-error It return value for single Dof
-      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]),
-      4
-    )} m`;
-    tooltipContent.innerHTML += "<br>";
-    tooltipContent.innerHTML += `u<sub>z</sub> = ${formatExpValueAsHTML(
-      // @ts-expect-error It return value for single Dof
-      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]),
-      4
-    )} m`;
-    tooltipContent.innerHTML += "<br>";
-    tooltipContent.innerHTML += `φ<sub>y</sub> = ${formatExpValueAsHTML(
-      // @ts-expect-error It return value for single Dof
-      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry]),
-      4
-    )} rad`;
-  }
   tt.style.display = "block";
   document.body.style.cursor = "pointer";
 
@@ -618,7 +578,7 @@ const mouseMove = (e: MouseEvent) => {
     finalZ = mouseYReal.value;
 
     //useProjectStore().solver.loadCases[0].solved = false;
-    useProjectStore().solve();
+    solve();
   }
 };
 
@@ -906,21 +866,6 @@ const onMouseUp = (e: MouseEvent) => {
   intersected.value.index = null;
 };
 
-const isSupported = (node: Node, dof: DofID) => {
-  return node.bcs.has(dof);
-};
-
-const isConnected = (node: Node) => {
-  return [...projectStore.solver.domain.elements.values()].some((el) => el.nodes.includes(node.label));
-};
-
-const getReaction = (node: Node, dof: DofID) => {
-  const r = node.getReactions(useProjectStore().solver.loadCases[0], true);
-  const i = r.dofs.findIndex((e) => e === dof);
-
-  return "get" in r.values ? (r.values as unknown as Matrix).get([i]) : r.values[i];
-};
-
 const showCtxMenu = ref(false);
 const optionsCtxMenu = reactive({
   zIndex: 3000,
@@ -1133,8 +1078,7 @@ defineExpose({ centerContent, fitContent });
           </g>
           <g>
             <g v-if="!useAppStore().zooming && useViewerStore().showLoads">
-              <g
-                class="element-load load-1d"
+              <SVGElementLoad
                 :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
                 @mousemove="onElementLoadHover($event, eload)"
                 @mouseleave="hideTooltip"
@@ -1146,64 +1090,11 @@ defineExpose({ centerContent, fitContent });
                 v-for="(eload, index) in useProjectStore().solver.loadCases[0].elementLoadList"
                 :key="`element-load-${index}`"
                 :data-element-load-id="index"
-              >
-                <g v-if="eload.values[0] !== 0">
-                  <polyline
-                    v-for="(load, i) in formatElementLoadForces(eload, scale, 0)"
-                    :key="`load-force-${i}`"
-                    points="0,0 0,0"
-                    vector-effect="non-scaling-stroke"
-                    class="drawable"
-                    :transform="`translate(${load[0]} ${load[1]}) rotate(${formatElementLoadForcesAngle(eload, 0)})`"
-                  />
-                </g>
-                <g v-if="eload.values[1] !== 0">
-                  <polyline
-                    v-for="(load, i) in formatElementLoadForces(eload, scale, 1)"
-                    :key="`load-force-${i}`"
-                    points="0,0 0,0"
-                    vector-effect="non-scaling-stroke"
-                    class="drawable"
-                    :transform="`translate(${load[0]} ${load[1]}) rotate(${formatElementLoadForcesAngle(eload, 1)})`"
-                  />
-                </g>
-                <g v-if="!useAppStore().zooming && viewerStore.showLoads">
-                  <text
-                    v-if="eload.values[0] !== 0"
-                    :font-size="13 / scale"
-                    font-weight="normal"
-                    text-anchor="end"
-                    dominant-baseline="middle"
-                    :transform="formatElementLoadLabel(eload, scale, 0)"
-                  >
-                    {{ Math.abs(appStore.convertForce(eload.values[0])).toFixed(2) }}
-                  </text>
-                  <text
-                    v-if="eload.values[1] !== 0"
-                    :font-size="13 / scale"
-                    font-weight="normal"
-                    text-anchor="end"
-                    dominant-baseline="middle"
-                    :transform="formatElementLoadLabel(eload, scale, 1)"
-                  >
-                    {{ Math.abs(appStore.convertForce(eload.values[1])).toFixed(2) }}
-                  </text>
-                </g>
-                <!--<path
-                :d="formatElementLoadHatch(eload, scale)"
-                vector-effect="non-scaling-stroke"
-                class="drawable"
-                stroke-linecap="round"
-              />-->
-                <polygon
-                  :points="formatElementLoad(eload, scale)"
-                  fill="transparent"
-                  class="drawable"
-                  vector-effect="non-scaling-stroke"
-                />
-              </g>
-              <g
-                class="nodal-load"
+                :eload="eload"
+                :scale="scale"
+                :convert-force="appStore.convertForce"
+              />
+              <SVGNodalLoad
                 :class="{ selected: projectStore.selection2.nodalLoads.includes(index) }"
                 @mousemove="onNodalLoadHover($event, nload)"
                 @mouseleave="hideTooltip"
@@ -1214,80 +1105,11 @@ defineExpose({ centerContent, fitContent });
                 "
                 v-for="(nload, index) in useProjectStore().solver.loadCases[0].nodalLoadList"
                 :key="`nodal-load-${index}`"
-              >
-                <polyline
-                  v-if="nload.values[0] !== 0 || nload.values[2] !== 0"
-                  points="0,0 0,0"
-                  vector-effect="non-scaling-stroke"
-                  class="decoration force"
-                  :transform="`translate(${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0]}
-              ${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2]}) rotate(${formatNodalLoadAngle(
-                nload
-              )})`"
-                />
-
-                <polyline
-                  v-if="nload.values[4] !== 0"
-                  points="0,0 0,0"
-                  vector-effect="non-scaling-stroke"
-                  class="decoration moment"
-                  :class="{ cw: nload.values[4] < 0, ccw: nload.values[4] > 0 }"
-                  :transform="`translate(${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0]}
-              ${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2]})`"
-                />
-
-                <polyline :points="formatNodalLoad(nload, scale)" class="handle" />
-                <polyline
-                  :points="formatNode(useProjectStore().solver.domain.nodes.get(nload.target).coords)"
-                  class="handle moment"
-                />
-
-                <text
-                  v-if="nload.values[4] !== 0"
-                  :font-size="13 / scale"
-                  font-weight="normal"
-                  text-anchor="start"
-                  dominant-baseline="central"
-                  :transform="`translate(${
-                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0] + 15 / scale
-                  }
-              ${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2] - 15 / scale})`"
-                >
-                  {{ Math.abs(appStore.convertForce(nload.values[4])).toFixed(2) }}
-                </text>
-
-                <text
-                  v-if="nload.values[0] !== 0 || nload.values[2] !== 0"
-                  :font-size="13 / scale"
-                  font-weight="normal"
-                  :text-anchor="nload.values[0] > 0 ? 'end' : 'start'"
-                  dominant-baseline="central"
-                  :transform="`translate(${
-                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0] -
-                    (40 * nload.values[0]) /
-                      Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2]) /
-                      scale
-                  }
-              ${
-                useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2] -
-                (40 * nload.values[2]) /
-                  Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2]) /
-                  scale
-              })`"
-                >
-                  {{
-                    appStore
-                      .convertForce(Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2]))
-                      .toFixed(2)
-                  }}
-                  <template v-if="nload.values[0] !== 0 && nload.values[2] !== 0">
-                    ({{ appStore.convertForce(nload.values[0]).toFixed(2) }},
-                    {{ appStore.convertForce(nload.values[2]).toFixed(2) }})
-                  </template>
-                </text>
-              </g>
-              <g
-                class="nodal-load"
+                :nload="nload"
+                :scale="scale"
+                :convert-force="appStore.convertForce"
+              />
+              <SVGPrescribedDisplacement
                 :class="{ selected: projectStore.selection2.nodalLoads.includes(index) }"
                 @mousemove="onPrescribedBCHover($event, nload)"
                 @mouseleave="hideTooltip"
@@ -1298,325 +1120,57 @@ defineExpose({ centerContent, fitContent });
                 "
                 v-for="(nload, index) in useProjectStore().solver.loadCases[0].prescribedBC"
                 :key="`nodal-load-${index}`"
-              >
-                <polyline
-                  v-if="nload.prescribedValues[0] !== 0 || nload.prescribedValues[2] !== 0"
-                  :points="`${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0]},${useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2]} ${
-                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0] +
-                    (nload.prescribedValues[0] * projectStore.defoScale * viewerStore.resultsScalePx_) / scale
-                  } ${
-                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2] +
-                    (nload.prescribedValues[2] * projectStore.defoScale * viewerStore.resultsScalePx_) / scale
-                  }`"
-                  :stroke="viewerStore.colors.loads"
-                  vector-effect="non-scaling-stroke"
-                  stroke-dasharray="2,4"
-                  marker-end="url(#forceTip)"
-                  class="decoration"
-                />
-
-                <text
-                  v-if="nload.prescribedValues[0] !== 0 || nload.prescribedValues[2] !== 0"
-                  :font-size="13 / scale"
-                  font-weight="normal"
-                  :text-anchor="nload.prescribedValues[0] > 0 ? 'start' : 'end'"
-                  dominant-baseline="central"
-                  :transform="`translate(${
-                    useProjectStore().solver.domain.nodes.get(nload.target)!.coords[0] +
-                    (nload.prescribedValues[0] > 0 ? 10 / scale : -10 / scale) +
-                    (nload.prescribedValues[0] * projectStore.defoScale * viewerStore.resultsScalePx_) / scale
-                  }
-              ${
-                useProjectStore().solver.domain.nodes.get(nload.target)!.coords[2] +
-                (nload.prescribedValues[2] * projectStore.defoScale * viewerStore.resultsScalePx_) / scale
-              })`"
-                >
-                  {{ appStore.convertLength(nload.prescribedValues[0]).toFixed(2) }},
-                  {{ appStore.convertLength(nload.prescribedValues[2]).toFixed(2) }},
-                  {{ appStore.convertLength(nload.prescribedValues[4]).toFixed(2) }}
-                </text>
-              </g>
-            </g>
-
-            <g
-              class="element element-1d"
-              :class="{ selected: projectStore.selection2.elements.includes(element.label) }"
-              v-for="(element, index) in projectStore.beams"
-              :key="`element-${index}`"
-            >
-              <polyline
-                v-if="
-                  !useAppStore().zooming &&
-                  isLoaded &&
-                  projectStore.solver.loadCases[0].solved &&
-                  viewerStore.showDeformedShape
-                "
-                :points="formatResults(element, scale, projectStore.defoScale, viewerStore.resultsScalePx_)"
-                vector-effect="non-scaling-stroke"
-                class="deformedShape"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-
-              <g
-                v-if="
-                  !useAppStore().zooming &&
-                  isLoaded &&
-                  projectStore.solver.loadCases[0].solved &&
-                  viewerStore.showNormalForce
-                "
-              >
-                <polyline
-                  :points="
-                    formatNormalForces(element, scale, projectStore.normalForceScale, viewerStore.resultsScalePx_)
-                  "
-                  vector-effect="non-scaling-stroke"
-                  class="normal"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <g
-                  v-for="(mv, mli) in formatNormalForceLabels(
-                    element,
-                    scale,
-                    projectStore.normalForceScale,
-                    appStore.convertForce,
-                    viewerStore.resultsScalePx_
-                  )"
-                  :key="mli"
-                  :transform="`translate(${mv[0] + (mv[2] < 0 ? -4 : 4) / scale} ${
-                    mv[1] + (mv[2] < 0 ? -4 : 4) / scale
-                  })`"
-                >
-                  <text
-                    :font-size="13 / scale"
-                    class="moment-label"
-                    filter="url(#textLabel)"
-                    :fill="viewerStore.colors.normalForce"
-                    font-weight="normal"
-                    :text-anchor="mv[2] < 0 ? 'end' : 'start'"
-                    dominant-baseline="baseline"
-                  >
-                    {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
-                  </text>
-                  <text
-                    :font-size="13 / scale"
-                    class="moment-label"
-                    :fill="viewerStore.colors.normalForce"
-                    font-weight="normal"
-                    :text-anchor="mv[2] < 0 ? 'end' : 'start'"
-                    dominant-baseline="baseline"
-                  >
-                    {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
-                  </text>
-                </g>
-              </g>
-              <g
-                v-if="
-                  !useAppStore().zooming &&
-                  isLoaded &&
-                  projectStore.solver.loadCases[0].solved &&
-                  viewerStore.showShearForce
-                "
-              >
-                <polyline
-                  :points="formatShearForces(element, scale, projectStore.shearForceScale, viewerStore.resultsScalePx_)"
-                  vector-effect="non-scaling-stroke"
-                  class="shear"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <g
-                  v-for="(mv, mli) in formatShearForceLabels(
-                    element,
-                    scale,
-                    projectStore.shearForceScale,
-                    appStore.convertForce,
-                    viewerStore.resultsScalePx_
-                  )"
-                  :key="mli"
-                  :transform="`translate(${mv[0] + (mv[2] < 0 ? -4 : 4) / scale} ${
-                    mv[1] + (mv[2] < 0 ? -4 : 4) / scale
-                  })`"
-                >
-                  <text
-                    :font-size="13 / scale"
-                    class="moment-label"
-                    filter="url(#textLabel)"
-                    :fill="viewerStore.colors.shearForce"
-                    font-weight="normal"
-                    :text-anchor="mv[2] < 0 ? 'end' : 'start'"
-                    dominant-baseline="baseline"
-                  >
-                    {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
-                  </text>
-                  <text
-                    :font-size="13 / scale"
-                    class="moment-label"
-                    :fill="viewerStore.colors.shearForce"
-                    font-weight="normal"
-                    :text-anchor="mv[2] < 0 ? 'end' : 'start'"
-                    dominant-baseline="baseline"
-                  >
-                    {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
-                  </text>
-                </g>
-              </g>
-
-              <g
-                v-if="
-                  !useAppStore().zooming &&
-                  isLoaded &&
-                  projectStore.solver.loadCases[0].solved &&
-                  viewerStore.showBendingMoment
-                "
-              >
-                <polyline
-                  :points="formatMoments(element, scale, projectStore.bendingMomentScale, viewerStore.resultsScalePx_)"
-                  vector-effect="non-scaling-stroke"
-                  class="moment"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <g
-                  v-for="(mv, mli) in formatMomentsLabels(
-                    element,
-                    scale,
-                    projectStore.bendingMomentScale,
-                    appStore.convertForce,
-                    viewerStore.resultsScalePx_
-                  )"
-                  :key="mli"
-                  :transform="`translate(${mv[0] + (mv[2] < 0 ? -4 : 4) / scale} ${
-                    mv[1] + (mv[2] < 0 ? -4 : 4) / scale
-                  })`"
-                >
-                  <text
-                    :font-size="13 / scale"
-                    class="moment-label"
-                    filter="url(#textLabel)"
-                    :fill="viewerStore.colors.bendingMoment"
-                    font-weight="normal"
-                    :text-anchor="mv[2] < 0 ? 'end' : 'start'"
-                    dominant-baseline="baseline"
-                  >
-                    {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
-                  </text>
-                  <text
-                    :font-size="13 / scale"
-                    class="moment-label"
-                    :fill="viewerStore.colors.bendingMoment"
-                    font-weight="normal"
-                    :text-anchor="mv[2] < 0 ? 'end' : 'start'"
-                    dominant-baseline="baseline"
-                  >
-                    {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
-                  </text>
-                </g>
-              </g>
-
-              <!--<polyline
-                :points="
-                  formatElement([
-                    solver.domain.nodes.get(element.nodes[0]).coords,
-                    solver.domain.nodes.get(element.nodes[1]).coords
-                  ])
-                "
-                vector-effect="non-scaling-stroke"
-                class="decoration"
-                stroke-linecap="round"
-                :marker-start="elementStartMarker(element)"
-                :marker-end="elementEndMarker(element)"
-              />-->
-              <polyline
-                :points="
-                  formatElement([
-                    projectStore.solver.domain.nodes.get(element.nodes[0])!.coords,
-                    projectStore.solver.domain.nodes.get(element.nodes[1])!.coords,
-                  ])
-                "
-                vector-effect="non-scaling-stroke"
-                class="drawable"
-                stroke-linecap="round"
-              />
-
-              <polyline
-                :points="formatElementFibers(element, scale)"
-                class="fibers"
-                stroke-dasharray="5 4"
-                vector-effect="non-scaling-stroke"
-              />
-
-              <circle
-                :transform="`translate(${formatElementHinge(element, 0, scale)})`"
-                :r="6 / scale"
-                fill="white"
-                stroke="black"
-                vector-effect="non-scaling-stroke"
-                stroke-width="2"
-                v-if="element.hinges[0]"
-              />
-
-              <circle
-                :transform="`translate(${formatElementHinge(element, 1, scale)})`"
-                :r="6 / scale"
-                fill="white"
-                stroke="black"
-                vector-effect="non-scaling-stroke"
-                stroke-width="2"
-                v-if="element.hinges[1]"
-              />
-
-              <g>
-                <text
-                  v-if="!useAppStore().zooming && viewerStore.showElementLabels"
-                  :x="
-                    (projectStore.solver.domain.nodes.get(element.nodes[0])!.coords[0] +
-                      projectStore.solver.domain.nodes.get(element.nodes[1])!.coords[0]) /
-                    2
-                  "
-                  :y="
-                    (projectStore.solver.domain.nodes.get(element.nodes[0])!.coords[2] +
-                      projectStore.solver.domain.nodes.get(element.nodes[1])!.coords[2]) /
-                    2
-                  "
-                  :font-size="14 / scale"
-                  font-weight="normal"
-                  text-anchor="middle"
-                  dominant-baseline="central"
-                  :transform="`${formatElementLabel(element, scale, 10)} rotate(${formatElementAngle(element)} ${
-                    (projectStore.solver.domain.nodes.get(element.nodes[0])!.coords[0] +
-                      projectStore.solver.domain.nodes.get(element.nodes[1])!.coords[0]) /
-                    2
-                  } ${
-                    (projectStore.solver.domain.nodes.get(element.nodes[0])!.coords[2] +
-                      projectStore.solver.domain.nodes.get(element.nodes[1])!.coords[2]) /
-                    2
-                  })`"
-                >
-                  {{ element.label }}
-                </text>
-              </g>
-
-              <polyline
-                :points="
-                  formatElement([
-                    projectStore.solver.domain.nodes.get(element.nodes[0])!.coords,
-                    projectStore.solver.domain.nodes.get(element.nodes[1])!.coords,
-                  ])
-                "
-                vector-effect="non-scaling-stroke"
-                class="handle"
-                :data-element-id="element.label"
-                @mousemove="onElementHover($event, element)"
-                @mouseleave="hideTooltip"
-                @pointerup="onElementClick"
+                :nload="nload"
+                :scale="scale"
+                :convert-length="appStore.convertLength"
+                :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
               />
             </g>
           </g>
+          <g>
+            <SVGElement
+              :class="{ selected: projectStore.selection2.elements.includes(element.label) }"
+              v-for="(element, index) in projectStore.beams"
+              :key="`element-${index}`"
+              :element="element"
+              :scale="scale"
+              :show-deformed-shape="!useAppStore().zooming && viewerStore.showDeformedShape"
+              :show-normal-force="!useAppStore().zooming && viewerStore.showNormalForce"
+              :show-shear-force="!useAppStore().zooming && viewerStore.showShearForce"
+              :show-bending-moment="!useAppStore().zooming && viewerStore.showBendingMoment"
+              :show-label="!useAppStore().zooming && viewerStore.showNodeLabels"
+              :load-case="projectStore.solver.loadCases[0]"
+              :deformed-shape-multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
+              :normal-force-multiplier="projectStore.normalForceScale * viewerStore.resultsScalePx_"
+              :shear-force-multiplier="projectStore.shearForceScale * viewerStore.resultsScalePx_"
+              :bending-moment-multiplier="projectStore.bendingMomentScale * viewerStore.resultsScalePx_"
+              :convert-force="appStore.convertForce"
+              @elementmousemove="onElementHover($event, element)"
+              @mouseleave="hideTooltip"
+              @elementpointerup="onElementClick"
+            />
+          </g>
 
           <g class="nodes">
-            <g
+            <SVGNode
+              :class="{ selected: projectStore.selection2.nodes.includes(node.label) }"
+              v-for="(node, index) in projectStore.nodes"
+              :key="`node-${index}`"
+              :node="node"
+              :scale="scale"
+              :show-label="!useAppStore().zooming && viewerStore.showNodeLabels"
+              :show-supports="viewerStore.showSupports"
+              :show-deformed-shape="!useAppStore().zooming && viewerStore.showDeformedShape"
+              :show-reactions="!useAppStore().zooming && viewerStore.showReactions"
+              :convert-force="appStore.convertForce"
+              @nodemousemove="onNodeHover($event, node)"
+              @nodedefomousemove="onNodeHover($event, node)"
+              @mouseleave="hideTooltip"
+              @nodepointerup="onNodeClick"
+              :load-case="projectStore.solver.loadCases[0]"
+              :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
+            />
+            <!-- <g
               class="node"
               :class="{ selected: projectStore.selection2.nodes.includes(node.label) }"
               v-for="(node, index) in projectStore.solver.domain.nodes.values()"
@@ -1814,7 +1368,7 @@ defineExpose({ centerContent, fitContent });
                 @mouseleave="hideTooltip"
                 @pointerup="onNodeClick"
               />
-            </g>
+            </g> -->
           </g>
         </g>
       </svg>
@@ -1950,4 +1504,3 @@ defineExpose({ centerContent, fitContent });
     </div>
   </div>
 </template>
-../utils/utils

@@ -1,7 +1,7 @@
 // Utilities
 import { defineStore } from "pinia";
 import { LinearStaticSolver, Beam2D } from "ts-fem";
-import { ref, computed, reactive } from "vue";
+import { ref, shallowRef, computed, reactive } from "vue";
 import { max, min } from "mathjs";
 import { deleteElement, deleteNode, deserializeModel, serializeModel, throttle } from "@/utils";
 
@@ -102,26 +102,6 @@ export const useProjectStore = defineStore(
     });
 
     const _solve = () => {
-      /*if (model === "LinearStaticSolver") {
-      const tmp = new LinearStaticSolver();
-      tmp.domain = solver.domain;
-      tmp.domain.solver = tmp;
-      tmp.loadCases = solver.loadCases;
-      solver = tmp;
-    } else if (model === "EigenValueDynamicSolver") {
-      const tmp = new EigenValueDynamicSolver();
-      tmp.domain = solver.domain;
-      tmp.domain.solver = tmp;
-      tmp.loadCases = solver.loadCases;
-      tmp.n = this.$store.state.settings.evdN;
-      tmp.tol = this.$store.state.settings.evdTol;
-      solver = tmp;
-    }*/
-
-      //this.$store.state.fem.solver = solver;
-
-      //solver.value.nodeCodeNumbers = new Map();
-      //solver.value.loadCases[0].solved = false;
       solver.value.codeNumberGenerated = false;
 
       if (solver.value.domain.elements.size === 0 || solver.value.domain.nodes.size === 0) return;
@@ -132,27 +112,13 @@ export const useProjectStore = defineStore(
         solver.value.loadCases[0].solved = false;
         return;
       }
-      /*if (this.$store.state.fem.model === "EigenValueDynamicSolver") {
-      this.$store.state.settings.showNormalForce = false;
-      this.$store.state.settings.showShearForce = false;
-      this.$store.state.settings.showBendingMoment = false;
-
-      this.$store.state.settings.showLoads = false;
-
-      if (result > this.$store.state.settings.evdN)
-        alert(
-          "Sturm sequence control failed! There are " +
-            result +
-            " eigen numbers below the highest eigen value, but we only found 10."
-        );
-    }*/
 
       //const r = solver.value.loadCases[0].r as number[];
 
-      let maxDefo = 0; //Math.max(Math.abs(max(r)), Math.abs(min(r)));
-      let maxNormalForce = 0;
-      let maxBendingMoment = 0;
-      let maxShearForce = 0;
+      let maxDefo = 1e-32; //Math.max(Math.abs(max(r)), Math.abs(min(r)));
+      let maxNormalForce = 1e-32;
+      let maxBendingMoment = 1e-32;
+      let maxShearForce = 1e-32;
 
       for (const beam of solver.value.domain.elements.values()) {
         let def = (beam as Beam2D).computeGlobalDefl(solver.value.loadCases[0], 10);
@@ -225,7 +191,6 @@ export const useProjectStore = defineStore(
     };
 
     const deleteSelection2 = () => {
-      console.log("deleteselection2");
       // Delete selected elements and corresponding element loads
       let toDelete = [];
       for (const element of selection2.elements) {
@@ -248,7 +213,6 @@ export const useProjectStore = defineStore(
 
       // Delete selected nodal loads
       const loadCase = solver.value.loadCases[0];
-      console.log(selection2.nodalLoads.sort((a, b) => b - a));
       for (const i of selection2.nodalLoads.sort((a, b) => b - a)) {
         if (loadCase.nodalLoadList[i] === undefined) continue;
 

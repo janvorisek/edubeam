@@ -337,7 +337,6 @@ export const loadXmlFile = () => {
 
   // Parse nodes
   if (jObj.session.domain.nodes) {
-    console.log(jObj.session.domain.nodes.Node);
     for (const node of jObj.session.domain.nodes.Node) {
       const label = node["@_label"];
       const coords = JSON.parse(node["@_coords"]);
@@ -384,8 +383,6 @@ export const loadXmlFile = () => {
             [DofID.Dz]: _values.fz ?? 0,
             [DofID.Ry]: _values.my ?? 0,
           };
-
-          console.log({ target, values });
 
           useProjectStore().solver.loadCases[0].createNodalLoad(target, values);
         }

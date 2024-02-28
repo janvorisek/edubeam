@@ -1,7 +1,7 @@
 <script lang="ts">
 import { container, openModal } from "jenesius-vue-modal";
 import { deserializeModel, download, exportJSON, importJSON } from "./utils";
-import { provide } from "vue";
+import { provide, nextTick } from "vue";
 import { undoRedoManager } from "./CommandManager";
 import { useViewerStore } from "./store/viewer";
 import Confirmation from "./components/dialogs/Confirmation.vue";
@@ -96,21 +96,6 @@ onMounted(() => {
 
 const appStore = useAppStore();
 
-const menu = ref([
-  {
-    title: "common.clearMesh",
-    action: () => {
-      clearMesh();
-    },
-  },
-  {
-    title: "common.shareModel",
-    action: () => {
-      shareMesh();
-    },
-  },
-]);
-
 onMounted(() => {
   const solver = useProjectStore().solver;
   const domain = solver.domain;
@@ -122,7 +107,7 @@ onMounted(() => {
   if (name) {
     clearMesh();
     deserializeModel(name, solver);
-    _solve();
+    solve();
 
     const url = document.location.href;
     window.history.pushState({}, "", url.split("?")[0]);
@@ -136,7 +121,7 @@ onMounted(() => {
     window.history.pushState({}, "", url.split("?")[0]);
   }
 
-  if (domain.nodes.size > 0) return _solve();
+  if (domain.nodes.size > 0) return solve();
 
   domain.createNode(1, [0, 0, 0], [DofID.Dx, DofID.Ry, DofID.Dz]);
   domain.createNode(2, [0, 0, -3], []);
@@ -183,15 +168,10 @@ onMounted(() => {
 });
 
 const solve = () => {
-  try {
-    _solve();
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-const _solve = () => {
   useProjectStore().solve();
+  nextTick(() => {
+    eventBus.emit(EventType.FIT_CONTENT);
+  });
 };
 
 const clearMesh = () => {
@@ -210,7 +190,6 @@ const shareMesh = () => {
 };
 
 onMounted(() => {
-  console.log(appStore.locale);
   setLocale(appStore.locale);
 });
 
@@ -234,7 +213,7 @@ function onDrop(e) {
       const text = e.target.result.toString();
       clearMesh();
       importJSON(JSON.parse(text));
-      _solve();
+      solve();
     };
     reader.readAsText(file);
   }
@@ -250,10 +229,9 @@ function openFile(e) {
     const text = e.target.result.toString();
     clearMesh();
     importJSON(JSON.parse(text));
-    _solve();
+    solve();
     appStore.tab = 0;
     appStore.drawerOpen = false;
-    eventBus.emit(EventType.FIT_CONTENT);
   };
   reader.readAsText(file);
 }
@@ -448,9 +426,6 @@ const app_commit = APP_COMMIT;
 
 svg {
   display: block;
-  *:hover {
-    transition: all 0.2s ease-out;
-  }
 }
 
 svg text {
@@ -550,7 +525,7 @@ svg text {
       stroke-width: 1px;
     }
   }
-  polyline.normal {
+  .normal polyline {
     stroke: v-bind("viewerStore.colors.normalForce");
     stroke-width: 1px;
     fill: v-bind("viewerStore.colors.normalForce");
@@ -559,7 +534,7 @@ svg text {
       fill-opacity: 0.2;
     }
   }
-  polyline.shear {
+  .shear polyline {
     stroke: v-bind("viewerStore.colors.shearForce");
     stroke-width: 1px;
     fill: v-bind("viewerStore.colors.shearForce");
@@ -568,7 +543,7 @@ svg text {
       fill-opacity: 0.2;
     }
   }
-  polyline.moment {
+  .moment polyline {
     stroke: v-bind("viewerStore.colors.bendingMoment");
     stroke-width: 1px;
     fill: v-bind("viewerStore.colors.bendingMoment");
@@ -605,6 +580,10 @@ svg text {
     stroke: rgb(0, 55, 149);
     stroke-width: 8px;
   }
+}
+
+.prescribed polyline {
+  stroke: v-bind("viewerStore.colors.loads");
 }
 
 .nodal-load {
@@ -650,6 +629,22 @@ svg text {
       fill: rgb(0, 55, 149);
     }
   }
+}
+
+.normal text {
+  fill: v-bind("viewerStore.colors.normalForce");
+}
+
+.shear text {
+  fill: v-bind("viewerStore.colors.shearForce");
+}
+
+.moment text {
+  fill: v-bind("viewerStore.colors.bendingMoment");
+}
+
+.reaction {
+  fill: v-bind("viewerStore.colors.reactions");
 }
 
 .tooltip {

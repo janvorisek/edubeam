@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { nextTick, onMounted, ref } from "vue";
 import { useAppStore } from "@/store/app";
+import { useProjectStore } from "../store/project";
 
 const appStore = useAppStore();
 
@@ -150,6 +151,8 @@ const onMouseMove = (event: MouseEvent): void => {
 };
 
 const centerContent = (): void => {
+  if (!svgRef.value) return;
+
   const rootG = (svgRef.value as SVGElement).getElementsByTagName("g")[0] as SVGGElement;
   const bBox = rootG.getBBox();
 
@@ -159,8 +162,51 @@ const centerContent = (): void => {
   updateMatrix(true);
 };
 
-const fitContent = (n = 0): void => {
+const fitContent = (n = 0) => {
   if (n > 5) return;
+
+  // for the first iteration, lets estimate the viewbox by node coord bounds
+  if (n === 0 && scale.value === 1) {
+    // Get the array of objects from useProjectStore().nodes
+    const arrayOfObjects = useProjectStore().nodes;
+
+    // Initialize variables to store maximum and minimum values
+    let maxXObject = arrayOfObjects[0];
+    let minXObject = arrayOfObjects[0];
+    let maxZObject = arrayOfObjects[0];
+    let minZObject = arrayOfObjects[0];
+
+    // Iterate through the array to find the maximum and minimum values for x and z
+    for (let i = 1; i < arrayOfObjects.length; i++) {
+      const coords = arrayOfObjects[i].coords; // Assuming coords is an array in each object
+
+      if (coords[0] > maxXObject.coords[0]) {
+        maxXObject = arrayOfObjects[i];
+      }
+      if (coords[0] < minXObject.coords[0]) {
+        minXObject = arrayOfObjects[i];
+      }
+      if (coords[2] > maxZObject.coords[2]) {
+        maxZObject = arrayOfObjects[i];
+      }
+      if (coords[2] < minZObject.coords[2]) {
+        minZObject = arrayOfObjects[i];
+      }
+    }
+
+    // Set the viewbox to the maximum and minimum values
+    viewBox = {
+      x: minXObject.coords[0],
+      y: minZObject.coords[2],
+      w: maxXObject.coords[0] - minXObject.coords[0],
+      h: maxZObject.coords[2] - minZObject.coords[2],
+    };
+
+    const svgEl = svgRef.value as SVGElement;
+    scale.value = svgEl.clientWidth / viewBox.w;
+
+    return requestAnimationFrame(() => fitContent(n + 1));
+  }
 
   if (!props.canFitContent) return centerContent();
 

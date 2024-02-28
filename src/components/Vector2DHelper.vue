@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useAppStore } from "@/store/app";
+import { useAppStore } from "../store/app";
 import { computed } from "vue";
 import { useViewerStore } from "../store/viewer";
 

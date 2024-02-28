@@ -53,8 +53,7 @@ import { useProjectStore } from "../../store/project";
 import { DofID, NodalLoad } from "ts-fem";
 import { closeModal } from "jenesius-vue-modal";
 import { useAppStore } from "@/store/app";
-import { checkNumber } from "@/utils";
-import { changeRefNumValue, numberRules } from "../../utils";
+import { checkNumber, changeRefNumValue, numberRules } from "../../utils";
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();

@@ -64,8 +64,7 @@ import { computed, ref } from "vue";
 import { useProjectStore } from "../../store/project";
 import { useAppStore } from "../../store/app";
 import { closeModal } from "jenesius-vue-modal";
-import { checkNumber, parseFloat2 } from "@/utils";
-import { numberRules } from "../../utils";
+import { checkNumber, parseFloat2, numberRules } from "@/utils";
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();

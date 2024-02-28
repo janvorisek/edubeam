@@ -103,11 +103,10 @@ import { useProjectStore } from "../../store/project";
 import { DofID, NodalLoad, PrescribedDisplacement } from "ts-fem";
 import { closeModal } from "jenesius-vue-modal";
 import { useAppStore } from "@/store/app";
-import { checkNumber, parseFloat2 } from "@/utils";
+import { checkNumber, parseFloat2, numberRules } from "@/utils";
 import Vector2DHelper from "../Vector2DHelper.vue";
 import { onMounted } from "vue";
 import { watch } from "vue";
-import { numberRules } from "../../utils";
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();

@@ -29,7 +29,7 @@ const reset = () => {
   viewBox = { x: 0, y: 0, w: 0, h: 0 };
   scale.value = 1;
 
-  onWindowResize();
+  //onWindowResize();
 };
 
 const onWindowResize = (): void => {
@@ -170,7 +170,9 @@ const centerContent = (): void => {
 };
 
 const fitContent = (n = 0) => {
-  if (n > 5) return;
+  if (n > 10) return;
+
+  onWindowResize();
 
   // for the first iteration, lets estimate the viewbox by node coord bounds
   if (n === 0 && scale.value === 1) {
@@ -249,14 +251,18 @@ const fitContent = (n = 0) => {
   const realScale = svgEl.clientHeight / bBox.height
   viewBox.w = bBox.width / realScale*/
 
+  const prevScale = scale.value;
   scale.value = svgEl.clientWidth / viewBox.w;
-
-  //console.log(bBox)
-  //console.log(viewBox)
+  const dscale = Math.abs(scale.value - prevScale);
 
   centerContent();
   updateMatrix(true);
 
+  if (dscale < 0.1) return;
+
+  // window.setTimeout(() => {
+  //   fitContent(n + 1);
+  // }, 1000);
   requestAnimationFrame(() => fitContent(n + 1));
   //nextTick(() => fitContent(n + 1));
 };

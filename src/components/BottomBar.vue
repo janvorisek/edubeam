@@ -1207,6 +1207,7 @@ import {
   toggleArray,
   toggleBoolean,
   toggleSet,
+  nameBeamForce,
 } from "../utils";
 import { DofID, Beam2D, PrescribedDisplacement } from "ts-fem";
 import { formatExpValueAsHTML, formatMeasureAsHTML } from "../SVGUtils";
@@ -1221,7 +1222,6 @@ import AddNodeDialog from "./dialogs/AddNode.vue";
 
 import { useLayoutStore } from "@/store/layout";
 import StiffnessMatrix from "@/components/StiffnessMatrix.vue";
-import { nameBeamForce } from "../utils";
 
 const appStore = useAppStore();
 const projStore = useProjectStore();

@@ -915,11 +915,13 @@ export const deleteNode = (id: string) => {
 export const deleteMaterial = (id: string) => {
   setUnsolved();
   useProjectStore().solver.domain.materials.delete(id);
+  solve();
 };
 
 export const deleteCrossSection = (id: string) => {
   setUnsolved();
   useProjectStore().solver.domain.crossSections.delete(id);
+  solve();
 };
 
 export const deleteNodalLoad = (load: NodalLoad, id: number) => {

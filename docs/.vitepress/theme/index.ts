@@ -8,7 +8,6 @@ import Edubeam from "../../components/edubeam.vue"
 import TrussElement from "../../components/TrussElement.vue";
 
 import "./style.css";
-import component from '../../../src/vite-env';
 
 export default {
   extends: DefaultTheme,

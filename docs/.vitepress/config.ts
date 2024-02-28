@@ -97,9 +97,14 @@ export default defineConfig({
   sitemap: {
     hostname: 'https://www.edubeam.app'
   },
+  lastUpdated: true,
   themeConfig: {
+    outline: "deep",
     search: {
       provider: 'local'
+    },
+    editLink: {
+      pattern: 'https://github.com/janvorisek/edubeam/edit/main/docs/:path'
     },
     nav: [
       { text: "Home", link: "/" },

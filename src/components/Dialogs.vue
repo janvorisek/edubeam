@@ -298,6 +298,7 @@ import { ref } from "vue";
 import { useProjectStore } from "../store/project";
 import { useAppStore } from "../store/app";
 import { DofID } from "ts-fem";
+import { setUnsolved } from "../utils/index";
 
 const newNodeX = ref(0.0);
 const newNodeZ = ref(0.0);
@@ -374,6 +375,8 @@ const addElementLoad = () => {
 };
 
 const addMaterial = () => {
+  setUnsolved();
+
   const domain = useProjectStore().solver.domain;
 
   const nid = domain.materials.size + 1;
@@ -381,9 +384,11 @@ const addMaterial = () => {
   domain.createMaterial(nid, { e: matE.value, g: matG.value, alpha: matAlphaTemp.value, d: matDensity.value });
 
   useAppStore().dialogs.addMaterial = false;
+  useProjectStore().solve();
 };
 
 const addCrossSection = () => {
+  setUnsolved();
   const domain = useProjectStore().solver.domain;
 
   const nid = domain.crossSections.size + 1;
@@ -391,5 +396,6 @@ const addCrossSection = () => {
   domain.createCrossSection(nid, { a: csArea.value, iy: csIy.value, h: csH.value, k: csShear.value });
 
   useAppStore().dialogs.addCrossSection = false;
+  useProjectStore().solve();
 };
 </script>

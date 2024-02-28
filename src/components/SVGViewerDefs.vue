@@ -236,8 +236,9 @@ const props = withDefaults(
       :markerWidth="supportSize * 20"
       :markerHeight="supportSize * 80"
       orient="auto"
+      markerUnits="strokeWidth"
     >
-      <line y1="6" x1="0" y2="44" x2="0" stroke-width="1" stroke="black" />
+      <line y1="6" x1="0" y2="44" x2="0" :stroke-width="1 / supportSize" stroke="black" />
       <line
         v-for="i in 6"
         :key="i"
@@ -245,7 +246,7 @@ const props = withDefaults(
         x1="0"
         :y2="10 + (i * 50) / 7"
         x2="-10"
-        stroke-width="1"
+        :stroke-width="1 / supportSize"
         stroke="black"
         fill="none"
       />
@@ -261,7 +262,7 @@ const props = withDefaults(
       overflow="visible"
       markerUnits="strokeWidth"
     >
-      <polyline points="10,0 -5,20 25,20 10,0" stroke-width="1" fill="transparent" stroke="black" />
+      <polyline points="10,0 -5,20 25,20 10,0" :stroke-width="1 / supportSize" fill="transparent" stroke="black" />
     </marker>
 
     <marker
@@ -274,8 +275,8 @@ const props = withDefaults(
       overflow="visible"
       markerUnits="strokeWidth"
     >
-      <polyline points="10,0 -5,20 25,20 10,0" stroke-width="1" fill="transparent" stroke="black" />
-      <line y1="25" x1="-5" y2="25" x2="25" stroke-width="1" stroke="black" />
+      <polyline points="10,0 -5,20 25,20 10,0" :stroke-width="1 / supportSize" fill="transparent" stroke="black" />
+      <line y1="25" x1="-5" y2="25" x2="25" :stroke-width="1 / supportSize" stroke="black" />
     </marker>
 
     <marker
@@ -288,8 +289,8 @@ const props = withDefaults(
       overflow="visible"
       markerUnits="strokeWidth"
     >
-      <polyline points="0,10 20,-5 20,25 0,10" stroke-width="1" fill="transparent" stroke="black" />
-      <line y1="-5" x1="25" y2="25" x2="25" stroke-width="1" stroke="black" />
+      <polyline points="0,10 20,-5 20,25 0,10" :stroke-width="1 / supportSize" fill="transparent" stroke="black" />
+      <line y1="-5" x1="25" y2="25" x2="25" :stroke-width="1 / supportSize" stroke="black" />
     </marker>
 
     <marker

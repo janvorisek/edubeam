@@ -97,7 +97,21 @@ const results = computed(() => {
 });
 
 const forces = computed(() => {
-  if (!props.loadCase.solved || !props.showDeformedShape) return {};
+  if (!props.loadCase.solved)
+    return {
+      normal: {
+        text: [],
+        values: "",
+      },
+      shear: {
+        text: [],
+        values: "",
+      },
+      moment: {
+        text: [],
+        values: "",
+      },
+    };
 
   let result = "";
   let resultV = "";
@@ -190,11 +204,28 @@ const forces = computed(() => {
     }
   }
 
-  return {
+  const ret = {
     normal: { values: `${n1.coords[0]},${n1.coords[2]} ${result}${n2.coords[0]},${n2.coords[2]}`, text: result2 },
     shear: { values: `${n1.coords[0]},${n1.coords[2]} ${resultV}${n2.coords[0]},${n2.coords[2]}`, text: result2V },
     moment: { values: `${n1.coords[0]},${n1.coords[2]} ${resultM}${n2.coords[0]},${n2.coords[2]}`, text: result2M },
   };
+
+  if (!props.showBendingMoment) {
+    ret.moment.text = [];
+    ret.moment.values = "";
+  }
+
+  if (!props.showShearForce) {
+    ret.shear.text = [];
+    ret.shear.values = "";
+  }
+
+  if (!props.showNormalForce) {
+    ret.normal.text = [];
+    ret.normal.values = "";
+  }
+
+  return ret;
 });
 
 const emit = defineEmits(["elementmousemove", "elementpointerup"]);

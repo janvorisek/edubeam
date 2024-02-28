@@ -25,6 +25,13 @@ const scale = ref(1);
 
 const touchPointer = ref({ x: 0, y: 0, ds: 0, move: false, pinch: false });
 
+const reset = () => {
+  viewBox = { x: 0, y: 0, w: 0, h: 0 };
+  scale.value = 1;
+
+  onWindowResize();
+};
+
 const onWindowResize = (): void => {
   if (!rootRef.value || !svgRef.value) return;
 
@@ -296,7 +303,7 @@ const onMouseUp = () => {
 const rootRef = ref<HTMLElement | null>(null);
 const svgRef = ref<SVGElement | null>(null);
 
-defineExpose({ scale, centerContent, fitContent, updateMatrix, onWindowResize, zoom });
+defineExpose({ scale, centerContent, fitContent, updateMatrix, onWindowResize, zoom, reset });
 </script>
 
 <template>

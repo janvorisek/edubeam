@@ -121,14 +121,23 @@ const zoom = (e: KeyboardEvent) => {
   }
 };
 
+const resetAndFit = () => {
+  if (!panZoom.value) return;
+  panZoom.value.reset();
+
+  nextTick(() => {
+    panZoom.value.fitContent();
+  });
+};
+
 onMounted(() => {
   window.addEventListener("keydown", zoom);
-  eventBus.on(EventType.FIT_CONTENT, fitContent);
+  eventBus.on(EventType.FIT_CONTENT, resetAndFit);
 });
 
 onUnmounted(() => {
   window.removeEventListener("keydown", zoom);
-  eventBus.off(EventType.FIT_CONTENT, fitContent);
+  eventBus.off(EventType.FIT_CONTENT, resetAndFit);
 });
 
 onMounted(() => {
@@ -164,7 +173,7 @@ const fitContent = () => {
 
 const onUpdate = throttle((zooming: boolean) => {
   if (grid.value) grid.value.refreshGrid(zooming);
-}, 1000 / 30);
+}, 1000 / 10);
 
 const { escape, f, c, _delete } = useMagicKeys({
   aliasMap: {

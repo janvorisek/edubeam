@@ -749,7 +749,8 @@ const onMouseDown = (e: PointerEvent) => {
     if (appStore.mouseMode === MouseMode.ADD_ELEMENT) {
       mouseStartX = -9999;
       if (startNode.value === null) {
-        startNode.value = { label: intersected.value.index, x: mouseXReal.value, y: mouseYReal.value };
+        const n = projectStore.solver.domain.nodes.get(intersected.value.index as string)!;
+        startNode.value = { label: intersected.value.index, x: n.coords[0], y: n.coords[2] };
       } else if (intersected.value.type === "node") {
         projectStore.solver.loadCases[0].solved = false;
         let newElId = projectStore.solver.domain.elements.size + 1;
@@ -759,10 +760,10 @@ const onMouseDown = (e: PointerEvent) => {
         }
 
         const nid = startNode.value.label;
-        // @ts-expect-error ts-fem is wrongly typed
         projectStore.solver.domain.createBeam2D(newElId, [nid, intersected.value.index], 1, 1);
 
-        startNode.value = { label: intersected.value.index, x: mouseXReal.value, y: mouseYReal.value };
+        const n = projectStore.solver.domain.nodes.get(intersected.value.index as string)!;
+        startNode.value = { label: intersected.value.index, x: n.coords[0], y: n.coords[2] };
         solve();
       }
 

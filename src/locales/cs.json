@@ -169,7 +169,9 @@
       "fromNodeId": "Počáteční uzel",
       "toNodeId": "Koncový uzel",
       "addElement": "Přidat prvek",
-      "addNewElement": "Přidat nový prvek"
+      "addNewElement": "Přidat nový prvek",
+      "material": "Materiál",
+      "crossSection": "Průřez"
     },
     "addNodalLoad": {
       "addNewNodalLoad": "Přidat nové uzlové zatížení",

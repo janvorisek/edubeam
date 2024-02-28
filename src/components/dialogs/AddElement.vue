@@ -32,6 +32,33 @@
                 />
               </v-col>
             </v-row>
+
+            <v-row no-gutters v-if="projectStore.crossSections.length > 1 || projectStore.crossSections.length > 1">
+              <v-col cols="6">
+                <v-select
+                  v-model="newElementMat"
+                  :items="projectStore.materials"
+                  item-title="label"
+                  item-value="label"
+                  :label="$t('dialogs.addElement.material')"
+                  hide-details="auto"
+                  required
+                  autofocus
+                />
+              </v-col>
+
+              <v-col cols="6" md="6">
+                <v-select
+                  v-model="newElementCS"
+                  :items="projectStore.crossSections"
+                  item-title="label"
+                  item-value="label"
+                  :label="$t('dialogs.addElement.crossSection')"
+                  hide-details="auto"
+                  required
+                />
+              </v-col>
+            </v-row>
           </v-container>
         </v-form>
       </v-card-text>
@@ -65,11 +92,16 @@ const open = ref(true);
 
 const newElementFrom = ref("");
 const newElementTo = ref("");
+const newElementMat = ref("");
+const newElementCS = ref("");
 
 onMounted(() => {
   if (projectStore.solver.domain.nodes.size >= 2) {
     newElementFrom.value = [...useProjectStore().solver.domain.nodes.values()][0].label;
     newElementTo.value = [...useProjectStore().solver.domain.nodes.values()][1].label;
+
+    newElementMat.value = [...useProjectStore().solver.domain.materials.values()][0].label;
+    newElementCS.value = [...useProjectStore().solver.domain.crossSections.values()][0].label;
   }
 });
 
@@ -85,7 +117,7 @@ const addElement = () => {
     nid++;
   }
 
-  domain.createBeam2D(nid, [newElementFrom.value, newElementTo.value], 1, 1);
+  domain.createBeam2D(nid, [newElementFrom.value, newElementTo.value], newElementMat.value, newElementCS.value);
 
   domain.elements = new Map(domain.elements);
 

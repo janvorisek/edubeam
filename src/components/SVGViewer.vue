@@ -760,7 +760,9 @@ const onMouseDown = (e: PointerEvent) => {
         }
 
         const nid = startNode.value.label;
-        projectStore.solver.domain.createBeam2D(newElId, [nid, intersected.value.index], 1, 1);
+        const mat = [...useProjectStore().solver.domain.materials.values()][0].label;
+        const cs = [...useProjectStore().solver.domain.crossSections.values()][0].label;
+        projectStore.solver.domain.createBeam2D(newElId, [nid, intersected.value.index], mat, cs);
 
         const n = projectStore.solver.domain.nodes.get(intersected.value.index as string)!;
         startNode.value = { label: intersected.value.index, x: n.coords[0], y: n.coords[2] };

@@ -170,7 +170,9 @@
       "fromNodeId": "Initial node",
       "toNodeId": "End node",
       "addElement": "Add element",
-      "addNewElement": "Add new element"
+      "addNewElement": "Add new element",
+      "material": "Material",
+      "crossSection": "Cross section"
     },
     "addNodalLoad": {
       "addNewNodalLoad": "Add new nodal load",

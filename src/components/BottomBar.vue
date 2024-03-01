@@ -719,7 +719,7 @@
                   v-html="formatMeasureAsHTML(appStore.units.Length)"
                 ></div>
               </div>
-              <div class="inline-edit-group">
+              <div v-if="item.ref instanceof BeamElementUniformEdgeLoad" class="inline-edit-group">
                 <span class="input-before">LCS</span>
                 <div class="inline-edit">
                   <v-checkbox-btn

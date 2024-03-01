@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="open" max-width="1150">
+  <v-dialog v-model="open" max-width="1150" attach=".v-application">
     <v-btn
       icon="mdi-close"
       size="small"

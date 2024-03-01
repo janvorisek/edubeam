@@ -113,9 +113,21 @@ export const useProjectStore = defineStore(
         return;
       }
 
+      // Check if at least 3 dofs are supported
+      let nSup = 0;
+
+      for (const node of solver.value.domain.nodes.values()) {
+        nSup += node.bcs.size;
+      }
+
+      if (nSup < 3) {
+        solver.value.loadCases[0].solved = false;
+        return;
+      }
+
       // Check for large deformations - kinematically indeterminate structures
       const maxU = Math.max(...(solver.value.loadCases[0].r.toArray() as number[]));
-      if (maxU > 1e10) {
+      if (maxU > 1e6) {
         solver.value.loadCases[0].solved = false;
         return;
       }

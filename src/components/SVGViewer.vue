@@ -719,7 +719,23 @@ const onMouseDown = (e: PointerEvent) => {
     if (appStore.mouseMode === MouseMode.ADD_ELEMENT) {
       mouseStartX = -9999;
       if (startNode.value === null) {
-        const n = projectStore.solver.domain.nodes.get(intersected.value.index as string)!;
+        const n = projectStore.solver.domain.nodes.get(intersected.value.index as string);
+
+        // No node selected, but want to add element
+        // So we add a node for the user
+        if (!n) {
+          let newNodeId = projectStore.solver.domain.nodes.size + 1;
+
+          while (projectStore.solver.domain.nodes.has(newNodeId.toString())) {
+            newNodeId++;
+          }
+
+          projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
+          startNode.value = { label: newNodeId, x: mouseXReal.value, y: mouseYReal.value };
+
+          return;
+        }
+
         startNode.value = { label: intersected.value.index, x: n.coords[0], y: n.coords[2] };
       } else if (intersected.value.type === "node") {
         projectStore.solver.loadCases[0].solved = false;
@@ -736,6 +752,32 @@ const onMouseDown = (e: PointerEvent) => {
 
         const n = projectStore.solver.domain.nodes.get(intersected.value.index as string)!;
         startNode.value = { label: intersected.value.index, x: n.coords[0], y: n.coords[2] };
+        solve();
+      } else {
+        projectStore.solver.loadCases[0].solved = false;
+
+        // No end node selected, just add new
+        let newNodeId = projectStore.solver.domain.nodes.size + 1;
+
+        while (projectStore.solver.domain.nodes.has(newNodeId.toString())) {
+          newNodeId++;
+        }
+
+        projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
+
+        let newElId = projectStore.solver.domain.elements.size + 1;
+
+        while (projectStore.solver.domain.elements.has(newElId.toString())) {
+          newElId++;
+        }
+
+        const nid = startNode.value.label;
+        const mat = [...useProjectStore().solver.domain.materials.values()][0].label;
+        const cs = [...useProjectStore().solver.domain.crossSections.values()][0].label;
+        projectStore.solver.domain.createBeam2D(newElId, [nid, newNodeId], mat, cs);
+
+        startNode.value = { label: newNodeId, x: mouseXReal.value, y: mouseYReal.value };
+
         solve();
       }
 
@@ -1066,7 +1108,7 @@ defineExpose({ centerContent, fitContent });
           :support-size="viewerStore.supportSize"
         />
         <g ref="viewport">
-          <g v-if="appStore.mouseMode === MouseMode.ADD_NODE">
+          <g v-if="appStore.mouseMode === MouseMode.ADD_NODE || appStore.mouseMode === MouseMode.ADD_ELEMENT">
             <rect
               :x="mouseXReal"
               :y="mouseYReal"

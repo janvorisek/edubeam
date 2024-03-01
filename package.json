@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "@mdi/font": "^7.4.47",
-    "@types/node": "^20.11.19",
+    "@types/node": "^20.11.24",
     "@types/webfontloader": "^1.6.38",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/eslint-config-typescript": "^12.0.0",

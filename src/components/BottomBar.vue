@@ -244,9 +244,7 @@
             color="secondary"
             style="border-left: 1px solid #ccc"
             :rounded="0"
-            @click.stop="
-              if (useProjectStore().solver.domain.nodes.size >= 2) appStore.mouseMode = MouseMode.ADD_ELEMENT;
-            "
+            @click.stop="appStore.mouseMode = MouseMode.ADD_ELEMENT"
           >
             <v-icon small>mdi-cursor-default-outline</v-icon> {{ $t("elements.addElement") }}
             <v-tooltip :text="$t('common.addUsingMouse')" location="bottom" activator="parent"></v-tooltip>

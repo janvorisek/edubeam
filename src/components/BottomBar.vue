@@ -108,7 +108,7 @@
                 <label :for="`coords0-${item.label}`" class="input-before">x</label>
                 <input
                   :id="`coords0-${item.label}`"
-                  :value="appStore.convertLength(item.coords[0])"
+                  :value="float2String(appStore.convertLength(item.coords[0]))"
                   @keydown="checkNumber($event)"
                   @change="
                     changeSetArrayItem(
@@ -126,7 +126,7 @@
                 <label :for="`coords2-${item.label}`" class="input-before">z</label>
                 <input
                   :id="`coords2-${item.label}`"
-                  :value="appStore.convertLength(item.coords[2])"
+                  :value="float2String(appStore.convertLength(item.coords[2]))"
                   @keydown="checkNumber($event)"
                   @change="
                     changeSetArrayItem(
@@ -1220,6 +1220,7 @@ import AddNodeDialog from "./dialogs/AddNode.vue";
 
 import { useLayoutStore } from "@/store/layout";
 import StiffnessMatrix from "@/components/StiffnessMatrix.vue";
+import { float2String } from "../utils/index";
 
 const appStore = useAppStore();
 const projStore = useProjectStore();

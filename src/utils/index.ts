@@ -956,3 +956,31 @@ export const nameBeamForce = (dof: number) => {
   if (dof === 5) return "M";
   return "";
 };
+
+export function decimalCount(number) {
+  // Convert to String
+  const numberAsString = number.toString();
+  // String Contains Decimal
+  if (numberAsString.includes(".")) {
+    return numberAsString.split(".")[1].length;
+  }
+  // String Does Not Contain Decimal
+  return 0;
+}
+
+export function float2String(v: number) {
+  const numDec = decimalCount(v);
+  let s = v.toString();
+  if (numDec > 15) s = s.substr(0, s.length - 1);
+
+  // now count zeros at end
+  let zeros = 0;
+  for (let c = 1; c < numDec; c++) {
+    if (s[s.length - c] === "0") zeros++;
+    else break;
+  }
+
+  if (zeros > 0) return parseFloat(s.substr(0, s.length - zeros));
+
+  return v;
+}

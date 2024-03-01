@@ -113,7 +113,12 @@ export const useProjectStore = defineStore(
         return;
       }
 
-      //const r = solver.value.loadCases[0].r as number[];
+      // Check for large deformations - kinematically indeterminate structures
+      const maxU = Math.max(...(solver.value.loadCases[0].r.toArray() as number[]));
+      if (maxU > 1e10) {
+        solver.value.loadCases[0].solved = false;
+        return;
+      }
 
       let maxDefo = 1e-32; //Math.max(Math.abs(max(r)), Math.abs(min(r)));
       let maxNormalForce = 1e-32;

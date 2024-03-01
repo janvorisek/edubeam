@@ -523,7 +523,14 @@
 
           <template #item.type="{ item }">
             <span class="text-no-wrap" v-if="item.type === 'node'">{{ $t("loads.nodalLoad") }}</span>
-            <span class="text-no-wrap" v-if="item.type === 'element'">{{ $t("loads.elementLoad") }}</span>
+            <span class="text-no-wrap" v-if="item.type === 'element'">
+              <template v-if="item.ref instanceof BeamElementUniformEdgeLoad">
+                {{ $t("loadType.udl") }}
+              </template>
+              <template v-else-if="item.ref instanceof BeamConcentratedLoad">
+                {{ $t("loadType.concentrated") }}
+              </template>
+            </span>
             <span class="text-no-wrap" v-if="item.type === 'prescribed'">{{ $t("loads.prescribedDisplacement") }}</span>
           </template>
 
@@ -626,7 +633,8 @@
 
             <div class="d-flex align-content-center" v-if="item.type === 'element'">
               <div class="inline-edit-group mr-2" style="min-width: 64px">
-                <span class="input-before">f<sub>x</sub></span>
+                <span v-if="item.ref instanceof BeamElementUniformEdgeLoad" class="input-before">f<sub>x</sub></span>
+                <span v-else-if="item.ref instanceof BeamConcentratedLoad" class="input-before">F<sub>x</sub></span>
                 <input
                   :value="appStore.convertForce(item.ref.values[0])"
                   @keydown="checkNumber($event)"
@@ -641,10 +649,20 @@
                   "
                   class="inline-edit"
                 />
-                <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.ForceDistance)"></div>
+                <div
+                  v-if="item.ref instanceof BeamElementUniformEdgeLoad"
+                  class="input-after"
+                  v-html="formatMeasureAsHTML(appStore.units.ForceDistance)"
+                ></div>
+                <div
+                  v-else-if="item.ref instanceof BeamConcentratedLoad"
+                  class="input-after"
+                  v-html="formatMeasureAsHTML(appStore.units.Force)"
+                ></div>
               </div>
               <div class="inline-edit-group mr-2" style="min-width: 64px">
-                <span class="input-before">f<sub>z</sub></span>
+                <span v-if="item.ref instanceof BeamElementUniformEdgeLoad" class="input-before">f<sub>z</sub></span>
+                <span v-else-if="item.ref instanceof BeamConcentratedLoad" class="input-before">F<sub>z</sub></span>
                 <input
                   :value="appStore.convertForce(item.ref.values[1])"
                   @keydown="checkNumber($event)"
@@ -659,7 +677,47 @@
                   "
                   class="inline-edit"
                 />
-                <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.ForceDistance)"></div>
+                <div
+                  v-if="item.ref instanceof BeamElementUniformEdgeLoad"
+                  class="input-after"
+                  v-html="formatMeasureAsHTML(appStore.units.ForceDistance)"
+                ></div>
+                <div
+                  v-else-if="item.ref instanceof BeamConcentratedLoad"
+                  class="input-after"
+                  v-html="formatMeasureAsHTML(appStore.units.Force)"
+                ></div>
+              </div>
+              <div
+                v-if="item.ref instanceof BeamConcentratedLoad"
+                class="inline-edit-group mr-2"
+                style="min-width: 64px"
+              >
+                <span class="input-before">d</span>
+                <input
+                  :value="appStore.convertLength(item.ref.values[3])"
+                  @keydown="checkNumber($event)"
+                  @change="
+                    changeSetArrayItem(
+                      item.ref,
+                      'values',
+                      3,
+                      $event.target as HTMLInputElement,
+                      appStore.convertInverseLength
+                    )
+                  "
+                  class="inline-edit"
+                />
+                <div
+                  v-if="item.ref instanceof BeamElementUniformEdgeLoad"
+                  class="input-after"
+                  v-html="formatMeasureAsHTML(appStore.units.ForceDistance)"
+                ></div>
+                <div
+                  v-else-if="item.ref instanceof BeamConcentratedLoad"
+                  class="input-after"
+                  v-html="formatMeasureAsHTML(appStore.units.Length)"
+                ></div>
               </div>
               <div class="inline-edit-group">
                 <span class="input-before">LCS</span>
@@ -1178,6 +1236,7 @@ import {
   Domain,
   LoadCase,
   BeamElementUniformEdgeLoad,
+  BeamConcentratedLoad,
   NodalLoad,
 } from "ts-fem";
 
@@ -1542,7 +1601,7 @@ const headers = reactive({
       title: "common.components",
       units: "Force",
       key: "load.values",
-      width: 360,
+      width: 420,
     },
     {
       title: "common.actions",

@@ -1,4 +1,4 @@
-import { LinearStaticSolver, Beam2D } from "ts-fem";
+import { LinearStaticSolver, Beam2D, BeamElementUniformEdgeLoad, BeamConcentratedLoad } from "ts-fem";
 
 function objectToBase64(obj: unknown) {
   try {
@@ -36,6 +36,7 @@ export const serializeModel = (ls: LinearStaticSolver) => {
   const _materials = [];
   const _css = [];
   const eloads = [];
+  const ecloads = [];
   const nloads = [];
   const pd = [];
 
@@ -55,9 +56,17 @@ export const serializeModel = (ls: LinearStaticSolver) => {
     _css.push([id, cs.a, cs.iy, cs.h, cs.k]);
   });
 
-  ls.loadCases[0].elementLoadList.forEach((load) => {
-    eloads.push([load.target, load.values]);
-  });
+  ls.loadCases[0].elementLoadList
+    .filter((el) => el instanceof BeamElementUniformEdgeLoad)
+    .forEach((load) => {
+      eloads.push([load.target, load.values]);
+    });
+
+  ls.loadCases[0].elementLoadList
+    .filter((el) => el instanceof BeamConcentratedLoad)
+    .forEach((load) => {
+      ecloads.push([load.target, load.values]);
+    });
 
   ls.loadCases[0].nodalLoadList.forEach((load) => {
     nloads.push([load.target, load.values]);
@@ -73,6 +82,7 @@ export const serializeModel = (ls: LinearStaticSolver) => {
     m?: unknown[];
     cs?: unknown[];
     el?: unknown[];
+    ecl?: unknown[];
     nl?: unknown[];
     pd?: unknown[];
   } = {};
@@ -82,6 +92,7 @@ export const serializeModel = (ls: LinearStaticSolver) => {
   if (_materials.length > 0) obj.m = _materials;
   if (_css.length > 0) obj.cs = _css;
   if (eloads.length > 0) obj.el = eloads;
+  if (ecloads.length > 0) obj.ecl = ecloads;
   if (nloads.length > 0) obj.nl = nloads;
   if (pd.length > 0) obj.pd = pd;
 
@@ -121,6 +132,12 @@ export const deserializeModel = (base64String: string, ls: LinearStaticSolver) =
   if ("el" in tmp) {
     for (const e of tmp.el) {
       ls.loadCases[0].createBeamElementUniformEdgeLoad(e[0], e[1], true);
+    }
+  }
+
+  if ("ecl" in tmp) {
+    for (const e of tmp.ecl) {
+      ls.loadCases[0].createBeamConcentratedLoad(e[0], e[1], true);
     }
   }
 

@@ -111,7 +111,8 @@
     "addLoad": "Přidat zatížení",
     "addPrescribedDisplacement": "Předepsat posunutí",
     "forceMoment": "Síla/moment",
-    "editLoad": "Upravit zatížení"
+    "editLoad": "Upravit zatížení",
+    "loadPositionOnBeam": "Vzdálenost od počátečního uzlu"
   },
   "material": {
     "alphaT": "α_T",
@@ -271,5 +272,9 @@
   "validators": {
     "enterValue": "Zadejte hodnotu",
     "invalidNumber": "Neplatné číslo"
+  },
+  "loadType": {
+    "concentrated": "Osamělé břemeno",
+    "udl": "Spojité rovnoměrné zatížení"
   }
 }

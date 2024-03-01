@@ -60,7 +60,8 @@
     "addPrescribedDisplacement": "Prescribe displacement",
     "UDL": "UDL",
     "forceMoment": "Force/Moment",
-    "editLoad": "Edit load"
+    "editLoad": "Edit load",
+    "loadPositionOnBeam": "Load position from start node"
   },
   "tabs": {
     "nodes": "Nodes",
@@ -273,5 +274,9 @@
   "validators": {
     "enterValue": "Enter a value",
     "invalidNumber": "Invalid number"
+  },
+  "loadType": {
+    "concentrated": "Concentrated load",
+    "udl": "Uniformly distributed load"
   }
 }

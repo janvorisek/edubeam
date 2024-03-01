@@ -16,6 +16,7 @@ import EditNodalLoadDialog from "./dialogs/EditNodalLoad.vue";
 import EditElementLoadDialog from "./dialogs/EditElementLoad.vue";
 
 import SVGElementLoad from "./svg/ElementLoad.vue";
+import SVGElementConcentratedLoad from "./svg/ElementConcentratedLoad.vue";
 import SVGNodalLoad from "./svg/NodalLoad.vue";
 import SVGPrescribedDisplacement from "./svg/PrescribedDisplacement.vue";
 import SVGNode from "./svg/Node.vue";
@@ -48,7 +49,15 @@ import {
   formatPrescribedBCAngle,
 } from "../SVGUtils";
 import { debounce, throttle } from "../utils";
-import { Node, DofID, Beam2D, BeamElementLoad, NodalLoad, PrescribedDisplacement } from "ts-fem";
+import {
+  Node,
+  DofID,
+  Beam2D,
+  BeamElementLoad,
+  NodalLoad,
+  PrescribedDisplacement,
+  BeamElementUniformEdgeLoad,
+} from "ts-fem";
 import { Matrix } from "mathjs";
 import { useMagicKeys } from "@vueuse/core";
 
@@ -69,6 +78,8 @@ import { useLayoutStore } from "@/store/layout";
 import AddNodeVue from "./dialogs/AddNode.vue";
 import { Command, IKeyValue, undoRedoManager } from "../CommandManager";
 import { EventType, eventBus } from "../EventBus";
+import { BeamConcentratedLoad } from "ts-fem";
+import { float2String } from "../utils/index";
 
 const props = defineProps<{
   id: string;
@@ -1130,22 +1141,40 @@ defineExpose({ centerContent, fitContent });
           </g>
           <g>
             <g v-if="!useAppStore().zooming && useViewerStore().showLoads">
-              <SVGElementLoad
-                :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
-                @mousemove="onElementLoadHover($event, eload)"
-                @mouseleave="hideTooltip"
-                @pointerup="onElementLoadClick($event, index)"
-                @dblclick="
-                  openModal(EditElementLoadDialog, { index });
-                  projectStore.clearSelection();
-                "
-                v-for="(eload, index) in useProjectStore().solver.loadCases[0].elementLoadList"
-                :key="`element-load-${index}`"
-                :data-element-load-id="index"
-                :eload="eload"
-                :scale="scale"
-                :convert-force="appStore.convertForce"
-              />
+              <template v-for="(eload, index) in useProjectStore().solver.loadCases[0].elementLoadList">
+                <SVGElementLoad
+                  v-if="eload instanceof BeamElementUniformEdgeLoad"
+                  :key="`element-load-${index}`"
+                  :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
+                  @mousemove="onElementLoadHover($event, eload)"
+                  @mouseleave="hideTooltip"
+                  @pointerup="onElementLoadClick($event, index)"
+                  @dblclick="
+                    openModal(EditElementLoadDialog, { index });
+                    projectStore.clearSelection();
+                  "
+                  :data-element-load-id="index"
+                  :eload="eload"
+                  :scale="scale"
+                  :convert-force="appStore.convertForce"
+                />
+                <SVGElementConcentratedLoad
+                  v-else
+                  :key="`element-load-${index}`"
+                  :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
+                  @mousemove="onElementLoadHover($event, eload)"
+                  @mouseleave="hideTooltip"
+                  @pointerup="onElementLoadClick($event, index)"
+                  @dblclick="
+                    openModal(EditElementLoadDialog, { index });
+                    projectStore.clearSelection();
+                  "
+                  :data-element-load-id="index"
+                  :eload="eload"
+                  :scale="scale"
+                  :convert-force="appStore.convertForce"
+                />
+              </template>
               <SVGNodalLoad
                 :class="{ selected: projectStore.selection2.nodalLoads.includes(index) }"
                 @mousemove="onNodalLoadHover($event, nload)"

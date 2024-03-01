@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Matrix } from "mathjs";
-import { Node, DofID, LoadCase, Beam2D } from "ts-fem";
+import { Node, DofID, LoadCase, Beam2D, BeamConcentratedLoad, BeamElementUniformEdgeLoad } from "ts-fem";
 import { computed } from "vue";
 
 const props = withDefaults(
@@ -124,9 +124,7 @@ const forces = computed(() => {
   const scaleByM = props.bendingMomentMultiplier / props.scale;
   const n1 = props.element.domain.nodes.get(props.element.nodes[0]) as Node;
   const n2 = props.element.domain.nodes.get(props.element.nodes[1]) as Node;
-  const forces = props.element.computeNormalForce(props.loadCase, nseg);
-  const forcesV = props.element.computeShearForce(props.loadCase, nseg);
-  const forcesM = props.element.computeBendingMoment(props.loadCase, nsegM);
+
   const geo = props.element.computeGeo();
   const cos = geo.dx / geo.l;
   const sin = geo.dz / geo.l;
@@ -134,55 +132,92 @@ const forces = computed(() => {
   const nx = geo.dz / geo.l;
   const ny = -geo.dx / geo.l;
 
-  for (let s = 0; s <= nseg; s++) {
-    const xc = n1.coords[0] + (cos * geo.l * s) / nseg;
-    const zc = n1.coords[2] + (sin * geo.l * s) / nseg;
+  // Calculate V(x)=0
+  //const dV = forcesV.V[nseg] - forcesV.V[0];
+  const xmax = 0;
 
-    result += `${xc + forces.N[s] * nx * scaleBy},${zc + forces.N[s] * ny * scaleBy} `;
-    resultV += `${xc + forcesV.V[s] * nx * scaleByV},${zc + forcesV.V[s] * ny * scaleByV} `;
+  /*if (Math.abs(dV) > 1e-6) {
+    xmax = -(forcesV.V[0] * geo.l) / dV;
+  }*/
+
+  const labelsX = [0, geo.l];
+  const labelsXM = xmax > 0 && xmax < geo.l ? [0, xmax, geo.l] : [0, geo.l];
+
+  // values from 0 to element length
+  const nvvalues = [];
+  const mvalues = [];
+
+  // Check if concentrated forces are present
+  const concentrated = props.loadCase.elementLoadList.filter(
+    (l) => l.target === props.element.label && l instanceof BeamConcentratedLoad
+  ) as BeamConcentratedLoad[];
+
+  for (const c of concentrated) {
+    labelsXM.push(c.values[3]);
+    labelsX.push(c.values[3] - 1e-6);
+    labelsX.push(c.values[3] + 1e-6);
+    mvalues.push(c.values[3]);
+    nvvalues.push(c.values[3] - 1e-6);
+    nvvalues.push(c.values[3] + 1e-6);
   }
 
-  // Calculate V(x)=0
-  const dV = forcesV.V[nseg] - forcesV.V[0];
-  let xmax = 0;
-
-  if (Math.abs(dV) > 1e-6) {
-    xmax = -(forcesV.V[0] * geo.l) / dV;
+  for (let s = 0; s <= nseg; s++) {
+    nvvalues.push((geo.l * s) / nseg);
   }
 
   for (let s = 0; s <= nsegM; s++) {
-    const xc = n1.coords[0] + (cos * geo.l * s) / nsegM;
-    const zc = n1.coords[2] + (sin * geo.l * s) / nsegM;
+    mvalues.push((geo.l * s) / nsegM);
+  }
+
+  labelsXM.sort((a, b) => a - b);
+  mvalues.sort((a, b) => a - b);
+  nvvalues.sort((a, b) => a - b);
+
+  for (let s = 0; s < nvvalues.length; s++) {
+    const xc = n1.coords[0] + cos * nvvalues[s];
+    const zc = n1.coords[2] + sin * nvvalues[s];
+
+    const vNraw = props.element.computeNormalForceAt(props.loadCase, nvvalues[s]);
+    const vVraw = props.element.computeShearForceAt(props.loadCase, nvvalues[s]);
+
+    if (Math.abs(vNraw) > 1e-6) result += `${xc + vNraw * nx * scaleBy},${zc + vNraw * ny * scaleBy} `;
+
+    if (Math.abs(vVraw) > 1e-6) resultV += `${xc + vVraw * nx * scaleByV},${zc + vVraw * ny * scaleByV} `;
+  }
+
+  for (let s = 0; s < mvalues.length; s++) {
+    const xc = n1.coords[0] + cos * mvalues[s];
+    const zc = n1.coords[2] + sin * mvalues[s];
 
     const nx = -geo.dz / geo.l;
     const ny = geo.dx / geo.l;
 
-    resultM += `${xc + forcesM.M[s] * nx * scaleByM},${zc + forcesM.M[s] * ny * scaleByM} `;
+    const vMraw = props.element.computeBendingMomentAt(props.loadCase, mvalues[s]);
+    if (Math.abs(vMraw) < 1e-6) continue;
+
+    resultM += `${xc + vMraw * nx * scaleByM},${zc + vMraw * ny * scaleByM} `;
   }
 
   const result2 = [];
   const result2V = [];
   const result2M = [];
 
-  const labelsX = [0, geo.l];
-  const labelsXM = xmax > 0 && xmax < geo.l ? [0, xmax, geo.l] : [0, geo.l];
-
   for (let s = 0; s < labelsX.length; s++) {
     const xc = n1.coords[0] + cos * labelsX[s];
     const zc = n1.coords[2] + sin * labelsX[s];
 
-    let vk = Math.ceil((labelsX[s] / geo.l) * nseg);
-    const vN = props.convertForce(forces.N[vk]);
+    const vNraw = props.element.computeNormalForceAt(props.loadCase, labelsX[s]);
+    const vN = props.convertForce(vNraw);
     if (Math.abs(vN) > 1e-8) {
       const p = (vN > 0 ? -4 : 4) / props.scale;
-      result2.push([xc + forces.N[vk] * nx * scaleBy + p, zc + forces.N[vk] * ny * scaleBy + p, vN]);
+      result2.push([xc + vNraw * nx * scaleBy + p, zc + vNraw * ny * scaleBy + p, vN]);
     }
 
-    vk = Math.ceil((labelsX[s] / geo.l) * nseg);
-    const vV = props.convertForce(forcesV.V[vk]);
+    const vVraw = props.element.computeShearForceAt(props.loadCase, labelsX[s]);
+    const vV = props.convertForce(vVraw);
     if (Math.abs(vV) > 1e-8) {
       const p = (vV > 0 ? -4 : 4) / props.scale;
-      result2V.push([xc + forcesV.V[vk] * nx * scaleByV + p, zc + forcesV.V[vk] * ny * scaleByV + p, vV]);
+      result2V.push([xc + vVraw * nx * scaleByV + p, zc + vVraw * ny * scaleByV + p, vV]);
     }
   }
 
@@ -190,17 +225,20 @@ const forces = computed(() => {
     const xc = n1.coords[0] + cos * labelsXM[s];
     const zc = n1.coords[2] + sin * labelsXM[s];
 
-    const vk = Math.ceil((labelsXM[s] / geo.l) * nsegM);
-    const vM = props.convertForce(forcesM.M[vk]);
-    if (Math.abs(vM) > 1e-8) {
-      let p = (vM < 0 ? -4 : 4) / props.scale;
+    const vMraw = props.element.computeBendingMomentAt(props.loadCase, labelsXM[s]);
+    const vM = props.convertForce(vMraw);
+    if (Math.abs(vMraw) > 1e-8) {
+      let px = 0,
+        pz = 0;
+      px = pz = (vM < 0 ? -4 : 4) / props.scale;
 
       // if max M
-      if (labelsXM.length === 3 && s === 1) {
-        p = (vM < 0 ? -6 : 14) / props.scale;
+      if (labelsXM.length > 2 && s !== 0 && s !== labelsXM.length - 1) {
+        px = 0;
+        pz = (vM < 0 ? -6 : 14) / props.scale;
       }
 
-      result2M.push([xc - forcesM.M[vk] * nx * scaleByM + p, zc - forcesM.M[vk] * ny * scaleByM + p, vM]);
+      result2M.push([xc - vMraw * nx * scaleByM + px, zc - vMraw * ny * scaleByM + pz, vM]);
     }
   }
 

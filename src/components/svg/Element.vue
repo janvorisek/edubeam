@@ -154,11 +154,11 @@ const forces = computed(() => {
 
   for (const c of concentrated) {
     labelsXM.push(c.values[3]);
-    labelsX.push(c.values[3] - 1e-6);
-    labelsX.push(c.values[3] + 1e-6);
+    labelsX.push(c.values[3] - 1e-7);
+    labelsX.push(c.values[3] + 1e-7);
     mvalues.push(c.values[3]);
-    nvvalues.push(c.values[3] - 1e-6);
-    nvvalues.push(c.values[3] + 1e-6);
+    nvvalues.push(c.values[3] - 1e-7);
+    nvvalues.push(c.values[3] + 1e-7);
   }
 
   for (let s = 0; s <= nseg; s++) {
@@ -172,6 +172,28 @@ const forces = computed(() => {
   labelsXM.sort((a, b) => a - b);
   mvalues.sort((a, b) => a - b);
   nvvalues.sort((a, b) => a - b);
+
+  // Now go over V intervals to find potential max M
+  for (let i = 0; i < nvvalues.length - 1; i++) {
+    const v1 = nvvalues[i];
+    const v2 = nvvalues[i + 1];
+    const dv = v2 - v1;
+
+    if (dv < 1e-6) continue;
+
+    const vV1 = props.element.computeShearForceAt(props.loadCase, v1);
+    const vV2 = props.element.computeShearForceAt(props.loadCase, v2);
+
+    const v0 = (-vV1 * dv) / (vV2 - vV1) + v1;
+
+    if (v0 > v1 && v0 < v2) {
+      mvalues.push(v0);
+      labelsXM.push(v0);
+    }
+  }
+
+  labelsXM.sort((a, b) => a - b);
+  mvalues.sort((a, b) => a - b);
 
   for (let s = 0; s < nvvalues.length; s++) {
     const xc = n1.coords[0] + cos * nvvalues[s];
@@ -238,7 +260,15 @@ const forces = computed(() => {
         pz = (vM < 0 ? -6 : 14) / props.scale;
       }
 
-      result2M.push([xc - vMraw * nx * scaleByM + px, zc - vMraw * ny * scaleByM + pz, vM]);
+      result2M.push([
+        xc,
+        zc,
+        xc - vMraw * nx * scaleByM,
+        zc - vMraw * ny * scaleByM,
+        xc - vMraw * nx * scaleByM + px,
+        zc - vMraw * ny * scaleByM + pz,
+        vM,
+      ]);
     }
   }
 
@@ -346,25 +376,33 @@ const emit = defineEmits(["elementmousemove", "elementpointerup"]);
         stroke-linecap="round"
         stroke-linejoin="round"
       />
-      <g v-for="(mv, mli) in forces.moment.text" :key="mli" :transform="`translate(${mv[0]} ${mv[1]})`">
+      <g v-for="(mv, mli) in forces.moment.text" :key="mli">
+        <polyline
+          :points="`${mv[0]},${mv[1]} ${mv[2]},${mv[3]}`"
+          vector-effect="non-scaling-stroke"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
         <text
           :font-size="13 / scale"
           class="moment-label"
           filter="url(#textLabel)"
           font-weight="normal"
-          :text-anchor="mv[2] < 0 ? 'end' : 'start'"
+          :text-anchor="mv[6] < 0 ? 'end' : 'start'"
           dominant-baseline="baseline"
+          :transform="`translate(${mv[4]} ${mv[5]})`"
         >
-          {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
+          {{ Math.abs(mv[6]) < 1e-6 ? 0 : mv[6].toFixed(2) }}
         </text>
         <text
           :font-size="13 / scale"
           class="moment-label"
           font-weight="normal"
-          :text-anchor="mv[2] < 0 ? 'end' : 'start'"
+          :text-anchor="mv[6] < 0 ? 'end' : 'start'"
           dominant-baseline="baseline"
+          :transform="`translate(${mv[4]} ${mv[5]})`"
         >
-          {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
+          {{ Math.abs(mv[6]) < 1e-6 ? 0 : mv[6].toFixed(2) }}
         </text>
       </g>
     </g>

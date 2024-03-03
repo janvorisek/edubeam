@@ -1219,7 +1219,7 @@ defineExpose({ centerContent, fitContent });
               :show-normal-force="!useAppStore().zooming && viewerStore.showNormalForce"
               :show-shear-force="!useAppStore().zooming && viewerStore.showShearForce"
               :show-bending-moment="!useAppStore().zooming && viewerStore.showBendingMoment"
-              :show-label="!useAppStore().zooming && viewerStore.showNodeLabels"
+              :show-label="!useAppStore().zooming && viewerStore.showElementLabels"
               :load-case="projectStore.solver.loadCases[0]"
               :deformed-shape-multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
               :normal-force-multiplier="projectStore.normalForceScale * viewerStore.resultsScalePx_"

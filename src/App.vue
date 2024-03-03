@@ -80,6 +80,12 @@ onMounted(() => {
       e.preventDefault();
       undoRedoManager.redo();
     }
+
+    // Save project
+    if (e.ctrlKey && e.code === "KeyS") {
+      e.preventDefault();
+      saveProject();
+    }
   });
 
   document.addEventListener(
@@ -236,6 +242,10 @@ function openFile(e) {
   reader.readAsText(file);
 }
 
+const saveProject = () => {
+  download("project.json", JSON.stringify(exportJSON()));
+};
+
 const app_version = APP_VERSION;
 const app_released = APP_RELEASED;
 const app_commit = APP_COMMIT;
@@ -348,7 +358,7 @@ const app_commit = APP_COMMIT;
           prepend-icon="mdi-folder-arrow-down-outline"
           :title="$t('common.saveProject')"
           value="about"
-          @click="download('example.json', JSON.stringify(exportJSON()))"
+          @click="saveProject"
         ></v-list-item>
         <v-list-item
           prepend-icon="mdi-share"

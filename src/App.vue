@@ -86,6 +86,12 @@ onMounted(() => {
       e.preventDefault();
       saveProject();
     }
+
+    // Open project
+    if (e.ctrlKey && e.code === "KeyO") {
+      e.preventDefault();
+      file.value.click();
+    }
   });
 
   document.addEventListener(

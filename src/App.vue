@@ -37,6 +37,8 @@ const viewerStore = useViewerStore();
 const onboardingWrapper = ref(null);
 provide("onboardingWrapper", onboardingWrapper);
 
+const file = ref(null);
+
 const steps = computed(() => [
   {
     attachTo: { element: "#viewerControls" },
@@ -224,8 +226,12 @@ function onDrop(e) {
     reader.onload = function (e) {
       const text = e.target.result.toString();
       clearMesh();
-      importJSON(JSON.parse(text));
-      solve();
+      try {
+        importJSON(JSON.parse(text));
+        solve();
+      } catch (e) {
+        alert("Could not import the file. Please check the file format.");
+      }
     };
     reader.readAsText(file);
   }
@@ -240,8 +246,14 @@ function openFile(e) {
   reader.onload = function (e) {
     const text = e.target.result.toString();
     clearMesh();
-    importJSON(JSON.parse(text));
-    solve();
+
+    try {
+      importJSON(JSON.parse(text));
+      solve();
+    } catch (e) {
+      alert("Could not import the file. Please check the file format.");
+    }
+
     appStore.tab = 0;
     appStore.drawerOpen = false;
   };

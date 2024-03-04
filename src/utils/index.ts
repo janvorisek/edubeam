@@ -471,6 +471,7 @@ export const exportJSON = () => {
       }),
       elementLoads: lc.elementLoadList.map((el) => {
         return {
+          type: el instanceof BeamElementUniformEdgeLoad ? "udl" : "concentrated",
           target: el.target,
           values: el.values,
         };
@@ -546,7 +547,9 @@ export const importJSON = (json: any) => {
       }
 
       for (const el of loadCase.elementLoads) {
-        useProjectStore().solver.loadCases[0].createBeamElementUniformEdgeLoad(el.target, el.values, true);
+        if ("type" in el && el.type === "concentrated")
+          useProjectStore().solver.loadCases[0].createBeamConcentratedLoad(el.target, el.values, true);
+        else useProjectStore().solver.loadCases[0].createBeamElementUniformEdgeLoad(el.target, el.values, true);
       }
 
       for (const pbc of loadCase.prescribedBC) {

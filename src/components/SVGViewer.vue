@@ -266,13 +266,22 @@ const onElementLoadHover = (e: MouseEvent, el: BeamElementLoad) => {
 
   tt.style.top = e.offsetY + "px";
   tt.style.left = e.offsetX + "px";
-  tooltipContent.innerHTML = `<strong>${t("loads.UDL")}</strong><br>`;
+
+  const lt = el instanceof BeamElementUniformEdgeLoad ? "loadType.udl" : "loadType.concentrated";
+  const ff = el instanceof BeamElementUniformEdgeLoad ? "f" : "F";
+  const uu =
+    el instanceof BeamElementUniformEdgeLoad
+      ? `${appStore.units.Force}/${appStore.units.Length}`
+      : `${appStore.units.Force}`;
+
+  tooltipContent.innerHTML = `<strong>${t(lt)}</strong><br>`;
+
   if (Math.abs(el.values[0]) > 1e-32) {
-    tooltipContent.innerHTML += `f<sub>x</sub> = ${appStore.convertForce(el.values[0])} ${appStore.units.Force}/${appStore.units.Length}<br>`;
+    tooltipContent.innerHTML += `${ff}<sub>x</sub> = ${appStore.convertForce(el.values[0])} ${uu}<br>`;
   }
 
   if (Math.abs(el.values[1]) > 1e-32) {
-    tooltipContent.innerHTML += `f<sub>z</sub> = ${appStore.convertForce(el.values[1])} ${appStore.units.Force}/${appStore.units.Length}`;
+    tooltipContent.innerHTML += `${ff}<sub>z</sub> = ${appStore.convertForce(el.values[1])} ${uu}`;
   }
 
   tt.style.display = "block";

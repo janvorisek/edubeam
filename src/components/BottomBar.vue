@@ -1458,14 +1458,22 @@ const formatNodalLoadsAtNode = (item: Node): [number, string][] => {
 const formatElementLoadsAtElement = (item: Beam2D): [number, string][] => {
   const nls = useProjectStore()
     .solver.loadCases[0].elementLoadList.map((nl, index) => {
-      return { index, target: nl.target, values: nl.values };
+      return {
+        type: nl instanceof BeamConcentratedLoad ? "concentrated" : "udl",
+        index,
+        target: nl.target,
+        values: nl.values,
+      };
     })
     .filter((nl) => nl.target === item.label);
 
   return nls.map((nl) => {
     const tmp = [];
-    if (Math.abs(nl.values[0]) > 1e-12) tmp.push("f<sub>x</sub> = " + appStore.convertForce(nl.values[0]));
-    if (Math.abs(nl.values[1]) > 1e-12) tmp.push("f<sub>z</sub> = " + appStore.convertForce(nl.values[1]));
+
+    const ff = nl.type === "concentrated" ? "F" : "f";
+
+    if (Math.abs(nl.values[0]) > 1e-12) tmp.push(ff + "<sub>x</sub> = " + appStore.convertForce(nl.values[0]));
+    if (Math.abs(nl.values[1]) > 1e-12) tmp.push(ff + "<sub>z</sub> = " + appStore.convertForce(nl.values[1]));
     return [nl.index, tmp.join(", ")];
   });
 };

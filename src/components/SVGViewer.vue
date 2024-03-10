@@ -614,7 +614,8 @@ const mouseMove = (e: MouseEvent) => {
 const onMouseDown = (e: PointerEvent) => {
   //if (this.svgPanZoom == null) return;
   projectStore.clearSelection();
-  projectStore.clearSelection2();
+
+  if (e.button !== 2) projectStore.clearSelection2();
 
   if ("activeElement" in document) (document.activeElement as HTMLElement).blur();
 

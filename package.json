@@ -30,7 +30,7 @@
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "roboto-fontface": "*",
-    "ts-fem": "github:janvorisek/ts-fem#8eee266ec34d686ca6baedce697101c905fba6d3",
+    "ts-fem": "github:janvorisek/ts-fem#8d4e073338efaf473f49bcdc319b73646cf89c20",
     "tweakpane": "^4.0.3",
     "v-onboarding": "^2.6.0",
     "v-tweakpane": "^0.2.0",

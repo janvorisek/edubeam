@@ -11,12 +11,14 @@ const props = withDefaults(
     padding?: number;
     mobilePadding?: number;
     canFitContent?: boolean;
+    touch?: boolean;
   }>(),
   {
     onUpdate: () => {},
     padding: 0,
     mobilePadding: 0,
     canFitContent: true,
+    touch: true,
   }
 );
 
@@ -93,6 +95,8 @@ const onMouseWheel = (event: WheelEvent): void => {
 };
 
 const onTouchStart = (event: TouchEvent): void => {
+  if (!props.touch) return;
+
   if (event.touches.length === 1) {
     touchPointer.value.x = event.touches[0].clientX;
     touchPointer.value.y = event.touches[0].clientY;
@@ -126,6 +130,8 @@ const onTouchEnd = (): void => {
 };
 
 const onTouchMove = (event: TouchEvent): void => {
+  if (!props.touch) return;
+
   //console.log({ touchmove: event.touches.length, pointer: JSON.stringify(touchPointer) })
   if (event.touches.length === 1 && touchPointer.value.move) {
     viewBox.x -= (event.touches[0].clientX - touchPointer.value.x) / scale.value;

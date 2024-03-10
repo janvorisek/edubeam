@@ -60,6 +60,7 @@ import {
 } from "ts-fem";
 import { Matrix } from "mathjs";
 import { useMagicKeys } from "@vueuse/core";
+import { OnLongPress } from "@vueuse/components";
 
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
@@ -411,6 +412,19 @@ const hasMoved = (e: MouseEvent) => {
   if (d > 10) return true;
 
   return false;
+};
+
+const onNodeLongPress = (e, node: Node) => {
+  e.stopImmediatePropagation();
+  e.preventDefault();
+
+  intersected.value.index = node.label;
+  intersected.value.type = "node";
+
+  appStore.mouseMode = MouseMode.MOVING;
+
+  const canVibrate = window.navigator.vibrate;
+  if (canVibrate) window.navigator.vibrate(300);
 };
 
 const TTWIDTH = 210;
@@ -1113,6 +1127,7 @@ defineExpose({ centerContent, fitContent });
       ref="panZoom"
       :padding="128"
       :mobile-padding="32"
+      :touch="appStore.mouseMode !== MouseMode.MOVING"
       :can-fit-content="projectStore.solver.domain.nodes.size >= 2"
       style="overflow: visible; z-index: 50; min-height: 0"
     >
@@ -1243,223 +1258,29 @@ defineExpose({ centerContent, fitContent });
           </g>
 
           <g class="nodes">
-            <SVGNode
-              :class="{ selected: projectStore.selection2.nodes.includes(node.label) }"
+            <OnLongPress
+              as="g"
+              @trigger="onNodeLongPress($event, node)"
               v-for="(node, index) in projectStore.nodes"
               :key="`node-${index}`"
-              :node="node"
-              :scale="scale"
-              :show-label="!useAppStore().zooming && viewerStore.showNodeLabels"
-              :show-supports="viewerStore.showSupports"
-              :show-deformed-shape="!useAppStore().zooming && viewerStore.showDeformedShape"
-              :show-reactions="!useAppStore().zooming && viewerStore.showReactions"
-              :convert-force="appStore.convertForce"
-              @nodemousemove="onNodeHover($event, node)"
-              @nodedefomousemove="onNodeHover($event, node)"
-              @mouseleave="hideTooltip"
-              @nodepointerup="onNodeClick"
-              :load-case="projectStore.solver.loadCases[0]"
-              :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
-            />
-            <!-- <g
-              class="node"
-              :class="{ selected: projectStore.selection2.nodes.includes(node.label) }"
-              v-for="(node, index) in projectStore.solver.domain.nodes.values()"
-              :key="`node-${index}`"
             >
-              <polyline
-                v-if="viewerStore.showSupports && supportMarker(node) !== 'none'"
-                :points="formatSupportNode(node)"
-                :marker-start="supportMarker(node)"
-                class="decoration"
-              />
-
-              <polyline :data-label="node.label" :points="formatNode(node.coords)" class="drawable" />
-
-              <polyline
-                v-if="
-                  !useAppStore().zooming &&
-                  isLoaded &&
-                  projectStore.solver.loadCases[0].solved &&
-                  viewerStore.showReactions &&
-                  isSupported(node, DofID.Dz) &&
-                  isConnected(node) &&
-                  Math.abs(getReaction(node, DofID.Dz)) > 1e-32
-                "
-                points="0,0 0,0"
-                class="decoration"
-                marker-start="url(#reaction)"
-                :transform="`translate(${node.coords[0]} ${node.coords[2]}) rotate(${
-                  Math.sign(getReaction(node, DofID.Dz)) >= 0 ? 0 : 180
-                })`"
-              />
-
-              <text
-                v-if="
-                  !useAppStore().zooming &&
-                  isLoaded &&
-                  projectStore.solver.loadCases[0].solved &&
-                  viewerStore.showReactions &&
-                  isSupported(node, DofID.Dz) &&
-                  isConnected(node) &&
-                  Math.abs(getReaction(node, DofID.Dz)) > 1e-32
-                "
-                :font-size="13 / scale"
-                :fill="viewerStore.colors.reactions"
-                font-weight="normal"
-                text-anchor="end"
-                dominant-baseline="baseline"
-                :transform="`translate(${node.coords[0]}
-              ${node.coords[2] - (40 * Math.sign(getReaction(node, DofID.Dz))) / scale})`"
-              >
-                {{ appStore.convertForce(Math.abs(getReaction(node, DofID.Dz))).toFixed(2) }}
-              </text>
-
-              <polyline
-                v-if="
-                  !useAppStore().zooming &&
-                  isLoaded &&
-                  projectStore.solver.loadCases[0].solved &&
-                  viewerStore.showReactions &&
-                  isSupported(node, DofID.Dx) &&
-                  isConnected(node) &&
-                  Math.abs(getReaction(node, DofID.Dx)) > 1e-32
-                "
-                points="0,0 0,0"
-                class="decoration"
-                marker-start="url(#reaction)"
-                :transform="`translate(${node.coords[0]} ${node.coords[2]}) rotate(${
-                  -90 * Math.sign(getReaction(node, DofID.Dx))
-                })`"
-              />
-
-              <text
-                v-if="
-                  !useAppStore().zooming &&
-                  isLoaded &&
-                  projectStore.solver.loadCases[0].solved &&
-                  viewerStore.showReactions &&
-                  isSupported(node, DofID.Dx) &&
-                  isConnected(node) &&
-                  Math.abs(getReaction(node, DofID.Dx)) > 1e-32
-                "
-                :font-size="13 / scale"
-                :fill="viewerStore.colors.reactions"
-                font-weight="normal"
-                :text-anchor="getReaction(node, DofID.Dx) > 0 ? 'end' : 'start'"
-                dominant-baseline="baseline"
-                :transform="`translate(${node.coords[0] - (Math.sign(getReaction(node, DofID.Dx)) * 40) / scale}
-              ${node.coords[2]})`"
-              >
-                {{ appStore.convertForce(Math.abs(getReaction(node, DofID.Dx))).toFixed(2) }}
-              </text>
-
-              <polyline
-                v-if="
-                  !useAppStore().zooming &&
-                  isLoaded &&
-                  projectStore.solver.loadCases[0].solved &&
-                  viewerStore.showReactions &&
-                  isSupported(node, DofID.Ry) &&
-                  isConnected(node) &&
-                  Math.abs(getReaction(node, DofID.Ry)) > 1e-32
-                "
-                points="0,0 0,0"
-                class="decoration"
-                :marker-start="`url(#${getReaction(node, DofID.Ry) > 0 ? 'moment_reaction_ccw' : 'moment_reaction_cw'})`"
-                :transform="`translate(${node.coords[0]} ${node.coords[2]})`"
-              />
-
-              <text
-                v-if="
-                  !useAppStore().zooming &&
-                  isLoaded &&
-                  projectStore.solver.loadCases[0].solved &&
-                  viewerStore.showReactions &&
-                  isSupported(node, DofID.Ry) &&
-                  isConnected(node) &&
-                  Math.abs(getReaction(node, DofID.Ry)) > 1e-32
-                "
-                :font-size="13 / scale"
-                :fill="viewerStore.colors.reactions"
-                font-weight="normal"
-                text-anchor="start"
-                dominant-baseline="baseline"
-                :transform="`translate(${node.coords[0] + 15 / scale}
-              ${node.coords[2] - 15 / scale})`"
-              >
-                {{ appStore.convertForce(Math.abs(getReaction(node, DofID.Ry))).toFixed(2) }}
-              </text>
-
-              <g
-                v-if="
-                  !useAppStore().zooming &&
-                  isLoaded &&
-                  projectStore.solver.loadCases[0].solved &&
-                  viewerStore.showDeformedShape &&
-                  // check if node is connected to anything
-                  projectStore.beams.some((element) => element.nodes.includes(node.label))
-                "
-                :transform="`translate(${
-                  node.coords[0] +
-                  // @ts-expect-error ts-fem is wrongly typed
-                  (node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]) *
-                    projectStore.defoScale *
-                    viewerStore.resultsScalePx_) /
-                    scale
-                }, ${
-                  node.coords[2] +
-                  // @ts-expect-error ts-fem is wrongly typed
-                  (node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]) *
-                    projectStore.defoScale *
-                    viewerStore.resultsScalePx_) /
-                    scale
-                })`"
-              >
-                <polyline points="0,0 0,0" class="drawable deformed" />
-
-                <polyline
-                  points="0,0 0 0"
-                  class="handle"
-                  :data-node-id="node.label"
-                  @mousemove="onNodalDefoHover($event, node)"
-                  @mouseleave="hideTooltip"
-                />
-              </g>
-
-              <g
-                v-if="!useAppStore().zooming && viewerStore.showNodeLabels"
-                :transform="`translate(${(-12 - (node.label.toString().length - 1) * 2) / scale}, ${-12 / scale})`"
-              >
-                <circle
-                  :cx="node.coords[0]"
-                  :cy="node.coords[2]"
-                  :r="(8 * (1 + Math.pow(node.label.toString().length - 1, 1.7) * 0.2)) / scale"
-                  fill="transparent"
-                  stroke="black"
-                  vector-effect="non-scaling-stroke"
-                ></circle>
-                <text
-                  :x="node.coords[0]"
-                  :y="node.coords[2]"
-                  :font-size="14 / scale"
-                  font-weight="normal"
-                  text-anchor="middle"
-                  dominant-baseline="central"
-                >
-                  {{ node.label }}
-                </text>
-              </g>
-
-              <polyline
-                :points="formatNode(node.coords)"
-                class="handle"
-                :data-node-id="node.label"
-                @mousemove="onNodeHover($event, node)"
+              <SVGNode
+                :class="{ selected: projectStore.selection2.nodes.includes(node.label) }"
+                :node="node"
+                :scale="scale"
+                :show-label="!useAppStore().zooming && viewerStore.showNodeLabels"
+                :show-supports="viewerStore.showSupports"
+                :show-deformed-shape="!useAppStore().zooming && viewerStore.showDeformedShape"
+                :show-reactions="!useAppStore().zooming && viewerStore.showReactions"
+                :convert-force="appStore.convertForce"
+                @nodemousemove="onNodeHover($event, node)"
+                @nodedefomousemove="onNodeHover($event, node)"
                 @mouseleave="hideTooltip"
-                @pointerup="onNodeClick"
+                @nodepointerup="onNodeClick"
+                :load-case="projectStore.solver.loadCases[0]"
+                :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
               />
-            </g> -->
+            </OnLongPress>
           </g>
         </g>
       </svg>

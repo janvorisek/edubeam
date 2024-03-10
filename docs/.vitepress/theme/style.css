@@ -45,6 +45,7 @@
 
 @import "https://fonts.googleapis.com/css?family=Barlow:300,400,500,700|Lobster&display=swap";
 @import url("../../../node_modules/katex/dist/katex.min.css");
+@import 'v-tweakpane/dist/v-tweakpane.css';
 
  :root {
   --vp-font-family-base: Barlow, sans-serif;
@@ -166,8 +167,7 @@
   }
 
   .bordered-image {
-    border-radius: 6px;
-    border: 1px solid #000;
+    border-radius: 12px;
   }
 }
 
@@ -186,14 +186,22 @@
   font-size: 0.8em;
   margin-top: 6px;
  }
+
+ svg, img {
+  padding: 4px;
+  box-shadow: 0 0 2px rgba(0,0,0,0.2);
+  border-radius: 8px;
+  margin: 0 auto;
+ }
 }
 
-.main img, .main svg {
+.figure {
   padding: 4px;
   background-color: white;
   box-shadow: 0 0 2px rgba(0,0,0,0.2);
   border-radius: 8px;
   margin: 0 auto;
+  overflow: hidden;
 }
 
 .dark .main svg {

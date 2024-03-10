@@ -11,7 +11,8 @@ import { VPImage } from "vitepress/theme";
   <Layout>
     <template #home-hero-image>
       <a href="https://run.edubeam.app" target="_blank">
-        <VPImage v-if="$frontmatter.hero.image" class="image-src bordered-image" :image="$frontmatter.hero.image" />
+        <WelcomeStructure class="image-src bordered-image figure" />
+        <!-- <VPImage v-if="$frontmatter.hero.image" class="image-src bordered-image" :image="$frontmatter.hero.image" /> -->
       </a>
     </template>
   </Layout>

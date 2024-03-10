@@ -6,34 +6,60 @@ Experience real-time structural analysis as every input change triggers live ana
 
 ### Normal force
 
+The normal force diagram represents the perpendicular force exerted by a surface on an object in contact with it, typically denoted as N.
+
+<Figure>
+    <Structure :show-loads="true" show-normal-force :nodes="[{label: 'a', coords: [0,0,0], dofs: [0,2, 4]}, {label: 'b', coords: [10,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['a', 'b']}]" :nodal-loads="[{target: 'b', values: { 0: -100, 2: 0, 4: 0 }}]" />
+    <figcaption>Normal force on a simple cantilever loaded at the free end</figcaption>
+</Figure>
+
 ### Shear force
+
+<Figure>
+  <Structure :show-loads="true" show-shear-force :nodes="[{label: 'a', coords: [0,0,0], dofs: [0,2, 4]}, {label: 'b', coords: [10,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['a', 'b']}]" :nodal-loads="[{target: 'b', values: { 0: 0, 2: 10, 4: 0 }}]" />
+ <figcaption>Shear force on a simple cantilever loaded at the free end</figcaption>
+</Figure>
 
 ### Bending moment
 
+<Figure>
+  <Structure :show-loads="true" show-moment :nodes="[{label: 'a', coords: [0,0,0], dofs: [0,2, 4]}, {label: 'b', coords: [10,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['a', 'b']}]" :nodal-loads="[{target: 'b', values: { 0: 0, 2: 10, 4: 0 }}]" />
+ <figcaption>Bending moment on a simple cantilever loaded at the free end</figcaption>
+</Figure>
+
 ## Deformed shapes of the structure
 
-Display the deformed shapes of the structure under applied loads.
+The deformed shape of the structure under applied loads is calculated from the primary unknowns in each of the elements.
+
+<Figure>
+  <Structure :show-loads="true" show-deformed-shape :nodes="[{label: 'a', coords: [0,0,0], dofs: [0,2, 4]}, {label: 'b', coords: [10,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['a', 'b']}]" :nodal-loads="[{target: 'b', values: { 0: 0, 2: 10, 4: 0 }}]" />
+  <figcaption>Deformed shape of a simple cantilever loaded at the free end</figcaption>
+</Figure>
 
 ## Reactions
 
-Illustrate detailed information on reactions at support points.
+Reactions are drawn for each supported DOF of the corresponding nodes.
 
-## Stiffness matrices
+<Structure :show-loads="true" show-reactions :nodes="[{label: 'a', coords: [0,0,0], dofs: [0,2, 4]}, {label: 'b', coords: [10,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['a', 'b']}]" :nodal-loads="[{target: 'b', values: { 0: 0, 2: 10, 4: 0 }}]" />
 
-### Individual elements
+## Results
 
-Display the stiffness matrix for each structural element.
+### Nodal Results
 
-### Overall structure
+The primary unknowns are displacements and rotations of the nodes. You can view the values in the **Bottom Bar** within the **Results** tab.
 
-Provide an overview of the stiffness matrix for the entire structure.
+<figure>
 
-## Load vectors
+![Nodal Results - Displacements & Rotations](/results_nodes.png)
 
-### Individual elements
+</figure>
 
-Show vectors illustrating applied loads on individual elements.
+### Element Results
 
-### Overall structure
+The element end forces and moments are calculated by multiplying of the element stiffness matrices and corresponding element unknowns. The end forces can be examined in the **Bottom Bar** within the **Results** tab after cliking the **Element Results** button.
 
-Display an aggregate load vector for the entire structure.
+<figure>
+
+![Element Results - End Forces](/results_elements.png)
+
+</figure>

@@ -2,9 +2,19 @@
 
 ## Nodal Load
 
-Nodal loads in represent external forces applied directly to nodes. Each nodal load is specified in the direction of the corresponding DOF.
+Nodal loads allow users to simulate external forces or prescribed displacements and rotations acting on specific points in the structure.
 
-Nodal loads allow users to simulate external forces acting on specific points in the structure.
+### Concentrated Force and Moment
+
+A concentrated force can be specified in the X and Z directions, as well as a concentrated moment load around the Y axis. The values are defined within the global coordinate system in the currently selected units. To make directional adjustments, users can append a negative sign to the specified values.
+
+Loads can be added within the **Bottom Bar** section in the **Loads** tab, accessed by selecting the **Add Nodal Load** button. Nodal loads can also be added in the menu accessed by clicking the desired node.
+
+### Prescribed Displacements and Rotations
+
+Prescribed displacements can be specified in the X and Y directions, while the prescribed rotation angle is specified around the Y axis. These values are defined within the global coordinate system in the currently selected units. To make directional adjustments, users can append a negative sign to the specified values.
+
+Prescribed displacements and rotation is added within the **Bottom Bar** section in the **Loads** tab, and initiated by selecting the **Add Nodal Load** button and furthermore selecting **Prescribed displacement** checkbox.
 
 ## Element loads
 
@@ -14,16 +24,16 @@ The Uniformly Distributed Load applies a uniform distributed load across the ent
 
 Component specifications can be in either the global coordinate system or the local coordinate system of the element.
 
+<figure>
+<img src="/add_UDL.png" style="height: 300px" />
+<figcaption>Add UDL dialog</figcaption>
+</figure>
+
 ### Linearly Distributed Load
 
 The Linearly Distributed Load represents a trapezoidal distribution of forces along the length of the structural element.
 
 Component specifications can be in either the global coordinate system or the local coordinate system of the element.
-
-<figure>
-<img src="/add_UDL.png" style="height: 300px" />
-<figcaption>Add UDL dialog</figcaption>
-</figure>
 
 ### Temperature load
 

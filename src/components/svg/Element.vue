@@ -202,9 +202,9 @@ const forces = computed(() => {
     const vNraw = props.element.computeNormalForceAt(props.loadCase, nvvalues[s]);
     const vVraw = props.element.computeShearForceAt(props.loadCase, nvvalues[s]);
 
-    if (Math.abs(vNraw) > 1e-6) result += `${xc + vNraw * nx * scaleBy},${zc + vNraw * ny * scaleBy} `;
+    result += `${xc + vNraw * nx * scaleBy},${zc + vNraw * ny * scaleBy} `;
 
-    if (Math.abs(vVraw) > 1e-6) resultV += `${xc + vVraw * nx * scaleByV},${zc + vVraw * ny * scaleByV} `;
+    resultV += `${xc + vVraw * nx * scaleByV},${zc + vVraw * ny * scaleByV} `;
   }
 
   for (let s = 0; s < mvalues.length; s++) {

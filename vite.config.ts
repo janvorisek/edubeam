@@ -34,6 +34,13 @@ export default defineConfig({
       mode: "development",
       //registerType: "autoUpdate",
       injectRegister: "script",
+      manifest: {
+        name: "edubeam",
+        short_name: "edubeam",
+        description:
+          "Explore 2D structural analysis directly in your web browser – tailored for students and educators alike. Solve beam and truss structures.",
+        theme_color: "#111133",
+      },
     }),
     sentryVitePlugin({
       org: "ctu-prague",

@@ -126,7 +126,7 @@ export const useProjectStore = defineStore(
       }
 
       // Check for large deformations - kinematically indeterminate structures
-      const maxU = Math.max(...(solver.value.loadCases[0].r.toArray() as number[]));
+      const maxU = Math.max(...(solver.value.loadCases[0].r.toArray() as number[]).map((v) => Math.abs(v)));
       if (maxU > 1e6) {
         solver.value.loadCases[0].solved = false;
         return;

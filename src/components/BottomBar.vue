@@ -536,7 +536,7 @@
 
           <template #item.load.values="{ item }">
             <div class="d-flex" v-if="item.type === 'node'">
-              <div class="inline-edit-group mr-2" style="min-width: 64px">
+              <div class="inline-edit-group mr-2" style="min-width: 128px">
                 <label class="input-before">F<sub>x</sub></label>
                 <input
                   :value="appStore.convertForce(item.ref.values[0])"
@@ -554,7 +554,7 @@
                 />
                 <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Force)"></div>
               </div>
-              <div class="inline-edit-group mr-2" style="min-width: 64px">
+              <div class="inline-edit-group mr-2" style="min-width: 128px">
                 <span class="input-before">F<sub>z</sub></span>
                 <input
                   :value="appStore.convertForce(item.ref.values[2])"
@@ -572,7 +572,7 @@
                 />
                 <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Force)"></div>
               </div>
-              <div class="inline-edit-group" style="min-width: 64px">
+              <div class="inline-edit-group" style="min-width: 128px">
                 <span class="input-before">M<sub>y</sub></span>
                 <input
                   :value="appStore.convertForce(item.ref.values[4])"
@@ -593,7 +593,7 @@
             </div>
 
             <div class="d-flex" v-if="item.type === 'prescribed'">
-              <div class="inline-edit-group mr-2" style="min-width: 64px">
+              <div class="inline-edit-group mr-2" style="min-width: 128px">
                 <label class="input-before">D<sub>x</sub></label>
                 <input
                   :value="item.ref.prescribedValues[0]"
@@ -605,7 +605,7 @@
                 />
                 <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
               </div>
-              <div class="inline-edit-group mr-2" style="min-width: 64px">
+              <div class="inline-edit-group mr-2" style="min-width: 128px">
                 <span class="input-before">D<sub>z</sub></span>
                 <input
                   :value="item.ref.prescribedValues[2]"
@@ -617,7 +617,7 @@
                 />
                 <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
               </div>
-              <div class="inline-edit-group" style="min-width: 64px">
+              <div class="inline-edit-group" style="min-width: 128px">
                 <span class="input-before">R<sub>y</sub></span>
                 <input
                   :value="item.ref.prescribedValues[4]"
@@ -631,8 +631,8 @@
               </div>
             </div>
 
-            <div class="d-flex align-content-center" v-if="item.type === 'element'">
-              <div class="inline-edit-group mr-2" style="min-width: 64px">
+            <div class="d-flex flex-grow-0 align-content-center" v-if="item.type === 'element'">
+              <div class="inline-edit-group mr-2" style="min-width: 128px">
                 <span v-if="item.ref instanceof BeamElementUniformEdgeLoad" class="input-before">f<sub>x</sub></span>
                 <span v-else-if="item.ref instanceof BeamConcentratedLoad" class="input-before">F<sub>x</sub></span>
                 <input
@@ -660,7 +660,7 @@
                   v-html="formatMeasureAsHTML(appStore.units.Force)"
                 ></div>
               </div>
-              <div class="inline-edit-group mr-2" style="min-width: 64px">
+              <div class="inline-edit-group mr-2" style="min-width: 128px">
                 <span v-if="item.ref instanceof BeamElementUniformEdgeLoad" class="input-before">f<sub>z</sub></span>
                 <span v-else-if="item.ref instanceof BeamConcentratedLoad" class="input-before">F<sub>z</sub></span>
                 <input
@@ -691,7 +691,7 @@
               <div
                 v-if="item.ref instanceof BeamConcentratedLoad"
                 class="inline-edit-group mr-2"
-                style="min-width: 64px"
+                style="min-width: 128px"
               >
                 <span class="input-before">d</span>
                 <input
@@ -1051,8 +1051,8 @@
             <v-icon small>mdi-vector-line</v-icon> {{ $t("results.element_results") }}
           </v-btn>
         </div>
-        <v-window v-model="layoutStore.bottomBarResultsTab">
-          <v-window-item value="nodes">
+        <v-window v-model="layoutStore.bottomBarResultsTab" disabled>
+          <v-window-item value="nodes" :transition="false" :reverse-transition="false">
             <v-data-table
               ref="table-results"
               :headers="headers.results"
@@ -1146,7 +1146,7 @@
               </template>
             </v-data-table>
           </v-window-item>
-          <v-window-item value="elements">
+          <v-window-item value="elements" :transition="false" :reverse-transition="false">
             <v-data-table
               ref="table-results2"
               :headers="headers.results2"
@@ -1610,6 +1610,7 @@ const headers = reactive({
       units: "Force",
       key: "load.values",
       width: 420,
+      sortable: false,
     },
     {
       title: "common.actions",

@@ -33,7 +33,8 @@
     "bendingMoment": "Ohybový moment",
     "confirm": "Potvrdit",
     "openProject": "Otevřít projekt",
-    "saveProject": "Uložit projekt"
+    "saveProject": "Uložit projekt",
+    "lcs": "Lokální souřadný systém"
   },
   "tabs": {
     "nodes": "Uzly",
@@ -275,6 +276,8 @@
   },
   "loadType": {
     "concentrated": "Osamělé břemeno",
-    "udl": "Spojité rovnoměrné zatížení"
+    "udl": "Spojité rovnoměrné zatížení",
+    "temperature": "Změna teploty",
+    "loadType": "Typ zatížení"
   }
 }

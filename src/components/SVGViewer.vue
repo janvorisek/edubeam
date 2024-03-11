@@ -21,34 +21,10 @@ import SVGNodalLoad from "./svg/NodalLoad.vue";
 import SVGPrescribedDisplacement from "./svg/PrescribedDisplacement.vue";
 import SVGNode from "./svg/Node.vue";
 import SVGElement from "./svg/Element.vue";
+import SVGElementTemperatureLoad from "./svg/ElementTemperatureLoad.vue";
 
-import {
-  formatNode,
-  formatElement,
-  formatElementFibers,
-  formatElementLoad,
-  formatElementLoadHatch,
-  formatNodalLoadAngle,
-  formatElementLoadLabel,
-  formatNodalLoad,
-  formatElementLabel,
-  formatElementAngle,
-  formatElementHinge,
-  formatSupportNode,
-  supportMarker,
-  formatResults,
-  formatNormalForces,
-  formatShearForces,
-  formatMoments,
-  formatMomentsLabels,
-  formatNormalForceLabels,
-  formatShearForceLabels,
-  formatElementLoadForces,
-  formatElementLoadForcesAngle,
-  formatExpValueAsHTML,
-  formatPrescribedBCAngle,
-} from "../SVGUtils";
-import { debounce, throttle } from "../utils";
+import { formatExpValueAsHTML } from "../SVGUtils";
+import { debounce, loadType, throttle } from "../utils";
 import {
   Node,
   DofID,
@@ -1169,7 +1145,23 @@ defineExpose({ centerContent, fitContent });
               <template v-for="(eload, index) in useProjectStore().solver.loadCases[0].elementLoadList">
                 <SVGElementLoad
                   v-if="eload instanceof BeamElementUniformEdgeLoad"
-                  :key="`element-load-${index}`"
+                  :key="`element-udl-${index}`"
+                  :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
+                  @mousemove="onElementLoadHover($event, eload)"
+                  @mouseleave="hideTooltip"
+                  @pointerup="onElementLoadClick($event, index)"
+                  @dblclick="
+                    openModal(EditElementLoadDialog, { index });
+                    projectStore.clearSelection();
+                  "
+                  :data-element-load-id="index"
+                  :eload="eload"
+                  :scale="scale"
+                  :convert-force="appStore.convertForce"
+                />
+                <SVGElementTemperatureLoad
+                  v-if="loadType(eload) === 'temperature'"
+                  :key="`element-temperature-${index}`"
                   :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
                   @mousemove="onElementLoadHover($event, eload)"
                   @mouseleave="hideTooltip"
@@ -1184,8 +1176,8 @@ defineExpose({ centerContent, fitContent });
                   :convert-force="appStore.convertForce"
                 />
                 <SVGElementConcentratedLoad
-                  v-else
-                  :key="`element-load-${index}`"
+                  v-else-if="eload instanceof BeamConcentratedLoad"
+                  :key="`element-cl-${index}`"
                   :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
                   @mousemove="onElementLoadHover($event, eload)"
                   @mouseleave="hideTooltip"

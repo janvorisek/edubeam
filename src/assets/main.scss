@@ -44,6 +44,12 @@ body,
   opacity: 0;
 }
 
+/* Popper Transition */
+
+.v-popper__popper {
+  font-size: 14px !important;
+}
+
 /* custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
@@ -192,8 +198,8 @@ select.mini-select {
 
 // Bottom bar table
 .v-table {
-  --v-table-header-height: 42px;
-  --v-table-row-height: 48px;
+  --v-table-header-height: 26px;
+  --v-table-row-height: 32px;
   table {
     border-bottom: 1px solid #ddd;
   }

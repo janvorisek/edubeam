@@ -22,6 +22,7 @@
     "@vueuse/components": "^10.9.0",
     "@vueuse/core": "^10.9.0",
     "fast-xml-parser": "^4.3.5",
+    "floating-vue": "^5.2.2",
     "jenesius-vue-modal": "^1.11.0",
     "js-quantities": "^1.8.0",
     "language-icons": "^0.3.0",
@@ -31,7 +32,7 @@
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "roboto-fontface": "*",
-    "ts-fem": "github:janvorisek/ts-fem#8d4e073338efaf473f49bcdc319b73646cf89c20",
+    "ts-fem": "github:janvorisek/ts-fem#811ae78bf1b695a2929ac700e217b5e39ae32432",
     "tweakpane": "^4.0.3",
     "v-onboarding": "^2.6.0",
     "v-tweakpane": "^0.2.0",
@@ -40,7 +41,7 @@
     "vue-gtag": "^2.0.1",
     "vue-i18n": "^9.9.1",
     "vue-router": "^4.2.5",
-    "vuetify": "3.5.1",
+    "vuetify": "3.5.8",
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {

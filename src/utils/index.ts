@@ -1,8 +1,11 @@
 import {
   Beam2D,
+  BeamConcentratedLoad,
   BeamElementUniformEdgeLoad,
+  BeamTemperatureLoad,
   DofID,
   LinearStaticSolver,
+  Load,
   NodalLoad,
   Node,
   PrescribedDisplacement,
@@ -421,6 +424,18 @@ export const download = (filename: string, text: string) => {
   document.body.removeChild(element);
 };
 
+export const loadType = (el: Load) => {
+  if (el instanceof BeamElementUniformEdgeLoad) {
+    return "udl";
+  } else if (el instanceof BeamConcentratedLoad) {
+    return "concentrated";
+  } else if (el instanceof BeamTemperatureLoad) {
+    return "temperature";
+  } else {
+    return "unknown";
+  }
+};
+
 export const exportJSON = () => {
   const nodes = [...useProjectStore().solver.domain.nodes.values()].map((n) => {
     return {
@@ -471,7 +486,7 @@ export const exportJSON = () => {
       }),
       elementLoads: lc.elementLoadList.map((el) => {
         return {
-          type: el instanceof BeamElementUniformEdgeLoad ? "udl" : "concentrated",
+          type: loadType(el),
           target: el.target,
           values: el.values,
         };
@@ -547,9 +562,12 @@ export const importJSON = (json: any) => {
       }
 
       for (const el of loadCase.elementLoads) {
-        if ("type" in el && el.type === "concentrated")
+        if (!("type" in el) || el.type === "udl")
+          useProjectStore().solver.loadCases[0].createBeamElementUniformEdgeLoad(el.target, el.values, true);
+        else if ("type" in el && el.type === "concentrated")
           useProjectStore().solver.loadCases[0].createBeamConcentratedLoad(el.target, el.values, true);
-        else useProjectStore().solver.loadCases[0].createBeamElementUniformEdgeLoad(el.target, el.values, true);
+        else if ("type" in el && el.type === "temperature")
+          useProjectStore().solver.loadCases[0].createBeamTemperatureLoad(el.target, el.values);
       }
 
       for (const pbc of loadCase.prescribedBC) {

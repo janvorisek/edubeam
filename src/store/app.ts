@@ -31,6 +31,7 @@ export const useAppStore = defineStore(
       Pressure: "MPa",
       ThermalExpansion: "1/K",
       Angle: "rad",
+      Temperature: "C",
       ForceDistance: computed(() => `${units.Force}/${units.Length}`),
     });
 
@@ -44,6 +45,8 @@ export const useAppStore = defineStore(
     let _convertInversePressure = Qty.swiftConverter(units.Pressure, "Pa");
     let _convertForce = Qty.swiftConverter("N", units.Force);
     let _convertInverseForce = Qty.swiftConverter(units.Force, "N");
+    let _convertTemperature = Qty.swiftConverter("C", units.Temperature);
+    let _convertInverseTemperature = Qty.swiftConverter(units.Temperature, "C");
 
     watch(
       units,
@@ -58,6 +61,8 @@ export const useAppStore = defineStore(
         _convertInversePressure = Qty.swiftConverter(newUnits.Pressure, "Pa");
         _convertForce = Qty.swiftConverter("N", newUnits.Force);
         _convertInverseForce = Qty.swiftConverter(newUnits.Force, "N");
+        _convertTemperature = Qty.swiftConverter("C", newUnits.Temperature);
+        _convertInverseTemperature = Qty.swiftConverter(newUnits.Temperature, "C");
 
         if (useAppStore().bottomBarOpen) useAppStore().bottomBarOpen = false;
         nextTick(() => {
@@ -77,6 +82,8 @@ export const useAppStore = defineStore(
     const convertInversePressure = (value: number) => _convertInversePressure(value);
     const convertForce = (value: number) => _convertForce(value);
     const convertInverseForce = (value: number) => _convertInverseForce(value);
+    const convertTemperature = (value: number) => _convertTemperature(value);
+    const convertInverseTemperature = (value: number) => _convertInverseTemperature(value);
 
     const onboardingFinished = ref(false);
 
@@ -164,6 +171,8 @@ export const useAppStore = defineStore(
       convertInversePressure,
       convertForce,
       convertInverseForce,
+      convertTemperature,
+      convertInverseTemperature,
     };
   },
   {

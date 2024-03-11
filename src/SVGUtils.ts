@@ -564,6 +564,7 @@ export function formatExpValueAsHTML(n: number, decimals: number) {
 
 export function formatMeasureAsHTML(s: string) {
   if (s === "1/K") return "K<sup>-1</sup>";
+  if (s === "C") return "°C";
 
   // find string before fist number
   const n = s.search(/\d/);

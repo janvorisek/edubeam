@@ -1,4 +1,10 @@
-import { LinearStaticSolver, Beam2D, BeamElementUniformEdgeLoad, BeamConcentratedLoad } from "ts-fem";
+import {
+  LinearStaticSolver,
+  Beam2D,
+  BeamElementUniformEdgeLoad,
+  BeamConcentratedLoad,
+  BeamTemperatureLoad,
+} from "ts-fem";
 
 function objectToBase64(obj: unknown) {
   try {
@@ -37,6 +43,7 @@ export const serializeModel = (ls: LinearStaticSolver) => {
   const _css = [];
   const eloads = [];
   const ecloads = [];
+  const etloads = [];
   const nloads = [];
   const pd = [];
 
@@ -68,6 +75,12 @@ export const serializeModel = (ls: LinearStaticSolver) => {
       ecloads.push([load.target, load.values]);
     });
 
+  ls.loadCases[0].elementLoadList
+    .filter((el) => el instanceof BeamTemperatureLoad)
+    .forEach((load) => {
+      etloads.push([load.target, load.values]);
+    });
+
   ls.loadCases[0].nodalLoadList.forEach((load) => {
     nloads.push([load.target, load.values]);
   });
@@ -83,6 +96,7 @@ export const serializeModel = (ls: LinearStaticSolver) => {
     cs?: unknown[];
     el?: unknown[];
     ecl?: unknown[];
+    etl?: unknown[];
     nl?: unknown[];
     pd?: unknown[];
   } = {};
@@ -93,6 +107,7 @@ export const serializeModel = (ls: LinearStaticSolver) => {
   if (_css.length > 0) obj.cs = _css;
   if (eloads.length > 0) obj.el = eloads;
   if (ecloads.length > 0) obj.ecl = ecloads;
+  if (etloads.length > 0) obj.etl = etloads;
   if (nloads.length > 0) obj.nl = nloads;
   if (pd.length > 0) obj.pd = pd;
 
@@ -138,6 +153,12 @@ export const deserializeModel = (base64String: string, ls: LinearStaticSolver) =
   if ("ecl" in tmp) {
     for (const e of tmp.ecl) {
       ls.loadCases[0].createBeamConcentratedLoad(e[0], e[1], true);
+    }
+  }
+
+  if ("etl" in tmp) {
+    for (const e of tmp.etl) {
+      ls.loadCases[0].createBeamTemperatureLoad(e[0], e[1]);
     }
   }
 

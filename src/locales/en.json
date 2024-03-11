@@ -38,7 +38,8 @@
     "elements": "Elements",
     "confirm": "Confirm",
     "saveProject": "Save project",
-    "openProject": "Open project"
+    "openProject": "Open project",
+    "lcs": "Local Coordinate System"
   },
   "nodes": {
     "addNode": "Add node",
@@ -276,7 +277,9 @@
     "invalidNumber": "Invalid number"
   },
   "loadType": {
+    "loadType": "Load type",
     "concentrated": "Concentrated load",
-    "udl": "Uniformly distributed load"
+    "udl": "Uniformly distributed load",
+    "temperature": "Temperature load"
   }
 }

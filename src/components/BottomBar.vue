@@ -38,9 +38,15 @@
         @touchstart.stop
       >
         <div class="border-b border-t">
-          <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="openModal(AddNodeDialog, {})">
+          <v-btn
+            size="small"
+            variant="flat"
+            color="secondary"
+            :rounded="0"
+            @click.stop="openModal(AddNodeDialog, {})"
+            v-tooltip.bottom="$t('common.addUsingDialog')"
+          >
             <v-icon small>mdi-plus</v-icon> {{ $t("nodes.addNode") }}
-            <v-tooltip :text="$t('common.addUsingDialog')" location="bottom" activator="parent"></v-tooltip>
           </v-btn>
           <v-btn
             size="small"
@@ -49,9 +55,9 @@
             style="border-left: 1px solid #ccc"
             :rounded="0"
             @click.stop="appStore.mouseMode = MouseMode.ADD_NODE"
+            v-tooltip.bottom="$t('common.addUsingMouse')"
           >
             <v-icon small>mdi-cursor-default-outline</v-icon> {{ $t("nodes.addNode") }}
-            <v-tooltip :text="$t('common.addUsingMouse')" location="bottom" activator="parent"></v-tooltip>
           </v-btn>
         </div>
         <v-data-table
@@ -234,9 +240,9 @@
             color="secondary"
             :rounded="0"
             @click.stop="if (useProjectStore().solver.domain.nodes.size >= 2) openModal(AddElementDialog, {});"
+            v-tooltip.bottom="$t('common.addUsingDialog')"
           >
             <v-icon small>mdi-plus</v-icon> {{ $t("elements.addElement") }}
-            <v-tooltip :text="$t('common.addUsingDialog')" location="bottom" activator="parent"></v-tooltip>
           </v-btn>
           <v-btn
             size="small"
@@ -245,9 +251,9 @@
             style="border-left: 1px solid #ccc"
             :rounded="0"
             @click.stop="appStore.mouseMode = MouseMode.ADD_ELEMENT"
+            v-tooltip.bottom="$t('common.addUsingMouse')"
           >
             <v-icon small>mdi-cursor-default-outline</v-icon> {{ $t("elements.addElement") }}
-            <v-tooltip :text="$t('common.addUsingMouse')" location="bottom" activator="parent"></v-tooltip>
           </v-btn>
         </div>
 
@@ -314,9 +320,13 @@
                   {{ `${$t("common.node")} ${node.label}` }}
                 </option>
               </select>
-              <a href="#" class="text-decoration-none text-primary" @click.stop="swapNodes(item)">
+              <a
+                href="#"
+                class="text-decoration-none text-primary"
+                @click.stop="swapNodes(item)"
+                v-tooltip.bottom="$t('elements.swapNodeOrder')"
+              >
                 <v-icon small>mdi-swap-horizontal</v-icon>
-                <v-tooltip :text="$t('elements.swapNodeOrder')" location="bottom" activator="parent"></v-tooltip>
               </a>
               <select
                 class="mini-select flex-shrink-0"
@@ -530,6 +540,9 @@
               <template v-else-if="item.ref instanceof BeamConcentratedLoad">
                 {{ $t("loadType.concentrated") }}
               </template>
+              <template v-else-if="loadType(item.ref) === 'temperature'">
+                {{ $t("loadType.temperature") }}
+              </template>
             </span>
             <span class="text-no-wrap" v-if="item.type === 'prescribed'">{{ $t("loads.prescribedDisplacement") }}</span>
           </template>
@@ -633,10 +646,15 @@
 
             <div class="d-flex flex-grow-0 align-content-center" v-if="item.type === 'element'">
               <div class="inline-edit-group mr-2" style="min-width: 128px">
-                <span v-if="item.ref instanceof BeamElementUniformEdgeLoad" class="input-before">f<sub>x</sub></span>
-                <span v-else-if="item.ref instanceof BeamConcentratedLoad" class="input-before">F<sub>x</sub></span>
+                <span v-if="loadType(item.ref) === 'udl'" class="input-before">f<sub>x</sub></span>
+                <span v-else-if="loadType(item.ref) === 'concentrated'" class="input-before">F<sub>x</sub></span>
+                <span v-else-if="loadType(item.ref) === 'temperature'" class="input-before">T<sub>c</sub></span>
                 <input
-                  :value="appStore.convertForce(item.ref.values[0])"
+                  :value="
+                    loadType(item.ref) !== 'temperature'
+                      ? appStore.convertForce(item.ref.values[0])
+                      : appStore.convertTemperature(item.ref.values[0])
+                  "
                   @keydown="checkNumber($event)"
                   @change="
                     changeSetArrayItem(
@@ -644,27 +662,39 @@
                       'values',
                       0,
                       $event.target as HTMLInputElement,
-                      appStore.convertInverseForce
+                      loadType(item.ref) !== 'temperature'
+                        ? appStore.convertInverseForce
+                        : appStore.convertInverseTemperature
                     )
                   "
                   class="inline-edit"
                 />
                 <div
-                  v-if="item.ref instanceof BeamElementUniformEdgeLoad"
+                  v-if="loadType(item.ref) === 'udl'"
                   class="input-after"
                   v-html="formatMeasureAsHTML(appStore.units.ForceDistance)"
                 ></div>
                 <div
-                  v-else-if="item.ref instanceof BeamConcentratedLoad"
+                  v-else-if="loadType(item.ref) === 'concentrated'"
                   class="input-after"
                   v-html="formatMeasureAsHTML(appStore.units.Force)"
                 ></div>
+                <div
+                  v-else-if="loadType(item.ref) === 'temperature'"
+                  class="input-after"
+                  v-html="formatMeasureAsHTML(appStore.units.Temperature)"
+                ></div>
               </div>
               <div class="inline-edit-group mr-2" style="min-width: 128px">
-                <span v-if="item.ref instanceof BeamElementUniformEdgeLoad" class="input-before">f<sub>z</sub></span>
-                <span v-else-if="item.ref instanceof BeamConcentratedLoad" class="input-before">F<sub>z</sub></span>
+                <span v-if="loadType(item.ref) === 'udl'" class="input-before">f<sub>z</sub></span>
+                <span v-else-if="loadType(item.ref) === 'concentrated'" class="input-before">F<sub>z</sub></span>
+                <span v-else-if="loadType(item.ref) === 'temperature'" class="input-before">T<sub>d</sub></span>
                 <input
-                  :value="appStore.convertForce(item.ref.values[1])"
+                  :value="
+                    loadType(item.ref) !== 'temperature'
+                      ? appStore.convertForce(item.ref.values[1])
+                      : appStore.convertTemperature(item.ref.values[1])
+                  "
                   @keydown="checkNumber($event)"
                   @change="
                     changeSetArrayItem(
@@ -672,21 +702,46 @@
                       'values',
                       1,
                       $event.target as HTMLInputElement,
-                      appStore.convertInverseForce
+                      loadType(item.ref) !== 'temperature'
+                        ? appStore.convertInverseForce
+                        : appStore.convertInverseTemperature
                     )
                   "
                   class="inline-edit"
                 />
                 <div
-                  v-if="item.ref instanceof BeamElementUniformEdgeLoad"
+                  v-if="loadType(item.ref) === 'udl'"
                   class="input-after"
                   v-html="formatMeasureAsHTML(appStore.units.ForceDistance)"
                 ></div>
                 <div
-                  v-else-if="item.ref instanceof BeamConcentratedLoad"
+                  v-else-if="loadType(item.ref) === 'concentrated'"
                   class="input-after"
                   v-html="formatMeasureAsHTML(appStore.units.Force)"
                 ></div>
+                <div
+                  v-else-if="loadType(item.ref) === 'temperature'"
+                  class="input-after"
+                  v-html="formatMeasureAsHTML(appStore.units.Temperature)"
+                ></div>
+              </div>
+              <div class="inline-edit-group mr-2" style="min-width: 128px" v-if="loadType(item.ref) === 'temperature'">
+                <span class="input-before">T<sub>h</sub></span>
+                <input
+                  :value="appStore.convertTemperature(item.ref.values[2])"
+                  @keydown="checkNumber($event)"
+                  @change="
+                    changeSetArrayItem(
+                      item.ref,
+                      'values',
+                      2,
+                      $event.target as HTMLInputElement,
+                      appStore.convertInverseTemperature
+                    )
+                  "
+                  class="inline-edit"
+                />
+                <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Temperature)"></div>
               </div>
               <div
                 v-if="item.ref instanceof BeamConcentratedLoad"
@@ -719,7 +774,11 @@
                   v-html="formatMeasureAsHTML(appStore.units.Length)"
                 ></div>
               </div>
-              <div v-if="item.ref instanceof BeamElementUniformEdgeLoad" class="inline-edit-group">
+              <div
+                v-if="item.ref instanceof BeamElementUniformEdgeLoad"
+                class="inline-edit-group"
+                v-tooltip.bottom="$t('common.lcs')"
+              >
                 <span class="input-before">LCS</span>
                 <div class="inline-edit">
                   <v-checkbox-btn
@@ -1265,6 +1324,7 @@ import {
   toggleBoolean,
   toggleSet,
   nameBeamForce,
+  loadType,
 } from "../utils";
 import { DofID, Beam2D, PrescribedDisplacement } from "ts-fem";
 import { formatExpValueAsHTML, formatMeasureAsHTML } from "../SVGUtils";
@@ -1607,7 +1667,6 @@ const headers = reactive({
     },
     {
       title: "common.components",
-      units: "Force",
       key: "load.values",
       width: 420,
       sortable: false,

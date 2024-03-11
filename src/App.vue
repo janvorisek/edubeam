@@ -163,7 +163,7 @@ onMounted(() => {
   domain.createMaterial(1, {
     e: 210000e6,
     g: 210000e6 / (2 * (1 + 0.2)),
-    alpha: 1.0,
+    alpha: 12.0e-6,
     d: 4000 /*kg/m3!!!*/,
   });
 
@@ -323,12 +323,7 @@ const app_commit = APP_COMMIT;
     <v-app-bar clipped-lefs clipped-right app color="primary" density="compact">
       <v-app-bar-nav-icon @click="appStore.drawerOpen = !appStore.drawerOpen"></v-app-bar-nav-icon>
 
-      <div class="app-title ml-3 d-flex align-center" style="user-select: none">
-        edubeam
-        <v-tooltip activator="parent" location="bottom">
-          v{{ app_version }} {{ $t("footer.released") }} {{ app_released }}
-        </v-tooltip>
-      </div>
+      <div class="app-title ml-3 d-flex align-center" style="user-select: none">edubeam</div>
 
       <v-btn
         class="d-none d-sm-inline-flex ml-3"

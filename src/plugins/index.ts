@@ -14,10 +14,28 @@ import VueDraggableResizable from "vue-draggable-resizable";
 import "@imengyu/vue3-context-menu/lib/vue3-context-menu.css";
 import ContextMenu from "@imengyu/vue3-context-menu";
 
+import FloatingVue from "floating-vue";
+import "floating-vue/dist/style.css";
+
 // Types
 import type { App } from "vue";
 
 export function registerPlugins(app: App) {
   loadFonts();
-  app.use(vuetify).use(pinia).use(i18n).use(ContextMenu).component("vue-draggable-resizable", VueDraggableResizable);
+
+  app.use(vuetify);
+  app.use(pinia);
+  app.use(i18n);
+  app.use(ContextMenu);
+  app.component("VueDraggableResizable", VueDraggableResizable);
+  app.use(FloatingVue, {
+    themes: {
+      tooltip: {
+        delay: {
+          show: 100,
+          hide: 0,
+        },
+      },
+    },
+  });
 }

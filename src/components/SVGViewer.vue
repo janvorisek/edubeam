@@ -1160,7 +1160,7 @@ defineExpose({ centerContent, fitContent });
                   :convert-force="appStore.convertForce"
                 />
                 <SVGElementTemperatureLoad
-                  v-if="loadType(eload) === 'temperature'"
+                  v-else-if="loadType(eload) === 'temperature'"
                   :key="`element-temperature-${index}`"
                   :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
                   @mousemove="onElementLoadHover($event, eload)"

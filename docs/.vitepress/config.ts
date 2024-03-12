@@ -142,6 +142,13 @@ export default defineConfig({
     de: {
       label: 'Deutsch',
       lang: 'de',
+      themeConfig: {
+        nav: [
+          { text: "Startseite", link: "/de/" },
+          { text: "FAQ", link: "/de/faq" },
+          { text: "Beispiele", link: "/de/examples" },
+        ]
+      }
     },
     es: {
       label: 'Español',

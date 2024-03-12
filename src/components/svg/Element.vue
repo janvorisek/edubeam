@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { smoothPath } from "@/utils";
 import { Matrix } from "mathjs";
 import { Node, DofID, LoadCase, Beam2D, BeamConcentratedLoad, BeamElementUniformEdgeLoad } from "ts-fem";
 import { computed } from "vue";
@@ -75,8 +76,9 @@ const elementHinges = computed(() => {
 const results = computed(() => {
   if (!props.loadCase.solved || !props.showDeformedShape) return "";
 
-  let result = "";
-  const nseg = 20;
+  const result = [];
+  const truss = props.element.hinges[0] && props.element.hinges[1];
+  const nseg = truss ? 1 : 5;
   const scaleBy = props.deformedShapeMultiplier / props.scale;
   const n1 = props.element.domain.nodes.get(props.element.nodes[0]) as Node;
   let def = null;
@@ -90,10 +92,10 @@ const results = computed(() => {
     const xc = n1.coords[0] + (cos * geo.l * s) / nseg;
     const zc = n1.coords[2] + (sin * geo.l * s) / nseg;
 
-    result += `${xc + def.u[s] * scaleBy},${zc + def.w[s] * scaleBy} `;
+    result.push([xc + def.u[s] * scaleBy, zc + def.w[s] * scaleBy]);
   }
 
-  return result;
+  return smoothPath(result);
 });
 
 const forces = computed(() => {
@@ -301,9 +303,9 @@ const emit = defineEmits(["elementmousemove", "elementpointerup"]);
 
 <template>
   <g class="element element-1d">
-    <polyline
+    <path
       v-if="loadCase.solved && showDeformedShape"
-      :points="results"
+      :d="results"
       vector-effect="non-scaling-stroke"
       class="deformedShape"
       stroke-linecap="round"

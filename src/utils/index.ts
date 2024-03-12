@@ -26,6 +26,8 @@ export { debounce } from "./debounce";
 export { serializeModel } from "./serializeModel";
 export { deserializeModel } from "./serializeModel";
 
+export { smoothPath } from "./smoothPath";
+
 export const capitalize = (s: string) => {
   return s.charAt(0).toUpperCase() + s.slice(1);
 };

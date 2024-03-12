@@ -541,7 +541,8 @@ svg text {
     stroke: #666;
     stroke-width: 1px;
   }
-  polyline.deformedShape {
+  path.deformedShape {
+    fill: none;
     stroke: #555;
     stroke-width: 2px;
     &.decoration {

@@ -197,6 +197,10 @@ const forces = computed(() => {
   labelsXM.sort((a, b) => a - b);
   mvalues.sort((a, b) => a - b);
 
+  let nNzero = 0;
+  let nVzero = 0;
+  let nMzero = 0;
+
   for (let s = 0; s < nvvalues.length; s++) {
     const xc = n1.coords[0] + cos * nvvalues[s];
     const zc = n1.coords[2] + sin * nvvalues[s];
@@ -204,8 +208,10 @@ const forces = computed(() => {
     const vNraw = props.element.computeNormalForceAt(props.loadCase, nvvalues[s]);
     const vVraw = props.element.computeShearForceAt(props.loadCase, nvvalues[s]);
 
-    result += `${xc + vNraw * nx * scaleBy},${zc + vNraw * ny * scaleBy} `;
+    if (Math.abs(vNraw) < 1e-6) nNzero++;
+    if (Math.abs(vVraw) < 1e-6) nVzero++;
 
+    result += `${xc + vNraw * nx * scaleBy},${zc + vNraw * ny * scaleBy} `;
     resultV += `${xc + vVraw * nx * scaleByV},${zc + vVraw * ny * scaleByV} `;
   }
 
@@ -217,10 +223,14 @@ const forces = computed(() => {
     const ny = geo.dx / geo.l;
 
     const vMraw = props.element.computeBendingMomentAt(props.loadCase, mvalues[s]);
-    if (Math.abs(vMraw) < 1e-6) continue;
+    if (Math.abs(vMraw) < 1e-6) nMzero++;
 
     resultM += `${xc + vMraw * nx * scaleByM},${zc + vMraw * ny * scaleByM} `;
   }
+
+  if (nNzero === nvvalues.length) result = "";
+  if (nVzero === nvvalues.length) resultV = "";
+  if (nMzero === mvalues.length) resultM = "";
 
   const result2 = [];
   const result2V = [];

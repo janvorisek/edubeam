@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { LinearStaticSolver, DofID } from "ts-fem";
-import { ref, onMounted, reactive } from "vue";
+import { ref, onMounted, reactive, nextTick, computed } from "vue";
 import SVGElementViewer from "../../src/components/SVGElementViewer.vue";
 import { VTweakpane } from "v-tweakpane";
 import { serializeModel, deserializeModel } from "../../src/utils/serializeModel";
@@ -81,8 +81,21 @@ onMounted(() => {
 //solver.loadCases[0].createNodalLoad(3, { [DofID.Dx]: 10000, [DofID.Dz]: 0, [DofID.Ry]: 10000 });
 //solver.loadCases[0].createNodalLoad(3, { [DofID.Dx]: 0, [DofID.Dz]: 20 });
 
-solver.value.loadCases[0].createBeamElementUniformEdgeLoad("1", [0, 10], true);
+solver.value.loadCases[0].createBeamElementUniformEdgeLoad("1", [0, 10000], true);
 solver.value.solve();
+
+const quantity = ref<"n" | "v" | "m" | "u">("m");
+
+const changeQuantity = (q: "n" | "v" | "m" | "u") => {
+  quantity.value = q;
+};
+
+const showDefo = computed(() => quantity.value === "u");
+const showNormalForce = computed(() => quantity.value === "n");
+const showShearForce = computed(() => quantity.value === "v");
+const showMoments = computed(() => quantity.value === "m");
+
+const viewer = ref<InstanceType<typeof SVGElementViewer>>();
 </script>
 
 <template>
@@ -90,6 +103,7 @@ solver.value.solve();
     <div class="d-flex" style="width: 100%; height: 160px">
       <SVGElementViewer
         v-if="_created"
+        ref="viewer"
         class="overflow-hidden pa-1 w-100"
         :solver="solver"
         :nodes="[domain.getNode('a'), domain.getNode('b')]"
@@ -103,53 +117,43 @@ solver.value.solve();
         :show-moments="false"
         :show-normal-force="false"
         :show-shear-force="false"
-        :padding="24"
-        :mobile-padding="24"
+        :padding="16"
+        :mobile-padding="16"
         :results-scale-px="32"
+        :convert-force="(v) => v / 1000"
       />
       <div>
         <v-tweakpane class="p-4" style="width: 260px" :pane="pane" @on-pane-created="onPaneCreated" />
       </div>
     </div>
-    <div class="d-flex" style="width: 100%; height: 160px">
-      <div class="relative">
-        <div class="absolute">V<sub>z</sub>, M<sub>y</sub> [kN]</div>
+    <div class="d-flex" style="width: 100%">
+      <div style="width: 100%">
+        <div>
+          <div class="if-selector">
+            <button :class="{ selected: quantity === 'u' }" @click="changeQuantity('u')">Deformed shape</button>
+            <button :class="{ selected: quantity === 'n' }" @click="changeQuantity('n')">Normal force</button>
+            <button :class="{ selected: quantity === 'v' }" @click="changeQuantity('v')">Shear force</button>
+            <button :class="{ selected: quantity === 'm' }" @click="changeQuantity('m')">Bending moment</button>
+          </div>
+        </div>
         <SVGElementViewer
           v-if="_created"
           class="overflow-hidden pa-1 w-100"
+          style="height: 160px"
           :solver="solver"
           :nodes="[domain.getNode('a'), domain.getNode('b')]"
           :elements="[domain.getElement(1)]"
           :element-loads="solver.loadCases[0].elementLoadList"
-          :show-deformed-shape="false"
+          :show-deformed-shape="showDefo"
           :show-reactions="true"
           :show-loads="false"
-          :show-moments="true"
-          :show-normal-force="false"
-          :show-shear-force="true"
-          :padding="12"
-          :mobile-padding="12"
-          :results-scale-px="32"
-        />
-      </div>
-      <div class="relative">
-        <div class="absolute">Deformed shape [mm]</div>
-        <SVGElementViewer
-          v-if="_created"
-          class="overflow-hidden pa-1 w-100"
-          :solver="solver"
-          :nodes="[domain.getNode('a'), domain.getNode('b')]"
-          :elements="[domain.getElement(1)]"
-          :element-loads="solver.loadCases[0].elementLoadList"
-          :show-deformed-shape="true"
-          :show-reactions="false"
-          :show-loads="false"
-          :show-moments="false"
-          :show-normal-force="false"
-          :show-shear-force="false"
-          :padding="12"
-          :mobile-padding="12"
-          :results-scale-px="32"
+          :show-moments="showMoments"
+          :show-normal-force="showNormalForce"
+          :show-shear-force="showShearForce"
+          :padding="32"
+          :mobile-padding="32"
+          :results-scale-px="48"
+          :convert-force="(v) => v / 1000"
         />
       </div>
     </div>
@@ -209,219 +213,5 @@ svg text {
   position: absolute;
   border: 1px solid #2f00ff;
   background: rgba(0, 0, 255, 0.2);
-}
-
-.element-load.load-1d {
-  text {
-    fill: v-bind("colors.loads");
-  }
-  pointer-events: all;
-  stroke-linecap: butt;
-  &:hover text {
-    //fill: blue;
-  }
-  &:hover path.drawable,
-  &:hover polygon.drawable {
-    //stroke: blue;
-    stroke-width: 3px;
-  }
-  &:hover polyline {
-    marker-end: url(#force_centered_hover);
-  }
-  polygon,
-  path {
-    stroke: v-bind("colors.loads");
-    stroke-width: 1px;
-    &.handle {
-      stroke-width: 12px;
-      stroke: transparent;
-    }
-  }
-  polyline {
-    marker-end: url(#force_centered);
-  }
-
-  &.selected {
-    text {
-      fill: rgb(0, 55, 149);
-    }
-    polygon {
-      stroke-linejoin: round;
-      fill: rgba(0, 55, 149, 0.1);
-    }
-  }
-}
-
-.element.element-1d {
-  polyline {
-    fill: none;
-    stroke: black;
-    stroke-width: 2px;
-    &.handle {
-      cursor: pointer;
-      stroke-width: 24px;
-      stroke: transparent;
-    }
-    &.decoration {
-      stroke-width: 1px;
-    }
-  }
-  &:hover {
-    & polyline.drawable {
-      stroke: black;
-      stroke-width: 5px;
-    }
-  }
-  &.selected {
-    & polyline.drawable {
-      stroke: rgb(0, 94, 255);
-      stroke-width: 5px;
-    }
-  }
-
-  polyline.fibers {
-    stroke: #666;
-    stroke-width: 1px;
-  }
-  polyline.deformedShape {
-    stroke: #555;
-    stroke-width: 2px;
-    &.decoration {
-      stroke-width: 1px;
-    }
-  }
-  polyline.normal {
-    stroke: v-bind("colors.normalForce");
-    stroke-width: 1px;
-    fill: v-bind("colors.normalForce");
-    fill-opacity: 0.1;
-    &:hover {
-      fill-opacity: 0.2;
-    }
-  }
-  polyline.shear {
-    stroke: v-bind("colors.shearForce");
-    stroke-width: 1px;
-    fill: v-bind("colors.shearForce");
-    fill-opacity: 0.1;
-    &:hover {
-      fill-opacity: 0.2;
-    }
-  }
-  polyline.moment {
-    stroke: v-bind("colors.bendingMoment");
-    stroke-width: 1px;
-    fill: v-bind("colors.bendingMoment");
-    fill-opacity: 0.1;
-    &:hover {
-      fill-opacity: 0.2;
-    }
-  }
-}
-
-.node {
-  polyline {
-    stroke: #000;
-    stroke-linecap: square;
-    stroke-width: 6px;
-    vector-effect: non-scaling-stroke;
-    &.handle {
-      cursor: pointer;
-      stroke-width: 24px;
-      stroke: transparent;
-    }
-    &.decoration {
-      stroke-width: 1px;
-    }
-    &.drawable.deformed {
-      stroke: #555;
-    }
-  }
-  &:hover polyline.drawable {
-    stroke: black;
-    stroke-width: 10px;
-  }
-  &.selected polyline.drawable {
-    stroke: rgb(0, 55, 149);
-    stroke-width: 8px;
-  }
-}
-
-.nodal-load {
-  text {
-    fill: v-bind("colors.loads");
-  }
-  polyline {
-    stroke-linecap: square;
-    vector-effect: non-scaling-stroke;
-    &.decoration.force {
-      marker-end: url(#force);
-    }
-    &.decoration.moment.cw {
-      marker-end: url(#moment_cw);
-    }
-    &.decoration.moment.ccw {
-      marker-end: url(#moment_ccw);
-    }
-    &.handle {
-      stroke: transparent;
-      stroke-width: 24px;
-    }
-
-    &.handle.moment {
-      stroke: transparent;
-      stroke-width: 38px;
-    }
-  }
-  &:hover text {
-    fill: blue;
-  }
-  &:hover polyline.decoration.force {
-    marker-end: url(#force_hover);
-  }
-  &:hover polyline.decoration.moment.cw {
-    marker-end: url(#moment_cw_hover);
-  }
-  &:hover polyline.decoration.moment.ccw {
-    marker-end: url(#moment_ccw_hover);
-  }
-  &.selected {
-    text {
-      fill: rgb(0, 55, 149);
-    }
-  }
-}
-
-.tooltip {
-  font-size: 14px;
-  position: absolute;
-  margin-top: -6px;
-  margin-left: 18px;
-}
-
-.tooltip .content {
-  position: relative;
-  background: rgba(255, 255, 255, 0.9);
-  z-index: 100;
-  padding: 3px 8px;
-  //font-weight: bold;
-  box-shadow: 1px 1px 1px #ddd;
-}
-
-.tooltip .content:after {
-  content: "";
-  position: absolute;
-  border-top: 6px solid transparent;
-  border-bottom: 6px solid transparent;
-  left: -6px;
-  top: 8px;
-  border-right: 6px solid rgba(255, 255, 255, 0.9);
-  z-index: 1000;
-}
-
-.inline-checkbox {
-  .v-input--selection-controls__input {
-    margin-right: 0px !important;
-  }
 }
 </style>

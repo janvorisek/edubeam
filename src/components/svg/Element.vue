@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { smoothPath } from "@/utils";
+import { smoothPath } from "../../utils/smoothPath";
 import { Matrix } from "mathjs";
 import { Node, DofID, LoadCase, Beam2D, BeamConcentratedLoad, BeamElementUniformEdgeLoad } from "ts-fem";
 import { computed } from "vue";

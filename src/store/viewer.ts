@@ -13,7 +13,7 @@ export const useViewerStore = defineStore(
 
     const showNormalForce = ref(false);
     const showShearForce = ref(false);
-    const showBendingMoment = ref(false);
+    const showBendingMoment = ref(true);
     const showDeformedShape = ref(true);
     const showReactions = ref(true);
 

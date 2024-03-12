@@ -207,3 +207,20 @@
 .dark .main svg {
   filter: invert(100%);
 }
+
+.if-selector {
+  border-top: 1px solid #e7e7e7;
+  padding-top: 16px;
+  display: flex;
+  justify-content: center;
+  button {
+    background: #ddd;
+    border-radius: 12px;
+    padding: 2px 8px;
+    margin-right: 4px;
+    &.selected {
+      background: #2266ff;
+      color: white;
+    }
+  }
+}

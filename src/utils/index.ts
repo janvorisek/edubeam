@@ -27,6 +27,7 @@ export { serializeModel } from "./serializeModel";
 export { deserializeModel } from "./serializeModel";
 
 export { smoothPath } from "./smoothPath";
+export { loadType } from "./loadType";
 
 export const capitalize = (s: string) => {
   return s.charAt(0).toUpperCase() + s.slice(1);
@@ -424,18 +425,6 @@ export const download = (filename: string, text: string) => {
   element.click();
 
   document.body.removeChild(element);
-};
-
-export const loadType = (el: Load) => {
-  if (el instanceof BeamElementUniformEdgeLoad) {
-    return "udl";
-  } else if (el instanceof BeamConcentratedLoad) {
-    return "concentrated";
-  } else if (el instanceof BeamTemperatureLoad) {
-    return "temperature";
-  } else {
-    return "unknown";
-  }
 };
 
 export const exportJSON = () => {

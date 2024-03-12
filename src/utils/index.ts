@@ -17,6 +17,7 @@ import { Command, IKeyValue, undoRedoManager } from "../CommandManager";
 import { useViewerStore } from "../store/viewer";
 
 import { XMLParser } from "fast-xml-parser";
+import { loadType } from "./loadType";
 
 export type EntityWithLabel = { label: string & { [key: string]: unknown } };
 

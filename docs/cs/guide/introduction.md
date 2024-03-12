@@ -29,10 +29,10 @@ Vítejte v EduBeamu, vaší online webové aplikaci pro statickou analýzu. Stat
 
 <hr>
 
-Kliknutím [sem](https://run.edubeam.app) získáte přístup k aplikaci EduBeam a můžete se vydat na cestu statické analýzy.
+Kliknutím [sem](https://run.edubeam.app/?lang=cs) získáte přístup k aplikaci EduBeam a můžete se vydat na cestu statické analýzy.
 
 <figure>
-  <a href="https://run.edubeam.app" target="_blank">
+  <a href="https://run.edubeam.app/?lang=cs" target="_blank">
     <WelcomeStructure />
     </a>
   <figcaption>EduBeam v akci</figcaption>
@@ -54,7 +54,7 @@ Kliknutím [sem](https://run.edubeam.app) získáte přístup k aplikaci EduBeam
 
 ## Lokalizace
 
-EduBeam je k dispozici v několika jazycích
+EduBeam je k dispozici v několika jazycích.
 
 <div>
 

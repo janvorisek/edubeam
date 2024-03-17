@@ -97,7 +97,7 @@ export default defineConfig({
   sitemap: {
     hostname: 'https://www.edubeam.app'
   },
-  cleanUrls: true,
+  //cleanUrls: true,
   lastUpdated: true,
   locales: {
     root: {

@@ -8,10 +8,10 @@ import { Node } from "ts-fem";
 
 const projectStore = useProjectStore();
 
-const lcs = ref("");
+const lcs = ref("0");
 
 onMounted(() => {
-  lcs.value = node.value.hasLcs() ? angle.value.toString() : "";
+  lcs.value = node.value.hasLcs() ? angle.value.toString() : "0";
 });
 
 const lcsChange = () => {

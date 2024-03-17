@@ -222,13 +222,15 @@
             </div>
           </template>
           <template #item.actions="{ item }">
-            <v-btn
-              density="compact"
-              variant="text"
-              @click="openModal(EditNode, { label: item.label })"
-              icon="mdi-pencil"
-            ></v-btn>
-            <v-btn density="compact" variant="text" @click="deleteNode(item.label)" icon="mdi-close"></v-btn>
+            <div>
+              <v-btn
+                density="compact"
+                variant="text"
+                @click="openModal(EditNode, { label: item.label })"
+                icon="mdi-pencil"
+              ></v-btn>
+              <v-btn density="compact" variant="text" @click="deleteNode(item.label)" icon="mdi-close"></v-btn>
+            </div>
           </template>
         </v-data-table>
       </v-window-item>
@@ -1609,7 +1611,6 @@ const headers = reactive({
     {
       title: "common.actions",
       key: "actions",
-      width: 100,
       sortable: false,
     },
   ],

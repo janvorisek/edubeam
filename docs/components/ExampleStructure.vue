@@ -100,63 +100,65 @@ const viewer = ref<InstanceType<typeof SVGElementViewer>>();
 
 <template>
   <div class="figure">
-    <div class="d-flex" style="width: 100%; height: 160px">
-      <SVGElementViewer
-        v-if="_created"
-        ref="viewer"
-        class="overflow-hidden pa-1 w-100"
-        :solver="solver"
-        :nodes="[domain.getNode('a'), domain.getNode('b')]"
-        :elements="[domain.getElement(1)]"
-        :element-loads="solver.loadCases[0].elementLoadList"
-        :show-node-labels="true"
-        :show-element-labels="true"
-        :show-deformed-shape="false"
-        :show-reactions="false"
-        :show-loads="true"
-        :show-moments="false"
-        :show-normal-force="false"
-        :show-shear-force="false"
-        :padding="16"
-        :mobile-padding="16"
-        :results-scale-px="32"
-        :convert-force="(v) => v / 1000"
-      />
-      <div>
-        <v-tweakpane class="p-4" style="width: 260px" :pane="pane" @on-pane-created="onPaneCreated" />
-      </div>
-    </div>
-    <div class="d-flex" style="width: 100%">
-      <div style="width: 100%">
-        <div>
-          <div class="if-selector">
-            <button :class="{ selected: quantity === 'u' }" @click="changeQuantity('u')">Deformed shape</button>
-            <button :class="{ selected: quantity === 'n' }" @click="changeQuantity('n')">Normal force</button>
-            <button :class="{ selected: quantity === 'v' }" @click="changeQuantity('v')">Shear force</button>
-            <button :class="{ selected: quantity === 'm' }" @click="changeQuantity('m')">Bending moment</button>
-          </div>
-        </div>
+    <ClientOnly>
+      <div class="d-flex" style="width: 100%; height: 160px">
         <SVGElementViewer
           v-if="_created"
+          ref="viewer"
           class="overflow-hidden pa-1 w-100"
-          style="height: 160px"
           :solver="solver"
           :nodes="[domain.getNode('a'), domain.getNode('b')]"
           :elements="[domain.getElement(1)]"
           :element-loads="solver.loadCases[0].elementLoadList"
-          :show-deformed-shape="showDefo"
-          :show-reactions="true"
-          :show-loads="false"
-          :show-moments="showMoments"
-          :show-normal-force="showNormalForce"
-          :show-shear-force="showShearForce"
-          :padding="32"
-          :mobile-padding="32"
-          :results-scale-px="48"
+          :show-node-labels="true"
+          :show-element-labels="true"
+          :show-deformed-shape="false"
+          :show-reactions="false"
+          :show-loads="true"
+          :show-moments="false"
+          :show-normal-force="false"
+          :show-shear-force="false"
+          :padding="16"
+          :mobile-padding="16"
+          :results-scale-px="32"
           :convert-force="(v) => v / 1000"
         />
+        <div>
+          <v-tweakpane class="p-4" style="width: 260px" :pane="pane" @on-pane-created="onPaneCreated" />
+        </div>
       </div>
-    </div>
+      <div class="d-flex" style="width: 100%">
+        <div style="width: 100%">
+          <div>
+            <div class="if-selector">
+              <button :class="{ selected: quantity === 'u' }" @click="changeQuantity('u')">Deformed shape</button>
+              <button :class="{ selected: quantity === 'n' }" @click="changeQuantity('n')">Normal force</button>
+              <button :class="{ selected: quantity === 'v' }" @click="changeQuantity('v')">Shear force</button>
+              <button :class="{ selected: quantity === 'm' }" @click="changeQuantity('m')">Bending moment</button>
+            </div>
+          </div>
+          <SVGElementViewer
+            v-if="_created"
+            class="overflow-hidden pa-1 w-100"
+            style="height: 160px"
+            :solver="solver"
+            :nodes="[domain.getNode('a'), domain.getNode('b')]"
+            :elements="[domain.getElement(1)]"
+            :element-loads="solver.loadCases[0].elementLoadList"
+            :show-deformed-shape="showDefo"
+            :show-reactions="true"
+            :show-loads="false"
+            :show-moments="showMoments"
+            :show-normal-force="showNormalForce"
+            :show-shear-force="showShearForce"
+            :padding="32"
+            :mobile-padding="32"
+            :results-scale-px="48"
+            :convert-force="(v) => v / 1000"
+          />
+        </div>
+      </div>
+    </ClientOnly>
   </div>
 </template>
 

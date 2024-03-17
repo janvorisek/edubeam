@@ -117,28 +117,30 @@ solver.value.solve();
 
 <template>
   <div>
-    <div class="d-flex" style="width: 100%; min-height: 120px">
-      <SVGElementViewer
-        v-if="_created"
-        class="overflow-hidden pa-1 w-100"
-        :colors="colors"
-        :solver="solver"
-        :nodes="nodes"
-        :elements="elements"
-        :element-loads="solver.loadCases[0].elementLoadList"
-        :show-node-labels="true"
-        :show-element-labels="true"
-        :show-deformed-shape="showDeformedShape"
-        :show-reactions="false"
-        :show-loads="showLoads"
-        :show-moments="showMoments"
-        :show-normal-force="false"
-        :show-shear-force="showShearForces"
-        :padding="32"
-        :mobile-padding="32"
-        :results-scale-px="resultsScalePx"
-      />
-    </div>
+    <ClientOnly>
+      <div class="d-flex" style="width: 100%; min-height: 120px">
+        <SVGElementViewer
+          v-if="_created"
+          class="overflow-hidden pa-1 w-100"
+          :colors="colors"
+          :solver="solver"
+          :nodes="nodes"
+          :elements="elements"
+          :element-loads="solver.loadCases[0].elementLoadList"
+          :show-node-labels="true"
+          :show-element-labels="true"
+          :show-deformed-shape="showDeformedShape"
+          :show-reactions="false"
+          :show-loads="showLoads"
+          :show-moments="showMoments"
+          :show-normal-force="false"
+          :show-shear-force="showShearForces"
+          :padding="32"
+          :mobile-padding="32"
+          :results-scale-px="resultsScalePx"
+        />
+      </div>
+    </ClientOnly>
   </div>
 </template>
 

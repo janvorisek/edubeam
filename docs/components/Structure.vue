@@ -102,29 +102,31 @@ onMounted(() => {
 
 <template>
   <div>
-    <div class="d-flex" style="width: 100%; min-height: 160px">
-      <SVGElementViewer
-        ref="viewer"
-        v-if="_created"
-        class="overflow-hidden pa-1 w-100"
-        :solver="solver"
-        :nodes="[...solver.domain.nodes.values()]"
-        :elements="[...solver.domain.elements.values()]"
-        :nodal-loads="solver.loadCases[0].nodalLoadList"
-        :element-loads="solver.loadCases[0].elementLoadList"
-        :show-node-labels="true"
-        :show-element-labels="true"
-        :show-deformed-shape="showDeformedShape"
-        :show-reactions="showReactions"
-        :show-loads="showLoads"
-        :show-moments="showMoment"
-        :show-normal-force="showNormalForce"
-        :show-shear-force="showShearForce"
-        :padding="16"
-        :mobile-padding="8"
-        :results-scale-px="24"
-      />
-    </div>
+    <ClientOnly>
+      <div class="d-flex" style="width: 100%; min-height: 160px">
+        <SVGElementViewer
+          ref="viewer"
+          v-if="_created"
+          class="overflow-hidden pa-1 w-100"
+          :solver="solver"
+          :nodes="[...solver.domain.nodes.values()]"
+          :elements="[...solver.domain.elements.values()]"
+          :nodal-loads="solver.loadCases[0].nodalLoadList"
+          :element-loads="solver.loadCases[0].elementLoadList"
+          :show-node-labels="true"
+          :show-element-labels="true"
+          :show-deformed-shape="showDeformedShape"
+          :show-reactions="showReactions"
+          :show-loads="showLoads"
+          :show-moments="showMoment"
+          :show-normal-force="showNormalForce"
+          :show-shear-force="showShearForce"
+          :padding="16"
+          :mobile-padding="8"
+          :results-scale-px="24"
+        />
+      </div>
+    </ClientOnly>
   </div>
 </template>
 

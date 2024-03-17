@@ -44,7 +44,8 @@
   "nodes": {
     "addNode": "Add node",
     "editNode": "Edit node",
-    "defineSupports": "Node supports"
+    "defineSupports": "Node supports",
+    "lcsAngle": "Nodal LCS angle"
   },
   "elements": {
     "addElement": "Add element",
@@ -207,6 +208,9 @@
       "update": "Update",
       "text1": "We're rolling out an update that requires resetting the app. This means any progress will be lost.",
       "text2": "If you wish to keep your current progress, you can cancel the update."
+    },
+    "editNode": {
+      "editNode": "Edit node"
     }
   },
   "tooltip": {

@@ -591,6 +591,7 @@ svg text {
     }
     &.decoration {
       stroke-width: 1px;
+      stroke: none;
     }
     &.drawable.deformed {
       stroke: #555;

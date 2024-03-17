@@ -222,6 +222,12 @@
             </div>
           </template>
           <template #item.actions="{ item }">
+            <v-btn
+              density="compact"
+              variant="text"
+              @click="openModal(EditNode, { label: item.label })"
+              icon="mdi-pencil"
+            ></v-btn>
             <v-btn density="compact" variant="text" @click="deleteNode(item.label)" icon="mdi-close"></v-btn>
           </template>
         </v-data-table>
@@ -1336,6 +1342,7 @@ import EditNodalLoad from "./dialogs/EditNodalLoad.vue";
 import EditElementLoad from "./dialogs/EditElementLoad.vue";
 import AddElementDialog from "./dialogs/AddElement.vue";
 import AddNodeDialog from "./dialogs/AddNode.vue";
+import EditNode from "./dialogs/EditNode.vue";
 
 import { useLayoutStore } from "@/store/layout";
 import StiffnessMatrix from "@/components/StiffnessMatrix.vue";
@@ -1602,6 +1609,7 @@ const headers = reactive({
     {
       title: "common.actions",
       key: "actions",
+      width: 100,
       sortable: false,
     },
   ],

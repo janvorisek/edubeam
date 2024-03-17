@@ -434,6 +434,7 @@ export const exportJSON = () => {
       label: n.label,
       coords: n.coords,
       bcs: [...n.bcs.values()],
+      lcs: n.lcs,
     };
   });
 
@@ -527,7 +528,9 @@ export const importJSON = (json: any) => {
   // Parse nodes
   if (jObj.domain.nodes) {
     for (const node of jObj.domain.nodes) {
-      useProjectStore().solver.domain.createNode(node.label, node.coords, node.bcs);
+      const n = useProjectStore().solver.domain.createNode(node.label, node.coords, node.bcs);
+
+      if (node.lcs) n.updateLcs({ locx: node.lcs[0], locy: node.lcs[1] });
     }
   }
 

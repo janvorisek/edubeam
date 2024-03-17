@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Matrix } from "mathjs";
+import { Matrix, inv, multiply } from "mathjs";
 import { Node, DofID, LoadCase } from "ts-fem";
 import { computed } from "vue";
 
@@ -38,6 +38,23 @@ const nodeCoords = computed(() => {
 });
 
 const orientedNodeCoords = computed(() => {
+  const isHinge =
+    (isSupported(props.node, DofID.Dx) || isSupported(props.node, DofID.Dz)) && !isSupported(props.node, DofID.Ry);
+
+  // Rotate hinge if has lcs
+  if (props.node.hasLcs() && isHinge) {
+    const angle = getSupportAngle(props.node);
+    const x = props.node.coords[0] + 1 * Math.cos((angle * Math.PI) / 180);
+    const z = props.node.coords[2] + 1 * Math.sin((angle * Math.PI) / 180);
+
+    return `${props.node.coords[0]},${props.node.coords[2]} ${x},${z}`;
+  }
+
+  // if not cantilever
+  if (isHinge) {
+    return `${props.node.coords[0]},${props.node.coords[2]} ${props.node.coords[0] + 1e-6},${props.node.coords[2]}`;
+  }
+
   // find first element which has this node
   const elements = props.node.domain.elements.values();
 
@@ -45,23 +62,80 @@ const orientedNodeCoords = computed(() => {
     if (el.nodes.includes(props.node.label)) {
       const idx = el.nodes.indexOf(props.node.label);
 
+      let node2 = props.node.domain.nodes.get(el.nodes[0])!;
       if (idx === 0) {
-        const node2 = props.node.domain.nodes.get(el.nodes[1])!;
-        const n2x = (node2.coords[0] + props.node.coords[0]) / 2;
-        const n2z = (node2.coords[2] + props.node.coords[2]) / 2;
-
-        return `${props.node.coords[0]},${props.node.coords[2]} ${n2x},${n2z}`;
+        node2 = props.node.domain.nodes.get(el.nodes[1])!;
       }
 
-      const node2 = props.node.domain.nodes.get(el.nodes[0])!;
-      const n2x = (node2.coords[0] + props.node.coords[0]) / 2;
-      const n2z = (node2.coords[2] + props.node.coords[2]) / 2;
+      let n2x = (node2.coords[0] + props.node.coords[0]) / 2;
+      let n2z = (node2.coords[2] + props.node.coords[2]) / 2;
+
+      const l = el.computeGeo().l * 0.5;
+      const dx = (n2x - props.node.coords[0]) / l;
+      const dz = (n2z - props.node.coords[2]) / l;
+
+      n2x = props.node.coords[0] + dx * 1;
+      n2z = props.node.coords[2] + dz * 1;
 
       return `${props.node.coords[0]},${props.node.coords[2]} ${n2x},${n2z}`;
     }
   }
 
   return nodeCoords.value;
+});
+
+const deformedPosition = computed(() => {
+  const x = props.node.coords[0];
+  // @ts-expect-error wrongly typed getUnknowns
+  let dx = (props.node.getUnknowns(props.loadCase, [DofID.Dx]) * props.multiplier) / props.scale;
+
+  const z = props.node.coords[2];
+  // @ts-expect-error wrongly typed getUnknowns
+  let dz = (props.node.getUnknowns(props.loadCase, [DofID.Dz]) * props.multiplier) / props.scale;
+
+  if (props.node.hasLcs()) {
+    const lcs = props.node.lcs;
+    const dx1 = multiply(dx, lcs[0]);
+    const dz1 = multiply(dz, lcs[2]);
+
+    dx = dx1[0] + dz1[0];
+    dz = dx1[2] + dz1[2];
+  }
+
+  return `translate(${x + dx}, ${z + dz})`;
+});
+
+const reactionLabelX = computed(() => {
+  if (props.node.hasLcs()) {
+    const rxx = props.node.lcs[0][0];
+    const rxz = props.node.lcs[0][2];
+
+    const x = `translate(${props.node.coords[0] - (Math.sign(getReaction(props.node, DofID.Dx)) * 40 * rxx) / props.scale}
+              ${props.node.coords[2] - (Math.sign(getReaction(props.node, DofID.Dx)) * 40 * rxz) / props.scale})`;
+
+    return x;
+  }
+
+  const x = `translate(${props.node.coords[0] - (Math.sign(getReaction(props.node, DofID.Dx)) * 40) / props.scale}
+              ${props.node.coords[2]})`;
+  return x;
+});
+
+const reactionLabelZ = computed(() => {
+  if (props.node.hasLcs()) {
+    const rzx = props.node.lcs[2][0];
+    const rzz = props.node.lcs[2][2];
+
+    const z = `translate(${props.node.coords[0] - (Math.sign(getReaction(props.node, DofID.Dz)) * 40 * rzx) / props.scale}
+              ${props.node.coords[2] - (Math.sign(getReaction(props.node, DofID.Dz)) * 40 * rzz) / props.scale})`;
+
+    return z;
+  }
+
+  const z = `translate(${props.node.coords[0]}
+              ${props.node.coords[2] - (Math.sign(getReaction(props.node, DofID.Dz)) * 40) / props.scale})`;
+
+  return z;
 });
 
 const isConnected = computed(() => {
@@ -73,10 +147,28 @@ const isSupported = (node: Node, dof: DofID) => {
 };
 
 const getReaction = (node: Node, dof: DofID) => {
-  const r = node.getReactions(props.loadCase, true);
+  const r = node.getReactions(props.loadCase, !node.hasLcs());
   const i = r.dofs.findIndex((e) => e === dof);
 
+  if (i === -1) return 0;
+
   return "get" in r.values ? (r.values as unknown as Matrix).get([i]) : r.values[i];
+};
+
+const getSupportAngle = (node: Node) => {
+  if (!node.hasLcs()) return 90;
+
+  const lx = node.lcs[0];
+
+  return Math.atan2(lx[2], lx[0]) * (180 / Math.PI);
+};
+
+const getRotSupportAngle = (node: Node, dof: DofID) => {
+  if (!node.hasLcs()) return 0;
+
+  const angle = getSupportAngle(node);
+
+  return angle;
 };
 
 const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]);
@@ -97,7 +189,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
       v-if="
         loadCase.solved &&
         showReactions &&
-        isSupported(node, DofID.Dz) &&
+        (node.hasLcs() || isSupported(node, DofID.Dz)) &&
         isConnected &&
         Math.abs(getReaction(node, DofID.Dz)) > 1e-32
       "
@@ -105,7 +197,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
       class="decoration"
       marker-start="url(#reaction)"
       :transform="`translate(${node.coords[0]} ${node.coords[2]}) rotate(${
-        Math.sign(getReaction(node, DofID.Dz)) >= 0 ? 0 : 180
+        (Math.sign(getReaction(node, DofID.Dz)) >= 0 ? 0 : 180) + getRotSupportAngle(node, DofID.Dz)
       })`"
     />
 
@@ -113,7 +205,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
       v-if="
         loadCase.solved &&
         showReactions &&
-        isSupported(node, DofID.Dz) &&
+        (node.hasLcs() || isSupported(node, DofID.Dz)) &&
         isConnected &&
         Math.abs(getReaction(node, DofID.Dz)) > 1e-32
       "
@@ -122,8 +214,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
       font-weight="normal"
       text-anchor="end"
       dominant-baseline="baseline"
-      :transform="`translate(${node.coords[0]}
-              ${node.coords[2] - (40 * Math.sign(getReaction(node, DofID.Dz))) / scale})`"
+      :transform="reactionLabelZ"
     >
       {{ convertForce(Math.abs(getReaction(node, DofID.Dz))).toFixed(2) }}
     </text>
@@ -132,7 +223,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
       v-if="
         loadCase.solved &&
         showReactions &&
-        isSupported(node, DofID.Dx) &&
+        (node.hasLcs() || isSupported(node, DofID.Dx)) &&
         isConnected &&
         Math.abs(getReaction(node, DofID.Dx)) > 1e-32
       "
@@ -140,7 +231,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
       class="decoration"
       marker-start="url(#reaction)"
       :transform="`translate(${node.coords[0]} ${node.coords[2]}) rotate(${
-        -90 * Math.sign(getReaction(node, DofID.Dx))
+        -90 * Math.sign(getReaction(node, DofID.Dx)) + getRotSupportAngle(node, DofID.Dx)
       })`"
     />
 
@@ -148,7 +239,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
       v-if="
         loadCase.solved &&
         showReactions &&
-        isSupported(node, DofID.Dx) &&
+        (node.hasLcs() || isSupported(node, DofID.Dx)) &&
         isConnected &&
         Math.abs(getReaction(node, DofID.Dx)) > 1e-32
       "
@@ -157,8 +248,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
       font-weight="normal"
       :text-anchor="getReaction(node, DofID.Dx) > 0 ? 'end' : 'start'"
       dominant-baseline="baseline"
-      :transform="`translate(${node.coords[0] - (Math.sign(getReaction(node, DofID.Dx)) * 40) / scale}
-              ${node.coords[2]})`"
+      :transform="reactionLabelX"
     >
       {{ convertForce(Math.abs(getReaction(node, DofID.Dx))).toFixed(2) }}
     </text>
@@ -199,15 +289,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
     <g
       v-if="loadCase.solved && showDeformedShape && isConnected"
       @mousemove="emit('nodedefomousemove', $event, node)"
-      :transform="`translate(${
-        node.coords[0] +
-        // @ts-expect-error getUnknowns return number | number[]
-        (node.getUnknowns(loadCase, [DofID.Dx]) * multiplier) / scale
-      }, ${
-        node.coords[2] +
-        // @ts-expect-error getUnknowns return number | number[]
-        (node.getUnknowns(loadCase, [DofID.Dz]) * multiplier) / scale
-      })`"
+      :transform="deformedPosition"
     >
       <polyline points="0,0 0,0" class="drawable deformed" />
 

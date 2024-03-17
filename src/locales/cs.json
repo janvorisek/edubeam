@@ -124,7 +124,8 @@
   "nodes": {
     "addNode": "Přidat uzel",
     "editNode": "Upravit uzel",
-    "defineSupports": "Podepření uzlu"
+    "defineSupports": "Podepření uzlu",
+    "lcsAngle": "Pootočení systému souřadnic"
   },
   "tabView": {
     "results": "Výsledky",
@@ -206,6 +207,9 @@
       "text1": " K dispozici je aktualizace, která vyžaduje restartování aplikace. To znamená, že veškeré úpravy budou ztraceny.",
       "text2": "Pokud si přejete zachovat svůj aktuální postup, můžete aktualizaci zrušit.",
       "update": "Aktualizovat"
+    },
+    "editNode": {
+      "editNode": "Upravit uzel"
     }
   },
   "tooltip": {

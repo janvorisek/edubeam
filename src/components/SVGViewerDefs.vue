@@ -260,6 +260,7 @@ const props = withDefaults(
       :markerWidth="supportSize * 20"
       :markerHeight="supportSize * 20"
       overflow="visible"
+      orient="auto"
       markerUnits="strokeWidth"
     >
       <polyline points="10,0 -5,20 25,20 10,0" :stroke-width="1 / supportSize" fill="transparent" stroke="black" />
@@ -273,6 +274,7 @@ const props = withDefaults(
       :markerWidth="supportSize * 20"
       :markerHeight="supportSize * 20"
       overflow="visible"
+      orient="auto"
       markerUnits="strokeWidth"
     >
       <polyline points="10,0 -5,20 25,20 10,0" :stroke-width="1 / supportSize" fill="transparent" stroke="black" />
@@ -287,6 +289,7 @@ const props = withDefaults(
       :markerWidth="supportSize * 20"
       :markerHeight="supportSize * 20"
       overflow="visible"
+      orient="auto"
       markerUnits="strokeWidth"
     >
       <polyline points="0,10 20,-5 20,25 0,10" :stroke-width="1 / supportSize" fill="transparent" stroke="black" />

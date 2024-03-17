@@ -48,7 +48,12 @@ export const serializeModel = (ls: LinearStaticSolver) => {
   const pd = [];
 
   ls.domain.nodes.forEach((node, id) => {
-    _nodes.push([id, node.coords, Array.from(node.bcs.values())]);
+    _nodes.push([
+      id,
+      node.coords,
+      Array.from(node.bcs.values()),
+      node.hasLcs() ? [...node.lcs[0], ...node.lcs[1]] : null,
+    ]);
   });
 
   ls.domain.elements.forEach((element: Beam2D, id) => {
@@ -122,7 +127,14 @@ export const deserializeModel = (base64String: string, ls: LinearStaticSolver) =
 
   if ("n" in tmp) {
     for (const e of tmp.n) {
-      ls.domain.createNode(e[0], e[1], e[2]);
+      const node = ls.domain.createNode(e[0], e[1], e[2]);
+
+      if (e[3] !== undefined && e[3] !== null) {
+        const locx = e[3].slice(0, 3);
+        const locy = e[3].slice(3, 6);
+
+        node.updateLcs({ locx, locy });
+      }
     }
   }
 

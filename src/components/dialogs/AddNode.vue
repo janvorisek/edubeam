@@ -12,10 +12,12 @@
                   v-model="newNodeX"
                   @keydown="checkNumber($event)"
                   :label="$t('dialogs.addNode.coordinate_x')"
+                  :suffix="appStore.units.Length"
                   hide-details="auto"
                   :rules="numberRules"
                   autofocus
                   required
+                  :rounded="0"
                 ></v-text-field>
               </v-col>
 
@@ -24,9 +26,11 @@
                   v-model="newNodeZ"
                   @keydown="checkNumber($event)"
                   :label="$t('dialogs.addNode.coordinate_z')"
+                  :suffix="appStore.units.Length"
                   hide-details="auto"
                   :rules="numberRules"
                   required
+                  :rounded="0"
                 ></v-text-field>
               </v-col>
             </v-row>

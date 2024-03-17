@@ -2,10 +2,44 @@
 import { openModal } from "jenesius-vue-modal";
 import AddNodalLoadDialog from "./dialogs/AddNodalLoad.vue";
 import { useProjectStore } from "@/store/project";
-import { toggleSet } from "@/utils";
-import { computed } from "vue";
+import { setUnsolved, solve, toggleSet } from "@/utils";
+import { computed, onMounted, ref } from "vue";
+import { Node } from "ts-fem";
 
 const projectStore = useProjectStore();
+
+const lcs = ref("");
+
+onMounted(() => {
+  lcs.value = node.value.hasLcs() ? angle.value.toString() : "";
+});
+
+const lcsChange = () => {
+  setUnsolved();
+
+  const ang = parseFloat(lcs.value) * (Math.PI / 180);
+
+  if (isNaN(ang) || Math.abs(ang) < 1e-8) {
+    node.value.lcs = undefined;
+    solve();
+    return;
+  }
+
+  const locx = [Math.cos(ang), 0, Math.sin(ang)];
+  const locy = [0, 1, 0];
+
+  node.value.updateLcs({ locx, locy });
+
+  solve();
+};
+
+const angle = computed(() => {
+  if (!node.value.hasLcs()) {
+    return 0;
+  }
+
+  return 90 - Math.atan2(node.value.lcs[0][0], node.value.lcs[0][2]) * (180 / Math.PI);
+});
 
 const node = computed(() => {
   return projectStore.solver.domain.nodes.get(projectStore.selection.label);
@@ -32,7 +66,7 @@ const node = computed(() => {
         <div class="pr-2"><v-icon size="16" icon="mdi-triangle-outline" /></div>
       </template>
       {{ $t("nodes.defineSupports") }}
-      <v-menu activator="parent" open-on-click min-width="150" location="end" :close-on-content-click="false">
+      <v-menu activator="parent" open-on-click min-width="170" location="end" :close-on-content-click="false">
         <v-list density="compact" class="py-0">
           <v-row no-gutters class="px-1">
             <v-col>
@@ -61,6 +95,19 @@ const node = computed(() => {
                 :model-value="node.bcs.has(4)"
                 @click="toggleSet(node, 'bcs', 4)"
               ></v-checkbox>
+            </v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-col>
+              <v-text-field
+                :label="$t('nodes.lcsAngle')"
+                suffix="°"
+                density="compact"
+                hide-details="auto"
+                :rounded="0"
+                v-model="lcs"
+                @change="lcsChange"
+              />
             </v-col>
           </v-row>
         </v-list>

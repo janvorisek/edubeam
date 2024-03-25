@@ -65,6 +65,7 @@ const props = withDefaults(
     convertForce?: (value: number) => number;
     convertLength?: (value: number) => number;
     zoomEnabled?: boolean;
+    fontSize?: number;
   }>(),
   {
     showGrid: false,
@@ -102,6 +103,7 @@ const props = withDefaults(
     convertForce: (v) => v,
     convertLength: (v) => v,
     zoomEnabled: false,
+    fontSize: 13,
   }
 );
 
@@ -207,7 +209,7 @@ defineExpose({ centerContent, fitContent });
       style="overflow: visible; z-index: 50; min-height: 0"
     >
       <svg ref="svg">
-        <SvgViewerDefs :colors="colors" :support-size="supportSize" />
+        <SvgViewerDefs :colors="colors" :support-size="supportSize" :scale="scale" />
         <g ref="viewport">
           <g>
             <g v-if="props.showLoads">
@@ -219,6 +221,7 @@ defineExpose({ centerContent, fitContent });
                   :eload="eload"
                   :scale="scale"
                   :convert-force="props.convertForce"
+                  :font-size="props.fontSize"
                 />
                 <SVGElementTemperatureLoad
                   v-else-if="loadType(eload) === 'temperature'"
@@ -243,6 +246,7 @@ defineExpose({ centerContent, fitContent });
                 :nload="nload"
                 :scale="scale"
                 :convert-force="props.convertForce"
+                :font-size="props.fontSize"
               />
               <SVGPrescribedDisplacement
                 v-for="(nload, index) in props.prescribedDisplacements"
@@ -271,6 +275,7 @@ defineExpose({ centerContent, fitContent });
               :shear-force-multiplier="shearForceScale * props.resultsScalePx"
               :bending-moment-multiplier="bendingMomentScale * props.resultsScalePx"
               :convert-force="props.convertForce"
+              :font-size="props.fontSize"
             />
           </g>
 
@@ -286,6 +291,7 @@ defineExpose({ centerContent, fitContent });
                 :convert-force="props.convertForce"
                 :load-case="props.solver.loadCases[0]"
                 :multiplier="defoScale * props.resultsScalePx"
+                :font-size="props.fontSize"
               />
             </g>
           </g>
@@ -408,7 +414,7 @@ defineExpose({ centerContent, fitContent });
 .node {
   polyline {
     stroke: #000;
-    stroke-linecap: square;
+    stroke-linecap: butt;
     stroke-width: 6px;
     vector-effect: non-scaling-stroke;
     &.handle {

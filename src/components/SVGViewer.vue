@@ -1118,6 +1118,7 @@ defineExpose({ centerContent, fitContent });
           v-if="props.id === appStore.openedTab!.props.id"
           :colors="viewerStore.colors"
           :support-size="viewerStore.supportSize"
+          :scale="scale"
         />
         <g ref="viewport">
           <g v-if="appStore.mouseMode === MouseMode.ADD_NODE || appStore.mouseMode === MouseMode.ADD_ELEMENT">
@@ -1158,6 +1159,7 @@ defineExpose({ centerContent, fitContent });
                   :eload="eload"
                   :scale="scale"
                   :convert-force="appStore.convertForce"
+                  :font-size="viewerStore.fontSize"
                 />
                 <SVGElementTemperatureLoad
                   v-else-if="loadType(eload) === 'temperature'"
@@ -1206,6 +1208,7 @@ defineExpose({ centerContent, fitContent });
                 :nload="nload"
                 :scale="scale"
                 :convert-force="appStore.convertForce"
+                :font-size="viewerStore.fontSize"
               />
               <SVGPrescribedDisplacement
                 :class="{ selected: projectStore.selection2.nodalLoads.includes(index) }"
@@ -1243,6 +1246,7 @@ defineExpose({ centerContent, fitContent });
               :shear-force-multiplier="projectStore.shearForceScale * viewerStore.resultsScalePx_"
               :bending-moment-multiplier="projectStore.bendingMomentScale * viewerStore.resultsScalePx_"
               :convert-force="appStore.convertForce"
+              :font-size="viewerStore.fontSize"
               @elementmousemove="onElementHover($event, element)"
               @mouseleave="hideTooltip"
               @elementpointerup="onElementClick"
@@ -1271,6 +1275,7 @@ defineExpose({ centerContent, fitContent });
                 @nodepointerup="onNodeClick"
                 :load-case="projectStore.solver.loadCases[0]"
                 :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
+                :font-size="viewerStore.fontSize"
               />
             </OnLongPress>
           </g>

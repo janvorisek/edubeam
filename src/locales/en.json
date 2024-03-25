@@ -131,7 +131,8 @@
     "sizes": {
       "sizes": "Sizes",
       "supportSize": "Support size"
-    }
+    },
+    "font_size": "Font size"
   },
   "sideSettings": {
     "showDeformedShape": "Deformed shape",

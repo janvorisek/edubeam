@@ -22,6 +22,7 @@
           :results-scale-px="viewerStore.resultsScalePx_"
           :colors="viewerStore.colors"
           :support-size="viewerStore.supportSize"
+          :font-size="viewerStore.fontSize"
         />
       </div>
 
@@ -68,6 +69,13 @@
         <v-col>
           <h4 class="mb-1">{{ $t("settings.sizes.supportSize") }}</h4>
           <v-slider v-model="viewerStore.supportSize" step="0.1" max="1.5" min="0.5" thumb-label></v-slider>
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col>
+          <h4 class="mb-1">{{ $t("settings.font_size") }}</h4>
+          <v-slider v-model="viewerStore.fontSize" step="1" min="10" max="20" thumb-label></v-slider>
         </v-col>
       </v-row>
 

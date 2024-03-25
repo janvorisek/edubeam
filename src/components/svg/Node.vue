@@ -3,38 +3,66 @@ import { Matrix, inv, multiply } from "mathjs";
 import { Node, DofID, LoadCase } from "ts-fem";
 import { computed } from "vue";
 
-const props = defineProps<{
-  node: Node;
-  scale: number;
-  showSupports: boolean;
-  showReactions: boolean;
-  showLabel: boolean;
-  convertForce: (f: number) => number;
-  showDeformedShape: boolean;
-  loadCase: LoadCase;
-  multiplier: number;
-}>();
+const props = withDefaults(
+  defineProps<{
+    node: Node;
+    scale: number;
+    showSupports: boolean;
+    showReactions: boolean;
+    showLabel: boolean;
+    convertForce: (f: number) => number;
+    showDeformedShape: boolean;
+    loadCase: LoadCase;
+    multiplier: number;
+    fontSize?: number;
+  }>(),
+  {
+    fontSize: 13,
+  }
+);
 
-const supportMarker = computed(() => {
+const isCantilever = computed(() => {
   const sdofs = Array.from(props.node.bcs);
 
+  return sdofs.includes(DofID.Dx) && sdofs.includes(DofID.Dz) && sdofs.includes(DofID.Ry);
+});
+
+const isHingeXY = computed(() => {
+  const sdofs = Array.from(props.node.bcs);
+
+  return sdofs.includes(DofID.Dx) && sdofs.includes(DofID.Dz) && !sdofs.includes(DofID.Ry);
+});
+
+const isHingeX = computed(() => {
+  const sdofs = Array.from(props.node.bcs);
+
+  return sdofs.includes(DofID.Dx) && sdofs.length === 1;
+});
+
+const isHingeZ = computed(() => {
+  const sdofs = Array.from(props.node.bcs);
+
+  return sdofs.includes(DofID.Dz) && sdofs.length === 1;
+});
+
+const supportMarker = computed(() => {
   // cantilever
-  if (sdofs.includes(DofID.Dx) && sdofs.includes(DofID.Dz) && sdofs.includes(DofID.Ry)) return `url(#dot)`;
+  if (isCantilever.value) return `url(#dot)`;
 
   // Hinge XY
-  if (sdofs.includes(DofID.Dx) && sdofs.includes(DofID.Dz)) return `url(#hinge-xy)`;
+  if (isHingeXY.value) return `url(#hinge-xy)`;
 
   // Hinge X
-  if (sdofs.includes(DofID.Dx)) return `url(#hinge-y)`;
+  if (isHingeX.value) return `url(#hinge-y)`;
 
   // Hinge Z
-  if (sdofs.includes(DofID.Dz)) return `url(#hinge-x)`;
+  if (isHingeZ.value) return `url(#hinge-x)`;
 
   return `none`;
 });
 
 const nodeCoords = computed(() => {
-  return `${props.node.coords[0]},${props.node.coords[2]} ${props.node.coords[0]},${props.node.coords[2]}`;
+  return `${props.node.coords[0] - 0.5 / props.scale},${props.node.coords[2]} ${props.node.coords[0] + 0.5 / props.scale},${props.node.coords[2]}`;
 });
 
 const orientedNodeCoords = computed(() => {
@@ -85,11 +113,11 @@ const orientedNodeCoords = computed(() => {
 });
 
 const deformedPosition = computed(() => {
-  const x = props.node.coords[0];
+  const x = 0;
   // @ts-expect-error wrongly typed getUnknowns
   let dx = (props.node.getUnknowns(props.loadCase, [DofID.Dx]) * props.multiplier) / props.scale;
 
-  const z = props.node.coords[2];
+  const z = 0;
   // @ts-expect-error wrongly typed getUnknowns
   let dz = (props.node.getUnknowns(props.loadCase, [DofID.Dz]) * props.multiplier) / props.scale;
 
@@ -146,6 +174,10 @@ const isSupported = (node: Node, dof: DofID) => {
   return node.bcs.has(dof);
 };
 
+const isSupportedAtAll = computed(() => {
+  return props.node.bcs.size > 0;
+});
+
 const getReaction = (node: Node, dof: DofID) => {
   const r = node.getReactions(props.loadCase, !node.hasLcs());
   const i = r.dofs.findIndex((e) => e === dof);
@@ -176,12 +208,39 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
 
 <template>
   <g class="node">
-    <polyline
-      v-if="showSupports && supportMarker !== 'none'"
-      :points="orientedNodeCoords"
-      :marker-start="supportMarker"
-      class="decoration"
-    />
+    <template v-if="showSupports && isSupportedAtAll">
+      <polyline
+        v-if="isCantilever"
+        :points="orientedNodeCoords"
+        :marker-start="supportMarker"
+        stroke-width="1"
+        class="decoration"
+      />
+
+      <polyline
+        v-if="isHingeXY"
+        :points="orientedNodeCoords"
+        :marker-start="supportMarker"
+        stroke-width="1"
+        class="decoration"
+      />
+
+      <polyline
+        v-if="isHingeX"
+        :points="orientedNodeCoords"
+        :marker-start="supportMarker"
+        stroke-width="1"
+        class="decoration"
+      />
+
+      <polyline
+        v-if="isHingeZ"
+        :points="orientedNodeCoords"
+        :marker-start="supportMarker"
+        stroke-width="1"
+        class="decoration"
+      />
+    </template>
 
     <polyline :data-label="node.label" :points="nodeCoords" class="drawable" />
 
@@ -193,7 +252,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
         isConnected &&
         Math.abs(getReaction(node, DofID.Dz)) > 1e-32
       "
-      points="0,0 0,0"
+      points="0,0 0.0001,0.0001"
       class="decoration"
       marker-start="url(#reaction)"
       :transform="`translate(${node.coords[0]} ${node.coords[2]}) rotate(${
@@ -210,7 +269,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
         Math.abs(getReaction(node, DofID.Dz)) > 1e-32
       "
       class="reaction"
-      :font-size="13 / scale"
+      :font-size="fontSize / scale"
       font-weight="normal"
       text-anchor="end"
       dominant-baseline="baseline"
@@ -227,7 +286,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
         isConnected &&
         Math.abs(getReaction(node, DofID.Dx)) > 1e-32
       "
-      points="0,0 0,0"
+      points="0,0 0.0001,0.0001"
       class="decoration"
       marker-start="url(#reaction)"
       :transform="`translate(${node.coords[0]} ${node.coords[2]}) rotate(${
@@ -244,7 +303,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
         Math.abs(getReaction(node, DofID.Dx)) > 1e-32
       "
       class="reaction"
-      :font-size="13 / scale"
+      :font-size="fontSize / scale"
       font-weight="normal"
       :text-anchor="getReaction(node, DofID.Dx) > 0 ? 'end' : 'start'"
       dominant-baseline="baseline"
@@ -261,7 +320,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
         isConnected &&
         Math.abs(getReaction(node, DofID.Ry)) > 1e-32
       "
-      points="0,0 0,0"
+      points="0,0 0.0001,0.0001"
       class="decoration"
       :marker-start="`url(#${getReaction(node, DofID.Ry) > 0 ? 'moment_reaction_ccw' : 'moment_reaction_cw'})`"
       :transform="`translate(${node.coords[0]} ${node.coords[2]})`"
@@ -276,7 +335,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
         Math.abs(getReaction(node, DofID.Ry)) > 1e-32
       "
       class="reaction"
-      :font-size="13 / scale"
+      :font-size="fontSize / scale"
       font-weight="normal"
       text-anchor="start"
       dominant-baseline="baseline"
@@ -286,14 +345,15 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
       {{ convertForce(Math.abs(getReaction(node, DofID.Ry))).toFixed(2) }}
     </text>
 
-    <g
-      v-if="loadCase.solved && showDeformedShape && isConnected"
-      @mousemove="emit('nodedefomousemove', $event, node)"
-      :transform="deformedPosition"
-    >
-      <polyline points="0,0 0,0" class="drawable deformed" />
+    <g v-if="loadCase.solved && showDeformedShape && isConnected" :transform="deformedPosition">
+      <polyline :points="nodeCoords" class="drawable deformed" />
 
-      <polyline points="0,0 0 0" class="handle" :data-node-id="node.label" />
+      <polyline
+        :points="nodeCoords"
+        class="handle"
+        :data-node-id="node.label"
+        @mousemove="emit('nodedefomousemove', $event, node)"
+      />
     </g>
 
     <g
@@ -303,7 +363,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
       <circle
         :cx="node.coords[0]"
         :cy="node.coords[2]"
-        :r="(8 * (1 + Math.pow(node.label.toString().length - 1, 1.7) * 0.2)) / scale"
+        :r="(1 + (fontSize / 2) * (1 + Math.pow(node.label.toString().length - 1, 1.7) * 0.3)) / scale"
         fill="transparent"
         stroke="black"
         vector-effect="non-scaling-stroke"
@@ -311,7 +371,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
       <text
         :x="node.coords[0]"
         :y="node.coords[2]"
-        :font-size="14 / scale"
+        :font-size="fontSize / scale"
         font-weight="normal"
         text-anchor="middle"
         dominant-baseline="central"

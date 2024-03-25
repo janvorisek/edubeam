@@ -20,9 +20,11 @@ const props = withDefaults(
     shearForceMultiplier: number;
     bendingMomentMultiplier: number;
     padding?: number;
+    fontSize?: number;
   }>(),
   {
     padding: 10,
+    fontSize: 13,
   }
 );
 
@@ -264,12 +266,12 @@ const forces = computed(() => {
     if (Math.abs(vMraw) > 1e-8) {
       let px = 0,
         pz = 0;
-      px = pz = (vM < 0 ? -4 : 4) / props.scale;
+      px = pz = (vM < 0 ? -props.fontSize / 4 : props.fontSize / 4) / props.scale;
 
       // if max M
       if (labelsXM.length > 2 && s !== 0 && s !== labelsXM.length - 1) {
-        px = 0;
-        pz = (vM < 0 ? -6 : 14) / props.scale;
+        px = 3 / props.scale;
+        pz = (vM < 0 ? -props.fontSize / 2 : props.fontSize) / props.scale;
       }
 
       result2M.push([
@@ -331,7 +333,7 @@ const emit = defineEmits(["elementmousemove", "elementpointerup"]);
       />
       <g v-for="(mv, mli) in forces.normal.text" :key="mli" :transform="`translate(${mv[0]} ${mv[1]})`">
         <text
-          :font-size="13 / scale"
+          :font-size="fontSize / scale"
           class="moment-label"
           filter="url(#textLabel)"
           font-weight="normal"
@@ -341,7 +343,7 @@ const emit = defineEmits(["elementmousemove", "elementpointerup"]);
           {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
         </text>
         <text
-          :font-size="13 / scale"
+          :font-size="fontSize / scale"
           class="moment-label"
           font-weight="normal"
           :text-anchor="mv[2] > 0 ? 'end' : 'start'"
@@ -360,7 +362,7 @@ const emit = defineEmits(["elementmousemove", "elementpointerup"]);
       />
       <g v-for="(mv, mli) in forces.shear.text" :key="mli" :transform="`translate(${mv[0]} ${mv[1]})`">
         <text
-          :font-size="13 / scale"
+          :font-size="fontSize / scale"
           class="moment-label"
           filter="url(#textLabel)"
           font-weight="normal"
@@ -370,7 +372,7 @@ const emit = defineEmits(["elementmousemove", "elementpointerup"]);
           {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
         </text>
         <text
-          :font-size="13 / scale"
+          :font-size="fontSize / scale"
           class="moment-label"
           font-weight="normal"
           :text-anchor="mv[2] > 0 ? 'end' : 'start'"
@@ -396,7 +398,7 @@ const emit = defineEmits(["elementmousemove", "elementpointerup"]);
           stroke-linejoin="round"
         />
         <text
-          :font-size="13 / scale"
+          :font-size="fontSize / scale"
           class="moment-label"
           filter="url(#textLabel)"
           font-weight="normal"
@@ -407,7 +409,7 @@ const emit = defineEmits(["elementmousemove", "elementpointerup"]);
           {{ Math.abs(mv[6]) < 1e-6 ? 0 : mv[6].toFixed(2) }}
         </text>
         <text
-          :font-size="13 / scale"
+          :font-size="fontSize / scale"
           class="moment-label"
           font-weight="normal"
           :text-anchor="mv[6] < 0 ? 'end' : 'start'"
@@ -456,7 +458,7 @@ const emit = defineEmits(["elementmousemove", "elementpointerup"]);
             element.domain.nodes.get(element.nodes[1])!.coords[2]) /
           2
         "
-        :font-size="14 / scale"
+        :font-size="fontSize / scale"
         font-weight="normal"
         text-anchor="middle"
         dominant-baseline="central"

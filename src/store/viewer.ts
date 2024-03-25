@@ -34,6 +34,8 @@ export const useViewerStore = defineStore(
     const resultsScalePx_ = ref(48);
     const supportSize = ref(1);
 
+    const fontSize = ref(14);
+
     const settingsOpen = ref(true);
 
     return {
@@ -52,6 +54,8 @@ export const useViewerStore = defineStore(
       snapToGrid,
       gridStep,
       resultsScalePx_: resultsScalePx_,
+
+      fontSize,
 
       supportSize,
 

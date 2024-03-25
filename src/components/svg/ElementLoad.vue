@@ -2,11 +2,17 @@
 import { Node, Beam2D, BeamElementUniformEdgeLoad } from "ts-fem";
 import { computed } from "vue";
 
-const props = defineProps<{
-  eload: BeamElementUniformEdgeLoad;
-  scale: number;
-  convertForce: (f: number) => number;
-}>();
+const props = withDefaults(
+  defineProps<{
+    eload: BeamElementUniformEdgeLoad;
+    scale: number;
+    convertForce: (f: number) => number;
+    fontSize?: number;
+  }>(),
+  {
+    fontSize: 13,
+  }
+);
 
 const target = computed(() => props.eload.domain.elements.get(props.eload.target) as Beam2D);
 const n1 = computed(() => props.eload.domain.nodes.get(target.value.nodes[0]) as Node);
@@ -199,7 +205,7 @@ const eloadForces = computed(() => {
     <g>
       <text
         v-if="eload.values[0] !== 0"
-        :font-size="13 / scale"
+        :font-size="fontSize / scale"
         font-weight="normal"
         text-anchor="end"
         dominant-baseline="middle"
@@ -209,7 +215,7 @@ const eloadForces = computed(() => {
       </text>
       <text
         v-if="eload.values[1] !== 0"
-        :font-size="13 / scale"
+        :font-size="fontSize / scale"
         font-weight="normal"
         text-anchor="end"
         dominant-baseline="middle"

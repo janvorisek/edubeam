@@ -66,9 +66,9 @@ const targetCoords = computed(() => {
       v-if="nload.values[4] !== 0"
       :font-size="fontSize / scale"
       font-weight="normal"
-      :text-anchor="nload.values[4] > 0 ? 'end' : 'start'"
+      text-anchor="start"
       dominant-baseline="central"
-      :transform="`translate(${target.coords[0] - (Math.sign(nload.values[4]) * (fontSize + 4)) / scale}
+      :transform="`translate(${target.coords[0] + (fontSize + 8) / scale}
               ${target.coords[2] - (fontSize / 2 + 2) / scale})`"
     >
       {{ Math.abs(convertForce(nload.values[4])).toFixed(2) }}

@@ -12,6 +12,7 @@ const props = withDefaults(
       reactions: string;
     };
     supportSize?: number;
+    scale?: number;
   }>(),
   {
     colors: () => {
@@ -27,6 +28,7 @@ const props = withDefaults(
       };
     },
     supportSize: 1,
+    scale: 1,
   }
 );
 </script>
@@ -74,10 +76,10 @@ const props = withDefaults(
       viewBox="0 0 20 60"
       refX="10"
       refY="60"
-      markerWidth="20"
-      markerHeight="50"
+      :markerWidth="20 / scale"
+      :markerHeight="50 / scale"
       overflow="visible"
-      markerUnits="strokeWidth"
+      markerUnits="userSpaceOnUse"
       marker-end="url(#arrow_reaction)"
     >
       <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" fill="none" :stroke="colors.reactions" />
@@ -87,10 +89,10 @@ const props = withDefaults(
       viewBox="0 0 20 60"
       refX="-20"
       refY="45"
-      markerWidth="20"
-      markerHeight="50"
+      :markerWidth="20 / scale"
+      :markerHeight="50 / scale"
       overflow="visible"
-      markerUnits="strokeWidth"
+      markerUnits="userSpaceOnUse"
       marker-end="url(#arrow_reaction)"
     >
       <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" fill="none" :stroke="colors.reactions" />
@@ -100,10 +102,10 @@ const props = withDefaults(
       viewBox="0 0 20 60"
       refX="10"
       refY="60"
-      markerWidth="20"
-      markerHeight="50"
+      :markerWidth="20 / scale"
+      :markerHeight="50 / scale"
       overflow="visible"
-      markerUnits="strokeWidth"
+      markerUnits="userSpaceOnUse"
       marker-end="url(#arrow)"
     >
       <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" fill="none" :stroke="colors.loads" />
@@ -113,10 +115,10 @@ const props = withDefaults(
       viewBox="0 0 20 60"
       refX="-20"
       refY="45"
-      markerWidth="20"
-      markerHeight="50"
+      :markerWidth="20 / scale"
+      :markerHeight="50 / scale"
       overflow="visible"
-      markerUnits="strokeWidth"
+      markerUnits="userSpaceOnUse"
       marker-end="url(#arrow)"
     >
       <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" fill="none" :stroke="colors.loads" />
@@ -152,10 +154,10 @@ const props = withDefaults(
       viewBox="0 0 20 60"
       refX="60"
       refY="10"
-      markerWidth="20"
-      markerHeight="50"
+      :markerWidth="20 / scale"
+      :markerHeight="50 / scale"
       overflow="visible"
-      markerUnits="strokeWidth"
+      markerUnits="userSpaceOnUse"
       orient="auto"
     >
       <polyline points="45,5 55,10 45,15" stroke-width="1" :fill="colors.loads" :stroke="colors.loads" />
@@ -165,10 +167,10 @@ const props = withDefaults(
       viewBox="0 0 20 60"
       refX="10"
       refY="60"
-      markerWidth="20"
-      markerHeight="50"
+      :markerWidth="20 / scale"
+      :markerHeight="50 / scale"
       overflow="visible"
-      markerUnits="strokeWidth"
+      markerUnits="userSpaceOnUse"
     >
       <polyline points="5,45 10,55 15,45" stroke-width="1" :fill="colors.loads" :stroke="colors.loads" />
       <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" :stroke="colors.loads" />
@@ -178,10 +180,10 @@ const props = withDefaults(
       viewBox="0 0 20 60"
       refX="10"
       refY="60"
-      markerWidth="20"
-      markerHeight="50"
+      :markerWidth="20 / scale"
+      :markerHeight="50 / scale"
       overflow="visible"
-      markerUnits="strokeWidth"
+      markerUnits="userSpaceOnUse"
     >
       <polyline points="5,45 10,55 15,45" stroke-width="1" :fill="colors.reactions" :stroke="colors.reactions" />
       <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" :stroke="colors.reactions" />
@@ -191,10 +193,10 @@ const props = withDefaults(
       viewBox="0 0 20 60"
       refX="10"
       refY="60"
-      markerWidth="20"
-      markerHeight="50"
+      :markerWidth="20 / scale"
+      :markerHeight="50 / scale"
       overflow="visible"
-      markerUnits="strokeWidth"
+      markerUnits="userSpaceOnUse"
     >
       <polyline points="5,45 10,55 15,45" stroke-width="1" fill="blue" stroke="blue" />
       <line y1="55" x1="10" y2="11" x2="10" stroke-width="3" stroke="blue" />
@@ -205,10 +207,10 @@ const props = withDefaults(
       viewBox="0 0 20 60"
       refX="10"
       refY="35"
-      markerWidth="20"
-      markerHeight="50"
+      :markerWidth="20 / scale"
+      :markerHeight="50 / scale"
       overflow="visible"
-      markerUnits="strokeWidth"
+      markerUnits="userSpaceOnUse"
     >
       <polyline points="5,45 10,55 15,45" stroke-width="1" :fill="colors.loads" :stroke="colors.loads" />
       <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" :stroke="colors.loads" />
@@ -233,12 +235,12 @@ const props = withDefaults(
       viewBox="-20 -10 20 70"
       refX="0"
       refY="24.5"
-      :markerWidth="supportSize * 20"
-      :markerHeight="supportSize * 80"
+      :markerWidth="(supportSize * 20) / scale"
+      :markerHeight="(supportSize * 80) / scale"
       orient="auto"
-      markerUnits="strokeWidth"
+      markerUnits="userSpaceOnUse"
     >
-      <line y1="6" x1="0" y2="44" x2="0" :stroke-width="1 / supportSize" stroke="black" />
+      <line y1="6" x1="0" y2="44" x2="0" :stroke-width="2" stroke="black" />
       <line
         v-for="i in 6"
         :key="i"
@@ -246,7 +248,7 @@ const props = withDefaults(
         x1="0"
         :y2="10 + (i * 50) / 7"
         x2="-10"
-        :stroke-width="1 / supportSize"
+        :stroke-width="1"
         stroke="black"
         fill="none"
       />
@@ -257,13 +259,13 @@ const props = withDefaults(
       viewBox="0 0 20 20"
       refX="10"
       refY="0"
-      :markerWidth="supportSize * 20"
-      :markerHeight="supportSize * 20"
+      :markerWidth="(supportSize * 20) / scale"
+      :markerHeight="(supportSize * 20) / scale"
       overflow="visible"
       orient="auto"
-      markerUnits="strokeWidth"
+      markerUnits="userSpaceOnUse"
     >
-      <polyline points="10,0 -5,20 25,20 10,0" :stroke-width="1 / supportSize" fill="transparent" stroke="black" />
+      <polyline points="10,0 -5,20 25,20 10,0" :stroke-width="1" fill="transparent" stroke="black" />
     </marker>
 
     <marker
@@ -271,14 +273,14 @@ const props = withDefaults(
       viewBox="0 0 20 20"
       refX="10"
       refY="0"
-      :markerWidth="supportSize * 20"
-      :markerHeight="supportSize * 20"
+      :markerWidth="(supportSize * 20) / scale"
+      :markerHeight="(supportSize * 20) / scale"
       overflow="visible"
       orient="auto"
-      markerUnits="strokeWidth"
+      markerUnits="userSpaceOnUse"
     >
-      <polyline points="10,0 -5,20 25,20 10,0" :stroke-width="1 / supportSize" fill="transparent" stroke="black" />
-      <line y1="25" x1="-5" y2="25" x2="25" :stroke-width="1 / supportSize" stroke="black" />
+      <polyline points="10,0 -5,20 25,20 10,0" :stroke-width="1" fill="transparent" stroke="black" />
+      <line y1="25" x1="-5" y2="25" x2="25" :stroke-width="1" stroke="black" />
     </marker>
 
     <marker
@@ -286,14 +288,14 @@ const props = withDefaults(
       viewBox="0 0 20 20"
       refX="0"
       refY="10"
-      :markerWidth="supportSize * 20"
-      :markerHeight="supportSize * 20"
+      :markerWidth="(supportSize * 20) / scale"
+      :markerHeight="(supportSize * 20) / scale"
       overflow="visible"
       orient="auto"
-      markerUnits="strokeWidth"
+      markerUnits="userSpaceOnUse"
     >
-      <polyline points="0,10 20,-5 20,25 0,10" :stroke-width="1 / supportSize" fill="transparent" stroke="black" />
-      <line y1="-5" x1="25" y2="25" x2="25" :stroke-width="1 / supportSize" stroke="black" />
+      <polyline points="0,10 20,-5 20,25 0,10" :stroke-width="1" fill="transparent" stroke="black" />
+      <line y1="-5" x1="25" y2="25" x2="25" :stroke-width="1" stroke="black" />
     </marker>
 
     <marker

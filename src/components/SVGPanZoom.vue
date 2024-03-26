@@ -22,7 +22,7 @@ const props = withDefaults(
   }
 );
 
-let viewBox = { x: 0, y: 0, w: 0, h: 0 };
+let viewBox = { x: 0, y: 0, w: 1, h: 1 };
 const scale = ref(1);
 
 const touchPointer = ref({ x: 0, y: 0, ds: 0, move: false, pinch: false });
@@ -42,11 +42,11 @@ const onWindowResize = (): void => {
   const dX = rootRef.value!.offsetWidth - svgRef.value!.getBoundingClientRect().width;
   const dY = rootRef.value!.offsetHeight - svgRef.value!.getBoundingClientRect().height;
 
-  svgRef.value!.setAttribute("width", rootRef.value!.offsetWidth.toString());
-  svgRef.value!.setAttribute("height", rootRef.value!.offsetHeight.toString());
+  svgRef.value.setAttribute("width", rootRef.value!.offsetWidth.toString());
+  svgRef.value.setAttribute("height", rootRef.value!.offsetHeight.toString());
 
-  viewBox.w = rootRef.value!.offsetWidth / scale.value;
-  viewBox.h = rootRef.value!.offsetHeight / scale.value;
+  viewBox.w = rootRef.value.offsetWidth / scale.value;
+  viewBox.h = rootRef.value.offsetHeight / scale.value;
 
   viewBox.x -= dX / scale.value / 2;
   viewBox.y -= dY / scale.value / 2;
@@ -77,6 +77,7 @@ const zoom = (mx: number, my: number, deltaY: number): void => {
     w: viewBox.w - dw,
     h: viewBox.h - dh,
   };
+
   scale.value = svgEl.clientWidth / viewBox.w;
 
   updateMatrix(true);
@@ -132,7 +133,6 @@ const onTouchEnd = (): void => {
 const onTouchMove = (event: TouchEvent): void => {
   if (!props.touch) return;
 
-  //console.log({ touchmove: event.touches.length, pointer: JSON.stringify(touchPointer) })
   if (event.touches.length === 1 && touchPointer.value.move) {
     viewBox.x -= (event.touches[0].clientX - touchPointer.value.x) / scale.value;
     viewBox.y -= (event.touches[0].clientY - touchPointer.value.y) / scale.value;
@@ -180,10 +180,11 @@ const fitContent = (n = 0) => {
 
   onWindowResize();
 
+  const arrayOfObjects = useProjectStore().nodes;
+
   // for the first iteration, lets estimate the viewbox by node coord bounds
-  if (n === 0 && scale.value === 1) {
+  if (n === 0 && scale.value === 1 && arrayOfObjects.length > 0) {
     // Get the array of objects from useProjectStore().nodes
-    const arrayOfObjects = useProjectStore().nodes;
 
     // Initialize variables to store maximum and minimum values
     let maxXObject = arrayOfObjects[0];
@@ -218,6 +219,9 @@ const fitContent = (n = 0) => {
     };
 
     const svgEl = svgRef.value as SVGElement;
+
+    if (svgEl.clientWidth === 0 || viewBox.w === 0) return;
+
     scale.value = svgEl.clientWidth / viewBox.w;
 
     return requestAnimationFrame(() => fitContent(n + 1));
@@ -236,9 +240,9 @@ const fitContent = (n = 0) => {
   const bBoxW = rootG.getBBox().width * scale.value;
   const bBoxH = rootG.getBBox().height * scale.value;
 
-  let zoomBy = bBoxH / (svgEl.clientHeight - FIT_CONTENT_PADDING);
+  if (isNaN(bBoxW) || isNaN(bBoxH) || bBoxH <= 0 || bBoxW <= 0) return;
 
-  //console.log(svgEl.clientHeight);
+  let zoomBy = bBoxH / (svgEl.clientHeight - FIT_CONTENT_PADDING);
 
   const r1 = bBoxW / bBoxH;
   const r2 = rootBBox.width / rootBBox.height;
@@ -260,6 +264,8 @@ const fitContent = (n = 0) => {
   const prevScale = scale.value;
   scale.value = svgEl.clientWidth / viewBox.w;
   const dscale = Math.abs(scale.value - prevScale);
+
+  //console.log(JSON.stringify(viewBox), dscale, scale.value, prevScale);
 
   centerContent();
   updateMatrix(true);

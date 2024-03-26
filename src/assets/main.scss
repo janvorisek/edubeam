@@ -18,6 +18,7 @@ $font: "Barlow", sans-serif;
 
 .app-title, .edubeam {
   font-family: "Lobster", "Barlow", sans-serif;
+  font-weight: normal;
 }
 
 html,
@@ -155,8 +156,8 @@ select.mini-select {
     calc(100% - 7px) calc(0.5em + 2px),
     calc(100% - 1.5em) 0em;
   background-size:
-    5px 5px,
-    5px 5px,
+    5.25px 5px,
+    5.25px 5px,
     1px 1.75em;
   background-repeat: no-repeat;
 }
@@ -200,14 +201,40 @@ select.mini-select {
 .v-table {
   --v-table-header-height: 26px;
   --v-table-row-height: 32px;
+  --fixed-column-size: 100px;  
+  overflow-x: visible;
+  position: relative;
+  .v-table__wrapper {
+    overflow-x: auto;
+    //padding-left: var(--fixed-column-size);
+  }
   table {
     border-bottom: 1px solid #ddd;
+  }
+  thead {
+    
+  }
+  table tr:nth-child(even) td {
+    background: #ffffff !important;
   }
   table tr:nth-child(odd) td {
     background: #f8f8f8 !important;
   }
   table tr:hover td {
     background: #eee !important;
+  }
+  &.fixed-left-col
+  {
+    th:nth-of-type(1), td:nth-of-type(1)
+    {
+      position: sticky !important;
+      min-width: var(--fixed-column-size);
+      left: 0px;
+      z-index: 1;
+    }
+  }
+  th {
+    z-index: 2;
   }
 }
 
@@ -230,7 +257,7 @@ select.mini-select {
 
 .v-table {
   //min-width: fit-content !important;
-  overflow-x: auto !important;
+  //overflow-x: auto !important;
 
   th {
     white-space: nowrap;

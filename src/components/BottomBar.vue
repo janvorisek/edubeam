@@ -62,6 +62,7 @@
         </div>
         <v-data-table
           ref="table-nodes"
+          class="fixed-left-col"
           :headers="headers.nodes"
           :items="nodes"
           :row-props="nodeRowProps"
@@ -110,7 +111,7 @@
           </template>
           <template #item.coords="{ item }">
             <div class="d-flex">
-              <div class="inline-edit-group mr-2" style="min-width: 64px">
+              <div class="inline-edit-group mr-2">
                 <label :for="`coords0-${item.label}`" class="input-before">x</label>
                 <input
                   :id="`coords0-${item.label}`"
@@ -126,9 +127,10 @@
                     )
                   "
                   class="inline-edit"
+                  style="width: 64px"
                 />
               </div>
-              <div class="inline-edit-group mr-2" style="min-width: 64px">
+              <div class="inline-edit-group mr-2">
                 <label :for="`coords2-${item.label}`" class="input-before">z</label>
                 <input
                   :id="`coords2-${item.label}`"
@@ -144,6 +146,7 @@
                     )
                   "
                   class="inline-edit"
+                  style="width: 64px"
                 />
               </div>
             </div>
@@ -222,7 +225,7 @@
             </div>
           </template>
           <template #item.actions="{ item }">
-            <div>
+            <div class="d-flex">
               <v-btn
                 density="compact"
                 variant="text"
@@ -267,6 +270,7 @@
 
         <v-data-table
           :headers="headers.elements"
+          class="fixed-left-col"
           :items="elements"
           :row-props="elementRowProps"
           density="compact"
@@ -557,7 +561,7 @@
 
           <template #item.load.values="{ item }">
             <div class="d-flex" v-if="item.type === 'node'">
-              <div class="inline-edit-group mr-2" style="min-width: 128px">
+              <div class="inline-edit-group mr-2" style="width: 128px">
                 <label class="input-before">F<sub>x</sub></label>
                 <input
                   :value="appStore.convertForce(item.ref.values[0])"
@@ -575,7 +579,7 @@
                 />
                 <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Force)"></div>
               </div>
-              <div class="inline-edit-group mr-2" style="min-width: 128px">
+              <div class="inline-edit-group mr-2" style="width: 128px">
                 <span class="input-before">F<sub>z</sub></span>
                 <input
                   :value="appStore.convertForce(item.ref.values[2])"
@@ -593,7 +597,7 @@
                 />
                 <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Force)"></div>
               </div>
-              <div class="inline-edit-group" style="min-width: 128px">
+              <div class="inline-edit-group" style="width: 128px">
                 <span class="input-before">M<sub>y</sub></span>
                 <input
                   :value="appStore.convertForce(item.ref.values[4])"
@@ -614,7 +618,7 @@
             </div>
 
             <div class="d-flex" v-if="item.type === 'prescribed'">
-              <div class="inline-edit-group mr-2" style="min-width: 128px">
+              <div class="inline-edit-group mr-2" style="width: 128px">
                 <label class="input-before">D<sub>x</sub></label>
                 <input
                   :value="item.ref.prescribedValues[0]"
@@ -626,7 +630,7 @@
                 />
                 <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
               </div>
-              <div class="inline-edit-group mr-2" style="min-width: 128px">
+              <div class="inline-edit-group mr-2" style="width: 128px">
                 <span class="input-before">D<sub>z</sub></span>
                 <input
                   :value="item.ref.prescribedValues[2]"
@@ -638,7 +642,7 @@
                 />
                 <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
               </div>
-              <div class="inline-edit-group" style="min-width: 128px">
+              <div class="inline-edit-group" style="width: 128px">
                 <span class="input-before">R<sub>y</sub></span>
                 <input
                   :value="item.ref.prescribedValues[4]"
@@ -653,7 +657,7 @@
             </div>
 
             <div class="d-flex flex-grow-0 align-content-center" v-if="item.type === 'element'">
-              <div class="inline-edit-group mr-2" style="min-width: 128px">
+              <div class="inline-edit-group mr-2">
                 <span v-if="loadType(item.ref) === 'udl'" class="input-before">f<sub>x</sub></span>
                 <span v-else-if="loadType(item.ref) === 'concentrated'" class="input-before">F<sub>x</sub></span>
                 <span v-else-if="loadType(item.ref) === 'temperature'" class="input-before">T<sub>c</sub></span>
@@ -676,6 +680,7 @@
                     )
                   "
                   class="inline-edit"
+                  style="width: 64px"
                 />
                 <div
                   v-if="loadType(item.ref) === 'udl'"
@@ -693,7 +698,7 @@
                   v-html="formatMeasureAsHTML(appStore.units.Temperature)"
                 ></div>
               </div>
-              <div class="inline-edit-group mr-2" style="min-width: 128px">
+              <div class="inline-edit-group mr-2">
                 <span v-if="loadType(item.ref) === 'udl'" class="input-before">f<sub>z</sub></span>
                 <span v-else-if="loadType(item.ref) === 'concentrated'" class="input-before">F<sub>z</sub></span>
                 <span v-else-if="loadType(item.ref) === 'temperature'" class="input-before">T<sub>d</sub></span>
@@ -716,6 +721,7 @@
                     )
                   "
                   class="inline-edit"
+                  style="width: 64px"
                 />
                 <div
                   v-if="loadType(item.ref) === 'udl'"
@@ -733,7 +739,7 @@
                   v-html="formatMeasureAsHTML(appStore.units.Temperature)"
                 ></div>
               </div>
-              <div class="inline-edit-group mr-2" style="min-width: 128px" v-if="loadType(item.ref) === 'temperature'">
+              <div class="inline-edit-group mr-2" style="width: 128px" v-if="loadType(item.ref) === 'temperature'">
                 <span class="input-before">T<sub>h</sub></span>
                 <input
                   :value="appStore.convertTemperature(item.ref.values[2])"
@@ -748,14 +754,11 @@
                     )
                   "
                   class="inline-edit"
+                  style="width: 64px"
                 />
                 <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Temperature)"></div>
               </div>
-              <div
-                v-if="item.ref instanceof BeamConcentratedLoad"
-                class="inline-edit-group mr-2"
-                style="min-width: 128px"
-              >
+              <div v-if="item.ref instanceof BeamConcentratedLoad" class="inline-edit-group mr-2">
                 <span class="input-before">d</span>
                 <input
                   :value="appStore.convertLength(item.ref.values[3])"
@@ -770,6 +773,7 @@
                     )
                   "
                   class="inline-edit"
+                  style="width: 64px"
                 />
                 <div
                   v-if="item.ref instanceof BeamElementUniformEdgeLoad"
@@ -898,6 +902,7 @@
 
         <v-data-table
           :headers="headers.materials"
+          class="fixed-left-col"
           :items="materials"
           density="compact"
           :height="props.height - 36 - 30"
@@ -1009,6 +1014,7 @@
 
         <v-data-table
           :headers="headers.crossSections"
+          class="fixed-left-col"
           :items="crossSections"
           density="compact"
           :height="props.height - 36 - 30"
@@ -1605,7 +1611,6 @@ const headers = reactive({
     {
       title: "common.loads",
       key: "loads",
-      width: 260,
       sortable: false,
     },
     {
@@ -1677,7 +1682,7 @@ const headers = reactive({
     {
       title: "common.components",
       key: "load.values",
-      width: 420,
+      //width: 420,
       sortable: false,
     },
     {
@@ -1690,7 +1695,7 @@ const headers = reactive({
     {
       title: "common.material",
       key: "label",
-      width: 120,
+      width: 100,
     },
     {
       title: "material.e",
@@ -1730,7 +1735,7 @@ const headers = reactive({
     {
       title: "common.crossSection",
       key: "label",
-      width: 160,
+      width: 100,
     },
     {
       title: "crossSection.area",

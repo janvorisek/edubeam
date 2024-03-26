@@ -186,6 +186,7 @@ const edit = () => {
   if (isNaN(ang) || Math.abs(ang) < 1e-8) {
     node.value.lcs = undefined;
     solve();
+    closeModal();
     return;
   }
 

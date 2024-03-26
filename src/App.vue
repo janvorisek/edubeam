@@ -178,7 +178,7 @@ onMounted(() => {
 
   solver.domain = domain;
 
-  solve();
+  requestAnimationFrame(solve);
 });
 
 const solve = () => {

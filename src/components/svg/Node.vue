@@ -47,16 +47,16 @@ const isHingeZ = computed(() => {
 
 const supportMarker = computed(() => {
   // cantilever
-  if (isCantilever.value) return `url(#dot)`;
+  if (isCantilever.value) return `marker-dot`;
 
   // Hinge XY
-  if (isHingeXY.value) return `url(#hinge-xy)`;
+  if (isHingeXY.value) return `marker-hinge-xy`;
 
   // Hinge X
-  if (isHingeX.value) return `url(#hinge-y)`;
+  if (isHingeX.value) return `marker-hinge-y`;
 
   // Hinge Z
-  if (isHingeZ.value) return `url(#hinge-x)`;
+  if (isHingeZ.value) return `marker-hinge-x`;
 
   return `none`;
 });
@@ -212,7 +212,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
       <polyline
         v-if="isCantilever"
         :points="orientedNodeCoords"
-        :marker-start="supportMarker"
+        :class="supportMarker"
         stroke-width="1"
         class="decoration"
       />
@@ -220,7 +220,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
       <polyline
         v-if="isHingeXY"
         :points="orientedNodeCoords"
-        :marker-start="supportMarker"
+        :class="supportMarker"
         stroke-width="1"
         class="decoration"
       />
@@ -228,7 +228,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
       <polyline
         v-if="isHingeX"
         :points="orientedNodeCoords"
-        :marker-start="supportMarker"
+        :class="supportMarker"
         stroke-width="1"
         class="decoration"
       />
@@ -236,7 +236,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
       <polyline
         v-if="isHingeZ"
         :points="orientedNodeCoords"
-        :marker-start="supportMarker"
+        :class="supportMarker"
         stroke-width="1"
         class="decoration"
       />
@@ -253,8 +253,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
         Math.abs(getReaction(node, DofID.Dz)) > 1e-32
       "
       points="0,0 0.0001,0.0001"
-      class="decoration"
-      marker-start="url(#reaction)"
+      class="decoration marker-reaction"
       :transform="`translate(${node.coords[0]} ${node.coords[2]}) rotate(${
         (Math.sign(getReaction(node, DofID.Dz)) >= 0 ? 0 : 180) + getRotSupportAngle(node, DofID.Dz)
       })`"
@@ -287,8 +286,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
         Math.abs(getReaction(node, DofID.Dx)) > 1e-32
       "
       points="0,0 0.0001,0.0001"
-      class="decoration"
-      marker-start="url(#reaction)"
+      class="decoration marker-reaction"
       :transform="`translate(${node.coords[0]} ${node.coords[2]}) rotate(${
         -90 * Math.sign(getReaction(node, DofID.Dx)) + getRotSupportAngle(node, DofID.Dx)
       })`"
@@ -322,7 +320,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
       "
       points="0,0 0.0001,0.0001"
       class="decoration"
-      :marker-start="`url(#${getReaction(node, DofID.Ry) > 0 ? 'moment_reaction_ccw' : 'moment_reaction_cw'})`"
+      :class="`marker-${getReaction(node, DofID.Ry) > 0 ? 'moment_reaction_ccw' : 'moment_reaction_cw'}`"
       :transform="`translate(${node.coords[0]} ${node.coords[2]})`"
     />
 

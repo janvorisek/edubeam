@@ -961,11 +961,16 @@ const isLoaded = computed(() => {
 const isZooming = computed(() => {
   return panZoom.value?.zooming;
 });
+
+const dynamicMarker = (label: string) => {
+  return `url(#${props.id}-${label})`;
+};
+
 defineExpose({ centerContent, fitContent });
 </script>
 
 <template>
-  <div class="d-flex flex-column fill-height">
+  <div class="d-flex flex-column fill-height svg-viewer">
     <div class="text-body-2 d-flex line-height-1" style="position: absolute; z-index: 100; bottom: 24px; right: 24px">
       <v-chip-group>
         <v-chip class="justify-end" density="compact" @click="appStore.openSettings()">
@@ -1003,6 +1008,7 @@ defineExpose({ centerContent, fitContent });
         title="Center content"
         @click.native="undoRedoManager.redo()"
       ></v-btn>
+      {{ panZoom ? panZoom.zooming : false }}
     </div>
     <div id="viewerControls" class="text-black d-flex" style="position: absolute; z-index: 100; top: 24px; right: 24px">
       <v-btn
@@ -1118,7 +1124,7 @@ defineExpose({ centerContent, fitContent });
         @pointerup="onMouseUp"
       >
         <SvgViewerDefs
-          v-if="props.id === appStore.openedTab!.props.id"
+          :id="props.id"
           :colors="viewerStore.colors"
           :support-size="viewerStore.supportSize"
           :scale="scale"
@@ -1179,6 +1185,7 @@ defineExpose({ centerContent, fitContent });
                   :eload="eload"
                   :scale="scale"
                   :convert-force="appStore.convertForce"
+                  :font-size="viewerStore.fontSize"
                 />
                 <SVGElementConcentratedLoad
                   v-else-if="eload instanceof BeamConcentratedLoad"
@@ -1195,6 +1202,7 @@ defineExpose({ centerContent, fitContent });
                   :eload="eload"
                   :scale="scale"
                   :convert-force="appStore.convertForce"
+                  :font-size="viewerStore.fontSize"
                 />
               </template>
               <SVGNodalLoad
@@ -1228,6 +1236,7 @@ defineExpose({ centerContent, fitContent });
                 :scale="scale"
                 :convert-length="appStore.convertLength"
                 :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
+                :font-size="viewerStore.fontSize"
               />
             </g>
           </g>
@@ -1416,3 +1425,246 @@ defineExpose({ centerContent, fitContent });
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.svg-viewer :deep(*) {
+  .element-load.load-1d {
+    text {
+      fill: v-bind("viewerStore.colors.loads");
+    }
+    pointer-events: all;
+    stroke-linecap: butt;
+    &:hover text {
+      //fill: blue;
+    }
+    &:hover path.drawable,
+    &:hover polygon.drawable {
+      //stroke: blue;
+      stroke-width: 3px;
+    }
+    &:hover polyline {
+      marker-end: v-bind(dynamicMarker("force_centered_hover"));
+    }
+    polygon,
+    path {
+      stroke: v-bind("viewerStore.colors.loads");
+      stroke-width: 1px;
+      &.handle {
+        stroke-width: 12px;
+        stroke: transparent;
+      }
+    }
+    polyline {
+      marker-end: v-bind(dynamicMarker("force_centered"));
+    }
+
+    &.selected {
+      text {
+        fill: rgb(0, 55, 149);
+      }
+      polygon {
+        stroke-linejoin: round;
+        fill: rgba(0, 55, 149, 0.1);
+      }
+    }
+  }
+
+  .element.element-1d {
+    polyline {
+      fill: none;
+      stroke: black;
+      stroke-width: 2px;
+      &.handle {
+        cursor: pointer;
+        stroke-width: 24px;
+        stroke: transparent;
+      }
+      &.decoration {
+        stroke-width: 1px;
+      }
+    }
+    &:hover {
+      & polyline.drawable {
+        stroke: black;
+        stroke-width: 5px;
+      }
+    }
+    &.selected {
+      & polyline.drawable {
+        stroke: rgb(0, 94, 255);
+        stroke-width: 5px;
+      }
+    }
+
+    polyline.fibers {
+      stroke: #666;
+      stroke-width: 1px;
+    }
+    path.deformedShape {
+      fill: none;
+      stroke: v-bind("viewerStore.colors.deformedShape");
+      stroke-width: 2px;
+      &.decoration {
+        stroke-width: 1px;
+      }
+    }
+    .normal polyline {
+      stroke: v-bind("viewerStore.colors.normalForce");
+      stroke-width: 1px;
+      fill: v-bind("viewerStore.colors.normalForce");
+      fill-opacity: 0.1;
+      &:hover {
+        fill-opacity: 0.2;
+      }
+    }
+    .shear polyline {
+      stroke: v-bind("viewerStore.colors.shearForce");
+      stroke-width: 1px;
+      fill: v-bind("viewerStore.colors.shearForce");
+      fill-opacity: 0.1;
+      &:hover {
+        fill-opacity: 0.2;
+      }
+    }
+    .moment polyline {
+      stroke: v-bind("viewerStore.colors.bendingMoment");
+      stroke-width: 1px;
+      fill: v-bind("viewerStore.colors.bendingMoment");
+      fill-opacity: 0.1;
+      &:hover {
+        fill-opacity: 0.2;
+      }
+    }
+  }
+
+  .node {
+    polyline {
+      stroke: #000;
+      stroke-linecap: square;
+      stroke-width: 6px;
+      vector-effect: non-scaling-stroke;
+      &.handle {
+        cursor: pointer;
+        stroke-width: 24px;
+        stroke: transparent;
+      }
+      &.decoration {
+        stroke-width: 1px;
+        stroke: none;
+      }
+      &.drawable.deformed {
+        stroke: v-bind("viewerStore.colors.deformedShape");
+      }
+    }
+    &:hover polyline.drawable {
+      stroke: black;
+      stroke-width: 10px;
+    }
+    &.selected polyline.drawable {
+      stroke: rgb(0, 55, 149);
+      stroke-width: 8px;
+    }
+  }
+
+  .prescribed polyline {
+    stroke: v-bind("viewerStore.colors.loads");
+  }
+
+  .nodal-load {
+    text {
+      fill: v-bind("viewerStore.colors.loads");
+    }
+    polyline {
+      stroke-linecap: square;
+      vector-effect: non-scaling-stroke;
+      &.decoration.force {
+        marker-end: v-bind(dynamicMarker("force"));
+      }
+      &.decoration.moment.cw {
+        marker-end: v-bind(dynamicMarker("moment_cw"));
+      }
+      &.decoration.moment.ccw {
+        marker-end: v-bind(dynamicMarker("#moment_ccw"));
+      }
+      &.handle {
+        stroke: transparent;
+        stroke-width: 24px;
+      }
+
+      &.handle.moment {
+        stroke: transparent;
+        stroke-width: 38px;
+      }
+    }
+    &:hover text {
+      fill: blue;
+    }
+    &:hover polyline.decoration.force {
+      marker-end: v-bind(dynamicMarker("force_hover"));
+    }
+    &:hover polyline.decoration.moment.cw {
+      marker-end: v-bind(dynamicMarker("moment_cw_hover"));
+    }
+    &:hover polyline.decoration.moment.ccw {
+      marker-end: v-bind(dynamicMarker("moment_ccw_hover"));
+    }
+    &.selected {
+      text {
+        fill: rgb(0, 55, 149);
+      }
+    }
+  }
+
+  .normal text {
+    fill: v-bind("viewerStore.colors.normalForce");
+  }
+
+  .shear text {
+    fill: v-bind("viewerStore.colors.shearForce");
+  }
+
+  .moment text {
+    fill: v-bind("viewerStore.colors.bendingMoment");
+  }
+
+  .reaction {
+    fill: v-bind("viewerStore.colors.reactions");
+  }
+
+  .marker-reaction {
+    marker-start: v-bind(dynamicMarker("reaction"));
+  }
+
+  .marker-moment_reaction_ccw {
+    marker-start: v-bind(dynamicMarker("moment_reaction_ccw"));
+  }
+
+  .marker-moment_reaction_cw {
+    marker-start: v-bind(dynamicMarker("moment_reaction_cw"));
+  }
+
+  .marker-dot {
+    marker-start: v-bind(dynamicMarker("dot"));
+  }
+
+  .marker-hinge-xy {
+    marker-start: v-bind(dynamicMarker("hinge-xy"));
+  }
+
+  .marker-hinge-x {
+    marker-start: v-bind(dynamicMarker("hinge-x"));
+  }
+
+  .marker-hinge-y {
+    marker-start: v-bind(dynamicMarker("hinge-y"));
+  }
+
+  .marker-forceTip {
+    marker-end: v-bind(dynamicMarker("forceTip"));
+  }
+
+  .filter-text-label {
+    filter: v-bind(dynamicMarker("textLabel"));
+  }
+}
+</style>

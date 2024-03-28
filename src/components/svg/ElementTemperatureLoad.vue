@@ -7,8 +7,9 @@ const props = withDefaults(
     eload: BeamTemperatureLoad;
     scale: number;
     padding?: number;
+    fontSize?: number;
   }>(),
-  { padding: 10 }
+  { padding: 10, fontSize: 13 }
 );
 
 const target = computed(() => props.eload.domain.elements.get(props.eload.target) as Beam2D);

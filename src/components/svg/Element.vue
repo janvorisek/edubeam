@@ -334,8 +334,7 @@ const emit = defineEmits(["elementmousemove", "elementpointerup"]);
       <g v-for="(mv, mli) in forces.normal.text" :key="mli" :transform="`translate(${mv[0]} ${mv[1]})`">
         <text
           :font-size="fontSize / scale"
-          class="moment-label"
-          filter="url(#textLabel)"
+          class="moment-label filter-text-label"
           font-weight="normal"
           :text-anchor="mv[2] > 0 ? 'end' : 'start'"
           dominant-baseline="baseline"
@@ -363,8 +362,7 @@ const emit = defineEmits(["elementmousemove", "elementpointerup"]);
       <g v-for="(mv, mli) in forces.shear.text" :key="mli" :transform="`translate(${mv[0]} ${mv[1]})`">
         <text
           :font-size="fontSize / scale"
-          class="moment-label"
-          filter="url(#textLabel)"
+          class="moment-label filter-text-label"
           font-weight="normal"
           :text-anchor="mv[2] > 0 ? 'end' : 'start'"
           dominant-baseline="baseline"
@@ -399,8 +397,7 @@ const emit = defineEmits(["elementmousemove", "elementpointerup"]);
         />
         <text
           :font-size="fontSize / scale"
-          class="moment-label"
-          filter="url(#textLabel)"
+          class="moment-label filter-text-label"
           font-weight="normal"
           :text-anchor="mv[6] < 0 ? 'end' : 'start'"
           dominant-baseline="baseline"

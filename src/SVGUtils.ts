@@ -4,16 +4,17 @@ export function supportMarker(node: Node) {
   const sdofs = Array.from(node.bcs);
 
   // cantilever
-  if (sdofs.includes(DofID.Dx) && sdofs.includes(DofID.Dz) && sdofs.includes(DofID.Ry)) return `url(#dot)`;
+  if (sdofs.includes(DofID.Dx) && sdofs.includes(DofID.Dz) && sdofs.includes(DofID.Ry))
+    return `url(#nodeEditDialog-dot)`;
 
   // Hinge XY
-  if (sdofs.includes(DofID.Dx) && sdofs.includes(DofID.Dz)) return `url(#hinge-xy)`;
+  if (sdofs.includes(DofID.Dx) && sdofs.includes(DofID.Dz)) return `url(#nodeEditDialog-hinge-xy)`;
 
   // Hinge X
-  if (sdofs.includes(DofID.Dx)) return `url(#hinge-y)`;
+  if (sdofs.includes(DofID.Dx)) return `url(#nodeEditDialog-hinge-y)`;
 
   // Hinge Z
-  if (sdofs.includes(DofID.Dz)) return `url(#hinge-x)`;
+  if (sdofs.includes(DofID.Dz)) return `url(#nodeEditDialog-hinge-x)`;
 
   return `none`;
 }

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 const props = withDefaults(
   defineProps<{
+    id: string;
     colors?: {
       normalForce: string;
       shearForce: string;
@@ -36,7 +37,7 @@ const props = withDefaults(
 <template>
   <defs>
     <marker
-      id="arrow"
+      :id="`${id}-arrow`"
       viewBox="0 0 10 10"
       refX="5"
       refY="5"
@@ -48,7 +49,7 @@ const props = withDefaults(
       <path d="M 0 0 L 10 5 L 0 10 z" :fill="colors.loads" />
     </marker>
     <marker
-      id="arrow_reaction"
+      :id="`${id}-arrow_reaction`"
       viewBox="0 0 10 10"
       refX="5"
       refY="5"
@@ -60,7 +61,7 @@ const props = withDefaults(
       <path d="M 0 0 L 10 5 L 0 10 z" :fill="colors.reactions" />
     </marker>
     <marker
-      id="arrow_hover"
+      :id="`${id}-arrow_hover`"
       viewBox="0 0 10 10"
       refX="5"
       refY="5"
@@ -72,7 +73,7 @@ const props = withDefaults(
       <path d="M 0 0 L 10 5 L 0 10 z" fill="blue" />
     </marker>
     <marker
-      id="moment_reaction_ccw"
+      :id="`${id}-moment_reaction_ccw`"
       viewBox="0 0 20 60"
       refX="10"
       refY="60"
@@ -80,12 +81,12 @@ const props = withDefaults(
       :markerHeight="50 / scale"
       overflow="visible"
       markerUnits="userSpaceOnUse"
-      marker-end="url(#arrow_reaction)"
+      :marker-end="`url(#${id}-arrow_reaction)`"
     >
       <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" fill="none" :stroke="colors.reactions" />
     </marker>
     <marker
-      id="moment_reaction_cw"
+      :id="`${id}-moment_reaction_cw`"
       viewBox="0 0 20 60"
       refX="-20"
       refY="45"
@@ -93,12 +94,12 @@ const props = withDefaults(
       :markerHeight="50 / scale"
       overflow="visible"
       markerUnits="userSpaceOnUse"
-      marker-end="url(#arrow_reaction)"
+      :marker-end="`url(#${id}-arrow_reaction)`"
     >
       <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" fill="none" :stroke="colors.reactions" />
     </marker>
     <marker
-      id="moment_ccw"
+      :id="`${id}-moment_ccw`"
       viewBox="0 0 20 60"
       refX="10"
       refY="60"
@@ -106,12 +107,12 @@ const props = withDefaults(
       :markerHeight="50 / scale"
       overflow="visible"
       markerUnits="userSpaceOnUse"
-      marker-end="url(#arrow)"
+      :marker-end="`url(#${id}-arrow`"
     >
       <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" fill="none" :stroke="colors.loads" />
     </marker>
     <marker
-      id="moment_cw"
+      :id="`${id}-moment_cw`"
       viewBox="0 0 20 60"
       refX="-20"
       refY="45"
@@ -119,12 +120,12 @@ const props = withDefaults(
       :markerHeight="50 / scale"
       overflow="visible"
       markerUnits="userSpaceOnUse"
-      marker-end="url(#arrow)"
+      :marker-end="`url(#${id}-arrow)`"
     >
       <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" fill="none" :stroke="colors.loads" />
     </marker>
     <marker
-      id="moment_ccw_hover"
+      :id="`${id}-moment_ccw_hover`"
       viewBox="0 0 20 60"
       refX="10"
       refY="60"
@@ -132,12 +133,12 @@ const props = withDefaults(
       markerHeight="50"
       overflow="visible"
       markerUnits="strokeWidth"
-      marker-end="url(#arrow_hover)"
+      :marker-end="`url(#${id}-arrow_hover)`"
     >
       <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" stroke-width="3" fill="none" stroke="blue" />
     </marker>
     <marker
-      id="moment_cw_hover"
+      :id="`${id}-moment_cw_hover`"
       viewBox="0 0 20 60"
       refX="-20"
       refY="45"
@@ -145,12 +146,12 @@ const props = withDefaults(
       markerHeight="50"
       overflow="visible"
       markerUnits="strokeWidth"
-      marker-end="url(#arrow_hover)"
+      :marker-end="`url(#${id}-arrow_hover)`"
     >
       <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" stroke-width="3" fill="none" stroke="blue" />
     </marker>
     <marker
-      id="forceTip"
+      :id="`${id}-forceTip`"
       viewBox="0 0 20 60"
       refX="60"
       refY="10"
@@ -163,7 +164,7 @@ const props = withDefaults(
       <polyline points="45,5 55,10 45,15" stroke-width="1" :fill="colors.loads" :stroke="colors.loads" />
     </marker>
     <marker
-      id="force"
+      :id="`${id}-force`"
       viewBox="0 0 20 60"
       refX="10"
       refY="60"
@@ -176,7 +177,7 @@ const props = withDefaults(
       <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" :stroke="colors.loads" />
     </marker>
     <marker
-      id="reaction"
+      :id="`${id}-reaction`"
       viewBox="0 0 20 60"
       refX="10"
       refY="60"
@@ -189,7 +190,7 @@ const props = withDefaults(
       <line y1="55" x1="10" y2="11" x2="10" stroke-width="1" :stroke="colors.reactions" />
     </marker>
     <marker
-      id="force_hover"
+      :id="`${id}-force_hover`"
       viewBox="0 0 20 60"
       refX="10"
       refY="60"
@@ -203,7 +204,7 @@ const props = withDefaults(
     </marker>
 
     <marker
-      id="force_centered"
+      :id="`${id}-force_centered`"
       viewBox="0 0 20 60"
       refX="10"
       refY="35"
@@ -217,7 +218,7 @@ const props = withDefaults(
     </marker>
 
     <marker
-      id="force_centered_hover"
+      :id="`${id}-force_centered_hover`"
       viewBox="0 0 20 60"
       refX="10"
       refY="35"
@@ -231,7 +232,7 @@ const props = withDefaults(
     </marker>
 
     <marker
-      id="dot"
+      :id="`${id}-dot`"
       viewBox="-20 -10 20 70"
       refX="0"
       refY="24.5"
@@ -255,7 +256,7 @@ const props = withDefaults(
     </marker>
 
     <marker
-      id="hinge-xy"
+      :id="`${id}-hinge-xy`"
       viewBox="0 0 20 20"
       refX="10"
       refY="0"
@@ -269,7 +270,7 @@ const props = withDefaults(
     </marker>
 
     <marker
-      id="hinge-x"
+      :id="`${id}-hinge-x`"
       viewBox="0 0 20 20"
       refX="10"
       refY="0"
@@ -284,7 +285,7 @@ const props = withDefaults(
     </marker>
 
     <marker
-      id="hinge-y"
+      :id="`${id}-hinge-y`"
       viewBox="0 0 20 20"
       refX="0"
       refY="10"
@@ -299,7 +300,7 @@ const props = withDefaults(
     </marker>
 
     <marker
-      id="hinge-start"
+      :id="`${id}-hinge-start`"
       viewBox="0 0 20 20"
       refX="0"
       refY="0"
@@ -312,7 +313,7 @@ const props = withDefaults(
     </marker>
 
     <marker
-      id="hinge-end"
+      :id="`${id}-hinge-end`"
       viewBox="0 0 20 20"
       refX="0"
       refY="0"
@@ -324,7 +325,7 @@ const props = withDefaults(
       <circle r="7" fill="white" stroke="black" stroke-width="2" />
     </marker>
 
-    <filter id="textLabel" x="-5%" width="110%" y="0%" height="100%">
+    <filter :id="`${id}-textLabel`" x="-5%" width="110%" y="0%" height="100%">
       <feFlood flood-color="white" flood-opacity="0.75" />
     </filter>
   </defs>

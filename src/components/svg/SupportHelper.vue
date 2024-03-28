@@ -20,7 +20,7 @@ const flag = computed(() => (props.angle > 0 ? 1 : 0));
 
 <template>
   <svg viewBox="-45 -90 90 100">
-    <SVGViewerDefs />
+    <SVGViewerDefs id="nodeEditDialog" />
     <g class="cs">
       <text fill="red" text-anchor="middle" alignment-baseline="middle" x="40" y="-30">x</text>
       <text fill="green" text-anchor="middle" alignment-baseline="middle" x="10" y="0">z</text>

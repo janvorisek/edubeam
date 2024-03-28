@@ -2,11 +2,15 @@
 import { BeamConcentratedLoad } from "ts-fem";
 import { computed } from "vue";
 
-const props = defineProps<{
-  eload: BeamConcentratedLoad;
-  scale: number;
-  convertForce: (f: number) => number;
-}>();
+const props = withDefaults(
+  defineProps<{
+    eload: BeamConcentratedLoad;
+    scale: number;
+    convertForce: (f: number) => number;
+    fontSize?: number;
+  }>(),
+  { fontSize: 13 }
+);
 
 const target = computed(() => {
   return props.eload.domain.elements.get(props.eload.target)!;

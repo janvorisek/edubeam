@@ -6,6 +6,7 @@
       <div style="height: 256px">
         <SVGElementViewer
           v-if="_created"
+          id="settings-appearance"
           class="overflow-hidden pa-1"
           :solver="solver"
           :nodes="[domain.getNode('a'), domain.getNode('b'), domain.getNode('c'), domain.getNode('d')]"

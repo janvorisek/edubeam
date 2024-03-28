@@ -958,6 +958,9 @@ const isLoaded = computed(() => {
   );
 });
 
+const isZooming = computed(() => {
+  return panZoom.value?.zooming;
+});
 defineExpose({ centerContent, fitContent });
 </script>
 
@@ -1142,7 +1145,7 @@ defineExpose({ centerContent, fitContent });
             />
           </g>
           <g>
-            <g v-if="!useAppStore().zooming && useViewerStore().showLoads">
+            <g v-if="!isZooming && useViewerStore().showLoads">
               <template v-for="(eload, index) in useProjectStore().solver.loadCases[0].elementLoadList">
                 <SVGElementLoad
                   v-if="eload instanceof BeamElementUniformEdgeLoad"
@@ -1235,11 +1238,11 @@ defineExpose({ centerContent, fitContent });
               :key="`element-${index}`"
               :element="element"
               :scale="scale"
-              :show-deformed-shape="!useAppStore().zooming && viewerStore.showDeformedShape"
-              :show-normal-force="!useAppStore().zooming && viewerStore.showNormalForce"
-              :show-shear-force="!useAppStore().zooming && viewerStore.showShearForce"
-              :show-bending-moment="!useAppStore().zooming && viewerStore.showBendingMoment"
-              :show-label="!useAppStore().zooming && viewerStore.showElementLabels"
+              :show-deformed-shape="!isZooming && viewerStore.showDeformedShape"
+              :show-normal-force="!isZooming && viewerStore.showNormalForce"
+              :show-shear-force="!isZooming && viewerStore.showShearForce"
+              :show-bending-moment="!isZooming && viewerStore.showBendingMoment"
+              :show-label="!isZooming && viewerStore.showElementLabels"
               :load-case="projectStore.solver.loadCases[0]"
               :deformed-shape-multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
               :normal-force-multiplier="projectStore.normalForceScale * viewerStore.resultsScalePx_"
@@ -1264,10 +1267,10 @@ defineExpose({ centerContent, fitContent });
                 :class="{ selected: projectStore.selection2.nodes.includes(node.label) }"
                 :node="node"
                 :scale="scale"
-                :show-label="!useAppStore().zooming && viewerStore.showNodeLabels"
+                :show-label="!isZooming && viewerStore.showNodeLabels"
                 :show-supports="viewerStore.showSupports"
-                :show-deformed-shape="!useAppStore().zooming && viewerStore.showDeformedShape"
-                :show-reactions="!useAppStore().zooming && viewerStore.showReactions"
+                :show-deformed-shape="!isZooming && viewerStore.showDeformedShape"
+                :show-reactions="!isZooming && viewerStore.showReactions"
                 :convert-force="appStore.convertForce"
                 @nodemousemove="onNodeHover($event, node)"
                 @nodedefomousemove="onNodeHover($event, node)"

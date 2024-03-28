@@ -24,6 +24,7 @@ const props = withDefaults(
 
 let viewBox = { x: 0, y: 0, w: 1, h: 1 };
 const scale = ref(1);
+const zooming = ref(false);
 
 const touchPointer = ref({ x: 0, y: 0, ds: 0, move: false, pinch: false });
 
@@ -84,12 +85,11 @@ const zoom = (mx: number, my: number, deltaY: number): void => {
 };
 
 let wheelEventEndTimeout = null;
-const isFirefox = navigator.userAgent.search("Firefox") > -1;
 const onMouseWheel = (event: WheelEvent): void => {
-  if (isFirefox) appStore.zooming = true;
+  zooming.value = true;
   clearTimeout(wheelEventEndTimeout);
   wheelEventEndTimeout = setTimeout(() => {
-    appStore.zooming = false;
+    zooming.value = false;
   }, 100);
 
   zoom(event.offsetX, event.offsetY, Math.sign(event.deltaY) * 0.05);
@@ -107,7 +107,7 @@ const onTouchStart = (event: TouchEvent): void => {
   }
 
   if (event.touches.length === 2) {
-    appStore.zooming = true;
+    zooming.value = true;
 
     touchPointer.value.ds = Math.hypot(
       event.touches[0].pageX - event.touches[1].pageX,
@@ -125,7 +125,7 @@ const onTouchStart = (event: TouchEvent): void => {
 };
 
 const onTouchEnd = (): void => {
-  appStore.zooming = false;
+  zooming.value = false;
   touchPointer.value.move = false;
   touchPointer.value.pinch = false;
 };
@@ -321,7 +321,7 @@ const onMouseUp = () => {
 const rootRef = ref<HTMLElement | null>(null);
 const svgRef = ref<SVGElement | null>(null);
 
-defineExpose({ scale, centerContent, fitContent, updateMatrix, onWindowResize, zoom, reset });
+defineExpose({ scale, centerContent, fitContent, updateMatrix, onWindowResize, zoom, reset, zooming });
 </script>
 
 <template>

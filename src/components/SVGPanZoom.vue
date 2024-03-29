@@ -2,6 +2,7 @@
 import { nextTick, onMounted, ref } from "vue";
 import { useAppStore } from "@/store/app";
 import { useProjectStore } from "../store/project";
+import { debounce } from "@/utils";
 
 const appStore = useAppStore();
 
@@ -84,15 +85,14 @@ const zoom = (mx: number, my: number, deltaY: number): void => {
   updateMatrix(true);
 };
 
-let wheelEventEndTimeout = null;
+const debonceZoom = debounce(() => {
+  zooming.value = false;
+}, 200);
+
 const onMouseWheel = (event: WheelEvent): void => {
   zooming.value = true;
-  clearTimeout(wheelEventEndTimeout);
-  wheelEventEndTimeout = setTimeout(() => {
-    zooming.value = false;
-  }, 100);
-
   zoom(event.offsetX, event.offsetY, Math.sign(event.deltaY) * 0.05);
+  debonceZoom();
 };
 
 const onTouchStart = (event: TouchEvent): void => {

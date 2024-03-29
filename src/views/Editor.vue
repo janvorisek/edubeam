@@ -58,8 +58,6 @@ onMounted(() => {
   window.addEventListener("mousemove", mouseMove);
   window.addEventListener("mouseup", onMouseUp);
   window.addEventListener("mousedown", onMouseDown);
-
-  if (window.innerWidth < 768) appStore.bottomBarOpen = false;
 });
 
 onUnmounted(() => {

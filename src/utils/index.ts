@@ -1000,3 +1000,14 @@ export function float2String(v: number) {
 
   return v;
 }
+
+export function isMobile(): boolean {
+  const userAgent = navigator.userAgent;
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+  const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+  // Adjust this value as per your requirements
+  const mobileScreenWidthThreshold = 768;
+
+  return isMobile || screenWidth < mobileScreenWidthThreshold;
+}

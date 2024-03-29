@@ -114,10 +114,27 @@ div.inline-edit.fw {
     border-bottom-left-radius: 0;
   }
   
-  &:has(.input-after) .inline-edit {
-    border-right: none;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+  &:has(.input-after) {
+    .inline-edit {
+      border-right: none;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+}
+
+.inline-edit-group.load {
+  .input-before, .input-after {
+    min-width: 28px;
+  }
+  &:has(.input-before) .inline-edit {
+    width: 60px;
+  }
+  
+  &:has(.input-after) {
+    .input-after {
+      width: 48px;
+    }
   }
 }
 
@@ -148,6 +165,8 @@ select.mini-select {
   font: inherit;
   line-height: 1.5em;
   padding: 1px 6px;
+  padding-right: 24px;
+  min-width: 100px;
 
   background-image: linear-gradient(45deg, transparent 50%, gray 50%),
     linear-gradient(135deg, gray 50%, transparent 50%), linear-gradient(to right, #ccc, #ccc);
@@ -201,7 +220,7 @@ select.mini-select {
 .v-table {
   --v-table-header-height: 26px;
   --v-table-row-height: 32px;
-  --fixed-column-size: 100px;  
+  --fixed-column-size: 48px;  
   overflow-x: visible;
   position: relative;
   .v-table__wrapper {

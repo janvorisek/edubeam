@@ -127,7 +127,7 @@
                     )
                   "
                   class="inline-edit"
-                  style="width: 64px"
+                  style="width: 60px"
                 />
               </div>
               <div class="inline-edit-group mr-2">
@@ -146,7 +146,7 @@
                     )
                   "
                   class="inline-edit"
-                  style="width: 64px"
+                  style="width: 60px"
                 />
               </div>
             </div>
@@ -362,7 +362,7 @@
           </template>
           <template #item.material="{ item }">
             <select
-              class="mini-select"
+              class="mini-select flex-shrink-0"
               v-model.number="item.mat"
               @change="
                 setUnsolved();
@@ -382,7 +382,7 @@
           </template>
           <template #item.cs="{ item }">
             <select
-              class="mini-select"
+              class="mini-select flex-shrink-0"
               v-model.number="item.cs"
               @change="
                 setUnsolved();
@@ -416,7 +416,7 @@
           </template>
           <template #item.diagonalMassMatrix="{ item }">
             <select
-              class="mini-select"
+              class="mini-select flex-shrink-0"
               v-model="item.diagonalMassMatrix"
               @change="
                 setUnsolved();
@@ -561,7 +561,7 @@
 
           <template #item.load.values="{ item }">
             <div class="d-flex" v-if="item.type === 'node'">
-              <div class="inline-edit-group mr-2" style="width: 128px">
+              <div class="inline-edit-group load mr-2">
                 <label class="input-before">F<sub>x</sub></label>
                 <input
                   :value="appStore.convertForce(item.ref.values[0])"
@@ -579,7 +579,7 @@
                 />
                 <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Force)"></div>
               </div>
-              <div class="inline-edit-group mr-2" style="width: 128px">
+              <div class="inline-edit-group load mr-2">
                 <span class="input-before">F<sub>z</sub></span>
                 <input
                   :value="appStore.convertForce(item.ref.values[2])"
@@ -597,7 +597,7 @@
                 />
                 <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Force)"></div>
               </div>
-              <div class="inline-edit-group" style="width: 128px">
+              <div class="inline-edit-group load">
                 <span class="input-before">M<sub>y</sub></span>
                 <input
                   :value="appStore.convertForce(item.ref.values[4])"
@@ -618,7 +618,7 @@
             </div>
 
             <div class="d-flex" v-if="item.type === 'prescribed'">
-              <div class="inline-edit-group mr-2" style="width: 128px">
+              <div class="inline-edit-group load mr-2" style="width: 128px">
                 <label class="input-before">D<sub>x</sub></label>
                 <input
                   :value="item.ref.prescribedValues[0]"
@@ -630,7 +630,7 @@
                 />
                 <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
               </div>
-              <div class="inline-edit-group mr-2" style="width: 128px">
+              <div class="inline-edit-group load mr-2" style="width: 128px">
                 <span class="input-before">D<sub>z</sub></span>
                 <input
                   :value="item.ref.prescribedValues[2]"
@@ -642,7 +642,7 @@
                 />
                 <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
               </div>
-              <div class="inline-edit-group" style="width: 128px">
+              <div class="inline-edit-group load" style="width: 128px">
                 <span class="input-before">R<sub>y</sub></span>
                 <input
                   :value="item.ref.prescribedValues[4]"
@@ -657,7 +657,7 @@
             </div>
 
             <div class="d-flex flex-grow-0 align-content-center" v-if="item.type === 'element'">
-              <div class="inline-edit-group mr-2">
+              <div class="inline-edit-group load mr-2">
                 <span v-if="loadType(item.ref) === 'udl'" class="input-before">f<sub>x</sub></span>
                 <span v-else-if="loadType(item.ref) === 'concentrated'" class="input-before">F<sub>x</sub></span>
                 <span v-else-if="loadType(item.ref) === 'temperature'" class="input-before">T<sub>c</sub></span>
@@ -680,7 +680,7 @@
                     )
                   "
                   class="inline-edit"
-                  style="width: 64px"
+                  style="width: 60px"
                 />
                 <div
                   v-if="loadType(item.ref) === 'udl'"
@@ -698,7 +698,7 @@
                   v-html="formatMeasureAsHTML(appStore.units.Temperature)"
                 ></div>
               </div>
-              <div class="inline-edit-group mr-2">
+              <div class="inline-edit-group load mr-2">
                 <span v-if="loadType(item.ref) === 'udl'" class="input-before">f<sub>z</sub></span>
                 <span v-else-if="loadType(item.ref) === 'concentrated'" class="input-before">F<sub>z</sub></span>
                 <span v-else-if="loadType(item.ref) === 'temperature'" class="input-before">T<sub>d</sub></span>
@@ -721,7 +721,7 @@
                     )
                   "
                   class="inline-edit"
-                  style="width: 64px"
+                  style="width: 60px"
                 />
                 <div
                   v-if="loadType(item.ref) === 'udl'"
@@ -739,7 +739,7 @@
                   v-html="formatMeasureAsHTML(appStore.units.Temperature)"
                 ></div>
               </div>
-              <div class="inline-edit-group mr-2" style="width: 128px" v-if="loadType(item.ref) === 'temperature'">
+              <div class="inline-edit-group load mr-2" style="width: 128px" v-if="loadType(item.ref) === 'temperature'">
                 <span class="input-before">T<sub>h</sub></span>
                 <input
                   :value="appStore.convertTemperature(item.ref.values[2])"
@@ -754,11 +754,11 @@
                     )
                   "
                   class="inline-edit"
-                  style="width: 64px"
+                  style="width: 60px"
                 />
                 <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Temperature)"></div>
               </div>
-              <div v-if="item.ref instanceof BeamConcentratedLoad" class="inline-edit-group mr-2">
+              <div v-if="item.ref instanceof BeamConcentratedLoad" class="inline-edit-group load mr-2">
                 <span class="input-before">d</span>
                 <input
                   :value="appStore.convertLength(item.ref.values[3])"
@@ -773,7 +773,7 @@
                     )
                   "
                   class="inline-edit"
-                  style="width: 64px"
+                  style="width: 60px"
                 />
                 <div
                   v-if="item.ref instanceof BeamElementUniformEdgeLoad"
@@ -807,7 +807,7 @@
 
           <template #item.target="{ item }">
             <select
-              class="mini-select"
+              class="mini-select flex-shrink-0"
               v-if="item.type === 'node'"
               v-model="item.ref.target"
               @change="
@@ -822,7 +822,7 @@
             </select>
 
             <select
-              class="mini-select"
+              class="mini-select flex-shrink-0"
               v-else-if="item.type === 'prescribed'"
               v-model="item.ref.target"
               @change="
@@ -837,7 +837,7 @@
             </select>
 
             <select
-              class="mini-select"
+              class="mini-select flex-shrink-0"
               v-else-if="item.type === 'element'"
               v-model="item.ref.target"
               @change="

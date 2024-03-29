@@ -10,7 +10,7 @@ import { setLocale } from "@/plugins/i18n";
 import { openModal } from "jenesius-vue-modal";
 import SettingsModal from "../components/dialogs/Settings.vue";
 import Qty from "js-quantities";
-import { suggestLanguage } from "@/utils";
+import { isMobile, suggestLanguage } from "@/utils";
 
 export const useAppStore = defineStore(
   "app",
@@ -18,8 +18,10 @@ export const useAppStore = defineStore(
     const drawerOpen = ref(false);
     const rightDrawerOpen = ref(false);
 
-    const bottomBarOpen = ref(true);
+    const bottomBarOpen = ref(!isMobile());
     const bottomBarHeight = ref(226);
+
+    console.log(isMobile());
 
     const locale = ref(suggestLanguage());
     const units = reactive({
@@ -64,10 +66,12 @@ export const useAppStore = defineStore(
         _convertTemperature = Qty.swiftConverter("C", newUnits.Temperature);
         _convertInverseTemperature = Qty.swiftConverter(newUnits.Temperature, "C");
 
-        if (useAppStore().bottomBarOpen) useAppStore().bottomBarOpen = false;
-        nextTick(() => {
-          useAppStore().bottomBarOpen = true;
-        });
+        if (useAppStore().bottomBarOpen) {
+          useAppStore().bottomBarOpen = false;
+          nextTick(() => {
+            useAppStore().bottomBarOpen = true;
+          });
+        }
       },
       { immediate: true }
     );

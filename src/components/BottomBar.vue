@@ -74,6 +74,8 @@
           hide-default-footer
           mobile-breakpoint="0"
           item-key="label"
+          sort-asc-icon="mdi-menu-up"
+          sort-desc-icon="mdi-menu-down"
         >
           <template #headers="{ columns, isSorted, getSortIcon, toggleSort }">
             <tr>
@@ -83,7 +85,7 @@
                   class="v-data-table__td v-data-table-column--align-start v-data-table__th v-data-table__th--sortable"
                 >
                   <div class="v-data-table-header__content">
-                    <div class="mr-2 cursor-pointer" @click="() => toggleSort(column)">
+                    <div class="mr-0 cursor-pointer" @click="() => toggleSort(column)">
                       {{ capitalize($t(column.title)) }}
                       <span
                         class="font-weight-regular"
@@ -281,6 +283,8 @@
           hide-default-footer
           mobile-breakpoint="0"
           item-key="label"
+          sort-asc-icon="mdi-menu-up"
+          sort-desc-icon="mdi-menu-down"
         >
           <template #headers="{ columns, isSorted, getSortIcon, toggleSort }">
             <tr>
@@ -290,7 +294,7 @@
                   class="v-data-table__td v-data-table-column--align-start v-data-table__th v-data-table__th--sortable"
                 >
                   <div class="v-data-table-header__content">
-                    <span class="mr-2 cursor-pointer" @click="() => toggleSort(column)">{{
+                    <span class="cursor-pointer" @click="() => toggleSort(column)">{{
                       capitalize($t(column.title))
                     }}</span>
                     <v-icon
@@ -514,6 +518,8 @@
           hide-default-footer
           mobile-breakpoint="0"
           item-key="label"
+          sort-asc-icon="mdi-menu-up"
+          sort-desc-icon="mdi-menu-down"
         >
           <template #headers="{ columns, isSorted, getSortIcon, toggleSort }">
             <tr>
@@ -523,7 +529,7 @@
                   class="v-data-table__td v-data-table-column--align-start v-data-table__th v-data-table__th--sortable"
                 >
                   <div class="v-data-table-header__content">
-                    <div class="mr-2 cursor-pointer" @click="() => toggleSort(column)">
+                    <div class="cursor-pointer" @click="() => toggleSort(column)">
                       {{ capitalize($t(column.title)) }}
                       <span
                         class="font-weight-regular"
@@ -912,6 +918,8 @@
           hide-default-footer
           mobile-breakpoint="0"
           item-key="label"
+          sort-asc-icon="mdi-menu-up"
+          sort-desc-icon="mdi-menu-down"
         >
           <template #headers="{ columns, isSorted, getSortIcon, toggleSort }">
             <tr>
@@ -921,7 +929,7 @@
                   class="v-data-table__td v-data-table-column--align-start v-data-table__th v-data-table__th--sortable"
                 >
                   <div class="v-data-table-header__content">
-                    <div class="mr-2 cursor-pointer" @click="() => toggleSort(column)">
+                    <div class="cursor-pointer" @click="() => toggleSort(column)">
                       <span v-html="column.key !== 'alpha' ? capitalize($t(column.title)) : 'α<sub>T</sub>'"></span
                       >&nbsp;
                       <span
@@ -1024,6 +1032,8 @@
           hide-default-footer
           mobile-breakpoint="0"
           item-key="label"
+          sort-asc-icon="mdi-menu-up"
+          sort-desc-icon="mdi-menu-down"
         >
           <template #headers="{ columns, isSorted, getSortIcon, toggleSort }">
             <tr>
@@ -1033,7 +1043,7 @@
                   class="v-data-table__td v-data-table-column--align-start v-data-table__th v-data-table__th--sortable"
                 >
                   <div class="v-data-table-header__content">
-                    <div class="mr-2 cursor-pointer" @click="() => toggleSort(column)">
+                    <div class="cursor-pointer" @click="() => toggleSort(column)">
                       {{ capitalize($t(column.title)) }}
                       <span
                         class="font-weight-regular"
@@ -1138,6 +1148,8 @@
               hide-default-footer
               mobile-breakpoint="0"
               item-key="label"
+              sort-asc-icon="mdi-menu-up"
+              sort-desc-icon="mdi-menu-down"
             >
               <template #headers="{ columns, isSorted, getSortIcon, toggleSort }">
                 <tr>
@@ -1147,7 +1159,7 @@
                       class="v-data-table__td v-data-table-column--align-start v-data-table__th v-data-table__th--sortable"
                     >
                       <div class="v-data-table-header__content">
-                        <span class="mr-2 cursor-pointer" @click="() => toggleSort(column)">{{
+                        <span class="cursor-pointer" @click="() => toggleSort(column)">{{
                           capitalize($t(column.title))
                         }}</span>
                         <v-icon
@@ -1232,6 +1244,8 @@
               hide-default-footer
               mobile-breakpoint="0"
               item-key="label"
+              sort-asc-icon="mdi-menu-up"
+              sort-desc-icon="mdi-menu-down"
             >
               <template #headers="{ columns, isSorted, getSortIcon, toggleSort }">
                 <tr>
@@ -1241,7 +1255,7 @@
                       class="v-data-table__td v-data-table-column--align-start v-data-table__th v-data-table__th--sortable"
                     >
                       <div class="v-data-table-header__content">
-                        <div class="mr-2 cursor-pointer" @click="() => toggleSort(column)">
+                        <div class="cursor-pointer" @click="() => toggleSort(column)">
                           {{ capitalize($t(column.title)) }}
                           <span
                             class="font-weight-regular"

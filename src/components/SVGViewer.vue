@@ -1008,7 +1008,6 @@ defineExpose({ centerContent, fitContent });
         title="Center content"
         @click.native="undoRedoManager.redo()"
       ></v-btn>
-      {{ panZoom ? panZoom.zooming : false }}
     </div>
     <div id="viewerControls" class="text-black d-flex" style="position: absolute; z-index: 100; top: 24px; right: 24px">
       <v-btn

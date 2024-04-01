@@ -46,7 +46,8 @@
     "addLoad": "添加荷载",
     "nodalLoad": "节点荷载",
     "elementLoad": "元素荷载",
-    "prescribedDisplacement": "规定位移"
+    "prescribedDisplacement": "规定位移",
+    "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>"
   },
   "tabs": {
     "nodes": "节点",

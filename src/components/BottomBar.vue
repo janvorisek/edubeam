@@ -666,7 +666,11 @@
               <div class="inline-edit-group load mr-2">
                 <span v-if="loadType(item.ref) === 'udl'" class="input-before">f<sub>x</sub></span>
                 <span v-else-if="loadType(item.ref) === 'concentrated'" class="input-before">F<sub>x</sub></span>
-                <span v-else-if="loadType(item.ref) === 'temperature'" class="input-before">T<sub>c</sub></span>
+                <span
+                  v-else-if="loadType(item.ref) === 'temperature'"
+                  class="input-before"
+                  v-html="$t('loads.temperatureDeltaTs')"
+                ></span>
                 <input
                   :value="
                     loadType(item.ref) !== 'temperature'
@@ -707,7 +711,11 @@
               <div class="inline-edit-group load mr-2">
                 <span v-if="loadType(item.ref) === 'udl'" class="input-before">f<sub>z</sub></span>
                 <span v-else-if="loadType(item.ref) === 'concentrated'" class="input-before">F<sub>z</sub></span>
-                <span v-else-if="loadType(item.ref) === 'temperature'" class="input-before">T<sub>d</sub></span>
+                <span
+                  v-else-if="loadType(item.ref) === 'temperature'"
+                  class="input-before"
+                  v-html="$t('loads.temperatureDeltaTbt')"
+                ></span>
                 <input
                   :value="
                     loadType(item.ref) !== 'temperature'
@@ -745,25 +753,7 @@
                   v-html="formatMeasureAsHTML(appStore.units.Temperature)"
                 ></div>
               </div>
-              <div class="inline-edit-group load mr-2" style="width: 128px" v-if="loadType(item.ref) === 'temperature'">
-                <span class="input-before">T<sub>h</sub></span>
-                <input
-                  :value="appStore.convertTemperature(item.ref.values[2])"
-                  @keydown="checkNumber($event)"
-                  @change="
-                    changeSetArrayItem(
-                      item.ref,
-                      'values',
-                      2,
-                      $event.target as HTMLInputElement,
-                      appStore.convertInverseTemperature
-                    )
-                  "
-                  class="inline-edit"
-                  style="width: 60px"
-                />
-                <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Temperature)"></div>
-              </div>
+
               <div v-if="item.ref instanceof BeamConcentratedLoad" class="inline-edit-group load mr-2">
                 <span class="input-before">d</span>
                 <input
@@ -1370,6 +1360,9 @@ import { useLayoutStore } from "@/store/layout";
 import StiffnessMatrix from "@/components/StiffnessMatrix.vue";
 import { float2String } from "../utils/index";
 
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 const appStore = useAppStore();
 const projStore = useProjectStore();
 const layoutStore = useLayoutStore();
@@ -1548,7 +1541,7 @@ const formatElementLoadsAtElement = (item: Beam2D): [number, string][] => {
   const nls = useProjectStore()
     .solver.loadCases[0].elementLoadList.map((nl, index) => {
       return {
-        type: nl instanceof BeamConcentratedLoad ? "concentrated" : "udl",
+        type: loadType(nl),
         index,
         target: nl.target,
         values: nl.values,
@@ -1560,9 +1553,15 @@ const formatElementLoadsAtElement = (item: Beam2D): [number, string][] => {
     const tmp = [];
 
     const ff = nl.type === "concentrated" ? "F" : "f";
-
-    if (Math.abs(nl.values[0]) > 1e-12) tmp.push(ff + "<sub>x</sub> = " + appStore.convertForce(nl.values[0]));
-    if (Math.abs(nl.values[1]) > 1e-12) tmp.push(ff + "<sub>z</sub> = " + appStore.convertForce(nl.values[1]));
+    if (nl.type === "temperature") {
+      if (Math.abs(nl.values[0]) > 1e-12)
+        tmp.push(t("loads.temperatureDeltaTs") + " = " + appStore.convertTemperature(nl.values[0]));
+      if (Math.abs(nl.values[1]) > 1e-12)
+        tmp.push(t("loads.temperatureDeltaTbt") + " = " + appStore.convertTemperature(nl.values[1]));
+    } else {
+      if (Math.abs(nl.values[0]) > 1e-12) tmp.push(ff + "<sub>x</sub> = " + appStore.convertForce(nl.values[0]));
+      if (Math.abs(nl.values[1]) > 1e-12) tmp.push(ff + "<sub>z</sub> = " + appStore.convertForce(nl.values[1]));
+    }
     return [nl.index, tmp.join(", ")];
   });
 };

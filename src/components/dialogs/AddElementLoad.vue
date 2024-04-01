@@ -10,6 +10,7 @@
           item-title="label"
           item-value="value"
           :label="$t('loadType.loadType')"
+          hide-details="auto"
         >
         </v-select>
         <v-form v-model="valid">
@@ -104,31 +105,27 @@
                     <v-text-field
                       v-model="loadNodeValueTc"
                       @keydown="checkNumber($event)"
-                      :label="`ΔTc - uniform temperature`"
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="formatMeasureAsHTML(appStore.units.Temperature)"
-                    ></v-text-field>
+                    >
+                      <template #label>
+                        <span v-html="$t('loads.temperatureBending')"></span>
+                      </template>
+                    </v-text-field>
                   </v-col>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="12">
                     <v-text-field
-                      v-model="loadNodeValueTb"
+                      v-model="loadNodeValueTbt"
                       @keydown="checkNumber($event)"
-                      :label="`ΔTb - bottom surface`"
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="formatMeasureAsHTML(appStore.units.Temperature)"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="6">
-                    <v-text-field
-                      v-model="loadNodeValueTu"
-                      @keydown="checkNumber($event)"
-                      :label="`ΔTu - upper surface`"
-                      hide-details="auto"
-                      :rules="numberRules"
-                      :suffix="formatMeasureAsHTML(appStore.units.Temperature)"
-                    ></v-text-field>
+                    >
+                      <template #label>
+                        <span v-html="$t('loads.temperatureAxial')"></span>
+                      </template>
+                    </v-text-field>
                   </v-col>
                 </template>
               </v-row>
@@ -198,8 +195,7 @@ const loadElementId = ref(props.label ?? [...useProjectStore().solver.domain.ele
 const loadNodeValueFx = ref(`${appStore.convertForce(4000)}`);
 const loadNodeValueFz = ref(`${appStore.convertForce(3000)}`);
 const loadNodeValueTc = ref("10.0");
-const loadNodeValueTb = ref("0.0");
-const loadNodeValueTu = ref("0.0");
+const loadNodeValueTbt = ref("0.0");
 const elementLoadPos = ref("0.0");
 const elementLCS = ref(true);
 
@@ -207,8 +203,7 @@ const realFx = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeV
 const realFz = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueFz.value)));
 const realDist = computed(() => appStore.convertInverseLength(parseFloat2(elementLoadPos.value)));
 const realTc = computed(() => appStore.convertInverseTemperature(parseFloat2(loadNodeValueTc.value)));
-const realTb = computed(() => appStore.convertInverseTemperature(parseFloat2(loadNodeValueTb.value)));
-const realTu = computed(() => appStore.convertInverseTemperature(parseFloat2(loadNodeValueTu.value)));
+const realTbt = computed(() => appStore.convertInverseTemperature(parseFloat2(loadNodeValueTbt.value)));
 
 const tmpLoad = computed(() => {
   return new BeamElementUniformEdgeLoad(
@@ -249,8 +244,8 @@ const addElementLoad = () => {
   if (loadType.value === "temperature")
     useProjectStore().solver.loadCases[0].createBeamTemperatureLoad(loadElementId.value, [
       realTc.value,
-      realTb.value,
-      realTu.value,
+      realTbt.value,
+      0,
     ]);
 
   useProjectStore().solve();

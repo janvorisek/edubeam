@@ -45,7 +45,7 @@ const elementLabel = computed(() => {
     >
       <template v-if="eload.values[0] !== 0">ΔTc={{ eload.values[0] }}</template>
       <template v-if="eload.values[1] !== 0 || eload.values[2] !== 0">
-        ΔTd={{ eload.values[1] }} ΔTh={{ eload.values[2] }}
+        {{ $t("loads.temperatureDeltaTbtNoHTML") }}={{ eload.values[1] - eload.values[2] }}
       </template>
     </text>
   </g>

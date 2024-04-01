@@ -122,7 +122,7 @@ import { useProjectStore } from "@/store/project";
 import { closeModal } from "jenesius-vue-modal";
 import { onMounted } from "vue";
 import { useAppStore } from "@/store/app";
-import { checkNumber, numberRules, parseFloat2 } from "@/utils";
+import { checkNumber, numberRules, parseFloat2, loadType as LT } from "@/utils";
 import { BeamConcentratedLoad, BeamElementUniformEdgeLoad } from "ts-fem";
 import SVGElementViewer from "../SVGElementViewer.vue";
 
@@ -136,7 +136,7 @@ const props = defineProps<{
 const open = ref(true);
 const valid = ref(false);
 
-const loadType = computed(() => (load.value instanceof BeamConcentratedLoad ? "concentrated" : "udl"));
+const loadType = computed(() => LT(load.value));
 const unitAndLabel = computed(() => {
   let u = appStore.units.Force;
   let l = "F";

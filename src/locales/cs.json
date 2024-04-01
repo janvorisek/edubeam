@@ -113,7 +113,11 @@
     "addPrescribedDisplacement": "Předepsat posunutí",
     "forceMoment": "Síla/moment",
     "editLoad": "Upravit zatížení",
-    "loadPositionOnBeam": "Vzdálenost od počátečního uzlu"
+    "loadPositionOnBeam": "Vzdálenost od počátečního uzlu",
+    "temperatureAxial": "ΔT<sub>d</sub>-ΔT<sub>h</sub> ... Rozdíl oteplení dolních a horních vláken",
+    "temperatureBending": "ΔT<sub>s</sub> ... Oteplení střednice",
+    "temperatureDeltaTbt": "ΔT<sub>d</sub>-ΔT<sub>h</sub>",
+    "temperatureDeltaTbtNoHTML": "ΔTd-ΔTh"
   },
   "material": {
     "alphaT": "α_T",

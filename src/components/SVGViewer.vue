@@ -33,6 +33,7 @@ import {
   NodalLoad,
   PrescribedDisplacement,
   BeamElementUniformEdgeLoad,
+  BeamTemperatureLoad,
 } from "ts-fem";
 import { Matrix } from "mathjs";
 import { useMagicKeys } from "@vueuse/core";
@@ -244,7 +245,9 @@ const onElementLoadHover = (e: MouseEvent, el: BeamElementLoad) => {
   tt.style.top = e.offsetY + "px";
   tt.style.left = e.offsetX + "px";
 
-  const lt = el instanceof BeamElementUniformEdgeLoad ? "loadType.udl" : "loadType.concentrated";
+  let lt = "loadType.udl";
+  if (el instanceof BeamConcentratedLoad) lt = "loadType.concentrated";
+  else if (el instanceof BeamTemperatureLoad) lt = "loadType.temperature";
   const ff = el instanceof BeamElementUniformEdgeLoad ? "f" : "F";
   const uu =
     el instanceof BeamElementUniformEdgeLoad
@@ -253,12 +256,22 @@ const onElementLoadHover = (e: MouseEvent, el: BeamElementLoad) => {
 
   tooltipContent.innerHTML = `<strong>${t(lt)}</strong><br>`;
 
-  if (Math.abs(el.values[0]) > 1e-32) {
-    tooltipContent.innerHTML += `${ff}<sub>x</sub> = ${appStore.convertForce(el.values[0])} ${uu}<br>`;
-  }
+  if (el instanceof BeamTemperatureLoad) {
+    if (Math.abs(el.values[0]) > 1e-32) {
+      tooltipContent.innerHTML += `${t("loads.temperatureDeltaTs")} = ${appStore.convertTemperature(el.values[0])} ${uu}<br>`;
+    }
 
-  if (Math.abs(el.values[1]) > 1e-32) {
-    tooltipContent.innerHTML += `${ff}<sub>z</sub> = ${appStore.convertForce(el.values[1])} ${uu}`;
+    if (Math.abs(el.values[1]) > 1e-32) {
+      tooltipContent.innerHTML += `${t("loads.temperatureDeltaTbt")} = ${appStore.convertTemperature(el.values[1])} ${uu}`;
+    }
+  } else {
+    if (Math.abs(el.values[0]) > 1e-32) {
+      tooltipContent.innerHTML += `${ff}<sub>x</sub> = ${appStore.convertForce(el.values[0])} ${uu}<br>`;
+    }
+
+    if (Math.abs(el.values[1]) > 1e-32) {
+      tooltipContent.innerHTML += `${ff}<sub>z</sub> = ${appStore.convertForce(el.values[1])} ${uu}`;
+    }
   }
 
   tt.style.display = "block";

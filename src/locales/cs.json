@@ -160,7 +160,7 @@
     "results": "Výsledky",
     "nodal_results": "Výsledky v uzlech",
     "element_results": "Výsledky na prvcích",
-    "end_forces": "Koncové síly"
+    "end_forces": "Koncové síly (v lokálních souřadnicích)"
   },
   "dialogs": {
     "addNode": {

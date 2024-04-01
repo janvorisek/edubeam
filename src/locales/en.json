@@ -155,7 +155,7 @@
     "results": "Results",
     "nodal_results": "Nodal results",
     "element_results": "Element results",
-    "end_forces": "End forces"
+    "end_forces": "End forces (in local coordinate system)"
   },
   "materials": {
     "addMaterial": "Add material",

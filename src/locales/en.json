@@ -64,7 +64,7 @@
     "forceMoment": "Force/Moment",
     "editLoad": "Edit load",
     "loadPositionOnBeam": "Load position from start node",
-    "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Temperature change bottom minus top fibers",
+    "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Temperature change of bottom minus top fibers",
     "temperatureBending": "ΔT<sub>s</sub> ... Axial temperature change",
     "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
     "temperatureDeltaTs": "ΔT<sub>s</sub>",

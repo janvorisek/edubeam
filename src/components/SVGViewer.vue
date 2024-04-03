@@ -1596,7 +1596,7 @@ defineExpose({ centerContent, fitContent });
         marker-end: v-bind(dynamicMarker("moment_cw"));
       }
       &.decoration.moment.ccw {
-        marker-end: v-bind(dynamicMarker("#moment_ccw"));
+        marker-end: v-bind(dynamicMarker("moment_ccw"));
       }
       &.handle {
         stroke: transparent;

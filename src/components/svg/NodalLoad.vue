@@ -8,9 +8,11 @@ const props = withDefaults(
     scale: number;
     convertForce: (f: number) => number;
     fontSize?: number;
+    numberFormat?: Intl.NumberFormat;
   }>(),
   {
     fontSize: 13,
+    numberFormat: new Intl.NumberFormat(),
   }
 );
 
@@ -71,7 +73,7 @@ const targetCoords = computed(() => {
       :transform="`translate(${target.coords[0] + (fontSize + 8) / scale}
               ${target.coords[2] - (fontSize / 2 + 2) / scale})`"
     >
-      {{ Math.abs(convertForce(nload.values[4])).toFixed(2) }}
+      {{ numberFormat.format(Math.abs(convertForce(nload.values[4]))) }}
     </text>
 
     <text
@@ -94,9 +96,14 @@ const targetCoords = computed(() => {
                   scale
               })`"
     >
-      {{ convertForce(Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2])).toFixed(2) }}
+      {{
+        numberFormat.format(
+          convertForce(Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2]))
+        )
+      }}
       <template v-if="nload.values[0] !== 0 && nload.values[2] !== 0">
-        ({{ convertForce(nload.values[0]).toFixed(2) }}, {{ convertForce(nload.values[2]).toFixed(2) }})
+        ({{ numberFormat.format(convertForce(nload.values[0])) }};
+        {{ numberFormat.format(convertForce(nload.values[2])) }})
       </template>
     </text>
   </g>

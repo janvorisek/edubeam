@@ -21,10 +21,12 @@ const props = withDefaults(
     bendingMomentMultiplier: number;
     padding?: number;
     fontSize?: number;
+    numberFormat?: Intl.NumberFormat;
   }>(),
   {
     padding: 10,
     fontSize: 13,
+    numberFormat: new Intl.NumberFormat(),
   }
 );
 
@@ -339,7 +341,7 @@ const emit = defineEmits(["elementmousemove", "elementpointerup"]);
           :text-anchor="mv[2] > 0 ? 'end' : 'start'"
           dominant-baseline="baseline"
         >
-          {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
+          {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }}
         </text>
         <text
           :font-size="fontSize / scale"
@@ -348,7 +350,7 @@ const emit = defineEmits(["elementmousemove", "elementpointerup"]);
           :text-anchor="mv[2] > 0 ? 'end' : 'start'"
           dominant-baseline="baseline"
         >
-          {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
+          {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }}
         </text>
       </g>
     </g>
@@ -367,7 +369,7 @@ const emit = defineEmits(["elementmousemove", "elementpointerup"]);
           :text-anchor="mv[2] > 0 ? 'end' : 'start'"
           dominant-baseline="baseline"
         >
-          {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
+          {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }}
         </text>
         <text
           :font-size="fontSize / scale"
@@ -376,7 +378,7 @@ const emit = defineEmits(["elementmousemove", "elementpointerup"]);
           :text-anchor="mv[2] > 0 ? 'end' : 'start'"
           dominant-baseline="baseline"
         >
-          {{ Math.abs(mv[2]) < 1e-6 ? 0 : mv[2].toFixed(2) }}
+          {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }}
         </text>
       </g>
     </g>
@@ -403,7 +405,7 @@ const emit = defineEmits(["elementmousemove", "elementpointerup"]);
           dominant-baseline="baseline"
           :transform="`translate(${mv[4]} ${mv[5]})`"
         >
-          {{ Math.abs(mv[6]) < 1e-6 ? 0 : mv[6].toFixed(2) }}
+          {{ numberFormat.format(Math.abs(mv[6]) < 1e-6 ? 0 : mv[6]) }}
         </text>
         <text
           :font-size="fontSize / scale"
@@ -413,7 +415,7 @@ const emit = defineEmits(["elementmousemove", "elementpointerup"]);
           dominant-baseline="baseline"
           :transform="`translate(${mv[4]} ${mv[5]})`"
         >
-          {{ Math.abs(mv[6]) < 1e-6 ? 0 : mv[6].toFixed(2) }}
+          {{ numberFormat.format(Math.abs(mv[6]) < 1e-6 ? 0 : mv[6]) }}
         </text>
       </g>
     </g>

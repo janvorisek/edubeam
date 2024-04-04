@@ -8,8 +8,9 @@ const props = withDefaults(
     scale: number;
     convertForce: (f: number) => number;
     fontSize?: number;
+    numberFormat?: Intl.NumberFormat;
   }>(),
-  { fontSize: 13 }
+  { fontSize: 13, numberFormat: new Intl.NumberFormat() }
 );
 
 const target = computed(() => {
@@ -81,9 +82,14 @@ const eloadPts = computed(() => {
                   scale
               })`"
     >
-      {{ convertForce(Math.sqrt(eload.values[0] * eload.values[0] + eload.values[1] * eload.values[1])).toFixed(2) }}
+      {{
+        numberFormat.format(
+          convertForce(Math.sqrt(eload.values[0] * eload.values[0] + eload.values[1] * eload.values[1]))
+        )
+      }}
       <template v-if="eload.values[0] !== 0 && eload.values[1] !== 0">
-        ({{ convertForce(eload.values[0]).toFixed(2) }}, {{ convertForce(eload.values[1]).toFixed(2) }})
+        ({{ numberFormat.format(convertForce(eload.values[0])) }};
+        {{ numberFormat.format(convertForce(eload.values[1])) }})
       </template>
     </text>
   </g>

@@ -22,6 +22,10 @@ export const useAppStore = defineStore(
     const bottomBarHeight = ref(226);
 
     const locale = ref(suggestLanguage());
+    const numberFormatter = ref(
+      new Intl.NumberFormat(locale.value, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    );
+
     const units = reactive({
       Length: "m",
       Area: "m2",
@@ -91,6 +95,7 @@ export const useAppStore = defineStore(
 
     watch(locale, (newLocale) => {
       setLocale(newLocale);
+      numberFormatter.value = new Intl.NumberFormat(newLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     });
 
     const dialogs = reactive({
@@ -112,7 +117,6 @@ export const useAppStore = defineStore(
 
     const tabs: Ref<
       {
-        id: string;
         title: string;
         component: Raw<Component>;
         props: { id?: string };
@@ -149,6 +153,7 @@ export const useAppStore = defineStore(
       bottomBarOpen,
       bottomBarHeight,
       locale,
+      numberFormatter,
       units,
       dialogs,
       zooming,

@@ -9,9 +9,11 @@ const props = withDefaults(
     convertLength: (f: number) => number;
     multiplier: number;
     fontSize?: number;
+    numberFormat?: Intl.NumberFormat;
   }>(),
   {
     fontSize: 13,
+    numberFormat: new Intl.NumberFormat(),
   }
 );
 
@@ -45,9 +47,9 @@ const target = computed(() => {
       }
               ${target.coords[2] + (nload.prescribedValues[2] * props.multiplier) / scale})`"
     >
-      {{ convertLength(nload.prescribedValues[0]).toFixed(2) }},
-      {{ convertLength(nload.prescribedValues[2]).toFixed(2) }},
-      {{ nload.prescribedValues[4].toFixed(2) }}
+      {{ numberFormat.format(convertLength(nload.prescribedValues[0])) }};
+      {{ numberFormat.format(convertLength(nload.prescribedValues[2])) }};
+      {{ numberFormat.format(nload.prescribedValues[4]) }}
     </text>
   </g>
 </template>

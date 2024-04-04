@@ -8,9 +8,11 @@ const props = withDefaults(
     scale: number;
     convertForce: (f: number) => number;
     fontSize?: number;
+    numberFormat?: Intl.NumberFormat;
   }>(),
   {
     fontSize: 13,
+    numberFormat: new Intl.NumberFormat(),
   }
 );
 
@@ -211,7 +213,7 @@ const eloadForces = computed(() => {
         dominant-baseline="middle"
         :transform="eloadLabels[0]"
       >
-        {{ Math.abs(convertForce(eload.values[0])).toFixed(2) }}
+        {{ numberFormat.format(Math.abs(convertForce(eload.values[0]))) }}
       </text>
       <text
         v-if="eload.values[1] !== 0"
@@ -221,7 +223,7 @@ const eloadForces = computed(() => {
         dominant-baseline="middle"
         :transform="eloadLabels[1]"
       >
-        {{ Math.abs(convertForce(eload.values[1])).toFixed(2) }}
+        {{ numberFormat.format(Math.abs(convertForce(eload.values[1]))) }}
       </text> </g
     >``
     <polygon

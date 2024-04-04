@@ -15,9 +15,11 @@ const props = withDefaults(
     loadCase: LoadCase;
     multiplier: number;
     fontSize?: number;
+    numberFormat?: Intl.NumberFormat;
   }>(),
   {
     fontSize: 13,
+    numberFormat: new Intl.NumberFormat(),
   }
 );
 
@@ -274,7 +276,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
       dominant-baseline="baseline"
       :transform="reactionLabelZ"
     >
-      {{ convertForce(Math.abs(getReaction(node, DofID.Dz))).toFixed(2) }}
+      {{ numberFormat.format(convertForce(Math.abs(getReaction(node, DofID.Dz)))) }}
     </text>
 
     <polyline
@@ -307,7 +309,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
       dominant-baseline="baseline"
       :transform="reactionLabelX"
     >
-      {{ convertForce(Math.abs(getReaction(node, DofID.Dx))).toFixed(2) }}
+      {{ numberFormat.format(convertForce(Math.abs(getReaction(node, DofID.Dx)))) }}
     </text>
 
     <polyline
@@ -340,7 +342,7 @@ const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]
       :transform="`translate(${node.coords[0] + 15 / scale}
               ${node.coords[2] - 15 / scale})`"
     >
-      {{ convertForce(Math.abs(getReaction(node, DofID.Ry))).toFixed(2) }}
+      {{ numberFormat.format(convertForce(Math.abs(getReaction(node, DofID.Ry)))) }}
     </text>
 
     <g v-if="loadCase.solved && showDeformedShape && isConnected" :transform="deformedPosition">

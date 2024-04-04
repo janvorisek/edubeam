@@ -140,13 +140,13 @@ const reactionLabelX = computed(() => {
     const rxx = props.node.lcs[0][0];
     const rxz = props.node.lcs[0][2];
 
-    const x = `translate(${props.node.coords[0] - (Math.sign(getReaction(props.node, DofID.Dx)) * 40 * rxx) / props.scale}
-              ${props.node.coords[2] - (Math.sign(getReaction(props.node, DofID.Dx)) * 40 * rxz) / props.scale})`;
+    const x = `translate(${props.node.coords[0] - (Math.sign(getReaction(props.node, DofID.Dx)) * 45 * rxx) / props.scale}
+              ${props.node.coords[2] - (Math.sign(getReaction(props.node, DofID.Dx)) * 45 * rxz) / props.scale})`;
 
     return x;
   }
 
-  const x = `translate(${props.node.coords[0] - (Math.sign(getReaction(props.node, DofID.Dx)) * 40) / props.scale}
+  const x = `translate(${props.node.coords[0] - (Math.sign(getReaction(props.node, DofID.Dx)) * 45) / props.scale}
               ${props.node.coords[2]})`;
   return x;
 });
@@ -156,13 +156,13 @@ const reactionLabelZ = computed(() => {
     const rzx = props.node.lcs[2][0];
     const rzz = props.node.lcs[2][2];
 
-    const z = `translate(${props.node.coords[0] - (Math.sign(getReaction(props.node, DofID.Dz)) * 40 * rzx) / props.scale}
-              ${props.node.coords[2] - (Math.sign(getReaction(props.node, DofID.Dz)) * 40 * rzz) / props.scale})`;
+    const z = `translate(${props.node.coords[0] - (Math.sign(getReaction(props.node, DofID.Dz)) * 45 * rzx) / props.scale}
+              ${props.node.coords[2] - (Math.sign(getReaction(props.node, DofID.Dz)) * 45 * rzz) / props.scale})`;
 
     return z;
   }
 
-  const z = `translate(${props.node.coords[0]}
+  const z = `translate(${props.node.coords[0] - 5 / props.scale}
               ${props.node.coords[2] - (Math.sign(getReaction(props.node, DofID.Dz)) * 40) / props.scale})`;
 
   return z;

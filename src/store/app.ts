@@ -21,8 +21,6 @@ export const useAppStore = defineStore(
     const bottomBarOpen = ref(!isMobile());
     const bottomBarHeight = ref(226);
 
-    console.log(isMobile());
-
     const locale = ref(suggestLanguage());
     const units = reactive({
       Length: "m",

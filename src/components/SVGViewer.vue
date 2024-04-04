@@ -53,11 +53,9 @@ import { formatMeasureAsHTML } from "../SVGUtils";
 import Selection from "./Selection.vue";
 
 import { useLayoutStore } from "@/store/layout";
-import AddNodeVue from "./dialogs/AddNode.vue";
 import { Command, IKeyValue, undoRedoManager } from "../CommandManager";
 import { EventType, eventBus } from "../EventBus";
 import { BeamConcentratedLoad } from "ts-fem";
-import { float2String } from "../utils/index";
 
 const props = defineProps<{
   id: string;

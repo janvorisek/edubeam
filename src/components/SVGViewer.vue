@@ -323,15 +323,15 @@ const onPrescribedBCHover = (e: MouseEvent, el: PrescribedDisplacement) => {
   tt.style.left = e.offsetX + "px";
   tooltipContent.innerHTML = `<strong>${t("loads.prescribedDisplacement")}</strong><br>`;
   if (Math.abs(el.prescribedValues[0]) > 1e-32) {
-    tooltipContent.innerHTML += `D<sub>x</sub> = ${appStore.convertForce(el.prescribedValues[0])} ${appStore.units.Length}<br>`;
+    tooltipContent.innerHTML += `D<sub>x</sub> = ${appStore.convertLength(el.prescribedValues[0])} ${appStore.units.Length}<br>`;
   }
 
   if (Math.abs(el.prescribedValues[2]) > 1e-32) {
-    tooltipContent.innerHTML += `D<sub>z</sub> = ${appStore.convertForce(el.prescribedValues[2])} ${appStore.units.Length}<br>`;
+    tooltipContent.innerHTML += `D<sub>z</sub> = ${appStore.convertLength(el.prescribedValues[2])} ${appStore.units.Length}<br>`;
   }
 
   if (Math.abs(el.prescribedValues[4]) > 1e-32) {
-    tooltipContent.innerHTML += `R<sub>y</sub> = ${appStore.convertForce(el.prescribedValues[4])} ${appStore.units.Angle}`;
+    tooltipContent.innerHTML += `R<sub>y</sub> = ${el.prescribedValues[4]} ${appStore.units.Angle}`;
   }
 
   tt.style.display = "block";

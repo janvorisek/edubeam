@@ -120,7 +120,7 @@ onMounted(() => {
 
   if (name) {
     clearMesh();
-    deserializeModel(name, solver);
+    deserializeModel(name, solver, useProjectStore().dimensions);
     solve();
 
     const url = document.location.href;

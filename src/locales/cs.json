@@ -34,7 +34,8 @@
     "confirm": "Potvrdit",
     "openProject": "Otevřít projekt",
     "saveProject": "Uložit projekt",
-    "lcs": "Lokální souřadný systém"
+    "lcs": "Lokální souřadný systém",
+    "paste": "Vložit"
   },
   "tabs": {
     "nodes": "Uzly",
@@ -287,5 +288,8 @@
     "udl": "Spojité rovnoměrné zatížení",
     "temperature": "Změna teploty",
     "loadType": "Typ zatížení"
+  },
+  "dimensioning": {
+    "add_dimension": "Přidat kótu"
   }
 }

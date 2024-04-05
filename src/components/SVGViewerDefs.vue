@@ -57,9 +57,21 @@ const props = withDefaults(
       markerWidth="12"
       markerHeight="12"
       orient="auto-start-reverse"
-      markerUnits="strokeWidth"
+      markerUnits="userSpaceOnUse"
     >
       <path d="M 0 0 L 10 5 L 0 10 z" :fill="colors.loads" />
+    </marker>
+    <marker
+      :id="`${id}-arrow_selected`"
+      viewBox="0 0 10 10"
+      refX="5"
+      refY="5"
+      markerWidth="12"
+      markerHeight="12"
+      orient="auto-start-reverse"
+      markerUnits="userSpaceOnUse"
+    >
+      <path d="M 0 0 L 10 5 L 0 10 z" :fill="`blue`" />
     </marker>
     <marker
       :id="`${id}-arrow_reaction`"
@@ -83,7 +95,7 @@ const props = withDefaults(
       orient="auto-start-reverse"
       markerUnits="userSpaceOnUse"
     >
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="blue" />
+      <path d="M 0 0 L 10 5 L 0 10 z" :fill="colors.loads" />
     </marker>
     <marker
       :id="`${id}-moment_reaction_ccw`"
@@ -142,16 +154,42 @@ const props = withDefaults(
       viewBox="0 0 20 60"
       refX="10"
       refY="60"
+      :markerWidth="20 / scale"
+      :markerHeight="50 / scale"
+      overflow="visible"
+      markerUnits="userSpaceOnUse"
+      :marker-end="`url(#${id}-arrow`"
+    >
+      <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" stroke-width="3" fill="none" :stroke="colors.loads" />
+    </marker>
+    <marker
+      :id="`${id}-moment_cw_hover`"
+      viewBox="0 0 20 60"
+      refX="-20"
+      refY="45"
+      :markerWidth="20 / scale"
+      :markerHeight="50 / scale"
+      overflow="visible"
+      markerUnits="userSpaceOnUse"
+      :marker-end="`url(#${id}-arrow)`"
+    >
+      <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" stroke-width="3" fill="none" :stroke="colors.loads" />
+    </marker>
+    <marker
+      :id="`${id}-moment_ccw_selected`"
+      viewBox="0 0 20 60"
+      refX="10"
+      refY="60"
       markerWidth="20"
       markerHeight="50"
       overflow="visible"
       markerUnits="strokeWidth"
-      :marker-end="`url(#${id}-arrow_hover)`"
+      :marker-end="`url(#${id}-arrow_selected)`"
     >
       <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" stroke-width="3" fill="none" stroke="blue" />
     </marker>
     <marker
-      :id="`${id}-moment_cw_hover`"
+      :id="`${id}-moment_cw_selected`"
       viewBox="0 0 20 60"
       refX="-20"
       refY="45"
@@ -159,7 +197,7 @@ const props = withDefaults(
       markerHeight="50"
       overflow="visible"
       markerUnits="strokeWidth"
-      :marker-end="`url(#${id}-arrow_hover)`"
+      :marker-end="`url(#${id}-arrow_selected)`"
     >
       <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" stroke-width="3" fill="none" stroke="blue" />
     </marker>
@@ -212,10 +250,22 @@ const props = withDefaults(
       overflow="visible"
       markerUnits="userSpaceOnUse"
     >
-      <polyline points="5,45 10,55 15,45" stroke-width="1" fill="blue" stroke="blue" />
-      <line y1="55" x1="10" y2="11" x2="10" stroke-width="3" stroke="blue" />
+      <polyline points="5,45 10,55 15,45" stroke-width="1" :fill="colors.loads" :stroke="colors.loads" />
+      <line y1="55" x1="10" y2="11" x2="10" stroke-width="3" :stroke="colors.loads" />
     </marker>
-
+    <marker
+      :id="`${id}-force_selected`"
+      viewBox="0 0 20 60"
+      refX="10"
+      refY="60"
+      :markerWidth="20 / scale"
+      :markerHeight="50 / scale"
+      overflow="visible"
+      markerUnits="userSpaceOnUse"
+    >
+      <polyline points="5,45 10,55 15,45" stroke-width="1" :fill="`blue`" :stroke="`blue`" />
+      <line y1="55" x1="10" y2="11" x2="10" stroke-width="3" :stroke="`blue`" />
+    </marker>
     <marker
       :id="`${id}-force_centered`"
       viewBox="0 0 20 60"
@@ -254,15 +304,15 @@ const props = withDefaults(
       orient="auto"
       markerUnits="userSpaceOnUse"
     >
-      <line y1="6" x1="0" y2="44" x2="0" :stroke-width="2" stroke="black" />
+      <line y1="6" x1="0" y2="40" x2="0" :stroke-width="2 / supportSize" stroke="black" />
       <line
-        v-for="i in 6"
+        v-for="i in 7"
         :key="i"
-        :y1="(i * 50) / 7"
+        :y1="(i * 40) / 7"
         x1="0"
-        :y2="10 + (i * 50) / 7"
+        :y2="10 + (i * 40) / 7"
         x2="-10"
-        :stroke-width="1"
+        :stroke-width="1 / supportSize"
         stroke="black"
         fill="none"
       />
@@ -279,7 +329,7 @@ const props = withDefaults(
       orient="auto"
       markerUnits="userSpaceOnUse"
     >
-      <polyline points="10,0 -5,20 25,20 10,0" :stroke-width="1" fill="transparent" stroke="black" />
+      <polyline points="10,0 -5,20 25,20 10,0" :stroke-width="1 / supportSize" fill="transparent" stroke="black" />
     </marker>
 
     <marker
@@ -293,8 +343,8 @@ const props = withDefaults(
       orient="auto"
       markerUnits="userSpaceOnUse"
     >
-      <polyline points="10,0 -5,20 25,20 10,0" :stroke-width="1" fill="transparent" stroke="black" />
-      <line y1="25" x1="-5" y2="25" x2="25" :stroke-width="1" stroke="black" />
+      <polyline points="10,0 -5,20 25,20 10,0" :stroke-width="1 / supportSize" fill="transparent" stroke="black" />
+      <line y1="25" x1="-5" y2="25" x2="25" :stroke-width="1 / supportSize" stroke="black" />
     </marker>
 
     <marker
@@ -308,8 +358,8 @@ const props = withDefaults(
       orient="auto"
       markerUnits="userSpaceOnUse"
     >
-      <polyline points="0,10 20,-5 20,25 0,10" :stroke-width="1" fill="transparent" stroke="black" />
-      <line y1="-5" x1="25" y2="25" x2="25" :stroke-width="1" stroke="black" />
+      <polyline points="0,10 20,-5 20,25 0,10" :stroke-width="1 / supportSize" fill="transparent" stroke="black" />
+      <line y1="-5" x1="25" y2="25" x2="25" :stroke-width="1 / supportSize" stroke="black" />
     </marker>
 
     <marker

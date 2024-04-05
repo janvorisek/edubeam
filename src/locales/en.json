@@ -39,7 +39,8 @@
     "confirm": "Confirm",
     "saveProject": "Save project",
     "openProject": "Open project",
-    "lcs": "Local Coordinate System"
+    "lcs": "Local Coordinate System",
+    "paste": "Paste"
   },
   "nodes": {
     "addNode": "Add node",
@@ -291,5 +292,8 @@
     "concentrated": "Concentrated load",
     "udl": "Uniformly distributed load",
     "temperature": "Temperature load"
+  },
+  "dimensioning": {
+    "add_dimension": "Add dimension"
   }
 }

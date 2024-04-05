@@ -6,4 +6,5 @@ export enum MouseMode {
   ADD_NODE,
   ADD_ELEMENT,
   ADD_DIMLINE,
+  PASTE_CLIPBOARD,
 }

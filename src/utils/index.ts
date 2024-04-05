@@ -1016,3 +1016,18 @@ export function isMobile(): boolean {
 
   return isMobile || screenWidth < mobileScreenWidthThreshold;
 }
+
+export const copyNode = (n: Node, d: { x: number; z: number }) => {
+  let newNodeId = n.domain.nodes.size + 1;
+
+  while (n.domain.nodes.has(newNodeId.toString())) {
+    newNodeId++;
+  }
+
+  // Add node
+  n.domain.createNode(newNodeId.toString(), [n.coords[0] + d.x, n.coords[1], n.coords[2] + d.z], [...n.bcs.values()]);
+
+  if (n.hasLcs()) n.domain.nodes.get(newNodeId.toString()).updateLcs({ locx: n.lcs[0], locy: n.lcs[1] });
+
+  return newNodeId.toString();
+};

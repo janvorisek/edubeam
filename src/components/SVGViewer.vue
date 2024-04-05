@@ -57,6 +57,7 @@ import { useLayoutStore } from "@/store/layout";
 import { Command, IKeyValue, undoRedoManager } from "../CommandManager";
 import { EventType, eventBus } from "../EventBus";
 import { BeamConcentratedLoad } from "ts-fem";
+import { useClipboardStore } from "../store/clipboard";
 
 const props = defineProps<{
   id: string;
@@ -69,6 +70,7 @@ const mouseYReal = ref(0);
 
 const startNode = ref<{ label: string | number; x: number; y: number } | null>(null);
 const endNode = ref<Node | null>(new Node("~932:d\nxADsfsa", null, [0, 0, 0]));
+const deltaPaste = ref<{ x: number; y: number } | null>({ x: 0, y: 0 });
 const dimlineDist = ref(64);
 
 const appStore = useAppStore();
@@ -165,13 +167,13 @@ const onUpdate = throttle((zooming: boolean) => {
   if (grid.value) grid.value.refreshGrid(zooming);
 }, 1000 / 10);
 
-const { escape, f, c, _delete } = useMagicKeys({
+const { current, escape, f, c, _delete } = useMagicKeys({
   aliasMap: {
     _delete: "delete",
   },
 });
 
-const { ctrl_a } = useMagicKeys({
+const { ctrl_a, ctrl_c, ctrl_v } = useMagicKeys({
   passive: false,
   onEventFired(e) {
     if ("activeElement" in document && document.activeElement.tagName !== "BODY") return;
@@ -186,7 +188,7 @@ watch(f, (v) => {
 
 watch(c, (v) => {
   if ("activeElement" in document && document.activeElement.tagName !== "BODY") return;
-  if (v) centerContent();
+  if (v && !current.has("control")) centerContent();
 });
 
 watch(_delete, (v) => {
@@ -204,6 +206,20 @@ watch(ctrl_a, (v) => {
   }
 });
 
+watch(ctrl_c, (v) => {
+  if ("activeElement" in document && document.activeElement.tagName !== "BODY") return;
+  if (v) {
+    useClipboardStore().select(projectStore.selection2);
+  }
+});
+
+watch(ctrl_v, (v) => {
+  if ("activeElement" in document && document.activeElement.tagName !== "BODY") return;
+  if (v) {
+    paste();
+  }
+});
+
 watch(escape, (v) => {
   if (v) {
     if ("activeElement" in document) (document.activeElement as HTMLElement).blur();
@@ -215,6 +231,17 @@ watch(escape, (v) => {
     //viewerStore.settingsOpen = false;
   }
 });
+
+const paste = () => {
+  const midpoint = useClipboardStore().midpoint();
+  deltaPaste.value = {
+    x: mouseXReal.value - midpoint[0],
+    y: mouseYReal.value - midpoint[2],
+  };
+
+  startNode.value = { label: "null", x: mouseXReal.value, y: mouseYReal.value };
+  appStore.mouseMode = MouseMode.PASTE_CLIPBOARD;
+};
 
 const onElementHover = (e: MouseEvent, el: Beam2D) => {
   if (appStore.mouseMode === MouseMode.MOVING) return;
@@ -636,6 +663,16 @@ const onMouseDown = (e: PointerEvent) => {
     //mouseStartX = e.offsetX;
     //mouseStartY = e.offsetY;
 
+    if (appStore.mouseMode === MouseMode.PASTE_CLIPBOARD) {
+      appStore.mouseMode = MouseMode.NONE;
+      useClipboardStore().paste({
+        x: mouseXReal.value - startNode.value.x + deltaPaste.value.x,
+        z: mouseYReal.value - startNode.value.y + deltaPaste.value.y,
+      });
+      startNode.value = null;
+      return;
+    }
+
     if (appStore.mouseMode === MouseMode.ADD_NODE) {
       mouseStartX = -9999;
 
@@ -922,6 +959,9 @@ const onMouseUp = (e: MouseEvent) => {
   if (appStore.mouseMode === MouseMode.SELECTING) {
     const selectedNodes = [];
     const selectedElements = [];
+    const selectedNodalLoads = [];
+    const selectedElementLoads = [];
+    const selectedPrescribedBC = [];
 
     const current = clientToSvgCoords({ x: e.clientX, y: e.clientY }, svg.value!);
     const prev = clientToSvgCoords({ x: appStore.mouse.sx, y: appStore.mouse.sy }, svg.value!);
@@ -935,6 +975,22 @@ const onMouseUp = (e: MouseEvent) => {
     for (const [label, n] of useProjectStore().solver.domain.nodes) {
       if (n.coords[0] > rx1 && n.coords[0] < rx2 && n.coords[2] > ry1 && n.coords[2] < ry2) {
         selectedNodes.push(label);
+
+        // Also select corresponding nodal load
+        for (let i = 0; i < useProjectStore().solver.loadCases[0].nodalLoadList.length; i++) {
+          const nl = useProjectStore().solver.loadCases[0].nodalLoadList[i];
+          if (nl.target === label) {
+            selectedNodalLoads.push(i);
+          }
+        }
+
+        // Also select corresponding prescribed BC
+        for (let i = 0; i < useProjectStore().solver.loadCases[0].prescribedBC.length; i++) {
+          const nl = useProjectStore().solver.loadCases[0].prescribedBC[i];
+          if (nl.target === label) {
+            selectedPrescribedBC.push(i);
+          }
+        }
       }
     }
 
@@ -952,6 +1008,14 @@ const onMouseUp = (e: MouseEvent) => {
         )
       ) {
         selectedElements.push(label);
+
+        // Select corresponding element loads
+        for (let i = 0; i < useProjectStore().solver.loadCases[0].elementLoadList.length; i++) {
+          const el = useProjectStore().solver.loadCases[0].elementLoadList[i];
+          if (el.target === label) {
+            selectedElementLoads.push(i);
+          }
+        }
       }
     }
 
@@ -964,6 +1028,9 @@ const onMouseUp = (e: MouseEvent) => {
     projectStore.clearSelection2();
     projectStore.selection2.elements = selectedElements;
     projectStore.selection2.nodes = selectedNodes;
+    projectStore.selection2.nodalLoads = selectedNodalLoads;
+    projectStore.selection2.elementLoads = selectedElementLoads;
+    projectStore.selection2.prescribedBC = selectedPrescribedBC;
   }
 
   appStore.mouseMode = MouseMode.NONE;
@@ -1127,12 +1194,24 @@ defineExpose({ centerContent, fitContent });
         </template>
       </context-menu-item>
       <context-menu-item
-        :label="$t('common.copy')"
         :disabled="!projectStore.isAnythingSelected2()"
-        @click="alertContextMenuItemClicked('Item1')"
+        @click="useClipboardStore().select(projectStore.selection2)"
       >
         <template #icon>
           <v-icon size="x-small">mdi-content-copy</v-icon>
+        </template>
+        <template #label>
+          <span class="label">{{ $t("common.copy") }}</span>
+          <span class="ml-auto text-right" style="font-size: 10px">Ctrl + C</span>
+        </template>
+      </context-menu-item>
+      <context-menu-item :disabled="!useClipboardStore().isAnythingInClipboard()" @click="paste()">
+        <template #icon>
+          <v-icon size="x-small">mdi-content-copy</v-icon>
+        </template>
+        <template #label>
+          <span class="label">{{ $t("common.paste") }}</span>
+          <span class="ml-auto text-right" style="font-size: 10px">Ctrl + V</span>
         </template>
       </context-menu-item>
       <context-menu-item
@@ -1180,7 +1259,13 @@ defineExpose({ centerContent, fitContent });
           :scale="scale"
         />
         <g ref="viewport">
-          <g v-if="appStore.mouseMode === MouseMode.ADD_NODE || appStore.mouseMode === MouseMode.ADD_ELEMENT">
+          <g
+            v-if="
+              appStore.mouseMode === MouseMode.ADD_NODE ||
+              appStore.mouseMode === MouseMode.ADD_ELEMENT ||
+              appStore.mouseMode === MouseMode.ADD_DIMLINE
+            "
+          >
             <rect
               :x="mouseXReal"
               :y="mouseYReal"
@@ -1191,6 +1276,16 @@ defineExpose({ centerContent, fitContent });
             />
           </g>
           <g v-if="appStore.mouseMode === MouseMode.ADD_ELEMENT && startNode !== null">
+            <line
+              :x1="startNode.x"
+              :y1="startNode.y"
+              :x2="mouseXReal"
+              :y2="mouseYReal"
+              :stroke-dasharray="intersected.type === 'node' ? `none` : `5 4`"
+              style="vector-effect: non-scaling-stroke; stroke-width: 2px; stroke: #aaa"
+            />
+          </g>
+          <g v-if="appStore.mouseMode === MouseMode.PASTE_CLIPBOARD">
             <line
               :x1="startNode.x"
               :y1="startNode.y"
@@ -1219,6 +1314,7 @@ defineExpose({ centerContent, fitContent });
                   :scale="scale"
                   :convert-force="appStore.convertForce"
                   :font-size="viewerStore.fontSize"
+                  :number-format="appStore.numberFormatter"
                 />
                 <SVGElementTemperatureLoad
                   v-else-if="loadType(eload) === 'temperature'"
@@ -1236,6 +1332,7 @@ defineExpose({ centerContent, fitContent });
                   :scale="scale"
                   :convert-force="appStore.convertForce"
                   :font-size="viewerStore.fontSize"
+                  :number-format="appStore.numberFormatter"
                 />
                 <SVGElementConcentratedLoad
                   v-else-if="eload instanceof BeamConcentratedLoad"
@@ -1253,6 +1350,7 @@ defineExpose({ centerContent, fitContent });
                   :scale="scale"
                   :convert-force="appStore.convertForce"
                   :font-size="viewerStore.fontSize"
+                  :number-format="appStore.numberFormatter"
                 />
               </template>
               <SVGNodalLoad
@@ -1270,6 +1368,7 @@ defineExpose({ centerContent, fitContent });
                 :scale="scale"
                 :convert-force="appStore.convertForce"
                 :font-size="viewerStore.fontSize"
+                :number-format="appStore.numberFormatter"
               />
               <SVGPrescribedDisplacement
                 :class="{ selected: projectStore.selection2.nodalLoads.includes(index) }"
@@ -1287,6 +1386,7 @@ defineExpose({ centerContent, fitContent });
                 :convert-length="appStore.convertLength"
                 :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
                 :font-size="viewerStore.fontSize"
+                :number-format="appStore.numberFormatter"
               />
             </g>
           </g>
@@ -1312,6 +1412,7 @@ defineExpose({ centerContent, fitContent });
               @elementmousemove="onElementHover($event, element)"
               @mouseleave="hideTooltip"
               @elementpointerup="onElementClick"
+              :number-format="appStore.numberFormatter"
             />
           </g>
 
@@ -1338,6 +1439,7 @@ defineExpose({ centerContent, fitContent });
                 :load-case="projectStore.solver.loadCases[0]"
                 :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
                 :font-size="viewerStore.fontSize"
+                :number-format="appStore.numberFormatter"
               />
             </OnLongPress>
           </g>
@@ -1360,6 +1462,50 @@ defineExpose({ centerContent, fitContent });
               :font-size="viewerStore.fontSize"
               :number-format="appStore.numberFormatter"
             />
+          </g>
+          <!-- Paste preview -->
+          <g
+            v-if="appStore.mouseMode === MouseMode.PASTE_CLIPBOARD"
+            :transform="`translate(${mouseXReal - startNode.x + deltaPaste.x}, ${mouseYReal - startNode.y + deltaPaste.y})`"
+          >
+            <g>
+              <SVGElement
+                v-for="(element, index) in useClipboardStore().selection.elements"
+                :key="`element-${index}`"
+                :element="projectStore.solver.domain.elements.get(element) as Beam2D"
+                :scale="scale"
+                :show-deformed-shape="false"
+                :show-normal-force="false"
+                :show-shear-force="false"
+                :show-bending-moment="false"
+                :show-label="false"
+                :load-case="projectStore.solver.loadCases[0]"
+                :deformed-shape-multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
+                :normal-force-multiplier="projectStore.normalForceScale * viewerStore.resultsScalePx_"
+                :shear-force-multiplier="projectStore.shearForceScale * viewerStore.resultsScalePx_"
+                :bending-moment-multiplier="projectStore.bendingMomentScale * viewerStore.resultsScalePx_"
+                :convert-force="appStore.convertForce"
+                :font-size="viewerStore.fontSize"
+                :number-format="appStore.numberFormatter"
+              />
+            </g>
+            <g class="nodes">
+              <SVGNode
+                v-for="(node, index) in useClipboardStore().selection.nodes"
+                :key="`node-${index}`"
+                :node="projectStore.solver.domain.nodes.get(node) as Node"
+                :scale="scale"
+                :show-label="false"
+                :show-supports="viewerStore.showSupports"
+                :show-deformed-shape="false"
+                :show-reactions="false"
+                :convert-force="appStore.convertForce"
+                :load-case="projectStore.solver.loadCases[0]"
+                :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
+                :font-size="viewerStore.fontSize"
+                :number-format="appStore.numberFormatter"
+              />
+            </g>
           </g>
         </g>
       </svg>
@@ -1506,6 +1652,7 @@ defineExpose({ centerContent, fitContent });
     stroke-linecap: butt;
     &:hover text {
       //fill: blue;
+      font-weight: bold;
     }
     &:hover path.drawable,
     &:hover polygon.drawable {
@@ -1532,9 +1679,11 @@ defineExpose({ centerContent, fitContent });
       text {
         fill: rgb(0, 55, 149);
       }
-      polygon {
+      polygon.drawable {
+        stroke: rgb(0, 94, 255);
+        stroke-width: 4px;
         stroke-linejoin: round;
-        fill: rgba(0, 55, 149, 0.1);
+        fill: rgba(0, 55, 149, 0.15);
       }
     }
   }
@@ -1667,7 +1816,8 @@ defineExpose({ centerContent, fitContent });
       }
     }
     &:hover text {
-      fill: blue;
+      //fill: blue;
+      font-weight: bold;
     }
     &:hover polyline.decoration.force {
       marker-end: v-bind(dynamicMarker("force_hover"));
@@ -1678,10 +1828,33 @@ defineExpose({ centerContent, fitContent });
     &:hover polyline.decoration.moment.ccw {
       marker-end: v-bind(dynamicMarker("moment_ccw_hover"));
     }
+    &.selected polyline.decoration.force {
+      marker-end: v-bind(dynamicMarker("force_selected"));
+    }
+    &.selected polyline.decoration.moment.cw {
+      marker-end: v-bind(dynamicMarker("moment_cw_selected"));
+    }
+    &.selected polyline.decoration.moment.ccw {
+      marker-end: v-bind(dynamicMarker("moment_ccw_selected"));
+    }
     &.selected {
       text {
         fill: rgb(0, 55, 149);
       }
+    }
+  }
+
+  .dimensioning {
+    polyline {
+      stroke: #000;
+      stroke-width: 1px;
+      fill: none;
+      vector-effect: non-scaling-stroke;
+    }
+
+    text {
+      text-anchor: middle;
+      dominant-baseline: text-bottom;
     }
   }
 
@@ -1731,6 +1904,11 @@ defineExpose({ centerContent, fitContent });
 
   .marker-forceTip {
     marker-end: v-bind(dynamicMarker("forceTip"));
+  }
+
+  .marker-dimTip {
+    marker-start: v-bind(dynamicMarker("dimTip"));
+    marker-end: v-bind(dynamicMarker("dimTip"));
   }
 
   .filter-text-label {

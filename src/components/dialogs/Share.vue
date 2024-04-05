@@ -24,7 +24,7 @@ const open = ref(true);
 const val = ref("");
 
 const shareMesh = () => {
-  const hash = serializeModel(useProjectStore().solver);
+  const hash = serializeModel(useProjectStore().solver, useProjectStore().dimensions);
 
   const modelURL = new URL(window.location as unknown as URL);
   modelURL.searchParams.set("model", hash);

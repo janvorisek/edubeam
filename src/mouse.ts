@@ -5,4 +5,5 @@ export enum MouseMode {
   MOVING,
   ADD_NODE,
   ADD_ELEMENT,
+  ADD_DIMLINE,
 }

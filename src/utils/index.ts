@@ -892,6 +892,11 @@ export const deleteNode = (id: string) => {
   setUnsolved();
   useProjectStore().clearSelection();
 
+  // delete relevant dimensioning
+  useProjectStore().dimensions = useProjectStore().dimensions.filter(
+    (dim) => dim.nodes[0].label !== id && dim.nodes[1].label !== id
+  );
+
   // delete elements first
   for (const [key, value] of useProjectStore().solver.domain.elements) {
     if (value.nodes[0] === id || value.nodes[1] === id) {

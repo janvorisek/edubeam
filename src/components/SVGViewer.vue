@@ -22,6 +22,7 @@ import SVGPrescribedDisplacement from "./svg/PrescribedDisplacement.vue";
 import SVGNode from "./svg/Node.vue";
 import SVGElement from "./svg/Element.vue";
 import SVGElementTemperatureLoad from "./svg/ElementTemperatureLoad.vue";
+import SVGDimensioning from "./svg/Dimensioning.vue";
 
 import { formatExpValueAsHTML } from "../SVGUtils";
 import { debounce, loadType, throttle } from "../utils";
@@ -67,6 +68,8 @@ const mouseXReal = ref(0);
 const mouseYReal = ref(0);
 
 const startNode = ref<{ label: string | number; x: number; y: number } | null>(null);
+const endNode = ref<Node | null>(new Node("~932:d\nxADsfsa", null, [0, 0, 0]));
+const dimlineDist = ref(64);
 
 const appStore = useAppStore();
 const projectStore = useProjectStore();
@@ -586,6 +589,11 @@ const mouseMove = (e: MouseEvent) => {
   mouseXReal.value = viewerStore.snapToGrid ? mouseXReal.value : mXReal / scale.value;
   mouseYReal.value = viewerStore.snapToGrid ? mouseYReal.value : mYReal / scale.value;
 
+  if (appStore.mouseMode === MouseMode.ADD_DIMLINE && startNode.value) {
+    endNode.value.coords[0] = mouseXReal.value;
+    endNode.value.coords[2] = mouseYReal.value;
+  }
+
   if (appStore.mouseMode === MouseMode.MOVING && intersected.value.type === "node") {
     const index = intersected.value.index;
     if (index === null) return;
@@ -806,6 +814,29 @@ const onMouseDown = (e: PointerEvent) => {
       return;
     }
 
+    if (appStore.mouseMode === MouseMode.ADD_DIMLINE) {
+      mouseStartX = -9999;
+      if (startNode.value === null && intersected.value.type === "node") {
+        const n = projectStore.solver.domain.nodes.get(intersected.value.index as string);
+        startNode.value = { label: intersected.value.index, x: n.coords[0], y: n.coords[2] };
+      } else if (intersected.value.type === "node") {
+        projectStore.dimensions.push({
+          distance: dimlineDist.value,
+          nodes: [
+            projectStore.solver.domain.nodes.get(startNode.value.label)!,
+            projectStore.solver.domain.nodes.get(intersected.value.index as string)!,
+          ],
+        });
+
+        startNode.value = null;
+        appStore.mouseMode = MouseMode.NONE;
+      } else {
+        // No effect when no node selected as end
+      }
+
+      return;
+    }
+
     if (appStore.mouseMode === MouseMode.HOVER) {
       appStore.mouseMode = MouseMode.MOVING;
     } else if (e.pointerType === "mouse") {
@@ -882,6 +913,7 @@ const clientToSvgCoords = (ecoords: { x: number; y: number }, svgElement: SVGSVG
 const onMouseUp = (e: MouseEvent) => {
   if (appStore.mouseMode === MouseMode.ADD_NODE) return;
   if (appStore.mouseMode === MouseMode.ADD_ELEMENT) return;
+  if (appStore.mouseMode === MouseMode.ADD_DIMLINE) return;
 
   if (appStore.mouseMode === MouseMode.MOVING) {
     moveNode();
@@ -1074,6 +1106,14 @@ defineExpose({ centerContent, fitContent });
         <template #label>
           <span class="label">{{ $t("elements.addElement") }}</span>
           <span class="ml-auto text-right" style="font-size: 10px">Hold Ctrl to add using mouse</span>
+        </template>
+      </context-menu-item>
+      <context-menu-item @click="appStore.mouseMode = MouseMode.ADD_DIMLINE">
+        <template #icon>
+          <v-icon size="x-small">mdi-arrow-expand-horizontal</v-icon>
+        </template>
+        <template #label>
+          <span class="label">{{ $t("dimensioning.add_dimension") }}</span>
         </template>
       </context-menu-item>
       <context-menu-sperator />
@@ -1300,6 +1340,26 @@ defineExpose({ centerContent, fitContent });
                 :font-size="viewerStore.fontSize"
               />
             </OnLongPress>
+          </g>
+          <g>
+            <SVGDimensioning
+              v-for="(dim, index) in projectStore.dimensions"
+              :key="index"
+              :nodes="dim.nodes"
+              :distance="dim.distance"
+              :scale="scale"
+              :font-size="viewerStore.fontSize"
+              :number-format="appStore.numberFormatter"
+            />
+            <SVGDimensioning
+              v-if="appStore.mouseMode === MouseMode.ADD_DIMLINE && startNode"
+              key="add-dimline"
+              :nodes="[projectStore.solver.domain.nodes.get(startNode.label)!, endNode]"
+              :distance="dimlineDist"
+              :scale="scale"
+              :font-size="viewerStore.fontSize"
+              :number-format="appStore.numberFormatter"
+            />
           </g>
         </g>
       </svg>

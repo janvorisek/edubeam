@@ -37,6 +37,19 @@ const props = withDefaults(
 <template>
   <defs>
     <marker
+      :id="`${id}-dimTip`"
+      viewBox="0 0 10 10"
+      refX="5"
+      refY="5"
+      :markerWidth="20 / scale"
+      :markerHeight="20 / scale"
+      orient="auto"
+      markerUnits="userSpaceOnUse"
+    >
+      <polyline points="5,0 5,8" stroke="black" :stroke-width="0.5" fill="none" />
+      <polyline points="8,2 2,8" stroke="black" :stroke-width="0.5" fill="none" />
+    </marker>
+    <marker
       :id="`${id}-arrow`"
       viewBox="0 0 10 10"
       refX="5"

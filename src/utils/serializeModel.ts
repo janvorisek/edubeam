@@ -36,7 +36,7 @@ function base64ToObject(base64String) {
   }
 }
 
-export const serializeModel = (ls: LinearStaticSolver) => {
+export const serializeModel = (ls: LinearStaticSolver, dims) => {
   const _nodes = [];
   const _elements = [];
   const _materials = [];
@@ -104,6 +104,7 @@ export const serializeModel = (ls: LinearStaticSolver) => {
     etl?: unknown[];
     nl?: unknown[];
     pd?: unknown[];
+    d: unknown[];
   } = {};
 
   if (_nodes.length > 0) obj.n = _nodes;
@@ -116,10 +117,14 @@ export const serializeModel = (ls: LinearStaticSolver) => {
   if (nloads.length > 0) obj.nl = nloads;
   if (pd.length > 0) obj.pd = pd;
 
+  obj.d = dims.map((e) => {
+    return [e.distance, e.nodes.map((n) => n.label)];
+  });
+
   return objectToBase64(obj);
 };
 
-export const deserializeModel = (base64String: string, ls: LinearStaticSolver) => {
+export const deserializeModel = (base64String: string, ls: LinearStaticSolver, dims) => {
   const tmp = base64ToObject(base64String);
 
   ls.domain.nodes.clear();
@@ -183,6 +188,12 @@ export const deserializeModel = (base64String: string, ls: LinearStaticSolver) =
   if ("pd" in tmp) {
     for (const e of tmp.pd) {
       ls.loadCases[0].createPrescribedDisplacement(e[0], e[1]);
+    }
+  }
+
+  if ("d" in tmp) {
+    for (const e of tmp.d) {
+      dims.push({ distance: e[0], nodes: e[1].map((n) => ls.domain.nodes.get(n)) });
     }
   }
 };

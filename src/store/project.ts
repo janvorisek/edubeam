@@ -1,6 +1,6 @@
 // Utilities
 import { defineStore } from "pinia";
-import { LinearStaticSolver, Beam2D } from "ts-fem";
+import { LinearStaticSolver, Beam2D, Node } from "ts-fem";
 import { ref, shallowRef, computed, reactive } from "vue";
 import { max, min } from "mathjs";
 import { deleteElement, deleteNode, deserializeModel, serializeModel, throttle } from "@/utils";
@@ -257,6 +257,8 @@ export const useProjectStore = defineStore(
       clearSelection2();
     };
 
+    const dimensions = ref<{ distance: number; nodes: Node[] }[]>([]);
+
     return {
       solve,
       model,
@@ -280,15 +282,16 @@ export const useProjectStore = defineStore(
       beams,
       materials,
       crossSections,
+      dimensions,
     };
   },
   {
     persist: [
       {
-        paths: ["solver"],
+        paths: ["solver", "dimensions"],
         serializer: {
           serialize: (value) => {
-            return serializeModel(value.solver);
+            return serializeModel(value.solver, value.dimensions);
           },
           deserialize: (value) => {
             if (value === undefined) return { _solver: "" };
@@ -299,7 +302,7 @@ export const useProjectStore = defineStore(
           if (ctx.store._solver === "") return;
 
           try {
-            deserializeModel(ctx.store._solver, ctx.store.solver);
+            deserializeModel(ctx.store._solver, ctx.store.solver, ctx.store.dimensions);
           } catch (e) {
             console.error(e);
           }

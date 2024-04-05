@@ -619,7 +619,7 @@
                   "
                   class="inline-edit"
                 />
-                <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Force)"></div>
+                <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Moment)"></div>
               </div>
             </div>
 
@@ -1215,7 +1215,7 @@
                       "
                     />
                     <div class="inline-edit fw pl-1" v-else v-html="formatExpValueAsHTML(0, 4)"></div>
-                    <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
+                    <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Angle)"></div>
                   </div>
                 </div>
               </template>
@@ -1731,13 +1731,12 @@ const headers = reactive({
       key: "alpha",
       width: 120,
     },
-
-    {
-      title: "material.density",
-      tooltip: "tooltip.material.density",
-      key: "d",
-      width: 120,
-    },
+    // {
+    //   title: "material.density",
+    //   tooltip: "tooltip.material.density",
+    //   key: "d",
+    //   width: 120,
+    // },
     {
       title: "common.actions",
       key: "actions",

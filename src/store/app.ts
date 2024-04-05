@@ -32,6 +32,7 @@ export const useAppStore = defineStore(
       AreaM2: "m4",
       Mass: "kg",
       Force: "kN",
+      Moment: computed(() => `${units.Force}${units.Length}`),
       Pressure: "MPa",
       ThermalExpansion: "1/K",
       Angle: "rad",

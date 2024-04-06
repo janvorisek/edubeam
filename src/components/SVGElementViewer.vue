@@ -118,6 +118,8 @@ const viewport = ref<SVGGElement>();
 const update = () => {
   fitContent();
 
+  if (!props.solver.loadCases[0].solved) return;
+
   let maxDefo = 0;
   let maxNormalForce = 0;
   let maxBendingMoment = 0;

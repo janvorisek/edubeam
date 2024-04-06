@@ -3,6 +3,7 @@ import { nextTick, onMounted, ref } from "vue";
 import { useAppStore } from "@/store/app";
 import { useProjectStore } from "../store/project";
 import { debounce } from "@/utils";
+import { useResizeObserver } from "@vueuse/core";
 
 const appStore = useAppStore();
 
@@ -28,6 +29,13 @@ const scale = ref(1);
 const zooming = ref(false);
 
 const touchPointer = ref({ x: 0, y: 0, ds: 0, move: false, pinch: false });
+
+const rootRef = ref<HTMLElement | null>(null);
+const svgRef = ref<SVGElement | null>(null);
+
+useResizeObserver(rootRef, () => {
+  onWindowResize();
+});
 
 const reset = () => {
   viewBox = { x: 0, y: 0, w: 0, h: 0 };
@@ -285,11 +293,11 @@ onMounted(() => {
     svgRef.value! = rootRef.value!.children[0] as SVGElement;
 
     //window.addEventListener('resize', onWindowResize)
-    const resizewatcher = new ResizeObserver(() => {
-      onWindowResize();
-    });
+    // const resizewatcher = new ResizeObserver(() => {
+    //   onWindowResize();
+    // });
 
-    resizewatcher.observe(rootRef.value!);
+    // resizewatcher.observe(rootRef.value!);
 
     svgRef.value!.setAttribute("overflow", "visible");
   });
@@ -317,9 +325,6 @@ const onMouseDown = () => {
 const onMouseUp = () => {
   //useAppStore().zooming = false;
 };
-
-const rootRef = ref<HTMLElement | null>(null);
-const svgRef = ref<SVGElement | null>(null);
 
 defineExpose({ scale, centerContent, fitContent, updateMatrix, onWindowResize, zoom, reset, zooming });
 </script>

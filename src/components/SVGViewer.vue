@@ -1237,10 +1237,10 @@ defineExpose({ centerContent, fitContent });
         <v-alert icon="$warning" density="compact" type="error" v-if="projectStore.materials.length === 0">
           <template #text>
             <div class="d-flex align-center">
-              No materials specified.
-              <v-btn variant="text" density="compact" size="small" @click="appStore.dialogs['addMaterial'] = true"
-                >Add new</v-btn
-              >
+              {{ $t("warnings.noMaterialsDefined") }}
+              <v-btn variant="text" density="compact" size="small" @click="appStore.dialogs['addMaterial'] = true">{{
+                $t("common.addNew")
+              }}</v-btn>
             </div>
           </template>
         </v-alert>
@@ -1249,9 +1249,13 @@ defineExpose({ centerContent, fitContent });
         <v-alert icon="$warning" density="compact" type="error" v-if="projectStore.crossSections.length === 0">
           <template #text>
             <div class="d-flex align-center">
-              No cross sections specified.
-              <v-btn variant="text" density="compact" size="small" @click="appStore.dialogs['addCrossSection'] = true"
-                >Add new</v-btn
+              {{ $t("warnings.noCrossSectionsDefined") }}
+              <v-btn
+                variant="text"
+                density="compact"
+                size="small"
+                @click="appStore.dialogs['addCrossSection'] = true"
+                >{{ $t("common.addNew") }}</v-btn
               >
             </div>
           </template>

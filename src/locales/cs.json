@@ -35,7 +35,8 @@
     "openProject": "Otevřít projekt",
     "saveProject": "Uložit projekt",
     "lcs": "Lokální souřadný systém",
-    "paste": "Vložit"
+    "paste": "Vložit",
+    "addNew": "Přidat"
   },
   "tabs": {
     "nodes": "Uzly",
@@ -291,5 +292,9 @@
   },
   "dimensioning": {
     "add_dimension": "Přidat kótu"
+  },
+  "warnings": {
+    "noMaterialsDefined": "Není definovaný žádný průřez",
+    "noCrossSectionsDefined": "Není definovaný žádný materiál"
   }
 }

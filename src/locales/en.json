@@ -40,7 +40,8 @@
     "saveProject": "Save project",
     "openProject": "Open project",
     "lcs": "Local Coordinate System",
-    "paste": "Paste"
+    "paste": "Paste",
+    "addNew": "Add new"
   },
   "nodes": {
     "addNode": "Add node",
@@ -295,5 +296,9 @@
   },
   "dimensioning": {
     "add_dimension": "Add dimension"
+  },
+  "warnings": {
+    "noMaterialsDefined": "No materials defined.",
+    "noCrossSectionsDefined": "No cross sections defined."
   }
 }

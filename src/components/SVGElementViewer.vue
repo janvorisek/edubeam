@@ -30,7 +30,7 @@ import { loadType } from "../utils/loadType";
 
 const props = withDefaults(
   defineProps<{
-    id: string;
+    id?: string;
     solver: LinearStaticSolver;
     showGrid?: boolean;
     showElements?: boolean;
@@ -69,6 +69,7 @@ const props = withDefaults(
     fontSize?: number;
   }>(),
   {
+    id: new Date().getTime().toString(),
     showGrid: false,
     showElements: true,
     showNodes: true,

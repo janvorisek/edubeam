@@ -1225,7 +1225,7 @@
             <v-data-table
               ref="table-results2"
               :headers="headers.results2"
-              :items="elements"
+              :items="useProjectStore().solver.loadCases[0].solved ? elements : []"
               density="compact"
               :height="props.height - 36 - 30"
               fixed-header

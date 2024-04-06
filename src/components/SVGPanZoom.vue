@@ -27,6 +27,7 @@ const props = withDefaults(
 let viewBox = { x: 0, y: 0, w: 1, h: 1 };
 const scale = ref(1);
 const zooming = ref(false);
+const panning = ref(false);
 
 const touchPointer = ref({ x: 0, y: 0, ds: 0, move: false, pinch: false });
 
@@ -106,6 +107,8 @@ const onMouseWheel = (event: WheelEvent): void => {
 const onTouchStart = (event: TouchEvent): void => {
   if (!props.touch) return;
 
+  panning.value = true;
+
   if (event.touches.length === 1) {
     touchPointer.value.x = event.touches[0].clientX;
     touchPointer.value.y = event.touches[0].clientY;
@@ -136,6 +139,7 @@ const onTouchEnd = (): void => {
   zooming.value = false;
   touchPointer.value.move = false;
   touchPointer.value.pinch = false;
+  panning.value = false;
 };
 
 const onTouchMove = (event: TouchEvent): void => {
@@ -320,13 +324,15 @@ onMounted(() => {
 
 const onMouseDown = () => {
   //useAppStore().zooming = true;
+  panning.value = true;
 };
 
 const onMouseUp = () => {
   //useAppStore().zooming = false;
+  panning.value = false;
 };
 
-defineExpose({ scale, centerContent, fitContent, updateMatrix, onWindowResize, zoom, reset, zooming });
+defineExpose({ scale, centerContent, fitContent, updateMatrix, onWindowResize, zoom, reset, zooming, panning });
 </script>
 
 <template>

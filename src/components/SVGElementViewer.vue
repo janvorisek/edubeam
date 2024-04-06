@@ -319,7 +319,6 @@ defineExpose({ centerContent, fitContent });
     text {
       fill: v-bind("colors.loads");
     }
-    pointer-events: all;
     stroke-linecap: butt;
     &:hover text {
       //fill: blue;

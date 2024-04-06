@@ -1072,6 +1072,10 @@ const isZooming = computed(() => {
   return panZoom.value?.zooming;
 });
 
+const isPanning = computed(() => {
+  return panZoom.value?.panning;
+});
+
 const dynamicMarker = (label: string) => {
   return `url(#${props.id}-${label})`;
 };
@@ -1289,7 +1293,7 @@ defineExpose({ centerContent, fitContent });
           :support-size="viewerStore.supportSize"
           :scale="scale"
         />
-        <g ref="viewport">
+        <g ref="viewport" :class="{ disablePointerEvents: isZooming || isPanning }">
           <g
             v-if="
               appStore.mouseMode === MouseMode.ADD_NODE ||
@@ -1674,12 +1678,15 @@ defineExpose({ centerContent, fitContent });
 </template>
 
 <style lang="scss" scoped>
+.disablePointerEvents {
+  pointer-events: none;
+}
+
 .svg-viewer :deep(*) {
   .element-load.load-1d {
     text {
       fill: v-bind("viewerStore.colors.loads");
     }
-    pointer-events: all;
     stroke-linecap: butt;
     &:hover text {
       //fill: blue;

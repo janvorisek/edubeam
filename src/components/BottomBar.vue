@@ -1764,6 +1764,7 @@ const headers = reactive({
     },
     {
       title: "crossSection.h",
+      units: "Length",
       key: "h",
       width: 160,
     },

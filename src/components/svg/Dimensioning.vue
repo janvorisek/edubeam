@@ -39,6 +39,9 @@ const normal = computed(() => {
   const dx = props.nodes[1].coords[0] - props.nodes[0].coords[0];
   const dz = props.nodes[1].coords[2] - props.nodes[0].coords[2];
   const length = Math.sqrt(dx * dx + dz * dz);
+
+  if (isNaN(length) || length === 0) return [0, 0];
+
   return [dz / length, -dx / length];
 });
 

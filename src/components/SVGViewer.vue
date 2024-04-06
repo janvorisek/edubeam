@@ -857,12 +857,18 @@ const onMouseDown = (e: PointerEvent) => {
         const n = projectStore.solver.domain.nodes.get(intersected.value.index as string);
         startNode.value = { label: intersected.value.index, x: n.coords[0], y: n.coords[2] };
       } else if (intersected.value.type === "node") {
+        const n1 = projectStore.solver.domain.nodes.get(startNode.value.label)!;
+        const n2 = projectStore.solver.domain.nodes.get(intersected.value.index as string)!;
+
+        if (n1.label === n2.label) {
+          startNode.value = null;
+          appStore.mouseMode = MouseMode.NONE;
+          return;
+        }
+
         projectStore.dimensions.push({
           distance: dimlineDist.value,
-          nodes: [
-            projectStore.solver.domain.nodes.get(startNode.value.label)!,
-            projectStore.solver.domain.nodes.get(intersected.value.index as string)!,
-          ],
+          nodes: [n1, n2],
         });
 
         startNode.value = null;

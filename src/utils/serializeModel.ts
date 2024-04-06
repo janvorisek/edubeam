@@ -198,7 +198,11 @@ export const deserializeModel = (base64String: string, ls: LinearStaticSolver, d
 
   if ("d" in tmp) {
     for (const e of tmp.d) {
-      dims.push({ distance: e[0], nodes: e[1].map((n) => ls.domain.nodes.get(n)) });
+      try {
+        dims.push({ distance: e[0], nodes: e[1].map((n) => ls.domain.getNode(n)) });
+      } catch (e) {
+        console.warn("Error deserializing dimensions: ", e);
+      }
     }
   }
 };

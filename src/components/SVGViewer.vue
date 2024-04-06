@@ -1232,6 +1232,33 @@ defineExpose({ centerContent, fitContent });
       <div class="content"></div>
     </div>
 
+    <div class="text-body-2 warning ga-1 d-flex flex-column pr-6">
+      <div style="width: fit-content">
+        <v-alert icon="$warning" density="compact" type="error" v-if="projectStore.materials.length === 0">
+          <template #text>
+            <div class="d-flex align-center">
+              No materials specified.
+              <v-btn variant="text" density="compact" size="small" @click="appStore.dialogs['addMaterial'] = true"
+                >Add new</v-btn
+              >
+            </div>
+          </template>
+        </v-alert>
+      </div>
+      <div style="width: fit-content">
+        <v-alert icon="$warning" density="compact" type="error" v-if="projectStore.crossSections.length === 0">
+          <template #text>
+            <div class="d-flex align-center">
+              No cross sections specified.
+              <v-btn variant="text" density="compact" size="small" @click="appStore.dialogs['addCrossSection'] = true"
+                >Add new</v-btn
+              >
+            </div>
+          </template>
+        </v-alert>
+      </div>
+    </div>
+
     <svg v-if="viewerStore.showGrid" class="w-100 fill-height" style="position: absolute">
       <SvgGrid ref="grid" :svg="svg as SVGSVGElement" :viewport="viewport as SVGGElement" :zoom="scale" />
     </svg>

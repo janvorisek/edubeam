@@ -354,3 +354,10 @@ select.mini-select {
 .v-window-item.v-window-item--active {
   display: block !important;
 }
+
+.warning {
+  position: absolute;
+  top: 64px;
+  left: 24px;
+  z-index: 55;
+}

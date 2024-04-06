@@ -1,7 +1,7 @@
 // Utilities
 import { defineStore } from "pinia";
 import { LinearStaticSolver, Beam2D, Node } from "ts-fem";
-import { ref, shallowRef, computed, reactive } from "vue";
+import { ref, computed, reactive } from "vue";
 import { max, min } from "mathjs";
 import { deleteElement, deleteNode, deserializeModel, serializeModel, throttle } from "@/utils";
 

@@ -1,10 +1,13 @@
 import {
+  Node,
   LinearStaticSolver,
   Beam2D,
   BeamElementUniformEdgeLoad,
   BeamConcentratedLoad,
   BeamTemperatureLoad,
 } from "ts-fem";
+
+type DimLine = { distance: number; nodes: Node[] };
 
 function objectToBase64(obj: unknown) {
   try {
@@ -36,7 +39,7 @@ function base64ToObject(base64String) {
   }
 }
 
-export const serializeModel = (ls: LinearStaticSolver, dims) => {
+export const serializeModel = (ls: LinearStaticSolver, dims: DimLine[]) => {
   const _nodes = [];
   const _elements = [];
   const _materials = [];
@@ -70,19 +73,19 @@ export const serializeModel = (ls: LinearStaticSolver, dims) => {
 
   ls.loadCases[0].elementLoadList
     .filter((el) => el instanceof BeamElementUniformEdgeLoad)
-    .forEach((load) => {
+    .forEach((load: BeamElementUniformEdgeLoad) => {
       eloads.push([load.target, load.values]);
     });
 
   ls.loadCases[0].elementLoadList
     .filter((el) => el instanceof BeamConcentratedLoad)
-    .forEach((load) => {
+    .forEach((load: BeamConcentratedLoad) => {
       ecloads.push([load.target, load.values]);
     });
 
   ls.loadCases[0].elementLoadList
     .filter((el) => el instanceof BeamTemperatureLoad)
-    .forEach((load) => {
+    .forEach((load: BeamTemperatureLoad) => {
       etloads.push([load.target, load.values]);
     });
 
@@ -104,7 +107,7 @@ export const serializeModel = (ls: LinearStaticSolver, dims) => {
     etl?: unknown[];
     nl?: unknown[];
     pd?: unknown[];
-    d: unknown[];
+    d?: unknown[];
   } = {};
 
   if (_nodes.length > 0) obj.n = _nodes;
@@ -129,6 +132,8 @@ export const deserializeModel = (base64String: string, ls: LinearStaticSolver, d
 
   ls.domain.nodes.clear();
   ls.domain.elements.clear();
+
+  if (tmp === null) return;
 
   if ("n" in tmp) {
     for (const e of tmp.n) {

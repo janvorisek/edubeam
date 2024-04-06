@@ -30,9 +30,6 @@ export function formatSupportNode(node: Node): string {
   for (const el of elements) {
     if (el.nodes.includes(node.label)) {
       const idx = el.nodes.indexOf(node.label);
-      const geo = el.computeGeo();
-      const sx = geo.dx / geo.l;
-      const sy = geo.dz / geo.l;
 
       if (idx === 0) {
         const node2 = node.domain.nodes.get(el.nodes[1])!;
@@ -382,8 +379,6 @@ export function formatElementLoadForces(eload: BeamElementUniformEdgeLoad, scale
   const geo = target.computeGeo();
   const nx = geo.dz / geo.l / scale;
   const nz = -geo.dx / geo.l / scale;
-  const nnx = (geo.dz * 40) / geo.l / scale;
-  const nnz = (-geo.dx * 40) / geo.l / scale;
 
   let nseg = Math.ceil((geo.l * scale) / 20);
   let segsize = geo.l / nseg;
@@ -439,7 +434,6 @@ export function formatElementLoadLabel(eload: BeamElementUniformEdgeLoad, scale:
   const nx = -geo.dz / geo.l;
 
   const n1 = eload.domain.nodes.get(target.nodes[0]) as Node;
-  const n2 = eload.domain.nodes.get(target.nodes[1]) as Node;
 
   const ncx = n1.coords[0]; //(n1.coords[0] + n2.coords[0]) / 2;
   const ncz = n1.coords[2]; //(n1.coords[2] + n2.coords[2]) / 2;

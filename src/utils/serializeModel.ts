@@ -34,7 +34,7 @@ function base64ToObject(base64String) {
 
     return obj;
   } catch (error) {
-    console.error("Error decoding base64 to object:", error);
+    console.warn("Error decoding base64 to object:", error);
     return null;
   }
 }

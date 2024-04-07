@@ -107,8 +107,6 @@ const onMouseWheel = (event: WheelEvent): void => {
 const onTouchStart = (event: TouchEvent): void => {
   if (!props.touch) return;
 
-  panning.value = true;
-
   if (event.touches.length === 1) {
     touchPointer.value.x = event.touches[0].clientX;
     touchPointer.value.y = event.touches[0].clientY;
@@ -146,6 +144,16 @@ const onTouchMove = (event: TouchEvent): void => {
   if (!props.touch) return;
 
   if (event.touches.length === 1 && touchPointer.value.move) {
+    // Only pan when sufficient distance
+    const dist = Math.hypot(
+      event.touches[0].clientX - touchPointer.value.x,
+      event.touches[0].clientY - touchPointer.value.y
+    );
+
+    if (dist < 10) return;
+
+    panning.value = true;
+
     viewBox.x -= (event.touches[0].clientX - touchPointer.value.x) / scale.value;
     viewBox.y -= (event.touches[0].clientY - touchPointer.value.y) / scale.value;
     updateMatrix();
@@ -168,6 +176,8 @@ const onTouchMove = (event: TouchEvent): void => {
 
 const onMouseMove = (event: MouseEvent): void => {
   if (event.buttons !== appStore.panButton) return;
+
+  panning.value = true;
 
   viewBox.x -= (event.movementX * 1) / scale.value;
   viewBox.y -= (event.movementY * 1) / scale.value;
@@ -324,7 +334,6 @@ onMounted(() => {
 
 const onMouseDown = () => {
   //useAppStore().zooming = true;
-  panning.value = true;
 };
 
 const onMouseUp = () => {

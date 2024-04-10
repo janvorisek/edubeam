@@ -76,7 +76,7 @@
                     ></v-text-field>
                   </v-col>
 
-                  <v-col cols="12" md="12">
+                  <v-col cols="12" md="12" v-if="loadType === 'udl'">
                     <v-checkbox
                       v-bind="props"
                       v-model="elementLCS"

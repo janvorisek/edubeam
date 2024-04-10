@@ -1004,7 +1004,7 @@
             color="secondary"
             :rounded="0"
             style="border-left: 1px solid #ccc"
-            @click.stop="showDialog('addMaterial')"
+            @click.stop="showDialog('addCrossSection')"
           >
             <v-icon small>mdi-database-search-outline</v-icon> {{ $t("materials.section_library") }}
           </v-btn>

@@ -175,6 +175,14 @@ export const useProjectStore = defineStore(
         maxShearForce = Math.max(maxShearForce, Math.abs(max(v)), Math.abs(min(v)));
       }
 
+      if (maxDefo === 1e-32 && solver.value.loadCases[0].prescribedBC.length > 0) {
+        for (const bc of solver.value.loadCases[0].prescribedBC) {
+          const ux = Math.abs(bc.prescribedValues[0]);
+          const uz = Math.abs(bc.prescribedValues[2]);
+          maxDefo = Math.max(maxDefo, ux, uz);
+        }
+      }
+
       useProjectStore().defoScale = 1 / maxDefo;
       useProjectStore().normalForceScale = 1 / maxNormalForce;
       useProjectStore().bendingMomentScale = 1 / maxBendingMoment;

@@ -361,3 +361,8 @@ select.mini-select {
   left: 24px;
   z-index: 55;
 }
+
+// Prevent line wrap in selection label
+.v-selection-control .v-label {
+  white-space: nowrap !important;
+}

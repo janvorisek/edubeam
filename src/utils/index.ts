@@ -31,6 +31,8 @@ export { loadType } from "./loadType";
 
 export { loadXmlFile } from "./loadXmlFile";
 
+export { formatScientificNumber } from "./formatScientificNumber";
+
 export const capitalize = (s: string) => {
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
@@ -260,12 +262,6 @@ export const swapNodes = (el: Beam2D) => {
 
   el.hinges = [el.hinges[1], el.hinges[0]];
   solve();
-};
-
-export const formatScientificNumber = (n: number) => {
-  if (n > 1000 || n < 0.001) return n.toExponential(4);
-
-  return n;
 };
 
 export const changeSetArrayItem = (

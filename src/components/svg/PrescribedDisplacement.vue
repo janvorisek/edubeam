@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { formatScientificNumber } from "@/utils";
 import { PrescribedDisplacement } from "ts-fem";
 import { computed } from "vue";
 
@@ -47,9 +48,9 @@ const target = computed(() => {
       }
               ${target.coords[2] + (nload.prescribedValues[2] * props.multiplier) / scale})`"
     >
-      {{ numberFormat.format(convertLength(nload.prescribedValues[0])) }};
-      {{ numberFormat.format(convertLength(nload.prescribedValues[2])) }};
-      {{ numberFormat.format(nload.prescribedValues[4]) }}
+      {{ formatScientificNumber(convertLength(nload.prescribedValues[0]), 2) }};
+      {{ formatScientificNumber(convertLength(nload.prescribedValues[2]), 2) }};
+      {{ formatScientificNumber(convertLength(nload.prescribedValues[4]), 2) }}
     </text>
   </g>
 </template>

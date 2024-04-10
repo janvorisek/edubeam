@@ -889,6 +889,7 @@ const onMouseDown = (e: PointerEvent) => {
     }
   } else {
     appStore.mouseMode = MouseMode.NONE;
+    startNode.value = null;
     //svgPanZoom.enablePan();
   }
 };

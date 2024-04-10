@@ -79,7 +79,7 @@
 
                   <v-col cols="12" md="12">
                     <v-checkbox
-                      v-if="loadType === 'udl'"
+                      v-if="loadType === 'udl' || loadType === 'concentrated'"
                       v-bind="props"
                       v-model="elementLCS"
                       :label="`LCS`"
@@ -238,7 +238,7 @@ const addElementLoad = () => {
     useProjectStore().solver.loadCases[0].createBeamConcentratedLoad(
       loadElementId.value,
       [realFx.value, realFz.value, 0, realDist.value],
-      true
+      elementLCS.value
     );
 
   if (loadType.value === "temperature")

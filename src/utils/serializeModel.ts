@@ -74,13 +74,13 @@ export const serializeModel = (ls: LinearStaticSolver, dims: DimLine[]) => {
   ls.loadCases[0].elementLoadList
     .filter((el) => el instanceof BeamElementUniformEdgeLoad)
     .forEach((load: BeamElementUniformEdgeLoad) => {
-      eloads.push([load.target, load.values]);
+      eloads.push([load.target, load.values, load.lcs]);
     });
 
   ls.loadCases[0].elementLoadList
     .filter((el) => el instanceof BeamConcentratedLoad)
     .forEach((load: BeamConcentratedLoad) => {
-      ecloads.push([load.target, load.values]);
+      ecloads.push([load.target, load.values, load.lcs]);
     });
 
   ls.loadCases[0].elementLoadList
@@ -168,13 +168,15 @@ export const deserializeModel = (base64String: string, ls: LinearStaticSolver, d
 
   if ("el" in tmp) {
     for (const e of tmp.el) {
-      ls.loadCases[0].createBeamElementUniformEdgeLoad(e[0], e[1], true);
+      const lcs = e[2] !== undefined ? e[2] : true;
+      ls.loadCases[0].createBeamElementUniformEdgeLoad(e[0], e[1], lcs);
     }
   }
 
   if ("ecl" in tmp) {
     for (const e of tmp.ecl) {
-      ls.loadCases[0].createBeamConcentratedLoad(e[0], e[1], true);
+      const lcs = e[2] !== undefined ? e[2] : true;
+      ls.loadCases[0].createBeamConcentratedLoad(e[0], e[1], lcs);
     }
   }
 

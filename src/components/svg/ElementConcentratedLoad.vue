@@ -47,7 +47,7 @@ const labelPosition = computed(() => {
   const fz = props.eload.values[1] / size;
 
   if (!props.eload.lcs)
-    return `translate(${position.value.x + (40 / props.scale) * fx} ${position.value.z + (40 / props.scale) * fz})`;
+    return `translate(${position.value.x - (45 / props.scale) * fx} ${position.value.z - (45 / props.scale) * fz})`;
 
   let px = 0;
   let pz = 0;

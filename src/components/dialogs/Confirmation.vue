@@ -5,6 +5,18 @@
 
       <v-card-text v-html="message"></v-card-text>
 
+      <template v-if="props.checkboxes">
+        <v-card-text>
+          <v-checkbox
+            v-for="cb in props.checkboxes"
+            density="compact"
+            :label="cb.label"
+            hide-details="auto"
+            v-model="cb.value"
+          />
+        </v-card-text>
+      </template>
+
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn v-if="props.success" color="green darken-1" @click="_success" @keydown.enter="_success">
@@ -37,9 +49,10 @@ const open = ref(true);
 const props = defineProps<{
   title: string;
   message: string;
-  success?: () => void;
+  success?: (params?: { checkboxes: { label: string; value: boolean }[] }) => void;
   cancel?: () => void;
-  actions: { label: string; color: string; action: () => void }[];
+  checkboxes?: { label: string; value: boolean }[];
+  actions?: { label: string; color: string; action: () => void }[];
   minWidth?: number;
 }>();
 
@@ -47,7 +60,13 @@ const mw = computed(() => props.minWidth || 320);
 const acs = computed(() => props.actions || []);
 
 const _success = () => {
-  props.success();
+  // Send back data if checkboxes provided
+  if (props.checkboxes) {
+    props.success({ checkboxes: props.checkboxes });
+  } else {
+    props.success();
+  }
+
   closeModal();
 };
 

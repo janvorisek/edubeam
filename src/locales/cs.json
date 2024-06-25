@@ -287,7 +287,7 @@
     "invalidNumber": "Neplatné číslo"
   },
   "loadType": {
-    "concentrated": "Osamělé břemeno",
+    "concentrated": "Osamělá síla",
     "udl": "Spojité rovnoměrné zatížení",
     "temperature": "Změna teploty",
     "loadType": "Typ zatížení"

@@ -260,7 +260,9 @@
   "confirmation": {
     "clearMesh": {
       "title": "Smazat konstrukci?",
-      "message": "Jste si jisti, že chcete smazat konstrukci? Tuto akci nelze vrátit zpět."
+      "message": "Jste si jisti, že chcete smazat konstrukci? Tuto akci nelze vrátit zpět.",
+      "materials": "Smazat materiály",
+      "crossSections": "Smazat průřezy"
     },
     "resetSettings": {
       "message": "Opravdu chcete obnovit všechna výchozí nastavení? Tuto akci nelze vrátit zpět.",
@@ -294,7 +296,7 @@
     "add_dimension": "Přidat kótu"
   },
   "warnings": {
-    "noMaterialsDefined": "Není definovaný žádný průřez",
-    "noCrossSectionsDefined": "Není definovaný žádný materiál"
+    "noMaterialsDefined": "Není definovaný žádný materiál",
+    "noCrossSectionsDefined": "Není definovaný žádný průřez"
   }
 }

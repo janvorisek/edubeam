@@ -264,7 +264,9 @@
   "confirmation": {
     "clearMesh": {
       "message": "Are you sure you want to clear the mesh? This action cannot be undone.",
-      "title": "Clear mesh?"
+      "title": "Clear mesh?",
+      "materials": "Delete materials",
+      "crossSections": "Delete cross sections"
     },
     "resetSettings": {
       "title": "Reset settings?",

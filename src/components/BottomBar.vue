@@ -783,7 +783,7 @@
                 ></div>
               </div>
               <div
-                v-if="item.ref instanceof BeamElementUniformEdgeLoad"
+                v-if="item.ref instanceof BeamElementUniformEdgeLoad || item.ref instanceof BeamConcentratedLoad"
                 class="inline-edit-group"
                 v-tooltip.bottom="$t('common.lcs')"
               >

@@ -119,7 +119,7 @@ onMounted(() => {
   const lang = params.get("lang");
 
   if (name) {
-    clearMesh();
+    clearMesh(true, true);
     deserializeModel(name, solver, useProjectStore().dimensions);
     solve();
 
@@ -188,7 +188,7 @@ const solve = () => {
   });
 };
 
-const clearMesh = () => {
+const clearMesh = (clearMaterials = false, clearCrossSects = false) => {
   useProjectStore().solver.loadCases[0].solved = false;
   useProjectStore().solver.loadCases[0].prescribedBC = [];
   useProjectStore().solver.loadCases[0].nodalLoadList = [];
@@ -196,6 +196,14 @@ const clearMesh = () => {
   useProjectStore().solver.domain.elements.clear();
   useProjectStore().solver.domain.nodes.clear();
   useProjectStore().dimensions = [];
+
+  if (clearMaterials) {
+    useProjectStore().solver.domain.materials.clear();
+  }
+
+  if (clearCrossSects) {
+    useProjectStore().solver.domain.crossSections.clear();
+  }
 
   undoRedoManager.clearHistory();
 };
@@ -226,7 +234,7 @@ function onDrop(e) {
     const reader = new FileReader();
     reader.onload = function (e) {
       const text = e.target.result.toString();
-      clearMesh();
+      clearMesh(true, true);
       try {
         importJSON(JSON.parse(text));
         solve();
@@ -246,7 +254,7 @@ function openFile(e) {
   const reader = new FileReader();
   reader.onload = function (e) {
     const text = e.target.result.toString();
-    clearMesh();
+    clearMesh(true, true);
 
     try {
       importJSON(JSON.parse(text));
@@ -332,7 +340,11 @@ const app_commit = APP_COMMIT;
           openModal(Confirmation, {
             title: t('confirmation.clearMesh.title'),
             message: t('confirmation.clearMesh.message'),
-            success: clearMesh,
+            success: (params) => clearMesh(params.checkboxes[0].value, params.checkboxes[1].value),
+            checkboxes: [
+              { label: t('confirmation.clearMesh.materials'), value: false },
+              { label: t('confirmation.clearMesh.crossSections'), value: false },
+            ],
           })
         "
       >
@@ -388,7 +400,11 @@ const app_commit = APP_COMMIT;
             openModal(Confirmation, {
               title: t('confirmation.clearMesh.title'),
               message: t('confirmation.clearMesh.message'),
-              success: clearMesh,
+              success: (params) => clearMesh(params.checkboxes[0].value, params.checkboxes[1].value),
+              checkboxes: [
+                { label: t('confirmation.clearMesh.materials'), value: false },
+                { label: t('confirmation.clearMesh.crossSections'), value: false },
+              ],
             })
           "
         ></v-list-item>

@@ -82,7 +82,7 @@ const results = computed(() => {
 
   const result = [];
   const truss = props.element.hinges[0] && props.element.hinges[1];
-  const nseg = truss ? 1 : 5;
+  const nseg = truss ? 1 : 16;
   const scaleBy = props.deformedShapeMultiplier / props.scale;
   const n1 = props.element.domain.nodes.get(props.element.nodes[0]) as Node;
   let def = null;

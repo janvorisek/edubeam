@@ -81,7 +81,10 @@ const results = computed(() => {
   if (!props.loadCase.solved || !props.showDeformedShape) return "";
 
   const result = [];
-  const truss = props.element.hinges[0] && props.element.hinges[1];
+  const hinges = props.element.hinges[0] && props.element.hinges[1];
+  const eload = props.loadCase.elementLoadList.filter((l) => l.target === props.element.label);
+  const truss = hinges && eload.length === 0;
+
   const nseg = truss ? 1 : 16;
   const scaleBy = props.deformedShapeMultiplier / props.scale;
   const n1 = props.element.domain.nodes.get(props.element.nodes[0]) as Node;

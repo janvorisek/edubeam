@@ -1092,7 +1092,11 @@ defineExpose({ centerContent, fitContent });
 
 <template>
   <div class="d-flex flex-column fill-height svg-viewer">
-    <div class="text-body-2 d-flex line-height-1" style="position: absolute; z-index: 100; bottom: 24px; right: 24px">
+    <div
+      class="text-body-2 d-flex line-height-1"
+      style="position: absolute; z-index: 100; bottom: 24px; right: 24px"
+      v-if="!appStore.inViewerMode"
+    >
       <v-chip-group>
         <v-chip class="justify-end" density="compact" @click="appStore.openSettings()">
           <div class="d-flex ga-1">
@@ -1110,14 +1114,14 @@ defineExpose({ centerContent, fitContent });
         </v-chip>
       </v-chip-group> -->
     </div>
-    <div id="undoRedo" style="position: absolute; top: 24px; left: 24px; z-index: 100">
+    <div id="undoRedo" style="position: absolute; top: 24px; left: 24px; z-index: 100" v-if="!appStore.inViewerMode">
       <v-btn
         icon="mdi:mdi-undo"
         size="32"
         density="comfortable"
         class="mr-1"
         rounded="lg"
-        title="Center content"
+        title="Undo"
         @click.native="undoRedoManager.undo()"
       ></v-btn>
       <v-btn
@@ -1126,7 +1130,7 @@ defineExpose({ centerContent, fitContent });
         density="comfortable"
         class="mr-1"
         rounded="lg"
-        title="Center content"
+        title="Redo"
         @click.native="undoRedoManager.redo()"
       ></v-btn>
     </div>

@@ -15,6 +15,8 @@ import { isMobile, suggestLanguage } from "@/utils";
 export const useAppStore = defineStore(
   "app",
   () => {
+    const inViewerMode = ref(false);
+
     const drawerOpen = ref(false);
     const rightDrawerOpen = ref(false);
 
@@ -148,6 +150,8 @@ export const useAppStore = defineStore(
     const panButton = ref(4);
 
     return {
+      inViewerMode,
+
       onboardingFinished,
       drawerOpen,
       rightDrawerOpen,

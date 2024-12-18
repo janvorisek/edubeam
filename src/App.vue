@@ -64,8 +64,6 @@ const steps = computed(() => [
 ]);
 
 onMounted(() => {
-  if (!appStore.onboardingFinished) openModal(Welcome);
-
   document.addEventListener("keydown", function (e) {
     if (e.ctrlKey && (e.key === "+" || e.key === "=" || e.key === "-")) {
       e.preventDefault();
@@ -117,6 +115,13 @@ onMounted(() => {
   const params = new URL(document.location as unknown as URL).searchParams;
   const name = params.get("model");
   const lang = params.get("lang");
+  const inViewerMode = params.get("viewer");
+
+  if (inViewerMode) {
+    appStore.inViewerMode = true;
+  } else {
+    if (!appStore.onboardingFinished) openModal(Welcome);
+  }
 
   if (name) {
     clearMesh(true, true);
@@ -329,7 +334,7 @@ const app_commit = APP_COMMIT;
       </template>
     </VOnboardingWrapper>
 
-    <v-app-bar clipped-lefs clipped-right app color="primary" density="compact">
+    <v-app-bar clipped-lefs clipped-right app color="primary" density="compact" v-if="!appStore.inViewerMode">
       <v-app-bar-nav-icon @click="appStore.drawerOpen = !appStore.drawerOpen"></v-app-bar-nav-icon>
 
       <div class="app-title ml-3 d-flex align-center" style="user-select: none">edubeam</div>

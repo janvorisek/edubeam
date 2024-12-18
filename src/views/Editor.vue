@@ -7,7 +7,7 @@
     </div>
     <HelloWorld class="fill-height" style="min-height: 0" />
     <div class="resizer" data-direction="vertical"></div>
-    <BottomBar :height="computedBottomBarHeight" class="d-block" />
+    <BottomBar v-if="!appStore.inViewerMode" :height="computedBottomBarHeight" class="d-block" />
   </div>
 </template>
 

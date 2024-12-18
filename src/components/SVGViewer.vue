@@ -1561,7 +1561,7 @@ defineExpose({ centerContent, fitContent });
       v-if="appStore.mouseMode === MouseMode.SELECTING"
       class="selecting"
       :style="`left: ${Math.min(appStore.mouse.x, appStore.mouse.sx)}px; top: ${
-        Math.min(appStore.mouse.y, appStore.mouse.sy) - 84
+        Math.min(appStore.mouse.y, appStore.mouse.sy) - (useAppStore().inViewerMode ? 0 : 84)
       }px; width: ${Math.abs(appStore.mouse.x - appStore.mouse.sx)}px; height: ${Math.abs(
         appStore.mouse.y - appStore.mouse.sy
       )}px;`"

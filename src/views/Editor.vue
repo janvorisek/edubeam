@@ -28,6 +28,8 @@ const layoutStore = useLayoutStore();
 const drag = ref(false);
 
 const computedBottomBarHeight = computed(() => {
+  if (appStore.inViewerMode) return 0;
+
   return appStore.bottomBarOpen ? appStore.bottomBarHeight : 36;
 });
 

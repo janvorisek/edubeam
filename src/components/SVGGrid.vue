@@ -169,7 +169,7 @@ defineExpose({ refreshGrid });
 .grid {
   font-size: 12px;
   path {
-    transition: all 0.1s linear;
+    //transition: all 0.1s linear;
     shape-rendering: crispEdges;
   }
 

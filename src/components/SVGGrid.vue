@@ -110,8 +110,8 @@ const refreshGrid = (isZooming = false) => {
 
   let path = "";
 
-  xGridTexts.value = [];
-  yGridTexts.value = [];
+  const _xGridTexts = [];
+  const _yGridTexts = [];
 
   for (let i = 0; i < tickCount; i++) {
     const v = i * stepW;
@@ -122,13 +122,13 @@ const refreshGrid = (isZooming = false) => {
 
     path += `M ${x1},${y1 - 1000} L ${x2},${1000 + y2} `;
 
-    xGridTexts.value.push({
+    _xGridTexts.push({
       x: x1,
       y: 10,
       value: v,
     });
 
-    xGridTexts.value.push({
+    _xGridTexts.push({
       x: x1,
       y: rightBottom.y - leftTop.y - 8,
       value: v,
@@ -144,20 +144,23 @@ const refreshGrid = (isZooming = false) => {
 
     path += `M ${x1},${y1} L ${x2},${y2} `;
 
-    yGridTexts.value.push({
+    _yGridTexts.push({
       x: 10,
       y: y1,
       value: v,
       angle: -90.0,
     });
 
-    yGridTexts.value.push({
+    _yGridTexts.push({
       x: rightBottom.x - leftTop.x - 12,
       y: y1,
       value: v,
       angle: 90,
     });
   }
+
+  xGridTexts.value = _xGridTexts;
+  yGridTexts.value = _yGridTexts;
 
   gridPath.value = path;
 };

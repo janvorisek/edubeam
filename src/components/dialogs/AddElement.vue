@@ -33,7 +33,43 @@
               </v-col>
             </v-row>
 
-            <v-row v-if="projectStore.crossSections.length > 1 || projectStore.crossSections.length > 1" no-gutters>
+            <div class="d-flex flex-column ga-3 py-3">
+              <div style="width: fit-content">
+                <v-alert v-if="projectStore.materials.length === 0" icon="$warning" density="compact" type="error">
+                  <template #text>
+                    <div class="d-flex align-center">
+                      {{ $t('warnings.noMaterialsDefined') }}
+                      <v-btn
+                        variant="text"
+                        density="compact"
+                        size="small"
+                        @click="appStore.dialogs['addMaterial'] = true"
+                        >{{ $t('common.addNew') }}</v-btn
+                      >
+                    </div>
+                  </template>
+                </v-alert>
+              </div>
+
+              <div style="width: fit-content">
+                <v-alert v-if="projectStore.crossSections.length === 0" icon="$warning" density="compact" type="error">
+                  <template #text>
+                    <div class="d-flex align-center">
+                      {{ $t('warnings.noCrossSectionsDefined') }}
+                      <v-btn
+                        variant="text"
+                        density="compact"
+                        size="small"
+                        @click="appStore.dialogs['addCrossSection'] = true"
+                        >{{ $t('common.addNew') }}</v-btn
+                      >
+                    </div>
+                  </template>
+                </v-alert>
+              </div>
+            </div>
+
+            <v-row v-if="projectStore.materials.length > 0 && projectStore.crossSections.length > 0" no-gutters>
               <v-col cols="6">
                 <v-select
                   v-model="newElementMat"
@@ -111,6 +147,11 @@ onMounted(() => {
 });
 
 const addElement = () => {
+  // check if material and cross section are selected
+  if (newElementMat.value === '' || newElementCS.value === '') {
+    return alert('Please select a material and cross section');
+  }
+
   useProjectStore().solver.loadCases[0].solved = false;
   const domain = useProjectStore().solver.domain;
 

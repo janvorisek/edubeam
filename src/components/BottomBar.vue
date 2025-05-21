@@ -264,7 +264,7 @@
             color="secondary"
             style="border-left: 1px solid #ccc"
             :rounded="0"
-            @click.stop="appStore.mouseMode = MouseMode.ADD_ELEMENT"
+            @click.stop="addElementUsingMouse"
           >
             <v-icon small>mdi-cursor-default-outline</v-icon> {{ $t('elements.addElement') }}
           </v-btn>
@@ -1564,6 +1564,21 @@ const formatElementLoadsAtElement = (item: Beam2D): [number, string][] => {
     }
     return [nl.index, tmp.join(', ')];
   });
+};
+
+const addElementUsingMouse = () => {
+  // check if we have material and CS to assign
+  if (projStore.solver.domain.materials.size === 0) {
+    alert('Please add some material first.');
+    return;
+  }
+
+  if (projStore.solver.domain.crossSections.size === 0) {
+    alert('Please add some cross section first.');
+    return;
+  }
+
+  appStore.mouseMode = MouseMode.ADD_ELEMENT;
 };
 
 const tabs = reactive([

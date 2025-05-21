@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import SvgPanZoom from "./SVGPanZoom2.vue";
-import SvgGrid from "./SVGGrid.vue";
-import SvgViewerDefs from "./SVGViewerDefs.vue";
-import { ref, onMounted, computed, watch } from "vue";
+import SvgPanZoom from './SVGPanZoom2.vue';
+import SvgGrid from './SVGGrid.vue';
+import SvgViewerDefs from './SVGViewerDefs.vue';
+import { ref, onMounted, computed, watch } from 'vue';
 
-import { throttle } from "../utils/throttle";
+import { throttle } from '../utils/throttle';
 import {
   Node,
   DofID,
@@ -16,17 +16,17 @@ import {
   BeamElementUniformEdgeLoad,
   BeamConcentratedLoad,
   PrescribedDisplacement,
-} from "ts-fem";
-import { Matrix, max, min } from "mathjs";
+} from 'ts-fem';
+import { Matrix, max, min } from 'mathjs';
 
-import SVGElementLoad from "./svg/ElementLoad.vue";
-import SVGElementConcentratedLoad from "./svg/ElementConcentratedLoad.vue";
-import SVGNodalLoad from "./svg/NodalLoad.vue";
-import SVGPrescribedDisplacement from "./svg/PrescribedDisplacement.vue";
-import SVGNode from "./svg/Node.vue";
-import SVGElement from "./svg/Element.vue";
-import SVGElementTemperatureLoad from "./svg/ElementTemperatureLoad.vue";
-import { loadType } from "../utils/loadType";
+import SVGElementLoad from './svg/ElementLoad.vue';
+import SVGElementConcentratedLoad from './svg/ElementConcentratedLoad.vue';
+import SVGNodalLoad from './svg/NodalLoad.vue';
+import SVGPrescribedDisplacement from './svg/PrescribedDisplacement.vue';
+import SVGNode from './svg/Node.vue';
+import SVGElement from './svg/Element.vue';
+import SVGElementTemperatureLoad from './svg/ElementTemperatureLoad.vue';
+import { loadType } from '../utils/loadType';
 
 const props = withDefaults(
   defineProps<{
@@ -92,14 +92,14 @@ const props = withDefaults(
     resultsScalePx: 64,
     colors: () => {
       return {
-        normalForce: "#2222ff",
-        shearForce: "#00af00",
-        bendingMoment: "#ff2222",
-        deformedShape: "#555555",
-        loads: "#ff8700",
-        nodes: "#000000",
-        elements: "#000000",
-        reactions: "#a020f0",
+        normalForce: '#2222ff',
+        shearForce: '#00af00',
+        bendingMoment: '#ff2222',
+        deformedShape: '#555555',
+        loads: '#ff8700',
+        nodes: '#000000',
+        elements: '#000000',
+        reactions: '#a020f0',
       };
     },
     supportSize: 1,
@@ -210,8 +210,8 @@ defineExpose({ centerContent, fitContent });
     </svg>
 
     <SvgPanZoom
-      :on-update="onUpdate"
       ref="panZoom"
+      :on-update="onUpdate"
       :padding="props.padding"
       :mobile-padding="props.mobilePadding"
       :zoom-enabled="props.zoomEnabled"
@@ -317,7 +317,7 @@ defineExpose({ centerContent, fitContent });
 .svg-viewer :deep(*) {
   .element-load.load-1d {
     text {
-      fill: v-bind("colors.loads");
+      fill: v-bind('colors.loads');
     }
     stroke-linecap: butt;
     &:hover text {
@@ -329,11 +329,11 @@ defineExpose({ centerContent, fitContent });
       stroke-width: 3px;
     }
     &:hover polyline {
-      marker-end: v-bind(dynamicMarker("force_centered_hover"));
+      marker-end: v-bind(dynamicMarker('force_centered_hover'));
     }
     polygon,
     path {
-      stroke: v-bind("colors.loads");
+      stroke: v-bind('colors.loads');
       stroke-width: 1px;
       &.handle {
         stroke-width: 12px;
@@ -341,7 +341,7 @@ defineExpose({ centerContent, fitContent });
       }
     }
     polyline {
-      marker-end: v-bind(dynamicMarker("force_centered"));
+      marker-end: v-bind(dynamicMarker('force_centered'));
     }
 
     &.selected {
@@ -388,34 +388,34 @@ defineExpose({ centerContent, fitContent });
     }
     path.deformedShape {
       fill: none;
-      stroke: v-bind("colors.deformedShape");
+      stroke: v-bind('colors.deformedShape');
       stroke-width: 2px;
       &.decoration {
         stroke-width: 1px;
       }
     }
     .normal polyline {
-      stroke: v-bind("colors.normalForce");
+      stroke: v-bind('colors.normalForce');
       stroke-width: 1px;
-      fill: v-bind("colors.normalForce");
+      fill: v-bind('colors.normalForce');
       fill-opacity: 0.1;
       &:hover {
         fill-opacity: 0.2;
       }
     }
     .shear polyline {
-      stroke: v-bind("colors.shearForce");
+      stroke: v-bind('colors.shearForce');
       stroke-width: 1px;
-      fill: v-bind("colors.shearForce");
+      fill: v-bind('colors.shearForce');
       fill-opacity: 0.1;
       &:hover {
         fill-opacity: 0.2;
       }
     }
     .moment polyline {
-      stroke: v-bind("colors.bendingMoment");
+      stroke: v-bind('colors.bendingMoment');
       stroke-width: 1px;
-      fill: v-bind("colors.bendingMoment");
+      fill: v-bind('colors.bendingMoment');
       fill-opacity: 0.1;
       &:hover {
         fill-opacity: 0.2;
@@ -439,7 +439,7 @@ defineExpose({ centerContent, fitContent });
         stroke: none;
       }
       &.drawable.deformed {
-        stroke: v-bind("colors.deformedShape");
+        stroke: v-bind('colors.deformedShape');
       }
     }
     &:hover polyline.drawable {
@@ -453,24 +453,24 @@ defineExpose({ centerContent, fitContent });
   }
 
   .prescribed polyline {
-    stroke: v-bind("colors.loads");
+    stroke: v-bind('colors.loads');
   }
 
   .nodal-load {
     text {
-      fill: v-bind("colors.loads");
+      fill: v-bind('colors.loads');
     }
     polyline {
       stroke-linecap: square;
       vector-effect: non-scaling-stroke;
       &.decoration.force {
-        marker-end: v-bind(dynamicMarker("force"));
+        marker-end: v-bind(dynamicMarker('force'));
       }
       &.decoration.moment.cw {
-        marker-end: v-bind(dynamicMarker("moment_cw"));
+        marker-end: v-bind(dynamicMarker('moment_cw'));
       }
       &.decoration.moment.ccw {
-        marker-end: v-bind(dynamicMarker("#moment_ccw"));
+        marker-end: v-bind(dynamicMarker('#moment_ccw'));
       }
       &.handle {
         stroke: transparent;
@@ -486,13 +486,13 @@ defineExpose({ centerContent, fitContent });
       fill: blue;
     }
     &:hover polyline.decoration.force {
-      marker-end: v-bind(dynamicMarker("force_hover"));
+      marker-end: v-bind(dynamicMarker('force_hover'));
     }
     &:hover polyline.decoration.moment.cw {
-      marker-end: v-bind(dynamicMarker("moment_cw_hover"));
+      marker-end: v-bind(dynamicMarker('moment_cw_hover'));
     }
     &:hover polyline.decoration.moment.ccw {
-      marker-end: v-bind(dynamicMarker("moment_ccw_hover"));
+      marker-end: v-bind(dynamicMarker('moment_ccw_hover'));
     }
     &.selected {
       text {
@@ -502,55 +502,55 @@ defineExpose({ centerContent, fitContent });
   }
 
   .normal text {
-    fill: v-bind("colors.normalForce");
+    fill: v-bind('colors.normalForce');
   }
 
   .shear text {
-    fill: v-bind("colors.shearForce");
+    fill: v-bind('colors.shearForce');
   }
 
   .moment text {
-    fill: v-bind("colors.bendingMoment");
+    fill: v-bind('colors.bendingMoment');
   }
 
   .reaction {
-    fill: v-bind("colors.reactions");
+    fill: v-bind('colors.reactions');
   }
 
   .marker-reaction {
-    marker-start: v-bind(dynamicMarker("reaction"));
+    marker-start: v-bind(dynamicMarker('reaction'));
   }
 
   .marker-moment_reaction_ccw {
-    marker-start: v-bind(dynamicMarker("moment_reaction_ccw"));
+    marker-start: v-bind(dynamicMarker('moment_reaction_ccw'));
   }
 
   .marker-moment_reaction_cw {
-    marker-start: v-bind(dynamicMarker("moment_reaction_cw"));
+    marker-start: v-bind(dynamicMarker('moment_reaction_cw'));
   }
 
   .marker-dot {
-    marker-start: v-bind(dynamicMarker("dot"));
+    marker-start: v-bind(dynamicMarker('dot'));
   }
 
   .marker-hinge-xy {
-    marker-start: v-bind(dynamicMarker("hinge-xy"));
+    marker-start: v-bind(dynamicMarker('hinge-xy'));
   }
 
   .marker-hinge-x {
-    marker-start: v-bind(dynamicMarker("hinge-x"));
+    marker-start: v-bind(dynamicMarker('hinge-x'));
   }
 
   .marker-hinge-y {
-    marker-start: v-bind(dynamicMarker("hinge-y"));
+    marker-start: v-bind(dynamicMarker('hinge-y'));
   }
 
   .marker-forceTip {
-    marker-end: v-bind(dynamicMarker("forceTip"));
+    marker-end: v-bind(dynamicMarker('forceTip'));
   }
 
   .filter-text-label {
-    filter: v-bind(dynamicMarker("textLabel"));
+    filter: v-bind(dynamicMarker('textLabel'));
   }
 }
 </style>

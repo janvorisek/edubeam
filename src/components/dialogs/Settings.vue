@@ -4,9 +4,9 @@
       icon="mdi-close"
       size="small"
       variant="text"
-      @click.prevent.stop="closeModal"
       small
       style="position: absolute; right: 0; z-index: 10"
+      @click.prevent.stop="closeModal"
     />
     <v-card>
       <Settings />
@@ -15,9 +15,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { closeModal } from "jenesius-vue-modal";
-import Settings from "../settings/Settings.vue";
+import { ref } from 'vue';
+import { closeModal } from 'jenesius-vue-modal';
+import Settings from '../settings/Settings.vue';
 
 const open = ref(true);
 </script>

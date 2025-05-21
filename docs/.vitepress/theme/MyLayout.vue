@@ -1,10 +1,10 @@
 <!--.vitepress/theme/MyLayout.vue-->
 <script setup>
-import DefaultTheme from "vitepress/theme";
+import DefaultTheme from 'vitepress/theme';
 
 const { Layout } = DefaultTheme;
 
-import { VPImage } from "vitepress/theme";
+import { VPImage } from 'vitepress/theme';
 </script>
 
 <template>

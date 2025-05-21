@@ -1,12 +1,12 @@
-import { useProjectStore } from "@/store/project";
-import { XMLParser } from "fast-xml-parser";
-import { DofID } from "ts-fem";
+import { useProjectStore } from '@/store/project';
+import { XMLParser } from 'fast-xml-parser';
+import { DofID } from 'ts-fem';
 
 export const loadXmlFile = () => {
   const parser = new XMLParser({
     ignoreAttributes: false,
     isArray: (tagName) =>
-      ["Material", "CrossSection", "Node", "Beam2d", "LoadCase", "NodalLoad", "ElementLoad"].includes(tagName),
+      ['Material', 'CrossSection', 'Node', 'Beam2d', 'LoadCase', 'NodalLoad', 'ElementLoad'].includes(tagName),
   });
   const jObj = parser.parse(`<?xml version="1.0" ?>
     <!--
@@ -257,11 +257,11 @@ export const loadXmlFile = () => {
   // Parse materials
   if (jObj.session.domain.materials) {
     for (const material of jObj.session.domain.materials.Material) {
-      const label = material["@_label"];
-      const d = parseFloat(material["@_d"]);
-      const e = parseFloat(material["@_e"]);
-      const g = parseFloat(material["@_g"]);
-      const alpha = parseFloat(material["@_alpha"]);
+      const label = material['@_label'];
+      const d = parseFloat(material['@_d']);
+      const e = parseFloat(material['@_e']);
+      const g = parseFloat(material['@_g']);
+      const alpha = parseFloat(material['@_alpha']);
 
       useProjectStore().solver.domain.createMaterial(label, { d, e, g, alpha });
     }
@@ -270,11 +270,11 @@ export const loadXmlFile = () => {
   // Parse cross sections
   if (jObj.session.domain.crossSects) {
     for (const cs of jObj.session.domain.crossSects.CrossSection) {
-      const label = cs["@_label"];
-      const a = parseFloat(cs["@_a"]);
-      const iy = parseFloat(cs["@_iy"]);
-      const h = parseFloat(cs["@_h"]);
-      const k = parseFloat(cs["@_k"]);
+      const label = cs['@_label'];
+      const a = parseFloat(cs['@_a']);
+      const iy = parseFloat(cs['@_iy']);
+      const h = parseFloat(cs['@_h']);
+      const k = parseFloat(cs['@_k']);
 
       useProjectStore().solver.domain.createCrossSection(label, { a, iy, h, k });
     }
@@ -283,18 +283,18 @@ export const loadXmlFile = () => {
   // Parse nodes
   if (jObj.session.domain.nodes) {
     for (const node of jObj.session.domain.nodes.Node) {
-      const label = node["@_label"];
-      const coords = JSON.parse(node["@_coords"]);
+      const label = node['@_label'];
+      const coords = JSON.parse(node['@_coords']);
 
       // Parse bcs
       const bcs = [];
-      const _bcs = JSON.parse(node["@_bcs"].replace(/'/g, '"').replace(/False/g, "false").replace(/True/g, "true"));
-      if ("x" in _bcs && _bcs["x"] === true) bcs.push(DofID.Dx);
-      if ("y" in _bcs && _bcs["y"] === true) bcs.push(DofID.Dy);
-      if ("z" in _bcs && _bcs["z"] === true) bcs.push(DofID.Dz);
-      if ("X" in _bcs && _bcs["X"] === true) bcs.push(DofID.Rx);
-      if ("Y" in _bcs && _bcs["Y"] === true) bcs.push(DofID.Ry);
-      if ("Z" in _bcs && _bcs["Z"] === true) bcs.push(DofID.Rz);
+      const _bcs = JSON.parse(node['@_bcs'].replace(/'/g, '"').replace(/False/g, 'false').replace(/True/g, 'true'));
+      if ('x' in _bcs && _bcs['x'] === true) bcs.push(DofID.Dx);
+      if ('y' in _bcs && _bcs['y'] === true) bcs.push(DofID.Dy);
+      if ('z' in _bcs && _bcs['z'] === true) bcs.push(DofID.Dz);
+      if ('X' in _bcs && _bcs['X'] === true) bcs.push(DofID.Rx);
+      if ('Y' in _bcs && _bcs['Y'] === true) bcs.push(DofID.Ry);
+      if ('Z' in _bcs && _bcs['Z'] === true) bcs.push(DofID.Rz);
 
       useProjectStore().solver.domain.createNode(label, coords, bcs);
     }
@@ -303,11 +303,11 @@ export const loadXmlFile = () => {
   // Parse elements
   if (jObj.session.domain.elements) {
     for (const element of jObj.session.domain.elements.Beam2d) {
-      const label = element["@_label"];
-      const nodes = JSON.parse(element["@_nodes"].replace(/'/g, '"'));
-      const mat = element["@_mat"];
-      const cs = element["@_cs"];
-      const hinges = JSON.parse(element["@_hinges"].replace(/False/g, "false").replace(/True/g, "true"));
+      const label = element['@_label'];
+      const nodes = JSON.parse(element['@_nodes'].replace(/'/g, '"'));
+      const mat = element['@_mat'];
+      const cs = element['@_cs'];
+      const hinges = JSON.parse(element['@_hinges'].replace(/False/g, 'false').replace(/True/g, 'true'));
 
       useProjectStore().solver.domain.createBeam2D(label, nodes, mat, cs, hinges);
     }
@@ -316,13 +316,13 @@ export const loadXmlFile = () => {
   // Parse load cases
   if (jObj.session.domain.loadCases) {
     for (const loadCase of jObj.session.domain.loadCases.LoadCase) {
-      const label = loadCase["@_label"];
-      const domain = loadCase["@_domain"];
+      const label = loadCase['@_label'];
+      const domain = loadCase['@_domain'];
 
       if (loadCase.NodalLoad) {
         for (const load of loadCase.NodalLoad) {
-          const target = load["@_where"];
-          const _values = JSON.parse(load["@_value"].replace(/'/g, '"'));
+          const target = load['@_where'];
+          const _values = JSON.parse(load['@_value'].replace(/'/g, '"'));
           const values = {
             [DofID.Dx]: _values.fx ?? 0,
             [DofID.Dz]: _values.fz ?? 0,
@@ -335,14 +335,14 @@ export const loadXmlFile = () => {
 
       if (loadCase.ElementLoad) {
         for (const load of loadCase.ElementLoad) {
-          const target = load["@_where"];
+          const target = load['@_where'];
           const _values = JSON.parse(
-            load["@_value"]
+            load['@_value']
               .replace(/u'/g, "'")
-              .replace(/None/g, "null")
+              .replace(/None/g, 'null')
               .replace(/'/g, '"')
-              .replace(/False/g, "false")
-              .replace(/True/g, "true")
+              .replace(/False/g, 'false')
+              .replace(/True/g, 'true')
           );
           const values = [_values.fx ?? 0, _values.fz ?? 0];
 

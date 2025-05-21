@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from "vue";
-import { useAppStore } from "@/store/app";
-import { useProjectStore } from "../store/project";
-import { debounce } from "@/utils";
-import { useResizeObserver } from "@vueuse/core";
+import { nextTick, onMounted, ref } from 'vue';
+import { useAppStore } from '@/store/app';
+import { useProjectStore } from '../store/project';
+import { debounce } from '@/utils';
+import { useResizeObserver } from '@vueuse/core';
 
 const appStore = useAppStore();
 
@@ -53,8 +53,8 @@ const onWindowResize = (): void => {
   const dX = rootRef.value!.offsetWidth - svgRef.value!.getBoundingClientRect().width;
   const dY = rootRef.value!.offsetHeight - svgRef.value!.getBoundingClientRect().height;
 
-  svgRef.value.setAttribute("width", rootRef.value!.offsetWidth.toString());
-  svgRef.value.setAttribute("height", rootRef.value!.offsetHeight.toString());
+  svgRef.value.setAttribute('width', rootRef.value!.offsetWidth.toString());
+  svgRef.value.setAttribute('height', rootRef.value!.offsetHeight.toString());
 
   viewBox.w = rootRef.value.offsetWidth / scale.value;
   viewBox.h = rootRef.value.offsetHeight / scale.value;
@@ -67,7 +67,7 @@ const onWindowResize = (): void => {
 
 const updateMatrix = (zooming = false): void => {
   const svgEl = svgRef.value as SVGElement;
-  svgEl.setAttribute("viewBox", `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
+  svgEl.setAttribute('viewBox', `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
   props.onUpdate(zooming);
 };
 
@@ -188,7 +188,7 @@ const onMouseMove = (event: MouseEvent): void => {
 const centerContent = (): void => {
   if (!svgRef.value) return;
 
-  const rootG = (svgRef.value as SVGElement).getElementsByTagName("g")[0] as SVGGElement;
+  const rootG = (svgRef.value as SVGElement).getElementsByTagName('g')[0] as SVGGElement;
   const bBox = rootG.getBBox();
 
   viewBox.x = -viewBox.w / 2 + bBox.x + bBox.width / 2;
@@ -254,7 +254,7 @@ const fitContent = (n = 0) => {
   const FIT_CONTENT_PADDING = window.innerWidth > 768 ? props.padding : props.mobilePadding;
 
   const svgEl = svgRef.value as SVGElement;
-  const rootG = svgEl.getElementsByTagName("g")[0] as SVGGElement;
+  const rootG = svgEl.getElementsByTagName('g')[0] as SVGGElement;
 
   const rootBBox = svgEl.getBoundingClientRect();
   //const bBox = rootG.getBoundingClientRect();
@@ -313,7 +313,7 @@ onMounted(() => {
 
     // resizewatcher.observe(rootRef.value!);
 
-    svgRef.value!.setAttribute("overflow", "visible");
+    svgRef.value!.setAttribute('overflow', 'visible');
   });
 
   /* const isFirefox = navigator.userAgent.search("Firefox") > -1;
@@ -348,6 +348,7 @@ defineExpose({ scale, centerContent, fitContent, updateMatrix, onWindowResize, z
   <div
     ref="rootRef"
     class="w-100 fill-height"
+    style="touch-action: none"
     @touchstart.prevent="onTouchStart"
     @touchmove.prevent="onTouchMove"
     @touchend.prevent="onTouchEnd"
@@ -356,7 +357,6 @@ defineExpose({ scale, centerContent, fitContent, updateMatrix, onWindowResize, z
     @mouseup.prevent="onMouseUp"
     @mousemove.prevent="onMouseMove"
     @contextmenu.prevent
-    style="touch-action: none"
   >
     <slot></slot>
   </div>

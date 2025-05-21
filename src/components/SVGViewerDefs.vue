@@ -18,14 +18,14 @@ const props = withDefaults(
   {
     colors: () => {
       return {
-        normalForce: "#2222ff",
-        shearForce: "#00af00",
-        bendingMoment: "#ff2222",
-        deformedShape: "#555555",
-        loads: "#ff8700",
-        nodes: "#000000",
-        elements: "#000000",
-        reactions: "#a020f0",
+        normalForce: '#2222ff',
+        shearForce: '#00af00',
+        bendingMoment: '#ff2222',
+        deformedShape: '#555555',
+        loads: '#ff8700',
+        nodes: '#000000',
+        elements: '#000000',
+        reactions: '#a020f0',
       };
     },
     supportSize: 1,

@@ -1,101 +1,101 @@
 <script lang="ts">
-import { container, openModal } from "jenesius-vue-modal";
-import { deserializeModel, download, exportJSON, importJSON } from "./utils";
-import { provide, nextTick } from "vue";
-import { undoRedoManager } from "./CommandManager";
-import { useViewerStore } from "./store/viewer";
-import Confirmation from "./components/dialogs/Confirmation.vue";
-import ReloadPrompt from "./components/ReloadPrompt.vue";
+import { container, openModal } from 'jenesius-vue-modal';
+import { deserializeModel, download, exportJSON, importJSON } from './utils';
+import { provide, nextTick } from 'vue';
+import { undoRedoManager } from './CommandManager';
+import { useViewerStore } from './store/viewer';
+import Confirmation from './components/dialogs/Confirmation.vue';
+import ReloadPrompt from './components/ReloadPrompt.vue';
 
 export default {
+  name: 'App',
   components: { WidgetContainerModal: container },
-  name: "App",
 };
 </script>
 
 <script setup lang="ts">
-import { onMounted, ref, computed } from "vue";
-import { DofID } from "ts-fem";
-import { setLocale, availableLocales } from "./plugins/i18n";
+import { onMounted, ref, computed } from 'vue';
+import { DofID } from 'ts-fem';
+import { setLocale, availableLocales } from './plugins/i18n';
 
-import Welcome from "@/components/dialogs/Welcome.vue";
-import Share from "@/components/dialogs/Share.vue";
-import Editor from "@/views/Editor.vue";
-import Dialogs from "@/components/Dialogs.vue";
-import { useProjectStore } from "./store/project";
-import { useAppStore } from "./store/app";
+import Welcome from '@/components/dialogs/Welcome.vue';
+import Share from '@/components/dialogs/Share.vue';
+import Editor from '@/views/Editor.vue';
+import Dialogs from '@/components/Dialogs.vue';
+import { useProjectStore } from './store/project';
+import { useAppStore } from './store/app';
 
-import { VOnboardingWrapper, VOnboardingStep } from "v-onboarding";
-import "v-onboarding/dist/style.css";
+import { VOnboardingWrapper, VOnboardingStep } from 'v-onboarding';
+import 'v-onboarding/dist/style.css';
 
-import { useI18n } from "vue-i18n";
-import { eventBus, EventType } from "./EventBus";
+import { useI18n } from 'vue-i18n';
+import { eventBus, EventType } from './EventBus';
 const { t } = useI18n();
 
 const viewerStore = useViewerStore();
 
 const onboardingWrapper = ref(null);
-provide("onboardingWrapper", onboardingWrapper);
+provide('onboardingWrapper', onboardingWrapper);
 
 const file = ref(null);
 
 const steps = computed(() => [
   {
-    attachTo: { element: "#viewerControls" },
+    attachTo: { element: '#viewerControls' },
     content: {
-      title: t("tour.viewerControls.title"),
-      description: t("tour.viewerControls.description"),
+      title: t('tour.viewerControls.title'),
+      description: t('tour.viewerControls.description'),
     },
   },
   {
-    attachTo: { element: "#viewerSettings" },
+    attachTo: { element: '#viewerSettings' },
     content: {
-      title: t("tour.viewerSettings.title"),
-      description: t("tour.viewerSettings.description"),
+      title: t('tour.viewerSettings.title'),
+      description: t('tour.viewerSettings.description'),
     },
   },
   {
-    attachTo: { element: "#bottomBar" },
+    attachTo: { element: '#bottomBar' },
     content: {
-      title: t("tour.bottomBar.title"),
-      description: t("tour.bottomBar.description"),
+      title: t('tour.bottomBar.title'),
+      description: t('tour.bottomBar.description'),
     },
   },
 ]);
 
 onMounted(() => {
-  document.addEventListener("keydown", function (e) {
-    if (e.ctrlKey && (e.key === "+" || e.key === "=" || e.key === "-")) {
+  document.addEventListener('keydown', function (e) {
+    if (e.ctrlKey && (e.key === '+' || e.key === '=' || e.key === '-')) {
       e.preventDefault();
     }
 
     // If CTRL+Z undo
-    if (e.ctrlKey && !e.shiftKey && e.code === "KeyZ") {
+    if (e.ctrlKey && !e.shiftKey && e.code === 'KeyZ') {
       e.preventDefault();
       undoRedoManager.undo();
     }
 
     // If CTRL+SHIFT+Z redo
-    if (e.ctrlKey && e.shiftKey && e.code === "KeyZ") {
+    if (e.ctrlKey && e.shiftKey && e.code === 'KeyZ') {
       e.preventDefault();
       undoRedoManager.redo();
     }
 
     // Save project
-    if (e.ctrlKey && e.code === "KeyS") {
+    if (e.ctrlKey && e.code === 'KeyS') {
       e.preventDefault();
       saveProject();
     }
 
     // Open project
-    if (e.ctrlKey && e.code === "KeyO") {
+    if (e.ctrlKey && e.code === 'KeyO') {
       e.preventDefault();
       file.value.click();
     }
   });
 
   document.addEventListener(
-    "wheel",
+    'wheel',
     function (e) {
       if (e.ctrlKey) {
         e.preventDefault();
@@ -113,9 +113,9 @@ onMounted(() => {
   const domain = solver.domain;
 
   const params = new URL(document.location as unknown as URL).searchParams;
-  const name = params.get("model");
-  const lang = params.get("lang");
-  const inViewerMode = params.get("viewer");
+  const name = params.get('model');
+  const lang = params.get('lang');
+  const inViewerMode = params.get('viewer');
 
   if (inViewerMode) {
     appStore.inViewerMode = true;
@@ -129,7 +129,7 @@ onMounted(() => {
     solve();
 
     const url = document.location.href;
-    window.history.pushState({}, "", url.split("?")[0]);
+    window.history.pushState({}, '', url.split('?')[0]);
 
     return;
   }
@@ -137,7 +137,7 @@ onMounted(() => {
   if (lang && availableLocales.findIndex((l) => l.code === lang) >= 0) {
     appStore.locale = lang;
     const url = document.location.href;
-    window.history.pushState({}, "", url.split("?")[0]);
+    window.history.pushState({}, '', url.split('?')[0]);
   }
 
   if (domain.nodes.size > 0) return solve();
@@ -225,7 +225,7 @@ function preventDefaults(e) {
   e.preventDefault();
 }
 
-const events = ["dragenter", "dragover", "dragleave", "drop"];
+const events = ['dragenter', 'dragover', 'dragleave', 'drop'];
 
 onMounted(() => {
   events.forEach((eventName) => {
@@ -244,7 +244,7 @@ function onDrop(e) {
         importJSON(JSON.parse(text));
         solve();
       } catch (e) {
-        alert("Could not import the file. Please check the file format.");
+        alert('Could not import the file. Please check the file format.');
       }
     };
     reader.readAsText(file);
@@ -265,7 +265,7 @@ function openFile(e) {
       importJSON(JSON.parse(text));
       solve();
     } catch (e) {
-      alert("Could not import the file. Please check the file format.");
+      alert('Could not import the file. Please check the file format.');
     }
 
     appStore.tab = 0;
@@ -275,7 +275,7 @@ function openFile(e) {
 }
 
 const saveProject = () => {
-  download("project.json", JSON.stringify(exportJSON()));
+  download('project.json', JSON.stringify(exportJSON()));
 };
 
 const app_version = APP_VERSION;
@@ -319,12 +319,12 @@ const app_commit = APP_COMMIT;
                 </div>
                 <div class="mt-5 space-x-4 sm:mt-0 sm:ml-6 sm:flex sm:flex-shrink-0 sm:items-center relative">
                   <template v-if="!isFirst">
-                    <v-btn @click="previous" type="button" flat color="grey-lighten-3">
-                      {{ $t("tour.previousButton") }}
+                    <v-btn type="button" flat color="grey-lighten-3" @click="previous">
+                      {{ $t('tour.previousButton') }}
                     </v-btn>
                   </template>
-                  <v-btn @click="next" type="button" color="primary" flat class="ml-1">
-                    {{ isLast ? $t("tour.finishButton") : $t("tour.nextButton") }}
+                  <v-btn type="button" color="primary" flat class="ml-1" @click="next">
+                    {{ isLast ? $t('tour.finishButton') : $t('tour.nextButton') }}
                   </v-btn>
                 </div>
               </div>
@@ -334,7 +334,7 @@ const app_commit = APP_COMMIT;
       </template>
     </VOnboardingWrapper>
 
-    <v-app-bar clipped-lefs clipped-right app color="primary" density="compact" v-if="!appStore.inViewerMode">
+    <v-app-bar v-if="!appStore.inViewerMode" clipped-lefs clipped-right app color="primary" density="compact">
       <v-app-bar-nav-icon @click="appStore.drawerOpen = !appStore.drawerOpen"></v-app-bar-nav-icon>
 
       <div class="app-title ml-3 d-flex align-center" style="user-select: none">edubeam</div>
@@ -354,17 +354,17 @@ const app_commit = APP_COMMIT;
         "
       >
         <v-icon>mdi-delete-empty</v-icon>
-        <span>{{ $t("common.clearMesh") }}</span>
+        <span>{{ $t('common.clearMesh') }}</span>
       </v-btn>
 
       <v-btn class="d-none d-sm-inline-flex" @click="shareMesh">
-        <v-icon>mdi-share</v-icon> {{ $t("common.shareModel") }}
+        <v-icon>mdi-share</v-icon> {{ $t('common.shareModel') }}
       </v-btn>
 
       <v-spacer></v-spacer>
 
       <v-btn class="d-inline-flex" href="https://edubeam.app" target="_blank">
-        {{ $t("common.documentation") }}
+        {{ $t('common.documentation') }}
         <v-icon class="ml-1">mdi-open-in-new</v-icon>
       </v-btn>
 
@@ -455,7 +455,7 @@ const app_commit = APP_COMMIT;
       <div>edubeam v{{ app_version }} {{ $t("footer.released") }} {{ app_released }}</div>
     </div> -->
     <ReloadPrompt />
-    <input type="file" ref="file" style="display: none" @change="openFile" />
+    <input ref="file" type="file" style="display: none" @change="openFile" />
   </v-app>
 </template>
 
@@ -508,7 +508,7 @@ svg text {
 }
 
 .tooltip .content:after {
-  content: "";
+  content: '';
   position: absolute;
   border-top: 6px solid transparent;
   border-bottom: 6px solid transparent;

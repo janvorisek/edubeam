@@ -1,19 +1,19 @@
 // Utilities
-import { defineStore } from "pinia";
-import { reactive, ref, markRaw, type Ref, watch, Raw, Component, computed, nextTick } from "vue";
+import { defineStore } from 'pinia';
+import { reactive, ref, markRaw, type Ref, watch, Raw, Component, computed, nextTick } from 'vue';
 
-import SVGViewer from "../components/SVGViewer.vue";
+import SVGViewer from '../components/SVGViewer.vue';
 // import Results from "../components/Results.vue";
-import Settings from "../components/settings/Settings.vue";
-import { MouseMode } from "@/mouse";
-import { setLocale } from "@/plugins/i18n";
-import { openModal } from "jenesius-vue-modal";
-import SettingsModal from "../components/dialogs/Settings.vue";
-import Qty from "js-quantities";
-import { isMobile, suggestLanguage } from "@/utils";
+import Settings from '../components/settings/Settings.vue';
+import { MouseMode } from '@/mouse';
+import { setLocale } from '@/plugins/i18n';
+import { openModal } from 'jenesius-vue-modal';
+import SettingsModal from '../components/dialogs/Settings.vue';
+import Qty from 'js-quantities';
+import { isMobile, suggestLanguage } from '@/utils';
 
 export const useAppStore = defineStore(
-  "app",
+  'app',
   () => {
     const inViewerMode = ref(false);
 
@@ -29,47 +29,47 @@ export const useAppStore = defineStore(
     );
 
     const units = reactive({
-      Length: "m",
-      Area: "m2",
-      AreaM2: "m4",
-      Mass: "kg",
-      Force: "kN",
+      Length: 'm',
+      Area: 'm2',
+      AreaM2: 'm4',
+      Mass: 'kg',
+      Force: 'kN',
       Moment: computed(() => `${units.Force}${units.Length}`),
-      Pressure: "MPa",
-      ThermalExpansion: "1/K",
-      Angle: "rad",
-      Temperature: "C",
+      Pressure: 'MPa',
+      ThermalExpansion: '1/K',
+      Angle: 'rad',
+      Temperature: 'C',
       ForceDistance: computed(() => `${units.Force}/${units.Length}`),
     });
 
-    let _convertLength = Qty.swiftConverter("m", units.Length);
-    let _convertInverseLength = Qty.swiftConverter(units.Length, "m");
-    let _convertArea = Qty.swiftConverter("m2", units.Area);
-    let _convertInverseArea = Qty.swiftConverter(units.Area, "m2");
-    let _convertAreaM2 = Qty.swiftConverter("m4", units.AreaM2);
-    let _convertInverseAreaM2 = Qty.swiftConverter(units.AreaM2, "m4");
-    let _convertPressure = Qty.swiftConverter("Pa", units.Pressure);
-    let _convertInversePressure = Qty.swiftConverter(units.Pressure, "Pa");
-    let _convertForce = Qty.swiftConverter("N", units.Force);
-    let _convertInverseForce = Qty.swiftConverter(units.Force, "N");
-    let _convertTemperature = Qty.swiftConverter("C", units.Temperature);
-    let _convertInverseTemperature = Qty.swiftConverter(units.Temperature, "C");
+    let _convertLength = Qty.swiftConverter('m', units.Length);
+    let _convertInverseLength = Qty.swiftConverter(units.Length, 'm');
+    let _convertArea = Qty.swiftConverter('m2', units.Area);
+    let _convertInverseArea = Qty.swiftConverter(units.Area, 'm2');
+    let _convertAreaM2 = Qty.swiftConverter('m4', units.AreaM2);
+    let _convertInverseAreaM2 = Qty.swiftConverter(units.AreaM2, 'm4');
+    let _convertPressure = Qty.swiftConverter('Pa', units.Pressure);
+    let _convertInversePressure = Qty.swiftConverter(units.Pressure, 'Pa');
+    let _convertForce = Qty.swiftConverter('N', units.Force);
+    let _convertInverseForce = Qty.swiftConverter(units.Force, 'N');
+    let _convertTemperature = Qty.swiftConverter('C', units.Temperature);
+    let _convertInverseTemperature = Qty.swiftConverter(units.Temperature, 'C');
 
     watch(
       units,
       (newUnits) => {
-        _convertLength = Qty.swiftConverter("m", newUnits.Length);
-        _convertInverseLength = Qty.swiftConverter(newUnits.Length, "m");
-        _convertArea = Qty.swiftConverter("m2", newUnits.Area);
-        _convertInverseArea = Qty.swiftConverter(newUnits.Area, "m2");
-        _convertAreaM2 = Qty.swiftConverter("m4", newUnits.AreaM2);
-        _convertInverseAreaM2 = Qty.swiftConverter(newUnits.AreaM2, "m4");
-        _convertPressure = Qty.swiftConverter("Pa", newUnits.Pressure);
-        _convertInversePressure = Qty.swiftConverter(newUnits.Pressure, "Pa");
-        _convertForce = Qty.swiftConverter("N", newUnits.Force);
-        _convertInverseForce = Qty.swiftConverter(newUnits.Force, "N");
-        _convertTemperature = Qty.swiftConverter("C", newUnits.Temperature);
-        _convertInverseTemperature = Qty.swiftConverter(newUnits.Temperature, "C");
+        _convertLength = Qty.swiftConverter('m', newUnits.Length);
+        _convertInverseLength = Qty.swiftConverter(newUnits.Length, 'm');
+        _convertArea = Qty.swiftConverter('m2', newUnits.Area);
+        _convertInverseArea = Qty.swiftConverter(newUnits.Area, 'm2');
+        _convertAreaM2 = Qty.swiftConverter('m4', newUnits.AreaM2);
+        _convertInverseAreaM2 = Qty.swiftConverter(newUnits.AreaM2, 'm4');
+        _convertPressure = Qty.swiftConverter('Pa', newUnits.Pressure);
+        _convertInversePressure = Qty.swiftConverter(newUnits.Pressure, 'Pa');
+        _convertForce = Qty.swiftConverter('N', newUnits.Force);
+        _convertInverseForce = Qty.swiftConverter(newUnits.Force, 'N');
+        _convertTemperature = Qty.swiftConverter('C', newUnits.Temperature);
+        _convertInverseTemperature = Qty.swiftConverter(newUnits.Temperature, 'C');
 
         if (useAppStore().bottomBarOpen) {
           useAppStore().bottomBarOpen = false;
@@ -126,9 +126,9 @@ export const useAppStore = defineStore(
         closable: boolean;
       }[]
     > = ref([
-      { title: "tabView.viewer", component: markRaw(SVGViewer), props: { id: "viewer" }, closable: false },
+      { title: 'tabView.viewer', component: markRaw(SVGViewer), props: { id: 'viewer' }, closable: false },
       //{ title: "tabView.results", component: markRaw(Results), props: {}, closable: true },
-      { title: "tabView.settings", component: markRaw(Settings), props: { id: "settings" }, closable: true },
+      { title: 'tabView.settings', component: markRaw(Settings), props: { id: 'settings' }, closable: true },
     ]);
 
     const openedTab = computed(() => tabs.value[tab.value] || null);
@@ -190,7 +190,7 @@ export const useAppStore = defineStore(
   {
     persist: {
       storage: localStorage,
-      paths: ["panButton", "onboardingFinished", "locale", "tab", "bottomBarHeight", "units"],
+      paths: ['panButton', 'onboardingFinished', 'locale', 'tab', 'bottomBarHeight', 'units'],
     },
   }
 );

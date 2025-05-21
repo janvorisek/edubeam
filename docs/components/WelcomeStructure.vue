@@ -1,29 +1,29 @@
 <script lang="ts" setup>
-import { LinearStaticSolver, DofID, Node, Beam2D } from "ts-fem";
-import { ref, onMounted, reactive } from "vue";
-import SVGElementViewer from "../../src/components/SVGElementViewer.vue";
-import { VTweakpane } from "v-tweakpane";
-import { serializeModel, deserializeModel } from "../../src/utils/serializeModel";
+import { LinearStaticSolver, DofID, Node, Beam2D } from 'ts-fem';
+import { ref, onMounted, reactive } from 'vue';
+import SVGElementViewer from '../../src/components/SVGElementViewer.vue';
+import { VTweakpane } from 'v-tweakpane';
+import { serializeModel, deserializeModel } from '../../src/utils/serializeModel';
 
 const colors = {
-  normalForce: "#2222ff",
-  shearForce: "#00af00",
-  bendingMoment: "#ff2222",
-  deformedShape: "#555555",
-  loads: "#ff8700",
-  nodes: "#000000",
-  elements: "#000000",
-  reactions: "#a020f0",
+  normalForce: '#2222ff',
+  shearForce: '#00af00',
+  bendingMoment: '#ff2222',
+  deformedShape: '#555555',
+  loads: '#ff8700',
+  nodes: '#000000',
+  elements: '#000000',
+  reactions: '#a020f0',
 };
 
 const solver = ref(new LinearStaticSolver());
 const domain = solver.value.domain;
 
 {
-  domain.createNode("a", [0, 0, 0], [DofID.Dx, DofID.Dz, DofID.Ry]);
-  domain.createNode("b", [3, 0, 0], [DofID.Dz]);
+  domain.createNode('a', [0, 0, 0], [DofID.Dx, DofID.Dz, DofID.Ry]);
+  domain.createNode('b', [3, 0, 0], [DofID.Dz]);
 
-  domain.createBeam2D("1", ["a", "b"], 1, 1);
+  domain.createBeam2D('1', ['a', 'b'], 1, 1);
 
   domain.createCrossSection(1, {
     a: 1,
@@ -43,7 +43,7 @@ const domain = solver.value.domain;
   });
 }
 
-const nodes = ref<Node[]>([domain.getNode("a"), domain.getNode("b")]);
+const nodes = ref<Node[]>([domain.getNode('a'), domain.getNode('b')]);
 const elements = ref<Beam2D[]>([]);
 const showLoads = ref(false);
 const showShearForces = ref(false);
@@ -111,7 +111,7 @@ onMounted(() => {
 //solver.loadCases[0].createNodalLoad(3, { [DofID.Dx]: 10000, [DofID.Dz]: 0, [DofID.Ry]: 10000 });
 //solver.loadCases[0].createNodalLoad(3, { [DofID.Dx]: 0, [DofID.Dz]: 20 });
 
-solver.value.loadCases[0].createBeamElementUniformEdgeLoad("1", [0, 10], true);
+solver.value.loadCases[0].createBeamElementUniformEdgeLoad('1', [0, 10], true);
 solver.value.solve();
 </script>
 

@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { openModal } from "jenesius-vue-modal";
-import AddElementLoadDialog from "./dialogs/AddElementLoad.vue";
-import { useProjectStore } from "@/store/project";
-import { useLayoutStore } from "@/store/layout";
-import StiffnessMatrix from "./StiffnessMatrix.vue";
-import { ref, computed, onMounted, watch } from "vue";
-import { setUnsolved, solve } from "../utils";
+import { openModal } from 'jenesius-vue-modal';
+import AddElementLoadDialog from './dialogs/AddElementLoad.vue';
+import { useProjectStore } from '@/store/project';
+import { useLayoutStore } from '@/store/layout';
+import StiffnessMatrix from './StiffnessMatrix.vue';
+import { ref, computed, onMounted, watch } from 'vue';
+import { setUnsolved, solve } from '../utils';
 
 const projectStore = useProjectStore();
 const layoutStore = useLayoutStore();
 
-const n1 = ref("");
-const n2 = ref("");
+const n1 = ref('');
+const n2 = ref('');
 
 const element = computed(() => {
   return useProjectStore().solver.domain.getElement(projectStore.selection.label);
@@ -35,7 +35,7 @@ watch([n1, n2], () => {
       <template #prepend>
         <div class="pr-2"><v-icon size="16" icon="mdi-pencil" /></div>
       </template>
-      {{ $t("elements.editElement") }}
+      {{ $t('elements.editElement') }}
       <v-menu activator="parent" open-on-click location="end" :close-on-content-click="false">
         <v-list density="compact" class="py-0">
           <v-row no-gutters>
@@ -104,18 +104,18 @@ watch([n1, n2], () => {
       <template #prepend>
         <div class="pr-2"><v-icon size="16" icon="mdi-arrow-down-thin" /></div>
       </template>
-      {{ $t("loads.addLoad") }}
+      {{ $t('loads.addLoad') }}
     </v-list-item>
     <v-list-item
+      v-if="projectStore.selection.type === 'element'"
       link
       class="text-body-2"
-      v-if="projectStore.selection.type === 'element'"
       @click="
         layoutStore.openWidget($t('common.stiffnessMatrix'), StiffnessMatrix, { label: projectStore.selection.label });
         projectStore.selection.type = null;
       "
     >
-      {{ $t("common.stiffnessMatrix") }}
+      {{ $t('common.stiffnessMatrix') }}
       <template #prepend>
         <div class="pr-2"><v-icon size="16" icon="mdi-matrix" /></div>
       </template>

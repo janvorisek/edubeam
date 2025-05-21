@@ -9,57 +9,57 @@ import {
   NodalLoad,
   Node,
   PrescribedDisplacement,
-} from "ts-fem";
-import { Ref } from "vue";
-import { availableLocales, i18n } from "../plugins/i18n";
-import { useProjectStore } from "../store/project";
-import { Command, IKeyValue, undoRedoManager } from "../CommandManager";
-import { useViewerStore } from "../store/viewer";
+} from 'ts-fem';
+import { Ref } from 'vue';
+import { availableLocales, i18n } from '../plugins/i18n';
+import { useProjectStore } from '../store/project';
+import { Command, IKeyValue, undoRedoManager } from '../CommandManager';
+import { useViewerStore } from '../store/viewer';
 
-import { loadType } from "./loadType";
+import { loadType } from './loadType';
 
 export type EntityWithLabel = { label: string & { [key: string]: unknown } };
 
-export { throttle } from "./throttle";
-export { debounce } from "./debounce";
+export { throttle } from './throttle';
+export { debounce } from './debounce';
 
-export { serializeModel } from "./serializeModel";
-export { deserializeModel } from "./serializeModel";
+export { serializeModel } from './serializeModel';
+export { deserializeModel } from './serializeModel';
 
-export { smoothPath } from "./smoothPath";
-export { loadType } from "./loadType";
+export { smoothPath } from './smoothPath';
+export { loadType } from './loadType';
 
-export { loadXmlFile } from "./loadXmlFile";
+export { loadXmlFile } from './loadXmlFile';
 
-export { formatScientificNumber } from "./formatScientificNumber";
+export { formatScientificNumber } from './formatScientificNumber';
 
 export const capitalize = (s: string) => {
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
 export const checkNumber = (e: KeyboardEvent) => {
-  if (e.key === "Escape") if ("activeElement" in document) (document.activeElement as HTMLElement).blur();
+  if (e.key === 'Escape') if ('activeElement' in document) (document.activeElement as HTMLElement).blur();
 
   const isNumber = !isNaN(e.key as unknown as number);
 
   const isActionKey =
-    (e.ctrlKey && e.key === "a") ||
-    (e.ctrlKey && e.key === "c") ||
-    (e.ctrlKey && e.key === "v") ||
-    (e.ctrlKey && e.key === "x") ||
-    e.key === "Escape" ||
-    e.key === "Delete" ||
-    e.key === "Backspace" ||
-    e.key === "Enter" ||
-    e.key === "Tab" ||
-    e.key === "ArrowRight" ||
-    e.key === "ArrowLeft" ||
-    e.key === "End" ||
-    e.key === "Home" ||
-    e.key === "e" ||
-    e.key === "-";
+    (e.ctrlKey && e.key === 'a') ||
+    (e.ctrlKey && e.key === 'c') ||
+    (e.ctrlKey && e.key === 'v') ||
+    (e.ctrlKey && e.key === 'x') ||
+    e.key === 'Escape' ||
+    e.key === 'Delete' ||
+    e.key === 'Backspace' ||
+    e.key === 'Enter' ||
+    e.key === 'Tab' ||
+    e.key === 'ArrowRight' ||
+    e.key === 'ArrowLeft' ||
+    e.key === 'End' ||
+    e.key === 'Home' ||
+    e.key === 'e' ||
+    e.key === '-';
 
-  const isComma = e.key === "," || e.key === ".";
+  const isComma = e.key === ',' || e.key === '.';
 
   if (isNumber || isActionKey || isComma) return;
 
@@ -68,11 +68,11 @@ export const checkNumber = (e: KeyboardEvent) => {
 };
 
 export const download = (filename: string, text: string) => {
-  const element = document.createElement("a");
-  element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
-  element.setAttribute("download", filename);
+  const element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
 
-  element.style.display = "none";
+  element.style.display = 'none';
   document.body.appendChild(element);
 
   element.click();
@@ -210,11 +210,11 @@ export const importJSON = (json: any) => {
       }
 
       for (const el of loadCase.elementLoads) {
-        if (!("type" in el) || el.type === "udl")
+        if (!('type' in el) || el.type === 'udl')
           useProjectStore().solver.loadCases[0].createBeamElementUniformEdgeLoad(el.target, el.values, el.lcs ?? true);
-        else if ("type" in el && el.type === "concentrated")
+        else if ('type' in el && el.type === 'concentrated')
           useProjectStore().solver.loadCases[0].createBeamConcentratedLoad(el.target, el.values, el.lcs ?? true);
-        else if ("type" in el && el.type === "temperature")
+        else if ('type' in el && el.type === 'temperature')
           useProjectStore().solver.loadCases[0].createBeamTemperatureLoad(el.target, el.values);
       }
 
@@ -232,18 +232,18 @@ export const suggestLanguage = () => {
     if (availableLocales.some((l) => l.code === lang)) return lang;
   }
 
-  return "en";
+  return 'en';
 };
 
 export const parseFloat2 = (s: string | number) => {
   s = s.toString();
 
-  if (s === "") return 0;
-  if (s === "-") return 0;
+  if (s === '') return 0;
+  if (s === '-') return 0;
 
-  s = s.replaceAll(/\s/g, "");
+  s = s.replaceAll(/\s/g, '');
 
-  let tmp = parseFloat(s.replace(",", "."));
+  let tmp = parseFloat(s.replace(',', '.'));
 
   tmp = isNaN(tmp) ? 0 : tmp;
 
@@ -276,9 +276,9 @@ export const changeSetArrayItem = (
 
   const prevVal = item[set][value];
 
-  if (el.value === "") el.value = "0";
+  if (el.value === '') el.value = '0';
 
-  const val = parseFloat(el.value.replace(/\s/g, "").replace(",", "."));
+  const val = parseFloat(el.value.replace(/\s/g, '').replace(',', '.'));
   if (isNaN(val)) return (el.value = item[set][value]);
 
   if (formatter) item[set][value] = formatter(val);
@@ -305,7 +305,7 @@ export const changeSetArrayItem = (
 };
 
 export const changeRefNumValue = (value: string) => {
-  const val = parseFloat(value.replace(/\s/g, "").replace(",", "."));
+  const val = parseFloat(value.replace(/\s/g, '').replace(',', '.'));
   if (isNaN(val)) return 0;
 
   return val;
@@ -313,12 +313,12 @@ export const changeRefNumValue = (value: string) => {
 
 export const numberRules = [
   (v: string) => {
-    if (v === "") return i18n.global.t("validators.enterValue");
+    if (v === '') return i18n.global.t('validators.enterValue');
 
-    const tmp = v.replace(/\s/g, "").replace(",", ".");
+    const tmp = v.replace(/\s/g, '').replace(',', '.');
 
     // isNaN accepts a string, the types are wrong
-    if (isNaN(tmp as unknown as number)) return i18n.global.t("validators.invalidNumber");
+    if (isNaN(tmp as unknown as number)) return i18n.global.t('validators.invalidNumber');
 
     return true;
   },
@@ -329,9 +329,9 @@ export const changeItem = (item: object, value: string, el?: HTMLInputElement, f
 
   const prevVal = item[value];
 
-  if (el.value === "") el.value = "0";
+  if (el.value === '') el.value = '0';
 
-  const val = parseFloat(el.value.replace(/\s/g, "").replace(",", "."));
+  const val = parseFloat(el.value.replace(/\s/g, '').replace(',', '.'));
   //if (isNaN(val)) return (el.value = item[value]);
 
   if (formatter) item[value] = formatter(val);
@@ -365,7 +365,7 @@ export const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputEl
 
   //if (isNaN(parseInt(el.value))) return;
   if (useProjectStore().solver.domain[map].has(el.value)) {
-    alert("ERROR: Label " + el.value + " already used!");
+    alert('ERROR: Label ' + el.value + ' already used!');
     el.value = item.label;
     return;
   }
@@ -375,7 +375,7 @@ export const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputEl
   item.label = el.value;
   useProjectStore().solver.domain[map].set(item.label, item);
 
-  if (map === "nodes") {
+  if (map === 'nodes') {
     for (const [key, element] of useProjectStore().solver.domain.elements) {
       const idtomodify = element.nodes.findIndex((nid) => nid == prevId);
       if (idtomodify > -1) {
@@ -390,7 +390,7 @@ export const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputEl
     }
   }
 
-  if (map === "elements") {
+  if (map === 'elements') {
     for (const load of useProjectStore().solver.loadCases[0].elementLoadList) {
       if (load.target == prevId) {
         load.target = item.label;
@@ -398,7 +398,7 @@ export const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputEl
     }
   }
 
-  if (map === "materials") {
+  if (map === 'materials') {
     for (const [key, element] of useProjectStore().solver.domain.elements) {
       if (element.mat == prevId) {
         element.mat = item.label;
@@ -406,7 +406,7 @@ export const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputEl
     }
   }
 
-  if (map === "crossSections") {
+  if (map === 'crossSections') {
     for (const [key, element] of useProjectStore().solver.domain.elements) {
       if (element.cs == prevId) {
         element.cs = item.label;
@@ -616,21 +616,21 @@ export const deletePrescribedDisplacement = (load: BeamElementUniformEdgeLoad, i
 };
 
 export const nameBeamForce = (dof: number) => {
-  if (dof === 0) return "X";
-  if (dof === 1) return "Z";
-  if (dof === 2) return "M";
-  if (dof === 3) return "X";
-  if (dof === 4) return "Z";
-  if (dof === 5) return "M";
-  return "";
+  if (dof === 0) return 'X';
+  if (dof === 1) return 'Z';
+  if (dof === 2) return 'M';
+  if (dof === 3) return 'X';
+  if (dof === 4) return 'Z';
+  if (dof === 5) return 'M';
+  return '';
 };
 
 export function decimalCount(number) {
   // Convert to String
   const numberAsString = number.toString();
   // String Contains Decimal
-  if (numberAsString.includes(".")) {
-    return numberAsString.split(".")[1].length;
+  if (numberAsString.includes('.')) {
+    return numberAsString.split('.')[1].length;
   }
   // String Does Not Contain Decimal
   return 0;
@@ -644,7 +644,7 @@ export function float2String(v: number) {
   // now count zeros at end
   let zeros = 0;
   for (let c = 1; c < numDec; c++) {
-    if (s[s.length - c] === "0") zeros++;
+    if (s[s.length - c] === '0') zeros++;
     else break;
   }
 

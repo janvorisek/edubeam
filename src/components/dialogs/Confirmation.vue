@@ -9,10 +9,10 @@
         <v-card-text>
           <v-checkbox
             v-for="cb in props.checkboxes"
+            v-model="cb.value"
             density="compact"
             :label="cb.label"
             hide-details="auto"
-            v-model="cb.value"
           />
         </v-card-text>
       </template>
@@ -20,7 +20,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn v-if="props.success" color="green darken-1" @click="_success" @keydown.enter="_success">
-          {{ $t("common.confirm") }}
+          {{ $t('common.confirm') }}
         </v-btn>
         <v-btn
           v-for="action in acs"
@@ -32,7 +32,7 @@
           {{ action.label }}
         </v-btn>
         <v-btn v-if="props.cancel || acs.length === 0" color="red darken-1" @click="cancel" @keydown.enter="cancel">{{
-          $t("dialogs.common.cancel")
+          $t('dialogs.common.cancel')
         }}</v-btn>
       </v-card-actions>
     </v-card>
@@ -40,9 +40,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { closeModal } from "jenesius-vue-modal";
-import { computed } from "vue";
+import { ref } from 'vue';
+import { closeModal } from 'jenesius-vue-modal';
+import { computed } from 'vue';
 
 const open = ref(true);
 

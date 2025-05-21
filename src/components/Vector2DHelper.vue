@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useAppStore } from "../store/app";
-import { computed } from "vue";
-import { useViewerStore } from "../store/viewer";
+import { useAppStore } from '../store/app';
+import { computed } from 'vue';
+import { useViewerStore } from '../store/viewer';
 
 const props = defineProps<{
   fx: number;

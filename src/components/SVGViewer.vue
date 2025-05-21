@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import { closeModal, openModal } from "jenesius-vue-modal";
-import SvgPanZoom from "./SVGPanZoom.vue";
-import SvgGrid from "./SVGGrid.vue";
-import SvgViewerDefs from "./SVGViewerDefs.vue";
-import { useProjectStore } from "../store/project";
-import { ref, onMounted, computed, nextTick, markRaw, watch, reactive, onUnmounted, onUpdated } from "vue";
-import { useViewerStore } from "../store/viewer";
-import { useAppStore } from "@/store/app";
+import { closeModal, openModal } from 'jenesius-vue-modal';
+import SvgPanZoom from './SVGPanZoom.vue';
+import SvgGrid from './SVGGrid.vue';
+import SvgViewerDefs from './SVGViewerDefs.vue';
+import { useProjectStore } from '../store/project';
+import { ref, onMounted, computed, nextTick, markRaw, watch, reactive, onUnmounted, onUpdated } from 'vue';
+import { useViewerStore } from '../store/viewer';
+import { useAppStore } from '@/store/app';
 
-import AddElementDialog from "./dialogs/AddElement.vue";
-import AddNodeDialog from "./dialogs/AddNode.vue";
-import Confirmation from "./dialogs/Confirmation.vue";
+import AddElementDialog from './dialogs/AddElement.vue';
+import AddNodeDialog from './dialogs/AddNode.vue';
+import Confirmation from './dialogs/Confirmation.vue';
 
-import EditNodalLoadDialog from "./dialogs/EditNodalLoad.vue";
-import EditElementLoadDialog from "./dialogs/EditElementLoad.vue";
+import EditNodalLoadDialog from './dialogs/EditNodalLoad.vue';
+import EditElementLoadDialog from './dialogs/EditElementLoad.vue';
 
-import SVGElementLoad from "./svg/ElementLoad.vue";
-import SVGElementConcentratedLoad from "./svg/ElementConcentratedLoad.vue";
-import SVGNodalLoad from "./svg/NodalLoad.vue";
-import SVGPrescribedDisplacement from "./svg/PrescribedDisplacement.vue";
-import SVGNode from "./svg/Node.vue";
-import SVGElement from "./svg/Element.vue";
-import SVGElementTemperatureLoad from "./svg/ElementTemperatureLoad.vue";
-import SVGDimensioning from "./svg/Dimensioning.vue";
+import SVGElementLoad from './svg/ElementLoad.vue';
+import SVGElementConcentratedLoad from './svg/ElementConcentratedLoad.vue';
+import SVGNodalLoad from './svg/NodalLoad.vue';
+import SVGPrescribedDisplacement from './svg/PrescribedDisplacement.vue';
+import SVGNode from './svg/Node.vue';
+import SVGElement from './svg/Element.vue';
+import SVGElementTemperatureLoad from './svg/ElementTemperatureLoad.vue';
+import SVGDimensioning from './svg/Dimensioning.vue';
 
-import { formatExpValueAsHTML } from "../SVGUtils";
-import { debounce, loadType, throttle } from "../utils";
+import { formatExpValueAsHTML } from '../SVGUtils';
+import { debounce, loadType, throttle } from '../utils';
 import {
   Node,
   DofID,
@@ -35,29 +35,29 @@ import {
   PrescribedDisplacement,
   BeamElementUniformEdgeLoad,
   BeamTemperatureLoad,
-} from "ts-fem";
-import { Matrix } from "mathjs";
-import { useMagicKeys } from "@vueuse/core";
-import { OnLongPress } from "@vueuse/components";
+} from 'ts-fem';
+import { Matrix } from 'mathjs';
+import { useMagicKeys } from '@vueuse/core';
+import { OnLongPress } from '@vueuse/components';
 
-import { useI18n } from "vue-i18n";
+import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
-import ContextMenuElement from "./ContextMenuElement.vue";
-import ContextMenuNode from "./ContextMenuNode.vue";
-import ContextMenuElementLoad from "./ContextMenuElementLoad.vue";
-import ContextMenuNodalLoad from "./ContextMenuNodalLoad.vue";
+import ContextMenuElement from './ContextMenuElement.vue';
+import ContextMenuNode from './ContextMenuNode.vue';
+import ContextMenuElementLoad from './ContextMenuElementLoad.vue';
+import ContextMenuNodalLoad from './ContextMenuNodalLoad.vue';
 
-import { MouseMode } from "@/mouse";
-import { formatMeasureAsHTML } from "../SVGUtils";
+import { MouseMode } from '@/mouse';
+import { formatMeasureAsHTML } from '../SVGUtils';
 
-import Selection from "./Selection.vue";
+import Selection from './Selection.vue';
 
-import { useLayoutStore } from "@/store/layout";
-import { Command, IKeyValue, undoRedoManager } from "../CommandManager";
-import { EventType, eventBus } from "../EventBus";
-import { BeamConcentratedLoad } from "ts-fem";
-import { useClipboardStore } from "../store/clipboard";
+import { useLayoutStore } from '@/store/layout';
+import { Command, IKeyValue, undoRedoManager } from '../CommandManager';
+import { EventType, eventBus } from '../EventBus';
+import { BeamConcentratedLoad } from 'ts-fem';
+import { useClipboardStore } from '../store/clipboard';
 
 const props = defineProps<{
   id: string;
@@ -69,7 +69,7 @@ const mouseXReal = ref(0);
 const mouseYReal = ref(0);
 
 const startNode = ref<{ label: string | number; x: number; y: number } | null>(null);
-const endNode = ref<Node | null>(new Node("~932:d\nxADsfsa", null, [0, 0, 0]));
+const endNode = ref<Node | null>(new Node('~932:d\nxADsfsa', null, [0, 0, 0]));
 const deltaPaste = ref<{ x: number; y: number } | null>({ x: 0, y: 0 });
 const dimlineDist = ref(64);
 
@@ -102,12 +102,12 @@ const intersected = ref<{
 });
 
 const zoom = (e: KeyboardEvent) => {
-  if (e.ctrlKey && e.code === "Equal") {
+  if (e.ctrlKey && e.code === 'Equal') {
     panZoom.value?.zoom(svg.value.clientWidth / 2, svg.value.clientHeight / 2, -0.1);
     e.preventDefault();
   }
 
-  if (e.ctrlKey && e.code === "Minus") {
+  if (e.ctrlKey && e.code === 'Minus') {
     panZoom.value?.zoom(svg.value.clientWidth / 2, svg.value.clientHeight / 2, 0.1);
     e.preventDefault();
   }
@@ -123,12 +123,12 @@ const resetAndFit = () => {
 };
 
 onMounted(() => {
-  window.addEventListener("keydown", zoom);
+  window.addEventListener('keydown', zoom);
   eventBus.on(EventType.FIT_CONTENT, resetAndFit);
 });
 
 onUnmounted(() => {
-  window.removeEventListener("keydown", zoom);
+  window.removeEventListener('keydown', zoom);
   eventBus.off(EventType.FIT_CONTENT, resetAndFit);
 });
 
@@ -169,30 +169,30 @@ const onUpdate = throttle((zooming: boolean) => {
 
 const { current, escape, f, c, _delete } = useMagicKeys({
   aliasMap: {
-    _delete: "delete",
+    _delete: 'delete',
   },
 });
 
 const { ctrl_a, ctrl_c, ctrl_v } = useMagicKeys({
   passive: false,
   onEventFired(e) {
-    if ("activeElement" in document && document.activeElement.tagName !== "BODY") return;
-    if (e.ctrlKey && e.key === "a" && e.type === "keydown") e.preventDefault();
+    if ('activeElement' in document && document.activeElement.tagName !== 'BODY') return;
+    if (e.ctrlKey && e.key === 'a' && e.type === 'keydown') e.preventDefault();
   },
 });
 
 watch(f, (v) => {
-  if ("activeElement" in document && document.activeElement.tagName !== "BODY") return;
+  if ('activeElement' in document && document.activeElement.tagName !== 'BODY') return;
   if (v) fitContent();
 });
 
 watch(c, (v) => {
-  if ("activeElement" in document && document.activeElement.tagName !== "BODY") return;
-  if (v && !current.has("control")) centerContent();
+  if ('activeElement' in document && document.activeElement.tagName !== 'BODY') return;
+  if (v && !current.has('control')) centerContent();
 });
 
 watch(_delete, (v) => {
-  if ("activeElement" in document && document.activeElement.tagName !== "BODY") return;
+  if ('activeElement' in document && document.activeElement.tagName !== 'BODY') return;
   if (v) {
     projectStore.deleteSelection2();
     solve();
@@ -200,21 +200,21 @@ watch(_delete, (v) => {
 });
 
 watch(ctrl_a, (v) => {
-  if ("activeElement" in document && document.activeElement.tagName !== "BODY") return;
+  if ('activeElement' in document && document.activeElement.tagName !== 'BODY') return;
   if (v) {
     projectStore.selectAll2();
   }
 });
 
 watch(ctrl_c, (v) => {
-  if ("activeElement" in document && document.activeElement.tagName !== "BODY") return;
+  if ('activeElement' in document && document.activeElement.tagName !== 'BODY') return;
   if (v) {
     useClipboardStore().select(projectStore.selection2);
   }
 });
 
 watch(ctrl_v, (v) => {
-  if ("activeElement" in document && document.activeElement.tagName !== "BODY") return;
+  if ('activeElement' in document && document.activeElement.tagName !== 'BODY') return;
   if (v) {
     paste();
   }
@@ -222,7 +222,7 @@ watch(ctrl_v, (v) => {
 
 watch(escape, (v) => {
   if (v) {
-    if ("activeElement" in document) (document.activeElement as HTMLElement).blur();
+    if ('activeElement' in document) (document.activeElement as HTMLElement).blur();
     appStore.mouseMode = MouseMode.NONE;
     projectStore.clearSelection();
     projectStore.clearSelection2();
@@ -239,7 +239,7 @@ const paste = () => {
     y: mouseYReal.value - midpoint[2],
   };
 
-  startNode.value = { label: "null", x: mouseXReal.value, y: mouseYReal.value };
+  startNode.value = { label: 'null', x: mouseXReal.value, y: mouseYReal.value };
   appStore.mouseMode = MouseMode.PASTE_CLIPBOARD;
 };
 
@@ -247,16 +247,16 @@ const onElementHover = (e: MouseEvent, el: Beam2D) => {
   if (appStore.mouseMode === MouseMode.MOVING) return;
 
   const tt = tooltip.value as HTMLElement;
-  const tooltipContent = tt.querySelector(".content") as HTMLElement;
+  const tooltipContent = tt.querySelector('.content') as HTMLElement;
 
-  intersected.value.type = "element";
+  intersected.value.type = 'element';
   intersected.value.index = el.label;
 
-  tt.style.top = e.offsetY + "px";
-  tt.style.left = e.offsetX + "px";
-  tooltipContent.innerHTML = `<strong>${t("common.element")} ${el.label}</strong>`;
-  tt.style.display = "block";
-  document.body.style.cursor = "pointer";
+  tt.style.top = e.offsetY + 'px';
+  tt.style.left = e.offsetX + 'px';
+  tooltipContent.innerHTML = `<strong>${t('common.element')} ${el.label}</strong>`;
+  tt.style.display = 'block';
+  document.body.style.cursor = 'pointer';
 
   if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
 };
@@ -265,18 +265,18 @@ const onElementLoadHover = (e: MouseEvent, el: BeamElementLoad) => {
   if (appStore.mouseMode === MouseMode.MOVING) return;
 
   const tt = tooltip.value as HTMLElement;
-  const tooltipContent = tt.querySelector(".content") as HTMLElement;
+  const tooltipContent = tt.querySelector('.content') as HTMLElement;
 
   //intersected.value.type = "element";
   //intersected.value.index = el.label;
 
-  tt.style.top = e.offsetY + "px";
-  tt.style.left = e.offsetX + "px";
+  tt.style.top = e.offsetY + 'px';
+  tt.style.left = e.offsetX + 'px';
 
-  let lt = "loadType.udl";
-  if (el instanceof BeamConcentratedLoad) lt = "loadType.concentrated";
-  else if (el instanceof BeamTemperatureLoad) lt = "loadType.temperature";
-  const ff = el instanceof BeamElementUniformEdgeLoad ? "f" : "F";
+  let lt = 'loadType.udl';
+  if (el instanceof BeamConcentratedLoad) lt = 'loadType.concentrated';
+  else if (el instanceof BeamTemperatureLoad) lt = 'loadType.temperature';
+  const ff = el instanceof BeamElementUniformEdgeLoad ? 'f' : 'F';
   const uu =
     el instanceof BeamElementUniformEdgeLoad
       ? `${appStore.units.Force}/${appStore.units.Length}`
@@ -286,11 +286,11 @@ const onElementLoadHover = (e: MouseEvent, el: BeamElementLoad) => {
 
   if (el instanceof BeamTemperatureLoad) {
     if (Math.abs(el.values[0]) > 1e-32) {
-      tooltipContent.innerHTML += `${t("loads.temperatureDeltaTs")} = ${appStore.convertTemperature(el.values[0])} ${uu}<br>`;
+      tooltipContent.innerHTML += `${t('loads.temperatureDeltaTs')} = ${appStore.convertTemperature(el.values[0])} ${uu}<br>`;
     }
 
     if (Math.abs(el.values[1]) > 1e-32) {
-      tooltipContent.innerHTML += `${t("loads.temperatureDeltaTbt")} = ${appStore.convertTemperature(el.values[1])} ${uu}`;
+      tooltipContent.innerHTML += `${t('loads.temperatureDeltaTbt')} = ${appStore.convertTemperature(el.values[1])} ${uu}`;
     }
   } else {
     if (Math.abs(el.values[0]) > 1e-32) {
@@ -302,8 +302,8 @@ const onElementLoadHover = (e: MouseEvent, el: BeamElementLoad) => {
     }
   }
 
-  tt.style.display = "block";
-  document.body.style.cursor = "pointer";
+  tt.style.display = 'block';
+  document.body.style.cursor = 'pointer';
 
   if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
 };
@@ -312,14 +312,14 @@ const onNodalLoadHover = (e: MouseEvent, el: NodalLoad) => {
   if (appStore.mouseMode === MouseMode.MOVING) return;
 
   const tt = tooltip.value as HTMLElement;
-  const tooltipContent = tt.querySelector(".content") as HTMLElement;
+  const tooltipContent = tt.querySelector('.content') as HTMLElement;
 
   //intersected.value.type = "element";
   //intersected.value.index = el.label;
 
-  tt.style.top = e.offsetY + "px";
-  tt.style.left = e.offsetX + "px";
-  tooltipContent.innerHTML = `<strong>${t("loads.nodalLoad")}</strong><br>`;
+  tt.style.top = e.offsetY + 'px';
+  tt.style.left = e.offsetX + 'px';
+  tooltipContent.innerHTML = `<strong>${t('loads.nodalLoad')}</strong><br>`;
   if (Math.abs(el.values[0]) > 1e-32) {
     tooltipContent.innerHTML += `F<sub>x</sub> = ${appStore.convertForce(el.values[0])} ${appStore.units.Force}<br>`;
   }
@@ -332,8 +332,8 @@ const onNodalLoadHover = (e: MouseEvent, el: NodalLoad) => {
     tooltipContent.innerHTML += `M<sub>y</sub> = ${appStore.convertForce(el.values[4])} ${appStore.units.Force}${appStore.units.Length}`;
   }
 
-  tt.style.display = "block";
-  document.body.style.cursor = "pointer";
+  tt.style.display = 'block';
+  document.body.style.cursor = 'pointer';
 
   if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
 };
@@ -342,14 +342,14 @@ const onPrescribedBCHover = (e: MouseEvent, el: PrescribedDisplacement) => {
   if (appStore.mouseMode === MouseMode.MOVING) return;
 
   const tt = tooltip.value as HTMLElement;
-  const tooltipContent = tt.querySelector(".content") as HTMLElement;
+  const tooltipContent = tt.querySelector('.content') as HTMLElement;
 
   //intersected.value.type = "element";
   //intersected.value.index = el.label;
 
-  tt.style.top = e.offsetY + "px";
-  tt.style.left = e.offsetX + "px";
-  tooltipContent.innerHTML = `<strong>${t("loads.prescribedDisplacement")}</strong><br>`;
+  tt.style.top = e.offsetY + 'px';
+  tt.style.left = e.offsetX + 'px';
+  tooltipContent.innerHTML = `<strong>${t('loads.prescribedDisplacement')}</strong><br>`;
   if (Math.abs(el.prescribedValues[0]) > 1e-32) {
     tooltipContent.innerHTML += `D<sub>x</sub> = ${appStore.convertLength(el.prescribedValues[0])} ${appStore.units.Length}<br>`;
   }
@@ -362,8 +362,8 @@ const onPrescribedBCHover = (e: MouseEvent, el: PrescribedDisplacement) => {
     tooltipContent.innerHTML += `R<sub>y</sub> = ${el.prescribedValues[4]} ${appStore.units.Angle}`;
   }
 
-  tt.style.display = "block";
-  document.body.style.cursor = "pointer";
+  tt.style.display = 'block';
+  document.body.style.cursor = 'pointer';
 
   if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
 };
@@ -372,47 +372,47 @@ const onNodeHover = (e: MouseEvent, node: Node) => {
   if (appStore.mouseMode === MouseMode.MOVING) return;
 
   const tt = tooltip.value as HTMLElement;
-  const tooltipContent = tt.querySelector(".content") as HTMLElement;
+  const tooltipContent = tt.querySelector('.content') as HTMLElement;
 
-  intersected.value.type = "node";
+  intersected.value.type = 'node';
   intersected.value.index = node.label;
 
-  tt.style.top = e.offsetY + "px";
-  tt.style.left = e.offsetX + "px";
-  tooltipContent.innerHTML = `<strong>${t("common.node")} ${node.label}</strong>`;
+  tt.style.top = e.offsetY + 'px';
+  tt.style.left = e.offsetX + 'px';
+  tooltipContent.innerHTML = `<strong>${t('common.node')} ${node.label}</strong>`;
   if (
     projectStore.solver.loadCases[0].solved &&
     projectStore.beams.some((element) => element.nodes.includes(node.label))
   ) {
-    tooltipContent.innerHTML += "<br>";
+    tooltipContent.innerHTML += '<br>';
     tooltipContent.innerHTML += `u<sub>x</sub> = ${formatExpValueAsHTML(
       // @ts-expect-error It return value for single Dof
       node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]),
       4
     )} m`;
-    tooltipContent.innerHTML += "<br>";
+    tooltipContent.innerHTML += '<br>';
     tooltipContent.innerHTML += `u<sub>z</sub> = ${formatExpValueAsHTML(
       // @ts-expect-error It return value for single Dof
       node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]),
       4
     )} m`;
-    tooltipContent.innerHTML += "<br>";
+    tooltipContent.innerHTML += '<br>';
     tooltipContent.innerHTML += `φ<sub>y</sub> = ${formatExpValueAsHTML(
       // @ts-expect-error It return value for single Dof
       node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry]),
       4
     )} rad`;
   }
-  tt.style.display = "block";
-  document.body.style.cursor = "pointer";
+  tt.style.display = 'block';
+  document.body.style.cursor = 'pointer';
 
   if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
 };
 
 const hideTooltip = () => {
   const tt = tooltip.value as HTMLElement;
-  tt.style.display = "none";
-  document.body.style.cursor = "auto";
+  tt.style.display = 'none';
+  document.body.style.cursor = 'auto';
 
   if ([MouseMode.HOVER, MouseMode.SELECTING, MouseMode.ADD_ELEMENT].includes(appStore.mouseMode)) {
     if (appStore.mouseMode === MouseMode.HOVER) appStore.mouseMode = MouseMode.NONE;
@@ -436,7 +436,7 @@ const onNodeLongPress = (e, node: Node) => {
   e.preventDefault();
 
   intersected.value.index = node.label;
-  intersected.value.type = "node";
+  intersected.value.type = 'node';
 
   appStore.mouseMode = MouseMode.MOVING;
 
@@ -451,9 +451,9 @@ const onNodeClick = (e: MouseEvent) => {
   appStore.bottomBarTab = 0;
 
   const target = e.target as HTMLElement;
-  const index = target.getAttribute("data-node-id") || "-1";
+  const index = target.getAttribute('data-node-id') || '-1';
 
-  useProjectStore().selection.type = "node";
+  useProjectStore().selection.type = 'node';
   useProjectStore().selection.label = index;
 
   projectStore.clearSelection2();
@@ -477,14 +477,14 @@ const onElementClick = (e: MouseEvent) => {
   appStore.bottomBarTab = 1;
 
   const target = e.target as HTMLElement;
-  const index = target.getAttribute("data-element-id") || "-1";
+  const index = target.getAttribute('data-element-id') || '-1';
 
   let nx = target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 - TTWIDTH / 2;
 
   if (nx < 0) nx = 24;
   if (nx > window.innerWidth - TTWIDTH - 24) nx = window.innerWidth - TTWIDTH - 24;
 
-  useProjectStore().selection.type = "element";
+  useProjectStore().selection.type = 'element';
   useProjectStore().selection.label = index;
   useProjectStore().selection.x = nx;
   useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
@@ -505,7 +505,7 @@ const onElementLoadClick = (e: MouseEvent, index: number) => {
   if (nx < 0) nx = 24;
   if (nx > window.innerWidth - TTWIDTH - 24) nx = window.innerWidth - TTWIDTH - 24;
 
-  useProjectStore().selection.type = "element-load";
+  useProjectStore().selection.type = 'element-load';
   useProjectStore().selection.label = index;
   useProjectStore().selection.x = nx;
   useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
@@ -526,7 +526,7 @@ const onNodalLoadClick = (e: MouseEvent, index: number) => {
   if (nx < 0) nx = 24;
   if (nx > window.innerWidth - TTWIDTH - 24) nx = window.innerWidth - TTWIDTH - 24;
 
-  useProjectStore().selection.type = "nodal-load";
+  useProjectStore().selection.type = 'nodal-load';
   useProjectStore().selection.label = index;
   useProjectStore().selection.x = nx;
   useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
@@ -547,7 +547,7 @@ const onPrescribedBCClick = (e: MouseEvent, index: number) => {
   if (nx < 0) nx = 24;
   if (nx > window.innerWidth - TTWIDTH - 24) nx = window.innerWidth - TTWIDTH - 24;
 
-  useProjectStore().selection.type = "prescribedbc-load";
+  useProjectStore().selection.type = 'prescribedbc-load';
   useProjectStore().selection.label = index;
   useProjectStore().selection.x = nx;
   useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
@@ -621,7 +621,7 @@ const mouseMove = (e: MouseEvent) => {
     endNode.value.coords[2] = mouseYReal.value;
   }
 
-  if (appStore.mouseMode === MouseMode.MOVING && intersected.value.type === "node") {
+  if (appStore.mouseMode === MouseMode.MOVING && intersected.value.type === 'node') {
     const index = intersected.value.index;
     if (index === null) return;
 
@@ -653,7 +653,7 @@ const onMouseDown = (e: PointerEvent) => {
 
   if (e.button !== 2) projectStore.clearSelection2();
 
-  if ("activeElement" in document) (document.activeElement as HTMLElement).blur();
+  if ('activeElement' in document) (document.activeElement as HTMLElement).blur();
 
   mouseStartX = e.offsetX;
   mouseStartY = e.offsetY;
@@ -696,12 +696,12 @@ const onMouseDown = (e: PointerEvent) => {
 
         if (dist < 0.1) {
           openModal(Confirmation, {
-            title: t("confirmation.splitElementAndPlaceNode.title"),
-            message: t("confirmation.splitElementAndPlaceNode.message", { label: el.label }),
+            title: t('confirmation.splitElementAndPlaceNode.title'),
+            message: t('confirmation.splitElementAndPlaceNode.message', { label: el.label }),
             actions: [
               {
-                label: t("confirmation.splitElementAndPlaceNode.split"),
-                color: "green darken-1",
+                label: t('confirmation.splitElementAndPlaceNode.split'),
+                color: 'green darken-1',
                 action: () => {
                   projectStore.solver.loadCases[0].solved = false;
 
@@ -711,12 +711,12 @@ const onMouseDown = (e: PointerEvent) => {
                   const prevHinges = el.hinges;
 
                   // Add two new elements
-                  projectStore.solver.domain.createBeam2D(el.label + "a", [el.nodes[0], newNodeId], el.mat, el.cs, [
+                  projectStore.solver.domain.createBeam2D(el.label + 'a', [el.nodes[0], newNodeId], el.mat, el.cs, [
                     prevHinges[0],
                     false,
                   ]);
 
-                  projectStore.solver.domain.createBeam2D(el.label + "b", [newNodeId, el.nodes[1]], el.mat, el.cs, [
+                  projectStore.solver.domain.createBeam2D(el.label + 'b', [newNodeId, el.nodes[1]], el.mat, el.cs, [
                     false,
                     prevHinges[1],
                   ]);
@@ -728,9 +728,9 @@ const onMouseDown = (e: PointerEvent) => {
                       if (loadCase.elementLoadList[i].target === el.label) {
                         //loadCase.elementLoadList.splice(i, 1);
 
-                        loadCase.elementLoadList[i].target = el.label + "a";
+                        loadCase.elementLoadList[i].target = el.label + 'a';
                         loadCase.createBeamElementUniformEdgeLoad(
-                          el.label + "b",
+                          el.label + 'b',
                           loadCase.elementLoadList[i].values,
                           loadCase.elementLoadList[i].lcs
                         );
@@ -747,8 +747,8 @@ const onMouseDown = (e: PointerEvent) => {
                 },
               },
               {
-                label: t("confirmation.placeIndividualNode"),
-                color: "blue darken-1",
+                label: t('confirmation.placeIndividualNode'),
+                color: 'blue darken-1',
                 action: () => {
                   projectStore.solver.loadCases[0].solved = false;
 
@@ -761,8 +761,8 @@ const onMouseDown = (e: PointerEvent) => {
                 },
               },
               {
-                label: t("dialogs.common.cancel"),
-                color: "red darken-1",
+                label: t('dialogs.common.cancel'),
+                color: 'red darken-1',
                 action: () => {
                   closeModal();
                 },
@@ -804,7 +804,7 @@ const onMouseDown = (e: PointerEvent) => {
         }
 
         startNode.value = { label: intersected.value.index, x: n.coords[0], y: n.coords[2] };
-      } else if (intersected.value.type === "node") {
+      } else if (intersected.value.type === 'node') {
         projectStore.solver.loadCases[0].solved = false;
         let newElId = projectStore.solver.domain.elements.size + 1;
 
@@ -853,10 +853,10 @@ const onMouseDown = (e: PointerEvent) => {
 
     if (appStore.mouseMode === MouseMode.ADD_DIMLINE) {
       mouseStartX = -9999;
-      if (startNode.value === null && intersected.value.type === "node") {
+      if (startNode.value === null && intersected.value.type === 'node') {
         const n = projectStore.solver.domain.nodes.get(intersected.value.index as string);
         startNode.value = { label: intersected.value.index, x: n.coords[0], y: n.coords[2] };
-      } else if (intersected.value.type === "node") {
+      } else if (intersected.value.type === 'node') {
         const n1 = projectStore.solver.domain.nodes.get(startNode.value.label)!;
         const n2 = projectStore.solver.domain.nodes.get(intersected.value.index as string)!;
 
@@ -882,7 +882,7 @@ const onMouseDown = (e: PointerEvent) => {
 
     if (appStore.mouseMode === MouseMode.HOVER) {
       appStore.mouseMode = MouseMode.MOVING;
-    } else if (e.pointerType === "mouse") {
+    } else if (e.pointerType === 'mouse') {
       appStore.mouseMode = MouseMode.SELECTING;
       appStore.mouse.sx = e.clientX;
       appStore.mouse.sy = e.clientY;
@@ -1093,9 +1093,9 @@ defineExpose({ centerContent, fitContent });
 <template>
   <div class="d-flex flex-column fill-height svg-viewer">
     <div
+      v-if="!appStore.inViewerMode"
       class="text-body-2 d-flex line-height-1"
       style="position: absolute; z-index: 100; bottom: 24px; right: 24px"
-      v-if="!appStore.inViewerMode"
     >
       <v-chip-group>
         <v-chip class="justify-end" density="compact" @click="appStore.openSettings()">
@@ -1114,7 +1114,7 @@ defineExpose({ centerContent, fitContent });
         </v-chip>
       </v-chip-group> -->
     </div>
-    <div id="undoRedo" style="position: absolute; top: 24px; left: 24px; z-index: 100" v-if="!appStore.inViewerMode">
+    <div v-if="!appStore.inViewerMode" id="undoRedo" style="position: absolute; top: 24px; left: 24px; z-index: 100">
       <v-btn
         icon="mdi:mdi-undo"
         size="32"
@@ -1174,7 +1174,7 @@ defineExpose({ centerContent, fitContent });
           <v-icon size="x-small">mdi-vector-point-plus</v-icon>
         </template>
         <template #label>
-          <span class="label">{{ $t("nodes.addNode") }}</span>
+          <span class="label">{{ $t('nodes.addNode') }}</span>
           <span class="ml-auto text-right" style="font-size: 10px">Hold Ctrl to add using mouse</span>
         </template>
       </context-menu-item>
@@ -1186,7 +1186,7 @@ defineExpose({ centerContent, fitContent });
           <v-icon size="x-small">mdi-vector-polyline-plus</v-icon>
         </template>
         <template #label>
-          <span class="label">{{ $t("elements.addElement") }}</span>
+          <span class="label">{{ $t('elements.addElement') }}</span>
           <span class="ml-auto text-right" style="font-size: 10px">Hold Ctrl to add using mouse</span>
         </template>
       </context-menu-item>
@@ -1195,7 +1195,7 @@ defineExpose({ centerContent, fitContent });
           <v-icon size="x-small">mdi-arrow-expand-horizontal</v-icon>
         </template>
         <template #label>
-          <span class="label">{{ $t("dimensioning.add_dimension") }}</span>
+          <span class="label">{{ $t('dimensioning.add_dimension') }}</span>
         </template>
       </context-menu-item>
       <context-menu-sperator />
@@ -1216,7 +1216,7 @@ defineExpose({ centerContent, fitContent });
           <v-icon size="x-small">mdi-content-copy</v-icon>
         </template>
         <template #label>
-          <span class="label">{{ $t("common.copy") }}</span>
+          <span class="label">{{ $t('common.copy') }}</span>
           <span class="ml-auto text-right" style="font-size: 10px">Ctrl + C</span>
         </template>
       </context-menu-item>
@@ -1225,7 +1225,7 @@ defineExpose({ centerContent, fitContent });
           <v-icon size="x-small">mdi-content-copy</v-icon>
         </template>
         <template #label>
-          <span class="label">{{ $t("common.paste") }}</span>
+          <span class="label">{{ $t('common.paste') }}</span>
           <span class="ml-auto text-right" style="font-size: 10px">Ctrl + V</span>
         </template>
       </context-menu-item>
@@ -1243,34 +1243,34 @@ defineExpose({ centerContent, fitContent });
       </context-menu-item>
     </context-menu>
 
-    <div class="tooltip body-2 black--text" ref="tooltip" style="display: none">
+    <div ref="tooltip" class="tooltip body-2 black--text" style="display: none">
       <div class="content"></div>
     </div>
 
     <div class="text-body-2 warning ga-1 d-flex flex-column pr-6">
       <div style="width: fit-content">
-        <v-alert icon="$warning" density="compact" type="error" v-if="projectStore.materials.length === 0">
+        <v-alert v-if="projectStore.materials.length === 0" icon="$warning" density="compact" type="error">
           <template #text>
             <div class="d-flex align-center">
-              {{ $t("warnings.noMaterialsDefined") }}
+              {{ $t('warnings.noMaterialsDefined') }}
               <v-btn variant="text" density="compact" size="small" @click="appStore.dialogs['addMaterial'] = true">{{
-                $t("common.addNew")
+                $t('common.addNew')
               }}</v-btn>
             </div>
           </template>
         </v-alert>
       </div>
       <div style="width: fit-content">
-        <v-alert icon="$warning" density="compact" type="error" v-if="projectStore.crossSections.length === 0">
+        <v-alert v-if="projectStore.crossSections.length === 0" icon="$warning" density="compact" type="error">
           <template #text>
             <div class="d-flex align-center">
-              {{ $t("warnings.noCrossSectionsDefined") }}
+              {{ $t('warnings.noCrossSectionsDefined') }}
               <v-btn
                 variant="text"
                 density="compact"
                 size="small"
                 @click="appStore.dialogs['addCrossSection'] = true"
-                >{{ $t("common.addNew") }}</v-btn
+                >{{ $t('common.addNew') }}</v-btn
               >
             </div>
           </template>
@@ -1283,8 +1283,8 @@ defineExpose({ centerContent, fitContent });
     </svg>
 
     <SvgPanZoom
-      :on-update="onUpdate"
       ref="panZoom"
+      :on-update="onUpdate"
       :padding="128"
       :mobile-padding="32"
       :touch="appStore.mouseMode !== MouseMode.MOVING"
@@ -1348,6 +1348,12 @@ defineExpose({ centerContent, fitContent });
                   v-if="eload instanceof BeamElementUniformEdgeLoad"
                   :key="`element-udl-${index}`"
                   :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
+                  :data-element-load-id="index"
+                  :eload="eload"
+                  :scale="scale"
+                  :convert-force="appStore.convertForce"
+                  :font-size="viewerStore.fontSize"
+                  :number-format="appStore.numberFormatter"
                   @mousemove="onElementLoadHover($event, eload)"
                   @mouseleave="hideTooltip"
                   @pointerup="onElementLoadClick($event, index)"
@@ -1355,17 +1361,17 @@ defineExpose({ centerContent, fitContent });
                     openModal(EditElementLoadDialog, { index });
                     projectStore.clearSelection();
                   "
-                  :data-element-load-id="index"
-                  :eload="eload"
-                  :scale="scale"
-                  :convert-force="appStore.convertForce"
-                  :font-size="viewerStore.fontSize"
-                  :number-format="appStore.numberFormatter"
                 />
                 <SVGElementTemperatureLoad
                   v-else-if="loadType(eload) === 'temperature'"
                   :key="`element-temperature-${index}`"
                   :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
+                  :data-element-load-id="index"
+                  :eload="eload"
+                  :scale="scale"
+                  :convert-force="appStore.convertForce"
+                  :font-size="viewerStore.fontSize"
+                  :number-format="appStore.numberFormatter"
                   @mousemove="onElementLoadHover($event, eload)"
                   @mouseleave="hideTooltip"
                   @pointerup="onElementLoadClick($event, index)"
@@ -1373,17 +1379,17 @@ defineExpose({ centerContent, fitContent });
                     openModal(EditElementLoadDialog, { index });
                     projectStore.clearSelection();
                   "
-                  :data-element-load-id="index"
-                  :eload="eload"
-                  :scale="scale"
-                  :convert-force="appStore.convertForce"
-                  :font-size="viewerStore.fontSize"
-                  :number-format="appStore.numberFormatter"
                 />
                 <SVGElementConcentratedLoad
                   v-else-if="eload instanceof BeamConcentratedLoad"
                   :key="`element-cl-${index}`"
                   :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
+                  :data-element-load-id="index"
+                  :eload="eload"
+                  :scale="scale"
+                  :convert-force="appStore.convertForce"
+                  :font-size="viewerStore.fontSize"
+                  :number-format="appStore.numberFormatter"
                   @mousemove="onElementLoadHover($event, eload)"
                   @mouseleave="hideTooltip"
                   @pointerup="onElementLoadClick($event, index)"
@@ -1391,16 +1397,17 @@ defineExpose({ centerContent, fitContent });
                     openModal(EditElementLoadDialog, { index });
                     projectStore.clearSelection();
                   "
-                  :data-element-load-id="index"
-                  :eload="eload"
-                  :scale="scale"
-                  :convert-force="appStore.convertForce"
-                  :font-size="viewerStore.fontSize"
-                  :number-format="appStore.numberFormatter"
                 />
               </template>
               <SVGNodalLoad
+                v-for="(nload, index) in useProjectStore().solver.loadCases[0].nodalLoadList"
+                :key="`nodal-load-${index}`"
                 :class="{ selected: projectStore.selection2.nodalLoads.includes(index) }"
+                :nload="nload"
+                :scale="scale"
+                :convert-force="appStore.convertForce"
+                :font-size="viewerStore.fontSize"
+                :number-format="appStore.numberFormatter"
                 @mousemove="onNodalLoadHover($event, nload)"
                 @mouseleave="hideTooltip"
                 @pointerup="onNodalLoadClick($event, index)"
@@ -1408,16 +1415,17 @@ defineExpose({ centerContent, fitContent });
                   openModal(EditNodalLoadDialog, { index });
                   projectStore.clearSelection();
                 "
-                v-for="(nload, index) in useProjectStore().solver.loadCases[0].nodalLoadList"
-                :key="`nodal-load-${index}`"
-                :nload="nload"
-                :scale="scale"
-                :convert-force="appStore.convertForce"
-                :font-size="viewerStore.fontSize"
-                :number-format="appStore.numberFormatter"
               />
               <SVGPrescribedDisplacement
+                v-for="(nload, index) in useProjectStore().solver.loadCases[0].prescribedBC"
+                :key="`nodal-load-${index}`"
                 :class="{ selected: projectStore.selection2.nodalLoads.includes(index) }"
+                :nload="nload"
+                :scale="scale"
+                :convert-length="appStore.convertLength"
+                :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
+                :font-size="viewerStore.fontSize"
+                :number-format="appStore.numberFormatter"
                 @mousemove="onPrescribedBCHover($event, nload)"
                 @mouseleave="hideTooltip"
                 @pointerup="onPrescribedBCClick($event, index)"
@@ -1425,22 +1433,14 @@ defineExpose({ centerContent, fitContent });
                   openModal(EditNodalLoadDialog, { index, type: 'displacement' });
                   projectStore.clearSelection();
                 "
-                v-for="(nload, index) in useProjectStore().solver.loadCases[0].prescribedBC"
-                :key="`nodal-load-${index}`"
-                :nload="nload"
-                :scale="scale"
-                :convert-length="appStore.convertLength"
-                :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
-                :font-size="viewerStore.fontSize"
-                :number-format="appStore.numberFormatter"
               />
             </g>
           </g>
           <g>
             <SVGElement
-              :class="{ selected: projectStore.selection2.elements.includes(element.label) }"
               v-for="(element, index) in projectStore.beams"
               :key="`element-${index}`"
+              :class="{ selected: projectStore.selection2.elements.includes(element.label) }"
               :element="element"
               :scale="scale"
               :show-deformed-shape="!isZooming && viewerStore.showDeformedShape"
@@ -1455,19 +1455,19 @@ defineExpose({ centerContent, fitContent });
               :bending-moment-multiplier="projectStore.bendingMomentScale * viewerStore.resultsScalePx_"
               :convert-force="appStore.convertForce"
               :font-size="viewerStore.fontSize"
+              :number-format="appStore.numberFormatter"
               @elementmousemove="onElementHover($event, element)"
               @mouseleave="hideTooltip"
               @elementpointerup="onElementClick"
-              :number-format="appStore.numberFormatter"
             />
           </g>
 
           <g class="nodes">
             <OnLongPress
-              as="g"
-              @trigger="onNodeLongPress($event, node)"
               v-for="(node, index) in projectStore.nodes"
               :key="`node-${index}`"
+              as="g"
+              @trigger="onNodeLongPress($event, node)"
             >
               <SVGNode
                 :class="{ selected: projectStore.selection2.nodes.includes(node.label) }"
@@ -1478,14 +1478,14 @@ defineExpose({ centerContent, fitContent });
                 :show-deformed-shape="!isZooming && viewerStore.showDeformedShape"
                 :show-reactions="!isZooming && viewerStore.showReactions"
                 :convert-force="appStore.convertForce"
-                @nodemousemove="onNodeHover($event, node)"
-                @nodedefomousemove="onNodeHover($event, node)"
-                @mouseleave="hideTooltip"
-                @nodepointerup="onNodeClick"
                 :load-case="projectStore.solver.loadCases[0]"
                 :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
                 :font-size="viewerStore.fontSize"
                 :number-format="appStore.numberFormatter"
+                @nodemousemove="onNodeHover($event, node)"
+                @nodedefomousemove="onNodeHover($event, node)"
+                @mouseleave="hideTooltip"
+                @nodepointerup="onNodeClick"
               />
             </OnLongPress>
           </g>
@@ -1574,7 +1574,7 @@ defineExpose({ centerContent, fitContent });
     >
       <div class="d-flex justify-space-between">
         <div class="font-weight-medium text-body-2 px-4 pt-2">
-          {{ $t("selection." + projectStore.selection.type) }}
+          {{ $t('selection.' + projectStore.selection.type) }}
           <span v-if="['node', 'element'].includes(projectStore.selection.type)">{{
             projectStore.selection.label
           }}</span>
@@ -1600,15 +1600,15 @@ defineExpose({ centerContent, fitContent });
           style="width: fit-content"
         >
           <v-checkbox
-            :label="$t('sideSettings.showDeformedShape')"
             v-model="useViewerStore().showDeformedShape"
+            :label="$t('sideSettings.showDeformedShape')"
             hide-details
             density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
           />
           <v-checkbox
-            label=""
             v-model="useViewerStore().showNormalForce"
+            label=""
             hide-details
             density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
@@ -1617,8 +1617,8 @@ defineExpose({ centerContent, fitContent });
             <template #label>N (x)</template>
           </v-checkbox>
           <v-checkbox
-            label="Vz (x)"
             v-model="useViewerStore().showShearForce"
+            label="Vz (x)"
             hide-details
             density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
@@ -1627,8 +1627,8 @@ defineExpose({ centerContent, fitContent });
             <template #label>V<sub>z</sub>&nbsp;(x)</template>
           </v-checkbox>
           <v-checkbox
-            label="My (x)"
             v-model="useViewerStore().showBendingMoment"
+            label="My (x)"
             hide-details
             density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
@@ -1637,8 +1637,8 @@ defineExpose({ centerContent, fitContent });
             <template #label>M<sub>y</sub>&nbsp;(x)</template>
           </v-checkbox>
           <v-checkbox
-            :label="$t('sideSettings.showReactions')"
             v-model="useViewerStore().showReactions"
+            :label="$t('sideSettings.showReactions')"
             hide-details
             density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
@@ -1647,16 +1647,16 @@ defineExpose({ centerContent, fitContent });
 
         <div color="grey-lighten-5" rounded="lg" height="32" class="d-sm-flex bg-grey-lighten-5 elevation-1 rounded">
           <v-checkbox
-            :label="$t('sideSettings.supports')"
             v-model="useViewerStore().showSupports"
+            :label="$t('sideSettings.supports')"
             hide-details
             density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
           />
           <v-checkbox
+            v-model.number="useViewerStore().showLoads"
             :label="$t('sideSettings.loads')"
             dense
-            v-model.number="useViewerStore().showLoads"
             hide-details
             density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
@@ -1664,15 +1664,15 @@ defineExpose({ centerContent, fitContent });
           />
 
           <v-checkbox
-            :label="$t('sideSettings.nodeLabels')"
             v-model="useViewerStore().showNodeLabels"
+            :label="$t('sideSettings.nodeLabels')"
             hide-details
             density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
           />
           <v-checkbox
-            :label="$t('sideSettings.elementLabels')"
             v-model="useViewerStore().showElementLabels"
+            :label="$t('sideSettings.elementLabels')"
             hide-details
             density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
@@ -1681,7 +1681,7 @@ defineExpose({ centerContent, fitContent });
       </div>
       <div class="text-right text-sm-body-2">
         <button class="text-decoration-underline bg-white" @click="appStore.openSettings()">
-          {{ $t("sideSettings.more_settings") }}
+          {{ $t('sideSettings.more_settings') }}
         </button>
       </div>
     </div>
@@ -1696,7 +1696,7 @@ defineExpose({ centerContent, fitContent });
 .svg-viewer :deep(*) {
   .element-load.load-1d {
     text {
-      fill: v-bind("viewerStore.colors.loads");
+      fill: v-bind('viewerStore.colors.loads');
     }
     stroke-linecap: butt;
     &:hover text {
@@ -1709,11 +1709,11 @@ defineExpose({ centerContent, fitContent });
       stroke-width: 3px;
     }
     &:hover polyline {
-      marker-end: v-bind(dynamicMarker("force_centered_hover"));
+      marker-end: v-bind(dynamicMarker('force_centered_hover'));
     }
     polygon,
     path {
-      stroke: v-bind("viewerStore.colors.loads");
+      stroke: v-bind('viewerStore.colors.loads');
       stroke-width: 1px;
       &.handle {
         stroke-width: 12px;
@@ -1721,7 +1721,7 @@ defineExpose({ centerContent, fitContent });
       }
     }
     polyline {
-      marker-end: v-bind(dynamicMarker("force_centered"));
+      marker-end: v-bind(dynamicMarker('force_centered'));
     }
 
     &.selected {
@@ -1770,34 +1770,34 @@ defineExpose({ centerContent, fitContent });
     }
     path.deformedShape {
       fill: none;
-      stroke: v-bind("viewerStore.colors.deformedShape");
+      stroke: v-bind('viewerStore.colors.deformedShape');
       stroke-width: 2px;
       &.decoration {
         stroke-width: 1px;
       }
     }
     .normal polyline {
-      stroke: v-bind("viewerStore.colors.normalForce");
+      stroke: v-bind('viewerStore.colors.normalForce');
       stroke-width: 1px;
-      fill: v-bind("viewerStore.colors.normalForce");
+      fill: v-bind('viewerStore.colors.normalForce');
       fill-opacity: 0.1;
       &:hover {
         fill-opacity: 0.2;
       }
     }
     .shear polyline {
-      stroke: v-bind("viewerStore.colors.shearForce");
+      stroke: v-bind('viewerStore.colors.shearForce');
       stroke-width: 1px;
-      fill: v-bind("viewerStore.colors.shearForce");
+      fill: v-bind('viewerStore.colors.shearForce');
       fill-opacity: 0.1;
       &:hover {
         fill-opacity: 0.2;
       }
     }
     .moment polyline {
-      stroke: v-bind("viewerStore.colors.bendingMoment");
+      stroke: v-bind('viewerStore.colors.bendingMoment');
       stroke-width: 1px;
-      fill: v-bind("viewerStore.colors.bendingMoment");
+      fill: v-bind('viewerStore.colors.bendingMoment');
       fill-opacity: 0.1;
       &:hover {
         fill-opacity: 0.2;
@@ -1821,7 +1821,7 @@ defineExpose({ centerContent, fitContent });
         stroke: none;
       }
       &.drawable.deformed {
-        stroke: v-bind("viewerStore.colors.deformedShape");
+        stroke: v-bind('viewerStore.colors.deformedShape');
       }
     }
     &:hover polyline.drawable {
@@ -1835,24 +1835,24 @@ defineExpose({ centerContent, fitContent });
   }
 
   .prescribed polyline {
-    stroke: v-bind("viewerStore.colors.loads");
+    stroke: v-bind('viewerStore.colors.loads');
   }
 
   .nodal-load {
     text {
-      fill: v-bind("viewerStore.colors.loads");
+      fill: v-bind('viewerStore.colors.loads');
     }
     polyline {
       stroke-linecap: square;
       vector-effect: non-scaling-stroke;
       &.decoration.force {
-        marker-end: v-bind(dynamicMarker("force"));
+        marker-end: v-bind(dynamicMarker('force'));
       }
       &.decoration.moment.cw {
-        marker-end: v-bind(dynamicMarker("moment_cw"));
+        marker-end: v-bind(dynamicMarker('moment_cw'));
       }
       &.decoration.moment.ccw {
-        marker-end: v-bind(dynamicMarker("moment_ccw"));
+        marker-end: v-bind(dynamicMarker('moment_ccw'));
       }
       &.handle {
         stroke: transparent;
@@ -1869,22 +1869,22 @@ defineExpose({ centerContent, fitContent });
       font-weight: bold;
     }
     &:hover polyline.decoration.force {
-      marker-end: v-bind(dynamicMarker("force_hover"));
+      marker-end: v-bind(dynamicMarker('force_hover'));
     }
     &:hover polyline.decoration.moment.cw {
-      marker-end: v-bind(dynamicMarker("moment_cw_hover"));
+      marker-end: v-bind(dynamicMarker('moment_cw_hover'));
     }
     &:hover polyline.decoration.moment.ccw {
-      marker-end: v-bind(dynamicMarker("moment_ccw_hover"));
+      marker-end: v-bind(dynamicMarker('moment_ccw_hover'));
     }
     &.selected polyline.decoration.force {
-      marker-end: v-bind(dynamicMarker("force_selected"));
+      marker-end: v-bind(dynamicMarker('force_selected'));
     }
     &.selected polyline.decoration.moment.cw {
-      marker-end: v-bind(dynamicMarker("moment_cw_selected"));
+      marker-end: v-bind(dynamicMarker('moment_cw_selected'));
     }
     &.selected polyline.decoration.moment.ccw {
-      marker-end: v-bind(dynamicMarker("moment_ccw_selected"));
+      marker-end: v-bind(dynamicMarker('moment_ccw_selected'));
     }
     &.selected {
       text {
@@ -1908,60 +1908,60 @@ defineExpose({ centerContent, fitContent });
   }
 
   .normal text {
-    fill: v-bind("viewerStore.colors.normalForce");
+    fill: v-bind('viewerStore.colors.normalForce');
   }
 
   .shear text {
-    fill: v-bind("viewerStore.colors.shearForce");
+    fill: v-bind('viewerStore.colors.shearForce');
   }
 
   .moment text {
-    fill: v-bind("viewerStore.colors.bendingMoment");
+    fill: v-bind('viewerStore.colors.bendingMoment');
   }
 
   .reaction {
-    fill: v-bind("viewerStore.colors.reactions");
+    fill: v-bind('viewerStore.colors.reactions');
   }
 
   .marker-reaction {
-    marker-start: v-bind(dynamicMarker("reaction"));
+    marker-start: v-bind(dynamicMarker('reaction'));
   }
 
   .marker-moment_reaction_ccw {
-    marker-start: v-bind(dynamicMarker("moment_reaction_ccw"));
+    marker-start: v-bind(dynamicMarker('moment_reaction_ccw'));
   }
 
   .marker-moment_reaction_cw {
-    marker-start: v-bind(dynamicMarker("moment_reaction_cw"));
+    marker-start: v-bind(dynamicMarker('moment_reaction_cw'));
   }
 
   .marker-dot {
-    marker-start: v-bind(dynamicMarker("dot"));
+    marker-start: v-bind(dynamicMarker('dot'));
   }
 
   .marker-hinge-xy {
-    marker-start: v-bind(dynamicMarker("hinge-xy"));
+    marker-start: v-bind(dynamicMarker('hinge-xy'));
   }
 
   .marker-hinge-x {
-    marker-start: v-bind(dynamicMarker("hinge-x"));
+    marker-start: v-bind(dynamicMarker('hinge-x'));
   }
 
   .marker-hinge-y {
-    marker-start: v-bind(dynamicMarker("hinge-y"));
+    marker-start: v-bind(dynamicMarker('hinge-y'));
   }
 
   .marker-forceTip {
-    marker-end: v-bind(dynamicMarker("forceTip"));
+    marker-end: v-bind(dynamicMarker('forceTip'));
   }
 
   .marker-dimTip {
-    marker-start: v-bind(dynamicMarker("dimTip"));
-    marker-end: v-bind(dynamicMarker("dimTip"));
+    marker-start: v-bind(dynamicMarker('dimTip'));
+    marker-end: v-bind(dynamicMarker('dimTip'));
   }
 
   .filter-text-label {
-    filter: v-bind(dynamicMarker("textLabel"));
+    filter: v-bind(dynamicMarker('textLabel'));
   }
 }
 </style>

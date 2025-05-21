@@ -12,14 +12,14 @@
 </template>
 
 <script lang="ts" setup>
-import HelloWorld from "@/components/HelloWorld.vue";
-import BottomBar from "@/components/BottomBar.vue";
-import Widget from "@/components/Widget.vue";
+import HelloWorld from '@/components/HelloWorld.vue';
+import BottomBar from '@/components/BottomBar.vue';
+import Widget from '@/components/Widget.vue';
 
-import { onMounted, onUnmounted, ref, computed } from "vue";
-import { useAppStore } from "@/store/app";
-import { useProjectStore } from "@/store/project";
-import { useLayoutStore } from "@/store/layout";
+import { onMounted, onUnmounted, ref, computed } from 'vue';
+import { useAppStore } from '@/store/app';
+import { useProjectStore } from '@/store/project';
+import { useLayoutStore } from '@/store/layout';
 
 const appStore = useAppStore();
 const projectStore = useProjectStore();
@@ -47,7 +47,7 @@ const mouseMove = (e: MouseEvent) => {
 };
 
 const onMouseDown = (e: MouseEvent) => {
-  if (e.target instanceof HTMLElement && e.target.dataset.direction === "vertical") {
+  if (e.target instanceof HTMLElement && e.target.dataset.direction === 'vertical') {
     drag.value = true;
   }
 };
@@ -57,26 +57,26 @@ const onMouseUp = () => {
 };
 
 onMounted(() => {
-  window.addEventListener("mousemove", mouseMove);
-  window.addEventListener("mouseup", onMouseUp);
-  window.addEventListener("mousedown", onMouseDown);
+  window.addEventListener('mousemove', mouseMove);
+  window.addEventListener('mouseup', onMouseUp);
+  window.addEventListener('mousedown', onMouseDown);
 });
 
 onUnmounted(() => {
-  window.removeEventListener("mousemove", mouseMove);
-  window.removeEventListener("mouseup", onMouseUp);
-  window.removeEventListener("mousedown", onMouseDown);
+  window.removeEventListener('mousemove', mouseMove);
+  window.removeEventListener('mouseup', onMouseUp);
+  window.removeEventListener('mousedown', onMouseDown);
 });
 </script>
 
 <style lang="scss">
-.resizer[data-direction="horizontal"] {
+.resizer[data-direction='horizontal'] {
   background-color: #cbd5e0;
   cursor: ew-resize;
   height: 100%;
   width: 2px;
 }
-.resizer[data-direction="vertical"] {
+.resizer[data-direction='vertical'] {
   cursor: ns-resize;
   height: 0px;
   width: 100%;
@@ -84,8 +84,8 @@ onUnmounted(() => {
   position: relative;
 }
 
-.resizer[data-direction="vertical"]::after {
-  content: "";
+.resizer[data-direction='vertical']::after {
+  content: '';
   background-color: transparent;
   cursor: ns-resize;
   height: 12px;

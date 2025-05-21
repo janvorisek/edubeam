@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { Node } from "ts-fem";
-import { computed } from "vue";
+import { Node } from 'ts-fem';
+import { computed } from 'vue';
 
 const props = withDefaults(
   defineProps<{

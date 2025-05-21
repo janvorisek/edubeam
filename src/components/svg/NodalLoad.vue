@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { NodalLoad } from "ts-fem";
-import { computed } from "vue";
+import { NodalLoad } from 'ts-fem';
+import { computed } from 'vue';
 
 const props = withDefaults(
   defineProps<{

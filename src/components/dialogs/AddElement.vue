@@ -1,32 +1,62 @@
 <template>
   <v-dialog v-model="open" max-width="420">
     <v-card>
-      <v-card-title> {{ $t("dialogs.addElement.addNewElement") }} </v-card-title>
+      <v-card-title> {{ $t('dialogs.addElement.addNewElement') }} </v-card-title>
 
       <v-card-text>
         <v-form>
           <v-container>
             <v-row no-gutters>
               <v-col cols="6" md="6">
-                <v-select v-model="newElementFrom" :items="projectStore.nodes" item-title="label" item-value="label"
-                  :label="$t('dialogs.addElement.fromNodeId')" hide-details="auto" required autofocus />
+                <v-select
+                  v-model="newElementFrom"
+                  :items="projectStore.nodes"
+                  item-title="label"
+                  item-value="label"
+                  :label="$t('dialogs.addElement.fromNodeId')"
+                  hide-details="auto"
+                  required
+                  autofocus
+                />
               </v-col>
 
               <v-col cols="6" md="6">
-                <v-select v-model="newElementTo" :items="projectStore.nodes" item-title="label" item-value="label"
-                  :label="$t('dialogs.addElement.toNodeId')" hide-details="auto" required />
+                <v-select
+                  v-model="newElementTo"
+                  :items="projectStore.nodes"
+                  item-title="label"
+                  item-value="label"
+                  :label="$t('dialogs.addElement.toNodeId')"
+                  hide-details="auto"
+                  required
+                />
               </v-col>
             </v-row>
 
-            <v-row no-gutters v-if="projectStore.crossSections.length > 1 || projectStore.crossSections.length > 1">
+            <v-row v-if="projectStore.crossSections.length > 1 || projectStore.crossSections.length > 1" no-gutters>
               <v-col cols="6">
-                <v-select v-model="newElementMat" :items="projectStore.materials" item-title="label" item-value="label"
-                  :label="$t('dialogs.addElement.material')" hide-details="auto" required autofocus />
+                <v-select
+                  v-model="newElementMat"
+                  :items="projectStore.materials"
+                  item-title="label"
+                  item-value="label"
+                  :label="$t('dialogs.addElement.material')"
+                  hide-details="auto"
+                  required
+                  autofocus
+                />
               </v-col>
 
               <v-col cols="6" md="6">
-                <v-select v-model="newElementCS" :items="projectStore.crossSections" item-title="label"
-                  item-value="label" :label="$t('dialogs.addElement.crossSection')" hide-details="auto" required />
+                <v-select
+                  v-model="newElementCS"
+                  :items="projectStore.crossSections"
+                  item-title="label"
+                  item-value="label"
+                  :label="$t('dialogs.addElement.crossSection')"
+                  hide-details="auto"
+                  required
+                />
               </v-col>
             </v-row>
           </v-container>
@@ -36,34 +66,34 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="green darken-1" @click="addElement()" @keydown.enter="addElement">
-          {{ $t("dialogs.addElement.addElement") }}
+          {{ $t('dialogs.addElement.addElement') }}
         </v-btn>
         <v-btn color="red darken-1" @click="closeModal()" @keydown.enter="closeModal">{{
-          $t("dialogs.common.cancel")
-          }}</v-btn>
+          $t('dialogs.common.cancel')
+        }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue";
-import { useProjectStore } from "../../store/project";
-import { DofID, NodalLoad } from "ts-fem";
-import { closeModal } from "jenesius-vue-modal";
-import { useAppStore } from "@/store/app";
-import { checkNumber } from "@/utils";
-import { onMounted } from "vue";
+import { ref, reactive, computed } from 'vue';
+import { useProjectStore } from '../../store/project';
+import { DofID, NodalLoad } from 'ts-fem';
+import { closeModal } from 'jenesius-vue-modal';
+import { useAppStore } from '@/store/app';
+import { checkNumber } from '@/utils';
+import { onMounted } from 'vue';
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
 
 const open = ref(true);
 
-const newElementFrom = ref("");
-const newElementTo = ref("");
-const newElementMat = ref("");
-const newElementCS = ref("");
+const newElementFrom = ref('');
+const newElementTo = ref('');
+const newElementMat = ref('');
+const newElementCS = ref('');
 
 onMounted(() => {
   if (projectStore.solver.domain.nodes.size >= 2) {

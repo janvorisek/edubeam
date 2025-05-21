@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="open" max-width="420">
     <v-card>
-      <v-card-title> {{ $t("dialogs.addNode.addNewNode") }} </v-card-title>
+      <v-card-title> {{ $t('dialogs.addNode.addNewNode') }} </v-card-title>
 
       <v-card-text>
         <v-form v-model="valid">
@@ -10,7 +10,6 @@
               <v-col cols="6" md="6">
                 <v-text-field
                   v-model="newNodeX"
-                  @keydown="checkNumber($event)"
                   :label="$t('dialogs.addNode.coordinate_x')"
                   :suffix="appStore.units.Length"
                   hide-details="auto"
@@ -18,19 +17,20 @@
                   autofocus
                   required
                   :rounded="0"
+                  @keydown="checkNumber($event)"
                 ></v-text-field>
               </v-col>
 
               <v-col cols="6" md="6">
                 <v-text-field
                   v-model="newNodeZ"
-                  @keydown="checkNumber($event)"
                   :label="$t('dialogs.addNode.coordinate_z')"
                   :suffix="appStore.units.Length"
                   hide-details="auto"
                   :rules="numberRules"
                   required
                   :rounded="0"
+                  @keydown="checkNumber($event)"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -41,10 +41,10 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="green darken-1" @click="addNode" @keydown.enter="addNode">
-          {{ $t("dialogs.addNode.addNode") }}
+          {{ $t('dialogs.addNode.addNode') }}
         </v-btn>
         <v-btn color="red darken-1" @click="closeModal" @keydown.enter="closeModal">
-          {{ $t("dialogs.common.cancel") }}
+          {{ $t('dialogs.common.cancel') }}
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -52,12 +52,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue";
-import { useProjectStore } from "../../store/project";
-import { DofID, NodalLoad } from "ts-fem";
-import { closeModal } from "jenesius-vue-modal";
-import { useAppStore } from "@/store/app";
-import { checkNumber, changeRefNumValue, numberRules } from "../../utils";
+import { ref, reactive, computed } from 'vue';
+import { useProjectStore } from '../../store/project';
+import { DofID, NodalLoad } from 'ts-fem';
+import { closeModal } from 'jenesius-vue-modal';
+import { useAppStore } from '@/store/app';
+import { checkNumber, changeRefNumValue, numberRules } from '../../utils';
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
@@ -65,8 +65,8 @@ const appStore = useAppStore();
 const open = ref(true);
 const valid = ref(false);
 
-const newNodeX = ref("0");
-const newNodeZ = ref("0");
+const newNodeX = ref('0');
+const newNodeZ = ref('0');
 
 const addNode = () => {
   if (valid.value === false) return;

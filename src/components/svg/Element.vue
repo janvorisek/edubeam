@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { smoothPath } from "../../utils/smoothPath";
-import { Matrix } from "mathjs";
-import { Node, DofID, LoadCase, Beam2D, BeamConcentratedLoad, BeamElementUniformEdgeLoad } from "ts-fem";
-import { computed } from "vue";
+import { smoothPath } from '../../utils/smoothPath';
+import { Matrix } from 'mathjs';
+import { Node, DofID, LoadCase, Beam2D, BeamConcentratedLoad, BeamElementUniformEdgeLoad } from 'ts-fem';
+import { computed } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -32,7 +32,7 @@ const props = withDefaults(
 
 const elementCoords = computed(() => {
   const nodes = props.element.nodes.map((n) => props.element.domain.nodes.get(n)!.coords);
-  return nodes.map((n: number[]) => `${n[0]},${n[2]}`).join(" ");
+  return nodes.map((n: number[]) => `${n[0]},${n[2]}`).join(' ');
 });
 
 const elementFibers = computed(() => {
@@ -42,7 +42,7 @@ const elementFibers = computed(() => {
 
   const nodes = props.element.nodes.map((n) => props.element.domain.nodes.get(n)!.coords);
 
-  return nodes.map((n: number[]) => `${n[0] + (nx * 3) / props.scale},${n[2] + (nz * 3) / props.scale}`).join(" ");
+  return nodes.map((n: number[]) => `${n[0] + (nx * 3) / props.scale},${n[2] + (nz * 3) / props.scale}`).join(' ');
 });
 
 const elementAngle = computed(() => {
@@ -78,7 +78,7 @@ const elementHinges = computed(() => {
 });
 
 const results = computed(() => {
-  if (!props.loadCase.solved || !props.showDeformedShape) return "";
+  if (!props.loadCase.solved || !props.showDeformedShape) return '';
 
   const result = [];
   const hinges = props.element.hinges[0] && props.element.hinges[1];
@@ -110,21 +110,21 @@ const forces = computed(() => {
     return {
       normal: {
         text: [],
-        values: "",
+        values: '',
       },
       shear: {
         text: [],
-        values: "",
+        values: '',
       },
       moment: {
         text: [],
-        values: "",
+        values: '',
       },
     };
 
-  let result = "";
-  let resultV = "";
-  let resultM = "";
+  let result = '';
+  let resultV = '';
+  let resultM = '';
 
   const nseg = 1;
   const nsegM = props.loadCase.elementLoadList.filter((l) => l.target === props.element.label).length === 0 ? 1 : 20;
@@ -235,9 +235,9 @@ const forces = computed(() => {
     resultM += `${xc + vMraw * nx * scaleByM},${zc + vMraw * ny * scaleByM} `;
   }
 
-  if (nNzero === nvvalues.length) result = "";
-  if (nVzero === nvvalues.length) resultV = "";
-  if (nMzero === mvalues.length) resultM = "";
+  if (nNzero === nvvalues.length) result = '';
+  if (nVzero === nvvalues.length) resultV = '';
+  if (nMzero === mvalues.length) resultM = '';
 
   const result2 = [];
   const result2V = [];
@@ -299,23 +299,23 @@ const forces = computed(() => {
 
   if (!props.showBendingMoment) {
     ret.moment.text = [];
-    ret.moment.values = "";
+    ret.moment.values = '';
   }
 
   if (!props.showShearForce) {
     ret.shear.text = [];
-    ret.shear.values = "";
+    ret.shear.values = '';
   }
 
   if (!props.showNormalForce) {
     ret.normal.text = [];
-    ret.normal.values = "";
+    ret.normal.values = '';
   }
 
   return ret;
 });
 
-const emit = defineEmits(["elementmousemove", "elementpointerup"]);
+const emit = defineEmits(['elementmousemove', 'elementpointerup']);
 </script>
 
 <template>
@@ -428,23 +428,23 @@ const emit = defineEmits(["elementmousemove", "elementpointerup"]);
     <polyline :points="elementFibers" class="fibers" stroke-dasharray="5 4" vector-effect="non-scaling-stroke" />
 
     <circle
+      v-if="element.hinges[0]"
       :transform="`translate(${elementHinges[0]})`"
       :r="6 / scale"
       fill="white"
       stroke="black"
       vector-effect="non-scaling-stroke"
       stroke-width="2"
-      v-if="element.hinges[0]"
     />
 
     <circle
+      v-if="element.hinges[1]"
       :transform="`translate(${elementHinges[1]})`"
       :r="6 / scale"
       fill="white"
       stroke="black"
       vector-effect="non-scaling-stroke"
       stroke-width="2"
-      v-if="element.hinges[1]"
     />
 
     <g>

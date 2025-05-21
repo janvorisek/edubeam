@@ -1,10 +1,10 @@
-import { defineStore } from "pinia";
-import { Component, Raw, Ref, markRaw, ref } from "vue";
+import { defineStore } from 'pinia';
+import { Component, Raw, Ref, markRaw, ref } from 'vue';
 
-import SVGElementViewer from "@/components/SVGElementViewer.vue";
+import SVGElementViewer from '@/components/SVGElementViewer.vue';
 
 export const useLayoutStore = defineStore(
-  "layout",
+  'layout',
   () => {
     const widgets: Ref<
       {
@@ -38,7 +38,7 @@ export const useLayoutStore = defineStore(
       return id;
     };
 
-    const bottomBarResultsTab = ref<"nodes" | "elements">("nodes");
+    const bottomBarResultsTab = ref<'nodes' | 'elements'>('nodes');
 
     return {
       widgets,

@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import StiffnessMatrix from "@/components/StiffnessMatrix.vue";
-import SVGElementViewer from "@/components/SVGElementViewer.vue";
+import StiffnessMatrix from '@/components/StiffnessMatrix.vue';
+import SVGElementViewer from '@/components/SVGElementViewer.vue';
 
-import { onMounted, onUnmounted, ref, computed } from "vue";
+import { onMounted, onUnmounted, ref, computed } from 'vue';
 
-import { useAppStore } from "@/store/app";
-import { useProjectStore } from "@/store/project";
-import { useLayoutStore } from "@/store/layout";
+import { useAppStore } from '@/store/app';
+import { useProjectStore } from '@/store/project';
+import { useLayoutStore } from '@/store/layout';
 
 const appStore = useAppStore();
 const projectStore = useProjectStore();
@@ -31,7 +31,7 @@ const props = withDefaults(
     <v-card style="pointer-events: auto">
       <div class="d-flex drag-handle">
         <div class="d-flex align-center flex-grow-1">
-          <div style="width: 64px; height: 48px" v-if="props.widget.props.label">
+          <div v-if="props.widget.props.label" style="width: 64px; height: 48px">
             <SVGElementViewer
               v-if="projectStore.solver.domain.elements.has(props.widget.props.label)"
               class="overflow-hidden pa-1"
@@ -43,8 +43,8 @@ const props = withDefaults(
             />
           </div>
           <div class="d-flex flex-column w-100 mb-1 px-3">
-            <div class="text-h6" v-if="props.widget.title">{{ props.widget.title }}</div>
-            <div class="d-flex" v-if="props.widget.props.label">
+            <div v-if="props.widget.title" class="text-h6">{{ props.widget.title }}</div>
+            <div v-if="props.widget.props.label" class="d-flex">
               <div>Element {{ props.widget.props.label }} {{ props.x }}</div>
               <!-- <div class="ml-1">
                 <v-btn icon="mdi-content-copy" size="small" density="compact" variant="text"> </v-btn>
@@ -54,13 +54,13 @@ const props = withDefaults(
         </div>
         <div class="">
           <v-btn
+            v-if="props.widget.closable"
             icon="mdi-close"
             size="small"
             variant="text"
-            @click.prevent.stop="layoutStore.removeWidget(props.widget.id)"
             small
             class="ml-1"
-            v-if="props.widget.closable"
+            @click.prevent.stop="layoutStore.removeWidget(props.widget.id)"
           />
         </div>
       </div>

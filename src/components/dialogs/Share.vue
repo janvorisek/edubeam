@@ -3,8 +3,8 @@
     <v-card class="pa-1">
       <v-card-title>
         <div class="d-flex">
-          <div class="flex-grow-1">{{ $t("sharing.shareViaURL") }}</div>
-          <v-btn icon="mdi-close" size="small" variant="text" @click.prevent.stop="closeModal()" small class="ml-1" />
+          <div class="flex-grow-1">{{ $t('sharing.shareViaURL') }}</div>
+          <v-btn icon="mdi-close" size="small" variant="text" small class="ml-1" @click.prevent.stop="closeModal()" />
         </div>
       </v-card-title>
       <v-textarea v-model="val" readonly no-resize variant="outlined" hide-details></v-textarea>
@@ -13,21 +13,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { closeModal } from "jenesius-vue-modal";
-import Settings from "../settings/Settings.vue";
-import { serializeModel } from "@/utils";
-import { useProjectStore } from "@/store/project";
-import { onMounted } from "vue";
+import { ref } from 'vue';
+import { closeModal } from 'jenesius-vue-modal';
+import Settings from '../settings/Settings.vue';
+import { serializeModel } from '@/utils';
+import { useProjectStore } from '@/store/project';
+import { onMounted } from 'vue';
 
 const open = ref(true);
-const val = ref("");
+const val = ref('');
 
 const shareMesh = () => {
   const hash = serializeModel(useProjectStore().solver, useProjectStore().dimensions);
 
   const modelURL = new URL(window.location as unknown as URL);
-  modelURL.searchParams.set("model", hash);
+  modelURL.searchParams.set('model', hash);
 
   val.value = modelURL.toString();
   //window.history.pushState({}, "", modelURL);

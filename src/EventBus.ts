@@ -34,7 +34,7 @@ class EventBus {
 }
 
 export const enum EventType {
-  FIT_CONTENT = "FIT_CONTENT",
+  FIT_CONTENT = 'FIT_CONTENT',
 }
 
 export const eventBus = new EventBus();

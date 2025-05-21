@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { Matrix, inv, multiply } from "mathjs";
-import { Node, DofID, LoadCase } from "ts-fem";
-import { computed } from "vue";
+import { Matrix, inv, multiply } from 'mathjs';
+import { Node, DofID, LoadCase } from 'ts-fem';
+import { computed } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -186,7 +186,7 @@ const getReaction = (node: Node, dof: DofID) => {
 
   if (i === -1) return 0;
 
-  return "get" in r.values ? (r.values as unknown as Matrix).get([i]) : r.values[i];
+  return 'get' in r.values ? (r.values as unknown as Matrix).get([i]) : r.values[i];
 };
 
 const getSupportAngle = (node: Node) => {
@@ -205,7 +205,7 @@ const getRotSupportAngle = (node: Node, dof: DofID) => {
   return angle;
 };
 
-const emit = defineEmits(["nodemousemove", "nodepointerup", "nodedefomousemove"]);
+const emit = defineEmits(['nodemousemove', 'nodepointerup', 'nodedefomousemove']);
 </script>
 
 <template>

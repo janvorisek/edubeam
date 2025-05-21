@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { computed } from "vue";
-import SVGViewerDefs from "../SVGViewerDefs.vue";
-import { supportMarker } from "@/SVGUtils";
-import { Node } from "ts-fem";
+import { computed } from 'vue';
+import SVGViewerDefs from '../SVGViewerDefs.vue';
+import { supportMarker } from '@/SVGUtils';
+import { Node } from 'ts-fem';
 
 const props = defineProps<{
   angle: number;

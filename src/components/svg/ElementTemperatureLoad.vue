@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { Node, Beam2D, BeamTemperatureLoad } from "ts-fem";
-import { computed } from "vue";
+import { Node, Beam2D, BeamTemperatureLoad } from 'ts-fem';
+import { computed } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -46,7 +46,7 @@ const elementLabel = computed(() => {
     >
       <template v-if="eload.values[0] !== 0">ΔTc={{ numberFormat.format(eload.values[0]) }}</template>
       <template v-if="eload.values[1] !== 0 || eload.values[2] !== 0">
-        {{ $t("loads.temperatureDeltaTbtNoHTML") }}={{ numberFormat.format(eload.values[1] - eload.values[2]) }}
+        {{ $t('loads.temperatureDeltaTbtNoHTML') }}={{ numberFormat.format(eload.values[1] - eload.values[2]) }}
       </template>
     </text>
   </g>

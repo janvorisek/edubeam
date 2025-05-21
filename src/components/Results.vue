@@ -20,32 +20,32 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import { useProjectStore } from "../store/project";
+import { computed } from 'vue';
+import { useProjectStore } from '../store/project';
 
-import { Node, Element, DofID } from "ts-fem";
-import { formatExpValueAsHTML } from "../SVGUtils";
+import { Node, Element, DofID } from 'ts-fem';
+import { formatExpValueAsHTML } from '../SVGUtils';
 
-import { useI18n } from "vue-i18n";
-import { reactive } from "vue";
+import { useI18n } from 'vue-i18n';
+import { reactive } from 'vue';
 const { t } = useI18n();
 
 const projectStore = useProjectStore();
 
 const headers = reactive([
-  { title: t("common.node"), value: "label" },
+  { title: t('common.node'), value: 'label' },
   {
-    title: "Displacements & Rotations",
-    align: "center",
+    title: 'Displacements & Rotations',
+    align: 'center',
     children: [
-      { title: "U_x", value: "solution[0]" },
-      { title: "U_z", value: "solution[1]" },
-      { title: "R_y", value: "solution[2]" },
+      { title: 'U_x', value: 'solution[0]' },
+      { title: 'U_z', value: 'solution[1]' },
+      { title: 'R_y', value: 'solution[2]' },
     ],
   },
 ]);
 
-const elementsHeaders = reactive([{ title: t("common.element"), value: "label" }]);
+const elementsHeaders = reactive([{ title: t('common.element'), value: 'label' }]);
 
 const nodes = computed(() => {
   const nodeVals = projectStore.solver.domain.nodes.values();
@@ -56,7 +56,7 @@ const nodes = computed(() => {
   }
 
   // @ts-expect-error ts-fem is wrongly typed
-  return display.sort((a, b) => ("" + a.label).localeCompare(b.label, undefined, { numeric: true }));
+  return display.sort((a, b) => ('' + a.label).localeCompare(b.label, undefined, { numeric: true }));
 });
 
 const elements = computed(() => {

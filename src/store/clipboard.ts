@@ -1,8 +1,8 @@
-import { defineStore } from "pinia";
-import { reactive } from "vue";
-import { useProjectStore } from "./project";
-import { Beam2D, BeamConcentratedLoad, BeamElementUniformEdgeLoad, BeamTemperatureLoad } from "ts-fem";
-import { copyNode, loadType, setUnsolved, solve } from "@/utils";
+import { defineStore } from 'pinia';
+import { reactive } from 'vue';
+import { useProjectStore } from './project';
+import { Beam2D, BeamConcentratedLoad, BeamElementUniformEdgeLoad, BeamTemperatureLoad } from 'ts-fem';
+import { copyNode, loadType, setUnsolved, solve } from '@/utils';
 
 type Selection = {
   nodes: string[];
@@ -12,7 +12,7 @@ type Selection = {
   prescribedBC: number[];
 };
 
-export const useClipboardStore = defineStore("clipboard", () => {
+export const useClipboardStore = defineStore('clipboard', () => {
   const selection = reactive<Selection>({
     nodes: [],
     elements: [],

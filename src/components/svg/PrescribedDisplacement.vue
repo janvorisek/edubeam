@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { formatScientificNumber } from "@/utils";
-import { PrescribedDisplacement } from "ts-fem";
-import { computed } from "vue";
+import { formatScientificNumber } from '@/utils';
+import { PrescribedDisplacement } from 'ts-fem';
+import { computed } from 'vue';
 
 const props = withDefaults(
   defineProps<{

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { Node, Beam2D, BeamElementUniformEdgeLoad } from "ts-fem";
-import { computed } from "vue";
+import { Node, Beam2D, BeamElementUniformEdgeLoad } from 'ts-fem';
+import { computed } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -50,9 +50,9 @@ const eloadPoints = computed(() => {
   const nx2 = (geo.dz * 60) / geo.l / props.scale;
   const nz2 = (-geo.dx * 60) / geo.l / props.scale;
 
-  let line1 = "",
-    line2 = "",
-    line3 = "";
+  let line1 = '',
+    line2 = '',
+    line3 = '';
 
   if (props.eload.lcs) {
     line1 = `${n1.value.coords[0]},${n1.value.coords[2]} ${n2.value.coords[0]},${n2.value.coords[2]}`;
@@ -81,7 +81,7 @@ const eloadPoints = computed(() => {
     }
   }
 
-  return line1 + " " + line2 + " " + line3;
+  return line1 + ' ' + line2 + ' ' + line3;
 });
 
 const eloadLabels = computed(() => {

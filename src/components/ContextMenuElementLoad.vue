@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { openModal } from "jenesius-vue-modal";
-import EditElementLoadDialog from "./dialogs/EditElementLoad.vue";
-import { useProjectStore } from "@/store/project";
-import { computed } from "vue";
+import { openModal } from 'jenesius-vue-modal';
+import EditElementLoadDialog from './dialogs/EditElementLoad.vue';
+import { useProjectStore } from '@/store/project';
+import { computed } from 'vue';
 
 const projectStore = useProjectStore();
 
@@ -24,7 +24,7 @@ const load = computed(() => {
       <template #prepend>
         <div class="pr-2"><v-icon size="16" icon="mdi-pencil" /></div>
       </template>
-      {{ $t("loads.editLoad") }}
+      {{ $t('loads.editLoad') }}
     </v-list-item>
   </v-list>
 </template>

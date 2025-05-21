@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { BeamConcentratedLoad } from "ts-fem";
-import { computed } from "vue";
+import { BeamConcentratedLoad } from 'ts-fem';
+import { computed } from 'vue';
 
 const props = withDefaults(
   defineProps<{

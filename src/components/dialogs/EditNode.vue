@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="open" max-width="420">
     <v-card>
-      <v-card-title> {{ $t("dialogs.editNode.editNode") }} </v-card-title>
+      <v-card-title> {{ $t('dialogs.editNode.editNode') }} </v-card-title>
 
       <v-card-text>
         <v-form v-model="valid">
@@ -23,7 +23,6 @@
                 <v-col cols="12">
                   <v-text-field
                     v-model="newNodeX"
-                    @keydown="checkNumber($event)"
                     :label="$t('dialogs.addNode.coordinate_x')"
                     :suffix="appStore.units.Length"
                     hide-details="auto"
@@ -31,18 +30,19 @@
                     autofocus
                     required
                     :rounded="0"
+                    @keydown="checkNumber($event)"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                   <v-text-field
                     v-model="newNodeZ"
-                    @keydown="checkNumber($event)"
                     :label="$t('dialogs.addNode.coordinate_z')"
                     :suffix="appStore.units.Length"
                     hide-details="auto"
                     :rules="numberRules"
                     required
                     :rounded="0"
+                    @keydown="checkNumber($event)"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -52,7 +52,7 @@
                 <SupportHelper :angle="angleVal" :node="tmpNode" />
               </div>
               <div>
-                <div class="text-caption">{{ $t("dofs.bcs") }}</div>
+                <div class="text-caption">{{ $t('dofs.bcs') }}</div>
                 <v-row no-gutters>
                   <v-col>
                     <v-checkbox
@@ -86,12 +86,12 @@
                   <v-col cols="12">
                     <v-text-field
                       v-model="nodalAngle"
-                      @keydown="checkNumber($event)"
                       :label="$t('nodes.lcsAngle')"
                       hide-details="auto"
                       :rules="[...numberRules, minMax]"
                       :suffix="`°`"
                       :rounded="0"
+                      @keydown="checkNumber($event)"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -104,10 +104,10 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="green darken-1" @click="edit" @keydown.enter="edit">
-          {{ $t("dialogs.editNode.editNode") }}
+          {{ $t('dialogs.editNode.editNode') }}
         </v-btn>
         <v-btn color="red darken-1" @click="closeModal()" @keydown.enter="closeModal">{{
-          $t("dialogs.common.cancel")
+          $t('dialogs.common.cancel')
         }}</v-btn>
       </v-card-actions>
     </v-card>
@@ -115,14 +115,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed } from "vue";
-import { useProjectStore } from "../../store/project";
-import { Node } from "ts-fem";
-import { closeModal } from "jenesius-vue-modal";
-import { useAppStore } from "@/store/app";
-import { checkNumber, parseFloat2, setUnsolved, solve, toggleSet } from "@/utils";
-import SupportHelper from "../svg/SupportHelper.vue";
-import { numberRules } from "../../utils";
+import { onMounted, ref, computed } from 'vue';
+import { useProjectStore } from '../../store/project';
+import { Node } from 'ts-fem';
+import { closeModal } from 'jenesius-vue-modal';
+import { useAppStore } from '@/store/app';
+import { checkNumber, parseFloat2, setUnsolved, solve, toggleSet } from '@/utils';
+import SupportHelper from '../svg/SupportHelper.vue';
+import { numberRules } from '../../utils';
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
@@ -137,11 +137,11 @@ const props = withDefaults(
 const open = ref(true);
 const valid = ref(false);
 
-const tmpNode = ref(new Node("tmp", undefined, [0, 0, 0]));
+const tmpNode = ref(new Node('tmp', undefined, [0, 0, 0]));
 
-const newNodeX = ref("0");
-const newNodeZ = ref("0");
-const nodalAngle = ref("0");
+const newNodeX = ref('0');
+const newNodeZ = ref('0');
+const nodalAngle = ref('0');
 
 const angleVal = computed(() => {
   const val = parseFloat(nodalAngle.value);
@@ -151,13 +151,13 @@ const angleVal = computed(() => {
 const minMax = (v) => {
   const val = parseFloat(v);
   if (val < -180 || val > 180) {
-    return "Enter value between -180 and 180.";
+    return 'Enter value between -180 and 180.';
   }
   return true;
 };
 
 onMounted(() => {
-  nodalAngle.value = node.value.hasLcs() ? angle.value.toString() : "0";
+  nodalAngle.value = node.value.hasLcs() ? angle.value.toString() : '0';
   tmpNode.value = new Node(node.value.label, node.value.domain, node.value.coords, [...node.value.bcs.values()]);
 
   newNodeX.value = node.value.coords[0].toString();

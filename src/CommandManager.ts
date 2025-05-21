@@ -31,14 +31,14 @@ export class CommandManager<T> {
   }
 
   undo(): void {
-    if (!this.history.length) return console.info("No commands in history to undo.");
+    if (!this.history.length) return console.info('No commands in history to undo.');
     const command = this.history.pop() as Command<T>;
     command.undo(command.value);
     this.redoStack.push(command);
   }
 
   redo(): void {
-    if (!this.redoStack.length) return console.info("No commands in redo stack to redo.");
+    if (!this.redoStack.length) return console.info('No commands in redo stack to redo.');
     const command = this.redoStack.pop() as Command<T>;
     command.execute(command.value);
     this.history.push(command);

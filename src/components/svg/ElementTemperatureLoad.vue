@@ -1,14 +1,16 @@
 <script lang="ts" setup>
-import { Node, Beam2D, BeamTemperatureLoad } from "ts-fem";
-import { computed } from "vue";
+import { Node, Beam2D, BeamTemperatureLoad } from 'ts-fem';
+import { computed } from 'vue';
 
 const props = withDefaults(
   defineProps<{
     eload: BeamTemperatureLoad;
     scale: number;
     padding?: number;
+    fontSize?: number;
+    numberFormat?: Intl.NumberFormat;
   }>(),
-  { padding: 10 }
+  { padding: 10, fontSize: 13, numberFormat: new Intl.NumberFormat() }
 );
 
 const target = computed(() => props.eload.domain.elements.get(props.eload.target) as Beam2D);
@@ -42,9 +44,9 @@ const elementLabel = computed(() => {
         (n1.coords[2] + n2.coords[2]) / 2
       })`"
     >
-      <template v-if="eload.values[0] !== 0">ΔTc={{ eload.values[0] }}</template>
+      <template v-if="eload.values[0] !== 0">ΔTc={{ numberFormat.format(eload.values[0]) }}</template>
       <template v-if="eload.values[1] !== 0 || eload.values[2] !== 0">
-        ΔTd={{ eload.values[1] }} ΔTh={{ eload.values[2] }}
+        {{ $t('loads.temperatureDeltaTbtNoHTML') }}={{ numberFormat.format(eload.values[1] - eload.values[2]) }}
       </template>
     </text>
   </g>

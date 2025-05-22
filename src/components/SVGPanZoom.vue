@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from "vue";
-import { useAppStore } from "@/store/app";
-import { useProjectStore } from "../store/project";
+import { nextTick, onMounted, ref } from 'vue';
+import { useAppStore } from '@/store/app';
+import { useProjectStore } from '../store/project';
+import { debounce } from '@/utils';
+import { useResizeObserver } from '@vueuse/core';
 
 const appStore = useAppStore();
 
@@ -22,10 +24,19 @@ const props = withDefaults(
   }
 );
 
-let viewBox = { x: 0, y: 0, w: 0, h: 0 };
+let viewBox = { x: 0, y: 0, w: 1, h: 1 };
 const scale = ref(1);
+const zooming = ref(false);
+const panning = ref(false);
 
 const touchPointer = ref({ x: 0, y: 0, ds: 0, move: false, pinch: false });
+
+const rootRef = ref<HTMLElement | null>(null);
+const svgRef = ref<SVGElement | null>(null);
+
+useResizeObserver(rootRef, () => {
+  onWindowResize();
+});
 
 const reset = () => {
   viewBox = { x: 0, y: 0, w: 0, h: 0 };
@@ -42,11 +53,11 @@ const onWindowResize = (): void => {
   const dX = rootRef.value!.offsetWidth - svgRef.value!.getBoundingClientRect().width;
   const dY = rootRef.value!.offsetHeight - svgRef.value!.getBoundingClientRect().height;
 
-  svgRef.value!.setAttribute("width", rootRef.value!.offsetWidth.toString());
-  svgRef.value!.setAttribute("height", rootRef.value!.offsetHeight.toString());
+  svgRef.value.setAttribute('width', rootRef.value!.offsetWidth.toString());
+  svgRef.value.setAttribute('height', rootRef.value!.offsetHeight.toString());
 
-  viewBox.w = rootRef.value!.offsetWidth / scale.value;
-  viewBox.h = rootRef.value!.offsetHeight / scale.value;
+  viewBox.w = rootRef.value.offsetWidth / scale.value;
+  viewBox.h = rootRef.value.offsetHeight / scale.value;
 
   viewBox.x -= dX / scale.value / 2;
   viewBox.y -= dY / scale.value / 2;
@@ -56,7 +67,7 @@ const onWindowResize = (): void => {
 
 const updateMatrix = (zooming = false): void => {
   const svgEl = svgRef.value as SVGElement;
-  svgEl.setAttribute("viewBox", `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
+  svgEl.setAttribute('viewBox', `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
   props.onUpdate(zooming);
 };
 
@@ -77,21 +88,20 @@ const zoom = (mx: number, my: number, deltaY: number): void => {
     w: viewBox.w - dw,
     h: viewBox.h - dh,
   };
+
   scale.value = svgEl.clientWidth / viewBox.w;
 
   updateMatrix(true);
 };
 
-let wheelEventEndTimeout = null;
-const isFirefox = navigator.userAgent.search("Firefox") > -1;
-const onMouseWheel = (event: WheelEvent): void => {
-  if (isFirefox) appStore.zooming = true;
-  clearTimeout(wheelEventEndTimeout);
-  wheelEventEndTimeout = setTimeout(() => {
-    appStore.zooming = false;
-  }, 100);
+const debonceZoom = debounce(() => {
+  zooming.value = false;
+}, 200);
 
+const onMouseWheel = (event: WheelEvent): void => {
+  zooming.value = true;
   zoom(event.offsetX, event.offsetY, Math.sign(event.deltaY) * 0.05);
+  debonceZoom();
 };
 
 const onTouchStart = (event: TouchEvent): void => {
@@ -106,7 +116,7 @@ const onTouchStart = (event: TouchEvent): void => {
   }
 
   if (event.touches.length === 2) {
-    appStore.zooming = true;
+    zooming.value = true;
 
     touchPointer.value.ds = Math.hypot(
       event.touches[0].pageX - event.touches[1].pageX,
@@ -124,16 +134,26 @@ const onTouchStart = (event: TouchEvent): void => {
 };
 
 const onTouchEnd = (): void => {
-  appStore.zooming = false;
+  zooming.value = false;
   touchPointer.value.move = false;
   touchPointer.value.pinch = false;
+  panning.value = false;
 };
 
 const onTouchMove = (event: TouchEvent): void => {
   if (!props.touch) return;
 
-  //console.log({ touchmove: event.touches.length, pointer: JSON.stringify(touchPointer) })
   if (event.touches.length === 1 && touchPointer.value.move) {
+    // Only pan when sufficient distance
+    const dist = Math.hypot(
+      event.touches[0].clientX - touchPointer.value.x,
+      event.touches[0].clientY - touchPointer.value.y
+    );
+
+    if (dist < 10) return;
+
+    panning.value = true;
+
     viewBox.x -= (event.touches[0].clientX - touchPointer.value.x) / scale.value;
     viewBox.y -= (event.touches[0].clientY - touchPointer.value.y) / scale.value;
     updateMatrix();
@@ -157,6 +177,8 @@ const onTouchMove = (event: TouchEvent): void => {
 const onMouseMove = (event: MouseEvent): void => {
   if (event.buttons !== appStore.panButton) return;
 
+  panning.value = true;
+
   viewBox.x -= (event.movementX * 1) / scale.value;
   viewBox.y -= (event.movementY * 1) / scale.value;
 
@@ -166,7 +188,7 @@ const onMouseMove = (event: MouseEvent): void => {
 const centerContent = (): void => {
   if (!svgRef.value) return;
 
-  const rootG = (svgRef.value as SVGElement).getElementsByTagName("g")[0] as SVGGElement;
+  const rootG = (svgRef.value as SVGElement).getElementsByTagName('g')[0] as SVGGElement;
   const bBox = rootG.getBBox();
 
   viewBox.x = -viewBox.w / 2 + bBox.x + bBox.width / 2;
@@ -180,10 +202,11 @@ const fitContent = (n = 0) => {
 
   onWindowResize();
 
+  const arrayOfObjects = useProjectStore().nodes;
+
   // for the first iteration, lets estimate the viewbox by node coord bounds
-  if (n === 0 && scale.value === 1) {
+  if (n === 0 && scale.value === 1 && arrayOfObjects.length > 0) {
     // Get the array of objects from useProjectStore().nodes
-    const arrayOfObjects = useProjectStore().nodes;
 
     // Initialize variables to store maximum and minimum values
     let maxXObject = arrayOfObjects[0];
@@ -218,6 +241,9 @@ const fitContent = (n = 0) => {
     };
 
     const svgEl = svgRef.value as SVGElement;
+
+    if (svgEl.clientWidth === 0 || viewBox.w === 0) return;
+
     scale.value = svgEl.clientWidth / viewBox.w;
 
     return requestAnimationFrame(() => fitContent(n + 1));
@@ -228,7 +254,7 @@ const fitContent = (n = 0) => {
   const FIT_CONTENT_PADDING = window.innerWidth > 768 ? props.padding : props.mobilePadding;
 
   const svgEl = svgRef.value as SVGElement;
-  const rootG = svgEl.getElementsByTagName("g")[0] as SVGGElement;
+  const rootG = svgEl.getElementsByTagName('g')[0] as SVGGElement;
 
   const rootBBox = svgEl.getBoundingClientRect();
   //const bBox = rootG.getBoundingClientRect();
@@ -236,9 +262,9 @@ const fitContent = (n = 0) => {
   const bBoxW = rootG.getBBox().width * scale.value;
   const bBoxH = rootG.getBBox().height * scale.value;
 
-  let zoomBy = bBoxH / (svgEl.clientHeight - FIT_CONTENT_PADDING);
+  if (isNaN(bBoxW) || isNaN(bBoxH) || bBoxH <= 0 || bBoxW <= 0) return;
 
-  //console.log(svgEl.clientHeight);
+  let zoomBy = bBoxH / (svgEl.clientHeight - FIT_CONTENT_PADDING);
 
   const r1 = bBoxW / bBoxH;
   const r2 = rootBBox.width / rootBBox.height;
@@ -261,6 +287,8 @@ const fitContent = (n = 0) => {
   scale.value = svgEl.clientWidth / viewBox.w;
   const dscale = Math.abs(scale.value - prevScale);
 
+  //console.log(JSON.stringify(viewBox), dscale, scale.value, prevScale);
+
   centerContent();
   updateMatrix(true);
 
@@ -279,13 +307,13 @@ onMounted(() => {
     svgRef.value! = rootRef.value!.children[0] as SVGElement;
 
     //window.addEventListener('resize', onWindowResize)
-    const resizewatcher = new ResizeObserver(() => {
-      onWindowResize();
-    });
+    // const resizewatcher = new ResizeObserver(() => {
+    //   onWindowResize();
+    // });
 
-    resizewatcher.observe(rootRef.value!);
+    // resizewatcher.observe(rootRef.value!);
 
-    svgRef.value!.setAttribute("overflow", "visible");
+    svgRef.value!.setAttribute('overflow', 'visible');
   });
 
   /* const isFirefox = navigator.userAgent.search("Firefox") > -1;
@@ -310,18 +338,17 @@ const onMouseDown = () => {
 
 const onMouseUp = () => {
   //useAppStore().zooming = false;
+  panning.value = false;
 };
 
-const rootRef = ref<HTMLElement | null>(null);
-const svgRef = ref<SVGElement | null>(null);
-
-defineExpose({ scale, centerContent, fitContent, updateMatrix, onWindowResize, zoom, reset });
+defineExpose({ scale, centerContent, fitContent, updateMatrix, onWindowResize, zoom, reset, zooming, panning });
 </script>
 
 <template>
   <div
     ref="rootRef"
     class="w-100 fill-height"
+    style="touch-action: none"
     @touchstart.prevent="onTouchStart"
     @touchmove.prevent="onTouchMove"
     @touchend.prevent="onTouchEnd"
@@ -330,7 +357,6 @@ defineExpose({ scale, centerContent, fitContent, updateMatrix, onWindowResize, z
     @mouseup.prevent="onMouseUp"
     @mousemove.prevent="onMouseMove"
     @contextmenu.prevent
-    style="touch-action: none"
   >
     <slot></slot>
   </div>

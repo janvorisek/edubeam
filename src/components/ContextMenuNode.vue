@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { openModal } from "jenesius-vue-modal";
-import AddNodalLoadDialog from "./dialogs/AddNodalLoad.vue";
-import { useProjectStore } from "@/store/project";
-import { setUnsolved, solve, toggleSet } from "@/utils";
-import { computed, onMounted, ref } from "vue";
-import { Node } from "ts-fem";
+import { openModal } from 'jenesius-vue-modal';
+import AddNodalLoadDialog from './dialogs/AddNodalLoad.vue';
+import { useProjectStore } from '@/store/project';
+import { setUnsolved, solve, toggleSet } from '@/utils';
+import { computed, onMounted, ref } from 'vue';
+import { Node } from 'ts-fem';
 
 const projectStore = useProjectStore();
 
-const lcs = ref("0");
+const lcs = ref('0');
 
 onMounted(() => {
-  lcs.value = node.value.hasLcs() ? angle.value.toString() : "0";
+  lcs.value = node.value.hasLcs() ? angle.value.toString() : '0';
 });
 
 const lcsChange = () => {
@@ -59,13 +59,13 @@ const node = computed(() => {
       <template #prepend>
         <div class="pr-2"><v-icon size="16" icon="mdi-arrow-down-thin" /></div>
       </template>
-      {{ $t("loads.addLoad") }}
+      {{ $t('loads.addLoad') }}
     </v-list-item>
     <v-list-item link class="text-body-2">
       <template #prepend>
         <div class="pr-2"><v-icon size="16" icon="mdi-triangle-outline" /></div>
       </template>
-      {{ $t("nodes.defineSupports") }}
+      {{ $t('nodes.defineSupports') }}
       <v-menu activator="parent" open-on-click min-width="170" location="end" :close-on-content-click="false">
         <v-list density="compact" class="py-0">
           <v-row no-gutters class="px-1">
@@ -100,12 +100,12 @@ const node = computed(() => {
           <v-row no-gutters>
             <v-col>
               <v-text-field
+                v-model="lcs"
                 :label="$t('nodes.lcsAngle')"
                 suffix="°"
                 density="compact"
                 hide-details="auto"
                 :rounded="0"
-                v-model="lcs"
                 @change="lcsChange"
               />
             </v-col>
@@ -125,7 +125,7 @@ const node = computed(() => {
       <template #prepend>
         <div class="pr-2"><v-icon size="16" icon="mdi-ruler" /></div>
       </template>
-      {{ $t("loads.addPrescribedDisplacement") }}
+      {{ $t('loads.addPrescribedDisplacement') }}
     </v-list-item>
   </v-list>
 </template>

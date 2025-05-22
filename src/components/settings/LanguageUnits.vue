@@ -1,11 +1,11 @@
 <template>
   <div style="display: grid; grid-template-columns: clamp(200px, 365px, 50%) auto">
     <div>
-      <h3 class="mb-2">{{ $t("settings.language_and_locale") }}</h3>
+      <h3 class="mb-2">{{ $t('settings.language_and_locale') }}</h3>
 
-      <h4 class="mb-1">{{ $t("settings.language") }}</h4>
+      <h4 class="mb-1">{{ $t('settings.language') }}</h4>
 
-      <div class="mb-1">{{ $t("settings.language_description") }}</div>
+      <div class="mb-1">{{ $t('settings.language_description') }}</div>
 
       <v-select
         v-model="appStore.locale"
@@ -24,9 +24,9 @@
         </template>
       </v-select>
 
-      <h4 class="mb-1 mt-3">{{ $t("settings.units.units") }}</h4>
+      <h4 class="mb-1 mt-3">{{ $t('settings.units.units') }}</h4>
 
-      <div class="mb-1">{{ $t("settings.units_description") }}</div>
+      <div class="mb-1">{{ $t('settings.units_description') }}</div>
 
       <v-row no-gutters>
         <v-col cols="6">
@@ -140,18 +140,18 @@
 </template>
 
 <script lang="ts" setup>
-import { useAppStore } from "@/store/app";
-import { availableLocales } from "../../plugins/i18n";
-import { formatMeasureAsHTML } from "../../SVGUtils";
+import { useAppStore } from '@/store/app';
+import { availableLocales } from '../../plugins/i18n';
+import { formatMeasureAsHTML } from '../../SVGUtils';
 
 const appStore = useAppStore();
 
-import English from "language-icons/icons/en.svg";
-import Czech from "language-icons/icons/cs.svg";
-import German from "language-icons/icons/de.svg";
-import Spanish from "language-icons/icons/es.svg";
-import French from "language-icons/icons/fr.svg";
-import Chinese from "language-icons/icons/zh.svg";
+import English from 'language-icons/icons/en.svg';
+import Czech from 'language-icons/icons/cs.svg';
+import German from 'language-icons/icons/de.svg';
+import Spanish from 'language-icons/icons/es.svg';
+import French from 'language-icons/icons/fr.svg';
+import Chinese from 'language-icons/icons/zh.svg';
 
 const flags = { en: English, cs: Czech, de: German, es: Spanish, fr: French, cn: Chinese };
 

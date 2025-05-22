@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { useProjectStore } from "../store/project";
-import { watch } from "vue";
+import { onMounted, ref } from 'vue';
+import { useProjectStore } from '../store/project';
+import { watch } from 'vue';
 
 const projectStore = useProjectStore();
 </script>
@@ -9,10 +9,10 @@ const projectStore = useProjectStore();
 <template>
   <div class="fill-height" style="overflow: auto">
     <div>
-      <v-table density="compact" v-if="projectStore.selection2.nodes.length > 0">
+      <v-table v-if="projectStore.selection2.nodes.length > 0" density="compact">
         <thead>
           <tr>
-            <th>{{ $t("common.node") }}</th>
+            <th>{{ $t('common.node') }}</th>
             <th>x</th>
             <th>z</th>
           </tr>
@@ -25,14 +25,14 @@ const projectStore = useProjectStore();
           </tr>
         </tbody>
       </v-table>
-      <v-table density="compact" v-if="projectStore.selection2.elements.length > 0">
+      <v-table v-if="projectStore.selection2.elements.length > 0" density="compact">
         <thead>
           <tr>
-            <th>{{ $t("common.element") }}</th>
-            <th>{{ $t("common.type") }}</th>
-            <th colspan="2">{{ $t("common.nodes") }}</th>
-            <th>{{ $t("common.material") }}</th>
-            <th>{{ $t("common.crossSection") }}</th>
+            <th>{{ $t('common.element') }}</th>
+            <th>{{ $t('common.type') }}</th>
+            <th colspan="2">{{ $t('common.nodes') }}</th>
+            <th>{{ $t('common.material') }}</th>
+            <th>{{ $t('common.crossSection') }}</th>
           </tr>
         </thead>
         <tbody>

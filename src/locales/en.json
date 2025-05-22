@@ -39,7 +39,9 @@
     "confirm": "Confirm",
     "saveProject": "Save project",
     "openProject": "Open project",
-    "lcs": "Local Coordinate System"
+    "lcs": "Local Coordinate System",
+    "paste": "Paste",
+    "addNew": "Add new"
   },
   "nodes": {
     "addNode": "Add node",
@@ -63,7 +65,12 @@
     "UDL": "UDL",
     "forceMoment": "Force/Moment",
     "editLoad": "Edit load",
-    "loadPositionOnBeam": "Load position from start node"
+    "loadPositionOnBeam": "Load position from start node",
+    "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Temperature change of bottom minus top fibers",
+    "temperatureBending": "ΔT<sub>s</sub> ... Axial temperature change",
+    "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
+    "temperatureDeltaTs": "ΔT<sub>s</sub>",
+    "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
   },
   "tabs": {
     "nodes": "Nodes",
@@ -131,7 +138,8 @@
     "sizes": {
       "sizes": "Sizes",
       "supportSize": "Support size"
-    }
+    },
+    "font_size": "Font size"
   },
   "sideSettings": {
     "showDeformedShape": "Deformed shape",
@@ -149,7 +157,7 @@
     "results": "Results",
     "nodal_results": "Nodal results",
     "element_results": "Element results",
-    "end_forces": "End forces"
+    "end_forces": "End forces (in local coordinate system)"
   },
   "materials": {
     "addMaterial": "Add material",
@@ -256,7 +264,9 @@
   "confirmation": {
     "clearMesh": {
       "message": "Are you sure you want to clear the mesh? This action cannot be undone.",
-      "title": "Clear mesh?"
+      "title": "Clear mesh?",
+      "materials": "Delete materials",
+      "crossSections": "Delete cross sections"
     },
     "resetSettings": {
       "title": "Reset settings?",
@@ -285,5 +295,12 @@
     "concentrated": "Concentrated load",
     "udl": "Uniformly distributed load",
     "temperature": "Temperature load"
+  },
+  "dimensioning": {
+    "add_dimension": "Add dimension"
+  },
+  "warnings": {
+    "noMaterialsDefined": "No materials defined.",
+    "noCrossSectionsDefined": "No cross sections defined."
   }
 }

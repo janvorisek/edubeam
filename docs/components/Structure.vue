@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { LinearStaticSolver, DofID, Node, Beam2D } from "ts-fem";
-import { ref, onMounted, reactive, nextTick } from "vue";
-import SVGElementViewer from "../../src/components/SVGElementViewer.vue";
-import { VTweakpane } from "v-tweakpane";
-import { serializeModel, deserializeModel } from "../../src/utils/serializeModel";
+import { LinearStaticSolver, DofID, Node, Beam2D } from 'ts-fem';
+import { ref, onMounted, reactive, nextTick } from 'vue';
+import SVGElementViewer from '../../src/components/SVGElementViewer.vue';
+import { VTweakpane } from 'v-tweakpane';
+import { serializeModel, deserializeModel } from '../../src/utils/serializeModel';
 
 const viewer = ref(null);
 
@@ -44,14 +44,14 @@ const props = withDefaults(
 );
 
 const colors = {
-  normalForce: "#2222ff",
-  shearForce: "#00af00",
-  bendingMoment: "#ff2222",
-  deformedShape: "#555555",
-  loads: "#ff8700",
-  nodes: "#000000",
-  elements: "#000000",
-  reactions: "#a020f0",
+  normalForce: '#2222ff',
+  shearForce: '#00af00',
+  bendingMoment: '#ff2222',
+  deformedShape: '#555555',
+  loads: '#ff8700',
+  nodes: '#000000',
+  elements: '#000000',
+  reactions: '#a020f0',
 };
 
 const solver = ref(new LinearStaticSolver());
@@ -105,8 +105,8 @@ onMounted(() => {
     <ClientOnly>
       <div class="d-flex" style="width: 100%; min-height: 160px">
         <SVGElementViewer
-          ref="viewer"
           v-if="_created"
+          ref="viewer"
           class="overflow-hidden pa-1 w-100"
           :solver="solver"
           :nodes="[...solver.domain.nodes.values()]"

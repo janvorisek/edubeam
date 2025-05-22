@@ -18,6 +18,7 @@ $font: "Barlow", sans-serif;
 
 .app-title, .edubeam {
   font-family: "Lobster", "Barlow", sans-serif;
+  font-weight: normal;
 }
 
 html,
@@ -113,10 +114,27 @@ div.inline-edit.fw {
     border-bottom-left-radius: 0;
   }
   
-  &:has(.input-after) .inline-edit {
-    border-right: none;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+  &:has(.input-after) {
+    .inline-edit {
+      border-right: none;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+}
+
+.inline-edit-group.load {
+  .input-before, .input-after {
+    min-width: 28px;
+  }
+  &:has(.input-before) .inline-edit {
+    width: 60px;
+  }
+  
+  &:has(.input-after) {
+    .input-after {
+      width: 48px;
+    }
   }
 }
 
@@ -147,6 +165,8 @@ select.mini-select {
   font: inherit;
   line-height: 1.5em;
   padding: 1px 6px;
+  padding-right: 24px;
+  min-width: 100px;
 
   background-image: linear-gradient(45deg, transparent 50%, gray 50%),
     linear-gradient(135deg, gray 50%, transparent 50%), linear-gradient(to right, #ccc, #ccc);
@@ -155,8 +175,8 @@ select.mini-select {
     calc(100% - 7px) calc(0.5em + 2px),
     calc(100% - 1.5em) 0em;
   background-size:
-    5px 5px,
-    5px 5px,
+    5.25px 5px,
+    5.25px 5px,
     1px 1.75em;
   background-repeat: no-repeat;
 }
@@ -200,14 +220,40 @@ select.mini-select {
 .v-table {
   --v-table-header-height: 26px;
   --v-table-row-height: 32px;
+  --fixed-column-size: 48px;  
+  overflow-x: visible;
+  position: relative;
+  .v-table__wrapper {
+    overflow-x: auto;
+    //padding-left: var(--fixed-column-size);
+  }
   table {
     border-bottom: 1px solid #ddd;
+  }
+  thead {
+    
+  }
+  table tr:nth-child(even) td {
+    background: #ffffff !important;
   }
   table tr:nth-child(odd) td {
     background: #f8f8f8 !important;
   }
   table tr:hover td {
     background: #eee !important;
+  }
+  &.fixed-left-col
+  {
+    th:nth-of-type(1), td:nth-of-type(1)
+    {
+      position: sticky !important;
+      min-width: var(--fixed-column-size);
+      left: 0px;
+      z-index: 1;
+    }
+  }
+  th {
+    z-index: 2;
   }
 }
 
@@ -230,7 +276,7 @@ select.mini-select {
 
 .v-table {
   //min-width: fit-content !important;
-  overflow-x: auto !important;
+  //overflow-x: auto !important;
 
   th {
     white-space: nowrap;
@@ -307,4 +353,16 @@ select.mini-select {
 // TODO: Hack, v-window-item has inline style of display none, unable to determine why
 .v-window-item.v-window-item--active {
   display: block !important;
+}
+
+.warning {
+  position: absolute;
+  top: 64px;
+  left: 24px;
+  z-index: 55;
+}
+
+// Prevent line wrap in selection label
+.v-selection-control .v-label {
+  white-space: nowrap !important;
 }

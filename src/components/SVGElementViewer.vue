@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import SvgPanZoom from "./SVGPanZoom2.vue";
-import SvgGrid from "./SVGGrid.vue";
-import SvgViewerDefs from "./SVGViewerDefs.vue";
-import { ref, onMounted, computed, watch } from "vue";
+import SvgPanZoom from './SVGPanZoom2.vue';
+import SvgGrid from './SVGGrid.vue';
+import SvgViewerDefs from './SVGViewerDefs.vue';
+import { ref, onMounted, computed, watch } from 'vue';
 
-import { throttle } from "../utils/throttle";
+import { throttle } from '../utils/throttle';
 import {
   Node,
   DofID,
@@ -16,20 +16,21 @@ import {
   BeamElementUniformEdgeLoad,
   BeamConcentratedLoad,
   PrescribedDisplacement,
-} from "ts-fem";
-import { Matrix, max, min } from "mathjs";
+} from 'ts-fem';
+import { Matrix, max, min } from 'mathjs';
 
-import SVGElementLoad from "./svg/ElementLoad.vue";
-import SVGElementConcentratedLoad from "./svg/ElementConcentratedLoad.vue";
-import SVGNodalLoad from "./svg/NodalLoad.vue";
-import SVGPrescribedDisplacement from "./svg/PrescribedDisplacement.vue";
-import SVGNode from "./svg/Node.vue";
-import SVGElement from "./svg/Element.vue";
-import SVGElementTemperatureLoad from "./svg/ElementTemperatureLoad.vue";
-import { loadType } from "../utils/loadType";
+import SVGElementLoad from './svg/ElementLoad.vue';
+import SVGElementConcentratedLoad from './svg/ElementConcentratedLoad.vue';
+import SVGNodalLoad from './svg/NodalLoad.vue';
+import SVGPrescribedDisplacement from './svg/PrescribedDisplacement.vue';
+import SVGNode from './svg/Node.vue';
+import SVGElement from './svg/Element.vue';
+import SVGElementTemperatureLoad from './svg/ElementTemperatureLoad.vue';
+import { loadType } from '../utils/loadType';
 
 const props = withDefaults(
   defineProps<{
+    id?: string;
     solver: LinearStaticSolver;
     showGrid?: boolean;
     showElements?: boolean;
@@ -50,7 +51,7 @@ const props = withDefaults(
     prescribedDisplacements?: PrescribedDisplacement[];
     padding?: number;
     mobilePadding?: number;
-    resultsScalePx: number;
+    resultsScalePx?: number;
     colors?: {
       normalForce: string;
       shearForce: string;
@@ -65,8 +66,10 @@ const props = withDefaults(
     convertForce?: (value: number) => number;
     convertLength?: (value: number) => number;
     zoomEnabled?: boolean;
+    fontSize?: number;
   }>(),
   {
+    id: new Date().getTime().toString(),
     showGrid: false,
     showElements: true,
     showNodes: true,
@@ -86,22 +89,24 @@ const props = withDefaults(
     prescribedDisplacements: () => [],
     padding: 12,
     mobilePadding: 12,
+    resultsScalePx: 64,
     colors: () => {
       return {
-        normalForce: "#2222ff",
-        shearForce: "#00af00",
-        bendingMoment: "#ff2222",
-        deformedShape: "#555555",
-        loads: "#ff8700",
-        nodes: "#000000",
-        elements: "#000000",
-        reactions: "#a020f0",
+        normalForce: '#2222ff',
+        shearForce: '#00af00',
+        bendingMoment: '#ff2222',
+        deformedShape: '#555555',
+        loads: '#ff8700',
+        nodes: '#000000',
+        elements: '#000000',
+        reactions: '#a020f0',
       };
     },
     supportSize: 1,
     convertForce: (v) => v,
     convertLength: (v) => v,
     zoomEnabled: false,
+    fontSize: 13,
   }
 );
 
@@ -113,6 +118,8 @@ const viewport = ref<SVGGElement>();
 
 const update = () => {
   fitContent();
+
+  if (!props.solver.loadCases[0].solved) return;
 
   let maxDefo = 0;
   let maxNormalForce = 0;
@@ -189,25 +196,29 @@ const onUpdate = throttle((zooming: boolean) => {
   if (grid.value) grid.value.refreshGrid(zooming);
 }, 100);
 
+const dynamicMarker = (label: string) => {
+  return `url(#${props.id}-${label})`;
+};
+
 defineExpose({ centerContent, fitContent });
 </script>
 
 <template>
-  <div class="d-flex flex-column fill-height">
+  <div class="d-flex flex-column fill-height svg-viewer">
     <svg v-if="false" class="w-100 fill-height" style="position: absolute">
       <SvgGrid ref="grid" :svg="svg as SVGSVGElement" :viewport="viewport as SVGGElement" :zoom="scale" />
     </svg>
 
     <SvgPanZoom
-      :on-update="onUpdate"
       ref="panZoom"
+      :on-update="onUpdate"
       :padding="props.padding"
       :mobile-padding="props.mobilePadding"
       :zoom-enabled="props.zoomEnabled"
       style="overflow: visible; z-index: 50; min-height: 0"
     >
       <svg ref="svg">
-        <SvgViewerDefs :colors="colors" :support-size="supportSize" />
+        <SvgViewerDefs :id="id" :colors="colors" :support-size="supportSize" :scale="scale" />
         <g ref="viewport">
           <g>
             <g v-if="props.showLoads">
@@ -219,6 +230,7 @@ defineExpose({ centerContent, fitContent });
                   :eload="eload"
                   :scale="scale"
                   :convert-force="props.convertForce"
+                  :font-size="props.fontSize"
                 />
                 <SVGElementTemperatureLoad
                   v-else-if="loadType(eload) === 'temperature'"
@@ -227,6 +239,7 @@ defineExpose({ centerContent, fitContent });
                   :eload="eload"
                   :scale="scale"
                   :convert-force="props.convertForce"
+                  :font-size="props.fontSize"
                 />
                 <SVGElementConcentratedLoad
                   v-else-if="eload instanceof BeamConcentratedLoad"
@@ -235,6 +248,7 @@ defineExpose({ centerContent, fitContent });
                   :eload="eload"
                   :scale="scale"
                   :convert-force="props.convertForce"
+                  :font-size="props.fontSize"
                 />
               </template>
               <SVGNodalLoad
@@ -243,6 +257,7 @@ defineExpose({ centerContent, fitContent });
                 :nload="nload"
                 :scale="scale"
                 :convert-force="props.convertForce"
+                :font-size="props.fontSize"
               />
               <SVGPrescribedDisplacement
                 v-for="(nload, index) in props.prescribedDisplacements"
@@ -251,6 +266,7 @@ defineExpose({ centerContent, fitContent });
                 :scale="scale"
                 :convert-length="props.convertLength"
                 :multiplier="defoScale * props.resultsScalePx"
+                :font-size="props.fontSize"
               />
             </g>
           </g>
@@ -271,6 +287,7 @@ defineExpose({ centerContent, fitContent });
               :shear-force-multiplier="shearForceScale * props.resultsScalePx"
               :bending-moment-multiplier="bendingMomentScale * props.resultsScalePx"
               :convert-force="props.convertForce"
+              :font-size="props.fontSize"
             />
           </g>
 
@@ -286,6 +303,7 @@ defineExpose({ centerContent, fitContent });
                 :convert-force="props.convertForce"
                 :load-case="props.solver.loadCases[0]"
                 :multiplier="defoScale * props.resultsScalePx"
+                :font-size="props.fontSize"
               />
             </g>
           </g>
@@ -295,206 +313,244 @@ defineExpose({ centerContent, fitContent });
   </div>
 </template>
 
-<style lang="scss">
-.element-load.load-1d {
-  text {
-    fill: v-bind("colors.loads");
-  }
-  pointer-events: all;
-  stroke-linecap: butt;
-  &:hover text {
-    //fill: blue;
-  }
-  &:hover path.drawable,
-  &:hover polygon.drawable {
-    //stroke: blue;
-    stroke-width: 3px;
-  }
-  &:hover polyline {
-    marker-end: url(#force_centered_hover);
-  }
-  polygon,
-  path {
-    stroke: v-bind("colors.loads");
-    stroke-width: 1px;
-    &.handle {
-      stroke-width: 12px;
-      stroke: transparent;
-    }
-  }
-  polyline {
-    marker-end: url(#force_centered);
-  }
-
-  &.selected {
+<style lang="scss" scoped>
+.svg-viewer :deep(*) {
+  .element-load.load-1d {
     text {
-      fill: rgb(0, 55, 149);
+      fill: v-bind('colors.loads');
     }
-    polygon {
-      stroke-linejoin: round;
-      fill: rgba(0, 55, 149, 0.1);
+    stroke-linecap: butt;
+    &:hover text {
+      //fill: blue;
     }
-  }
-}
-
-.element.element-1d {
-  polyline {
-    fill: none;
-    stroke: black;
-    stroke-width: 2px;
-    &.handle {
-      cursor: pointer;
-      stroke-width: 24px;
-      stroke: transparent;
+    &:hover path.drawable,
+    &:hover polygon.drawable {
+      //stroke: blue;
+      stroke-width: 3px;
     }
-    &.decoration {
+    &:hover polyline {
+      marker-end: v-bind(dynamicMarker('force_centered_hover'));
+    }
+    polygon,
+    path {
+      stroke: v-bind('colors.loads');
       stroke-width: 1px;
+      &.handle {
+        stroke-width: 12px;
+        stroke: transparent;
+      }
+    }
+    polyline {
+      marker-end: v-bind(dynamicMarker('force_centered'));
+    }
+
+    &.selected {
+      text {
+        fill: rgb(0, 55, 149);
+      }
+      polygon {
+        stroke-linejoin: round;
+        fill: rgba(0, 55, 149, 0.1);
+      }
     }
   }
-  &:hover {
-    & polyline.drawable {
+
+  .element.element-1d {
+    polyline {
+      fill: none;
       stroke: black;
-      stroke-width: 5px;
+      stroke-width: 2px;
+      &.handle {
+        cursor: pointer;
+        stroke-width: 24px;
+        stroke: transparent;
+      }
+      &.decoration {
+        stroke-width: 1px;
+      }
     }
-  }
-  &.selected {
-    & polyline.drawable {
-      stroke: rgb(0, 94, 255);
-      stroke-width: 5px;
+    &:hover {
+      & polyline.drawable {
+        stroke: black;
+        stroke-width: 5px;
+      }
     }
-  }
+    &.selected {
+      & polyline.drawable {
+        stroke: rgb(0, 94, 255);
+        stroke-width: 5px;
+      }
+    }
 
-  polyline.fibers {
-    stroke: #666;
-    stroke-width: 1px;
-  }
-  path.deformedShape {
-    fill: none;
-    stroke: #555;
-    stroke-width: 2px;
-    &.decoration {
+    polyline.fibers {
+      stroke: #666;
       stroke-width: 1px;
     }
-  }
-  .normal polyline {
-    stroke: v-bind("colors.normalForce");
-    stroke-width: 1px;
-    fill: v-bind("colors.normalForce");
-    fill-opacity: 0.1;
-    &:hover {
-      fill-opacity: 0.2;
+    path.deformedShape {
+      fill: none;
+      stroke: v-bind('colors.deformedShape');
+      stroke-width: 2px;
+      &.decoration {
+        stroke-width: 1px;
+      }
     }
-  }
-  .shear polyline {
-    stroke: v-bind("colors.shearForce");
-    stroke-width: 1px;
-    fill: v-bind("colors.shearForce");
-    fill-opacity: 0.1;
-    &:hover {
-      fill-opacity: 0.2;
-    }
-  }
-  .moment polyline {
-    stroke: v-bind("colors.bendingMoment");
-    stroke-width: 1px;
-    fill: v-bind("colors.bendingMoment");
-    fill-opacity: 0.1;
-    &:hover {
-      fill-opacity: 0.2;
-    }
-  }
-}
-
-.node {
-  polyline {
-    stroke: #000;
-    stroke-linecap: square;
-    stroke-width: 6px;
-    vector-effect: non-scaling-stroke;
-    &.handle {
-      cursor: pointer;
-      stroke-width: 24px;
-      stroke: transparent;
-    }
-    &.decoration {
+    .normal polyline {
+      stroke: v-bind('colors.normalForce');
       stroke-width: 1px;
+      fill: v-bind('colors.normalForce');
+      fill-opacity: 0.1;
+      &:hover {
+        fill-opacity: 0.2;
+      }
     }
-    &.drawable.deformed {
-      stroke: #555;
+    .shear polyline {
+      stroke: v-bind('colors.shearForce');
+      stroke-width: 1px;
+      fill: v-bind('colors.shearForce');
+      fill-opacity: 0.1;
+      &:hover {
+        fill-opacity: 0.2;
+      }
+    }
+    .moment polyline {
+      stroke: v-bind('colors.bendingMoment');
+      stroke-width: 1px;
+      fill: v-bind('colors.bendingMoment');
+      fill-opacity: 0.1;
+      &:hover {
+        fill-opacity: 0.2;
+      }
     }
   }
-  &:hover polyline.drawable {
-    stroke: black;
-    stroke-width: 10px;
-  }
-  &.selected polyline.drawable {
-    stroke: rgb(0, 55, 149);
-    stroke-width: 8px;
-  }
-}
 
-.prescribed polyline {
-  stroke: v-bind("colors.loads");
-}
+  .node {
+    polyline {
+      stroke: #000;
+      stroke-linecap: square;
+      stroke-width: 6px;
+      vector-effect: non-scaling-stroke;
+      &.handle {
+        cursor: pointer;
+        stroke-width: 24px;
+        stroke: transparent;
+      }
+      &.decoration {
+        stroke-width: 1px;
+        stroke: none;
+      }
+      &.drawable.deformed {
+        stroke: v-bind('colors.deformedShape');
+      }
+    }
+    &:hover polyline.drawable {
+      stroke: black;
+      stroke-width: 10px;
+    }
+    &.selected polyline.drawable {
+      stroke: rgb(0, 55, 149);
+      stroke-width: 8px;
+    }
+  }
 
-.nodal-load {
-  text {
-    fill: v-bind("colors.loads");
+  .prescribed polyline {
+    stroke: v-bind('colors.loads');
   }
-  polyline {
-    stroke-linecap: square;
-    vector-effect: non-scaling-stroke;
-    &.decoration.force {
-      marker-end: url(#force);
-    }
-    &.decoration.moment.cw {
-      marker-end: url(#moment_cw);
-    }
-    &.decoration.moment.ccw {
-      marker-end: url(#moment_ccw);
-    }
-    &.handle {
-      stroke: transparent;
-      stroke-width: 24px;
-    }
 
-    &.handle.moment {
-      stroke: transparent;
-      stroke-width: 38px;
-    }
-  }
-  &:hover text {
-    fill: blue;
-  }
-  &:hover polyline.decoration.force {
-    marker-end: url(#force_hover);
-  }
-  &:hover polyline.decoration.moment.cw {
-    marker-end: url(#moment_cw_hover);
-  }
-  &:hover polyline.decoration.moment.ccw {
-    marker-end: url(#moment_ccw_hover);
-  }
-  &.selected {
+  .nodal-load {
     text {
-      fill: rgb(0, 55, 149);
+      fill: v-bind('colors.loads');
+    }
+    polyline {
+      stroke-linecap: square;
+      vector-effect: non-scaling-stroke;
+      &.decoration.force {
+        marker-end: v-bind(dynamicMarker('force'));
+      }
+      &.decoration.moment.cw {
+        marker-end: v-bind(dynamicMarker('moment_cw'));
+      }
+      &.decoration.moment.ccw {
+        marker-end: v-bind(dynamicMarker('#moment_ccw'));
+      }
+      &.handle {
+        stroke: transparent;
+        stroke-width: 24px;
+      }
+
+      &.handle.moment {
+        stroke: transparent;
+        stroke-width: 38px;
+      }
+    }
+    &:hover text {
+      fill: blue;
+    }
+    &:hover polyline.decoration.force {
+      marker-end: v-bind(dynamicMarker('force_hover'));
+    }
+    &:hover polyline.decoration.moment.cw {
+      marker-end: v-bind(dynamicMarker('moment_cw_hover'));
+    }
+    &:hover polyline.decoration.moment.ccw {
+      marker-end: v-bind(dynamicMarker('moment_ccw_hover'));
+    }
+    &.selected {
+      text {
+        fill: rgb(0, 55, 149);
+      }
     }
   }
-}
 
-.normal text {
-  fill: v-bind("colors.normalForce");
-}
+  .normal text {
+    fill: v-bind('colors.normalForce');
+  }
 
-.shear text {
-  fill: v-bind("colors.shearForce");
-}
+  .shear text {
+    fill: v-bind('colors.shearForce');
+  }
 
-.moment text {
-  fill: v-bind("colors.bendingMoment");
-}
+  .moment text {
+    fill: v-bind('colors.bendingMoment');
+  }
 
-.reaction {
-  fill: v-bind("colors.reactions");
+  .reaction {
+    fill: v-bind('colors.reactions');
+  }
+
+  .marker-reaction {
+    marker-start: v-bind(dynamicMarker('reaction'));
+  }
+
+  .marker-moment_reaction_ccw {
+    marker-start: v-bind(dynamicMarker('moment_reaction_ccw'));
+  }
+
+  .marker-moment_reaction_cw {
+    marker-start: v-bind(dynamicMarker('moment_reaction_cw'));
+  }
+
+  .marker-dot {
+    marker-start: v-bind(dynamicMarker('dot'));
+  }
+
+  .marker-hinge-xy {
+    marker-start: v-bind(dynamicMarker('hinge-xy'));
+  }
+
+  .marker-hinge-x {
+    marker-start: v-bind(dynamicMarker('hinge-x'));
+  }
+
+  .marker-hinge-y {
+    marker-start: v-bind(dynamicMarker('hinge-y'));
+  }
+
+  .marker-forceTip {
+    marker-end: v-bind(dynamicMarker('forceTip'));
+  }
+
+  .filter-text-label {
+    filter: v-bind(dynamicMarker('textLabel'));
+  }
 }
 </style>

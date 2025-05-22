@@ -4,7 +4,7 @@
       <v-card-title v-html="$t('welcome.title')"></v-card-title>
 
       <v-card-text>
-        {{ $t("welcome.description") }}
+        {{ $t('welcome.description') }}
       </v-card-text>
 
       <v-card-actions>
@@ -25,14 +25,14 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, inject } from "vue";
-import { closeModal } from "jenesius-vue-modal";
+import { onMounted, ref, inject } from 'vue';
+import { closeModal } from 'jenesius-vue-modal';
 
-import { useVOnboarding } from "v-onboarding";
-import "v-onboarding/dist/style.css";
-import { useAppStore } from "../../store/app";
+import { useVOnboarding } from 'v-onboarding';
+import 'v-onboarding/dist/style.css';
+import { useAppStore } from '../../store/app';
 
-const wrapper = inject("onboardingWrapper");
+const wrapper = inject('onboardingWrapper');
 
 const appStore = useAppStore();
 

@@ -1,12 +1,20 @@
 <script lang="ts" setup>
-import { NodalLoad } from "ts-fem";
-import { computed } from "vue";
+import { NodalLoad } from 'ts-fem';
+import { computed } from 'vue';
 
-const props = defineProps<{
-  nload: NodalLoad;
-  scale: number;
-  convertForce: (f: number) => number;
-}>();
+const props = withDefaults(
+  defineProps<{
+    nload: NodalLoad;
+    scale: number;
+    convertForce: (f: number) => number;
+    fontSize?: number;
+    numberFormat?: Intl.NumberFormat;
+  }>(),
+  {
+    fontSize: 13,
+    numberFormat: new Intl.NumberFormat(),
+  }
+);
 
 const target = computed(() => {
   return props.nload.domain.nodes.get(props.nload.target)!;
@@ -29,7 +37,7 @@ const nloadPts = computed(() => {
 });
 
 const targetCoords = computed(() => {
-  return `${target.value.coords[0]},${target.value.coords[2]} ${target.value.coords[0]},${target.value.coords[2]}`;
+  return `${target.value.coords[0]},${target.value.coords[2]} ${target.value.coords[0] + 1e-6},${target.value.coords[2]}`;
 });
 </script>
 
@@ -58,19 +66,19 @@ const targetCoords = computed(() => {
 
     <text
       v-if="nload.values[4] !== 0"
-      :font-size="13 / scale"
+      :font-size="fontSize / scale"
       font-weight="normal"
       text-anchor="start"
       dominant-baseline="central"
-      :transform="`translate(${target.coords[0] + 15 / scale}
-              ${target.coords[2] - 15 / scale})`"
+      :transform="`translate(${target.coords[0] + (fontSize + 8) / scale}
+              ${target.coords[2] - (fontSize / 2 + 2) / scale})`"
     >
-      {{ Math.abs(convertForce(nload.values[4])).toFixed(2) }}
+      {{ numberFormat.format(Math.abs(convertForce(nload.values[4]))) }}
     </text>
 
     <text
       v-if="nload.values[0] !== 0 || nload.values[2] !== 0"
-      :font-size="13 / scale"
+      :font-size="fontSize / scale"
       font-weight="normal"
       :text-anchor="nload.values[0] > 0 ? 'end' : 'start'"
       dominant-baseline="central"
@@ -78,7 +86,8 @@ const targetCoords = computed(() => {
         target.coords[0] -
         (40 * nload.values[0]) /
           Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2]) /
-          scale
+          scale -
+        (nload.values[0] > 0 ? 4 : -4) / scale
       }
               ${
                 target.coords[2] -
@@ -87,9 +96,14 @@ const targetCoords = computed(() => {
                   scale
               })`"
     >
-      {{ convertForce(Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2])).toFixed(2) }}
+      {{
+        numberFormat.format(
+          convertForce(Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2]))
+        )
+      }}
       <template v-if="nload.values[0] !== 0 && nload.values[2] !== 0">
-        ({{ convertForce(nload.values[0]).toFixed(2) }}, {{ convertForce(nload.values[2]).toFixed(2) }})
+        ({{ numberFormat.format(convertForce(nload.values[0])) }};
+        {{ numberFormat.format(convertForce(nload.values[2])) }})
       </template>
     </text>
   </g>

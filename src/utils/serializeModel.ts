@@ -1,10 +1,13 @@
 import {
+  Node,
   LinearStaticSolver,
   Beam2D,
   BeamElementUniformEdgeLoad,
   BeamConcentratedLoad,
   BeamTemperatureLoad,
-} from "ts-fem";
+} from 'ts-fem';
+
+type DimLine = { distance: number; nodes: Node[] };
 
 function objectToBase64(obj: unknown) {
   try {
@@ -16,7 +19,7 @@ function objectToBase64(obj: unknown) {
 
     return base64String;
   } catch (error) {
-    console.error("Error converting object to base64:", error);
+    console.error('Error converting object to base64:', error);
     return null;
   }
 }
@@ -31,12 +34,12 @@ function base64ToObject(base64String) {
 
     return obj;
   } catch (error) {
-    console.error("Error decoding base64 to object:", error);
+    console.warn('Error decoding base64 to object:', error);
     return null;
   }
 }
 
-export const serializeModel = (ls: LinearStaticSolver) => {
+export const serializeModel = (ls: LinearStaticSolver, dims: DimLine[]) => {
   const _nodes = [];
   const _elements = [];
   const _materials = [];
@@ -70,19 +73,19 @@ export const serializeModel = (ls: LinearStaticSolver) => {
 
   ls.loadCases[0].elementLoadList
     .filter((el) => el instanceof BeamElementUniformEdgeLoad)
-    .forEach((load) => {
-      eloads.push([load.target, load.values]);
+    .forEach((load: BeamElementUniformEdgeLoad) => {
+      eloads.push([load.target, load.values, load.lcs]);
     });
 
   ls.loadCases[0].elementLoadList
     .filter((el) => el instanceof BeamConcentratedLoad)
-    .forEach((load) => {
-      ecloads.push([load.target, load.values]);
+    .forEach((load: BeamConcentratedLoad) => {
+      ecloads.push([load.target, load.values, load.lcs]);
     });
 
   ls.loadCases[0].elementLoadList
     .filter((el) => el instanceof BeamTemperatureLoad)
-    .forEach((load) => {
+    .forEach((load: BeamTemperatureLoad) => {
       etloads.push([load.target, load.values]);
     });
 
@@ -104,6 +107,7 @@ export const serializeModel = (ls: LinearStaticSolver) => {
     etl?: unknown[];
     nl?: unknown[];
     pd?: unknown[];
+    d?: unknown[];
   } = {};
 
   if (_nodes.length > 0) obj.n = _nodes;
@@ -116,16 +120,22 @@ export const serializeModel = (ls: LinearStaticSolver) => {
   if (nloads.length > 0) obj.nl = nloads;
   if (pd.length > 0) obj.pd = pd;
 
+  obj.d = dims.map((e) => {
+    return [e.distance, e.nodes.map((n) => n.label)];
+  });
+
   return objectToBase64(obj);
 };
 
-export const deserializeModel = (base64String: string, ls: LinearStaticSolver) => {
+export const deserializeModel = (base64String: string, ls: LinearStaticSolver, dims) => {
   const tmp = base64ToObject(base64String);
 
   ls.domain.nodes.clear();
   ls.domain.elements.clear();
 
-  if ("n" in tmp) {
+  if (tmp === null) return;
+
+  if ('n' in tmp) {
     for (const e of tmp.n) {
       const node = ls.domain.createNode(e[0], e[1], e[2]);
 
@@ -138,51 +148,63 @@ export const deserializeModel = (base64String: string, ls: LinearStaticSolver) =
     }
   }
 
-  if ("e" in tmp) {
+  if ('e' in tmp) {
     for (const e of tmp.e) {
       ls.domain.createBeam2D(e[0], e[1], e[2], e[3], e[4]);
     }
   }
 
-  if ("m" in tmp) {
+  if ('m' in tmp) {
     for (const e of tmp.m) {
       ls.domain.createMaterial(e[0], { d: e[1], e: e[2], g: e[3], alpha: e[4] });
     }
   }
 
-  if ("cs" in tmp) {
+  if ('cs' in tmp) {
     for (const e of tmp.cs) {
       ls.domain.createCrossSection(e[0], { a: e[1], iy: e[2], h: e[3], k: e[4] });
     }
   }
 
-  if ("el" in tmp) {
+  if ('el' in tmp) {
     for (const e of tmp.el) {
-      ls.loadCases[0].createBeamElementUniformEdgeLoad(e[0], e[1], true);
+      const lcs = e[2] !== undefined ? e[2] : true;
+      ls.loadCases[0].createBeamElementUniformEdgeLoad(e[0], e[1], lcs);
     }
   }
 
-  if ("ecl" in tmp) {
+  if ('ecl' in tmp) {
     for (const e of tmp.ecl) {
-      ls.loadCases[0].createBeamConcentratedLoad(e[0], e[1], true);
+      const lcs = e[2] !== undefined ? e[2] : true;
+      ls.loadCases[0].createBeamConcentratedLoad(e[0], e[1], lcs);
     }
   }
 
-  if ("etl" in tmp) {
+  if ('etl' in tmp) {
     for (const e of tmp.etl) {
       ls.loadCases[0].createBeamTemperatureLoad(e[0], e[1]);
     }
   }
 
-  if ("nl" in tmp) {
+  if ('nl' in tmp) {
     for (const e of tmp.nl) {
       ls.loadCases[0].createNodalLoad(e[0], e[1]);
     }
   }
 
-  if ("pd" in tmp) {
+  if ('pd' in tmp) {
     for (const e of tmp.pd) {
       ls.loadCases[0].createPrescribedDisplacement(e[0], e[1]);
+    }
+  }
+
+  if ('d' in tmp) {
+    for (const e of tmp.d) {
+      try {
+        dims.push({ distance: e[0], nodes: e[1].map((n) => ls.domain.getNode(n)) });
+      } catch (e) {
+        console.warn('Error deserializing dimensions: ', e);
+      }
     }
   }
 };

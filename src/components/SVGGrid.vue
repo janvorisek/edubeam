@@ -26,7 +26,7 @@
         </text>
       </g>
     </g>
-    <g class="cs" :transform="`translate(${csLeft} ${csTop})`">
+    <g v-if="!appStore.inViewerMode" class="cs" :transform="`translate(${csLeft} ${csTop})`">
       <text fill="red" text-anchor="middle" alignment-baseline="middle" x="40" y="-30"> x </text>
       <text fill="green" text-anchor="middle" alignment-baseline="middle" x="10" y="0"> z </text>
       <line y1="-40" x1="0" y2="0" x2="0" stroke-width="3" stroke="green" stroke-linecap="round" />
@@ -36,7 +36,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue';
+
+import { useAppStore } from '@/store/app';
+
+const appStore = useAppStore();
 
 const props = defineProps<{
   svg: SVGSVGElement;
@@ -44,7 +48,7 @@ const props = defineProps<{
   zoom: number;
 }>();
 
-const gridPath = ref("");
+const gridPath = ref('');
 const xGridTexts = ref<{ x: number; y: number; value: number }[]>([]);
 const yGridTexts = ref<{ x: number; y: number; value: number; angle: number }[]>([]);
 const gridTX = ref(0);
@@ -104,10 +108,10 @@ const refreshGrid = (isZooming = false) => {
 
   if (!isZooming) return;
 
-  let path = "";
+  let path = '';
 
-  xGridTexts.value = [];
-  yGridTexts.value = [];
+  const _xGridTexts = [];
+  const _yGridTexts = [];
 
   for (let i = 0; i < tickCount; i++) {
     const v = i * stepW;
@@ -118,13 +122,13 @@ const refreshGrid = (isZooming = false) => {
 
     path += `M ${x1},${y1 - 1000} L ${x2},${1000 + y2} `;
 
-    xGridTexts.value.push({
+    _xGridTexts.push({
       x: x1,
       y: 10,
       value: v,
     });
 
-    xGridTexts.value.push({
+    _xGridTexts.push({
       x: x1,
       y: rightBottom.y - leftTop.y - 8,
       value: v,
@@ -140,20 +144,23 @@ const refreshGrid = (isZooming = false) => {
 
     path += `M ${x1},${y1} L ${x2},${y2} `;
 
-    yGridTexts.value.push({
+    _yGridTexts.push({
       x: 10,
       y: y1,
       value: v,
       angle: -90.0,
     });
 
-    yGridTexts.value.push({
+    _yGridTexts.push({
       x: rightBottom.x - leftTop.x - 12,
       y: y1,
       value: v,
       angle: 90,
     });
   }
+
+  xGridTexts.value = _xGridTexts;
+  yGridTexts.value = _yGridTexts;
 
   gridPath.value = path;
 };
@@ -165,7 +172,7 @@ defineExpose({ refreshGrid });
 .grid {
   font-size: 12px;
   path {
-    transition: all 0.1s linear;
+    //transition: all 0.1s linear;
     shape-rendering: crispEdges;
   }
 

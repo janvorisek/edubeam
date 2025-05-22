@@ -1,19 +1,20 @@
-import { Node, DofID, Beam2D, NodalLoad, BeamElementUniformEdgeLoad, PrescribedDisplacement } from "ts-fem";
+import { Node, DofID, Beam2D, NodalLoad, BeamElementUniformEdgeLoad, PrescribedDisplacement } from 'ts-fem';
 
 export function supportMarker(node: Node) {
   const sdofs = Array.from(node.bcs);
 
   // cantilever
-  if (sdofs.includes(DofID.Dx) && sdofs.includes(DofID.Dz) && sdofs.includes(DofID.Ry)) return `url(#dot)`;
+  if (sdofs.includes(DofID.Dx) && sdofs.includes(DofID.Dz) && sdofs.includes(DofID.Ry))
+    return `url(#nodeEditDialog-dot)`;
 
   // Hinge XY
-  if (sdofs.includes(DofID.Dx) && sdofs.includes(DofID.Dz)) return `url(#hinge-xy)`;
+  if (sdofs.includes(DofID.Dx) && sdofs.includes(DofID.Dz)) return `url(#nodeEditDialog-hinge-xy)`;
 
   // Hinge X
-  if (sdofs.includes(DofID.Dx)) return `url(#hinge-y)`;
+  if (sdofs.includes(DofID.Dx)) return `url(#nodeEditDialog-hinge-y)`;
 
   // Hinge Z
-  if (sdofs.includes(DofID.Dz)) return `url(#hinge-x)`;
+  if (sdofs.includes(DofID.Dz)) return `url(#nodeEditDialog-hinge-x)`;
 
   return `none`;
 }
@@ -29,9 +30,6 @@ export function formatSupportNode(node: Node): string {
   for (const el of elements) {
     if (el.nodes.includes(node.label)) {
       const idx = el.nodes.indexOf(node.label);
-      const geo = el.computeGeo();
-      const sx = geo.dx / geo.l;
-      const sy = geo.dz / geo.l;
 
       if (idx === 0) {
         const node2 = node.domain.nodes.get(el.nodes[1])!;
@@ -53,7 +51,7 @@ export function formatSupportNode(node: Node): string {
 }
 
 export function formatResults(el: Beam2D, scale: number, defoScale: number = 1, resultsScalePx = 42) {
-  let result = "";
+  let result = '';
   const nseg = 20;
   const scaleBy = (resultsScalePx * defoScale) / scale;
   const n1 = el.domain.getNode(el.nodes[0]);
@@ -80,7 +78,7 @@ export function formatResults(el: Beam2D, scale: number, defoScale: number = 1, 
 }
 
 export function formatNormalForces(el: Beam2D, scale: number, normalForceScale: number = 1, resultsScalePx = 42) {
-  let result = "";
+  let result = '';
   const nseg = 1;
   const scaleBy = (resultsScalePx * normalForceScale) / scale;
   const n1 = el.domain.getNode(el.nodes[0]);
@@ -105,7 +103,7 @@ export function formatNormalForces(el: Beam2D, scale: number, normalForceScale: 
 }
 
 export function formatShearForces(el: Beam2D, scale: number, shearForceScale: number = 1, resultsScalePx = 42) {
-  let result = "";
+  let result = '';
   const nseg = 1;
   const scaleBy = (resultsScalePx * shearForceScale) / scale;
   const n1 = el.domain.getNode(el.nodes[0]);
@@ -134,7 +132,7 @@ export function formatMoments(el: Beam2D, scale: number, bendingMomentScale: num
     if (eload.target === el.label) neloads++;
   }
 
-  let result = "";
+  let result = '';
   const nseg = neloads === 0 ? 1 : 20;
   const scaleBy = (resultsScalePx * bendingMomentScale) / scale;
   const n1 = el.domain.getNode(el.nodes[0]);
@@ -259,7 +257,7 @@ export function elementEndMarker(el: Beam2D) {
 }
 
 export function formatElement(nodes: number[][]) {
-  return nodes.map((n: number[]) => `${n[0]},${n[2]}`).join(" ");
+  return nodes.map((n: number[]) => `${n[0]},${n[2]}`).join(' ');
 }
 
 export function formatElementFibers(el: Beam2D, scale) {
@@ -269,7 +267,7 @@ export function formatElementFibers(el: Beam2D, scale) {
 
   const nodes = [el.domain.nodes.get(el.nodes[0])!.coords, el.domain.nodes.get(el.nodes[1])!.coords];
 
-  return nodes.map((n: number[]) => `${n[0] + (nx * 3) / scale},${n[2] + (nz * 3) / scale}`).join(" ");
+  return nodes.map((n: number[]) => `${n[0] + (nx * 3) / scale},${n[2] + (nz * 3) / scale}`).join(' ');
 }
 
 export function formatElementAngle(el: Beam2D) {
@@ -321,7 +319,7 @@ export function formatPrescribedBCAngle(nl: PrescribedDisplacement) {
 }
 
 export function formatElementLoad(eload: BeamElementUniformEdgeLoad, scale: number) {
-  if (eload.values[0] === 0 && eload.values[1] === 0) return "";
+  if (eload.values[0] === 0 && eload.values[1] === 0) return '';
 
   const target = eload.domain.elements.get(eload.target) as Beam2D;
 
@@ -337,9 +335,9 @@ export function formatElementLoad(eload: BeamElementUniformEdgeLoad, scale: numb
   const nx2 = (geo.dz * 60) / geo.l / scale;
   const nz2 = (-geo.dx * 60) / geo.l / scale;
 
-  let line1 = "",
-    line2 = "",
-    line3 = "";
+  let line1 = '',
+    line2 = '',
+    line3 = '';
 
   if (eload.lcs) {
     line1 = `${n1.coords[0]},${n1.coords[2]} ${n2.coords[0]},${n2.coords[2]}`;
@@ -368,7 +366,7 @@ export function formatElementLoad(eload: BeamElementUniformEdgeLoad, scale: numb
     }
   }
 
-  return line1 + " " + line2 + " " + line3;
+  return line1 + ' ' + line2 + ' ' + line3;
 }
 
 export function formatElementLoadForces(eload: BeamElementUniformEdgeLoad, scale: number, component: number) {
@@ -381,8 +379,6 @@ export function formatElementLoadForces(eload: BeamElementUniformEdgeLoad, scale
   const geo = target.computeGeo();
   const nx = geo.dz / geo.l / scale;
   const nz = -geo.dx / geo.l / scale;
-  const nnx = (geo.dz * 40) / geo.l / scale;
-  const nnz = (-geo.dx * 40) / geo.l / scale;
 
   let nseg = Math.ceil((geo.l * scale) / 20);
   let segsize = geo.l / nseg;
@@ -438,7 +434,6 @@ export function formatElementLoadLabel(eload: BeamElementUniformEdgeLoad, scale:
   const nx = -geo.dz / geo.l;
 
   const n1 = eload.domain.nodes.get(target.nodes[0]) as Node;
-  const n2 = eload.domain.nodes.get(target.nodes[1]) as Node;
 
   const ncx = n1.coords[0]; //(n1.coords[0] + n2.coords[0]) / 2;
   const ncz = n1.coords[2]; //(n1.coords[2] + n2.coords[2]) / 2;
@@ -483,7 +478,7 @@ export function formatElementLoadForcesAngle(eload: BeamElementUniformEdgeLoad, 
 }
 
 export function formatElementLoadHatch(eload: BeamElementUniformEdgeLoad, scale: number) {
-  let result = "";
+  let result = '';
   const target = eload.domain.elements.get(eload.target) as Beam2D;
 
   const n1 = eload.domain.nodes.get(target.nodes[0]) as Node;
@@ -553,18 +548,18 @@ export function formatElementLoadHatch(eload: BeamElementUniformEdgeLoad, scale:
 }
 
 export function formatExpValueAsHTML(n: number, decimals: number) {
-  let str = n >= 0 ? '<span style=" width: 5px;"></span>' : "";
+  let str = n >= 0 ? '<span style=" width: 5px;"></span>' : '';
   str += n.toExponential(decimals);
-  str = str.replace("e-", " &middot; 10<sup>-");
-  str = str.replace("e+", " &middot; 10<sup>");
-  str = str + "</sup>"; //.replace('10')
+  str = str.replace('e-', ' &middot; 10<sup>-');
+  str = str.replace('e+', ' &middot; 10<sup>');
+  str = str + '</sup>'; //.replace('10')
 
   return str;
 }
 
 export function formatMeasureAsHTML(s: string) {
-  if (s === "1/K") return "K<sup>-1</sup>";
-  if (s === "C") return "°C";
+  if (s === '1/K') return 'K<sup>-1</sup>';
+  if (s === 'C') return '°C';
 
   // find string before fist number
   const n = s.search(/\d/);

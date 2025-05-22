@@ -1,15 +1,15 @@
 // Utilities
-import { defineStore } from "pinia";
-import { LinearStaticSolver, Beam2D } from "ts-fem";
-import { ref, shallowRef, computed, reactive } from "vue";
-import { max, min } from "mathjs";
-import { deleteElement, deleteNode, deserializeModel, serializeModel, throttle } from "@/utils";
+import { defineStore } from 'pinia';
+import { LinearStaticSolver, Beam2D, Node } from 'ts-fem';
+import { ref, computed, reactive } from 'vue';
+import { max, min } from 'mathjs';
+import { deleteElement, deleteNode, deserializeModel, serializeModel, throttle } from '@/utils';
 
 export const useProjectStore = defineStore(
-  "project",
+  'project',
   () => {
-    const model = ref("LinearStaticSolver");
-    const _solver = ref("");
+    const model = ref('LinearStaticSolver');
+    const _solver = ref('');
     const solver = ref(new LinearStaticSolver());
 
     const nthEigenVector = ref(1);
@@ -144,7 +144,7 @@ export const useProjectStore = defineStore(
         const v = (beam as Beam2D).computeShearForce(solver.value.loadCases[0], 10).V as number[];
         const m = (beam as Beam2D).computeBendingMoment(solver.value.loadCases[0], 10).M as number[];
 
-        if (model.value === "LinearStaticSolver") {
+        if (model.value === 'LinearStaticSolver') {
           maxDefo = Math.max(
             maxDefo,
             Math.abs(max(def.u)),
@@ -152,7 +152,7 @@ export const useProjectStore = defineStore(
             Math.abs(max(def.w)),
             Math.abs(min(def.w))
           );
-        } else if (model.value === "EigenValueDynamicSolver") {
+        } else if (model.value === 'EigenValueDynamicSolver') {
           def = (beam as Beam2D).computeGlobalEigenMode(
             solver.value.loadCases[0],
             useProjectStore().nthEigenVector - 1,
@@ -173,6 +173,14 @@ export const useProjectStore = defineStore(
         maxBendingMoment = Math.max(maxBendingMoment, Math.abs(max(m)), Math.abs(min(m)));
 
         maxShearForce = Math.max(maxShearForce, Math.abs(max(v)), Math.abs(min(v)));
+      }
+
+      if (maxDefo === 1e-32 && solver.value.loadCases[0].prescribedBC.length > 0) {
+        for (const bc of solver.value.loadCases[0].prescribedBC) {
+          const ux = Math.abs(bc.prescribedValues[0]);
+          const uz = Math.abs(bc.prescribedValues[2]);
+          maxDefo = Math.max(maxDefo, ux, uz);
+        }
       }
 
       useProjectStore().defoScale = 1 / maxDefo;
@@ -257,6 +265,8 @@ export const useProjectStore = defineStore(
       clearSelection2();
     };
 
+    const dimensions = ref<{ distance: number; nodes: Node[] }[]>([]);
+
     return {
       solve,
       model,
@@ -280,26 +290,27 @@ export const useProjectStore = defineStore(
       beams,
       materials,
       crossSections,
+      dimensions,
     };
   },
   {
     persist: [
       {
-        paths: ["solver"],
+        paths: ['solver', 'dimensions'],
         serializer: {
           serialize: (value) => {
-            return serializeModel(value.solver);
+            return serializeModel(value.solver, value.dimensions);
           },
           deserialize: (value) => {
-            if (value === undefined) return { _solver: "" };
+            if (value === undefined) return { _solver: '' };
             return { _solver: value };
           },
         },
         afterRestore: (ctx) => {
-          if (ctx.store._solver === "") return;
+          if (ctx.store._solver === '') return;
 
           try {
-            deserializeModel(ctx.store._solver, ctx.store.solver);
+            deserializeModel(ctx.store._solver, ctx.store.solver, ctx.store.dimensions);
           } catch (e) {
             console.error(e);
           }

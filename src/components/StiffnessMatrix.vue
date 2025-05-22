@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
-import { useProjectStore } from "../store/project";
-import { watch } from "vue";
+import { computed, onMounted, ref } from 'vue';
+import { useProjectStore } from '../store/project';
+import { watch } from 'vue';
 
 const projStore = useProjectStore();
 
@@ -45,7 +45,7 @@ const elementHasMaterialAndCS = computed(() => {
 
 <template>
   <div class="fill-height" style="overflow: auto">
-    <v-table class="border-t text-right" density="compact" v-if="elementHasMaterialAndCS">
+    <v-table v-if="elementHasMaterialAndCS" class="border-t text-right" density="compact">
       <tbody>
         <tr v-for="i in size">
           <td v-for="j in size" :class="{ 'bg-grey-lighten-3 font-weight-medium': i === j }" class="px-1">
@@ -60,7 +60,7 @@ const elementHasMaterialAndCS = computed(() => {
         </tr>
       </tbody>
     </v-table>
-    <div class="pa-3" v-else>Element does not specify material or cross section.</div>
+    <div v-else class="pa-3">Element does not specify material or cross section.</div>
   </div>
 </template>
 

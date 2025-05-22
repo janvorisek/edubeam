@@ -58,7 +58,7 @@
                 })
               "
             >
-              {{ $t("settings.reset_settings") }}
+              {{ $t('settings.reset_settings') }}
             </v-btn>
           </v-list>
         </v-sheet>
@@ -84,30 +84,30 @@
 </template>
 
 <script setup lang="ts">
-import { useAppStore } from "@/store/app";
-import { useProjectStore } from "@/store/project";
-import { useViewerStore } from "@/store/viewer";
-import { availableLocales } from "../../plugins/i18n";
-import { onMounted, ref } from "vue";
-import { formatMeasureAsHTML } from "../../SVGUtils";
+import { useAppStore } from '@/store/app';
+import { useProjectStore } from '@/store/project';
+import { useViewerStore } from '@/store/viewer';
+import { availableLocales } from '../../plugins/i18n';
+import { onMounted, ref } from 'vue';
+import { formatMeasureAsHTML } from '../../SVGUtils';
 
-import LanguageUnits from "@/components/settings/LanguageUnits.vue";
-import Appearance from "@/components/settings/Appearance.vue";
-import KeyboardMouse from "@/components/settings/KeyboardMouse.vue";
+import LanguageUnits from '@/components/settings/LanguageUnits.vue';
+import Appearance from '@/components/settings/Appearance.vue';
+import KeyboardMouse from '@/components/settings/KeyboardMouse.vue';
 
-import { openModal } from "jenesius-vue-modal";
-import Confirmation from "../dialogs/Confirmation.vue";
+import { openModal } from 'jenesius-vue-modal';
+import Confirmation from '../dialogs/Confirmation.vue';
 
-import { useI18n } from "vue-i18n";
+import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const appStore = useAppStore();
 const projectStore = useProjectStore();
 const viewerStore = useViewerStore();
 
-const unitSystem = ref("si");
+const unitSystem = ref('si');
 
-const tab = ref("lang");
+const tab = ref('lang');
 
 const resetSettings = () => {
   //appStore.reset();

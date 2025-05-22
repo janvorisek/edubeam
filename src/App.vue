@@ -1,103 +1,101 @@
 <script lang="ts">
-import { container, openModal } from "jenesius-vue-modal";
-import { deserializeModel, download, exportJSON, importJSON } from "./utils";
-import { provide, nextTick } from "vue";
-import { undoRedoManager } from "./CommandManager";
-import { useViewerStore } from "./store/viewer";
-import Confirmation from "./components/dialogs/Confirmation.vue";
-import ReloadPrompt from "./components/ReloadPrompt.vue";
+import { container, openModal } from 'jenesius-vue-modal';
+import { deserializeModel, download, exportJSON, importJSON } from './utils';
+import { provide, nextTick } from 'vue';
+import { undoRedoManager } from './CommandManager';
+import { useViewerStore } from './store/viewer';
+import Confirmation from './components/dialogs/Confirmation.vue';
+import ReloadPrompt from './components/ReloadPrompt.vue';
 
 export default {
+  name: 'App',
   components: { WidgetContainerModal: container },
-  name: "App",
 };
 </script>
 
 <script setup lang="ts">
-import { onMounted, ref, computed } from "vue";
-import { DofID } from "ts-fem";
-import { setLocale, availableLocales } from "./plugins/i18n";
+import { onMounted, ref, computed } from 'vue';
+import { DofID } from 'ts-fem';
+import { setLocale, availableLocales } from './plugins/i18n';
 
-import Welcome from "@/components/dialogs/Welcome.vue";
-import Share from "@/components/dialogs/Share.vue";
-import Editor from "@/views/Editor.vue";
-import Dialogs from "@/components/Dialogs.vue";
-import { useProjectStore } from "./store/project";
-import { useAppStore } from "./store/app";
+import Welcome from '@/components/dialogs/Welcome.vue';
+import Share from '@/components/dialogs/Share.vue';
+import Editor from '@/views/Editor.vue';
+import Dialogs from '@/components/Dialogs.vue';
+import { useProjectStore } from './store/project';
+import { useAppStore } from './store/app';
 
-import { VOnboardingWrapper, VOnboardingStep } from "v-onboarding";
-import "v-onboarding/dist/style.css";
+import { VOnboardingWrapper, VOnboardingStep } from 'v-onboarding';
+import 'v-onboarding/dist/style.css';
 
-import { useI18n } from "vue-i18n";
-import { eventBus, EventType } from "./EventBus";
+import { useI18n } from 'vue-i18n';
+import { eventBus, EventType } from './EventBus';
 const { t } = useI18n();
 
 const viewerStore = useViewerStore();
 
 const onboardingWrapper = ref(null);
-provide("onboardingWrapper", onboardingWrapper);
+provide('onboardingWrapper', onboardingWrapper);
 
 const file = ref(null);
 
 const steps = computed(() => [
   {
-    attachTo: { element: "#viewerControls" },
+    attachTo: { element: '#viewerControls' },
     content: {
-      title: t("tour.viewerControls.title"),
-      description: t("tour.viewerControls.description"),
+      title: t('tour.viewerControls.title'),
+      description: t('tour.viewerControls.description'),
     },
   },
   {
-    attachTo: { element: "#viewerSettings" },
+    attachTo: { element: '#viewerSettings' },
     content: {
-      title: t("tour.viewerSettings.title"),
-      description: t("tour.viewerSettings.description"),
+      title: t('tour.viewerSettings.title'),
+      description: t('tour.viewerSettings.description'),
     },
   },
   {
-    attachTo: { element: "#bottomBar" },
+    attachTo: { element: '#bottomBar' },
     content: {
-      title: t("tour.bottomBar.title"),
-      description: t("tour.bottomBar.description"),
+      title: t('tour.bottomBar.title'),
+      description: t('tour.bottomBar.description'),
     },
   },
 ]);
 
 onMounted(() => {
-  if (!appStore.onboardingFinished) openModal(Welcome);
-
-  document.addEventListener("keydown", function (e) {
-    if (e.ctrlKey && (e.key === "+" || e.key === "=" || e.key === "-")) {
+  document.addEventListener('keydown', function (e) {
+    if (e.ctrlKey && (e.key === '+' || e.key === '=' || e.key === '-')) {
       e.preventDefault();
     }
 
     // If CTRL+Z undo
-    if (e.ctrlKey && !e.shiftKey && e.code === "KeyZ") {
+    if (e.ctrlKey && !e.shiftKey && e.code === 'KeyZ') {
       e.preventDefault();
       undoRedoManager.undo();
     }
 
     // If CTRL+SHIFT+Z redo
-    if (e.ctrlKey && e.shiftKey && e.code === "KeyZ") {
+    if (e.ctrlKey && e.shiftKey && e.code === 'KeyZ') {
       e.preventDefault();
       undoRedoManager.redo();
     }
 
     // Save project
-    if (e.ctrlKey && e.code === "KeyS") {
+    if (e.ctrlKey && e.code === 'KeyS') {
       e.preventDefault();
       saveProject();
     }
 
     // Open project
-    if (e.ctrlKey && e.code === "KeyO") {
+    if (e.ctrlKey && e.code === 'KeyO') {
       e.preventDefault();
       file.value.click();
     }
   });
 
   document.addEventListener(
-    "wheel",
+    'wheel',
     function (e) {
       if (e.ctrlKey) {
         e.preventDefault();
@@ -115,16 +113,23 @@ onMounted(() => {
   const domain = solver.domain;
 
   const params = new URL(document.location as unknown as URL).searchParams;
-  const name = params.get("model");
-  const lang = params.get("lang");
+  const name = params.get('model');
+  const lang = params.get('lang');
+  const inViewerMode = params.get('viewer');
+
+  if (inViewerMode) {
+    appStore.inViewerMode = true;
+  } else {
+    if (!appStore.onboardingFinished) openModal(Welcome);
+  }
 
   if (name) {
-    clearMesh();
-    deserializeModel(name, solver);
+    clearMesh(true, true);
+    deserializeModel(name, solver, useProjectStore().dimensions);
     solve();
 
     const url = document.location.href;
-    window.history.pushState({}, "", url.split("?")[0]);
+    window.history.pushState({}, '', url.split('?')[0]);
 
     return;
   }
@@ -132,7 +137,7 @@ onMounted(() => {
   if (lang && availableLocales.findIndex((l) => l.code === lang) >= 0) {
     appStore.locale = lang;
     const url = document.location.href;
-    window.history.pushState({}, "", url.split("?")[0]);
+    window.history.pushState({}, '', url.split('?')[0]);
   }
 
   if (domain.nodes.size > 0) return solve();
@@ -178,7 +183,7 @@ onMounted(() => {
 
   solver.domain = domain;
 
-  solve();
+  requestAnimationFrame(solve);
 });
 
 const solve = () => {
@@ -188,13 +193,22 @@ const solve = () => {
   });
 };
 
-const clearMesh = () => {
+const clearMesh = (clearMaterials = false, clearCrossSects = false) => {
   useProjectStore().solver.loadCases[0].solved = false;
   useProjectStore().solver.loadCases[0].prescribedBC = [];
   useProjectStore().solver.loadCases[0].nodalLoadList = [];
   useProjectStore().solver.loadCases[0].elementLoadList = [];
   useProjectStore().solver.domain.elements.clear();
   useProjectStore().solver.domain.nodes.clear();
+  useProjectStore().dimensions = [];
+
+  if (clearMaterials) {
+    useProjectStore().solver.domain.materials.clear();
+  }
+
+  if (clearCrossSects) {
+    useProjectStore().solver.domain.crossSections.clear();
+  }
 
   undoRedoManager.clearHistory();
 };
@@ -211,7 +225,7 @@ function preventDefaults(e) {
   e.preventDefault();
 }
 
-const events = ["dragenter", "dragover", "dragleave", "drop"];
+const events = ['dragenter', 'dragover', 'dragleave', 'drop'];
 
 onMounted(() => {
   events.forEach((eventName) => {
@@ -225,12 +239,12 @@ function onDrop(e) {
     const reader = new FileReader();
     reader.onload = function (e) {
       const text = e.target.result.toString();
-      clearMesh();
+      clearMesh(true, true);
       try {
         importJSON(JSON.parse(text));
         solve();
       } catch (e) {
-        alert("Could not import the file. Please check the file format.");
+        alert('Could not import the file. Please check the file format.');
       }
     };
     reader.readAsText(file);
@@ -245,13 +259,13 @@ function openFile(e) {
   const reader = new FileReader();
   reader.onload = function (e) {
     const text = e.target.result.toString();
-    clearMesh();
+    clearMesh(true, true);
 
     try {
       importJSON(JSON.parse(text));
       solve();
     } catch (e) {
-      alert("Could not import the file. Please check the file format.");
+      alert('Could not import the file. Please check the file format.');
     }
 
     appStore.tab = 0;
@@ -261,7 +275,7 @@ function openFile(e) {
 }
 
 const saveProject = () => {
-  download("project.json", JSON.stringify(exportJSON()));
+  download('project.json', JSON.stringify(exportJSON()));
 };
 
 const app_version = APP_VERSION;
@@ -305,12 +319,12 @@ const app_commit = APP_COMMIT;
                 </div>
                 <div class="mt-5 space-x-4 sm:mt-0 sm:ml-6 sm:flex sm:flex-shrink-0 sm:items-center relative">
                   <template v-if="!isFirst">
-                    <v-btn @click="previous" type="button" flat color="grey-lighten-3">
-                      {{ $t("tour.previousButton") }}
+                    <v-btn type="button" flat color="grey-lighten-3" @click="previous">
+                      {{ $t('tour.previousButton') }}
                     </v-btn>
                   </template>
-                  <v-btn @click="next" type="button" color="primary" flat class="ml-1">
-                    {{ isLast ? $t("tour.finishButton") : $t("tour.nextButton") }}
+                  <v-btn type="button" color="primary" flat class="ml-1" @click="next">
+                    {{ isLast ? $t('tour.finishButton') : $t('tour.nextButton') }}
                   </v-btn>
                 </div>
               </div>
@@ -320,7 +334,7 @@ const app_commit = APP_COMMIT;
       </template>
     </VOnboardingWrapper>
 
-    <v-app-bar clipped-lefs clipped-right app color="primary" density="compact">
+    <v-app-bar v-if="!appStore.inViewerMode" clipped-lefs clipped-right app color="primary" density="compact">
       <v-app-bar-nav-icon @click="appStore.drawerOpen = !appStore.drawerOpen"></v-app-bar-nav-icon>
 
       <div class="app-title ml-3 d-flex align-center" style="user-select: none">edubeam</div>
@@ -331,22 +345,26 @@ const app_commit = APP_COMMIT;
           openModal(Confirmation, {
             title: t('confirmation.clearMesh.title'),
             message: t('confirmation.clearMesh.message'),
-            success: clearMesh,
+            success: (params) => clearMesh(params.checkboxes[0].value, params.checkboxes[1].value),
+            checkboxes: [
+              { label: t('confirmation.clearMesh.materials'), value: false },
+              { label: t('confirmation.clearMesh.crossSections'), value: false },
+            ],
           })
         "
       >
         <v-icon>mdi-delete-empty</v-icon>
-        <span>{{ $t("common.clearMesh") }}</span>
+        <span>{{ $t('common.clearMesh') }}</span>
       </v-btn>
 
       <v-btn class="d-none d-sm-inline-flex" @click="shareMesh">
-        <v-icon>mdi-share</v-icon> {{ $t("common.shareModel") }}
+        <v-icon>mdi-share</v-icon> {{ $t('common.shareModel') }}
       </v-btn>
 
       <v-spacer></v-spacer>
 
       <v-btn class="d-inline-flex" href="https://edubeam.app" target="_blank">
-        {{ $t("common.documentation") }}
+        {{ $t('common.documentation') }}
         <v-icon class="ml-1">mdi-open-in-new</v-icon>
       </v-btn>
 
@@ -387,7 +405,11 @@ const app_commit = APP_COMMIT;
             openModal(Confirmation, {
               title: t('confirmation.clearMesh.title'),
               message: t('confirmation.clearMesh.message'),
-              success: clearMesh,
+              success: (params) => clearMesh(params.checkboxes[0].value, params.checkboxes[1].value),
+              checkboxes: [
+                { label: t('confirmation.clearMesh.materials'), value: false },
+                { label: t('confirmation.clearMesh.crossSections'), value: false },
+              ],
             })
           "
         ></v-list-item>
@@ -433,7 +455,7 @@ const app_commit = APP_COMMIT;
       <div>edubeam v{{ app_version }} {{ $t("footer.released") }} {{ app_released }}</div>
     </div> -->
     <ReloadPrompt />
-    <input type="file" ref="file" style="display: none" @change="openFile" />
+    <input ref="file" type="file" style="display: none" @change="openFile" />
   </v-app>
 </template>
 
@@ -469,209 +491,6 @@ svg text {
   background: rgba(0, 0, 255, 0.2);
 }
 
-.element-load.load-1d {
-  text {
-    fill: v-bind("viewerStore.colors.loads");
-  }
-  pointer-events: all;
-  stroke-linecap: butt;
-  &:hover text {
-    //fill: blue;
-  }
-  &:hover path.drawable,
-  &:hover polygon.drawable {
-    //stroke: blue;
-    stroke-width: 3px;
-  }
-  &:hover polyline {
-    marker-end: url(#force_centered_hover);
-  }
-  polygon,
-  path {
-    stroke: v-bind("viewerStore.colors.loads");
-    stroke-width: 1px;
-    &.handle {
-      stroke-width: 12px;
-      stroke: transparent;
-    }
-  }
-  polyline {
-    marker-end: url(#force_centered);
-  }
-
-  &.selected {
-    text {
-      fill: rgb(0, 55, 149);
-    }
-    polygon {
-      stroke-linejoin: round;
-      fill: rgba(0, 55, 149, 0.1);
-    }
-  }
-}
-
-.element.element-1d {
-  polyline {
-    fill: none;
-    stroke: black;
-    stroke-width: 2px;
-    &.handle {
-      cursor: pointer;
-      stroke-width: 24px;
-      stroke: transparent;
-    }
-    &.decoration {
-      stroke-width: 1px;
-    }
-  }
-  &:hover {
-    & polyline.drawable {
-      stroke: black;
-      stroke-width: 5px;
-    }
-  }
-  &.selected {
-    & polyline.drawable {
-      stroke: rgb(0, 94, 255);
-      stroke-width: 5px;
-    }
-  }
-
-  polyline.fibers {
-    stroke: #666;
-    stroke-width: 1px;
-  }
-  path.deformedShape {
-    fill: none;
-    stroke: #555;
-    stroke-width: 2px;
-    &.decoration {
-      stroke-width: 1px;
-    }
-  }
-  .normal polyline {
-    stroke: v-bind("viewerStore.colors.normalForce");
-    stroke-width: 1px;
-    fill: v-bind("viewerStore.colors.normalForce");
-    fill-opacity: 0.1;
-    &:hover {
-      fill-opacity: 0.2;
-    }
-  }
-  .shear polyline {
-    stroke: v-bind("viewerStore.colors.shearForce");
-    stroke-width: 1px;
-    fill: v-bind("viewerStore.colors.shearForce");
-    fill-opacity: 0.1;
-    &:hover {
-      fill-opacity: 0.2;
-    }
-  }
-  .moment polyline {
-    stroke: v-bind("viewerStore.colors.bendingMoment");
-    stroke-width: 1px;
-    fill: v-bind("viewerStore.colors.bendingMoment");
-    fill-opacity: 0.1;
-    &:hover {
-      fill-opacity: 0.2;
-    }
-  }
-}
-
-.node {
-  polyline {
-    stroke: #000;
-    stroke-linecap: square;
-    stroke-width: 6px;
-    vector-effect: non-scaling-stroke;
-    &.handle {
-      cursor: pointer;
-      stroke-width: 24px;
-      stroke: transparent;
-    }
-    &.decoration {
-      stroke-width: 1px;
-      stroke: none;
-    }
-    &.drawable.deformed {
-      stroke: #555;
-    }
-  }
-  &:hover polyline.drawable {
-    stroke: black;
-    stroke-width: 10px;
-  }
-  &.selected polyline.drawable {
-    stroke: rgb(0, 55, 149);
-    stroke-width: 8px;
-  }
-}
-
-.prescribed polyline {
-  stroke: v-bind("viewerStore.colors.loads");
-}
-
-.nodal-load {
-  text {
-    fill: v-bind("viewerStore.colors.loads");
-  }
-  polyline {
-    stroke-linecap: square;
-    vector-effect: non-scaling-stroke;
-    &.decoration.force {
-      marker-end: url(#force);
-    }
-    &.decoration.moment.cw {
-      marker-end: url(#moment_cw);
-    }
-    &.decoration.moment.ccw {
-      marker-end: url(#moment_ccw);
-    }
-    &.handle {
-      stroke: transparent;
-      stroke-width: 24px;
-    }
-
-    &.handle.moment {
-      stroke: transparent;
-      stroke-width: 38px;
-    }
-  }
-  &:hover text {
-    fill: blue;
-  }
-  &:hover polyline.decoration.force {
-    marker-end: url(#force_hover);
-  }
-  &:hover polyline.decoration.moment.cw {
-    marker-end: url(#moment_cw_hover);
-  }
-  &:hover polyline.decoration.moment.ccw {
-    marker-end: url(#moment_ccw_hover);
-  }
-  &.selected {
-    text {
-      fill: rgb(0, 55, 149);
-    }
-  }
-}
-
-.normal text {
-  fill: v-bind("viewerStore.colors.normalForce");
-}
-
-.shear text {
-  fill: v-bind("viewerStore.colors.shearForce");
-}
-
-.moment text {
-  fill: v-bind("viewerStore.colors.bendingMoment");
-}
-
-.reaction {
-  fill: v-bind("viewerStore.colors.reactions");
-}
-
 .tooltip {
   font-size: 14px;
   position: absolute;
@@ -689,7 +508,7 @@ svg text {
 }
 
 .tooltip .content:after {
-  content: "";
+  content: '';
   position: absolute;
   border-top: 6px solid transparent;
   border-bottom: 6px solid transparent;

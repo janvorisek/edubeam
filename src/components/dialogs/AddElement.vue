@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="open" max-width="420">
     <v-card>
-      <v-card-title> {{ $t("dialogs.addElement.addNewElement") }} </v-card-title>
+      <v-card-title> {{ $t('dialogs.addElement.addNewElement') }} </v-card-title>
 
       <v-card-text>
         <v-form>
@@ -33,7 +33,43 @@
               </v-col>
             </v-row>
 
-            <v-row no-gutters v-if="projectStore.crossSections.length > 1 || projectStore.crossSections.length > 1">
+            <div class="d-flex flex-column ga-3 py-3">
+              <div style="width: fit-content">
+                <v-alert v-if="projectStore.materials.length === 0" icon="$warning" density="compact" type="error">
+                  <template #text>
+                    <div class="d-flex align-center">
+                      {{ $t('warnings.noMaterialsDefined') }}
+                      <v-btn
+                        variant="text"
+                        density="compact"
+                        size="small"
+                        @click="appStore.dialogs['addMaterial'] = true"
+                        >{{ $t('common.addNew') }}</v-btn
+                      >
+                    </div>
+                  </template>
+                </v-alert>
+              </div>
+
+              <div style="width: fit-content">
+                <v-alert v-if="projectStore.crossSections.length === 0" icon="$warning" density="compact" type="error">
+                  <template #text>
+                    <div class="d-flex align-center">
+                      {{ $t('warnings.noCrossSectionsDefined') }}
+                      <v-btn
+                        variant="text"
+                        density="compact"
+                        size="small"
+                        @click="appStore.dialogs['addCrossSection'] = true"
+                        >{{ $t('common.addNew') }}</v-btn
+                      >
+                    </div>
+                  </template>
+                </v-alert>
+              </div>
+            </div>
+
+            <v-row v-if="projectStore.materials.length > 0 && projectStore.crossSections.length > 0" no-gutters>
               <v-col cols="6">
                 <v-select
                   v-model="newElementMat"
@@ -66,10 +102,10 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="green darken-1" @click="addElement()" @keydown.enter="addElement">
-          {{ $t("dialogs.addElement.addElement") }}
+          {{ $t('dialogs.addElement.addElement') }}
         </v-btn>
         <v-btn color="red darken-1" @click="closeModal()" @keydown.enter="closeModal">{{
-          $t("dialogs.common.cancel")
+          $t('dialogs.common.cancel')
         }}</v-btn>
       </v-card-actions>
     </v-card>
@@ -77,35 +113,45 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue";
-import { useProjectStore } from "../../store/project";
-import { DofID, NodalLoad } from "ts-fem";
-import { closeModal } from "jenesius-vue-modal";
-import { useAppStore } from "@/store/app";
-import { checkNumber } from "@/utils";
-import { onMounted } from "vue";
+import { ref, reactive, computed } from 'vue';
+import { useProjectStore } from '../../store/project';
+import { DofID, NodalLoad } from 'ts-fem';
+import { closeModal } from 'jenesius-vue-modal';
+import { useAppStore } from '@/store/app';
+import { checkNumber } from '@/utils';
+import { onMounted } from 'vue';
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
 
 const open = ref(true);
 
-const newElementFrom = ref("");
-const newElementTo = ref("");
-const newElementMat = ref("");
-const newElementCS = ref("");
+const newElementFrom = ref('');
+const newElementTo = ref('');
+const newElementMat = ref('');
+const newElementCS = ref('');
 
 onMounted(() => {
   if (projectStore.solver.domain.nodes.size >= 2) {
     newElementFrom.value = [...useProjectStore().solver.domain.nodes.values()][0].label;
     newElementTo.value = [...useProjectStore().solver.domain.nodes.values()][1].label;
+  }
 
+  if (projectStore.solver.domain.materials.size > 0) {
     newElementMat.value = [...useProjectStore().solver.domain.materials.values()][0].label;
+  }
+
+  if (projectStore.solver.domain.crossSections.size > 0) {
     newElementCS.value = [...useProjectStore().solver.domain.crossSections.values()][0].label;
   }
 });
 
 const addElement = () => {
+  // check if material and cross section are selected
+  if (newElementMat.value === '' || newElementCS.value === '') {
+    return alert('Please select a material and cross section');
+  }
+
   useProjectStore().solver.loadCases[0].solved = false;
   const domain = useProjectStore().solver.domain;
 

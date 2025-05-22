@@ -1,19 +1,25 @@
 <script lang="ts" setup>
-import { BeamConcentratedLoad } from "ts-fem";
-import { computed } from "vue";
+import { BeamConcentratedLoad } from 'ts-fem';
+import { computed } from 'vue';
 
-const props = defineProps<{
-  eload: BeamConcentratedLoad;
-  scale: number;
-  convertForce: (f: number) => number;
-}>();
+const props = withDefaults(
+  defineProps<{
+    eload: BeamConcentratedLoad;
+    scale: number;
+    convertForce: (f: number) => number;
+    fontSize?: number;
+    numberFormat?: Intl.NumberFormat;
+  }>(),
+  { fontSize: 13, numberFormat: new Intl.NumberFormat() }
+);
 
 const target = computed(() => {
   return props.eload.domain.elements.get(props.eload.target)!;
 });
 
 const position = computed(() => {
-  const n1 = props.eload.domain.nodes.get(target.value.nodes[0])!;
+  const n1 = props.eload.domain.nodes.get(target.value.nodes[0]);
+
   const geo = target.value.computeGeo();
 
   const cos = geo.dx / geo.l;
@@ -35,14 +41,29 @@ const angle = computed(() => {
   else return -(Math.atan2(props.eload.values[0], props.eload.values[1]) * 180) / Math.PI;
 });
 
-const eloadPts = computed(() => {
-  const size = Math.sqrt(
-    props.eload.values[0]! * props.eload.values[0]! + props.eload.values[1]! * props.eload.values[1]!
-  );
-  const sx = -props.eload.values[0]! / size;
-  const sz = -props.eload.values[1]! / size;
+const labelPosition = computed(() => {
+  const size = Math.sqrt(props.eload.values[0] * props.eload.values[0] + props.eload.values[1] * props.eload.values[1]);
+  const fx = props.eload.values[0] / size;
+  const fz = props.eload.values[1] / size;
 
-  return `${position.value.x},${position.value.z} ${position.value.x + (sx * 40) / props.scale},${position.value.z + (sz * 40) / props.scale}`;
+  if (!props.eload.lcs)
+    return `translate(${position.value.x - (45 / props.scale) * fx} ${position.value.z - (45 / props.scale) * fz})`;
+
+  let px = 0;
+  let pz = 0;
+
+  const geo = target.value.computeGeo();
+  const cos = geo.dx / geo.l;
+  const sin = geo.dz / geo.l;
+
+  // local to global
+  const fxl = cos * fx - sin * fz;
+  const fzl = sin * fx + cos * fz;
+
+  px += position.value.x - (fxl * 45) / props.scale;
+  pz += position.value.z - (fzl * 45) / props.scale;
+
+  return `translate(${px} ${pz})`;
 });
 </script>
 
@@ -56,30 +77,28 @@ const eloadPts = computed(() => {
       :transform="`translate(${position.x} ${position.z}) rotate(${angle})`"
     />
 
-    <polyline :points="eloadPts" class="handle" />
+    <polyline
+      :points="`${position.x},${position.z} ${position.x + 40 / scale},${position.z}`"
+      :transform="`rotate(${angle - 90} ${position.x} ${position.z})`"
+      class="handle"
+    />
 
     <text
       v-if="eload.values[0] !== 0 || eload.values[1] !== 0"
-      :font-size="13 / scale"
+      :font-size="fontSize / scale"
       font-weight="normal"
-      :text-anchor="eload.values[0] > 0 ? 'end' : 'start'"
       dominant-baseline="central"
-      :transform="`translate(${
-        position.x -
-        (40 * eload.values[0]) /
-          Math.sqrt(eload.values[0] * eload.values[0] + eload.values[1] * eload.values[1]) /
-          scale
-      }
-              ${
-                position.z -
-                (40 * eload.values[1]) /
-                  Math.sqrt(eload.values[0] * eload.values[0] + eload.values[1] * eload.values[1]) /
-                  scale
-              })`"
+      :text-anchor="eload.values[0] > 0 ? 'end' : 'start'"
+      :transform="labelPosition"
     >
-      {{ convertForce(Math.sqrt(eload.values[0] * eload.values[0] + eload.values[1] * eload.values[1])).toFixed(2) }}
+      {{
+        numberFormat.format(
+          convertForce(Math.sqrt(eload.values[0] * eload.values[0] + eload.values[1] * eload.values[1]))
+        )
+      }}
       <template v-if="eload.values[0] !== 0 && eload.values[1] !== 0">
-        ({{ convertForce(eload.values[0]).toFixed(2) }}, {{ convertForce(eload.values[1]).toFixed(2) }})
+        ({{ numberFormat.format(convertForce(eload.values[0])) }};
+        {{ numberFormat.format(convertForce(eload.values[1])) }})
       </template>
     </text>
   </g>

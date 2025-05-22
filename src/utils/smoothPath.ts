@@ -30,7 +30,7 @@ export const smoothPath = (points: [number, number][]) => {
     } else {
       return `${acc} M ${e[0]},${e[1]}`;
     }
-  }, "");
+  }, '');
 
   return d;
 };

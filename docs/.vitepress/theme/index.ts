@@ -1,16 +1,16 @@
 // https://vitepress.dev/guide/custom-theme
-import { h } from "vue";
-import type { Theme } from "vitepress";
-import DefaultTheme from "vitepress/theme";
-import MyLayout from "./MyLayout.vue";
+import { h } from 'vue';
+import type { Theme } from 'vitepress';
+import DefaultTheme from 'vitepress/theme';
+import MyLayout from './MyLayout.vue';
 
-import Edubeam from "../../components/edubeam.vue"
-import TrussElement from "../../components/TrussElement.vue";
-import Structure from "../../components/Structure.vue";
-import ExampleStructure from "../../components/ExampleStructure.vue";
-import WelcomeStructure from "../../components/WelcomeStructure.vue";
+import Edubeam from '../../components/edubeam.vue';
+import TrussElement from '../../components/TrussElement.vue';
+import Structure from '../../components/Structure.vue';
+import ExampleStructure from '../../components/ExampleStructure.vue';
+import WelcomeStructure from '../../components/WelcomeStructure.vue';
 
-import "./style.css";
+import './style.css';
 
 export default {
   extends: DefaultTheme,

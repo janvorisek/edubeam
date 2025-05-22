@@ -1,23 +1,23 @@
 <script lang="ts" setup>
-import { LinearStaticSolver, DofID } from "ts-fem";
-import { ref, onMounted, reactive, nextTick, computed } from "vue";
-import SVGElementViewer from "../../src/components/SVGElementViewer.vue";
-import { VTweakpane } from "v-tweakpane";
-import { serializeModel, deserializeModel } from "../../src/utils/serializeModel";
+import { LinearStaticSolver, DofID } from 'ts-fem';
+import { ref, onMounted, reactive, nextTick, computed } from 'vue';
+import SVGElementViewer from '../../src/components/SVGElementViewer.vue';
+import { VTweakpane } from 'v-tweakpane';
+import { serializeModel, deserializeModel } from '../../src/utils/serializeModel';
 
 const colors = {
-  normalForce: "#2222ff",
-  shearForce: "#00af00",
-  bendingMoment: "#ff2222",
-  deformedShape: "#555555",
-  loads: "#ff8700",
-  nodes: "#000000",
-  elements: "#000000",
-  reactions: "#a020f0",
+  normalForce: '#2222ff',
+  shearForce: '#00af00',
+  bendingMoment: '#ff2222',
+  deformedShape: '#555555',
+  loads: '#ff8700',
+  nodes: '#000000',
+  elements: '#000000',
+  reactions: '#a020f0',
 };
 
 const pane = ref({
-  title: "Simply supported beam",
+  title: 'Simply supported beam',
 });
 
 const PARAMS = reactive({
@@ -26,34 +26,34 @@ const PARAMS = reactive({
 });
 
 const onPaneCreated = (pane: any) => {
-  pane.addInput(PARAMS, "length", { min: 1, max: 10, step: 0.1 }).on("change", (e: { value: number }) => {
-    domain.getNode("b").coords[0] = e.value;
+  pane.addInput(PARAMS, 'length', { min: 1, max: 10, step: 0.1 }).on('change', (e: { value: number }) => {
+    domain.getNode('b').coords[0] = e.value;
     solver.value.solve();
   });
 
   pane
-    .addInput(PARAMS, "loadMagnitude", { label: "f", min: 1, max: 20, step: 1 })
-    .on("change", (e: { value: number }) => {
+    .addInput(PARAMS, 'loadMagnitude', { label: 'f', min: 1, max: 20, step: 1 })
+    .on('change', (e: { value: number }) => {
       solver.value.loadCases[0].elementLoadList[0].values[1] = e.value;
       solver.value.solve();
     });
 
   const btn = pane.addButton({
-    title: "Open in edubeam",
+    title: 'Open in edubeam',
   });
 
-  btn.on("click", () => {
-    window.location.href = "https://run.edubeam.app?model=" + serializeModel(solver.value);
+  btn.on('click', () => {
+    window.location.href = 'https://run.edubeam.app?model=' + serializeModel(solver.value);
   });
 };
 
 const solver = ref(new LinearStaticSolver());
 const domain = solver.value.domain;
 
-domain.createNode("a", [0, 0, 0], [DofID.Dx, DofID.Dz]);
-domain.createNode("b", [3, 0, 0], [DofID.Dz]);
+domain.createNode('a', [0, 0, 0], [DofID.Dx, DofID.Dz]);
+domain.createNode('b', [3, 0, 0], [DofID.Dz]);
 
-domain.createBeam2D("1", ["a", "b"], 1, 1);
+domain.createBeam2D('1', ['a', 'b'], 1, 1);
 
 domain.createCrossSection(1, {
   a: 1,
@@ -81,19 +81,19 @@ onMounted(() => {
 //solver.loadCases[0].createNodalLoad(3, { [DofID.Dx]: 10000, [DofID.Dz]: 0, [DofID.Ry]: 10000 });
 //solver.loadCases[0].createNodalLoad(3, { [DofID.Dx]: 0, [DofID.Dz]: 20 });
 
-solver.value.loadCases[0].createBeamElementUniformEdgeLoad("1", [0, 10000], true);
+solver.value.loadCases[0].createBeamElementUniformEdgeLoad('1', [0, 10000], true);
 solver.value.solve();
 
-const quantity = ref<"n" | "v" | "m" | "u">("m");
+const quantity = ref<'n' | 'v' | 'm' | 'u'>('m');
 
-const changeQuantity = (q: "n" | "v" | "m" | "u") => {
+const changeQuantity = (q: 'n' | 'v' | 'm' | 'u') => {
   quantity.value = q;
 };
 
-const showDefo = computed(() => quantity.value === "u");
-const showNormalForce = computed(() => quantity.value === "n");
-const showShearForce = computed(() => quantity.value === "v");
-const showMoments = computed(() => quantity.value === "m");
+const showDefo = computed(() => quantity.value === 'u');
+const showNormalForce = computed(() => quantity.value === 'n');
+const showShearForce = computed(() => quantity.value === 'v');
+const showMoments = computed(() => quantity.value === 'm');
 
 const viewer = ref<InstanceType<typeof SVGElementViewer>>();
 </script>

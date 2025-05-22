@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from "vue";
+import { nextTick, onMounted, onBeforeUnmount, ref } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -33,8 +33,8 @@ const onWindowResize = (): void => {
   const dX = rootRef.value!.offsetWidth - svgRef.value!.getBoundingClientRect().width;
   const dY = rootRef.value!.offsetHeight - svgRef.value!.getBoundingClientRect().height;
 
-  svgRef.value!.setAttribute("width", rootRef.value!.offsetWidth.toString());
-  svgRef.value!.setAttribute("height", rootRef.value!.offsetHeight.toString());
+  svgRef.value!.setAttribute('width', rootRef.value!.offsetWidth.toString());
+  svgRef.value!.setAttribute('height', rootRef.value!.offsetHeight.toString());
 
   viewBox.w = rootRef.value!.offsetWidth / scale.value;
   viewBox.h = rootRef.value!.offsetHeight / scale.value;
@@ -47,7 +47,7 @@ const onWindowResize = (): void => {
 
 const updateMatrix = (zooming = false): void => {
   const svgEl = svgRef.value as SVGElement;
-  svgEl.setAttribute("viewBox", `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
+  svgEl.setAttribute('viewBox', `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
   props.onUpdate(zooming);
 };
 
@@ -140,7 +140,7 @@ const onMouseMove = (event: MouseEvent): void => {
 };
 
 const centerContent = (): void => {
-  const rootG = (svgRef.value as SVGElement).getElementsByTagName("g")[0] as SVGGElement;
+  const rootG = (svgRef.value as SVGElement).getElementsByTagName('g')[0] as SVGGElement;
   const bBox = rootG.getBBox();
 
   viewBox.x = -viewBox.w / 2 + bBox.x + bBox.width / 2;
@@ -157,7 +157,7 @@ const fitContent = (n = 0): void => {
   const FIT_CONTENT_PADDING = window.innerWidth > 768 ? props.padding : props.mobilePadding;
 
   const svgEl = svgRef.value as SVGElement;
-  const rootG = svgEl.getElementsByTagName("g")[0] as SVGGElement;
+  const rootG = svgEl.getElementsByTagName('g')[0] as SVGGElement;
 
   const rootBBox = svgEl.getBoundingClientRect();
   //const bBox = rootG.getBoundingClientRect();
@@ -198,35 +198,25 @@ const fitContent = (n = 0): void => {
   //nextTick(() => fitContent(n + 1));
 };
 
+let resizewatcher: ResizeObserver;
+
 onMounted(() => {
   nextTick(() => {
     // Default slot is the SVG
     svgRef.value! = rootRef.value!.children[0] as SVGElement;
 
-    //window.addEventListener('resize', onWindowResize)
-    const resizewatcher = new ResizeObserver(() => {
+    resizewatcher = new ResizeObserver(() => {
       onWindowResize();
     });
 
     resizewatcher.observe(rootRef.value!);
 
-    svgRef.value!.setAttribute("overflow", "visible");
+    svgRef.value!.setAttribute('overflow', 'visible');
   });
+});
 
-  /* const isFirefox = navigator.userAgent.search("Firefox") > -1;
-  let wheelEventEndTimeout = null;
-  window.addEventListener(
-    "wheel",
-    () => {
-      console.log("wheel");
-      if (isFirefox) appStore.zooming = true;
-      clearTimeout(wheelEventEndTimeout);
-      wheelEventEndTimeout = setTimeout(() => {
-        appStore.zooming = false;
-      }, 100);
-    },
-    { passive: false }
-  );*/
+onBeforeUnmount(() => {
+  resizewatcher?.disconnect();
 });
 
 const onMouseDown = () => {
@@ -247,6 +237,7 @@ defineExpose({ scale, centerContent, fitContent, updateMatrix, onWindowResize, z
   <div
     ref="rootRef"
     class="w-100 fill-height"
+    style="touch-action: none"
     @touchstart.prevent="onTouchStart"
     @touchmove.prevent="onTouchMove"
     @touchend.prevent="onTouchEnd"
@@ -255,7 +246,6 @@ defineExpose({ scale, centerContent, fitContent, updateMatrix, onWindowResize, z
     @mouseup.prevent="onMouseUp"
     @mousemove.prevent="onMouseMove"
     @contextmenu.prevent
-    style="touch-action: none"
   >
     <slot></slot>
   </div>

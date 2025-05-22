@@ -1,7 +1,7 @@
 <template>
-  <v-dialog class="no-overlay" v-model="useAppStore().dialogs.addNode" max-width="420">
+  <v-dialog v-model="useAppStore().dialogs.addNode" class="no-overlay" max-width="420">
     <v-card>
-      <v-card-title> {{ $t("dialogs.addNode.addNewNode") }} </v-card-title>
+      <v-card-title> {{ $t('dialogs.addNode.addNewNode') }} </v-card-title>
 
       <v-card-text>
         <v-form>
@@ -32,17 +32,17 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green darken-1" @click="addNode()"> {{ $t("dialogs.addNode.addNode") }} </v-btn>
+        <v-btn color="green darken-1" @click="addNode()"> {{ $t('dialogs.addNode.addNode') }} </v-btn>
         <v-btn color="red darken-1" @click="useAppStore().dialogs.addNode = false">
-          {{ $t("dialogs.common.cancel") }}
+          {{ $t('dialogs.common.cancel') }}
         </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 
-  <v-dialog class="no-overlay" v-model="useAppStore().dialogs.addElement" max-width="420">
+  <v-dialog v-model="useAppStore().dialogs.addElement" class="no-overlay" max-width="420">
     <v-card>
-      <v-card-title> {{ $t("dialogs.addElement.addNewElement") }} </v-card-title>
+      <v-card-title> {{ $t('dialogs.addElement.addNewElement') }} </v-card-title>
 
       <v-card-text>
         <v-form>
@@ -79,17 +79,17 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green darken-1" @click="addElement()"> {{ $t("dialogs.addElement.addElement") }} </v-btn>
+        <v-btn color="green darken-1" @click="addElement()"> {{ $t('dialogs.addElement.addElement') }} </v-btn>
         <v-btn color="red darken-1" @click="useAppStore().dialogs.addElement = false">{{
-          $t("dialogs.common.cancel")
+          $t('dialogs.common.cancel')
         }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 
-  <v-dialog class="no-overlay" v-model="useAppStore().dialogs.addNodalLoad" max-width="420">
+  <v-dialog v-model="useAppStore().dialogs.addNodalLoad" class="no-overlay" max-width="420">
     <v-card>
-      <v-card-title> {{ $t("dialogs.addNodalLoad.addNewNodalLoad") }} </v-card-title>
+      <v-card-title> {{ $t('dialogs.addNodalLoad.addNewNodalLoad') }} </v-card-title>
 
       <v-card-text>
         <v-form>
@@ -125,17 +125,17 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green darken-1" @click="addNodalLoad()"> {{ $t("dialogs.addNodalLoad.addNodalLoad") }} </v-btn>
+        <v-btn color="green darken-1" @click="addNodalLoad()"> {{ $t('dialogs.addNodalLoad.addNodalLoad') }} </v-btn>
         <v-btn color="red darken-1" @click="useAppStore().dialogs.addNodalLoad = false">{{
-          $t("dialogs.common.cancel")
+          $t('dialogs.common.cancel')
         }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 
-  <v-dialog class="no-overlay" v-model="useAppStore().dialogs.addElementLoad" max-width="420">
+  <v-dialog v-model="useAppStore().dialogs.addElementLoad" class="no-overlay" max-width="420">
     <v-card>
-      <v-card-title> {{ $t("dialogs.addElementLoad.addNewElementLoad") }} </v-card-title>
+      <v-card-title> {{ $t('dialogs.addElementLoad.addNewElementLoad') }} </v-card-title>
 
       <v-card-text>
         <v-form>
@@ -168,18 +168,18 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="green darken-1" @click="addElementLoad()">
-          {{ $t("dialogs.addElementLoad.addElementLoad") }}
+          {{ $t('dialogs.addElementLoad.addElementLoad') }}
         </v-btn>
         <v-btn color="red darken-1" @click="useAppStore().dialogs.addElementLoad = false">{{
-          $t("dialogs.common.cancel")
+          $t('dialogs.common.cancel')
         }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 
-  <v-dialog class="no-overlay" v-model="useAppStore().dialogs.addMaterial" max-width="420">
+  <v-dialog v-model="useAppStore().dialogs.addMaterial" class="no-overlay" max-width="420">
     <v-card>
-      <v-card-title> {{ $t("dialogs.addMaterial.addNewMaterial") }} </v-card-title>
+      <v-card-title> {{ $t('dialogs.addMaterial.addNewMaterial') }} </v-card-title>
 
       <v-card-text>
         <v-form>
@@ -228,17 +228,17 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green darken-1" @click="addMaterial()"> {{ $t("dialogs.addMaterial.addMaterial") }} </v-btn>
+        <v-btn color="green darken-1" @click="addMaterial()"> {{ $t('dialogs.addMaterial.addMaterial') }} </v-btn>
         <v-btn color="red darken-1" @click="useAppStore().dialogs.addMaterial = false">{{
-          $t("dialogs.common.cancel")
+          $t('dialogs.common.cancel')
         }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 
-  <v-dialog class="no-overlay" v-model="useAppStore().dialogs.addCrossSection" max-width="420">
+  <v-dialog v-model="useAppStore().dialogs.addCrossSection" class="no-overlay" max-width="420">
     <v-card>
-      <v-card-title> {{ $t("dialogs.addCrossSection.addNewCrossSection") }} </v-card-title>
+      <v-card-title> {{ $t('dialogs.addCrossSection.addNewCrossSection') }} </v-card-title>
 
       <v-card-text>
         <v-form>
@@ -283,10 +283,10 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="green darken-1" @click="addCrossSection()">
-          {{ $t("dialogs.addCrossSection.addCrossSection") }}
+          {{ $t('dialogs.addCrossSection.addCrossSection') }}
         </v-btn>
         <v-btn color="red darken-1" @click="useAppStore().dialogs.addCrossSection = false">{{
-          $t("dialogs.common.cancel")
+          $t('dialogs.common.cancel')
         }}</v-btn>
       </v-card-actions>
     </v-card>
@@ -294,11 +294,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { useProjectStore } from "../store/project";
-import { useAppStore } from "../store/app";
-import { DofID } from "ts-fem";
-import { setUnsolved } from "../utils/index";
+import { ref } from 'vue';
+import { useProjectStore } from '../store/project';
+import { useAppStore } from '../store/app';
+import { DofID } from 'ts-fem';
+import { setUnsolved } from '../utils/index';
 
 const newNodeX = ref(0.0);
 const newNodeZ = ref(0.0);

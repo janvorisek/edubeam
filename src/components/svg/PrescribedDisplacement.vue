@@ -1,13 +1,22 @@
 <script lang="ts" setup>
-import { PrescribedDisplacement } from "ts-fem";
-import { computed } from "vue";
+import { formatScientificNumber } from '@/utils';
+import { PrescribedDisplacement } from 'ts-fem';
+import { computed } from 'vue';
 
-const props = defineProps<{
-  nload: PrescribedDisplacement;
-  scale: number;
-  convertLength: (f: number) => number;
-  multiplier: number;
-}>();
+const props = withDefaults(
+  defineProps<{
+    nload: PrescribedDisplacement;
+    scale: number;
+    convertLength: (f: number) => number;
+    multiplier: number;
+    fontSize?: number;
+    numberFormat?: Intl.NumberFormat;
+  }>(),
+  {
+    fontSize: 13,
+    numberFormat: new Intl.NumberFormat(),
+  }
+);
 
 const target = computed(() => {
   return props.nload.domain.nodes.get(props.nload.target)!;
@@ -23,13 +32,12 @@ const target = computed(() => {
       } ${target.coords[2] + (nload.prescribedValues[2] * props.multiplier) / scale}`"
       vector-effect="non-scaling-stroke"
       stroke-dasharray="2,4"
-      marker-end="url(#forceTip)"
-      class="decoration"
+      class="decoration marker-forceTip"
     />
 
     <text
       v-if="nload.prescribedValues[0] !== 0 || nload.prescribedValues[2] !== 0"
-      :font-size="13 / scale"
+      :font-size="fontSize / scale"
       font-weight="normal"
       :text-anchor="nload.prescribedValues[0] > 0 ? 'start' : 'end'"
       dominant-baseline="central"
@@ -40,9 +48,9 @@ const target = computed(() => {
       }
               ${target.coords[2] + (nload.prescribedValues[2] * props.multiplier) / scale})`"
     >
-      {{ convertLength(nload.prescribedValues[0]).toFixed(2) }},
-      {{ convertLength(nload.prescribedValues[2]).toFixed(2) }},
-      {{ nload.prescribedValues[4].toFixed(2) }}
+      {{ formatScientificNumber(convertLength(nload.prescribedValues[0]), 2) }};
+      {{ formatScientificNumber(convertLength(nload.prescribedValues[2]), 2) }};
+      {{ formatScientificNumber(convertLength(nload.prescribedValues[4]), 2) }}
     </text>
   </g>
 </template>

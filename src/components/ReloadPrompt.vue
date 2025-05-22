@@ -22,7 +22,9 @@ async function close() {
 }
 
 async function update() {
-  updateServiceWorker(true);
+  updateServiceWorker(true).catch((err) => {
+    console.error('Error updating service worker:', err);
+  });
 }
 </script>
 

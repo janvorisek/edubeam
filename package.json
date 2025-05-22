@@ -36,12 +36,12 @@
     "tweakpane": "^4.0.3",
     "v-onboarding": "^2.6.0",
     "v-tweakpane": "^0.2.0",
-    "vue": "^3.4.16",
+    "vue": "^3.5.14",
     "vue-draggable-resizable": "^3.0.0",
     "vue-gtag": "^2.0.1",
     "vue-i18n": "^9.9.1",
-    "vue-router": "^4.2.5",
-    "vuetify": "3.5.8",
+    "vue-router": "^4.5.1",
+    "vuetify": "^3.8.6",
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {

@@ -34,7 +34,7 @@
     "roboto-fontface": "*",
     "ts-fem": "github:janvorisek/ts-fem#59c32e13ce76d2fec45861e9c15d50d7b6dd52c4",
     "tweakpane": "^4.0.3",
-    "v-onboarding": "^2.6.0",
+    "v-onboarding": "^2.9.0",
     "v-tweakpane": "^0.2.0",
     "vue": "^3.5.14",
     "vue-draggable-resizable": "^3.0.0",

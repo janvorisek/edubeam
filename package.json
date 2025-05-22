@@ -23,7 +23,7 @@
     "@vueuse/core": "^10.9.0",
     "fast-xml-parser": "^4.3.5",
     "floating-vue": "^5.2.2",
-    "jenesius-vue-modal": "^1.11.0",
+    "jenesius-vue-modal": "^1.11.9",
     "js-quantities": "^1.8.0",
     "language-icons": "^0.3.0",
     "markdown-it-implicit-figures": "^0.12.0",

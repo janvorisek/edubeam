@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from 'vue';
+import { nextTick, onMounted, onBeforeUnmount, ref } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -198,13 +198,14 @@ const fitContent = (n = 0): void => {
   //nextTick(() => fitContent(n + 1));
 };
 
+let resizewatcher: ResizeObserver;
+
 onMounted(() => {
   nextTick(() => {
     // Default slot is the SVG
     svgRef.value! = rootRef.value!.children[0] as SVGElement;
 
-    //window.addEventListener('resize', onWindowResize)
-    const resizewatcher = new ResizeObserver(() => {
+    resizewatcher = new ResizeObserver(() => {
       onWindowResize();
     });
 
@@ -212,21 +213,10 @@ onMounted(() => {
 
     svgRef.value!.setAttribute('overflow', 'visible');
   });
+});
 
-  /* const isFirefox = navigator.userAgent.search("Firefox") > -1;
-  let wheelEventEndTimeout = null;
-  window.addEventListener(
-    "wheel",
-    () => {
-      console.log("wheel");
-      if (isFirefox) appStore.zooming = true;
-      clearTimeout(wheelEventEndTimeout);
-      wheelEventEndTimeout = setTimeout(() => {
-        appStore.zooming = false;
-      }, 100);
-    },
-    { passive: false }
-  );*/
+onBeforeUnmount(() => {
+  resizewatcher?.disconnect();
 });
 
 const onMouseDown = () => {

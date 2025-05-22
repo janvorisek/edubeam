@@ -30,7 +30,7 @@
     "markdown-it-katex": "^2.0.3",
     "mathjs": "^12.3.2",
     "pinia": "^3.0.2",
-    "pinia-plugin-persistedstate": "^3.2.1",
+    "pinia-plugin-persistedstate": "^4.3.0",
     "roboto-fontface": "*",
     "ts-fem": "github:janvorisek/ts-fem#59c32e13ce76d2fec45861e9c15d50d7b6dd52c4",
     "tweakpane": "^4.0.3",

@@ -190,7 +190,7 @@ export const useAppStore = defineStore(
   {
     persist: {
       storage: localStorage,
-      paths: ['panButton', 'onboardingFinished', 'locale', 'tab', 'bottomBarHeight', 'units'],
+      pick: ['panButton', 'onboardingFinished', 'locale', 'tab', 'bottomBarHeight', 'units'],
     },
   }
 );

@@ -298,17 +298,14 @@ export const useProjectStore = defineStore(
       pick: ['_solver', 'solver', 'dimensions'],
       serializer: {
         serialize: (value) => {
-          console.log('serializing', value);
           return serializeModel(value.solver, value.dimensions);
         },
         deserialize: (value) => {
-          console.log('deserializing', value);
           if (value === undefined) return { _solver: '' };
           return { _solver: value };
         },
       },
       afterHydrate: (ctx) => {
-        console.log('afterHydrate', ctx);
         if (ctx.store._solver === '') return;
 
         try {

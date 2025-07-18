@@ -41,7 +41,7 @@
     "vue-gtag": "^2.0.1",
     "vue-i18n": "^11.1.3",
     "vue-router": "^4.5.1",
-    "vuetify": "^3.8.6",
+    "vuetify": "^3.9.2",
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {

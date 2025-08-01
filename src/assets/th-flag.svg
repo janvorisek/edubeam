@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 16">
+  <!-- แถบแดงบน -->
+  <rect x="0" y="0" width="24" height="2.67" fill="#ED1C24"/>
+  <!-- แถบขาว -->
+  <rect x="0" y="2.67" width="24" height="2.67" fill="#FFFFFF"/>
+  <!-- แถบน้ำเงิน (กลาง) -->
+  <rect x="0" y="5.33" width="24" height="5.33" fill="#002868"/>
+  <!-- แถบขาว -->
+  <rect x="0" y="10.67" width="24" height="2.67" fill="#FFFFFF"/>
+  <!-- แถบแดงล่าง -->
+  <rect x="0" y="13.33" width="24" height="2.67" fill="#ED1C24"/>
+  
+  <!-- ข้อความ TH ตรงกลาง -->
+  <text x="12" y="9.5" font-family="Arial, sans-serif" font-size="5" font-weight="bold" text-anchor="middle" fill="#FFFFFF">TH</text>
+</svg>

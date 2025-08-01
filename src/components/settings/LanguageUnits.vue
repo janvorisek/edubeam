@@ -112,6 +112,8 @@
               { name: 'kN', code: 'kN' },
               { name: 'MN', code: 'MN' },
               { name: 'lbf', code: 'lbf' },
+              { name: 'Tonf', code: 'Tonf' },
+              { name: 'kgf', code: 'kgf' },
             ]"
             :label="$t('settings.units.force')"
           >
@@ -129,6 +131,7 @@
               { name: 'MPa', code: 'MPa' },
               { name: 'GPa', code: 'GPa' },
               { name: 'psi', code: 'psi' },
+              { name: 'ksc', code: 'ksc' },
             ]"
             :label="$t('settings.units.pressure')"
           >
@@ -152,8 +155,9 @@ import German from 'language-icons/icons/de.svg';
 import Spanish from 'language-icons/icons/es.svg';
 import French from 'language-icons/icons/fr.svg';
 import Chinese from 'language-icons/icons/zh.svg';
+import ThaiFlag from '../../assets/th-flag.svg';
 
-const flags = { en: English, cs: Czech, de: German, es: Spanish, fr: French, cn: Chinese };
+const flags = { en: English, cs: Czech, de: German, es: Spanish, fr: French, cn: Chinese, th: ThaiFlag };
 
 function getImageUrl(name) {
   return flags[name];

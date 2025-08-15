@@ -11,6 +11,7 @@ import { openModal } from 'jenesius-vue-modal';
 import SettingsModal from '../components/dialogs/Settings.vue';
 import Qty from 'js-quantities';
 import { isMobile, suggestLanguage } from '@/utils';
+import { customForceConversion, customPressureConversion } from '@/utils/unitConversions';
 
 export const useAppStore = defineStore(
   'app',
@@ -48,10 +49,10 @@ export const useAppStore = defineStore(
     let _convertInverseArea = Qty.swiftConverter(units.Area, 'm2');
     let _convertAreaM2 = Qty.swiftConverter('m4', units.AreaM2);
     let _convertInverseAreaM2 = Qty.swiftConverter(units.AreaM2, 'm4');
-    let _convertPressure = Qty.swiftConverter('Pa', units.Pressure);
-    let _convertInversePressure = Qty.swiftConverter(units.Pressure, 'Pa');
-    let _convertForce = Qty.swiftConverter('N', units.Force);
-    let _convertInverseForce = Qty.swiftConverter(units.Force, 'N');
+    let _convertPressure = customPressureConversion('Pa', units.Pressure);
+    let _convertInversePressure = customPressureConversion(units.Pressure, 'Pa');
+    let _convertForce = customForceConversion('N', units.Force);
+    let _convertInverseForce = customForceConversion(units.Force, 'N');
     let _convertTemperature = Qty.swiftConverter('C', units.Temperature);
     let _convertInverseTemperature = Qty.swiftConverter(units.Temperature, 'C');
 
@@ -64,10 +65,10 @@ export const useAppStore = defineStore(
         _convertInverseArea = Qty.swiftConverter(newUnits.Area, 'm2');
         _convertAreaM2 = Qty.swiftConverter('m4', newUnits.AreaM2);
         _convertInverseAreaM2 = Qty.swiftConverter(newUnits.AreaM2, 'm4');
-        _convertPressure = Qty.swiftConverter('Pa', newUnits.Pressure);
-        _convertInversePressure = Qty.swiftConverter(newUnits.Pressure, 'Pa');
-        _convertForce = Qty.swiftConverter('N', newUnits.Force);
-        _convertInverseForce = Qty.swiftConverter(newUnits.Force, 'N');
+        _convertPressure = customPressureConversion('Pa', newUnits.Pressure);
+        _convertInversePressure = customPressureConversion(newUnits.Pressure, 'Pa');
+        _convertForce = customForceConversion('N', newUnits.Force);
+        _convertInverseForce = customForceConversion(newUnits.Force, 'N');
         _convertTemperature = Qty.swiftConverter('C', newUnits.Temperature);
         _convertInverseTemperature = Qty.swiftConverter(newUnits.Temperature, 'C');
 

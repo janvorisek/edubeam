@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ทดสอบไอคอนธงชาติไทยที่มี TH</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .flag { width: 48px; height: 32px; margin: 10px; border: 1px solid #ddd; }
+        .test-container { 
+            border: 1px solid #ccc; 
+            padding: 20px; 
+            margin: 10px 0; 
+            border-radius: 8px; 
+            background: #f9f9f9;
+        }
+        .flag-row {
+            display: flex; 
+            align-items: center; 
+            margin: 15px 0; 
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+        }
+        .flag-text {
+            margin-left: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🇹🇭 ทดสอบไอคอนธงชาติไทยใหม่ (มี TH)</h1>
+    
+    <div class="test-container">
+        <h2>ธงชาติไทยแบบใหม่ที่มีข้อความ "TH":</h2>
+        <div class="flag-row">
+            <img src="/src/assets/th-flag.svg" class="flag" alt="Thai Flag with TH">
+            <span class="flag-text">🇹🇭 ไทย (Thai) - มีข้อความ TH</span>
+        </div>
+        
+        <h3>เปรียบเทียบกับธงอื่นๆ:</h3>
+        <div class="flag-row">
+            <img src="/node_modules/language-icons/icons/en.svg" class="flag" alt="English">
+            <span class="flag-text">🇺🇸 English</span>
+        </div>
+        <div class="flag-row">
+            <img src="/node_modules/language-icons/icons/zh.svg" class="flag" alt="Chinese">
+            <span class="flag-text">🇨🇳 中文 (Chinese)</span>
+        </div>
+        <div class="flag-row">
+            <img src="/node_modules/language-icons/icons/fr.svg" class="flag" alt="French">
+            <span class="flag-text">🇫🇷 Français (French)</span>
+        </div>
+    </div>
+
+    <div class="test-container">
+        <h2>🎨 ลักษณะของธงไทยใหม่:</h2>
+        <ul>
+            <li>✅ สีแดง-ขาว-น้ำเงิน-ขาว-แดง (ตามธงจริง)</li>
+            <li>✅ มีข้อความ "TH" สีขาวตรงกลางแถบน้ำเงิน</li>
+            <li>✅ ขนาดเหมาะสมกับรายการเลือกภาษา</li>
+            <li>✅ รูปแบบ SVG คุณภาพสูง</li>
+        </ul>
+    </div>
+
+    <div class="test-container">
+        <h2>🚀 ทดสอบในแอปหลัก:</h2>
+        <p><a href="http://localhost:3001/" target="_blank" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">เปิด EduBeam App</a></p>
+        <ol>
+            <li>คลิกที่แท็บ <strong>"SETTINGS"</strong></li>
+            <li>ไปที่ส่วน <strong>"Language & Locale"</strong></li>
+            <li>คลิก dropdown <strong>"Language"</strong></li>
+            <li>ควรเห็น <strong>"ไทย"</strong> พร้อมธงที่มีข้อความ <strong>"TH"</strong></li>
+            <li>เลือก <strong>"ไทย"</strong> เพื่อเปลี่ยนภาษา</li>
+        </ol>
+    </div>
+</body>
+</html>

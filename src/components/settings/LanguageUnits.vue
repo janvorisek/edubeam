@@ -186,7 +186,11 @@ function getImageUrl(name) {
 }
 
 const momentUnitsProxy = computed({
-  get: () => appStore.momentUnits.join('_'),
-  set: (val: string) => (appStore.momentUnits = val.split('_')),
+  get: () => `${appStore.momentUnits.force}_${appStore.momentUnits.length}`,
+  set: (val: string) => {
+    const [force, length] = val.split('_');
+    appStore.momentUnits.force = force;
+    appStore.momentUnits.length = length;
+  },
 })
 </script>

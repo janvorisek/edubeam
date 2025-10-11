@@ -294,28 +294,28 @@ export const useProjectStore = defineStore(
     };
   },
   {
-    persist: [
-      {
-        paths: ['solver', 'dimensions'],
-        serializer: {
-          serialize: (value) => {
-            return serializeModel(value.solver, value.dimensions);
-          },
-          deserialize: (value) => {
-            if (value === undefined) return { _solver: '' };
-            return { _solver: value };
-          },
+    persist: {
+      pick: ['solver', 'dimensions', '_solver'],
+      serializer: {
+        serialize: (value) => {
+          return serializeModel(value.solver, value.dimensions);
         },
-        afterRestore: (ctx) => {
-          if (ctx.store._solver === '') return;
-
-          try {
-            deserializeModel(ctx.store._solver, ctx.store.solver, ctx.store.dimensions);
-          } catch (e) {
-            console.error(e);
-          }
+        deserialize: (value) => {
+          console.log(value);
+          if (value === undefined) return { _solver: '' };
+          return { _solver: value };
         },
       },
-    ],
+      afterHydrate: (ctx) => {
+        // console.log(ctx.store.$state);
+        if (ctx.store._solver === '') return;
+
+        try {
+          deserializeModel(ctx.store._solver, ctx.store.solver, ctx.store.dimensions);
+        } catch (e) {
+          console.error(e);
+        }
+      },
+    },
   }
 );

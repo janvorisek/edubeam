@@ -30,8 +30,8 @@ export const useAppStore = defineStore(
       new Intl.NumberFormat(locale.value, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
     );
 
-    // The converter cant handle moment units, so we store them separatelyand call the converter for length and force separately
-    const momentUnits = ref(['N', 'm']);
+    // The converter cant handle moment units, so we store them separately and call the converter for length and force separately
+    const momentUnits = ref({ force: 'N', length: 'm' });
 
     const units = reactive({
       Length: 'm',
@@ -39,7 +39,7 @@ export const useAppStore = defineStore(
       AreaM2: 'm4',
       Mass: 'kg',
       Force: 'kN',
-      Moment: computed(() => `${momentUnits.value[0]}${momentUnits.value[1]}`),
+      Moment: computed(() => `${momentUnits.value.force}${momentUnits.value.length}`),
       Pressure: 'MPa',
       ThermalExpansion: '1/K',
       Angle: 'rad',
@@ -63,14 +63,14 @@ export const useAppStore = defineStore(
     let _convertForce = customForceConversion('N', units.Force);
     let _convertInverseForce = customForceConversion(units.Force, 'N');
     let _convertMoment = (v) => {
-      const lenConv = Qty.swiftConverter('m', momentUnits.value[1]);
-      const forceConv = customForceConversion('N', momentUnits.value[0]);
+      const lenConv = Qty.swiftConverter('m', momentUnits.value.length);
+      const forceConv = customForceConversion('N', momentUnits.value.force);
 
       return lenConv(forceConv(v));
     };
     let _convertInverseMoment = (v) => {
-      const lenConv = Qty.swiftConverter(momentUnits.value[1], 'm');
-      const forceConv = customForceConversion(momentUnits.value[0], 'N');
+      const lenConv = Qty.swiftConverter(momentUnits.value.length, 'm');
+      const forceConv = customForceConversion(momentUnits.value.force, 'N');
 
       return lenConv(forceConv(v));
     };
@@ -92,14 +92,14 @@ export const useAppStore = defineStore(
         _convertForce = customForceConversion('N', newUnits.Force);
         _convertInverseForce = customForceConversion(newUnits.Force, 'N');
         _convertMoment = (v) => {
-          const lenConv = Qty.swiftConverter('m', momentUnits.value[1]);
-          const forceConv = customForceConversion('N', momentUnits.value[0]);
+          const lenConv = Qty.swiftConverter('m', momentUnits.value.length);
+          const forceConv = customForceConversion('N', momentUnits.value.force);
 
           return lenConv(forceConv(v));
         };
         _convertInverseMoment = (v) => {
-          const lenConv = Qty.swiftConverter(momentUnits.value[1], 'm');
-          const forceConv = customForceConversion(momentUnits.value[0], 'N');
+          const lenConv = Qty.swiftConverter(momentUnits.value.length, 'm');
+          const forceConv = customForceConversion(momentUnits.value.force, 'N');
 
           return lenConv(forceConv(v));
         };
@@ -186,6 +186,8 @@ export const useAppStore = defineStore(
 
     const panButton = ref(4);
 
+    const test = ref(20);
+
     return {
       inViewerMode,
 
@@ -229,8 +231,24 @@ export const useAppStore = defineStore(
   },
   {
     persist: {
-      storage: localStorage,
-      paths: ['panButton', 'onboardingFinished', 'locale', 'tab', 'bottomBarHeight', 'units', 'momentUnits'],
+      pick: [
+        'panButton',
+        'onboardingFinished',
+        'locale',
+        'tab',
+        'bottomBarHeight',
+        'units.Length',
+        'units.Area',
+        'units.AreaM2',
+        'units.Mass',
+        'units.Force',
+        'units.Pressure',
+        'units.Temperature',
+        'units.ThermalExpansion',
+        'units.Angle',
+        'momentUnits',
+      ],
+      debug: true,
     },
   }
 );

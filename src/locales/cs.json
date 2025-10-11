@@ -69,6 +69,7 @@
       "areaM2": "Moment setrvačnosti",
       "length": "Délka",
       "force": "Síla",
+      "moment": "Ohybový moment",
       "mass": "Hmotnost",
       "pressure": "Napětí",
       "units": "Jednotky"

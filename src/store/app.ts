@@ -30,13 +30,16 @@ export const useAppStore = defineStore(
       new Intl.NumberFormat(locale.value, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
     );
 
+    // The converter cant handle moment units, so we store them separatelyand call the converter for length and force separately
+    const momentUnits = ref(['N', 'm']);
+
     const units = reactive({
       Length: 'm',
       Area: 'm2',
       AreaM2: 'm4',
       Mass: 'kg',
       Force: 'kN',
-      Moment: computed(() => `${units.Force}${units.Length}`),
+      Moment: computed(() => `${momentUnits.value[0]}${momentUnits.value[1]}`),
       Pressure: 'MPa',
       ThermalExpansion: '1/K',
       Angle: 'rad',
@@ -59,8 +62,19 @@ export const useAppStore = defineStore(
     let _convertInversePressure = customPressureConversion(units.Pressure, 'Pa');
     let _convertForce = customForceConversion('N', units.Force);
     let _convertInverseForce = customForceConversion(units.Force, 'N');
-    let _convertMoment = (v) => _convertLength(_convertForce(v));
-    let _convertInverseMoment = (v) => _convertInverseLength(_convertInverseForce(v));
+    let _convertMoment = (v) => {
+      const lenConv = Qty.swiftConverter('m', momentUnits.value[1]);
+      const forceConv = customForceConversion('N', momentUnits.value[0]);
+
+      return lenConv(forceConv(v));
+    };
+    let _convertInverseMoment = (v) => {
+      const lenConv = Qty.swiftConverter(momentUnits.value[1], 'm');
+      const forceConv = customForceConversion(momentUnits.value[0], 'N');
+
+      return lenConv(forceConv(v));
+    };
+
     let _convertTemperature = Qty.swiftConverter('C', units.Temperature);
     let _convertInverseTemperature = Qty.swiftConverter(units.Temperature, 'C');
 
@@ -77,8 +91,18 @@ export const useAppStore = defineStore(
         _convertInversePressure = customPressureConversion(newUnits.Pressure, 'Pa');
         _convertForce = customForceConversion('N', newUnits.Force);
         _convertInverseForce = customForceConversion(newUnits.Force, 'N');
-        _convertMoment = (v) => _convertLength(_convertForce(v));
-        _convertInverseMoment = (v) => _convertInverseLength(_convertInverseForce(v));
+        _convertMoment = (v) => {
+          const lenConv = Qty.swiftConverter('m', momentUnits.value[1]);
+          const forceConv = customForceConversion('N', momentUnits.value[0]);
+
+          return lenConv(forceConv(v));
+        };
+        _convertInverseMoment = (v) => {
+          const lenConv = Qty.swiftConverter(momentUnits.value[1], 'm');
+          const forceConv = customForceConversion(momentUnits.value[0], 'N');
+
+          return lenConv(forceConv(v));
+        };
         _convertTemperature = Qty.swiftConverter('C', newUnits.Temperature);
         _convertInverseTemperature = Qty.swiftConverter(newUnits.Temperature, 'C');
 
@@ -173,6 +197,7 @@ export const useAppStore = defineStore(
       locale,
       numberFormatter,
       units,
+      momentUnits,
       dialogs,
       zooming,
       tab,

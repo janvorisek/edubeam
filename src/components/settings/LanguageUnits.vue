@@ -119,6 +119,27 @@
           >
           </v-select
         ></v-col>
+
+        <v-col cols="6"
+          ><v-select
+            v-model="momentUnitsProxy"
+            item-title="name"
+            item-value="code"
+            hide-details="auto"
+            :items="[
+              { name: 'Nmm', code: 'N_mm' },
+              { name: 'Nm', code: 'N_m' },
+              { name: 'kNm', code: 'kN_m' },
+              { name: 'MNm', code: 'MN_m' },
+              { name: 'Tonf·m', code: 'Tonf_m' },
+              { name: 'lbf·in', code: 'lbf_in' },
+              { name: 'lbf·ft', code: 'lbf_ft' },
+            ]"
+            :label="$t('settings.units.moment')"
+          >
+          </v-select
+        ></v-col>
+
         <v-col cols="6"
           ><v-select
             v-model="appStore.units.Pressure"
@@ -156,10 +177,16 @@ import Spanish from 'language-icons/icons/es.svg';
 import French from 'language-icons/icons/fr.svg';
 import Chinese from 'language-icons/icons/zh.svg';
 import ThaiFlag from '../../assets/th-flag.svg';
+import { computed } from 'vue';
 
 const flags = { en: English, cs: Czech, de: German, es: Spanish, fr: French, cn: Chinese, th: ThaiFlag };
 
 function getImageUrl(name) {
   return flags[name];
 }
+
+const momentUnitsProxy = computed({
+  get: () => appStore.momentUnits.join('_'),
+  set: (val: string) => (appStore.momentUnits = val.split('_')),
+})
 </script>

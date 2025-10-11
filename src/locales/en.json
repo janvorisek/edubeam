@@ -108,6 +108,7 @@
       "length": "Length",
       "mass": "Mass",
       "force": "Force",
+      "moment": "Bending moment",
       "pressure": "Pressure",
       "area": "Area",
       "areaM2": "Second moment of area"

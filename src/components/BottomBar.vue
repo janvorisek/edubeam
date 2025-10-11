@@ -606,7 +606,7 @@
               <div class="inline-edit-group load">
                 <span class="input-before">M<sub>y</sub></span>
                 <input
-                  :value="appStore.convertForce(item.ref.values[4])"
+                  :value="appStore.convertMoment(item.ref.values[4])"
                   class="inline-edit"
                   @keydown="checkNumber($event)"
                   @change="
@@ -1268,8 +1268,7 @@
                 <div class="d-flex" style="font-variant-numeric: tabular-nums">
                   <div
                     v-for="(f, i) in item
-                      .computeEndForces(useProjectStore().solver.loadCases[0])
-                      .map((v) => appStore.convertForce(v))"
+                      .computeEndForces(useProjectStore().solver.loadCases[0])"
                     :key="i"
                     class="inline-edit-group mr-2"
                   >
@@ -1279,7 +1278,7 @@
                     <div
                       v-if="projStore.solver.loadCases[0].solved"
                       class="inline-edit fw pl-1"
-                      v-html="formatExpValueAsHTML(f.value, 4)"
+                      v-html="formatExpValueAsHTML(nameBeamForce(i) === 'M' ? appStore.convertMoment(f.value) : appStore.convertForce(f.value), 4)"
                     />
                     <div v-else class="inline-edit fw pl-1">-</div>
                     <div
@@ -1532,7 +1531,7 @@ const formatNodalLoadsAtNode = (item: Node): [number, string][] => {
     if (DofID.Dz in nl.components && Math.abs(nl.components[DofID.Dz]) > 1e-12)
       tmp.push('F<sub>z</sub> = ' + appStore.convertForce(nl.components[DofID.Dz]));
     if (DofID.Ry in nl.components && Math.abs(nl.components[DofID.Ry]) > 1e-12)
-      tmp.push('M<sub>y</sub> = ' + appStore.convertForce(nl.components[DofID.Ry]));
+      tmp.push('M<sub>y</sub> = ' + appStore.convertMoment(nl.components[DofID.Ry]));
     return [nl.index, tmp.join(', ')];
   });
 };

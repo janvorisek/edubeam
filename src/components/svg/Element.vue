@@ -14,6 +14,7 @@ const props = withDefaults(
     showBendingMoment: boolean;
     showLabel: boolean;
     convertForce: (f: number) => number;
+    convertMoment: (m: number) => number;
     loadCase: LoadCase;
     deformedShapeMultiplier: number;
     normalForceMultiplier: number;
@@ -267,7 +268,7 @@ const forces = computed(() => {
     const zc = n1.coords[2] + sin * labelsXM[s];
 
     const vMraw = props.element.computeBendingMomentAt(props.loadCase, labelsXM[s]);
-    const vM = props.convertForce(vMraw);
+    const vM = props.convertMoment(vMraw);
     if (Math.abs(vMraw) > 1e-8) {
       let px = 0,
         pz = 0;
@@ -320,106 +321,48 @@ const emit = defineEmits(['elementmousemove', 'elementpointerup']);
 
 <template>
   <g class="element element-1d">
-    <path
-      v-if="loadCase.solved && showDeformedShape"
-      :d="results"
-      vector-effect="non-scaling-stroke"
-      class="deformedShape"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
+    <path v-if="loadCase.solved && showDeformedShape" :d="results" vector-effect="non-scaling-stroke"
+      class="deformedShape" stroke-linecap="round" stroke-linejoin="round" />
 
     <g v-if="loadCase.solved && showNormalForce" class="normal">
-      <polyline
-        :points="forces.normal.values"
-        vector-effect="non-scaling-stroke"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
+      <polyline :points="forces.normal.values" vector-effect="non-scaling-stroke" stroke-linecap="round"
+        stroke-linejoin="round" />
       <g v-for="(mv, mli) in forces.normal.text" :key="mli" :transform="`translate(${mv[0]} ${mv[1]})`">
-        <text
-          :font-size="fontSize / scale"
-          class="moment-label filter-text-label"
-          font-weight="normal"
-          :text-anchor="mv[2] > 0 ? 'end' : 'start'"
-          dominant-baseline="baseline"
-        >
-          {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }}
-        </text>
-        <text
-          :font-size="fontSize / scale"
-          class="moment-label"
-          font-weight="normal"
-          :text-anchor="mv[2] > 0 ? 'end' : 'start'"
-          dominant-baseline="baseline"
-        >
-          {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }}
-        </text>
+        <text :font-size="fontSize / scale" class="moment-label filter-text-label" font-weight="normal"
+          :text-anchor="mv[2] > 0 ? 'end' : 'start'" dominant-baseline="baseline">
+          {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }} </text>
+            <text :font-size="fontSize / scale" class="moment-label" font-weight="normal"
+              :text-anchor="mv[2] > 0 ? 'end' : 'start'" dominant-baseline="baseline">
+              {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }} </text>
       </g>
     </g>
     <g v-if="loadCase.solved && showShearForce" class="shear">
-      <polyline
-        :points="forces.shear.values"
-        vector-effect="non-scaling-stroke"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
+      <polyline :points="forces.shear.values" vector-effect="non-scaling-stroke" stroke-linecap="round"
+        stroke-linejoin="round" />
       <g v-for="(mv, mli) in forces.shear.text" :key="mli" :transform="`translate(${mv[0]} ${mv[1]})`">
-        <text
-          :font-size="fontSize / scale"
-          class="moment-label filter-text-label"
-          font-weight="normal"
-          :text-anchor="mv[2] > 0 ? 'end' : 'start'"
-          dominant-baseline="baseline"
-        >
-          {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }}
-        </text>
-        <text
-          :font-size="fontSize / scale"
-          class="moment-label"
-          font-weight="normal"
-          :text-anchor="mv[2] > 0 ? 'end' : 'start'"
-          dominant-baseline="baseline"
-        >
-          {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }}
-        </text>
+        <text :font-size="fontSize / scale" class="moment-label filter-text-label" font-weight="normal"
+          :text-anchor="mv[2] > 0 ? 'end' : 'start'" dominant-baseline="baseline">
+          {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }} </text>
+            <text :font-size="fontSize / scale" class="moment-label" font-weight="normal"
+              :text-anchor="mv[2] > 0 ? 'end' : 'start'" dominant-baseline="baseline">
+              {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }} </text>
       </g>
     </g>
 
     <g v-if="loadCase.solved && showBendingMoment" class="moment">
-      <polyline
-        :points="forces.moment.values"
-        vector-effect="non-scaling-stroke"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
+      <polyline :points="forces.moment.values" vector-effect="non-scaling-stroke" stroke-linecap="round"
+        stroke-linejoin="round" />
       <g v-for="(mv, mli) in forces.moment.text" :key="mli">
-        <polyline
-          :points="`${mv[0]},${mv[1]} ${mv[2]},${mv[3]}`"
-          vector-effect="non-scaling-stroke"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-        <text
-          :font-size="fontSize / scale"
-          class="moment-label filter-text-label"
-          font-weight="normal"
-          :text-anchor="mv[6] < 0 ? 'end' : 'start'"
-          dominant-baseline="baseline"
-          :transform="`translate(${mv[4]} ${mv[5]})`"
-        >
-          {{ numberFormat.format(Math.abs(mv[6]) < 1e-6 ? 0 : mv[6]) }}
-        </text>
-        <text
-          :font-size="fontSize / scale"
-          class="moment-label"
-          font-weight="normal"
-          :text-anchor="mv[6] < 0 ? 'end' : 'start'"
-          dominant-baseline="baseline"
-          :transform="`translate(${mv[4]} ${mv[5]})`"
-        >
-          {{ numberFormat.format(Math.abs(mv[6]) < 1e-6 ? 0 : mv[6]) }}
-        </text>
+        <polyline :points="`${mv[0]},${mv[1]} ${mv[2]},${mv[3]}`" vector-effect="non-scaling-stroke"
+          stroke-linecap="round" stroke-linejoin="round" />
+        <text :font-size="fontSize / scale" class="moment-label filter-text-label" font-weight="normal"
+          :text-anchor="mv[6] < 0 ? 'end' : 'start'" dominant-baseline="baseline"
+          :transform="`translate(${mv[4]} ${mv[5]})`">
+          {{ numberFormat.format(Math.abs(mv[6]) < 1e-6 ? 0 : mv[6]) }} </text>
+            <text :font-size="fontSize / scale" class="moment-label" font-weight="normal"
+              :text-anchor="mv[6] < 0 ? 'end' : 'start'" dominant-baseline="baseline"
+              :transform="`translate(${mv[4]} ${mv[5]})`">
+              {{ numberFormat.format(Math.abs(mv[6]) < 1e-6 ? 0 : mv[6]) }} </text>
       </g>
     </g>
 
@@ -427,64 +370,32 @@ const emit = defineEmits(['elementmousemove', 'elementpointerup']);
 
     <polyline :points="elementFibers" class="fibers" stroke-dasharray="5 4" vector-effect="non-scaling-stroke" />
 
-    <circle
-      v-if="element.hinges[0]"
-      :transform="`translate(${elementHinges[0]})`"
-      :r="6 / scale"
-      fill="white"
-      stroke="black"
-      vector-effect="non-scaling-stroke"
-      stroke-width="2"
-    />
+    <circle v-if="element.hinges[0]" :transform="`translate(${elementHinges[0]})`" :r="6 / scale" fill="white"
+      stroke="black" vector-effect="non-scaling-stroke" stroke-width="2" />
 
-    <circle
-      v-if="element.hinges[1]"
-      :transform="`translate(${elementHinges[1]})`"
-      :r="6 / scale"
-      fill="white"
-      stroke="black"
-      vector-effect="non-scaling-stroke"
-      stroke-width="2"
-    />
+    <circle v-if="element.hinges[1]" :transform="`translate(${elementHinges[1]})`" :r="6 / scale" fill="white"
+      stroke="black" vector-effect="non-scaling-stroke" stroke-width="2" />
 
     <g>
-      <text
-        v-if="showLabel"
-        :x="
-          (element.domain.nodes.get(element.nodes[0])!.coords[0] +
-            element.domain.nodes.get(element.nodes[1])!.coords[0]) /
+      <text v-if="showLabel" :x="(element.domain.nodes.get(element.nodes[0])!.coords[0] +
+        element.domain.nodes.get(element.nodes[1])!.coords[0]) /
+        2
+        " :y="(element.domain.nodes.get(element.nodes[0])!.coords[2] +
+          element.domain.nodes.get(element.nodes[1])!.coords[2]) /
           2
-        "
-        :y="
-          (element.domain.nodes.get(element.nodes[0])!.coords[2] +
+          " :font-size="fontSize / scale" font-weight="normal" text-anchor="middle" dominant-baseline="central"
+        :transform="`${elementLabel} rotate(${elementAngle} ${(element.domain.nodes.get(element.nodes[0])!.coords[0] +
+          element.domain.nodes.get(element.nodes[1])!.coords[0]) /
+          2
+          } ${(element.domain.nodes.get(element.nodes[0])!.coords[2] +
             element.domain.nodes.get(element.nodes[1])!.coords[2]) /
           2
-        "
-        :font-size="fontSize / scale"
-        font-weight="normal"
-        text-anchor="middle"
-        dominant-baseline="central"
-        :transform="`${elementLabel} rotate(${elementAngle} ${
-          (element.domain.nodes.get(element.nodes[0])!.coords[0] +
-            element.domain.nodes.get(element.nodes[1])!.coords[0]) /
-          2
-        } ${
-          (element.domain.nodes.get(element.nodes[0])!.coords[2] +
-            element.domain.nodes.get(element.nodes[1])!.coords[2]) /
-          2
-        })`"
-      >
+          })`">
         {{ element.label }}
       </text>
     </g>
 
-    <polyline
-      :points="elementCoords"
-      vector-effect="non-scaling-stroke"
-      class="handle"
-      :data-element-id="element.label"
-      @mousemove="emit('elementmousemove', $event, element)"
-      @pointerup="emit('elementpointerup', $event)"
-    />
+    <polyline :points="elementCoords" vector-effect="non-scaling-stroke" class="handle" :data-element-id="element.label"
+      @mousemove="emit('elementmousemove', $event, element)" @pointerup="emit('elementpointerup', $event)" />
   </g>
 </template>

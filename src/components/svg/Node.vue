@@ -11,6 +11,7 @@ const props = withDefaults(
     showReactions: boolean;
     showLabel: boolean;
     convertForce: (f: number) => number;
+    convertMoment: (m: number) => number;
     showDeformedShape: boolean;
     loadCase: LoadCase;
     multiplier: number;
@@ -342,7 +343,7 @@ const emit = defineEmits(['nodemousemove', 'nodepointerup', 'nodedefomousemove']
       :transform="`translate(${node.coords[0] + 15 / scale}
               ${node.coords[2] - 15 / scale})`"
     >
-      {{ numberFormat.format(convertForce(Math.abs(getReaction(node, DofID.Ry)))) }}
+      {{ numberFormat.format(convertMoment(Math.abs(getReaction(node, DofID.Ry)))) }}
     </text>
 
     <g v-if="loadCase.solved && showDeformedShape && isConnected" :transform="deformedPosition">

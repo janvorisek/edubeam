@@ -15,6 +15,7 @@
           :show-deformed-shape="showQuantity === 'deformedShape'"
           :show-reactions="showQuantity === 'reactions'"
           :show-loads="true"
+          :show-supports="true"
           :show-moments="showQuantity === 'bendingMoment'"
           :show-normal-force="showQuantity === 'normalForce'"
           :show-shear-force="showQuantity === 'shearForce'"

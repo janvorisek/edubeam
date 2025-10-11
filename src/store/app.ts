@@ -12,6 +12,7 @@ import SettingsModal from '../components/dialogs/Settings.vue';
 import Qty from 'js-quantities';
 import { isMobile, suggestLanguage } from '@/utils';
 import { customForceConversion, customPressureConversion } from '@/utils/unitConversions';
+import { useProjectStore } from './project';
 
 export const useAppStore = defineStore(
   'app',
@@ -43,6 +44,11 @@ export const useAppStore = defineStore(
       ForceDistance: computed(() => `${units.Force}/${units.Length}`),
     });
 
+    // TODO: We really don't need to solve anything, but this triggers most of the reactivity we need
+    watch(units, (newUnits) => {
+      useProjectStore().solve();
+    });
+
     let _convertLength = Qty.swiftConverter('m', units.Length);
     let _convertInverseLength = Qty.swiftConverter(units.Length, 'm');
     let _convertArea = Qty.swiftConverter('m2', units.Area);
@@ -53,6 +59,8 @@ export const useAppStore = defineStore(
     let _convertInversePressure = customPressureConversion(units.Pressure, 'Pa');
     let _convertForce = customForceConversion('N', units.Force);
     let _convertInverseForce = customForceConversion(units.Force, 'N');
+    let _convertMoment = (v) => _convertLength(_convertForce(v));
+    let _convertInverseMoment = (v) => _convertInverseLength(_convertInverseForce(v));
     let _convertTemperature = Qty.swiftConverter('C', units.Temperature);
     let _convertInverseTemperature = Qty.swiftConverter(units.Temperature, 'C');
 
@@ -69,6 +77,8 @@ export const useAppStore = defineStore(
         _convertInversePressure = customPressureConversion(newUnits.Pressure, 'Pa');
         _convertForce = customForceConversion('N', newUnits.Force);
         _convertInverseForce = customForceConversion(newUnits.Force, 'N');
+        _convertMoment = (v) => _convertLength(_convertForce(v));
+        _convertInverseMoment = (v) => _convertInverseLength(_convertInverseForce(v));
         _convertTemperature = Qty.swiftConverter('C', newUnits.Temperature);
         _convertInverseTemperature = Qty.swiftConverter(newUnits.Temperature, 'C');
 
@@ -92,6 +102,8 @@ export const useAppStore = defineStore(
     const convertInversePressure = (value: number) => _convertInversePressure(value);
     const convertForce = (value: number) => _convertForce(value);
     const convertInverseForce = (value: number) => _convertInverseForce(value);
+    const convertMoment = (value: number) => _convertMoment(value);
+    const convertInverseMoment = (value: number) => _convertInverseMoment(value);
     const convertTemperature = (value: number) => _convertTemperature(value);
     const convertInverseTemperature = (value: number) => _convertInverseTemperature(value);
 
@@ -184,6 +196,8 @@ export const useAppStore = defineStore(
       convertInversePressure,
       convertForce,
       convertInverseForce,
+      convertMoment,
+      convertInverseMoment,
       convertTemperature,
       convertInverseTemperature,
     };

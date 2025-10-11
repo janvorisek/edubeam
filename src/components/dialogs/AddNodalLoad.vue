@@ -140,11 +140,11 @@ const mainLabel = computed(() => (loadType.value === 'force' ? 'F' : 'D'));
 const momentLabel = computed(() => (loadType.value === 'force' ? 'M' : 'R'));
 
 const mainUnits = computed(() => (loadType.value === 'force' ? appStore.units.Force : appStore.units.Length));
-const momentUnits = computed(() => (loadType.value === 'force' ? appStore.units.Force + 'm' : 'rad'));
+const momentUnits = computed(() => (loadType.value === 'force' ? appStore.units.Moment : 'rad'));
 
 const realFx = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueFx.value)));
 const realFz = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueFz.value)));
-const realMy = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueMy.value)));
+const realMy = computed(() => appStore.convertInverseMoment(parseFloat2(loadNodeValueMy.value)));
 
 const realDx = computed(() => appStore.convertInverseLength(parseFloat2(loadNodeValueFx.value)));
 const realDz = computed(() => appStore.convertInverseLength(parseFloat2(loadNodeValueFz.value)));

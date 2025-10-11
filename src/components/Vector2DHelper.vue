@@ -24,7 +24,7 @@ const loadNodeValueFzInUnits = computed(() => {
 });
 
 const loadNodeValueMyInUnits = computed(() => {
-  return appStore.convertForce(props.my);
+  return appStore.convertMoment(props.my);
 });
 
 const flen = computed(() => appStore.convertForce(Math.sqrt(props.fx ** 2 + props.fz ** 2)));
@@ -73,106 +73,44 @@ const angle = computed(() => {
   <svg width="160" height="160" :viewBox="vbox" xmlns="http://www.w3.org/2000/svg">
     <g v-if="props.fx !== 0 || props.fz !== 0">
       <!-- Arrow -->
-      <line
-        x1="0"
-        y1="0"
-        :x2="end.x"
-        :y2="end.y"
-        stroke="black"
-        stroke-width="2"
-        vector-effect="non-scaling-stroke"
-        marker-end="url(#arrowhead)"
-      />
+      <line x1="0" y1="0" :x2="end.x" :y2="end.y" stroke="black" stroke-width="2" vector-effect="non-scaling-stroke"
+        marker-end="url(#arrowhead)" />
 
       <!-- Arrowhead marker definition -->
       <defs>
-        <marker
-          id="arrowhead"
-          markerWidth="10"
-          markerHeight="7"
-          markerUnits="strokeWidth"
-          refX="10"
-          refY="3.5"
-          orient="auto"
-        >
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" markerUnits="strokeWidth" refX="10" refY="3.5"
+          orient="auto">
           <polygon points="3 1, 10 3.5, 3 6" vector-effect="non-scaling-stroke" fill="black" />
         </marker>
       </defs>
 
       <!-- Decomposition lines -->
-      <line
-        v-if="Math.abs(props.fx) > 1e-6 && Math.abs(props.fz) > 1e-6"
-        x1="0"
-        y1="0"
-        :x2="end.x"
-        y2="0"
-        stroke="red"
-        stroke-width="1"
-        stroke-dasharray="5"
-        vector-effect="non-scaling-stroke"
-      />
-      <line
-        v-if="Math.abs(props.fz) > 1e-6 && Math.abs(props.fx) > 1e-6"
-        :x1="end.x"
-        y1="0"
-        :x2="end.x"
-        :y2="end.y"
-        stroke="blue"
-        stroke-width="1"
-        stroke-dasharray="5"
-        vector-effect="non-scaling-stroke"
-      />
+      <line v-if="Math.abs(props.fx) > 1e-6 && Math.abs(props.fz) > 1e-6" x1="0" y1="0" :x2="end.x" y2="0" stroke="red"
+        stroke-width="1" stroke-dasharray="5" vector-effect="non-scaling-stroke" />
+      <line v-if="Math.abs(props.fz) > 1e-6 && Math.abs(props.fx) > 1e-6" :x1="end.x" y1="0" :x2="end.x" :y2="end.y"
+        stroke="blue" stroke-width="1" stroke-dasharray="5" vector-effect="non-scaling-stroke" />
 
       <g v-if="Math.abs(props.my) > 1e-32">
-        <polyline
-          points="0,0 0,0"
-          :marker-end="`url(${props.my > 0 ? '#moment_ccw' : '#moment_cw'})`"
-          fill="none"
-          :transform="`translate(${end.x} ${end.y})`"
-        />
-        <text
-          :x="end.x"
-          :y="end.y + (props.fz < 0 ? -5 : 7)"
-          :fill="viewerStore.colors.loads"
-          font-size="10"
-          :text-anchor="'middle'"
-          alignment-baseline="middle"
-        >
+        <polyline points="0,0 0,0" :marker-end="`url(${props.my > 0 ? '#moment_ccw' : '#moment_cw'})`" fill="none"
+          :transform="`translate(${end.x} ${end.y})`" />
+        <text :x="end.x" :y="end.y + (props.fz < 0 ? -5 : 7)" :fill="viewerStore.colors.loads" font-size="10"
+          :text-anchor="'middle'" alignment-baseline="middle">
           {{ Math.abs(loadNodeValueMyInUnits).toFixed(2) }}
         </text>
       </g>
 
-      <text
-        v-if="Math.abs(props.fx) > 1e-6 && Math.abs(props.fz) > 1e-6"
-        :x="end.x / 2"
-        :y="props.fz < 0 ? 5 : -5"
-        fill="red"
-        font-size="10"
-        text-anchor="middle"
-        alignment-baseline="middle"
-      >
+      <text v-if="Math.abs(props.fx) > 1e-6 && Math.abs(props.fz) > 1e-6" :x="end.x / 2" :y="props.fz < 0 ? 5 : -5"
+        fill="red" font-size="10" text-anchor="middle" alignment-baseline="middle">
         {{ Math.abs(loadNodeValueFxInUnits).toFixed(2) }}
       </text>
-      <text
-        v-if="Math.abs(props.fx) > 1e-6 && Math.abs(props.fz) > 1e-6"
-        :x="props.fx < 0 ? end.x - 3 : end.x + 3"
-        :y="end.y / 2"
-        fill="blue"
-        font-size="10"
-        :text-anchor="props.fx < 0 ? 'end' : 'start'"
-        alignment-baseline="middle"
-      >
+      <text v-if="Math.abs(props.fx) > 1e-6 && Math.abs(props.fz) > 1e-6" :x="props.fx < 0 ? end.x - 3 : end.x + 3"
+        :y="end.y / 2" fill="blue" font-size="10" :text-anchor="props.fx < 0 ? 'end' : 'start'"
+        alignment-baseline="middle">
         {{ Math.abs(loadNodeValueFzInUnits).toFixed(2) }}
       </text>
       <g>
-        <text
-          :x="center2.x"
-          :y="center2.y"
-          fill="black"
-          font-size="10"
-          text-anchor="middle"
-          :transform="`rotate(${props.fx < 0 ? 180 + angle : angle}, ${center2.x}, ${center2.y})`"
-        >
+        <text :x="center2.x" :y="center2.y" fill="black" font-size="10" text-anchor="middle"
+          :transform="`rotate(${props.fx < 0 ? 180 + angle : angle}, ${center2.x}, ${center2.y})`">
           {{ flen.toFixed(2) }}
         </text>
       </g>

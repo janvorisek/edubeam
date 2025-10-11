@@ -7,6 +7,7 @@ const props = withDefaults(
     nload: NodalLoad;
     scale: number;
     convertForce: (f: number) => number;
+    convertMoment: (m: number) => number;
     fontSize?: number;
     numberFormat?: Intl.NumberFormat;
   }>(),
@@ -73,7 +74,7 @@ const targetCoords = computed(() => {
       :transform="`translate(${target.coords[0] + (fontSize + 8) / scale}
               ${target.coords[2] - (fontSize / 2 + 2) / scale})`"
     >
-      {{ numberFormat.format(Math.abs(convertForce(nload.values[4]))) }}
+      {{ numberFormat.format(Math.abs(convertMoment(nload.values[4]))) }}
     </text>
 
     <text

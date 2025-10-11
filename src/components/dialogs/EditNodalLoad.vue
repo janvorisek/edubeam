@@ -164,7 +164,7 @@ onMounted(() => {
     const load = useProjectStore().solver.loadCases[0].nodalLoadList[props.index];
     loadNodeValueFx.value = appStore.convertForce(load.values[DofID.Dx]).toString();
     loadNodeValueFz.value = appStore.convertForce(load.values[DofID.Dz]).toString();
-    loadNodeValueMy.value = appStore.convertForce(load.values[DofID.Ry]).toString();
+    loadNodeValueMy.value = appStore.convertMoment(load.values[DofID.Ry]).toString();
   }
 });
 

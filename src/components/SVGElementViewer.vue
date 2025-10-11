@@ -64,6 +64,7 @@ const props = withDefaults(
     };
     supportSize?: number;
     convertForce?: (value: number) => number;
+    convertMoment?: (value: number) => number;
     convertLength?: (value: number) => number;
     zoomEnabled?: boolean;
     fontSize?: number;
@@ -104,6 +105,7 @@ const props = withDefaults(
     },
     supportSize: 1,
     convertForce: (v) => v,
+    convertMoment: (v) => v,
     convertLength: (v) => v,
     zoomEnabled: false,
     fontSize: 13,
@@ -200,6 +202,33 @@ const dynamicMarker = (label: string) => {
   return `url(#${props.id}-${label})`;
 };
 
+// Computed dynamic markers
+const markerForce = computed(() => dynamicMarker('force'));
+const markerForceHover = computed(() => dynamicMarker('force_hover'));
+const markerForceSelected = computed(() => dynamicMarker('force_selected'));
+const markerCentered = computed(() => dynamicMarker('force_centered'));
+const markerCenteredHover = computed(() => dynamicMarker('force_centered_hover'));
+
+const markerMomentCw = computed(() => dynamicMarker('moment_cw'));
+const markerMomentCwHover = computed(() => dynamicMarker('moment_cw_hover'));
+const markerMomentCwSelected = computed(() => dynamicMarker('moment_cw_selected'));
+
+const markerMomentCcw = computed(() => dynamicMarker('moment_ccw'));
+const markerMomentCcwHover = computed(() => dynamicMarker('moment_ccw_hover'));
+const markerMomentCcwSelected = computed(() => dynamicMarker('moment_ccw_selected'));
+
+const markerReaction = computed(() => dynamicMarker('reaction'));
+const markerMomentReactionCcw = computed(() => dynamicMarker('moment_reaction_ccw'));
+const markerMomentReactionCw = computed(() => dynamicMarker('moment_reaction_cw'));
+const markerDot = computed(() => dynamicMarker('dot'));
+const markerHingeXY = computed(() => dynamicMarker('hinge-xy'));
+const markerHingeX = computed(() => dynamicMarker('hinge-x'));
+const markerHingeY = computed(() => dynamicMarker('hinge-y'));
+const markerForceTip = computed(() => dynamicMarker('forceTip'));
+const markerDimTip = computed(() => dynamicMarker('dimTip'));
+
+const markerTextLabel = computed(() => dynamicMarker('textLabel'));
+
 defineExpose({ centerContent, fitContent });
 </script>
 
@@ -217,7 +246,30 @@ defineExpose({ centerContent, fitContent });
       :zoom-enabled="props.zoomEnabled"
       style="overflow: visible; z-index: 50; min-height: 0"
     >
-      <svg ref="svg">
+      <svg ref="svg"
+      :style="{
+        '--marker-force': markerForce,
+        '--marker-force-hover': markerForceHover,
+        '--marker-force-selected': markerForceSelected,
+        '--marker-centered': markerCentered,
+        '--marker-centered-hover': markerCenteredHover,
+        '--marker-moment-cw': markerMomentCw,
+        '--marker-moment-cw-hover': markerMomentCwHover,
+        '--marker-moment-cw-selected': markerMomentCwSelected,
+        '--marker-moment-ccw': markerMomentCcw,
+        '--marker-moment-ccw-hover': markerMomentCcwHover,
+        '--marker-moment-ccw-selected': markerMomentCcwSelected,
+        '--marker-reaction': markerReaction,
+        '--marker-moment-reaction-ccw': markerMomentReactionCcw,
+        '--marker-moment-reaction-cw': markerMomentReactionCw,
+        '--marker-dot': markerDot,
+        '--marker-hinge-xy': markerHingeXY,
+        '--marker-hinge-x': markerHingeX,
+        '--marker-hinge-y': markerHingeY,
+        '--marker-force-tip': markerForceTip,
+        '--marker-dim-tip': markerDimTip,
+        '--filter-text-label': markerTextLabel,
+      }">
         <SvgViewerDefs :id="id" :colors="colors" :support-size="supportSize" :scale="scale" />
         <g ref="viewport">
           <g>
@@ -287,6 +339,7 @@ defineExpose({ centerContent, fitContent });
               :shear-force-multiplier="shearForceScale * props.resultsScalePx"
               :bending-moment-multiplier="bendingMomentScale * props.resultsScalePx"
               :convert-force="props.convertForce"
+              :convert-moment="props.convertMoment"
               :font-size="props.fontSize"
             />
           </g>
@@ -301,6 +354,7 @@ defineExpose({ centerContent, fitContent });
                 :show-deformed-shape="props.showDeformedShape"
                 :show-reactions="props.showReactions"
                 :convert-force="props.convertForce"
+                :convert-moment="props.convertMoment"
                 :load-case="props.solver.loadCases[0]"
                 :multiplier="defoScale * props.resultsScalePx"
                 :font-size="props.fontSize"
@@ -329,7 +383,7 @@ defineExpose({ centerContent, fitContent });
       stroke-width: 3px;
     }
     &:hover polyline {
-      marker-end: v-bind(dynamicMarker('force_centered_hover'));
+      marker-end: var(--marker-centered-hover);
     }
     polygon,
     path {
@@ -341,7 +395,7 @@ defineExpose({ centerContent, fitContent });
       }
     }
     polyline {
-      marker-end: v-bind(dynamicMarker('force_centered'));
+      marker-end: var(--marker-centered);
     }
 
     &.selected {
@@ -464,13 +518,15 @@ defineExpose({ centerContent, fitContent });
       stroke-linecap: square;
       vector-effect: non-scaling-stroke;
       &.decoration.force {
-        marker-end: v-bind(dynamicMarker('force'));
+        marker-end: var(--marker-force);
       }
+
       &.decoration.moment.cw {
-        marker-end: v-bind(dynamicMarker('moment_cw'));
+        marker-end: var(--marker-moment-cw);
       }
+
       &.decoration.moment.ccw {
-        marker-end: v-bind(dynamicMarker('#moment_ccw'));
+        marker-end: var(--marker-moment-ccw);
       }
       &.handle {
         stroke: transparent;
@@ -483,16 +539,32 @@ defineExpose({ centerContent, fitContent });
       }
     }
     &:hover text {
-      fill: blue;
+      //fill: blue;
+      font-weight: bold;
     }
+
     &:hover polyline.decoration.force {
-      marker-end: v-bind(dynamicMarker('force_hover'));
+      marker-end: var(--marker-force-hover);
     }
+
     &:hover polyline.decoration.moment.cw {
-      marker-end: v-bind(dynamicMarker('moment_cw_hover'));
+      marker-end: var(--marker-moment-cw-hover);
     }
+
     &:hover polyline.decoration.moment.ccw {
-      marker-end: v-bind(dynamicMarker('moment_ccw_hover'));
+      marker-end: var(--marker-moment-ccw-hover);
+    }
+
+    &.selected polyline.decoration.force {
+      marker-end: var(--marker-force-selected);
+    }
+
+    &.selected polyline.decoration.moment.cw {
+      marker-end: var(--marker-moment-cw-selected);
+    }
+
+    &.selected polyline.decoration.moment.ccw {
+      marker-end: var(--marker-moment-ccw-selected);
     }
     &.selected {
       text {
@@ -518,39 +590,44 @@ defineExpose({ centerContent, fitContent });
   }
 
   .marker-reaction {
-    marker-start: v-bind(dynamicMarker('reaction'));
+    marker-start: var(--marker-reaction);
   }
 
   .marker-moment_reaction_ccw {
-    marker-start: v-bind(dynamicMarker('moment_reaction_ccw'));
+    marker-start: var(--marker-moment-reaction-ccw);
   }
 
   .marker-moment_reaction_cw {
-    marker-start: v-bind(dynamicMarker('moment_reaction_cw'));
+    marker-start: var(--marker-moment-reaction-cw);
   }
 
   .marker-dot {
-    marker-start: v-bind(dynamicMarker('dot'));
+    marker-start: var(--marker-dot);
   }
 
   .marker-hinge-xy {
-    marker-start: v-bind(dynamicMarker('hinge-xy'));
+    marker-start: var(--marker-hinge-xy);
   }
 
   .marker-hinge-x {
-    marker-start: v-bind(dynamicMarker('hinge-x'));
+    marker-start: var(--marker-hinge-x);
   }
 
   .marker-hinge-y {
-    marker-start: v-bind(dynamicMarker('hinge-y'));
+    marker-start: var(--marker-hinge-y);
   }
 
   .marker-forceTip {
-    marker-end: v-bind(dynamicMarker('forceTip'));
+    marker-end: var(--marker-force-tip);
+  }
+
+  .marker-dimTip {
+    marker-start: var(--marker-dim-tip);
+    marker-end: var(--marker-dim-tip);
   }
 
   .filter-text-label {
-    filter: v-bind(dynamicMarker('textLabel'));
+    filter: var(--filter-text-label);
   }
 }
 </style>

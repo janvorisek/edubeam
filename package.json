@@ -28,7 +28,7 @@
     "language-icons": "^0.3.0",
     "markdown-it-implicit-figures": "^0.12.0",
     "markdown-it-katex": "^2.0.3",
-    "mathjs": "^12.3.2",
+    "mathjs": "^15.0.0",
     "pinia": "^3.0.2",
     "pinia-plugin-persistedstate": "^4.3.0",
     "roboto-fontface": "*",

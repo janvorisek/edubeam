@@ -1289,7 +1289,7 @@
                     <div
                       v-else
                       class="input-after"
-                      v-html="formatMeasureAsHTML(appStore.units.Force) + formatMeasureAsHTML(appStore.units.Length)"
+                      v-html="formatMeasureAsHTML(appStore.units.Moment)"
                     ></div>
                   </div>
                 </div>

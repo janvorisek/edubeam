@@ -2,12 +2,8 @@
   <g>
     <g class="grid">
       <rect class="chartBorder" x="16" y="16" width="100%" height="100%" />
-      <path
-        stroke="#ccc"
-        vector-effect="non-scaling-stroke"
-        :d="gridPath"
-        :transform="`translate(${gridTX} ${gridTY})`"
-      />
+      <path stroke="#ccc" vector-effect="non-scaling-stroke" :d="gridPath"
+        :transform="`translate(${gridTX} ${gridTY})`" />
     </g>
 
     <g class="grid">
@@ -26,7 +22,7 @@
         </text>
       </g>
     </g>
-    <g v-if="!appStore.inViewerMode" class="cs" :transform="`translate(${csLeft} ${csTop})`">
+    <g v-if="!props.viewMode" class="cs" :transform="`translate(${csLeft} ${csTop})`">
       <text fill="red" text-anchor="middle" alignment-baseline="middle" x="40" y="-30"> x </text>
       <text fill="green" text-anchor="middle" alignment-baseline="middle" x="10" y="0"> z </text>
       <line y1="-40" x1="0" y2="0" x2="0" stroke-width="3" stroke="green" stroke-linecap="round" />
@@ -38,15 +34,17 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-import { useAppStore } from '@/store/app';
-
-const appStore = useAppStore();
-
-const props = defineProps<{
-  svg: SVGSVGElement;
-  viewport: SVGGElement;
-  zoom: number;
-}>();
+const props = withDefaults(
+  defineProps<{
+    svg: SVGSVGElement;
+    viewport: SVGGElement;
+    zoom: number;
+    viewMode?: boolean;
+  }>(),
+  {
+    viewMode: false,
+  }
+);
 
 const gridPath = ref('');
 const xGridTexts = ref<{ x: number; y: number; value: number }[]>([]);
@@ -171,6 +169,7 @@ defineExpose({ refreshGrid });
 <style lang="scss" scoped>
 .grid {
   font-size: 12px;
+
   path {
     //transition: all 0.1s linear;
     shape-rendering: crispEdges;

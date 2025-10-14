@@ -1252,7 +1252,7 @@ defineExpose({ centerContent, fitContent });
     </div>
 
     <svg v-if="viewerStore.showGrid" class="w-100 fill-height" style="position: absolute">
-      <SvgGrid ref="grid" :svg="svg as SVGSVGElement" :viewport="viewport as SVGGElement" :zoom="scale" />
+      <SvgGrid ref="grid" :svg="svg as SVGSVGElement" :viewport="viewport as SVGGElement" :zoom="scale" :view-mode="appStore.inViewerMode" />
     </svg>
 
     <SvgPanZoom ref="panZoom" :on-update="onUpdate" :padding="128" :mobile-padding="32"

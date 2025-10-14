@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { formatScientificNumber } from '@/utils';
+import { formatScientificNumber } from '@/utils/index';
 import { PrescribedDisplacement } from 'ts-fem';
 import { computed } from 'vue';
 

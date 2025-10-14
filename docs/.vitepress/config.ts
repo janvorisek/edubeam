@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress';
 import markdownItKatex from 'markdown-it-katex';
 import implicitFigures from 'markdown-it-implicit-figures';
+import path from 'path';
 
 const customElements = [
   'math',
@@ -252,6 +253,13 @@ export default defineConfig({
     template: {
       compilerOptions: {
         isCustomElement: (tag) => customElements.includes(tag),
+      },
+    },
+  },
+  vite: {
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, '../../src'),
       },
     },
   },

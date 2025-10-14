@@ -5,7 +5,7 @@ import App from './App.vue';
 import { createApp } from 'vue';
 
 // Google Analytics
-import VueGtag from 'vue-gtag';
+import { createGtag } from 'vue-gtag';
 
 // Plugins
 import { registerPlugins } from '@/plugins';
@@ -22,10 +22,12 @@ const app = createApp(App);
 
 app.config.globalProperties.window = window;
 
+const gtag = createGtag({
+  tagId: 'G-RFM73PGN79',
+});
+
 if (import.meta.env.PROD) {
-  app.use(VueGtag, {
-    config: { id: 'G-RFM73PGN79' },
-  });
+  app.use(gtag);
 
   Sentry.init({
     app,

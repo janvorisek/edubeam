@@ -172,8 +172,15 @@
 }
 
 @media (min-width: 960px) {
-  .VPHero.has-image .text {
+  .VPHero.has-image {
+    .image-src {
+      display: flex;
+      height: 150px !important;
+    }
+
+    .text {
       margin-top: 16px !important;
+    }
   }
 }
 

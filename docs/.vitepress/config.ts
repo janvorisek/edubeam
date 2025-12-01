@@ -2,6 +2,7 @@ import { defineConfig } from 'vitepress';
 import markdownItKatex from 'markdown-it-katex';
 import implicitFigures from 'markdown-it-implicit-figures';
 import path from 'path';
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 
 const customElements = [
   'math',
@@ -262,5 +263,12 @@ export default defineConfig({
         '@': path.resolve(__dirname, '../../src'),
       },
     },
+    plugins: [
+      VueI18nPlugin({
+        include: path.resolve(__dirname, '../../src/locales/**'),
+        runtimeOnly: false,
+        strictMessage: false,
+      }),
+    ],
   },
 });

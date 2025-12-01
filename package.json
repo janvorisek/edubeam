@@ -1,7 +1,10 @@
 {
   "name": "edubeam",
-  "version": "1.0.0-beta-1",
+  "version": "1.0.1",
   "type": "module",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "vitepress dev docs2",
     "build": "vitepress build docs2",

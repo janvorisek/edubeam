@@ -1,5 +1,5 @@
 import { createI18n } from 'vue-i18n';
-//import messages from '@intlify/unplugin-vue-i18n/messages';
+import messages from '@intlify/unplugin-vue-i18n/messages';
 import * as vloc from 'vuetify/locale';
 
 export const availableLocales = [
@@ -18,7 +18,7 @@ export const i18n = createI18n({
   globalInjection: true,
   locale: 'en',
   fallbackLocale: 'en',
-  //messages: messages,
+  messages: messages,
 });
 
 // Set new locale.

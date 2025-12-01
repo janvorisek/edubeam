@@ -2,8 +2,12 @@
   <g>
     <g class="grid">
       <rect class="chartBorder" x="16" y="16" width="100%" height="100%" />
-      <path stroke="#ccc" vector-effect="non-scaling-stroke" :d="gridPath"
-        :transform="`translate(${gridTX} ${gridTY})`" />
+      <path
+        stroke="#ccc"
+        vector-effect="non-scaling-stroke"
+        :d="gridPath"
+        :transform="`translate(${gridTX} ${gridTY})`"
+      />
     </g>
 
     <g class="grid">
@@ -71,7 +75,7 @@ const refreshGrid = (isZooming = false) => {
   rightBottom.y = svgBB.bottom - svgBB.top;
 
   csLeft.value = 45;
-  csTop.value = svgBB.bottom - 130;
+  csTop.value = svgBB.bottom - svgBB.top - 45;
 
   const inv = matrix.inverse();
   const svgP1 = leftTop.matrixTransform(inv);

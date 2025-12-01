@@ -22,12 +22,14 @@ const app = createApp(App);
 
 app.config.globalProperties.window = window;
 
-const gtag = createGtag({
-  tagId: 'G-RFM73PGN79',
-});
-
 if (import.meta.env.PROD) {
-  app.use(gtag);
+  // Google analytics - production only and when specified
+  if (import.meta.env.VITE_GANALYTICS_TAG_ID) {
+    const gtag = createGtag({
+      tagId: import.meta.env.VITE_GANALYTICS_TAG_ID,
+    });
+    app.use(gtag);
+  }
 
   Sentry.init({
     app,

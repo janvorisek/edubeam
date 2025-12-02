@@ -448,7 +448,7 @@ const TTWIDTH = 210;
 const onNodeClick = (e: MouseEvent) => {
   if (hasMoved(e)) return;
 
-  appStore.bottomBarTab = 0;
+  appStore.bottomBarTab = 'tab-nodes';
 
   const target = e.target as HTMLElement;
   const index = target.getAttribute('data-node-id') || '-1';
@@ -474,7 +474,7 @@ const onNodeClick = (e: MouseEvent) => {
 const onElementClick = (e: MouseEvent) => {
   if (hasMoved(e)) return;
 
-  appStore.bottomBarTab = 1;
+  appStore.bottomBarTab = 'tab-elements';
 
   const target = e.target as HTMLElement;
   const index = target.getAttribute('data-element-id') || '-1';
@@ -496,7 +496,7 @@ const onElementClick = (e: MouseEvent) => {
 const onElementLoadClick = (e: MouseEvent, index: number) => {
   if (hasMoved(e)) return;
 
-  appStore.bottomBarTab = 2;
+  appStore.bottomBarTab = 'tab-loads';
 
   const target = e.target as HTMLElement;
 
@@ -517,7 +517,7 @@ const onElementLoadClick = (e: MouseEvent, index: number) => {
 const onNodalLoadClick = (e: MouseEvent, index: number) => {
   if (hasMoved(e)) return;
 
-  appStore.bottomBarTab = 2;
+  appStore.bottomBarTab = 'tab-loads';
 
   const target = e.target as HTMLElement;
 
@@ -538,7 +538,7 @@ const onNodalLoadClick = (e: MouseEvent, index: number) => {
 const onPrescribedBCClick = (e: MouseEvent, index: number) => {
   if (hasMoved(e)) return;
 
-  appStore.bottomBarTab = 2;
+  appStore.bottomBarTab = 'tab-loads';
 
   const target = e.target as HTMLElement;
 
@@ -1119,8 +1119,11 @@ defineExpose({ centerContent, fitContent });
 
 <template>
   <div class="d-flex flex-column fill-height svg-viewer">
-    <div v-if="!appStore.inViewerMode" class="text-body-2 d-flex line-height-1"
-      style="position: absolute; z-index: 100; bottom: 24px; right: 24px">
+    <div
+      v-if="!appStore.inViewerMode"
+      class="text-body-2 d-flex line-height-1"
+      style="position: absolute; z-index: 100; bottom: 24px; right: 24px"
+    >
       <v-chip-group>
         <v-chip class="justify-end" density="compact" @click="appStore.openSettings()">
           <div class="d-flex ga-1">
@@ -1140,25 +1143,61 @@ defineExpose({ centerContent, fitContent });
       </v-chip-group> -->
     </div>
     <div v-if="!appStore.inViewerMode" id="undoRedo" style="position: absolute; top: 24px; left: 24px; z-index: 100">
-      <v-btn icon="mdi:mdi-undo" size="32" density="comfortable" class="mr-1" rounded="lg" title="Undo"
-        @click.native="undoRedoManager.undo()"></v-btn>
-      <v-btn icon="mdi:mdi-redo" size="32" density="comfortable" class="mr-1" rounded="lg" title="Redo"
-        @click.native="undoRedoManager.redo()"></v-btn>
+      <v-btn
+        icon="mdi:mdi-undo"
+        size="32"
+        density="comfortable"
+        class="mr-1"
+        rounded="lg"
+        title="Undo"
+        @click.native="undoRedoManager.undo()"
+      ></v-btn>
+      <v-btn
+        icon="mdi:mdi-redo"
+        size="32"
+        density="comfortable"
+        class="mr-1"
+        rounded="lg"
+        title="Redo"
+        @click.native="undoRedoManager.redo()"
+      ></v-btn>
     </div>
     <div id="viewerControls" class="text-black d-flex" style="position: absolute; z-index: 100; top: 24px; right: 24px">
-      <v-btn icon="mdi:mdi-image-filter-center-focus" size="32" density="comfortable" class="mr-1" rounded="lg"
-        title="Center content" @click.native="centerContent"></v-btn>
-      <v-btn icon="mdi:mdi-fit-to-screen-outline" size="32" density="comfortable" class="mr-1" rounded="lg"
-        title="Fit content to screen" @click="fitContent">
+      <v-btn
+        icon="mdi:mdi-image-filter-center-focus"
+        size="32"
+        density="comfortable"
+        class="mr-1"
+        rounded="lg"
+        title="Center content"
+        @click.native="centerContent"
+      ></v-btn>
+      <v-btn
+        icon="mdi:mdi-fit-to-screen-outline"
+        size="32"
+        density="comfortable"
+        class="mr-1"
+        rounded="lg"
+        title="Fit content to screen"
+        @click="fitContent"
+      >
       </v-btn>
-      <v-btn icon="mdi:mdi-cog" size="32" density="comfortable" rounded="lg" title="Settings"
+      <v-btn
+        icon="mdi:mdi-cog"
+        size="32"
+        density="comfortable"
+        rounded="lg"
+        title="Settings"
         :color="viewerStore.settingsOpen ? 'primary' : 'default'"
-        @click="viewerStore.settingsOpen = !viewerStore.settingsOpen"></v-btn>
+        @click="viewerStore.settingsOpen = !viewerStore.settingsOpen"
+      ></v-btn>
     </div>
 
     <context-menu v-model:show="showCtxMenu" :options="optionsCtxMenu">
-      <context-menu-item @click.ctrl="appStore.mouseMode = MouseMode.ADD_NODE"
-        @click.exact="openModal(AddNodeDialog, {})">
+      <context-menu-item
+        @click.ctrl="appStore.mouseMode = MouseMode.ADD_NODE"
+        @click.exact="openModal(AddNodeDialog, {})"
+      >
         <template #icon>
           <v-icon size="x-small">mdi-vector-point-plus</v-icon>
         </template>
@@ -1167,8 +1206,10 @@ defineExpose({ centerContent, fitContent });
           <span class="ml-auto text-right" style="font-size: 10px">Hold Ctrl to add using mouse</span>
         </template>
       </context-menu-item>
-      <context-menu-item @click.ctrl="appStore.mouseMode = MouseMode.ADD_ELEMENT"
-        @click.exact="openModal(AddElementDialog, {})">
+      <context-menu-item
+        @click.ctrl="appStore.mouseMode = MouseMode.ADD_ELEMENT"
+        @click.exact="openModal(AddElementDialog, {})"
+      >
         <template #icon>
           <v-icon size="x-small">mdi-vector-polyline-plus</v-icon>
         </template>
@@ -1186,14 +1227,19 @@ defineExpose({ centerContent, fitContent });
         </template>
       </context-menu-item>
       <context-menu-sperator />
-      <context-menu-item :label="$t('common.edit')" :disabled="!projectStore.isAnythingSelected2()"
-        @click="layoutStore.openWidget('Selection', Selection, {})">
+      <context-menu-item
+        :label="$t('common.edit')"
+        :disabled="!projectStore.isAnythingSelected2()"
+        @click="layoutStore.openWidget('Selection', Selection, {})"
+      >
         <template #icon>
           <v-icon size="x-small">mdi-pencil</v-icon>
         </template>
       </context-menu-item>
-      <context-menu-item :disabled="!projectStore.isAnythingSelected2()"
-        @click="useClipboardStore().select(projectStore.selection2)">
+      <context-menu-item
+        :disabled="!projectStore.isAnythingSelected2()"
+        @click="useClipboardStore().select(projectStore.selection2)"
+      >
         <template #icon>
           <v-icon size="x-small">mdi-content-copy</v-icon>
         </template>
@@ -1211,10 +1257,14 @@ defineExpose({ centerContent, fitContent });
           <span class="ml-auto text-right" style="font-size: 10px">Ctrl + V</span>
         </template>
       </context-menu-item>
-      <context-menu-item :label="$t('common.delete')" :disabled="!projectStore.isAnythingSelected2()" @click="
-        projectStore.deleteSelection2();
-      solve();
-      ">
+      <context-menu-item
+        :label="$t('common.delete')"
+        :disabled="!projectStore.isAnythingSelected2()"
+        @click="
+          projectStore.deleteSelection2();
+          solve();
+        "
+      >
         <template #icon>
           <v-icon size="x-small">mdi-delete</v-icon>
         </template>
@@ -1233,7 +1283,7 @@ defineExpose({ centerContent, fitContent });
               {{ $t('warnings.noMaterialsDefined') }}
               <v-btn variant="text" density="compact" size="small" @click="appStore.dialogs['addMaterial'] = true">{{
                 $t('common.addNew')
-                }}</v-btn>
+              }}</v-btn>
             </div>
           </template>
         </v-alert>
@@ -1243,8 +1293,13 @@ defineExpose({ centerContent, fitContent });
           <template #text>
             <div class="d-flex align-center">
               {{ $t('warnings.noCrossSectionsDefined') }}
-              <v-btn variant="text" density="compact" size="small"
-                @click="appStore.dialogs['addCrossSection'] = true">{{ $t('common.addNew') }}</v-btn>
+              <v-btn
+                variant="text"
+                density="compact"
+                size="small"
+                @click="appStore.dialogs['addCrossSection'] = true"
+                >{{ $t('common.addNew') }}</v-btn
+              >
             </div>
           </template>
         </v-alert>
@@ -1252,191 +1307,338 @@ defineExpose({ centerContent, fitContent });
     </div>
 
     <svg v-if="viewerStore.showGrid" class="w-100 fill-height" style="position: absolute">
-      <SvgGrid ref="grid" :svg="svg as SVGSVGElement" :viewport="viewport as SVGGElement" :zoom="scale" :view-mode="appStore.inViewerMode" />
+      <SvgGrid
+        ref="grid"
+        :svg="svg as SVGSVGElement"
+        :viewport="viewport as SVGGElement"
+        :zoom="scale"
+        :view-mode="appStore.inViewerMode"
+      />
     </svg>
 
-    <SvgPanZoom ref="panZoom" :on-update="onUpdate" :padding="128" :mobile-padding="32"
-      :touch="appStore.mouseMode !== MouseMode.MOVING" :can-fit-content="projectStore.solver.domain.nodes.size >= 2"
-      style="overflow: visible; z-index: 50; min-height: 0">
-      <svg ref="svg" :style="{
-        '--marker-force': markerForce,
-        '--marker-force-hover': markerForceHover,
-        '--marker-force-selected': markerForceSelected,
-        '--marker-centered': markerCentered,
-        '--marker-centered-hover': markerCenteredHover,
-        '--marker-moment-cw': markerMomentCw,
-        '--marker-moment-cw-hover': markerMomentCwHover,
-        '--marker-moment-cw-selected': markerMomentCwSelected,
-        '--marker-moment-ccw': markerMomentCcw,
-        '--marker-moment-ccw-hover': markerMomentCcwHover,
-        '--marker-moment-ccw-selected': markerMomentCcwSelected,
-        '--marker-reaction': markerReaction,
-        '--marker-moment-reaction-ccw': markerMomentReactionCcw,
-        '--marker-moment-reaction-cw': markerMomentReactionCw,
-        '--marker-dot': markerDot,
-        '--marker-hinge-xy': markerHingeXY,
-        '--marker-hinge-x': markerHingeX,
-        '--marker-hinge-y': markerHingeY,
-        '--marker-force-tip': markerForceTip,
-        '--marker-dim-tip': markerDimTip,
-        '--filter-text-label': markerTextLabel,
-      }" @click.right.prevent="openCtxMenu($event)" @pointermove="mouseMove" @pointerdown="onMouseDown"
-        @pointerup="onMouseUp">
-        <SvgViewerDefs :id="props.id" :colors="viewerStore.colors" :support-size="viewerStore.supportSize"
-          :scale="scale" />
+    <SvgPanZoom
+      ref="panZoom"
+      :on-update="onUpdate"
+      :padding="128"
+      :mobile-padding="32"
+      :touch="appStore.mouseMode !== MouseMode.MOVING"
+      :can-fit-content="projectStore.solver.domain.nodes.size >= 2"
+      style="overflow: visible; z-index: 50; min-height: 0"
+    >
+      <svg
+        ref="svg"
+        :style="{
+          '--marker-force': markerForce,
+          '--marker-force-hover': markerForceHover,
+          '--marker-force-selected': markerForceSelected,
+          '--marker-centered': markerCentered,
+          '--marker-centered-hover': markerCenteredHover,
+          '--marker-moment-cw': markerMomentCw,
+          '--marker-moment-cw-hover': markerMomentCwHover,
+          '--marker-moment-cw-selected': markerMomentCwSelected,
+          '--marker-moment-ccw': markerMomentCcw,
+          '--marker-moment-ccw-hover': markerMomentCcwHover,
+          '--marker-moment-ccw-selected': markerMomentCcwSelected,
+          '--marker-reaction': markerReaction,
+          '--marker-moment-reaction-ccw': markerMomentReactionCcw,
+          '--marker-moment-reaction-cw': markerMomentReactionCw,
+          '--marker-dot': markerDot,
+          '--marker-hinge-xy': markerHingeXY,
+          '--marker-hinge-x': markerHingeX,
+          '--marker-hinge-y': markerHingeY,
+          '--marker-force-tip': markerForceTip,
+          '--marker-dim-tip': markerDimTip,
+          '--filter-text-label': markerTextLabel,
+        }"
+        @click.right.prevent="openCtxMenu($event)"
+        @pointermove="mouseMove"
+        @pointerdown="onMouseDown"
+        @pointerup="onMouseUp"
+      >
+        <SvgViewerDefs
+          :id="props.id"
+          :colors="viewerStore.colors"
+          :support-size="viewerStore.supportSize"
+          :scale="scale"
+        />
         <g ref="viewport" :class="{ disablePointerEvents: isZooming || isPanning }">
-          <g v-if="
-            appStore.mouseMode === MouseMode.ADD_NODE ||
-            appStore.mouseMode === MouseMode.ADD_ELEMENT ||
-            appStore.mouseMode === MouseMode.ADD_DIMLINE
-          ">
-            <rect :x="mouseXReal" :y="mouseYReal" :width="8 / scale" :height="8 / scale"
-              :transform="`translate(${-8 / 2 / scale},${-8 / 2 / scale})`" style="fill: #aaa" />
+          <g
+            v-if="
+              appStore.mouseMode === MouseMode.ADD_NODE ||
+              appStore.mouseMode === MouseMode.ADD_ELEMENT ||
+              appStore.mouseMode === MouseMode.ADD_DIMLINE
+            "
+          >
+            <rect
+              :x="mouseXReal"
+              :y="mouseYReal"
+              :width="8 / scale"
+              :height="8 / scale"
+              :transform="`translate(${-8 / 2 / scale},${-8 / 2 / scale})`"
+              style="fill: #aaa"
+            />
           </g>
           <g v-if="appStore.mouseMode === MouseMode.ADD_ELEMENT && startNode !== null">
-            <line :x1="startNode.x" :y1="startNode.y" :x2="mouseXReal" :y2="mouseYReal"
+            <line
+              :x1="startNode.x"
+              :y1="startNode.y"
+              :x2="mouseXReal"
+              :y2="mouseYReal"
               :stroke-dasharray="intersected.type === 'node' ? `none` : `5 4`"
-              style="vector-effect: non-scaling-stroke; stroke-width: 2px; stroke: #aaa" />
+              style="vector-effect: non-scaling-stroke; stroke-width: 2px; stroke: #aaa"
+            />
           </g>
           <g v-if="appStore.mouseMode === MouseMode.PASTE_CLIPBOARD">
-            <line :x1="startNode.x" :y1="startNode.y" :x2="mouseXReal" :y2="mouseYReal"
+            <line
+              :x1="startNode.x"
+              :y1="startNode.y"
+              :x2="mouseXReal"
+              :y2="mouseYReal"
               :stroke-dasharray="intersected.type === 'node' ? `none` : `5 4`"
-              style="vector-effect: non-scaling-stroke; stroke-width: 2px; stroke: #aaa" />
+              style="vector-effect: non-scaling-stroke; stroke-width: 2px; stroke: #aaa"
+            />
           </g>
           <g>
             <g v-if="!isZooming && useViewerStore().showLoads">
               <template v-for="(eload, index) in useProjectStore().solver.loadCases[0].elementLoadList">
-                <SVGElementLoad v-if="eload instanceof BeamElementUniformEdgeLoad" :key="`element-udl-${index}`"
+                <SVGElementLoad
+                  v-if="eload instanceof BeamElementUniformEdgeLoad"
+                  :key="`element-udl-${index}`"
                   :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
-                  :data-element-load-id="index" :eload="eload" :scale="scale" :convert-force="appStore.convertForce"
-                  :font-size="viewerStore.fontSize" :number-format="appStore.numberFormatter"
-                  @mousemove="onElementLoadHover($event, eload)" @mouseleave="hideTooltip"
-                  @pointerup="onElementLoadClick($event, index)" @dblclick="
+                  :data-element-load-id="index"
+                  :eload="eload"
+                  :scale="scale"
+                  :convert-force="appStore.convertForce"
+                  :font-size="viewerStore.fontSize"
+                  :number-format="appStore.numberFormatter"
+                  @mousemove="onElementLoadHover($event, eload)"
+                  @mouseleave="hideTooltip"
+                  @pointerup="onElementLoadClick($event, index)"
+                  @dblclick="
                     openModal(EditElementLoadDialog, { index });
-                  projectStore.clearSelection();
-                  " />
-                <SVGElementTemperatureLoad v-else-if="loadType(eload) === 'temperature'"
+                    projectStore.clearSelection();
+                  "
+                />
+                <SVGElementTemperatureLoad
+                  v-else-if="loadType(eload) === 'temperature'"
                   :key="`element-temperature-${index}`"
                   :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
-                  :data-element-load-id="index" :eload="eload" :scale="scale" :convert-force="appStore.convertForce"
-                  :font-size="viewerStore.fontSize" :number-format="appStore.numberFormatter"
-                  @mousemove="onElementLoadHover($event, eload)" @mouseleave="hideTooltip"
-                  @pointerup="onElementLoadClick($event, index)" @dblclick="
+                  :data-element-load-id="index"
+                  :eload="eload"
+                  :scale="scale"
+                  :convert-force="appStore.convertForce"
+                  :font-size="viewerStore.fontSize"
+                  :number-format="appStore.numberFormatter"
+                  @mousemove="onElementLoadHover($event, eload)"
+                  @mouseleave="hideTooltip"
+                  @pointerup="onElementLoadClick($event, index)"
+                  @dblclick="
                     openModal(EditElementLoadDialog, { index });
-                  projectStore.clearSelection();
-                  " />
-                <SVGElementConcentratedLoad v-else-if="eload instanceof BeamConcentratedLoad"
+                    projectStore.clearSelection();
+                  "
+                />
+                <SVGElementConcentratedLoad
+                  v-else-if="eload instanceof BeamConcentratedLoad"
                   :key="`element-cl-${index}`"
                   :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
-                  :data-element-load-id="index" :eload="eload" :scale="scale" :convert-force="appStore.convertForce"
-                  :font-size="viewerStore.fontSize" :number-format="appStore.numberFormatter"
-                  @mousemove="onElementLoadHover($event, eload)" @mouseleave="hideTooltip"
-                  @pointerup="onElementLoadClick($event, index)" @dblclick="
+                  :data-element-load-id="index"
+                  :eload="eload"
+                  :scale="scale"
+                  :convert-force="appStore.convertForce"
+                  :font-size="viewerStore.fontSize"
+                  :number-format="appStore.numberFormatter"
+                  @mousemove="onElementLoadHover($event, eload)"
+                  @mouseleave="hideTooltip"
+                  @pointerup="onElementLoadClick($event, index)"
+                  @dblclick="
                     openModal(EditElementLoadDialog, { index });
-                  projectStore.clearSelection();
-                  " />
+                    projectStore.clearSelection();
+                  "
+                />
               </template>
-              <SVGNodalLoad v-for="(nload, index) in useProjectStore().solver.loadCases[0].nodalLoadList"
-                :key="`nodal-load-${index}`" :class="{ selected: projectStore.selection2.nodalLoads.includes(index) }"
-                :nload="nload" :scale="scale" :convert-force="appStore.convertForce"
-                :convert-moment="appStore.convertMoment" :font-size="viewerStore.fontSize"
-                :number-format="appStore.numberFormatter" @mousemove="onNodalLoadHover($event, nload)"
-                @mouseleave="hideTooltip" @pointerup="onNodalLoadClick($event, index)" @dblclick="
+              <SVGNodalLoad
+                v-for="(nload, index) in useProjectStore().solver.loadCases[0].nodalLoadList"
+                :key="`nodal-load-${index}`"
+                :class="{ selected: projectStore.selection2.nodalLoads.includes(index) }"
+                :nload="nload"
+                :scale="scale"
+                :convert-force="appStore.convertForce"
+                :convert-moment="appStore.convertMoment"
+                :font-size="viewerStore.fontSize"
+                :number-format="appStore.numberFormatter"
+                @mousemove="onNodalLoadHover($event, nload)"
+                @mouseleave="hideTooltip"
+                @pointerup="onNodalLoadClick($event, index)"
+                @dblclick="
                   openModal(EditNodalLoadDialog, { index });
-                projectStore.clearSelection();
-                " />
-              <SVGPrescribedDisplacement v-for="(nload, index) in useProjectStore().solver.loadCases[0].prescribedBC"
-                :key="`nodal-load-${index}`" :class="{ selected: projectStore.selection2.nodalLoads.includes(index) }"
-                :nload="nload" :scale="scale" :convert-length="appStore.convertLength"
-                :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_" :font-size="viewerStore.fontSize"
-                :number-format="appStore.numberFormatter" @mousemove="onPrescribedBCHover($event, nload)"
-                @mouseleave="hideTooltip" @pointerup="onPrescribedBCClick($event, index)" @dblclick="
+                  projectStore.clearSelection();
+                "
+              />
+              <SVGPrescribedDisplacement
+                v-for="(nload, index) in useProjectStore().solver.loadCases[0].prescribedBC"
+                :key="`nodal-load-${index}`"
+                :class="{ selected: projectStore.selection2.nodalLoads.includes(index) }"
+                :nload="nload"
+                :scale="scale"
+                :convert-length="appStore.convertLength"
+                :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
+                :font-size="viewerStore.fontSize"
+                :number-format="appStore.numberFormatter"
+                @mousemove="onPrescribedBCHover($event, nload)"
+                @mouseleave="hideTooltip"
+                @pointerup="onPrescribedBCClick($event, index)"
+                @dblclick="
                   openModal(EditNodalLoadDialog, { index, type: 'displacement' });
-                projectStore.clearSelection();
-                " />
+                  projectStore.clearSelection();
+                "
+              />
             </g>
           </g>
           <g>
-            <SVGElement v-for="(element, index) in projectStore.beams" :key="`element-${index}`"
-              :class="{ selected: projectStore.selection2.elements.includes(element.label) }" :element="element"
-              :scale="scale" :show-deformed-shape="!isZooming && viewerStore.showDeformedShape"
+            <SVGElement
+              v-for="(element, index) in projectStore.beams"
+              :key="`element-${index}`"
+              :class="{ selected: projectStore.selection2.elements.includes(element.label) }"
+              :element="element"
+              :scale="scale"
+              :show-deformed-shape="!isZooming && viewerStore.showDeformedShape"
               :show-normal-force="!isZooming && viewerStore.showNormalForce"
               :show-shear-force="!isZooming && viewerStore.showShearForce"
               :show-bending-moment="!isZooming && viewerStore.showBendingMoment"
-              :show-label="!isZooming && viewerStore.showElementLabels" :load-case="projectStore.solver.loadCases[0]"
+              :show-label="!isZooming && viewerStore.showElementLabels"
+              :load-case="projectStore.solver.loadCases[0]"
               :deformed-shape-multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
               :normal-force-multiplier="projectStore.normalForceScale * viewerStore.resultsScalePx_"
               :shear-force-multiplier="projectStore.shearForceScale * viewerStore.resultsScalePx_"
               :bending-moment-multiplier="projectStore.bendingMomentScale * viewerStore.resultsScalePx_"
-              :convert-force="appStore.convertForce" :convert-moment="appStore.convertMoment"
-              :font-size="viewerStore.fontSize" :number-format="appStore.numberFormatter"
-              @elementmousemove="onElementHover($event, element)" @mouseleave="hideTooltip"
-              @elementpointerup="onElementClick" />
+              :convert-force="appStore.convertForce"
+              :convert-moment="appStore.convertMoment"
+              :font-size="viewerStore.fontSize"
+              :number-format="appStore.numberFormatter"
+              @elementmousemove="onElementHover($event, element)"
+              @mouseleave="hideTooltip"
+              @elementpointerup="onElementClick"
+            />
           </g>
 
           <g class="nodes">
-            <OnLongPress v-for="(node, index) in projectStore.nodes" :key="`node-${index}`" as="g"
-              @trigger="onNodeLongPress($event, node)">
-              <SVGNode :class="{ selected: projectStore.selection2.nodes.includes(node.label) }" :node="node"
-                :scale="scale" :show-label="!isZooming && viewerStore.showNodeLabels"
+            <OnLongPress
+              v-for="(node, index) in projectStore.nodes"
+              :key="`node-${index}`"
+              as="g"
+              @trigger="onNodeLongPress($event, node)"
+            >
+              <SVGNode
+                :class="{ selected: projectStore.selection2.nodes.includes(node.label) }"
+                :node="node"
+                :scale="scale"
+                :show-label="!isZooming && viewerStore.showNodeLabels"
                 :show-supports="viewerStore.showSupports"
                 :show-deformed-shape="!isZooming && viewerStore.showDeformedShape"
-                :show-reactions="!isZooming && viewerStore.showReactions" :convert-force="appStore.convertForce"
-                :convert-moment="appStore.convertMoment" :load-case="projectStore.solver.loadCases[0]"
-                :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_" :font-size="viewerStore.fontSize"
-                :number-format="appStore.numberFormatter" @nodemousemove="onNodeHover($event, node)"
-                @nodedefomousemove="onNodeHover($event, node)" @mouseleave="hideTooltip" @nodepointerup="onNodeClick" />
+                :show-reactions="!isZooming && viewerStore.showReactions"
+                :convert-force="appStore.convertForce"
+                :convert-moment="appStore.convertMoment"
+                :load-case="projectStore.solver.loadCases[0]"
+                :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
+                :font-size="viewerStore.fontSize"
+                :number-format="appStore.numberFormatter"
+                @nodemousemove="onNodeHover($event, node)"
+                @nodedefomousemove="onNodeHover($event, node)"
+                @mouseleave="hideTooltip"
+                @nodepointerup="onNodeClick"
+              />
             </OnLongPress>
           </g>
           <g>
-            <SVGDimensioning v-for="(dim, index) in projectStore.dimensions" :key="index" :nodes="dim.nodes"
-              :distance="dim.distance" :scale="scale" :font-size="viewerStore.fontSize"
-              :number-format="appStore.numberFormatter" />
-            <SVGDimensioning v-if="appStore.mouseMode === MouseMode.ADD_DIMLINE && startNode" key="add-dimline"
-              :nodes="[projectStore.solver.domain.nodes.get(startNode.label)!, endNode]" :distance="dimlineDist"
-              :scale="scale" :font-size="viewerStore.fontSize" :number-format="appStore.numberFormatter" />
+            <SVGDimensioning
+              v-for="(dim, index) in projectStore.dimensions"
+              :key="index"
+              :nodes="dim.nodes"
+              :distance="dim.distance"
+              :scale="scale"
+              :font-size="viewerStore.fontSize"
+              :number-format="appStore.numberFormatter"
+            />
+            <SVGDimensioning
+              v-if="appStore.mouseMode === MouseMode.ADD_DIMLINE && startNode"
+              key="add-dimline"
+              :nodes="[projectStore.solver.domain.nodes.get(startNode.label)!, endNode]"
+              :distance="dimlineDist"
+              :scale="scale"
+              :font-size="viewerStore.fontSize"
+              :number-format="appStore.numberFormatter"
+            />
           </g>
           <!-- Paste preview -->
-          <g v-if="appStore.mouseMode === MouseMode.PASTE_CLIPBOARD"
-            :transform="`translate(${mouseXReal - startNode.x + deltaPaste.x}, ${mouseYReal - startNode.y + deltaPaste.y})`">
+          <g
+            v-if="appStore.mouseMode === MouseMode.PASTE_CLIPBOARD"
+            :transform="`translate(${mouseXReal - startNode.x + deltaPaste.x}, ${mouseYReal - startNode.y + deltaPaste.y})`"
+          >
             <g>
-              <SVGElement v-for="(element, index) in useClipboardStore().selection.elements" :key="`element-${index}`"
-                :element="projectStore.solver.domain.elements.get(element) as Beam2D" :scale="scale"
-                :show-deformed-shape="false" :show-normal-force="false" :show-shear-force="false"
-                :show-bending-moment="false" :show-label="false" :load-case="projectStore.solver.loadCases[0]"
+              <SVGElement
+                v-for="(element, index) in useClipboardStore().selection.elements"
+                :key="`element-${index}`"
+                :element="projectStore.solver.domain.elements.get(element) as Beam2D"
+                :scale="scale"
+                :show-deformed-shape="false"
+                :show-normal-force="false"
+                :show-shear-force="false"
+                :show-bending-moment="false"
+                :show-label="false"
+                :load-case="projectStore.solver.loadCases[0]"
                 :deformed-shape-multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
                 :normal-force-multiplier="projectStore.normalForceScale * viewerStore.resultsScalePx_"
                 :shear-force-multiplier="projectStore.shearForceScale * viewerStore.resultsScalePx_"
                 :bending-moment-multiplier="projectStore.bendingMomentScale * viewerStore.resultsScalePx_"
-                :convert-force="appStore.convertForce" :convert-moment="appStore.convertMoment"
-                :font-size="viewerStore.fontSize" :number-format="appStore.numberFormatter" />
+                :convert-force="appStore.convertForce"
+                :convert-moment="appStore.convertMoment"
+                :font-size="viewerStore.fontSize"
+                :number-format="appStore.numberFormatter"
+              />
             </g>
             <g class="nodes">
-              <SVGNode v-for="(node, index) in useClipboardStore().selection.nodes" :key="`node-${index}`"
-                :node="projectStore.solver.domain.nodes.get(node) as Node" :scale="scale" :show-label="false"
-                :show-supports="viewerStore.showSupports" :show-deformed-shape="false" :show-reactions="false"
-                :convert-force="appStore.convertForce" :load-case="projectStore.solver.loadCases[0]"
-                :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_" :font-size="viewerStore.fontSize"
-                :number-format="appStore.numberFormatter" />
+              <SVGNode
+                v-for="(node, index) in useClipboardStore().selection.nodes"
+                :key="`node-${index}`"
+                :node="projectStore.solver.domain.nodes.get(node) as Node"
+                :scale="scale"
+                :show-label="false"
+                :show-supports="viewerStore.showSupports"
+                :show-deformed-shape="false"
+                :show-reactions="false"
+                :convert-force="appStore.convertForce"
+                :load-case="projectStore.solver.loadCases[0]"
+                :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
+                :font-size="viewerStore.fontSize"
+                :number-format="appStore.numberFormatter"
+              />
             </g>
           </g>
         </g>
       </svg>
     </SvgPanZoom>
 
-    <div v-if="appStore.mouseMode === MouseMode.SELECTING" class="selecting" :style="`left: ${Math.min(appStore.mouse.x, appStore.mouse.sx)}px; top: ${Math.min(appStore.mouse.y, appStore.mouse.sy) - (useAppStore().inViewerMode ? 0 : 84)
+    <div
+      v-if="appStore.mouseMode === MouseMode.SELECTING"
+      class="selecting"
+      :style="`left: ${Math.min(appStore.mouse.x, appStore.mouse.sx)}px; top: ${
+        Math.min(appStore.mouse.y, appStore.mouse.sy) - (useAppStore().inViewerMode ? 0 : 84)
       }px; width: ${Math.abs(appStore.mouse.x - appStore.mouse.sx)}px; height: ${Math.abs(
         appStore.mouse.y - appStore.mouse.sy
-      )}px;`"></div>
+      )}px;`"
+    ></div>
 
-    <div v-if="projectStore.selection.type !== null" class="selection-tooltip elevation-1"
-      :style="`position: absolute; left: ${projectStore.selection.x}px; top: ${projectStore.selection.y}px;`">
+    <div
+      v-if="projectStore.selection.type !== null"
+      class="selection-tooltip elevation-1"
+      :style="`position: absolute; left: ${projectStore.selection.x}px; top: ${projectStore.selection.y}px;`"
+    >
       <div class="d-flex justify-space-between">
         <div class="font-weight-medium text-body-2 px-4 pt-2">
           {{ $t('selection.' + projectStore.selection.type) }}
           <span v-if="['node', 'element'].includes(projectStore.selection.type)">{{
             projectStore.selection.label
-            }}</span>
+          }}</span>
         </div>
         <v-btn variant="text" icon="mdi-close" size="x-small" @click="projectStore.selection.type = null" />
       </div>
@@ -1452,40 +1654,90 @@ defineExpose({ centerContent, fitContent });
 
     <div v-if="viewerStore.settingsOpen" class="" style="position: absolute; right: 24px; top: 64px; z-index: 600">
       <div id="viewerSettings" class="d-flex flex-sm-column pa-1 overflow-y-auto ga-2 align-end justify-end">
-        <div color="grey-lighten-5" rounded="lg" class="d-sm-flex bg-grey-lighten-5 elevation-1 rounded"
-          style="width: fit-content">
-          <v-checkbox v-model="useViewerStore().showDeformedShape" :label="$t('sideSettings.showDeformedShape')"
-            hide-details density="compact" class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap" />
-          <v-checkbox v-model="useViewerStore().showNormalForce" label="" hide-details density="compact"
+        <div
+          color="grey-lighten-5"
+          rounded="lg"
+          class="d-sm-flex bg-grey-lighten-5 elevation-1 rounded"
+          style="width: fit-content"
+        >
+          <v-checkbox
+            v-model="useViewerStore().showDeformedShape"
+            :label="$t('sideSettings.showDeformedShape')"
+            hide-details
+            density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
-            :disabled="useProjectStore().model === 'EigenValueDynamicSolver'">
+          />
+          <v-checkbox
+            v-model="useViewerStore().showNormalForce"
+            label=""
+            hide-details
+            density="compact"
+            class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
+            :disabled="useProjectStore().model === 'EigenValueDynamicSolver'"
+          >
             <template #label>N (x)</template>
           </v-checkbox>
-          <v-checkbox v-model="useViewerStore().showShearForce" label="Vz (x)" hide-details density="compact"
+          <v-checkbox
+            v-model="useViewerStore().showShearForce"
+            label="Vz (x)"
+            hide-details
+            density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
-            :disabled="useProjectStore().model === 'EigenValueDynamicSolver'">
+            :disabled="useProjectStore().model === 'EigenValueDynamicSolver'"
+          >
             <template #label>V<sub>z</sub>&nbsp;(x)</template>
           </v-checkbox>
-          <v-checkbox v-model="useViewerStore().showBendingMoment" label="My (x)" hide-details density="compact"
+          <v-checkbox
+            v-model="useViewerStore().showBendingMoment"
+            label="My (x)"
+            hide-details
+            density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
-            :disabled="useProjectStore().model === 'EigenValueDynamicSolver'">
+            :disabled="useProjectStore().model === 'EigenValueDynamicSolver'"
+          >
             <template #label>M<sub>y</sub>&nbsp;(x)</template>
           </v-checkbox>
-          <v-checkbox v-model="useViewerStore().showReactions" :label="$t('sideSettings.showReactions')" hide-details
-            density="compact" class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap" />
+          <v-checkbox
+            v-model="useViewerStore().showReactions"
+            :label="$t('sideSettings.showReactions')"
+            hide-details
+            density="compact"
+            class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
+          />
         </div>
 
         <div color="grey-lighten-5" rounded="lg" height="32" class="d-sm-flex bg-grey-lighten-5 elevation-1 rounded">
-          <v-checkbox v-model="useViewerStore().showSupports" :label="$t('sideSettings.supports')" hide-details
-            density="compact" class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap" />
-          <v-checkbox v-model.number="useViewerStore().showLoads" :label="$t('sideSettings.loads')" dense hide-details
-            density="compact" class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
-            :disabled="useProjectStore().model === 'EigenValueDynamicSolver'" />
+          <v-checkbox
+            v-model="useViewerStore().showSupports"
+            :label="$t('sideSettings.supports')"
+            hide-details
+            density="compact"
+            class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
+          />
+          <v-checkbox
+            v-model.number="useViewerStore().showLoads"
+            :label="$t('sideSettings.loads')"
+            dense
+            hide-details
+            density="compact"
+            class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
+            :disabled="useProjectStore().model === 'EigenValueDynamicSolver'"
+          />
 
-          <v-checkbox v-model="useViewerStore().showNodeLabels" :label="$t('sideSettings.nodeLabels')" hide-details
-            density="compact" class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap" />
-          <v-checkbox v-model="useViewerStore().showElementLabels" :label="$t('sideSettings.elementLabels')"
-            hide-details density="compact" class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap" />
+          <v-checkbox
+            v-model="useViewerStore().showNodeLabels"
+            :label="$t('sideSettings.nodeLabels')"
+            hide-details
+            density="compact"
+            class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
+          />
+          <v-checkbox
+            v-model="useViewerStore().showElementLabels"
+            :label="$t('sideSettings.elementLabels')"
+            hide-details
+            density="compact"
+            class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
+          />
         </div>
       </div>
       <div class="text-right text-sm-body-2">

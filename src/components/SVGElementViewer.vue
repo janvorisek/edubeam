@@ -246,30 +246,32 @@ defineExpose({ centerContent, fitContent });
       :zoom-enabled="props.zoomEnabled"
       style="overflow: visible; z-index: 50; min-height: 0"
     >
-      <svg ref="svg"
-      :style="{
-        '--marker-force': markerForce,
-        '--marker-force-hover': markerForceHover,
-        '--marker-force-selected': markerForceSelected,
-        '--marker-centered': markerCentered,
-        '--marker-centered-hover': markerCenteredHover,
-        '--marker-moment-cw': markerMomentCw,
-        '--marker-moment-cw-hover': markerMomentCwHover,
-        '--marker-moment-cw-selected': markerMomentCwSelected,
-        '--marker-moment-ccw': markerMomentCcw,
-        '--marker-moment-ccw-hover': markerMomentCcwHover,
-        '--marker-moment-ccw-selected': markerMomentCcwSelected,
-        '--marker-reaction': markerReaction,
-        '--marker-moment-reaction-ccw': markerMomentReactionCcw,
-        '--marker-moment-reaction-cw': markerMomentReactionCw,
-        '--marker-dot': markerDot,
-        '--marker-hinge-xy': markerHingeXY,
-        '--marker-hinge-x': markerHingeX,
-        '--marker-hinge-y': markerHingeY,
-        '--marker-force-tip': markerForceTip,
-        '--marker-dim-tip': markerDimTip,
-        '--filter-text-label': markerTextLabel,
-      }">
+      <svg
+        ref="svg"
+        :style="{
+          '--marker-force': markerForce,
+          '--marker-force-hover': markerForceHover,
+          '--marker-force-selected': markerForceSelected,
+          '--marker-centered': markerCentered,
+          '--marker-centered-hover': markerCenteredHover,
+          '--marker-moment-cw': markerMomentCw,
+          '--marker-moment-cw-hover': markerMomentCwHover,
+          '--marker-moment-cw-selected': markerMomentCwSelected,
+          '--marker-moment-ccw': markerMomentCcw,
+          '--marker-moment-ccw-hover': markerMomentCcwHover,
+          '--marker-moment-ccw-selected': markerMomentCcwSelected,
+          '--marker-reaction': markerReaction,
+          '--marker-moment-reaction-ccw': markerMomentReactionCcw,
+          '--marker-moment-reaction-cw': markerMomentReactionCw,
+          '--marker-dot': markerDot,
+          '--marker-hinge-xy': markerHingeXY,
+          '--marker-hinge-x': markerHingeX,
+          '--marker-hinge-y': markerHingeY,
+          '--marker-force-tip': markerForceTip,
+          '--marker-dim-tip': markerDimTip,
+          '--filter-text-label': markerTextLabel,
+        }"
+      >
         <SvgViewerDefs :id="id" :colors="colors" :support-size="supportSize" :scale="scale" />
         <g ref="viewport">
           <g>

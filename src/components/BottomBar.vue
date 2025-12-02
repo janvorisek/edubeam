@@ -1267,8 +1267,7 @@
               <template #item.end_forces="{ item }">
                 <div class="d-flex" style="font-variant-numeric: tabular-nums">
                   <div
-                    v-for="(f, i) in item
-                      .computeEndForces(useProjectStore().solver.loadCases[0])"
+                    v-for="(f, i) in item.computeEndForces(useProjectStore().solver.loadCases[0])"
                     :key="i"
                     class="inline-edit-group mr-2"
                   >
@@ -1278,7 +1277,12 @@
                     <div
                       v-if="projStore.solver.loadCases[0].solved"
                       class="inline-edit fw pl-1"
-                      v-html="formatExpValueAsHTML(nameBeamForce(i) === 'M' ? appStore.convertMoment(f.value) : appStore.convertForce(f.value), 4)"
+                      v-html="
+                        formatExpValueAsHTML(
+                          nameBeamForce(i) === 'M' ? appStore.convertMoment(f.value) : appStore.convertForce(f.value),
+                          4
+                        )
+                      "
                     />
                     <div v-else class="inline-edit fw pl-1">-</div>
                     <div
@@ -1286,11 +1290,7 @@
                       class="input-after"
                       v-html="formatMeasureAsHTML(appStore.units.Force)"
                     ></div>
-                    <div
-                      v-else
-                      class="input-after"
-                      v-html="formatMeasureAsHTML(appStore.units.Moment)"
-                    ></div>
+                    <div v-else class="input-after" v-html="formatMeasureAsHTML(appStore.units.Moment)"></div>
                   </div>
                 </div>
               </template>

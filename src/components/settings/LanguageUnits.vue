@@ -192,5 +192,5 @@ const momentUnitsProxy = computed({
     appStore.momentUnits.force = force;
     appStore.momentUnits.length = length;
   },
-})
+});
 </script>

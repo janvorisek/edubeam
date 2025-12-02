@@ -58,7 +58,7 @@
     "globals": "^16.1.0",
     "prettier": "^3.5.3",
     "prettier-eslint": "^16.4.2",
-    "sass": "^1.89.0",
+    "sass": "^1.94.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.32.1",
     "vite": "^6.3.5",

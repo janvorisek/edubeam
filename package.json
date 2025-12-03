@@ -65,7 +65,7 @@
     "eslint-plugin-vue": "^10.6.2",
     "globals": "^16.1.0",
     "happy-dom": "^18.0.1",
-    "prettier": "^3.7.3",
+    "prettier": "^3.7.4",
     "prettier-eslint": "^16.4.2",
     "sass": "^1.94.2",
     "typescript": "^5.9.3",

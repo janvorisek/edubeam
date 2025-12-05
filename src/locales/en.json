@@ -41,7 +41,8 @@
     "openProject": "Open project",
     "lcs": "Local Coordinate System",
     "paste": "Paste",
-    "addNew": "Add new"
+    "addNew": "Add new",
+    "whatisnew": "What’s New?"
   },
   "nodes": {
     "addNode": "Add node",
@@ -220,6 +221,10 @@
     },
     "editNode": {
       "editNode": "Edit node"
+    },
+    "changelog": {
+      "title": "What's New?",
+      "description": "New features, improvements, and sneak peeks of what we’re working on."
     }
   },
   "tooltip": {

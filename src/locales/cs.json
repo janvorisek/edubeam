@@ -36,7 +36,8 @@
     "saveProject": "Uložit projekt",
     "lcs": "Lokální souřadný systém",
     "paste": "Vložit",
-    "addNew": "Přidat"
+    "addNew": "Přidat",
+    "whatisnew": "Co je nového?"
   },
   "tabs": {
     "nodes": "Uzly",
@@ -217,6 +218,10 @@
     },
     "editNode": {
       "editNode": "Upravit uzel"
+    },
+    "changelog": {
+      "title": "Co je nového?",
+      "description": "Novinky, vylepšení a ukázky toho, co chystáme dál."
     }
   },
   "tooltip": {

@@ -20,6 +20,7 @@ import { setLocale, availableLocales } from './plugins/i18n';
 
 import Welcome from '@/components/dialogs/Welcome.vue';
 import Share from '@/components/dialogs/Share.vue';
+import Changelog from '@/components/dialogs/Changelog.vue';
 import Editor from '@/views/Editor.vue';
 import Dialogs from '@/components/Dialogs.vue';
 import { useProjectStore } from './store/project';
@@ -121,6 +122,7 @@ onMounted(() => {
     appStore.inViewerMode = true;
   } else {
     if (!appStore.onboardingFinished) openModal(Welcome);
+    else maybeShowChangelog();
   }
 
   if (name) {
@@ -215,6 +217,34 @@ const clearMesh = (clearMaterials = false, clearCrossSects = false) => {
 
 const shareMesh = () => {
   openModal(Share);
+};
+
+const openChangelog = () => {
+  openModal(Changelog);
+};
+
+type ChangelogPayload = {
+  releases?: { version?: string }[];
+};
+
+const fetchLatestChangelogVersion = async (): Promise<string | null> => {
+  try {
+    const response = await fetch('/changelog/en.json', { cache: 'no-cache' });
+    if (!response.ok) return null;
+    const payload = (await response.json()) as ChangelogPayload;
+    return payload.releases?.[0]?.version ?? null;
+  } catch (error) {
+    console.warn('Skipping changelog auto-open because the dataset could not be fetched.', error);
+    return null;
+  }
+};
+
+const maybeShowChangelog = async () => {
+  if (appStore.inViewerMode) return;
+  const latestVersion = await fetchLatestChangelogVersion();
+  if (!latestVersion) return;
+  if (appStore.lastSeenChangelogVersion === latestVersion) return;
+  openModal(Changelog);
 };
 
 onMounted(() => {
@@ -362,6 +392,11 @@ const app_commit = APP_COMMIT;
       </v-btn>
 
       <v-spacer></v-spacer>
+
+      <v-btn class="d-none d-sm-inline-flex" @click="openChangelog">
+        <v-icon class="mr-1">mdi-history</v-icon>
+        <span>{{ $t('common.whatisnew') }}</span>
+      </v-btn>
 
       <v-btn class="d-inline-flex" href="https://edubeam.app" target="_blank">
         {{ $t('common.documentation') }}

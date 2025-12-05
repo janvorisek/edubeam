@@ -132,6 +132,7 @@ export const useAppStore = defineStore(
     const convertInverseTemperature = (value: number) => _convertInverseTemperature(value);
 
     const onboardingFinished = ref(false);
+    const lastSeenChangelogVersion = ref('');
 
     watch(locale, (newLocale) => {
       setLocale(newLocale);
@@ -227,6 +228,8 @@ export const useAppStore = defineStore(
       convertInverseMoment,
       convertTemperature,
       convertInverseTemperature,
+
+      lastSeenChangelogVersion,
     };
   },
   {
@@ -234,6 +237,7 @@ export const useAppStore = defineStore(
       pick: [
         'panButton',
         'onboardingFinished',
+        'lastSeenChangelogVersion',
         'locale',
         'tab',
         'bottomBarHeight',

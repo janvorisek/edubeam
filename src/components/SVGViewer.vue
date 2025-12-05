@@ -607,14 +607,11 @@ const mouseMove = (e: MouseEvent) => {
 
   const realStep = viewerStore.gridStep;
 
-  mouseXReal.value = /*Math.round(*/ mXReal; /* / realStep) * realStep;*/
-  mouseYReal.value = /*Math.round(*/ mYReal; /* / realStep) * realStep;*/
+  const snappedX = Math.round(mXReal / realStep) * realStep;
+  const snappedY = Math.round(mYReal / realStep) * realStep;
 
-  mouseXReal.value = Math.round(mXReal / realStep) * realStep;
-  mouseYReal.value = Math.round(mYReal / realStep) * realStep;
-
-  mouseXReal.value = viewerStore.snapToGrid ? mouseXReal.value : mXReal / scale.value;
-  mouseYReal.value = viewerStore.snapToGrid ? mouseYReal.value : mYReal / scale.value;
+  mouseXReal.value = viewerStore.snapToGrid ? snappedX : mXReal;
+  mouseYReal.value = viewerStore.snapToGrid ? snappedY : mYReal;
 
   if (appStore.mouseMode === MouseMode.ADD_DIMLINE && startNode.value) {
     endNode.value.coords[0] = mouseXReal.value;

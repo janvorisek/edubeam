@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { closeModal } from 'jenesius-vue-modal';
+import { popModal } from 'jenesius-vue-modal';
 import { computed } from 'vue';
 
 const open = ref(true);
@@ -67,13 +67,13 @@ const _success = () => {
     props.success();
   }
 
-  closeModal();
+  popModal();
 };
 
 const cancel = () => {
   if (props.cancel) {
     props.cancel();
   }
-  closeModal();
+  popModal();
 };
 </script>

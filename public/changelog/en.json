@@ -12,13 +12,13 @@
       "media": [
         {
           "src": "/changelog/media/stacked-loads.png",
-          "alt": "Illustration of stacked distributed loads on a beam",
-          "caption": "Combined load visualization"
+          "alt": "Stacking of nodal loads illustration",
+          "caption": "Stacked nodal loads"
         },
         {
           "src": "/changelog/media/stacked-loads2.png",
-          "alt": "Illustration of stacked distributed loads on a beam",
-          "caption": "Combined load visualization"
+          "alt": "Stacking of distributed loads illustration",
+          "caption": "Stacked distributed loads"
         }
       ]
     },

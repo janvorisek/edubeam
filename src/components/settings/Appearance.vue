@@ -1,9 +1,9 @@
 <template>
-  <div style="display: grid; gap: 16px 16px; grid-template-columns: clamp(200px, 365px, 50%) clamp(200px, 365px, 50%)">
-    <div>
+  <div class="d-flex">
+    <div class="v-col-6">
       <h3 class="mb-2">{{ $t('settings.viewer_preview') }}</h3>
 
-      <div style="height: 256px">
+      <div style="height: 256px; pointer-events: none">
         <SVGElementViewer
           v-if="_created"
           id="settings-appearance"
@@ -11,6 +11,7 @@
           :solver="solver"
           :nodes="[domain.getNode('a'), domain.getNode('b'), domain.getNode('c'), domain.getNode('d')]"
           :elements="[domain.getElement(1), domain.getElement(2), domain.getElement(3)]"
+          :nodal-loads="solver.loadCases[0].nodalLoadList"
           :element-loads="solver.loadCases[0].elementLoadList"
           :show-deformed-shape="showQuantity === 'deformedShape'"
           :show-reactions="showQuantity === 'reactions'"
@@ -60,7 +61,7 @@
         suffix="m"
       />
     </div>
-    <div>
+    <div class="v-col-6">
       <h3 class="mb-2">{{ $t('settings.sizes.sizes') }}</h3>
 
       <v-row>
@@ -308,9 +309,9 @@ onMounted(() => {
   _created.value = true;
 });
 
-//solver.loadCases[0].createNodalLoad(3, { [DofID.Dx]: 10000, [DofID.Dz]: 0, [DofID.Ry]: 10000 });
+// solver.value.loadCases[0].createNodalLoad('b', { [DofID.Dx]: 2000, [DofID.Dz]: 10 });
 //solver.loadCases[0].createNodalLoad(3, { [DofID.Dx]: 0, [DofID.Dz]: 20 });
 
-solver.value.loadCases[0].createBeamElementUniformEdgeLoad(2, [0, 10000], true);
+solver.value.loadCases[0].createBeamElementUniformEdgeLoad(2, [0, 25000], true);
 solver.value.solve();
 </script>

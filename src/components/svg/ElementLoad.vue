@@ -180,10 +180,53 @@ const eloadForces = computed(() => {
 
   return { 0: pts0, 1: pts1 };
 });
+
+/**
+ * Calculate stacked transform for multiple loads on same element
+ */
+const stackedTransform = computed(() => {
+  // We cant handle global stacking yet
+  if (!props.eload.lcs) {
+    return '';
+  }
+
+  const geo = target.value.computeGeo();
+  const nz = geo.dx / geo.l;
+  const nx = -geo.dz / geo.l;
+
+  // calculate index of load on element
+  const eloads = target.value.domain.solver.loadCases[0].getElementLoadsOnElement(props.eload.target);
+
+  const index = eloads.indexOf(props.eload);
+  let dist = 0;
+
+  for (let i = 0; i < index; i++) {
+    const load = eloads[i];
+    if (load instanceof BeamElementUniformEdgeLoad) {
+      // perpendicular load is 40px
+      // TODO: if we allow load scaling, this needs to be dynamic
+      if (Math.abs(load.values[1]) > 1e-12) {
+        dist += 40;
+      }
+
+      // parallel load (horizontal arrows) are not as tall
+      // currently fixed at 20px
+      // TODO: if we allow load scaling, this needs to be dynamic
+      if (Math.abs(load.values[0]) > 1e-12) {
+        dist += 20;
+      }
+    }
+  }
+
+  const dx = props.eload.lcs ? (-nx * dist) / props.scale : 0;
+  const dz = props.eload.lcs ? (-nz * dist) / props.scale : -dist / props.scale;
+
+  return `translate(${dx} ${dz})`;
+});
 </script>
 
 <template>
-  <g class="element-load load-1d">
+  <g class="element-load load-1d" :transform="stackedTransform">
     <g v-if="eload.values[0] !== 0">
       <polyline
         v-for="(load, i) in eloadForces[0]"

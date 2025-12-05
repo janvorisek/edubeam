@@ -1,0 +1,26 @@
+{
+  "releases": [
+    {
+      "version": "1.0.2",
+      "title": "Skládání zatížení pro větší přehlednost",
+      "date": "5. prosince 2025",
+      "highlights": [
+        "Spojitá zatížení na se nyní skládají nad sebe při umístění více zatížení na stejný prvek.",
+        "Uzlová zatížení ve stejném směru se nyní skládají nad sebe pro lepší přehlednost."
+      ],
+      "tag": "Aktuální",
+      "media": [
+        {
+          "src": "/changelog/media/stacked-loads.png",
+          "alt": "Skládání uzlových zatížení",
+          "caption": "Skládání uzlových zatížení"
+        },
+        {
+          "src": "/changelog/media/stacked-loads2.png",
+          "alt": "Skládání spojitých zatížení",
+          "caption": "Skládání spojitých zatížení"
+        }
+      ]
+    }
+  ]
+}

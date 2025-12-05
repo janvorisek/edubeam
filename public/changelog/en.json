@@ -1,0 +1,36 @@
+{
+  "releases": [
+    {
+      "version": "1.0.2",
+      "title": "Load stacking to improve visibility",
+      "date": "Dec 5, 2025",
+      "highlights": [
+        "Distributed loads now stack correctly when multiple placed on the same element.",
+        "Nodal loads in the same direction now stack on top of each other to improve visibility."
+      ],
+      "tag": "Latest",
+      "media": [
+        {
+          "src": "/changelog/media/stacked-loads.png",
+          "alt": "Stacking of nodal loads illustration",
+          "caption": "Stacked nodal loads"
+        },
+        {
+          "src": "/changelog/media/stacked-loads2.png",
+          "alt": "Stacking of distributed loads illustration",
+          "caption": "Stacked distributed loads"
+        }
+      ]
+    },
+    {
+      "version": "1.0.1",
+      "title": "Changelog",
+      "date": "Dec 4, 2025",
+      "highlights": [
+        "Changelog dialog now shows on app updates with useful release information.",
+        "Supports multiple languages based on user locale."
+      ],
+      "media": []
+    }
+  ]
+}

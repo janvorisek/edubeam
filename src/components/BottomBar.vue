@@ -194,7 +194,7 @@
             </div>
           </template>
           <template #item.loads="{ item }">
-            <div class="d-flex align-center">
+            <div class="d-flex align-center" style="height: 28px">
               <v-btn
                 icon="mdi-plus-circle"
                 density="compact"

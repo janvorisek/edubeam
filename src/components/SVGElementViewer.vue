@@ -517,7 +517,7 @@ defineExpose({ centerContent, fitContent });
       fill: v-bind('colors.loads');
     }
     polyline {
-      stroke-linecap: square;
+      stroke-linecap: butt;
       vector-effect: non-scaling-stroke;
       &.decoration.force {
         marker-end: var(--marker-force);

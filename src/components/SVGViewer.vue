@@ -1930,7 +1930,7 @@ defineExpose({ centerContent, fitContent });
     }
 
     polyline {
-      stroke-linecap: square;
+      stroke-linecap: butt;
       vector-effect: non-scaling-stroke;
 
       &.decoration.force {

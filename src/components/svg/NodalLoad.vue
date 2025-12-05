@@ -6,14 +6,16 @@ const props = withDefaults(
   defineProps<{
     nload: NodalLoad;
     scale: number;
-    convertForce: (f: number) => number;
-    convertMoment: (m: number) => number;
+    convertForce?: (f: number) => number;
+    convertMoment?: (m: number) => number;
     fontSize?: number;
     numberFormat?: Intl.NumberFormat;
   }>(),
   {
     fontSize: 13,
     numberFormat: new Intl.NumberFormat(),
+    convertForce: (f: number) => f,
+    convertMoment: (m: number) => m,
   }
 );
 
@@ -32,18 +34,50 @@ const nloadPts = computed(() => {
   const sx = -props.nload.values[0]! / size;
   const sz = -props.nload.values[2]! / size;
 
-  return `${props.nload.domain.nodes.get(props.nload.target)!.coords[0]},${props.nload.domain.nodes.get(props.nload.target)!.coords[2]} ${
-    props.nload.domain.nodes.get(props.nload.target)!.coords[0] + (sx * 40) / props.scale
-  },${props.nload.domain.nodes.get(props.nload.target)!.coords[2] + (sz * 40) / props.scale}`;
+  return `${target.value!.coords[0]},${target.value!.coords[2]} ${
+    target.value!.coords[0] + (sx * 30) / props.scale
+  },${target.value!.coords[2] + (sz * 30) / props.scale}`;
 });
 
 const targetCoords = computed(() => {
   return `${target.value.coords[0]},${target.value.coords[2]} ${target.value.coords[0] + 1e-6},${target.value.coords[2]}`;
 });
+
+/**
+ * Calculate stacked transform for multiple loads on same element
+ */
+const stackedTransform = computed(() => {
+  const nloads = target.value.domain.solver.loadCases[0].nodalLoadList.filter((nl) => nl.target === props.nload.target);
+
+  const index = nloads.indexOf(props.nload);
+
+  // count per angle
+  const angleMap = new Map<number, number>();
+  for (let i = 0; i < index; i++) {
+    // calculate full angle in 360deg space
+    const ang = (360 + -(Math.atan2(nloads[i].values[0], nloads[i].values[2]) * 180) / Math.PI) % 360;
+
+    angleMap.set(ang, (angleMap.get(ang) || 0) + 1);
+  }
+
+  // move in force direction by 30 units per same-angle load before this one
+  const fullAngle = (360 + (angle.value % 360)) % 360;
+  const count = angleMap.get(fullAngle) || 0;
+
+  const sx =
+    -props.nload.values[0]! /
+    Math.sqrt(props.nload.values[0]! * props.nload.values[0]! + props.nload.values[2]! * props.nload.values[2]!);
+
+  const sz =
+    -props.nload.values[2]! /
+    Math.sqrt(props.nload.values[0]! * props.nload.values[0]! + props.nload.values[2]! * props.nload.values[2]!);
+
+  return `translate(${(sx * 30 * count) / props.scale} ${(sz * 30 * count) / props.scale})`;
+});
 </script>
 
 <template>
-  <g class="nodal-load">
+  <g class="nodal-load" :transform="stackedTransform">
     <polyline
       v-if="nload.values[0] !== 0 || nload.values[2] !== 0"
       points="0,0 0,0"

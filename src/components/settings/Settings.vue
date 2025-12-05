@@ -1,9 +1,9 @@
 <template>
-  <div class="container px-3 py-3 fill-height overflow-auto">
-    <v-row>
-      <v-col cols="2" style="min-width: 360px">
-        <v-sheet rounded="lg">
-          <v-list rounded="lg" active-class="bg-primary">
+  <div class="settings-layout fill-height">
+    <div class="settings-shell">
+      <div class="settings-sidebar-wrapper">
+        <v-sheet class="settings-panel settings-sidebar">
+          <v-list class="settings-sidebar-scroll" active-class="bg-primary">
             <v-list-item
               :active="tab === 'lang'"
               value="lang"
@@ -51,7 +51,7 @@
               prepend-icon="mdi-restart"
               variant="text"
               @click="
-                openModal(Confirmation, {
+                pushModal(Confirmation, {
                   title: t('confirmation.resetSettings.title'),
                   message: t('confirmation.resetSettings.message'),
                   success: resetSettings,
@@ -62,24 +62,26 @@
             </v-btn>
           </v-list>
         </v-sheet>
-      </v-col>
+      </div>
 
-      <v-col>
-        <v-sheet min-height="70vh" rounded="lg">
-          <v-window v-model="tab">
-            <v-window-item value="lang">
-              <LanguageUnits />
-            </v-window-item>
-            <v-window-item value="appearance">
-              <Appearance />
-            </v-window-item>
-            <v-window-item value="controls">
-              <KeyboardMouse />
-            </v-window-item>
-          </v-window>
+      <div class="settings-content-wrapper">
+        <v-sheet class="settings-panel settings-content" rounded="lg">
+          <div class="settings-content-scroll">
+            <v-window v-model="tab">
+              <v-window-item value="lang">
+                <LanguageUnits />
+              </v-window-item>
+              <v-window-item value="appearance">
+                <Appearance />
+              </v-window-item>
+              <v-window-item value="controls">
+                <KeyboardMouse />
+              </v-window-item>
+            </v-window>
+          </div>
         </v-sheet>
-      </v-col>
-    </v-row>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -95,7 +97,7 @@ import LanguageUnits from '@/components/settings/LanguageUnits.vue';
 import Appearance from '@/components/settings/Appearance.vue';
 import KeyboardMouse from '@/components/settings/KeyboardMouse.vue';
 
-import { openModal } from 'jenesius-vue-modal';
+import { pushModal } from 'jenesius-vue-modal';
 import Confirmation from '../dialogs/Confirmation.vue';
 
 import { useI18n } from 'vue-i18n';
@@ -110,14 +112,86 @@ const unitSystem = ref('si');
 const tab = ref('lang');
 
 const resetSettings = () => {
-  //appStore.reset();
-  //projectStore.reset();
-  //viewerStore.reset();
+  // appStore.reset();
+  viewerStore.reset();
 };
 </script>
 
 <style>
 .v-expansion-panel-text__wrapper {
   padding: 0 !important;
+}
+
+.settings-layout {
+  height: 100%;
+  overflow: hidden;
+}
+
+.settings-shell {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  height: 100%;
+}
+
+.settings-sidebar-wrapper,
+.settings-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.settings-sidebar-wrapper {
+  flex: 0 0 340px;
+  max-width: 360px;
+  border-right: 1px solid rgba(var(--v-border-color), 0.15);
+  & .v-list,
+  & .v-sheet {
+    padding: 0;
+  }
+
+  & .v-sheet,
+  & .v-list-item {
+    border-radius: 0;
+  }
+}
+
+.settings-content-wrapper {
+  flex: 1 1 auto;
+}
+
+.settings-panel {
+  background-color: rgb(var(--v-theme-surface));
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.settings-sidebar {
+  padding: 8px 0;
+}
+
+.settings-sidebar-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.settings-content-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+@media (max-width: 1100px) {
+  .settings-shell {
+    flex-direction: column;
+  }
+
+  .settings-sidebar-wrapper {
+    flex: 0 0 auto;
+    max-width: none;
+  }
 }
 </style>

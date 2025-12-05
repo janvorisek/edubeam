@@ -5,6 +5,7 @@ import SvgGrid from './SVGGrid.vue';
 import SvgViewerDefs from './SVGViewerDefs.vue';
 import { useProjectStore } from '../store/project';
 import { ref, onMounted, computed, nextTick, markRaw, watch, reactive, onUnmounted, onUpdated } from 'vue';
+import { useDisplay } from 'vuetify';
 import { useViewerStore } from '../store/viewer';
 import { useAppStore } from '@/store/app';
 
@@ -62,6 +63,8 @@ import { useClipboardStore } from '../store/clipboard';
 const props = defineProps<{
   id: string;
 }>();
+
+const { mobile } = useDisplay();
 
 let mouseStartX = 0;
 let mouseStartY = 0;
@@ -167,7 +170,25 @@ const onUpdate = throttle((zooming: boolean) => {
   if (grid.value) grid.value.refreshGrid(zooming);
 }, 1000 / 10);
 
-const { current, escape, f, c, _delete } = useMagicKeys({
+const toggleGridVisibility = () => {
+  viewerStore.showGrid = !viewerStore.showGrid;
+  nextTick(() => grid.value?.refreshGrid(true));
+};
+
+const toggleSnapToGrid = () => {
+  viewerStore.snapToGrid = !viewerStore.snapToGrid;
+  nextTick(() => grid.value?.refreshGrid(true));
+};
+
+const isShortcutBlocked = () => {
+  const activeElement = document.activeElement as HTMLElement | null;
+  if (!activeElement) return false;
+  if (activeElement === document.body) return false;
+
+  return activeElement.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(activeElement.tagName);
+};
+
+const { current, escape, f, c, g, s, _delete } = useMagicKeys({
   aliasMap: {
     _delete: 'delete',
   },
@@ -176,23 +197,33 @@ const { current, escape, f, c, _delete } = useMagicKeys({
 const { ctrl_a, ctrl_c, ctrl_v } = useMagicKeys({
   passive: false,
   onEventFired(e) {
-    if ('activeElement' in document && document.activeElement.tagName !== 'BODY') return;
+    if (isShortcutBlocked()) return;
     if (e.ctrlKey && e.key === 'a' && e.type === 'keydown') e.preventDefault();
   },
 });
 
 watch(f, (v) => {
-  if ('activeElement' in document && document.activeElement.tagName !== 'BODY') return;
+  if (isShortcutBlocked()) return;
   if (v) fitContent();
 });
 
 watch(c, (v) => {
-  if ('activeElement' in document && document.activeElement.tagName !== 'BODY') return;
+  if (isShortcutBlocked()) return;
   if (v && !current.has('control')) centerContent();
 });
 
+watch(g, (v) => {
+  if (!v || isShortcutBlocked()) return;
+  toggleGridVisibility();
+});
+
+watch(s, (v) => {
+  if (!v || isShortcutBlocked()) return;
+  toggleSnapToGrid();
+});
+
 watch(_delete, (v) => {
-  if ('activeElement' in document && document.activeElement.tagName !== 'BODY') return;
+  if (isShortcutBlocked()) return;
   if (v) {
     projectStore.deleteSelection2();
     solve();
@@ -200,21 +231,21 @@ watch(_delete, (v) => {
 });
 
 watch(ctrl_a, (v) => {
-  if ('activeElement' in document && document.activeElement.tagName !== 'BODY') return;
+  if (isShortcutBlocked()) return;
   if (v) {
     projectStore.selectAll2();
   }
 });
 
 watch(ctrl_c, (v) => {
-  if ('activeElement' in document && document.activeElement.tagName !== 'BODY') return;
+  if (isShortcutBlocked()) return;
   if (v) {
     useClipboardStore().select(projectStore.selection2);
   }
 });
 
 watch(ctrl_v, (v) => {
-  if ('activeElement' in document && document.activeElement.tagName !== 'BODY') return;
+  if (isShortcutBlocked()) return;
   if (v) {
     paste();
   }
@@ -1118,9 +1149,41 @@ defineExpose({ centerContent, fitContent });
   <div class="d-flex flex-column fill-height svg-viewer">
     <div
       v-if="!appStore.inViewerMode"
-      class="text-body-2 d-flex line-height-1"
+      class="text-body-2 d-flex ga-1 line-height-1"
       style="position: absolute; z-index: 100; bottom: 24px; right: 24px"
     >
+      <div v-if="!mobile" class="d-flex align-center ga-1" style="opacity: 0.5">
+        <!-- Grid toggle -->
+        <v-tooltip text="Toggle grid (G)" location="top">
+          <template #activator="{ props: tooltipProps }">
+            <v-btn
+              v-bind="tooltipProps"
+              size="24"
+              density="compact"
+              rounded="xl"
+              :color="viewerStore.showGrid ? 'primary' : 'default'"
+              @click="toggleGridVisibility"
+            >
+              <div>G</div>
+            </v-btn>
+          </template>
+        </v-tooltip>
+        <!-- Snap to grid -->
+        <v-tooltip text="Toggle snap to grid (S)" location="top">
+          <template #activator="{ props: tooltipProps }">
+            <v-btn
+              v-bind="tooltipProps"
+              size="24"
+              density="compact"
+              rounded="xl"
+              :color="viewerStore.snapToGrid ? 'primary' : 'default'"
+              @click="toggleSnapToGrid"
+            >
+              <div>S</div>
+            </v-btn>
+          </template>
+        </v-tooltip>
+      </div>
       <v-chip-group>
         <v-chip class="justify-end" density="compact" @click="appStore.openSettings()">
           <div class="d-flex ga-1">

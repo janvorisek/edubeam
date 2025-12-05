@@ -2,7 +2,7 @@
 import { openModal } from 'jenesius-vue-modal';
 import AddNodalLoadDialog from './dialogs/AddNodalLoad.vue';
 import { useProjectStore } from '@/store/project';
-import { setUnsolved, solve, toggleSet } from '@/utils';
+import { deleteNode, setUnsolved, solve, toggleSet } from '@/utils';
 import { computed, onMounted, ref } from 'vue';
 import { Node } from 'ts-fem';
 
@@ -44,6 +44,12 @@ const angle = computed(() => {
 const node = computed(() => {
   return projectStore.solver.domain.nodes.get(projectStore.selection.label);
 });
+
+const removeNode = () => {
+  if (projectStore.selection.type !== 'node' || projectStore.selection.label === null) return;
+
+  deleteNode(String(projectStore.selection.label));
+};
 </script>
 
 <template>
@@ -126,6 +132,13 @@ const node = computed(() => {
         <div class="pr-2"><v-icon size="16" icon="mdi-ruler" /></div>
       </template>
       {{ $t('loads.addPrescribedDisplacement') }}
+    </v-list-item>
+    <v-divider v-if="projectStore.selection.type === 'node'" />
+    <v-list-item v-if="projectStore.selection.type === 'node'" link class="text-body-2 text-error" @click="removeNode">
+      <template #prepend>
+        <div class="pr-2"><v-icon size="16" color="error" icon="mdi-delete" /></div>
+      </template>
+      {{ $t('common.delete') }}
     </v-list-item>
   </v-list>
 </template>

@@ -27,7 +27,7 @@
     "@types/js-quantities": "^1.6.6",
     "@vueuse/components": "^10.9.0",
     "@vueuse/core": "^10.9.0",
-    "fast-xml-parser": "^4.3.5",
+    "fast-xml-parser": "^5.3.2",
     "floating-vue": "^5.2.2",
     "jenesius-vue-modal": "^1.11.0",
     "js-quantities": "^1.8.0",

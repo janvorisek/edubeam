@@ -53,7 +53,7 @@
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@mdi/font": "^7.4.47",
-    "@types/node": "^20.11.16",
+    "@types/node": "^24.10.1",
     "@types/webfontloader": "^1.6.38",
     "@typescript-eslint/parser": "^8.48.0",
     "@vitejs/plugin-vue": "^6.0.2",

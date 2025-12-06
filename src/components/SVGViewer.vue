@@ -1150,39 +1150,43 @@ defineExpose({ centerContent, fitContent });
     <div
       v-if="!appStore.inViewerMode"
       class="text-body-2 d-flex ga-1 line-height-1"
-      style="position: absolute; z-index: 100; bottom: 24px; right: 24px"
+      style="position: absolute; z-index: 100; bottom: 16px; right: 16px"
     >
-      <div v-if="!mobile" class="d-flex align-center ga-1" style="opacity: 0.5">
-        <!-- Grid toggle -->
-        <v-tooltip text="Toggle grid (G)" location="top">
-          <template #activator="{ props: tooltipProps }">
-            <v-btn
-              v-bind="tooltipProps"
-              size="24"
-              density="compact"
-              rounded="xl"
-              :color="viewerStore.showGrid ? 'primary' : 'default'"
-              @click="toggleGridVisibility"
-            >
-              <div>G</div>
-            </v-btn>
-          </template>
-        </v-tooltip>
-        <!-- Snap to grid -->
-        <v-tooltip text="Toggle snap to grid (S)" location="top">
-          <template #activator="{ props: tooltipProps }">
-            <v-btn
-              v-bind="tooltipProps"
-              size="24"
-              density="compact"
-              rounded="xl"
-              :color="viewerStore.snapToGrid ? 'primary' : 'default'"
-              @click="toggleSnapToGrid"
-            >
-              <div>S</div>
-            </v-btn>
-          </template>
-        </v-tooltip>
+      <div v-if="!mobile" class="d-flex align-center ga-1">
+        <v-chip density="compact" class="d-flex pa-0 overflow-hidden">
+          <!-- Grid toggle -->
+          <v-tooltip text="Toggle grid (G)" location="top">
+            <template #activator="{ props: tooltipProps }">
+              <v-btn
+                v-bind="tooltipProps"
+                size="24"
+                density="compact"
+                variant="text"
+                rounded="0"
+                :class="viewerStore.showGrid ? 'text-black' : 'text-grey'"
+                @click="toggleGridVisibility"
+              >
+                <div>G</div>
+              </v-btn>
+            </template>
+          </v-tooltip>
+          <!-- Snap to grid -->
+          <v-tooltip text="Toggle snap to grid (S)" location="top">
+            <template #activator="{ props: tooltipProps }">
+              <v-btn
+                v-bind="tooltipProps"
+                size="24"
+                density="compact"
+                variant="text"
+                rounded="0"
+                :class="viewerStore.snapToGrid ? 'text-black' : 'text-grey'"
+                @click="toggleSnapToGrid"
+              >
+                <div>S</div>
+              </v-btn>
+            </template>
+          </v-tooltip>
+        </v-chip>
       </div>
       <v-chip-group>
         <v-chip class="justify-end" density="compact" @click="appStore.openSettings()">

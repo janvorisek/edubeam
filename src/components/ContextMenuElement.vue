@@ -5,7 +5,7 @@ import { useProjectStore } from '@/store/project';
 import { useLayoutStore } from '@/store/layout';
 import StiffnessMatrix from './StiffnessMatrix.vue';
 import { ref, computed, onMounted, watch } from 'vue';
-import { setUnsolved, solve } from '../utils';
+import { deleteElement, setUnsolved, solve } from '../utils';
 
 const projectStore = useProjectStore();
 const layoutStore = useLayoutStore();
@@ -16,6 +16,12 @@ const n2 = ref('');
 const element = computed(() => {
   return useProjectStore().solver.domain.getElement(projectStore.selection.label);
 });
+
+const removeElement = () => {
+  if (projectStore.selection.type !== 'element' || projectStore.selection.label === null) return;
+
+  deleteElement(String(projectStore.selection.label));
+};
 
 onMounted(() => {
   n1.value = element.value.nodes[0];
@@ -119,6 +125,18 @@ watch([n1, n2], () => {
       <template #prepend>
         <div class="pr-2"><v-icon size="16" icon="mdi-matrix" /></div>
       </template>
+    </v-list-item>
+    <v-divider v-if="projectStore.selection.type === 'element'" />
+    <v-list-item
+      v-if="projectStore.selection.type === 'element'"
+      link
+      class="text-body-2 text-error"
+      @click="removeElement"
+    >
+      <template #prepend>
+        <div class="pr-2"><v-icon size="16" color="error" icon="mdi-delete" /></div>
+      </template>
+      {{ $t('common.delete') }}
     </v-list-item>
   </v-list>
 </template>

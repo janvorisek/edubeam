@@ -33,7 +33,7 @@ const flag = computed(() => (props.angle > 0 ? 1 : 0));
       </g>
 
       <polyline
-        :points="`0,-80 10 -80`"
+        :points="`0,-40 10 -40`"
         :marker-start="supportMarker(props.node)"
         stroke-width="1"
         vector-effect="non-scaling-stroke"

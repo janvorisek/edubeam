@@ -185,19 +185,17 @@ const edit = () => {
 
   if (isNaN(ang) || Math.abs(ang) < 1e-8) {
     node.value.lcs = undefined;
-    solve();
-    closeModal();
-    return;
+  } else {
+    const locx = [Math.cos(ang), 0, Math.sin(ang)];
+    const locy = [0, 1, 0];
+    node.value.updateLcs({ locx, locy });
   }
-
-  const locx = [Math.cos(ang), 0, Math.sin(ang)];
-  const locy = [0, 1, 0];
-
-  node.value.updateLcs({ locx, locy });
 
   node.value.coords = [parseFloat2(newNodeX.value), 0, parseFloat2(newNodeZ.value)];
 
+  console.log('BCS before:', node.value.bcs);
   node.value.bcs = new Set(tmpNode.value.bcs);
+  console.log('BCS after:', node.value.bcs);
 
   solve();
   closeModal();

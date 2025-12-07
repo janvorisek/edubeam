@@ -2056,20 +2056,6 @@ defineExpose({ centerContent, fitContent });
     }
   }
 
-  .dimensioning {
-    polyline {
-      stroke: #000;
-      stroke-width: 1px;
-      fill: none;
-      vector-effect: non-scaling-stroke;
-    }
-
-    text {
-      text-anchor: middle;
-      dominant-baseline: text-bottom;
-    }
-  }
-
   .normal text {
     fill: v-bind('viewerStore.colors.normalForce');
   }

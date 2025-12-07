@@ -366,3 +366,20 @@ select.mini-select {
 .v-selection-control .v-label {
   white-space: nowrap !important;
 }
+
+// SVGViewer related classes
+// TODO: Must be moved here from scoped component styles
+
+.dimensioning {
+  polyline {
+    stroke: #000;
+    stroke-width: 1px;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+
+  text {
+    text-anchor: middle;
+    dominant-baseline: text-bottom;
+  }
+}

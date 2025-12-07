@@ -8,37 +8,15 @@
           <v-container>
             <v-row no-gutters>
               <v-col
-                v-if="loadType === 'udl' && 1 === 0"
-                class="d-none d-md-block"
+                v-if="previewLoad"
                 cols="12"
                 md="6"
+                class="mb-4 mb-md-0 pe-md-4"
                 align-self="center"
               >
-                <div style="height: 200px">
-                  <SVGElementViewer
-                    v-if="loadType === 'udl'"
-                    ref="viewer"
-                    class="overflow-hidden pa-1 w-100"
-                    :solver="projectStore.solver"
-                    :nodes="[]"
-                    :elements="[target]"
-                    :element-loads="[tmpLoad]"
-                    :show-node-labels="true"
-                    :show-element-labels="true"
-                    :show-deformed-shape="false"
-                    :show-reactions="false"
-                    :show-loads="true"
-                    :show-moments="false"
-                    :show-normal-force="false"
-                    :show-shear-force="false"
-                    :padding="12"
-                    :mobile-padding="12"
-                    :results-scale-px="32"
-                    :convert-force="appStore.convertForce"
-                  />
-                </div>
+                <ElementLoadPreview class="w-100" :load="previewLoad" :show-node-labels="true" />
               </v-col>
-              <v-col cols="12" md="12" align-self="center">
+              <v-col cols="12" :md="previewLoad ? 6 : 12" align-self="center">
                 <v-row no-gutters>
                   <v-col cols="12" md="12">
                     <v-select
@@ -123,8 +101,8 @@ import { closeModal } from 'jenesius-vue-modal';
 import { onMounted } from 'vue';
 import { useAppStore } from '@/store/app';
 import { checkNumber, numberRules, parseFloat2, loadType as LT } from '@/utils';
-import { BeamConcentratedLoad, BeamElementUniformEdgeLoad } from 'ts-fem';
-import SVGElementViewer from '../SVGElementViewer.vue';
+import { BeamConcentratedLoad, BeamElementUniformEdgeLoad, BeamTemperatureLoad } from 'ts-fem';
+import ElementLoadPreview from '../ElementLoadPreview.vue';
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
@@ -166,13 +144,27 @@ const realFx = computed(() => appStore.convertInverseForce(parseFloat2(elementNo
 const realFz = computed(() => appStore.convertInverseForce(parseFloat2(elementNodeValueFz.value)));
 const realDist = computed(() => appStore.convertInverseLength(parseFloat2(elementLoadPos.value)));
 
-const tmpLoad = computed(() => {
-  return new BeamElementUniformEdgeLoad(
-    load.value.target,
-    projectStore.solver.domain,
-    [realFx.value, realFz.value],
-    elementLCS.value
-  );
+const previewLoad = computed(() => {
+  const domain = projectStore.solver.domain;
+
+  if (loadType.value === 'udl') {
+    return new BeamElementUniformEdgeLoad(load.value.target, domain, [realFx.value, realFz.value], elementLCS.value);
+  }
+
+  if (loadType.value === 'concentrated') {
+    return new BeamConcentratedLoad(
+      load.value.target,
+      domain,
+      [realFx.value, realFz.value, 0, realDist.value],
+      elementLCS.value
+    );
+  }
+
+  if (loadType.value === 'temperature') {
+    return load.value as BeamTemperatureLoad;
+  }
+
+  return null;
 });
 
 onMounted(() => {

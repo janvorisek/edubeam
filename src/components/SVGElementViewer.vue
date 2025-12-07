@@ -26,6 +26,7 @@ import SVGPrescribedDisplacement from './svg/PrescribedDisplacement.vue';
 import SVGNode from './svg/Node.vue';
 import SVGElement from './svg/Element.vue';
 import SVGElementTemperatureLoad from './svg/ElementTemperatureLoad.vue';
+import SVGDimensioning from './svg/Dimensioning.vue';
 import { loadType } from '../utils/loadType';
 
 const props = withDefaults(
@@ -49,6 +50,7 @@ const props = withDefaults(
     nodalLoads?: NodalLoad[];
     elementLoads?: BeamElementLoad[];
     prescribedDisplacements?: PrescribedDisplacement[];
+    dimlines?: { nodes: Node[]; distance: number }[];
     padding?: number;
     mobilePadding?: number;
     resultsScalePx?: number;
@@ -88,6 +90,7 @@ const props = withDefaults(
     nodalLoads: () => [],
     elementLoads: () => [],
     prescribedDisplacements: () => [],
+    dimlines: () => [],
     padding: 12,
     mobilePadding: 12,
     resultsScalePx: 64,
@@ -362,6 +365,17 @@ defineExpose({ centerContent, fitContent });
                 :font-size="props.fontSize"
               />
             </g>
+          </g>
+
+          <g>
+            <SVGDimensioning
+              v-for="(dim, index) in props.dimlines"
+              :key="index"
+              :nodes="dim.nodes"
+              :distance="dim.distance"
+              :scale="scale"
+              :font-size="props.fontSize"
+            />
           </g>
         </g>
       </svg>

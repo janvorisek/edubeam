@@ -15,31 +15,16 @@
         </v-select>
         <v-form v-model="valid">
           <v-row no-gutters>
-            <v-col v-if="loadType === 'udl' && 1 === 0" class="d-none d-md-block" cols="12" md="6" align-self="center">
-              <div style="height: 200px">
-                <SVGElementViewer
-                  ref="viewer"
-                  class="overflow-hidden pa-1 w-100"
-                  :solver="projectStore.solver"
-                  :nodes="[]"
-                  :elements="[target]"
-                  :element-loads="[tmpLoad]"
-                  :show-node-labels="true"
-                  :show-element-labels="true"
-                  :show-deformed-shape="false"
-                  :show-reactions="false"
-                  :show-loads="true"
-                  :show-moments="false"
-                  :show-normal-force="false"
-                  :show-shear-force="false"
-                  :padding="12"
-                  :mobile-padding="12"
-                  :results-scale-px="32"
-                  :convert-force="appStore.convertForce"
-                />
-              </div>
+            <v-col
+              v-if="previewLoad"
+              cols="12"
+              md="6"
+              class="mb-4 mb-md-0 pe-md-4"
+              align-self="center"
+            >
+              <ElementLoadPreview class="w-100" :load="previewLoad" :show-node-labels="true" />
             </v-col>
-            <v-col cols="12" md="12" align-self="center">
+            <v-col cols="12" :md="previewLoad ? 6 : 12" align-self="center">
               <v-row no-gutters>
                 <v-col cols="12" md="12">
                   <v-select
@@ -50,7 +35,6 @@
                     :label="$t('common.element')"
                     hide-details="auto"
                     required
-                    @update:model-value="viewer ? viewer.fitContent() : (() => {})()"
                   />
                 </v-col>
 
@@ -153,8 +137,8 @@ import { useProjectStore } from '../../store/project';
 import { useAppStore } from '../../store/app';
 import { closeModal } from 'jenesius-vue-modal';
 import { checkNumber, parseFloat2, numberRules } from '@/utils';
-import SVGElementViewer from '../SVGElementViewer.vue';
-import { BeamElementUniformEdgeLoad } from 'ts-fem';
+import ElementLoadPreview from '../ElementLoadPreview.vue';
+import { BeamConcentratedLoad, BeamElementUniformEdgeLoad, BeamTemperatureLoad } from 'ts-fem';
 import { formatMeasureAsHTML } from '@/SVGUtils';
 
 import { useI18n } from 'vue-i18n';
@@ -166,8 +150,6 @@ const appStore = useAppStore();
 const props = defineProps<{
   label?: string | number;
 }>();
-
-const viewer = ref<InstanceType<typeof SVGElementViewer>>();
 
 const open = ref(true);
 const valid = ref(false);
@@ -205,13 +187,27 @@ const realDist = computed(() => appStore.convertInverseLength(parseFloat2(elemen
 const realTc = computed(() => appStore.convertInverseTemperature(parseFloat2(loadNodeValueTc.value)));
 const realTbt = computed(() => appStore.convertInverseTemperature(parseFloat2(loadNodeValueTbt.value)));
 
-const tmpLoad = computed(() => {
-  return new BeamElementUniformEdgeLoad(
-    loadElementId.value,
-    projectStore.solver.domain,
-    [realFx.value, realFz.value],
-    elementLCS.value
-  );
+const previewLoad = computed(() => {
+  const domain = projectStore.solver.domain;
+
+  if (loadType.value === 'udl') {
+    return new BeamElementUniformEdgeLoad(loadElementId.value, domain, [realFx.value, realFz.value], elementLCS.value);
+  }
+
+  if (loadType.value === 'concentrated') {
+    return new BeamConcentratedLoad(
+      loadElementId.value,
+      domain,
+      [realFx.value, realFz.value, 0, realDist.value],
+      elementLCS.value
+    );
+  }
+
+  if (loadType.value === 'temperature') {
+    return new BeamTemperatureLoad(loadElementId.value, domain, [realTc.value, realTbt.value, 0]);
+  }
+
+  return null;
 });
 
 const minMax = (v) => {

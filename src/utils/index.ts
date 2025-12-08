@@ -17,6 +17,7 @@ import { Command, IKeyValue, undoRedoManager } from '../CommandManager';
 import { useViewerStore } from '../store/viewer';
 
 import { loadType } from './loadType';
+import { ensureDimensionId, createDimensionId } from './id';
 
 export type EntityWithLabel = { label: string & { [key: string]: unknown } };
 
@@ -146,6 +147,16 @@ export const exportJSON = () => {
     };
   });
 
+  const dimensions = useProjectStore().dimensions.map((dim) => {
+    const id = ensureDimensionId(dim);
+    return {
+      id,
+      distance: dim.distance,
+      distanceUnit: dim.distanceUnit ?? 'world',
+      nodes: dim.nodes.map((n) => n.label),
+    };
+  });
+
   return {
     edubeam: true,
     date: new Date(),
@@ -158,11 +169,14 @@ export const exportJSON = () => {
       elements,
       loadCases,
     },
+    dimensions,
   };
 };
 
 export const importJSON = (json: any) => {
   const jObj = json;
+
+  useProjectStore().dimensions = [];
 
   // Parse materials
   if (jObj.domain.materials) {
@@ -222,6 +236,30 @@ export const importJSON = (json: any) => {
         useProjectStore().solver.loadCases[0].createPrescribedDisplacement(pbc.target, pbc.prescribedValues);
       }
     }
+  }
+
+  if (Array.isArray(jObj.dimensions)) {
+    const restoredDimensions = [];
+    const nodeMap = useProjectStore().solver.domain.nodes;
+
+    for (const dim of jObj.dimensions) {
+      if (!dim || !Array.isArray(dim.nodes) || dim.nodes.length < 2) continue;
+
+      const nodes = dim.nodes
+        .map((label) => nodeMap.get(label))
+        .filter((node): node is Node => Boolean(node));
+
+      if (nodes.length !== dim.nodes.length) continue;
+
+      restoredDimensions.push({
+        id: typeof dim.id === 'string' ? dim.id : createDimensionId(),
+        distance: typeof dim.distance === 'number' ? dim.distance : 0,
+        distanceUnit: dim.distanceUnit === 'pixel' ? 'pixel' : 'world',
+        nodes,
+      });
+    }
+
+    useProjectStore().dimensions = restoredDimensions;
   }
 };
 
@@ -540,9 +578,18 @@ export const deleteNode = (id: string) => {
   useProjectStore().clearSelection();
 
   // delete relevant dimensioning
-  useProjectStore().dimensions = useProjectStore().dimensions.filter(
-    (dim) => dim.nodes[0].label !== id && dim.nodes[1].label !== id
-  );
+  const removedDimensionIds: string[] = [];
+  useProjectStore().dimensions = useProjectStore().dimensions.filter((dim) => {
+    const shouldRemove = dim.nodes[0].label === id || dim.nodes[1].label === id;
+    if (shouldRemove) removedDimensionIds.push(ensureDimensionId(dim));
+    return !shouldRemove;
+  });
+
+  if (removedDimensionIds.length > 0) {
+    useProjectStore().selection2.dimensions = useProjectStore().selection2.dimensions.filter(
+      (dimId) => !removedDimensionIds.includes(dimId)
+    );
+  }
 
   // delete elements first
   for (const [key, value] of useProjectStore().solver.domain.elements) {

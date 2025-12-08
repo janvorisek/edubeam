@@ -375,6 +375,7 @@ defineExpose({ centerContent, fitContent });
               :distance="dim.distance"
               :scale="scale"
               :font-size="props.fontSize"
+              :interactive="false"
             />
           </g>
         </g>

@@ -4,6 +4,8 @@ import { LinearStaticSolver, Beam2D, Node } from 'ts-fem';
 import { ref, computed, reactive } from 'vue';
 import { max, min } from 'mathjs';
 import { deleteElement, deleteNode, deserializeModel, serializeModel, throttle } from '@/utils';
+import { ensureDimensionId } from '@/utils/id';
+import type { DimensionLine } from '@/types/dimension';
 
 export const useProjectStore = defineStore(
   'project',
@@ -37,12 +39,14 @@ export const useProjectStore = defineStore(
       nodalLoads: number[];
       elementLoads: number[];
       prescribedBC: number[];
+      dimensions: string[];
     }>({
       nodes: [],
       elements: [],
       nodalLoads: [],
       elementLoads: [],
       prescribedBC: [],
+      dimensions: [],
     });
 
     const clearSelection = () => {
@@ -58,6 +62,7 @@ export const useProjectStore = defineStore(
       selection2.nodalLoads = [];
       selection2.elementLoads = [];
       selection2.prescribedBC = [];
+      selection2.dimensions = [];
     };
 
     const isAnythingSelected2 = () => {
@@ -66,7 +71,8 @@ export const useProjectStore = defineStore(
         selection2.elements.length > 0 ||
         selection2.nodalLoads.length > 0 ||
         selection2.elementLoads.length > 0 ||
-        selection2.prescribedBC.length > 0
+        selection2.prescribedBC.length > 0 ||
+        selection2.dimensions.length > 0
       );
     };
 
@@ -213,6 +219,10 @@ export const useProjectStore = defineStore(
       for (let i = 0; i < solver.value.loadCases[0].prescribedBC.length; i++) {
         selection2.prescribedBC.push(i);
       }
+
+      for (const dim of dimensions.value) {
+        selection2.dimensions.push(ensureDimensionId(dim));
+      }
     };
 
     const deleteSelection2 = () => {
@@ -261,11 +271,16 @@ export const useProjectStore = defineStore(
         loadCase.prescribedBC.splice(i, 1);
       }
 
+      if (selection2.dimensions.length > 0) {
+        const toDelete = new Set(selection2.dimensions);
+        dimensions.value = dimensions.value.filter((dim) => !toDelete.has(ensureDimensionId(dim)));
+      }
+
       clearSelection();
       clearSelection2();
     };
 
-    const dimensions = ref<{ distance: number; nodes: Node[] }[]>([]);
+    const dimensions = ref<DimensionLine[]>([]);
 
     return {
       solve,

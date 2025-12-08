@@ -6,8 +6,8 @@ import {
   BeamConcentratedLoad,
   BeamTemperatureLoad,
 } from 'ts-fem';
-
-type DimLine = { distance: number; nodes: Node[] };
+import { createDimensionId, ensureDimensionId } from './id';
+import type { DimensionLine } from '@/types/dimension';
 
 function objectToBase64(obj: unknown) {
   try {
@@ -39,7 +39,7 @@ function base64ToObject(base64String) {
   }
 }
 
-export const serializeModel = (ls: LinearStaticSolver, dims: DimLine[]) => {
+export const serializeModel = (ls: LinearStaticSolver, dims: DimensionLine[]) => {
   const _nodes = [];
   const _elements = [];
   const _materials = [];
@@ -121,7 +121,9 @@ export const serializeModel = (ls: LinearStaticSolver, dims: DimLine[]) => {
   if (pd.length > 0) obj.pd = pd;
 
   obj.d = dims.map((e) => {
-    return [e.distance, e.nodes.map((n) => n.label)];
+    const id = ensureDimensionId(e);
+    const distanceUnit = e.distanceUnit ?? 'world';
+    return [e.distance, e.nodes.map((n) => n.label), id, distanceUnit];
   });
 
   return objectToBase64(obj);
@@ -201,7 +203,9 @@ export const deserializeModel = (base64String: string, ls: LinearStaticSolver, d
   if ('d' in tmp) {
     for (const e of tmp.d) {
       try {
-        dims.push({ distance: e[0], nodes: e[1].map((n) => ls.domain.getNode(n)) });
+        const id = e[2] ?? createDimensionId();
+        const distanceUnit = e[3] ?? 'pixel';
+        dims.push({ id, distance: e[0], distanceUnit, nodes: e[1].map((n) => ls.domain.getNode(n)) });
       } catch (e) {
         console.warn('Error deserializing dimensions: ', e);
       }

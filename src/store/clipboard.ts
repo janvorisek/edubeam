@@ -10,6 +10,7 @@ type Selection = {
   nodalLoads: number[];
   elementLoads: number[];
   prescribedBC: number[];
+  dimensions: string[];
 };
 
 export const useClipboardStore = defineStore('clipboard', () => {
@@ -19,6 +20,7 @@ export const useClipboardStore = defineStore('clipboard', () => {
     nodalLoads: [],
     elementLoads: [],
     prescribedBC: [],
+    dimensions: [],
   });
 
   const select = (sel: Selection) => {
@@ -27,6 +29,7 @@ export const useClipboardStore = defineStore('clipboard', () => {
     selection.nodalLoads = sel.nodalLoads;
     selection.elementLoads = sel.elementLoads;
     selection.prescribedBC = sel.prescribedBC;
+    selection.dimensions = sel.dimensions;
   };
 
   const paste = (d: { x: number; z: number } = { x: 0, z: 0 }) => {

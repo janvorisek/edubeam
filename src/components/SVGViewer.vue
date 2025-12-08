@@ -4,7 +4,7 @@ import SvgPanZoom from './SVGPanZoom.vue';
 import SvgGrid from './SVGGrid.vue';
 import SvgViewerDefs from './SVGViewerDefs.vue';
 import { useProjectStore } from '../store/project';
-import { ref, onMounted, computed, nextTick, markRaw, watch, reactive, onUnmounted, onUpdated } from 'vue';
+import { ref, onMounted, computed, nextTick, watch, reactive, onUnmounted } from 'vue';
 import { useDisplay } from 'vuetify';
 import { useViewerStore } from '../store/viewer';
 import { useAppStore } from '@/store/app';
@@ -26,7 +26,8 @@ import SVGElementTemperatureLoad from './svg/ElementTemperatureLoad.vue';
 import SVGDimensioning from './svg/Dimensioning.vue';
 
 import { formatExpValueAsHTML } from '../SVGUtils';
-import { debounce, loadType, throttle } from '../utils';
+import { loadType, throttle } from '../utils';
+import { createDimensionId, ensureDimensionId } from '@/utils/id';
 import {
   Node,
   DofID,
@@ -59,6 +60,7 @@ import { Command, IKeyValue, undoRedoManager } from '../CommandManager';
 import { EventType, eventBus } from '../EventBus';
 import { BeamConcentratedLoad } from 'ts-fem';
 import { useClipboardStore } from '../store/clipboard';
+import type { DimensionLine } from '@/types/dimension';
 
 const props = defineProps<{
   id: string;
@@ -72,9 +74,8 @@ const mouseXReal = ref(0);
 const mouseYReal = ref(0);
 
 const startNode = ref<{ label: string | number; x: number; y: number } | null>(null);
-const endNode = ref<Node | null>(new Node('~932:d\nxADsfsa', null, [0, 0, 0]));
 const deltaPaste = ref<{ x: number; y: number } | null>({ x: 0, y: 0 });
-const dimlineDist = ref(64);
+const dimlineDist = ref(48); // preview offset
 
 const appStore = useAppStore();
 const projectStore = useProjectStore();
@@ -92,6 +93,24 @@ const scale = computed(() => {
   if (panZoom.value) return panZoom.value.scale;
 
   return 1;
+});
+
+const previewDimensionDistance = computed(() => {
+  const currentScale = scale.value || 1;
+  const pxOffset = dimlineDist.value;
+  return pxOffset / currentScale;
+});
+
+const previewDimensionNodes = computed<Node[] | null>(() => {
+  if (appStore.mouseMode !== MouseMode.ADD_DIMLINE || !startNode.value) return null;
+  const start = projectStore.solver.domain.nodes.get(String(startNode.value.label));
+  if (!start) return null;
+
+  const previewEnd = {
+    coords: [mouseXReal.value, 0, mouseYReal.value],
+  } as unknown as Node;
+
+  return [start, previewEnd];
 });
 
 const intersected = ref<{
@@ -253,6 +272,7 @@ watch(ctrl_v, (v) => {
 
 watch(escape, (v) => {
   if (v) {
+    cancelDimensionDrag();
     if ('activeElement' in document) (document.activeElement as HTMLElement).blur();
     appStore.mouseMode = MouseMode.NONE;
     projectStore.clearSelection();
@@ -453,7 +473,7 @@ const hideTooltip = () => {
   }
 };
 
-const hasMoved = (e: MouseEvent) => {
+const hasMoved = (e: MouseEvent | PointerEvent) => {
   const dx = e.offsetX - mouseStartX;
   const dy = e.offsetY - mouseStartY;
   const d = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
@@ -524,6 +544,32 @@ const onElementClick = (e: MouseEvent) => {
   projectStore.selection2.elements = [useProjectStore().selection.label];
 };
 
+const onDimensionClick = (e: PointerEvent, dimensionId: string) => {
+  if (hasMoved(e)) return;
+
+  projectStore.clearSelection();
+  projectStore.clearSelection2();
+  projectStore.selection2.dimensions = [dimensionId];
+};
+
+const onDimensionPointerDown = (e: PointerEvent, dimensionId: string) => {
+  const dimension = findDimensionById(dimensionId);
+  if (dimension) convertDistanceToWorld(dimension);
+
+  pendingDimensionId = dimensionId;
+  pointerDownOriginatesFromDimension = true;
+  intersected.value.type = 'dimension';
+  intersected.value.index = dimensionId;
+  appStore.mouseMode = MouseMode.MOVING;
+};
+
+const onDimensionPointerUp = (e: PointerEvent, dimensionId: string) => {
+  if (isDraggingDimension()) return;
+
+  pendingDimensionId = null;
+  onDimensionClick(e, dimensionId);
+};
+
 const onElementLoadClick = (e: MouseEvent, index: number) => {
   if (hasMoved(e)) return;
 
@@ -592,6 +638,9 @@ let origX = 0;
 let origZ = 0;
 let finalX = 0;
 let finalZ = 0;
+let dragDimension: { id: string; dimension: DimensionEntry; startDistance: number; lastDistance: number } | null = null;
+let pendingDimensionId: string | null = null;
+let pointerDownOriginatesFromDimension = false;
 
 const moveNode = () => {
   if (!drgNode) return;
@@ -620,7 +669,94 @@ const moveNode = () => {
   drgNode = null;
 };
 
-const mouseMove = (e: MouseEvent) => {
+const isDraggingDimension = () => dragDimension !== null;
+
+const updateDimensionDistanceFromPointer = () => {
+  if (!dragDimension) return;
+  const nodes = dragDimension.dimension.nodes;
+  if (!nodes[0] || !nodes[1]) return;
+
+  convertDistanceToWorld(dragDimension.dimension);
+
+  const dx = nodes[1].coords[0] - nodes[0].coords[0];
+  const dz = nodes[1].coords[2] - nodes[0].coords[2];
+  const length = Math.sqrt(dx * dx + dz * dz);
+  if (!isFinite(length) || length === 0) return;
+
+  const normalX = dz / length;
+  const normalY = -dx / length;
+  const offset = (mouseXReal.value - nodes[0].coords[0]) * normalX + (mouseYReal.value - nodes[0].coords[2]) * normalY;
+  const newDistance = -offset;
+
+  if (!Number.isFinite(newDistance)) return;
+
+  dragDimension.dimension.distance = newDistance;
+  dragDimension.dimension.distanceUnit = 'world';
+  dragDimension.lastDistance = newDistance;
+};
+
+const startDimensionDrag = (dimensionId: string) => {
+  const dimension = findDimensionById(dimensionId);
+  if (!dimension) {
+    pendingDimensionId = null;
+    return false;
+  }
+
+  ensureDimensionSelected(dimensionId);
+  convertDistanceToWorld(dimension);
+  dimension.distanceUnit = 'world';
+
+  dragDimension = {
+    id: dimensionId,
+    dimension,
+    startDistance: dimension.distance ?? 0,
+    lastDistance: dimension.distance ?? 0,
+  };
+  pendingDimensionId = null;
+  appStore.mouseMode = MouseMode.MOVING;
+  intersected.value.type = 'dimension';
+  intersected.value.index = dimensionId;
+  return true;
+};
+
+const finishDimensionDrag = (shouldCommit = true) => {
+  if (!dragDimension) return;
+
+  const { dimension, startDistance, lastDistance } = dragDimension;
+  if (shouldCommit && Math.abs(lastDistance - startDistance) > 1e-6) {
+    const setCommand = new Command<IKeyValue>(
+      (value) => {
+        value.item.distance = value.next as number;
+        value.item.distanceUnit = 'world';
+      },
+      (value) => {
+        value.item.distance = value.prev as number;
+        value.item.distanceUnit = 'world';
+      },
+      { item: dimension, prev: startDistance, next: lastDistance }
+    );
+
+    undoRedoManager.executeCommand(setCommand);
+  } else if (!shouldCommit) {
+    dimension.distance = startDistance;
+    dimension.distanceUnit = 'world';
+  }
+
+  dragDimension = null;
+  appStore.mouseMode = MouseMode.NONE;
+  pendingDimensionId = null;
+};
+
+const cancelDimensionDrag = () => {
+  if (!dragDimension) {
+    pendingDimensionId = null;
+    return;
+  }
+
+  finishDimensionDrag(false);
+};
+
+const mouseMove = (e: PointerEvent) => {
   appStore.mouse.x = e.clientX;
   appStore.mouse.y = e.clientY;
 
@@ -644,9 +780,14 @@ const mouseMove = (e: MouseEvent) => {
   mouseXReal.value = viewerStore.snapToGrid ? snappedX : mXReal;
   mouseYReal.value = viewerStore.snapToGrid ? snappedY : mYReal;
 
-  if (appStore.mouseMode === MouseMode.ADD_DIMLINE && startNode.value) {
-    endNode.value.coords[0] = mouseXReal.value;
-    endNode.value.coords[2] = mouseYReal.value;
+  if (pendingDimensionId && !isDraggingDimension() && hasMoved(e)) {
+    if (startDimensionDrag(pendingDimensionId)) {
+      updateDimensionDistanceFromPointer();
+    }
+  }
+
+  if (isDraggingDimension()) {
+    updateDimensionDistanceFromPointer();
   }
 
   if (appStore.mouseMode === MouseMode.MOVING && intersected.value.type === 'node') {
@@ -677,9 +818,14 @@ const mouseMove = (e: MouseEvent) => {
 
 const onMouseDown = (e: PointerEvent) => {
   //if (this.svgPanZoom == null) return;
-  projectStore.clearSelection();
+  const skipClearingSelection = pointerDownOriginatesFromDimension;
+  pointerDownOriginatesFromDimension = false;
 
-  if (e.button !== 2) projectStore.clearSelection2();
+  if (!skipClearingSelection) {
+    projectStore.clearSelection();
+
+    if (e.button !== 2) projectStore.clearSelection2();
+  }
 
   if ('activeElement' in document) (document.activeElement as HTMLElement).blur();
 
@@ -895,7 +1041,9 @@ const onMouseDown = (e: PointerEvent) => {
         }
 
         projectStore.dimensions.push({
-          distance: dimlineDist.value,
+          id: createDimensionId(),
+          distance: dimlineDist.value / (scale.value || 1),
+          distanceUnit: 'world',
           nodes: [n1, n2],
         });
 
@@ -910,7 +1058,7 @@ const onMouseDown = (e: PointerEvent) => {
 
     if (appStore.mouseMode === MouseMode.HOVER) {
       appStore.mouseMode = MouseMode.MOVING;
-    } else if (e.pointerType === 'mouse') {
+    } else if (e.pointerType === 'mouse' && appStore.mouseMode !== MouseMode.MOVING) {
       appStore.mouseMode = MouseMode.SELECTING;
       appStore.mouse.sx = e.clientX;
       appStore.mouse.sy = e.clientY;
@@ -926,6 +1074,63 @@ interface Point {
   x: number;
   y: number;
 }
+
+type DimensionEntry = DimensionLine;
+
+const getDimensionId = (dim: { id?: string }) => {
+  return ensureDimensionId(dim);
+};
+
+const convertDistanceToWorld = (dim: DimensionEntry) => {
+  if (dim.distanceUnit === 'world') return;
+
+  const currentScale = scale.value || 1;
+  const baseline = dim.distance ?? dimlineDist.value;
+  const worldDistance = baseline / (currentScale === 0 ? 1 : currentScale);
+
+  dim.distance = worldDistance;
+  dim.distanceUnit = 'world';
+};
+
+const normalizedDimensions = computed(() => {
+  projectStore.dimensions.forEach((dim) => convertDistanceToWorld(dim as DimensionEntry));
+  return projectStore.dimensions as DimensionEntry[];
+});
+
+const getDimensionSegment = (dim: DimensionEntry): { start: Point; end: Point } | null => {
+  if (!dim.nodes[0] || !dim.nodes[1]) return null;
+
+  convertDistanceToWorld(dim);
+
+  const dx = dim.nodes[1].coords[0] - dim.nodes[0].coords[0];
+  const dz = dim.nodes[1].coords[2] - dim.nodes[0].coords[2];
+  const length = Math.sqrt(dx * dx + dz * dz);
+
+  if (!isFinite(length) || length === 0) return null;
+
+  const normalX = dz / length;
+  const normalY = -dx / length;
+  const offset = -(dim.distance ?? 0);
+
+  const dnx = offset * normalX;
+  const dny = offset * normalY;
+
+  return {
+    start: { x: dim.nodes[0].coords[0] + dnx, y: dim.nodes[0].coords[2] + dny },
+    end: { x: dim.nodes[1].coords[0] + dnx, y: dim.nodes[1].coords[2] + dny },
+  };
+};
+
+const findDimensionById = (dimensionId: string): DimensionEntry | undefined => {
+  return projectStore.dimensions.find((dim) => getDimensionId(dim) === dimensionId);
+};
+
+const ensureDimensionSelected = (dimensionId: string) => {
+  if (!projectStore.selection2.dimensions.includes(dimensionId)) {
+    projectStore.clearSelection2();
+    projectStore.selection2.dimensions = [dimensionId];
+  }
+};
 
 function distanceToLineSegment(point: Point, lineStart: Point, lineEnd: Point): number {
   const lengthSquared = (v: Point) => v.x * v.x + v.y * v.y;
@@ -982,13 +1187,21 @@ const clientToSvgCoords = (ecoords: { x: number; y: number }, svgElement: SVGSVG
   return { x: cursorPt.x, y: cursorPt.y };
 };
 
-const onMouseUp = (e: MouseEvent) => {
+const onMouseUp = (e: PointerEvent) => {
   if (appStore.mouseMode === MouseMode.ADD_NODE) return;
   if (appStore.mouseMode === MouseMode.ADD_ELEMENT) return;
   if (appStore.mouseMode === MouseMode.ADD_DIMLINE) return;
 
   if (appStore.mouseMode === MouseMode.MOVING) {
-    moveNode();
+    if (intersected.value.type === 'node') {
+      moveNode();
+    } else if (intersected.value.type === 'dimension') {
+      finishDimensionDrag();
+    }
+  }
+
+  if (!isDraggingDimension()) {
+    pendingDimensionId = null;
   }
 
   if (appStore.mouseMode === MouseMode.SELECTING) {
@@ -997,6 +1210,7 @@ const onMouseUp = (e: MouseEvent) => {
     const selectedNodalLoads = [];
     const selectedElementLoads = [];
     const selectedPrescribedBC = [];
+    const selectedDimensions = [];
 
     const current = clientToSvgCoords({ x: e.clientX, y: e.clientY }, svg.value!);
     const prev = clientToSvgCoords({ x: appStore.mouse.sx, y: appStore.mouse.sy }, svg.value!);
@@ -1026,6 +1240,15 @@ const onMouseUp = (e: MouseEvent) => {
             selectedPrescribedBC.push(i);
           }
         }
+      }
+    }
+
+    for (const dim of normalizedDimensions.value) {
+      const segment = getDimensionSegment(dim);
+      if (!segment) continue;
+
+      if (isIntersecting(segment.start, segment.end, { x: rx1, y: ry1 }, { x: rx2, y: ry2 })) {
+        selectedDimensions.push(getDimensionId(dim));
       }
     }
 
@@ -1066,6 +1289,7 @@ const onMouseUp = (e: MouseEvent) => {
     projectStore.selection2.nodalLoads = selectedNodalLoads;
     projectStore.selection2.elementLoads = selectedElementLoads;
     projectStore.selection2.prescribedBC = selectedPrescribedBC;
+    projectStore.selection2.dimensions = selectedDimensions;
   }
 
   appStore.mouseMode = MouseMode.NONE;
@@ -1615,22 +1839,26 @@ defineExpose({ centerContent, fitContent });
           </g>
           <g>
             <SVGDimensioning
-              v-for="(dim, index) in projectStore.dimensions"
-              :key="index"
+              v-for="(dim, index) in normalizedDimensions"
+              :key="getDimensionId(dim)"
               :nodes="dim.nodes"
               :distance="dim.distance"
               :scale="scale"
               :font-size="viewerStore.fontSize"
               :number-format="appStore.numberFormatter"
+              :selected="projectStore.selection2.dimensions.includes(getDimensionId(dim))"
+              @dimensionpointerdown="onDimensionPointerDown($event, getDimensionId(dim))"
+              @dimensionpointerup="onDimensionPointerUp($event, getDimensionId(dim))"
             />
             <SVGDimensioning
-              v-if="appStore.mouseMode === MouseMode.ADD_DIMLINE && startNode"
+              v-if="previewDimensionNodes"
               key="add-dimline"
-              :nodes="[projectStore.solver.domain.nodes.get(startNode.label)!, endNode]"
-              :distance="dimlineDist"
+              :nodes="previewDimensionNodes"
+              :distance="previewDimensionDistance"
               :scale="scale"
               :font-size="viewerStore.fontSize"
               :number-format="appStore.numberFormatter"
+              :interactive="false"
             />
           </g>
           <!-- Paste preview -->

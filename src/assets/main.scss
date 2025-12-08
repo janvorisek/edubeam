@@ -371,7 +371,9 @@ select.mini-select {
 // TODO: Must be moved here from scoped component styles
 
 .dimensioning {
-  polyline {
+  pointer-events: none;
+
+  polyline.drawable {
     stroke: #000;
     stroke-width: 1px;
     fill: none;
@@ -381,5 +383,43 @@ select.mini-select {
   text {
     text-anchor: middle;
     dominant-baseline: text-bottom;
+    pointer-events: visiblePainted;
+    cursor: inherit;
+  }
+
+  &.dimensioning--interactive {
+    pointer-events: auto;
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    &:hover:not(.selected) {
+      polyline.drawable {
+        stroke: #222;
+        stroke-width: 2px;
+      }
+
+      text {
+        fill: #222;
+      }
+    }
+  }
+
+  &.selected {
+    polyline.drawable {
+      stroke-width: 2px;
+      stroke: rgb(0, 94, 255);
+    }
+
+    text {
+      fill: rgb(0, 94, 255);
+      font-weight: 600;
+    }
+  }
+
+  .handle {
+    pointer-events: stroke;
   }
 }

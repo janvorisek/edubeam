@@ -7,13 +7,7 @@
         <v-form v-model="valid">
           <v-container>
             <v-row no-gutters>
-              <v-col
-                v-if="previewLoad"
-                cols="12"
-                md="6"
-                class="mb-4 mb-md-0 pe-md-4"
-                align-self="center"
-              >
+              <v-col v-if="previewLoad" cols="12" md="6" class="mb-4 mb-md-0 pe-md-4" align-self="center">
                 <ElementLoadPreview class="w-100" :load="previewLoad" :show-node-labels="true" />
               </v-col>
               <v-col cols="12" :md="previewLoad ? 6 : 12" align-self="center">

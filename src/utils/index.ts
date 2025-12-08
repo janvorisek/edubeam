@@ -245,9 +245,7 @@ export const importJSON = (json: any) => {
     for (const dim of jObj.dimensions) {
       if (!dim || !Array.isArray(dim.nodes) || dim.nodes.length < 2) continue;
 
-      const nodes = dim.nodes
-        .map((label) => nodeMap.get(label))
-        .filter((node): node is Node => Boolean(node));
+      const nodes = dim.nodes.map((label) => nodeMap.get(label)).filter((node): node is Node => Boolean(node));
 
       if (nodes.length !== dim.nodes.length) continue;
 

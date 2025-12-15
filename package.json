@@ -51,7 +51,7 @@
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.1",
+    "@eslint/js": "^9.39.2",
     "@mdi/font": "^7.4.47",
     "@types/node": "^20.11.16",
     "@types/webfontloader": "^1.6.38",

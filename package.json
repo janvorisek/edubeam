@@ -55,7 +55,7 @@
     "@mdi/font": "^7.4.47",
     "@types/node": "^20.11.16",
     "@types/webfontloader": "^1.6.38",
-    "@typescript-eslint/parser": "^8.48.0",
+    "@typescript-eslint/parser": "^8.50.0",
     "@vitejs/plugin-vue": "^6.0.2",
     "@vitest/ui": "^4.0.14",
     "@vue/eslint-config-prettier": "^10.2.0",

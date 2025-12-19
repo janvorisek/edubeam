@@ -670,7 +670,7 @@
                 v-if="loadType(item.ref) === 'trapezoidal' && item.ref instanceof BeamElementTrapezoidalEdgeLoad"
               >
                 <div class="inline-edit-group load mr-2">
-                  <span class="input-before" v-html="'f<sub>x0</sub>'"></span>
+                  <span class="input-before" v-html="'f<sub>x1</sub>'"></span>
                   <input
                     :value="appStore.convertForce(item.ref.startValues[0])"
                     class="inline-edit"
@@ -689,7 +689,7 @@
                   <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.ForceDistance)"></div>
                 </div>
                 <div class="inline-edit-group load mr-2">
-                  <span class="input-before" v-html="'f<sub>x1</sub>'"></span>
+                  <span class="input-before" v-html="'f<sub>x2</sub>'"></span>
                   <input
                     :value="appStore.convertForce(item.ref.endValues[0])"
                     class="inline-edit"
@@ -708,7 +708,7 @@
                   <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.ForceDistance)"></div>
                 </div>
                 <div class="inline-edit-group load mr-2">
-                  <span class="input-before" v-html="'f<sub>z0</sub>'"></span>
+                  <span class="input-before" v-html="'f<sub>z1</sub>'"></span>
                   <input
                     :value="appStore.convertForce(item.ref.startValues[1])"
                     class="inline-edit"
@@ -727,7 +727,7 @@
                   <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.ForceDistance)"></div>
                 </div>
                 <div class="inline-edit-group load mr-2">
-                  <span class="input-before" v-html="'f<sub>z1</sub>'"></span>
+                  <span class="input-before" v-html="'f<sub>z2</sub>'"></span>
                   <input
                     :value="appStore.convertForce(item.ref.endValues[1])"
                     class="inline-edit"

@@ -1,6 +1,44 @@
 {
   "releases": [
     {
+    "version": "1.0.3",
+      "title": "Linearly Variable Loads & Dimensions",
+      "date": "December 19, 2025",
+      "highlights": [
+        "Added support for linearly variable loads on elements.",
+        "Fixed the ability to add, delete, and select dimensions between nodes.",
+        "Dimensions can be moved with the mouse for better clarity."
+      ],
+      "tag": "Latest",
+      "media": [
+        {
+          "src": "/changelog/media/trapezoidal1.png",
+          "alt": "Linearly variable loads - triangular",
+          "caption": "Linearly variable loads - triangular"
+        },
+        {
+          "src": "/changelog/media/trapezoidal2.png",
+          "alt": "Linearly variable loads - trapezoidal",
+          "caption": "Linearly variable loads - trapezoidal"
+        },
+        {
+          "src": "/changelog/media/trapezoidal3.png",
+          "alt": "Linearly variable loads - positive and negative",
+          "caption": "Linearly variable loads - positive and negative"
+        },
+        {
+          "src": "/changelog/media/dimlines1.gif",
+          "alt": "Moving dimensions with mouse",
+          "caption": "Moving dimensions with mouse"
+        },
+        {
+          "src": "/changelog/media/dimlines2.gif",
+          "alt": "Moving dimensions with mouse",
+          "caption": "Moving dimensions with mouse"
+        }
+      ]
+    },
+    {
       "version": "1.0.2",
       "title": "Load stacking to improve visibility",
       "date": "Dec 5, 2025",
@@ -8,7 +46,6 @@
         "Distributed loads now stack correctly when multiple placed on the same element.",
         "Nodal loads in the same direction now stack on top of each other to improve visibility."
       ],
-      "tag": "Latest",
       "media": [
         {
           "src": "/changelog/media/stacked-loads.png",

@@ -282,6 +282,7 @@
   "selection": {
     "node": "โหนด",
     "element": "องค์ประกอบ",
+    "dimension": "เส้นมิติ",
     "nodal-load": "แรงกระทำที่โหนด",
     "element-load": "แรงกระทำที่องค์ประกอบ",
     "prescribedbc-load": "การให้ค่าการกระจัด"

@@ -5,9 +5,10 @@ import {
   BeamElementUniformEdgeLoad,
   BeamConcentratedLoad,
   BeamTemperatureLoad,
+  BeamElementTrapezoidalEdgeLoad,
 } from 'ts-fem';
-
-type DimLine = { distance: number; nodes: Node[] };
+import { createDimensionId, ensureDimensionId } from './id';
+import type { DimensionLine } from '@/types/dimension';
 
 function objectToBase64(obj: unknown) {
   try {
@@ -39,7 +40,7 @@ function base64ToObject(base64String) {
   }
 }
 
-export const serializeModel = (ls: LinearStaticSolver, dims: DimLine[]) => {
+export const serializeModel = (ls: LinearStaticSolver, dims: DimensionLine[]) => {
   const _nodes = [];
   const _elements = [];
   const _materials = [];
@@ -47,6 +48,7 @@ export const serializeModel = (ls: LinearStaticSolver, dims: DimLine[]) => {
   const eloads = [];
   const ecloads = [];
   const etloads = [];
+  const etraploads = [];
   const nloads = [];
   const pd = [];
 
@@ -89,6 +91,12 @@ export const serializeModel = (ls: LinearStaticSolver, dims: DimLine[]) => {
       etloads.push([load.target, load.values]);
     });
 
+  ls.loadCases[0].elementLoadList
+    .filter((el) => el instanceof BeamElementTrapezoidalEdgeLoad)
+    .forEach((load: BeamElementTrapezoidalEdgeLoad) => {
+      etraploads.push([load.target, load.startValues, load.endValues, load.lcs]);
+    });
+
   ls.loadCases[0].nodalLoadList.forEach((load) => {
     nloads.push([load.target, load.values]);
   });
@@ -108,6 +116,7 @@ export const serializeModel = (ls: LinearStaticSolver, dims: DimLine[]) => {
     nl?: unknown[];
     pd?: unknown[];
     d?: unknown[];
+    etr?: unknown[];
   } = {};
 
   if (_nodes.length > 0) obj.n = _nodes;
@@ -117,11 +126,14 @@ export const serializeModel = (ls: LinearStaticSolver, dims: DimLine[]) => {
   if (eloads.length > 0) obj.el = eloads;
   if (ecloads.length > 0) obj.ecl = ecloads;
   if (etloads.length > 0) obj.etl = etloads;
+  if (etraploads.length > 0) obj.etr = etraploads;
   if (nloads.length > 0) obj.nl = nloads;
   if (pd.length > 0) obj.pd = pd;
 
   obj.d = dims.map((e) => {
-    return [e.distance, e.nodes.map((n) => n.label)];
+    const id = ensureDimensionId(e);
+    const distanceUnit = e.distanceUnit ?? 'world';
+    return [e.distance, e.nodes.map((n) => n.label), id, distanceUnit];
   });
 
   return objectToBase64(obj);
@@ -186,6 +198,15 @@ export const deserializeModel = (base64String: string, ls: LinearStaticSolver, d
     }
   }
 
+  if ('etr' in tmp) {
+    for (const e of tmp.etr) {
+      const lcs = e[3] !== undefined ? e[3] : true;
+      const startValues = e[1] !== undefined ? e[1] : [0, 0];
+      const endValues = e[2] !== undefined ? e[2] : startValues;
+      ls.loadCases[0].createBeamElementTrapezoidalEdgeLoad(e[0], startValues, endValues, lcs);
+    }
+  }
+
   if ('nl' in tmp) {
     for (const e of tmp.nl) {
       ls.loadCases[0].createNodalLoad(e[0], e[1]);
@@ -201,7 +222,9 @@ export const deserializeModel = (base64String: string, ls: LinearStaticSolver, d
   if ('d' in tmp) {
     for (const e of tmp.d) {
       try {
-        dims.push({ distance: e[0], nodes: e[1].map((n) => ls.domain.getNode(n)) });
+        const id = e[2] ?? createDimensionId();
+        const distanceUnit = e[3] ?? 'pixel';
+        dims.push({ id, distance: e[0], distanceUnit, nodes: e[1].map((n) => ls.domain.getNode(n)) });
       } catch (e) {
         console.warn('Error deserializing dimensions: ', e);
       }

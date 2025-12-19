@@ -4,7 +4,7 @@ import SvgPanZoom from './SVGPanZoom.vue';
 import SvgGrid from './SVGGrid.vue';
 import SvgViewerDefs from './SVGViewerDefs.vue';
 import { useProjectStore } from '../store/project';
-import { ref, onMounted, computed, nextTick, markRaw, watch, reactive, onUnmounted, onUpdated } from 'vue';
+import { ref, onMounted, computed, nextTick, watch, reactive, onUnmounted, provide } from 'vue';
 import { useDisplay } from 'vuetify';
 import { useViewerStore } from '../store/viewer';
 import { useAppStore } from '@/store/app';
@@ -26,7 +26,8 @@ import SVGElementTemperatureLoad from './svg/ElementTemperatureLoad.vue';
 import SVGDimensioning from './svg/Dimensioning.vue';
 
 import { formatExpValueAsHTML } from '../SVGUtils';
-import { debounce, loadType, throttle } from '../utils';
+import { loadType, throttle } from '../utils';
+import { createDimensionId, ensureDimensionId } from '@/utils/id';
 import {
   Node,
   DofID,
@@ -34,6 +35,7 @@ import {
   BeamElementLoad,
   NodalLoad,
   PrescribedDisplacement,
+  BeamElementTrapezoidalEdgeLoad,
   BeamElementUniformEdgeLoad,
   BeamTemperatureLoad,
 } from 'ts-fem';
@@ -48,6 +50,7 @@ import ContextMenuElement from './ContextMenuElement.vue';
 import ContextMenuNode from './ContextMenuNode.vue';
 import ContextMenuElementLoad from './ContextMenuElementLoad.vue';
 import ContextMenuNodalLoad from './ContextMenuNodalLoad.vue';
+import ContextMenuDimension from './ContextMenuDimension.vue';
 
 import { MouseMode } from '@/mouse';
 import { formatMeasureAsHTML } from '../SVGUtils';
@@ -59,6 +62,7 @@ import { Command, IKeyValue, undoRedoManager } from '../CommandManager';
 import { EventType, eventBus } from '../EventBus';
 import { BeamConcentratedLoad } from 'ts-fem';
 import { useClipboardStore } from '../store/clipboard';
+import type { DimensionLine } from '@/types/dimension';
 
 const props = defineProps<{
   id: string;
@@ -72,9 +76,8 @@ const mouseXReal = ref(0);
 const mouseYReal = ref(0);
 
 const startNode = ref<{ label: string | number; x: number; y: number } | null>(null);
-const endNode = ref<Node | null>(new Node('~932:d\nxADsfsa', null, [0, 0, 0]));
 const deltaPaste = ref<{ x: number; y: number } | null>({ x: 0, y: 0 });
-const dimlineDist = ref(64);
+const dimlineDist = ref(48); // preview offset
 
 const appStore = useAppStore();
 const projectStore = useProjectStore();
@@ -94,6 +97,26 @@ const scale = computed(() => {
   return 1;
 });
 
+provide('viewer_uuid', props.id);
+
+const previewDimensionDistance = computed(() => {
+  const currentScale = scale.value || 1;
+  const pxOffset = dimlineDist.value;
+  return pxOffset / currentScale;
+});
+
+const previewDimensionNodes = computed<Node[] | null>(() => {
+  if (appStore.mouseMode !== MouseMode.ADD_DIMLINE || !startNode.value) return null;
+  const start = projectStore.solver.domain.nodes.get(String(startNode.value.label));
+  if (!start) return null;
+
+  const previewEnd = {
+    coords: [mouseXReal.value, 0, mouseYReal.value],
+  } as unknown as Node;
+
+  return [start, previewEnd];
+});
+
 const intersected = ref<{
   type: string | null;
   index: number | string | null;
@@ -103,6 +126,23 @@ const intersected = ref<{
   index: null,
   originalPosition: { x: 0, y: 0 },
 });
+
+const hideTooltip = (clearHoverState = true) => {
+  const tt = tooltip.value as HTMLElement | undefined;
+  if (!tt) return;
+
+  tt.style.display = 'none';
+  document.body.style.cursor = 'auto';
+
+  if (!clearHoverState) return;
+
+  if ([MouseMode.HOVER, MouseMode.SELECTING, MouseMode.ADD_ELEMENT].includes(appStore.mouseMode)) {
+    if (appStore.mouseMode === MouseMode.HOVER) appStore.mouseMode = MouseMode.NONE;
+
+    intersected.value.type = null;
+    intersected.value.index = null;
+  }
+};
 
 const zoom = (e: KeyboardEvent) => {
   if (e.ctrlKey && e.code === 'Equal') {
@@ -167,6 +207,7 @@ const fitContent = () => {
 };
 
 const onUpdate = throttle((zooming: boolean) => {
+  if (zooming) hideTooltip();
   if (grid.value) grid.value.refreshGrid(zooming);
 }, 1000 / 10);
 
@@ -253,6 +294,7 @@ watch(ctrl_v, (v) => {
 
 watch(escape, (v) => {
   if (v) {
+    cancelDimensionDrag();
     if ('activeElement' in document) (document.activeElement as HTMLElement).blur();
     appStore.mouseMode = MouseMode.NONE;
     projectStore.clearSelection();
@@ -262,6 +304,28 @@ watch(escape, (v) => {
     //viewerStore.settingsOpen = false;
   }
 });
+
+const refreshTooltipContent = () => {
+  const tt = tooltip.value as HTMLElement | undefined;
+  if (!tt || tt.style.display === 'none') return;
+
+  if (intersected.value.type === 'node' && intersected.value.index !== null) {
+    const node = projectStore.solver.domain.nodes.get(String(intersected.value.index));
+    if (!node) return;
+
+    const tooltipContent = tt.querySelector('.content') as HTMLElement | null;
+    if (!tooltipContent) return;
+
+    tooltipContent.innerHTML = buildNodeTooltipContent(node as Node);
+  }
+};
+
+watch(
+  () => projectStore.solver.loadCases[0].solved,
+  (solved) => {
+    if (solved) refreshTooltipContent();
+  }
+);
 
 const paste = () => {
   const midpoint = useClipboardStore().midpoint();
@@ -305,13 +369,12 @@ const onElementLoadHover = (e: MouseEvent, el: BeamElementLoad) => {
   tt.style.left = e.offsetX + 'px';
 
   let lt = 'loadType.udl';
-  if (el instanceof BeamConcentratedLoad) lt = 'loadType.concentrated';
+  const isDistributed = el instanceof BeamElementUniformEdgeLoad || el instanceof BeamElementTrapezoidalEdgeLoad;
+  if (el instanceof BeamElementTrapezoidalEdgeLoad) lt = 'loadType.trapezoidal';
+  else if (el instanceof BeamConcentratedLoad) lt = 'loadType.concentrated';
   else if (el instanceof BeamTemperatureLoad) lt = 'loadType.temperature';
-  const ff = el instanceof BeamElementUniformEdgeLoad ? 'f' : 'F';
-  const uu =
-    el instanceof BeamElementUniformEdgeLoad
-      ? `${appStore.units.Force}/${appStore.units.Length}`
-      : `${appStore.units.Force}`;
+  const ff = isDistributed ? 'f' : 'F';
+  const uu = isDistributed ? `${appStore.units.Force}/${appStore.units.Length}` : `${appStore.units.Force}`;
 
   tooltipContent.innerHTML = `<strong>${t(lt)}</strong><br>`;
 
@@ -323,7 +386,19 @@ const onElementLoadHover = (e: MouseEvent, el: BeamElementLoad) => {
     if (Math.abs(el.values[1]) > 1e-32) {
       tooltipContent.innerHTML += `${t('loads.temperatureDeltaTbt')} = ${appStore.convertTemperature(el.values[1])} ${uu}`;
     }
-  } else {
+  } else if (el instanceof BeamElementTrapezoidalEdgeLoad) {
+    if (Math.abs(el.startValues[0]) > 1e-32 || Math.abs(el.endValues[0]) > 1e-32) {
+      tooltipContent.innerHTML += `${ff}<sub>x</sub> = ${appStore.convertForce(el.startValues[0])} → ${appStore.convertForce(
+        el.endValues[0]
+      )} ${uu}<br>`;
+    }
+
+    if (Math.abs(el.startValues[1]) > 1e-32 || Math.abs(el.endValues[1]) > 1e-32) {
+      tooltipContent.innerHTML += `${ff}<sub>z</sub> = ${appStore.convertForce(el.startValues[1])} → ${appStore.convertForce(
+        el.endValues[1]
+      )} ${uu}`;
+    }
+  } else if (el instanceof BeamElementUniformEdgeLoad || el instanceof BeamConcentratedLoad) {
     if (Math.abs(el.values[0]) > 1e-32) {
       tooltipContent.innerHTML += `${ff}<sub>x</sub> = ${appStore.convertForce(el.values[0])} ${uu}<br>`;
     }
@@ -399,6 +474,36 @@ const onPrescribedBCHover = (e: MouseEvent, el: PrescribedDisplacement) => {
   if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
 };
 
+const buildNodeTooltipContent = (node: Node) => {
+  let content = `<strong>${t('common.node')} ${node.label}</strong>`;
+
+  if (
+    projectStore.solver.loadCases[0].solved &&
+    projectStore.beams.some((element) => element.nodes.includes(node.label))
+  ) {
+    content += '<br>';
+    content += `u<sub>x</sub> = ${formatExpValueAsHTML(
+      // @ts-expect-error It return value for single Dof
+      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]),
+      4
+    )} m`;
+    content += '<br>';
+    content += `u<sub>z</sub> = ${formatExpValueAsHTML(
+      // @ts-expect-error It return value for single Dof
+      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]),
+      4
+    )} m`;
+    content += '<br>';
+    content += `φ<sub>y</sub> = ${formatExpValueAsHTML(
+      // @ts-expect-error It return value for single Dof
+      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry]),
+      4
+    )} rad`;
+  }
+
+  return content;
+};
+
 const onNodeHover = (e: MouseEvent, node: Node) => {
   if (appStore.mouseMode === MouseMode.MOVING) return;
 
@@ -410,50 +515,14 @@ const onNodeHover = (e: MouseEvent, node: Node) => {
 
   tt.style.top = e.offsetY + 'px';
   tt.style.left = e.offsetX + 'px';
-  tooltipContent.innerHTML = `<strong>${t('common.node')} ${node.label}</strong>`;
-  if (
-    projectStore.solver.loadCases[0].solved &&
-    projectStore.beams.some((element) => element.nodes.includes(node.label))
-  ) {
-    tooltipContent.innerHTML += '<br>';
-    tooltipContent.innerHTML += `u<sub>x</sub> = ${formatExpValueAsHTML(
-      // @ts-expect-error It return value for single Dof
-      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]),
-      4
-    )} m`;
-    tooltipContent.innerHTML += '<br>';
-    tooltipContent.innerHTML += `u<sub>z</sub> = ${formatExpValueAsHTML(
-      // @ts-expect-error It return value for single Dof
-      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]),
-      4
-    )} m`;
-    tooltipContent.innerHTML += '<br>';
-    tooltipContent.innerHTML += `φ<sub>y</sub> = ${formatExpValueAsHTML(
-      // @ts-expect-error It return value for single Dof
-      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry]),
-      4
-    )} rad`;
-  }
+  tooltipContent.innerHTML = buildNodeTooltipContent(node);
   tt.style.display = 'block';
   document.body.style.cursor = 'pointer';
 
   if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
 };
 
-const hideTooltip = () => {
-  const tt = tooltip.value as HTMLElement;
-  tt.style.display = 'none';
-  document.body.style.cursor = 'auto';
-
-  if ([MouseMode.HOVER, MouseMode.SELECTING, MouseMode.ADD_ELEMENT].includes(appStore.mouseMode)) {
-    if (appStore.mouseMode === MouseMode.HOVER) appStore.mouseMode = MouseMode.NONE;
-
-    intersected.value.type = null;
-    intersected.value.index = null;
-  }
-};
-
-const hasMoved = (e: MouseEvent) => {
+const hasMoved = (e: MouseEvent | PointerEvent) => {
   const dx = e.offsetX - mouseStartX;
   const dy = e.offsetY - mouseStartY;
   const d = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
@@ -469,6 +538,7 @@ const onNodeLongPress = (e, node: Node) => {
   intersected.value.index = node.label;
   intersected.value.type = 'node';
 
+  hideTooltip(false);
   appStore.mouseMode = MouseMode.MOVING;
 
   const canVibrate = window.navigator.vibrate;
@@ -522,6 +592,51 @@ const onElementClick = (e: MouseEvent) => {
 
   projectStore.clearSelection2();
   projectStore.selection2.elements = [useProjectStore().selection.label];
+};
+
+const onDimensionClick = (e: PointerEvent, dimensionId: string) => {
+  if (hasMoved(e)) return;
+
+  projectStore.clearSelection();
+  projectStore.clearSelection2();
+  projectStore.selection2.dimensions = [dimensionId];
+
+  const targetElement = e.currentTarget instanceof Element ? e.currentTarget : null;
+  const bounds = targetElement?.getBoundingClientRect();
+
+  let nx = e.clientX - TTWIDTH / 2;
+  let ny = e.clientY - 64;
+
+  if (bounds) {
+    nx = bounds.left + bounds.width / 2 - TTWIDTH / 2;
+    ny = bounds.top + bounds.height / 2 - 64;
+  }
+
+  if (nx < 24) nx = 24;
+  if (nx > window.innerWidth - TTWIDTH - 24) nx = window.innerWidth - TTWIDTH - 24;
+
+  projectStore.selection.type = 'dimension';
+  projectStore.selection.label = dimensionId;
+  projectStore.selection.x = nx;
+  projectStore.selection.y = ny;
+};
+
+const onDimensionPointerDown = (e: PointerEvent, dimensionId: string) => {
+  const dimension = findDimensionById(dimensionId);
+  if (dimension) convertDistanceToWorld(dimension);
+
+  pendingDimensionId = dimensionId;
+  pointerDownOriginatesFromDimension = true;
+  intersected.value.type = 'dimension';
+  intersected.value.index = dimensionId;
+  appStore.mouseMode = MouseMode.MOVING;
+};
+
+const onDimensionPointerUp = (e: PointerEvent, dimensionId: string) => {
+  if (isDraggingDimension()) return;
+
+  pendingDimensionId = null;
+  onDimensionClick(e, dimensionId);
 };
 
 const onElementLoadClick = (e: MouseEvent, index: number) => {
@@ -592,6 +707,9 @@ let origX = 0;
 let origZ = 0;
 let finalX = 0;
 let finalZ = 0;
+let dragDimension: { id: string; dimension: DimensionEntry; startDistance: number; lastDistance: number } | null = null;
+let pendingDimensionId: string | null = null;
+let pointerDownOriginatesFromDimension = false;
 
 const moveNode = () => {
   if (!drgNode) return;
@@ -620,7 +738,94 @@ const moveNode = () => {
   drgNode = null;
 };
 
-const mouseMove = (e: MouseEvent) => {
+const isDraggingDimension = () => dragDimension !== null;
+
+const updateDimensionDistanceFromPointer = () => {
+  if (!dragDimension) return;
+  const nodes = dragDimension.dimension.nodes;
+  if (!nodes[0] || !nodes[1]) return;
+
+  convertDistanceToWorld(dragDimension.dimension);
+
+  const dx = nodes[1].coords[0] - nodes[0].coords[0];
+  const dz = nodes[1].coords[2] - nodes[0].coords[2];
+  const length = Math.sqrt(dx * dx + dz * dz);
+  if (!isFinite(length) || length === 0) return;
+
+  const normalX = dz / length;
+  const normalY = -dx / length;
+  const offset = (mouseXReal.value - nodes[0].coords[0]) * normalX + (mouseYReal.value - nodes[0].coords[2]) * normalY;
+  const newDistance = -offset;
+
+  if (!Number.isFinite(newDistance)) return;
+
+  dragDimension.dimension.distance = newDistance;
+  dragDimension.dimension.distanceUnit = 'world';
+  dragDimension.lastDistance = newDistance;
+};
+
+const startDimensionDrag = (dimensionId: string) => {
+  const dimension = findDimensionById(dimensionId);
+  if (!dimension) {
+    pendingDimensionId = null;
+    return false;
+  }
+
+  ensureDimensionSelected(dimensionId);
+  convertDistanceToWorld(dimension);
+  dimension.distanceUnit = 'world';
+
+  dragDimension = {
+    id: dimensionId,
+    dimension,
+    startDistance: dimension.distance ?? 0,
+    lastDistance: dimension.distance ?? 0,
+  };
+  pendingDimensionId = null;
+  appStore.mouseMode = MouseMode.MOVING;
+  intersected.value.type = 'dimension';
+  intersected.value.index = dimensionId;
+  return true;
+};
+
+const finishDimensionDrag = (shouldCommit = true) => {
+  if (!dragDimension) return;
+
+  const { dimension, startDistance, lastDistance } = dragDimension;
+  if (shouldCommit && Math.abs(lastDistance - startDistance) > 1e-6) {
+    const setCommand = new Command<IKeyValue>(
+      (value) => {
+        value.item.distance = value.next as number;
+        value.item.distanceUnit = 'world';
+      },
+      (value) => {
+        value.item.distance = value.prev as number;
+        value.item.distanceUnit = 'world';
+      },
+      { item: dimension, prev: startDistance, next: lastDistance }
+    );
+
+    undoRedoManager.executeCommand(setCommand);
+  } else if (!shouldCommit) {
+    dimension.distance = startDistance;
+    dimension.distanceUnit = 'world';
+  }
+
+  dragDimension = null;
+  appStore.mouseMode = MouseMode.NONE;
+  pendingDimensionId = null;
+};
+
+const cancelDimensionDrag = () => {
+  if (!dragDimension) {
+    pendingDimensionId = null;
+    return;
+  }
+
+  finishDimensionDrag(false);
+};
+
+const mouseMove = (e: PointerEvent) => {
   appStore.mouse.x = e.clientX;
   appStore.mouse.y = e.clientY;
 
@@ -644,9 +849,14 @@ const mouseMove = (e: MouseEvent) => {
   mouseXReal.value = viewerStore.snapToGrid ? snappedX : mXReal;
   mouseYReal.value = viewerStore.snapToGrid ? snappedY : mYReal;
 
-  if (appStore.mouseMode === MouseMode.ADD_DIMLINE && startNode.value) {
-    endNode.value.coords[0] = mouseXReal.value;
-    endNode.value.coords[2] = mouseYReal.value;
+  if (pendingDimensionId && !isDraggingDimension() && hasMoved(e)) {
+    if (startDimensionDrag(pendingDimensionId)) {
+      updateDimensionDistanceFromPointer();
+    }
+  }
+
+  if (isDraggingDimension()) {
+    updateDimensionDistanceFromPointer();
   }
 
   if (appStore.mouseMode === MouseMode.MOVING && intersected.value.type === 'node') {
@@ -677,9 +887,14 @@ const mouseMove = (e: MouseEvent) => {
 
 const onMouseDown = (e: PointerEvent) => {
   //if (this.svgPanZoom == null) return;
-  projectStore.clearSelection();
+  const skipClearingSelection = pointerDownOriginatesFromDimension;
+  pointerDownOriginatesFromDimension = false;
 
-  if (e.button !== 2) projectStore.clearSelection2();
+  if (!skipClearingSelection) {
+    projectStore.clearSelection();
+
+    if (e.button !== 2) projectStore.clearSelection2();
+  }
 
   if ('activeElement' in document) (document.activeElement as HTMLElement).blur();
 
@@ -738,6 +953,19 @@ const onMouseDown = (e: PointerEvent) => {
 
                   const prevHinges = el.hinges;
 
+                  const startNode = projectStore.solver.domain.nodes.get(el.nodes[0])!;
+                  const endNode = projectStore.solver.domain.nodes.get(el.nodes[1])!;
+                  const newNode = projectStore.solver.domain.nodes.get(newNodeId)!;
+                  const totalLength = Math.hypot(
+                    endNode.coords[0] - startNode.coords[0],
+                    endNode.coords[2] - startNode.coords[2]
+                  );
+                  const partialLength = Math.hypot(
+                    newNode.coords[0] - startNode.coords[0],
+                    newNode.coords[2] - startNode.coords[2]
+                  );
+                  const splitRatio = totalLength > 0 ? Math.min(Math.max(partialLength / totalLength, 0), 1) : 0.5;
+
                   // Add two new elements
                   projectStore.solver.domain.createBeam2D(el.label + 'a', [el.nodes[0], newNodeId], el.mat, el.cs, [
                     prevHinges[0],
@@ -753,15 +981,23 @@ const onMouseDown = (e: PointerEvent) => {
                   for (const loadCase of projectStore.solver.loadCases) {
                     loadCase.solved = false;
                     for (let i = loadCase.elementLoadList.length - 1; i >= 0; i--) {
-                      if (loadCase.elementLoadList[i].target === el.label) {
-                        //loadCase.elementLoadList.splice(i, 1);
+                      const load = loadCase.elementLoadList[i];
+                      if (load.target !== el.label) continue;
 
-                        loadCase.elementLoadList[i].target = el.label + 'a';
-                        loadCase.createBeamElementUniformEdgeLoad(
-                          el.label + 'b',
-                          loadCase.elementLoadList[i].values,
-                          loadCase.elementLoadList[i].lcs
-                        );
+                      if (load instanceof BeamElementUniformEdgeLoad) {
+                        load.target = el.label + 'a';
+                        loadCase.createBeamElementUniformEdgeLoad(el.label + 'b', [...load.values], load.lcs);
+                      } else if (load instanceof BeamElementTrapezoidalEdgeLoad) {
+                        const midValues: [number, number] = [
+                          load.startValues[0] + (load.endValues[0] - load.startValues[0]) * splitRatio,
+                          load.startValues[1] + (load.endValues[1] - load.startValues[1]) * splitRatio,
+                        ];
+                        const startValues: [number, number] = [...load.startValues] as [number, number];
+                        const endValues: [number, number] = [...load.endValues] as [number, number];
+                        load.change(el.label + 'a', startValues, midValues, load.lcs);
+                        loadCase.createBeamElementTrapezoidalEdgeLoad(el.label + 'b', midValues, endValues, load.lcs);
+                      } else {
+                        load.target = el.label + 'a';
                       }
                     }
                   }
@@ -895,7 +1131,9 @@ const onMouseDown = (e: PointerEvent) => {
         }
 
         projectStore.dimensions.push({
-          distance: dimlineDist.value,
+          id: createDimensionId(),
+          distance: dimlineDist.value / (scale.value || 1),
+          distanceUnit: 'world',
           nodes: [n1, n2],
         });
 
@@ -909,8 +1147,9 @@ const onMouseDown = (e: PointerEvent) => {
     }
 
     if (appStore.mouseMode === MouseMode.HOVER) {
+      if (intersected.value.type === 'node') hideTooltip(false);
       appStore.mouseMode = MouseMode.MOVING;
-    } else if (e.pointerType === 'mouse') {
+    } else if (e.pointerType === 'mouse' && appStore.mouseMode !== MouseMode.MOVING) {
       appStore.mouseMode = MouseMode.SELECTING;
       appStore.mouse.sx = e.clientX;
       appStore.mouse.sy = e.clientY;
@@ -926,6 +1165,63 @@ interface Point {
   x: number;
   y: number;
 }
+
+type DimensionEntry = DimensionLine;
+
+const getDimensionId = (dim: { id?: string }) => {
+  return ensureDimensionId(dim);
+};
+
+const convertDistanceToWorld = (dim: DimensionEntry) => {
+  if (dim.distanceUnit === 'world') return;
+
+  const currentScale = scale.value || 1;
+  const baseline = dim.distance ?? dimlineDist.value;
+  const worldDistance = baseline / (currentScale === 0 ? 1 : currentScale);
+
+  dim.distance = worldDistance;
+  dim.distanceUnit = 'world';
+};
+
+const normalizedDimensions = computed(() => {
+  projectStore.dimensions.forEach((dim) => convertDistanceToWorld(dim as DimensionEntry));
+  return projectStore.dimensions as DimensionEntry[];
+});
+
+const getDimensionSegment = (dim: DimensionEntry): { start: Point; end: Point } | null => {
+  if (!dim.nodes[0] || !dim.nodes[1]) return null;
+
+  convertDistanceToWorld(dim);
+
+  const dx = dim.nodes[1].coords[0] - dim.nodes[0].coords[0];
+  const dz = dim.nodes[1].coords[2] - dim.nodes[0].coords[2];
+  const length = Math.sqrt(dx * dx + dz * dz);
+
+  if (!isFinite(length) || length === 0) return null;
+
+  const normalX = dz / length;
+  const normalY = -dx / length;
+  const offset = -(dim.distance ?? 0);
+
+  const dnx = offset * normalX;
+  const dny = offset * normalY;
+
+  return {
+    start: { x: dim.nodes[0].coords[0] + dnx, y: dim.nodes[0].coords[2] + dny },
+    end: { x: dim.nodes[1].coords[0] + dnx, y: dim.nodes[1].coords[2] + dny },
+  };
+};
+
+const findDimensionById = (dimensionId: string): DimensionEntry | undefined => {
+  return projectStore.dimensions.find((dim) => getDimensionId(dim) === dimensionId);
+};
+
+const ensureDimensionSelected = (dimensionId: string) => {
+  if (!projectStore.selection2.dimensions.includes(dimensionId)) {
+    projectStore.clearSelection2();
+    projectStore.selection2.dimensions = [dimensionId];
+  }
+};
 
 function distanceToLineSegment(point: Point, lineStart: Point, lineEnd: Point): number {
   const lengthSquared = (v: Point) => v.x * v.x + v.y * v.y;
@@ -982,13 +1278,21 @@ const clientToSvgCoords = (ecoords: { x: number; y: number }, svgElement: SVGSVG
   return { x: cursorPt.x, y: cursorPt.y };
 };
 
-const onMouseUp = (e: MouseEvent) => {
+const onMouseUp = (e: PointerEvent) => {
   if (appStore.mouseMode === MouseMode.ADD_NODE) return;
   if (appStore.mouseMode === MouseMode.ADD_ELEMENT) return;
   if (appStore.mouseMode === MouseMode.ADD_DIMLINE) return;
 
   if (appStore.mouseMode === MouseMode.MOVING) {
-    moveNode();
+    if (intersected.value.type === 'node') {
+      moveNode();
+    } else if (intersected.value.type === 'dimension') {
+      finishDimensionDrag();
+    }
+  }
+
+  if (!isDraggingDimension()) {
+    pendingDimensionId = null;
   }
 
   if (appStore.mouseMode === MouseMode.SELECTING) {
@@ -997,6 +1301,7 @@ const onMouseUp = (e: MouseEvent) => {
     const selectedNodalLoads = [];
     const selectedElementLoads = [];
     const selectedPrescribedBC = [];
+    const selectedDimensions = [];
 
     const current = clientToSvgCoords({ x: e.clientX, y: e.clientY }, svg.value!);
     const prev = clientToSvgCoords({ x: appStore.mouse.sx, y: appStore.mouse.sy }, svg.value!);
@@ -1026,6 +1331,15 @@ const onMouseUp = (e: MouseEvent) => {
             selectedPrescribedBC.push(i);
           }
         }
+      }
+    }
+
+    for (const dim of normalizedDimensions.value) {
+      const segment = getDimensionSegment(dim);
+      if (!segment) continue;
+
+      if (isIntersecting(segment.start, segment.end, { x: rx1, y: ry1 }, { x: rx2, y: ry2 })) {
+        selectedDimensions.push(getDimensionId(dim));
       }
     }
 
@@ -1066,6 +1380,7 @@ const onMouseUp = (e: MouseEvent) => {
     projectStore.selection2.nodalLoads = selectedNodalLoads;
     projectStore.selection2.elementLoads = selectedElementLoads;
     projectStore.selection2.prescribedBC = selectedPrescribedBC;
+    projectStore.selection2.dimensions = selectedDimensions;
   }
 
   appStore.mouseMode = MouseMode.NONE;
@@ -1466,7 +1781,7 @@ defineExpose({ centerContent, fitContent });
             <g v-if="!isZooming && useViewerStore().showLoads">
               <template v-for="(eload, index) in useProjectStore().solver.loadCases[0].elementLoadList">
                 <SVGElementLoad
-                  v-if="eload instanceof BeamElementUniformEdgeLoad"
+                  v-if="eload instanceof BeamElementUniformEdgeLoad || eload instanceof BeamElementTrapezoidalEdgeLoad"
                   :key="`element-udl-${index}`"
                   :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
                   :data-element-load-id="index"
@@ -1615,22 +1930,26 @@ defineExpose({ centerContent, fitContent });
           </g>
           <g>
             <SVGDimensioning
-              v-for="(dim, index) in projectStore.dimensions"
-              :key="index"
+              v-for="(dim, index) in normalizedDimensions"
+              :key="getDimensionId(dim)"
               :nodes="dim.nodes"
               :distance="dim.distance"
               :scale="scale"
               :font-size="viewerStore.fontSize"
               :number-format="appStore.numberFormatter"
+              :selected="projectStore.selection2.dimensions.includes(getDimensionId(dim))"
+              @dimensionpointerdown="onDimensionPointerDown($event, getDimensionId(dim))"
+              @dimensionpointerup="onDimensionPointerUp($event, getDimensionId(dim))"
             />
             <SVGDimensioning
-              v-if="appStore.mouseMode === MouseMode.ADD_DIMLINE && startNode"
+              v-if="previewDimensionNodes"
               key="add-dimline"
-              :nodes="[projectStore.solver.domain.nodes.get(startNode.label)!, endNode]"
-              :distance="dimlineDist"
+              :nodes="previewDimensionNodes"
+              :distance="previewDimensionDistance"
               :scale="scale"
               :font-size="viewerStore.fontSize"
               :number-format="appStore.numberFormatter"
+              :interactive="false"
             />
           </g>
           <!-- Paste preview -->
@@ -1711,6 +2030,7 @@ defineExpose({ centerContent, fitContent });
         <ContextMenuElement v-if="projectStore.selection.type === 'element'"></ContextMenuElement>
         <ContextMenuElementLoad v-if="projectStore.selection.type === 'element-load'"></ContextMenuElementLoad>
         <ContextMenuNodalLoad v-if="projectStore.selection.type === 'nodal-load'"></ContextMenuNodalLoad>
+        <ContextMenuDimension v-if="projectStore.selection.type === 'dimension'"></ContextMenuDimension>
         <!-- <ContextMenuNodalLoad v-if="projectStore.selection.type === 'nodal-load'"></ContextMenuNodalLoad>
         <ContextMenuElementLoad v-if="projectStore.selection.type === 'element-load'"></ContextMenuElementLoad> -->
       </div>
@@ -1861,7 +2181,8 @@ defineExpose({ centerContent, fitContent });
         fill: rgb(0, 55, 149);
       }
 
-      polygon.drawable {
+      polygon.drawable,
+      path.drawable {
         stroke: rgb(0, 94, 255);
         stroke-width: 4px;
         stroke-linejoin: round;
@@ -2053,20 +2374,6 @@ defineExpose({ centerContent, fitContent });
       text {
         fill: rgb(0, 55, 149);
       }
-    }
-  }
-
-  .dimensioning {
-    polyline {
-      stroke: #000;
-      stroke-width: 1px;
-      fill: none;
-      vector-effect: non-scaling-stroke;
-    }
-
-    text {
-      text-anchor: middle;
-      dominant-baseline: text-bottom;
     }
   }
 

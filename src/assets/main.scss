@@ -34,6 +34,10 @@ body,
   overflow: hidden;
 }
 
+.pointer-events-none {
+  pointer-events: none;
+}
+
 /* Transitions */
 .fade-enter-active,
 .fade-leave-active {
@@ -365,4 +369,67 @@ select.mini-select {
 // Prevent line wrap in selection label
 .v-selection-control .v-label {
   white-space: nowrap !important;
+}
+
+// SVGViewer related classes
+// TODO: Must be moved here from scoped component styles
+
+.dimensioning {
+  pointer-events: none;
+
+  polyline.drawable {
+    stroke: #000;
+    stroke-width: 1px;
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+
+  text {
+    text-anchor: middle;
+    dominant-baseline: text-bottom;
+    pointer-events: visiblePainted;
+    cursor: inherit;
+  }
+
+  &.dimensioning--interactive {
+    pointer-events: auto;
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    &:hover:not(.selected) {
+      polyline.drawable {
+        stroke: #222;
+        stroke-width: 2px;
+      }
+
+      text {
+        fill: #222;
+      }
+    }
+  }
+
+  &.selected {
+    polyline.drawable {
+      stroke-width: 2px;
+      stroke: rgb(0, 94, 255);
+    }
+
+    text {
+      fill: rgb(0, 94, 255);
+      font-weight: 600;
+    }
+  }
+
+  .handle {
+    pointer-events: stroke;
+  }
+}
+
+#sentry-feedback {
+  --background: rgb(var(--v-theme-primary));
+  --font-size: 14px;
+  --font-family: "Barlow", sans-serif;
 }

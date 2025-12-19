@@ -1,7 +1,13 @@
 import { defineStore } from 'pinia';
 import { reactive } from 'vue';
 import { useProjectStore } from './project';
-import { Beam2D, BeamConcentratedLoad, BeamElementUniformEdgeLoad, BeamTemperatureLoad } from 'ts-fem';
+import {
+  Beam2D,
+  BeamConcentratedLoad,
+  BeamElementTrapezoidalEdgeLoad,
+  BeamElementUniformEdgeLoad,
+  BeamTemperatureLoad,
+} from 'ts-fem';
 import { copyNode, loadType, setUnsolved, solve } from '@/utils';
 
 type Selection = {
@@ -10,6 +16,7 @@ type Selection = {
   nodalLoads: number[];
   elementLoads: number[];
   prescribedBC: number[];
+  dimensions: string[];
 };
 
 export const useClipboardStore = defineStore('clipboard', () => {
@@ -19,6 +26,7 @@ export const useClipboardStore = defineStore('clipboard', () => {
     nodalLoads: [],
     elementLoads: [],
     prescribedBC: [],
+    dimensions: [],
   });
 
   const select = (sel: Selection) => {
@@ -27,6 +35,7 @@ export const useClipboardStore = defineStore('clipboard', () => {
     selection.nodalLoads = sel.nodalLoads;
     selection.elementLoads = sel.elementLoads;
     selection.prescribedBC = sel.prescribedBC;
+    selection.dimensions = sel.dimensions;
   };
 
   const paste = (d: { x: number; z: number } = { x: 0, z: 0 }) => {
@@ -76,6 +85,13 @@ export const useClipboardStore = defineStore('clipboard', () => {
         projectStore.solver.loadCases[0].createBeamConcentratedLoad(elMap.get(l.target)!, l.values, l.lcs);
       } else if (l instanceof BeamElementUniformEdgeLoad) {
         projectStore.solver.loadCases[0].createBeamElementUniformEdgeLoad(elMap.get(l.target)!, l.values, l.lcs);
+      } else if (l instanceof BeamElementTrapezoidalEdgeLoad) {
+        projectStore.solver.loadCases[0].createBeamElementTrapezoidalEdgeLoad(
+          elMap.get(l.target)!,
+          [...l.startValues] as [number, number],
+          [...l.endValues] as [number, number],
+          l.lcs
+        );
       } else if (l instanceof BeamTemperatureLoad) {
         projectStore.solver.loadCases[0].createBeamTemperatureLoad(elMap.get(l.target)!, l.values);
       }

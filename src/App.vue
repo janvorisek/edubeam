@@ -178,7 +178,8 @@ onMounted(() => {
   //solver.loadCases[0].createNodalLoad(3, { [DofID.Dx]: 10000, [DofID.Dz]: 0, [DofID.Ry]: 10000 });
   //solver.loadCases[0].createNodalLoad(3, { [DofID.Dx]: 0, [DofID.Dz]: 20 });
 
-  solver.loadCases[0].createBeamElementUniformEdgeLoad(2, [0, 10000], true);
+  solver.loadCases[0].createBeamElementTrapezoidalEdgeLoad(2, [0, 10000], [0, 30000], true);
+  //solver.loadCases[0].createBeamElementUniformEdgeLoad(2, [0, 10000], true);
   //solver.loadCases[0].createPrescribedDisplacement("a", { [DofID.Dx]: 0.3, [DofID.Dz]: 0.2, [DofID.Ry]: 0.01 });
 
   domain.materials = new Map(domain.materials);

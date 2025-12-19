@@ -55,6 +55,7 @@ watch([n1, n2], () => {
                 item-value="label"
                 :items="projectStore.nodes"
                 class="menu-select"
+                style="width: 90px"
               ></v-select>
             </v-col>
             <v-col>
@@ -67,6 +68,7 @@ watch([n1, n2], () => {
                 item-value="label"
                 :items="projectStore.nodes"
                 class="menu-select"
+                style="width: 90px"
               ></v-select>
             </v-col>
           </v-row>

@@ -127,6 +127,23 @@ const intersected = ref<{
   originalPosition: { x: 0, y: 0 },
 });
 
+const hideTooltip = (clearHoverState = true) => {
+  const tt = tooltip.value as HTMLElement | undefined;
+  if (!tt) return;
+
+  tt.style.display = 'none';
+  document.body.style.cursor = 'auto';
+
+  if (!clearHoverState) return;
+
+  if ([MouseMode.HOVER, MouseMode.SELECTING, MouseMode.ADD_ELEMENT].includes(appStore.mouseMode)) {
+    if (appStore.mouseMode === MouseMode.HOVER) appStore.mouseMode = MouseMode.NONE;
+
+    intersected.value.type = null;
+    intersected.value.index = null;
+  }
+};
+
 const zoom = (e: KeyboardEvent) => {
   if (e.ctrlKey && e.code === 'Equal') {
     panZoom.value?.zoom(svg.value.clientWidth / 2, svg.value.clientHeight / 2, -0.1);
@@ -190,6 +207,7 @@ const fitContent = () => {
 };
 
 const onUpdate = throttle((zooming: boolean) => {
+  if (zooming) hideTooltip();
   if (grid.value) grid.value.refreshGrid(zooming);
 }, 1000 / 10);
 
@@ -286,6 +304,28 @@ watch(escape, (v) => {
     //viewerStore.settingsOpen = false;
   }
 });
+
+const refreshTooltipContent = () => {
+  const tt = tooltip.value as HTMLElement | undefined;
+  if (!tt || tt.style.display === 'none') return;
+
+  if (intersected.value.type === 'node' && intersected.value.index !== null) {
+    const node = projectStore.solver.domain.nodes.get(String(intersected.value.index));
+    if (!node) return;
+
+    const tooltipContent = tt.querySelector('.content') as HTMLElement | null;
+    if (!tooltipContent) return;
+
+    tooltipContent.innerHTML = buildNodeTooltipContent(node as Node);
+  }
+};
+
+watch(
+  () => projectStore.solver.loadCases[0].solved,
+  (solved) => {
+    if (solved) refreshTooltipContent();
+  }
+);
 
 const paste = () => {
   const midpoint = useClipboardStore().midpoint();
@@ -434,6 +474,36 @@ const onPrescribedBCHover = (e: MouseEvent, el: PrescribedDisplacement) => {
   if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
 };
 
+const buildNodeTooltipContent = (node: Node) => {
+  let content = `<strong>${t('common.node')} ${node.label}</strong>`;
+
+  if (
+    projectStore.solver.loadCases[0].solved &&
+    projectStore.beams.some((element) => element.nodes.includes(node.label))
+  ) {
+    content += '<br>';
+    content += `u<sub>x</sub> = ${formatExpValueAsHTML(
+      // @ts-expect-error It return value for single Dof
+      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]),
+      4
+    )} m`;
+    content += '<br>';
+    content += `u<sub>z</sub> = ${formatExpValueAsHTML(
+      // @ts-expect-error It return value for single Dof
+      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]),
+      4
+    )} m`;
+    content += '<br>';
+    content += `φ<sub>y</sub> = ${formatExpValueAsHTML(
+      // @ts-expect-error It return value for single Dof
+      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry]),
+      4
+    )} rad`;
+  }
+
+  return content;
+};
+
 const onNodeHover = (e: MouseEvent, node: Node) => {
   if (appStore.mouseMode === MouseMode.MOVING) return;
 
@@ -445,47 +515,11 @@ const onNodeHover = (e: MouseEvent, node: Node) => {
 
   tt.style.top = e.offsetY + 'px';
   tt.style.left = e.offsetX + 'px';
-  tooltipContent.innerHTML = `<strong>${t('common.node')} ${node.label}</strong>`;
-  if (
-    projectStore.solver.loadCases[0].solved &&
-    projectStore.beams.some((element) => element.nodes.includes(node.label))
-  ) {
-    tooltipContent.innerHTML += '<br>';
-    tooltipContent.innerHTML += `u<sub>x</sub> = ${formatExpValueAsHTML(
-      // @ts-expect-error It return value for single Dof
-      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]),
-      4
-    )} m`;
-    tooltipContent.innerHTML += '<br>';
-    tooltipContent.innerHTML += `u<sub>z</sub> = ${formatExpValueAsHTML(
-      // @ts-expect-error It return value for single Dof
-      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]),
-      4
-    )} m`;
-    tooltipContent.innerHTML += '<br>';
-    tooltipContent.innerHTML += `φ<sub>y</sub> = ${formatExpValueAsHTML(
-      // @ts-expect-error It return value for single Dof
-      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry]),
-      4
-    )} rad`;
-  }
+  tooltipContent.innerHTML = buildNodeTooltipContent(node);
   tt.style.display = 'block';
   document.body.style.cursor = 'pointer';
 
   if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
-};
-
-const hideTooltip = () => {
-  const tt = tooltip.value as HTMLElement;
-  tt.style.display = 'none';
-  document.body.style.cursor = 'auto';
-
-  if ([MouseMode.HOVER, MouseMode.SELECTING, MouseMode.ADD_ELEMENT].includes(appStore.mouseMode)) {
-    if (appStore.mouseMode === MouseMode.HOVER) appStore.mouseMode = MouseMode.NONE;
-
-    intersected.value.type = null;
-    intersected.value.index = null;
-  }
 };
 
 const hasMoved = (e: MouseEvent | PointerEvent) => {
@@ -504,6 +538,7 @@ const onNodeLongPress = (e, node: Node) => {
   intersected.value.index = node.label;
   intersected.value.type = 'node';
 
+  hideTooltip(false);
   appStore.mouseMode = MouseMode.MOVING;
 
   const canVibrate = window.navigator.vibrate;
@@ -1112,6 +1147,7 @@ const onMouseDown = (e: PointerEvent) => {
     }
 
     if (appStore.mouseMode === MouseMode.HOVER) {
+      if (intersected.value.type === 'node') hideTooltip(false);
       appStore.mouseMode = MouseMode.MOVING;
     } else if (e.pointerType === 'mouse' && appStore.mouseMode !== MouseMode.MOVING) {
       appStore.mouseMode = MouseMode.SELECTING;

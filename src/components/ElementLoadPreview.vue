@@ -1,93 +1,91 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import SVGElementViewer from './SVGElementViewer.vue';
-import { useProjectStore } from '@/store/project';
 import { useAppStore } from '@/store/app';
-import type { BeamElementLoad, LinearStaticSolver } from 'ts-fem';
+import { Beam2D, BeamConcentratedLoad, BeamElementLoad, LinearStaticSolver, Node } from 'ts-fem';
 
 const props = withDefaults(
   defineProps<{
     load?: BeamElementLoad | null;
-    solver?: LinearStaticSolver;
     height?: number;
     showElementLabels?: boolean;
     showNodeLabels?: boolean;
   }>(),
   {
     load: null,
-    solver: undefined,
     height: 200,
     showElementLabels: true,
     showNodeLabels: false,
   }
 );
 
-const projectStore = useProjectStore();
+const viewer = ref<InstanceType<typeof SVGElementViewer> | null>(null);
+const solver = ref(new LinearStaticSolver());
 const appStore = useAppStore();
 
-const activeSolver = computed(() => props.solver ?? projectStore.solver);
-
-const targetElement = computed(() => {
-  if (!props.load) return null;
-  return activeSolver.value.domain.elements.get(props.load.target) ?? null;
-});
-
-const previewElements = computed(() => {
-  if (!targetElement.value) return [];
-  return [targetElement.value];
-});
-
-const previewElementLoads = computed(() => {
+const elements = computed(() => {
   if (!props.load) return [];
-  return [props.load];
+  return [props.load.domain.elements.get(props.load.target) as Beam2D];
 });
 
-const previewDimensioning = computed(() => {
-  return [];
-  // TODO: do we want any dims?
-  if (!targetElement.value) return [];
+// computed nodes from load's element and domain
+const nodes = computed<Node[]>(() => {
+  if (!props.load) return [];
+
+  const element = props.load.domain.elements.get(props.load.target);
+  if (!element) return [];
+
+  // get nodes from element
+  return element.nodes.map((nodeId) => props.load!.domain.nodes.get(nodeId)!);
+});
+
+const dimensionLines = computed(() => {
+  if (!(props.load instanceof BeamConcentratedLoad)) return [];
+
+  const element = props.load.domain.elements.get(props.load.target) as Beam2D | undefined;
+  if (!element) return [];
+
+  const startNode = props.load.domain.nodes.get(element.nodes[0]);
+  if (!startNode) return [];
+
+  const geo = element.computeGeo();
+  const elementLength = geo?.l ?? 0;
+  if (!elementLength) return [];
+
+  const clampedDist = Math.min(Math.max(props.load.values[3] ?? 0, 0), elementLength);
+  const cos = geo.dx / elementLength || 0;
+  const sin = geo.dz / elementLength || 0;
+
+  const loadNode = new Node('__preview-load-distance', props.load.domain, [
+    startNode.coords[0] + cos * clampedDist,
+    startNode.coords[1],
+    startNode.coords[2] + sin * clampedDist,
+  ]);
+
+  const offset = Math.min(Math.max(elementLength * 0.15, 0.25), 2);
+
   return [
     {
-      nodes: [
-        activeSolver.value.domain.nodes.get(targetElement.value.nodes[0])!,
-        activeSolver.value.domain.nodes.get(targetElement.value.nodes[1])!,
-      ],
-      distance: previewElementLoads.value[0]?.lcs ? 32 : 64,
+      nodes: [startNode, loadNode],
+      distance: offset,
+      numberFormat: appStore.numberFormatter.value,
+      convertLength: appStore.convertLength,
     },
   ];
-});
-
-const hasPreview = computed(() => previewElements.value.length > 0 && previewElementLoads.value.length > 0);
-
-const viewer = ref<InstanceType<typeof SVGElementViewer> | null>(null);
-
-const fitPreview = () => {
-  nextTick(() => viewer.value?.fitContent());
-};
-
-watch([previewElements, previewElementLoads], () => {
-  if (!hasPreview.value) return;
-  fitPreview();
-});
-
-onMounted(() => {
-  if (hasPreview.value) {
-    fitPreview();
-  }
 });
 </script>
 
 <template>
   <div class="element-load-preview" :style="{ height: `${height}px` }">
     <SVGElementViewer
-      v-if="hasPreview"
+      :id="`element-load-preview`"
       ref="viewer"
       class="overflow-hidden pa-1 w-100"
-      :solver="activeSolver"
-      :nodes="[]"
-      :elements="previewElements"
-      :dimlines="previewDimensioning"
-      :element-loads="previewElementLoads"
+      :solver="solver"
+      :nodes="nodes"
+      :elements="elements"
+      :dimlines="dimensionLines"
+      :element-loads="[load]"
       :show-node-labels="showNodeLabels"
       :show-element-labels="showElementLabels"
       :show-deformed-shape="false"
@@ -96,14 +94,13 @@ onMounted(() => {
       :show-moments="false"
       :show-normal-force="false"
       :show-shear-force="false"
-      :padding="12"
-      :mobile-padding="12"
+      :padding="24"
+      :mobile-padding="24"
       :results-scale-px="32"
-      :convert-force="appStore.convertForce"
-      :convert-moment="appStore.convertMoment"
+      :support-size="0.75"
+      :number-format="appStore.numberFormatter"
       :convert-length="appStore.convertLength"
     />
-    <div v-else class="d-flex align-center justify-center fill-height text-medium-emphasis">Preview unavailable</div>
   </div>
 </template>
 

@@ -6,6 +6,7 @@ import { undoRedoManager } from './CommandManager';
 import { useViewerStore } from './store/viewer';
 import Confirmation from './components/dialogs/Confirmation.vue';
 import ReloadPrompt from './components/ReloadPrompt.vue';
+import { createDimensionId } from './utils/id';
 
 export default {
   name: 'App',
@@ -184,6 +185,12 @@ onMounted(() => {
   domain.crossSections = new Map(domain.crossSections);
 
   solver.domain = domain;
+
+  useProjectStore().dimensions.push({
+    id: createDimensionId(),
+    nodes: [domain.nodes.get('1')!, domain.nodes.get('4')!],
+    distance: 1,
+  });
 
   requestAnimationFrame(solve);
 });

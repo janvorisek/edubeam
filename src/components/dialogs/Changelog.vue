@@ -48,7 +48,17 @@
 
               <div v-if="release.media?.length" class="changelog-media-grid">
                 <figure v-for="media in release.media" :key="media.src" class="changelog-media-item">
-                  <v-img :src="media.src" :alt="media.alt || release.title" class="changelog-media-img"></v-img>
+                  <video
+                    v-if="isVideoMedia(media)"
+                    :src="media.src"
+                    :aria-label="media.alt || release.title"
+                    class="changelog-media-video"
+                    controls
+                    loop
+                    muted
+                    playsinline
+                  ></video>
+                  <v-img v-else :src="media.src" :alt="media.alt || release.title" class="changelog-media-img"></v-img>
                   <figcaption v-if="media.caption" class="text-caption text-medium-emphasis text-center mt-1">
                     {{ media.caption }}
                   </figcaption>
@@ -85,6 +95,7 @@ type MediaEntry = {
   src: string;
   alt?: string;
   caption?: string;
+  type?: 'image' | 'video';
 };
 
 type ReleaseEntry = {
@@ -119,10 +130,16 @@ const appStore = useAppStore();
 let latestRequest: symbol | null = null;
 const baseLocale = 'en';
 
+const isVideoMedia = (entry: MediaEntry) => {
+  if (entry.type) return entry.type === 'video';
+  return /\.mp4($|\?)/i.test(entry.src);
+};
+
 const cloneMedia = (entry: MediaEntry): MediaEntry => ({
   src: entry.src,
   alt: entry.alt,
   caption: entry.caption,
+  type: entry.type,
 });
 
 const cloneRelease = (entry: ReleaseEntry): ReleaseEntry => ({
@@ -327,6 +344,14 @@ onBeforeUnmount(() => {
   max-height: 150px;
   width: auto;
   object-fit: contain;
+}
+
+.changelog-media-video {
+  border-radius: 8px;
+  border: 1px solid rgba(var(--v-theme-outline), 0.2);
+  max-height: 150px;
+  width: 100%;
+  background-color: #000;
 }
 
 .changelog-items {

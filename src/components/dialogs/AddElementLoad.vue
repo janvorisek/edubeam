@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="open" max-width="420" attach=".v-application">
+  <v-dialog v-model="open" max-width="480" attach=".v-application">
     <v-card>
       <v-card-title> {{ $t('dialogs.addElementLoad.addNewElementLoad') }} </v-card-title>
 
@@ -16,7 +16,7 @@
         <v-form v-model="valid">
           <v-row no-gutters>
             <v-col v-if="previewLoad" cols="12" md="6" class="mb-4 mb-md-0 pe-md-4" align-self="center">
-              <ElementLoadPreview class="w-100" :load="previewLoad" :show-node-labels="true" />
+              <ElementLoadPreview class="w-100 pointer-events-none" :load="previewLoad" :show-node-labels="true" />
             </v-col>
             <v-col cols="12" :md="previewLoad ? 6 : 12" align-self="center">
               <v-row no-gutters>
@@ -55,17 +55,6 @@
                     ></v-text-field>
                   </v-col>
 
-                  <v-col cols="12" md="12">
-                    <v-checkbox
-                      v-if="loadType === 'udl' || loadType === 'concentrated'"
-                      v-bind="props"
-                      v-model="elementLCS"
-                      v-tooltip.left="$t('common.lcs')"
-                      :label="`LCS`"
-                      hide-details="auto"
-                    />
-                  </v-col>
-
                   <v-col v-if="loadType === 'concentrated'" cols="12" md="12">
                     <v-text-field
                       v-model="elementLoadPos"
@@ -77,6 +66,80 @@
                     />
                   </v-col>
                 </template>
+
+                <template v-else-if="loadType === 'trapezoidal'">
+                  <v-col cols="12">
+                    <v-row no-gutters>
+                      <v-col cols="12" md="6">
+                        <v-text-field
+                          v-model="loadTrapezoidStartFx"
+                          hide-details="auto"
+                          :rules="numberRules"
+                          :suffix="unitAndLabel.u"
+                          @keydown="checkNumber($event)"
+                        >
+                          <template #label>
+                            <span>f<sub>1</sub>x</span>
+                          </template>
+                        </v-text-field>
+                      </v-col>
+                      <v-col cols="12" md="6">
+                        <v-text-field
+                          v-model="loadTrapezoidEndFx"
+                          hide-details="auto"
+                          :rules="numberRules"
+                          :suffix="unitAndLabel.u"
+                          @keydown="checkNumber($event)"
+                        >
+                          <template #label>
+                            <span>f<sub>2</sub>x</span>
+                          </template>
+                        </v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-row no-gutters>
+                      <v-col cols="12" md="6">
+                        <v-text-field
+                          v-model="loadTrapezoidStartFz"
+                          hide-details="auto"
+                          :rules="numberRules"
+                          :suffix="unitAndLabel.u"
+                          @keydown="checkNumber($event)"
+                        >
+                          <template #label>
+                            <span>f<sub>1</sub>z</span>
+                          </template>
+                        </v-text-field>
+                      </v-col>
+                      <v-col cols="12" md="6">
+                        <v-text-field
+                          v-model="loadTrapezoidEndFz"
+                          hide-details="auto"
+                          :rules="numberRules"
+                          :suffix="unitAndLabel.u"
+                          @keydown="checkNumber($event)"
+                        >
+                          <template #label>
+                            <span>f<sub>2</sub>z</span>
+                          </template>
+                        </v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-col>
+                </template>
+
+                <v-col v-if="['udl', 'trapezoidal', 'concentrated'].includes(loadType)" cols="12" md="12">
+                  <v-checkbox
+                    v-bind="props"
+                    v-model="elementLCS"
+                    v-tooltip.left="$t('common.lcs')"
+                    :label="`LCS`"
+                    hide-details="auto"
+                    :disabled="loadType === 'trapezoidal'"
+                  />
+                </v-col>
 
                 <template v-if="loadType === 'temperature'">
                   <v-col cols="12" md="12">
@@ -126,13 +189,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useProjectStore } from '../../store/project';
 import { useAppStore } from '../../store/app';
 import { closeModal } from 'jenesius-vue-modal';
 import { checkNumber, parseFloat2, numberRules } from '@/utils';
 import ElementLoadPreview from '../ElementLoadPreview.vue';
-import { BeamConcentratedLoad, BeamElementUniformEdgeLoad, BeamTemperatureLoad } from 'ts-fem';
+import {
+  BeamConcentratedLoad,
+  BeamElementTrapezoidalEdgeLoad,
+  BeamElementUniformEdgeLoad,
+  BeamTemperatureLoad,
+} from 'ts-fem';
 import { formatMeasureAsHTML } from '@/SVGUtils';
 
 import { useI18n } from 'vue-i18n';
@@ -151,6 +219,7 @@ const loadType = ref('udl');
 
 const loadTypes = [
   { label: t('loadType.udl'), value: 'udl' },
+  { label: t('loadType.trapezoidal'), value: 'trapezoidal' },
   { label: t('loadType.concentrated'), value: 'concentrated' },
   { label: t('loadType.temperature'), value: 'temperature' },
 ];
@@ -159,7 +228,7 @@ const unitAndLabel = computed(() => {
   let u = appStore.units.Force;
   let l = 'F';
 
-  if (loadType.value === 'udl') {
+  if (loadType.value === 'udl' || loadType.value === 'trapezoidal') {
     u += '/m';
     l = 'f';
   }
@@ -167,9 +236,20 @@ const unitAndLabel = computed(() => {
   return { l, u };
 });
 
+// TODO: LCS is forced on trapezoidal loads for now, rendering GCS load is not supported graphically
+watch(loadType, (newVal) => {
+  if (newVal === 'trapezoidal') {
+    elementLCS.value = true;
+  }
+});
+
 const loadElementId = ref(props.label ?? [...useProjectStore().solver.domain.elements.values()][0].label);
 const loadNodeValueFx = ref(`${appStore.convertForce(4000)}`);
 const loadNodeValueFz = ref(`${appStore.convertForce(3000)}`);
+const loadTrapezoidStartFx = ref(`${appStore.convertForce(0)}`);
+const loadTrapezoidStartFz = ref(`${appStore.convertForce(1000)}`);
+const loadTrapezoidEndFx = ref(`${appStore.convertForce(0)}`);
+const loadTrapezoidEndFz = ref(`${appStore.convertForce(2000)}`);
 const loadNodeValueTc = ref('10.0');
 const loadNodeValueTbt = ref('0.0');
 const elementLoadPos = ref('0.0');
@@ -177,6 +257,10 @@ const elementLCS = ref(true);
 
 const realFx = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueFx.value)));
 const realFz = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueFz.value)));
+const realTrapStartFx = computed(() => appStore.convertInverseForce(parseFloat2(loadTrapezoidStartFx.value)));
+const realTrapStartFz = computed(() => appStore.convertInverseForce(parseFloat2(loadTrapezoidStartFz.value)));
+const realTrapEndFx = computed(() => appStore.convertInverseForce(parseFloat2(loadTrapezoidEndFx.value)));
+const realTrapEndFz = computed(() => appStore.convertInverseForce(parseFloat2(loadTrapezoidEndFz.value)));
 const realDist = computed(() => appStore.convertInverseLength(parseFloat2(elementLoadPos.value)));
 const realTc = computed(() => appStore.convertInverseTemperature(parseFloat2(loadNodeValueTc.value)));
 const realTbt = computed(() => appStore.convertInverseTemperature(parseFloat2(loadNodeValueTbt.value)));
@@ -186,6 +270,16 @@ const previewLoad = computed(() => {
 
   if (loadType.value === 'udl') {
     return new BeamElementUniformEdgeLoad(loadElementId.value, domain, [realFx.value, realFz.value], elementLCS.value);
+  }
+
+  if (loadType.value === 'trapezoidal') {
+    return new BeamElementTrapezoidalEdgeLoad(
+      loadElementId.value,
+      domain,
+      [realTrapStartFx.value, realTrapStartFz.value],
+      [realTrapEndFx.value, realTrapEndFz.value],
+      elementLCS.value
+    );
   }
 
   if (loadType.value === 'concentrated') {
@@ -224,6 +318,14 @@ const addElementLoad = () => {
       elementLCS.value
     );
 
+  if (loadType.value === 'trapezoidal')
+    useProjectStore().solver.loadCases[0].createBeamElementTrapezoidalEdgeLoad(
+      loadElementId.value,
+      [realTrapStartFx.value, realTrapStartFz.value],
+      [realTrapEndFx.value, realTrapEndFz.value],
+      elementLCS.value
+    );
+
   if (loadType.value === 'concentrated')
     useProjectStore().solver.loadCases[0].createBeamConcentratedLoad(
       loadElementId.value,
@@ -245,5 +347,13 @@ const addElementLoad = () => {
 
 const target = computed(() => {
   return useProjectStore().solver.domain.elements.get(loadElementId.value)!;
+});
+
+// default concentrated load position to mid-span
+watch(loadType, () => {
+  if (loadType.value === 'concentrated') {
+    const geo = target.value.computeGeo();
+    elementLoadPos.value = `${appStore.convertLength(Math.max(Math.min(Math.floor(geo.l / 2), 5.0), geo.l / 10))}`;
+  }
 });
 </script>

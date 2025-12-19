@@ -4,7 +4,7 @@ import SvgPanZoom from './SVGPanZoom.vue';
 import SvgGrid from './SVGGrid.vue';
 import SvgViewerDefs from './SVGViewerDefs.vue';
 import { useProjectStore } from '../store/project';
-import { ref, onMounted, computed, nextTick, watch, reactive, onUnmounted } from 'vue';
+import { ref, onMounted, computed, nextTick, watch, reactive, onUnmounted, provide } from 'vue';
 import { useDisplay } from 'vuetify';
 import { useViewerStore } from '../store/viewer';
 import { useAppStore } from '@/store/app';
@@ -35,6 +35,7 @@ import {
   BeamElementLoad,
   NodalLoad,
   PrescribedDisplacement,
+  BeamElementTrapezoidalEdgeLoad,
   BeamElementUniformEdgeLoad,
   BeamTemperatureLoad,
 } from 'ts-fem';
@@ -49,6 +50,7 @@ import ContextMenuElement from './ContextMenuElement.vue';
 import ContextMenuNode from './ContextMenuNode.vue';
 import ContextMenuElementLoad from './ContextMenuElementLoad.vue';
 import ContextMenuNodalLoad from './ContextMenuNodalLoad.vue';
+import ContextMenuDimension from './ContextMenuDimension.vue';
 
 import { MouseMode } from '@/mouse';
 import { formatMeasureAsHTML } from '../SVGUtils';
@@ -94,6 +96,8 @@ const scale = computed(() => {
 
   return 1;
 });
+
+provide('viewer_uuid', props.id);
 
 const previewDimensionDistance = computed(() => {
   const currentScale = scale.value || 1;
@@ -325,13 +329,12 @@ const onElementLoadHover = (e: MouseEvent, el: BeamElementLoad) => {
   tt.style.left = e.offsetX + 'px';
 
   let lt = 'loadType.udl';
-  if (el instanceof BeamConcentratedLoad) lt = 'loadType.concentrated';
+  const isDistributed = el instanceof BeamElementUniformEdgeLoad || el instanceof BeamElementTrapezoidalEdgeLoad;
+  if (el instanceof BeamElementTrapezoidalEdgeLoad) lt = 'loadType.trapezoidal';
+  else if (el instanceof BeamConcentratedLoad) lt = 'loadType.concentrated';
   else if (el instanceof BeamTemperatureLoad) lt = 'loadType.temperature';
-  const ff = el instanceof BeamElementUniformEdgeLoad ? 'f' : 'F';
-  const uu =
-    el instanceof BeamElementUniformEdgeLoad
-      ? `${appStore.units.Force}/${appStore.units.Length}`
-      : `${appStore.units.Force}`;
+  const ff = isDistributed ? 'f' : 'F';
+  const uu = isDistributed ? `${appStore.units.Force}/${appStore.units.Length}` : `${appStore.units.Force}`;
 
   tooltipContent.innerHTML = `<strong>${t(lt)}</strong><br>`;
 
@@ -343,7 +346,19 @@ const onElementLoadHover = (e: MouseEvent, el: BeamElementLoad) => {
     if (Math.abs(el.values[1]) > 1e-32) {
       tooltipContent.innerHTML += `${t('loads.temperatureDeltaTbt')} = ${appStore.convertTemperature(el.values[1])} ${uu}`;
     }
-  } else {
+  } else if (el instanceof BeamElementTrapezoidalEdgeLoad) {
+    if (Math.abs(el.startValues[0]) > 1e-32 || Math.abs(el.endValues[0]) > 1e-32) {
+      tooltipContent.innerHTML += `${ff}<sub>x</sub> = ${appStore.convertForce(el.startValues[0])} → ${appStore.convertForce(
+        el.endValues[0]
+      )} ${uu}<br>`;
+    }
+
+    if (Math.abs(el.startValues[1]) > 1e-32 || Math.abs(el.endValues[1]) > 1e-32) {
+      tooltipContent.innerHTML += `${ff}<sub>z</sub> = ${appStore.convertForce(el.startValues[1])} → ${appStore.convertForce(
+        el.endValues[1]
+      )} ${uu}`;
+    }
+  } else if (el instanceof BeamElementUniformEdgeLoad || el instanceof BeamConcentratedLoad) {
     if (Math.abs(el.values[0]) > 1e-32) {
       tooltipContent.innerHTML += `${ff}<sub>x</sub> = ${appStore.convertForce(el.values[0])} ${uu}<br>`;
     }
@@ -550,6 +565,25 @@ const onDimensionClick = (e: PointerEvent, dimensionId: string) => {
   projectStore.clearSelection();
   projectStore.clearSelection2();
   projectStore.selection2.dimensions = [dimensionId];
+
+  const targetElement = e.currentTarget instanceof Element ? e.currentTarget : null;
+  const bounds = targetElement?.getBoundingClientRect();
+
+  let nx = e.clientX - TTWIDTH / 2;
+  let ny = e.clientY - 64;
+
+  if (bounds) {
+    nx = bounds.left + bounds.width / 2 - TTWIDTH / 2;
+    ny = bounds.top + bounds.height / 2 - 64;
+  }
+
+  if (nx < 24) nx = 24;
+  if (nx > window.innerWidth - TTWIDTH - 24) nx = window.innerWidth - TTWIDTH - 24;
+
+  projectStore.selection.type = 'dimension';
+  projectStore.selection.label = dimensionId;
+  projectStore.selection.x = nx;
+  projectStore.selection.y = ny;
 };
 
 const onDimensionPointerDown = (e: PointerEvent, dimensionId: string) => {
@@ -884,6 +918,19 @@ const onMouseDown = (e: PointerEvent) => {
 
                   const prevHinges = el.hinges;
 
+                  const startNode = projectStore.solver.domain.nodes.get(el.nodes[0])!;
+                  const endNode = projectStore.solver.domain.nodes.get(el.nodes[1])!;
+                  const newNode = projectStore.solver.domain.nodes.get(newNodeId)!;
+                  const totalLength = Math.hypot(
+                    endNode.coords[0] - startNode.coords[0],
+                    endNode.coords[2] - startNode.coords[2]
+                  );
+                  const partialLength = Math.hypot(
+                    newNode.coords[0] - startNode.coords[0],
+                    newNode.coords[2] - startNode.coords[2]
+                  );
+                  const splitRatio = totalLength > 0 ? Math.min(Math.max(partialLength / totalLength, 0), 1) : 0.5;
+
                   // Add two new elements
                   projectStore.solver.domain.createBeam2D(el.label + 'a', [el.nodes[0], newNodeId], el.mat, el.cs, [
                     prevHinges[0],
@@ -899,15 +946,23 @@ const onMouseDown = (e: PointerEvent) => {
                   for (const loadCase of projectStore.solver.loadCases) {
                     loadCase.solved = false;
                     for (let i = loadCase.elementLoadList.length - 1; i >= 0; i--) {
-                      if (loadCase.elementLoadList[i].target === el.label) {
-                        //loadCase.elementLoadList.splice(i, 1);
+                      const load = loadCase.elementLoadList[i];
+                      if (load.target !== el.label) continue;
 
-                        loadCase.elementLoadList[i].target = el.label + 'a';
-                        loadCase.createBeamElementUniformEdgeLoad(
-                          el.label + 'b',
-                          loadCase.elementLoadList[i].values,
-                          loadCase.elementLoadList[i].lcs
-                        );
+                      if (load instanceof BeamElementUniformEdgeLoad) {
+                        load.target = el.label + 'a';
+                        loadCase.createBeamElementUniformEdgeLoad(el.label + 'b', [...load.values], load.lcs);
+                      } else if (load instanceof BeamElementTrapezoidalEdgeLoad) {
+                        const midValues: [number, number] = [
+                          load.startValues[0] + (load.endValues[0] - load.startValues[0]) * splitRatio,
+                          load.startValues[1] + (load.endValues[1] - load.startValues[1]) * splitRatio,
+                        ];
+                        const startValues: [number, number] = [...load.startValues] as [number, number];
+                        const endValues: [number, number] = [...load.endValues] as [number, number];
+                        load.change(el.label + 'a', startValues, midValues, load.lcs);
+                        loadCase.createBeamElementTrapezoidalEdgeLoad(el.label + 'b', midValues, endValues, load.lcs);
+                      } else {
+                        load.target = el.label + 'a';
                       }
                     }
                   }
@@ -1690,7 +1745,7 @@ defineExpose({ centerContent, fitContent });
             <g v-if="!isZooming && useViewerStore().showLoads">
               <template v-for="(eload, index) in useProjectStore().solver.loadCases[0].elementLoadList">
                 <SVGElementLoad
-                  v-if="eload instanceof BeamElementUniformEdgeLoad"
+                  v-if="eload instanceof BeamElementUniformEdgeLoad || eload instanceof BeamElementTrapezoidalEdgeLoad"
                   :key="`element-udl-${index}`"
                   :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
                   :data-element-load-id="index"
@@ -1939,6 +1994,7 @@ defineExpose({ centerContent, fitContent });
         <ContextMenuElement v-if="projectStore.selection.type === 'element'"></ContextMenuElement>
         <ContextMenuElementLoad v-if="projectStore.selection.type === 'element-load'"></ContextMenuElementLoad>
         <ContextMenuNodalLoad v-if="projectStore.selection.type === 'nodal-load'"></ContextMenuNodalLoad>
+        <ContextMenuDimension v-if="projectStore.selection.type === 'dimension'"></ContextMenuDimension>
         <!-- <ContextMenuNodalLoad v-if="projectStore.selection.type === 'nodal-load'"></ContextMenuNodalLoad>
         <ContextMenuElementLoad v-if="projectStore.selection.type === 'element-load'"></ContextMenuElementLoad> -->
       </div>
@@ -2089,7 +2145,8 @@ defineExpose({ centerContent, fitContent });
         fill: rgb(0, 55, 149);
       }
 
-      polygon.drawable {
+      polygon.drawable,
+      path.drawable {
         stroke: rgb(0, 94, 255);
         stroke-width: 4px;
         stroke-linejoin: round;

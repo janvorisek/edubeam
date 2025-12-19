@@ -1,7 +1,15 @@
 <script lang="ts" setup>
 import { smoothPath } from '../../utils/smoothPath';
 import { Matrix } from 'mathjs';
-import { Node, DofID, LoadCase, Beam2D, BeamConcentratedLoad, BeamElementUniformEdgeLoad } from 'ts-fem';
+import {
+  Node,
+  DofID,
+  LoadCase,
+  Beam2D,
+  BeamConcentratedLoad,
+  BeamElementUniformEdgeLoad,
+  BeamElementTrapezoidalEdgeLoad,
+} from 'ts-fem';
 import { computed } from 'vue';
 
 const props = withDefaults(
@@ -146,9 +154,9 @@ const forces = computed(() => {
   //const dV = forcesV.V[nseg] - forcesV.V[0];
   const xmax = 0;
 
-  /*if (Math.abs(dV) > 1e-6) {
-    xmax = -(forcesV.V[0] * geo.l) / dV;
-  }*/
+  // if (Math.abs(dV) > 1e-6) {
+  //   xmax = -(forcesV.V[0] * geo.l) / dV;
+  // }
 
   const labelsX = [0, geo.l];
   const labelsXM = xmax > 0 && xmax < geo.l ? [0, xmax, geo.l] : [0, geo.l];
@@ -171,6 +179,20 @@ const forces = computed(() => {
     nvvalues.push(c.values[3] + 1e-7);
   }
 
+  // if element contains trapezoidal load, need to use segments
+  const hasTrapezoidal = props.loadCase.elementLoadList.some(
+    (l) => l.target === props.element.label && l instanceof BeamElementTrapezoidalEdgeLoad
+  );
+
+  // Trapezoidal has second degree Vz(x) and third order My(x)
+  // TODO: must use odd number so we can guess Vz(x)=0 for max My estimation
+  if (hasTrapezoidal) {
+    for (let s = 0; s <= 11; s++) {
+      nvvalues.push((geo.l * s) / 11);
+    }
+  }
+
+  // TODO: why is nseg = 1 by default
   for (let s = 0; s <= nseg; s++) {
     nvvalues.push((geo.l * s) / nseg);
   }

@@ -2,6 +2,7 @@ import {
   Beam2D,
   BeamConcentratedLoad,
   BeamElementUniformEdgeLoad,
+  BeamElementTrapezoidalEdgeLoad,
   BeamTemperatureLoad,
   DofID,
   LinearStaticSolver,
@@ -131,11 +132,23 @@ export const exportJSON = () => {
         };
       }),
       elementLoads: lc.elementLoadList.map((el) => {
-        return {
+        const base = {
           type: loadType(el),
           target: el.target,
-          values: el.values,
           lcs: el.lcs,
+        };
+
+        if (el instanceof BeamElementTrapezoidalEdgeLoad) {
+          return {
+            ...base,
+            startValues: [...el.startValues],
+            endValues: [...el.endValues],
+          };
+        }
+
+        return {
+          ...base,
+          values: el.values,
         };
       }),
       prescribedBC: lc.prescribedBC.map((pbc) => {
@@ -228,7 +241,21 @@ export const importJSON = (json: any) => {
           useProjectStore().solver.loadCases[0].createBeamElementUniformEdgeLoad(el.target, el.values, el.lcs ?? true);
         else if ('type' in el && el.type === 'concentrated')
           useProjectStore().solver.loadCases[0].createBeamConcentratedLoad(el.target, el.values, el.lcs ?? true);
-        else if ('type' in el && el.type === 'temperature')
+        else if ('type' in el && el.type === 'trapezoidal') {
+          const startValues = Array.isArray(el.startValues)
+            ? el.startValues
+            : Array.isArray(el.values)
+              ? el.values
+              : [0, 0];
+          const endValues = Array.isArray(el.endValues) ? el.endValues : startValues;
+
+          useProjectStore().solver.loadCases[0].createBeamElementTrapezoidalEdgeLoad(
+            el.target,
+            startValues,
+            endValues,
+            el.lcs ?? true
+          );
+        } else if ('type' in el && el.type === 'temperature')
           useProjectStore().solver.loadCases[0].createBeamTemperatureLoad(el.target, el.values);
       }
 

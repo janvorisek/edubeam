@@ -284,6 +284,7 @@
   "selection": {
     "element": "Prvek",
     "node": "Uzel",
+    "dimension": "Kóta",
     "nodal-load": "Uzlové zatížení",
     "element-load": "Prvkové zatížení",
     "prescribedbc-load": "Předepsané posunutí"
@@ -295,6 +296,7 @@
   "loadType": {
     "concentrated": "Osamělá síla",
     "udl": "Spojité rovnoměrné zatížení",
+    "trapezoidal": "Lineárně proměnné zatížení",
     "temperature": "Změna teploty",
     "loadType": "Typ zatížení"
   },

@@ -33,7 +33,7 @@ if (import.meta.env.PROD) {
 
   Sentry.init({
     app,
-    dsn: 'https://2ad86f24126655c46ae6c69badd206ed@o4506784936165376.ingest.sentry.io/4506784937607168',
+    dsn: 'https://2ad86f24126655c46ae6c69badd206ed@o4506784936165376.ingest.us.sentry.io/4506784937607168',
     integrations: [
       Sentry.browserTracingIntegration(),
       Sentry.replayIntegration({

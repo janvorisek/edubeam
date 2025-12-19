@@ -288,6 +288,7 @@
   "selection": {
     "node": "Node",
     "element": "Element",
+    "dimension": "Dimension line",
     "nodal-load": "Nodal load",
     "element-load": "Element load",
     "prescribedbc-load": "Prescribed displacement"
@@ -299,6 +300,7 @@
   "loadType": {
     "loadType": "Load type",
     "concentrated": "Concentrated load",
+    "trapezoidal": "Trapezoidal load",
     "udl": "Uniformly distributed load",
     "temperature": "Temperature load"
   },

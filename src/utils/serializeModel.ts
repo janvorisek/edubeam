@@ -5,6 +5,7 @@ import {
   BeamElementUniformEdgeLoad,
   BeamConcentratedLoad,
   BeamTemperatureLoad,
+  BeamElementTrapezoidalEdgeLoad,
 } from 'ts-fem';
 import { createDimensionId, ensureDimensionId } from './id';
 import type { DimensionLine } from '@/types/dimension';
@@ -47,6 +48,7 @@ export const serializeModel = (ls: LinearStaticSolver, dims: DimensionLine[]) =>
   const eloads = [];
   const ecloads = [];
   const etloads = [];
+  const etraploads = [];
   const nloads = [];
   const pd = [];
 
@@ -89,6 +91,12 @@ export const serializeModel = (ls: LinearStaticSolver, dims: DimensionLine[]) =>
       etloads.push([load.target, load.values]);
     });
 
+  ls.loadCases[0].elementLoadList
+    .filter((el) => el instanceof BeamElementTrapezoidalEdgeLoad)
+    .forEach((load: BeamElementTrapezoidalEdgeLoad) => {
+      etraploads.push([load.target, load.startValues, load.endValues, load.lcs]);
+    });
+
   ls.loadCases[0].nodalLoadList.forEach((load) => {
     nloads.push([load.target, load.values]);
   });
@@ -108,6 +116,7 @@ export const serializeModel = (ls: LinearStaticSolver, dims: DimensionLine[]) =>
     nl?: unknown[];
     pd?: unknown[];
     d?: unknown[];
+    etr?: unknown[];
   } = {};
 
   if (_nodes.length > 0) obj.n = _nodes;
@@ -117,6 +126,7 @@ export const serializeModel = (ls: LinearStaticSolver, dims: DimensionLine[]) =>
   if (eloads.length > 0) obj.el = eloads;
   if (ecloads.length > 0) obj.ecl = ecloads;
   if (etloads.length > 0) obj.etl = etloads;
+  if (etraploads.length > 0) obj.etr = etraploads;
   if (nloads.length > 0) obj.nl = nloads;
   if (pd.length > 0) obj.pd = pd;
 
@@ -185,6 +195,15 @@ export const deserializeModel = (base64String: string, ls: LinearStaticSolver, d
   if ('etl' in tmp) {
     for (const e of tmp.etl) {
       ls.loadCases[0].createBeamTemperatureLoad(e[0], e[1]);
+    }
+  }
+
+  if ('etr' in tmp) {
+    for (const e of tmp.etr) {
+      const lcs = e[3] !== undefined ? e[3] : true;
+      const startValues = e[1] !== undefined ? e[1] : [0, 0];
+      const endValues = e[2] !== undefined ? e[2] : startValues;
+      ls.loadCases[0].createBeamElementTrapezoidalEdgeLoad(e[0], startValues, endValues, lcs);
     }
   }
 

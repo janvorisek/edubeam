@@ -34,6 +34,10 @@ body,
   overflow: hidden;
 }
 
+.pointer-events-none {
+  pointer-events: none;
+}
+
 /* Transitions */
 .fade-enter-active,
 .fade-leave-active {
@@ -422,4 +426,10 @@ select.mini-select {
   .handle {
     pointer-events: stroke;
   }
+}
+
+#sentry-feedback {
+  --background: rgb(var(--v-theme-primary));
+  --font-size: 14px;
+  --font-family: "Barlow", sans-serif;
 }

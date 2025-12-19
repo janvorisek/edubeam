@@ -2,7 +2,7 @@
 import SvgPanZoom from './SVGPanZoom2.vue';
 import SvgGrid from './SVGGrid.vue';
 import SvgViewerDefs from './SVGViewerDefs.vue';
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, computed, watch, provide } from 'vue';
 
 import { throttle } from '../utils/throttle';
 import {
@@ -13,6 +13,7 @@ import {
   NodalLoad,
   BeamElementLoad,
   LinearStaticSolver,
+  BeamElementTrapezoidalEdgeLoad,
   BeamElementUniformEdgeLoad,
   BeamConcentratedLoad,
   PrescribedDisplacement,
@@ -50,7 +51,12 @@ const props = withDefaults(
     nodalLoads?: NodalLoad[];
     elementLoads?: BeamElementLoad[];
     prescribedDisplacements?: PrescribedDisplacement[];
-    dimlines?: { nodes: Node[]; distance: number }[];
+    dimlines?: {
+      nodes: Node[];
+      distance: number;
+      numberFormat?: Intl.NumberFormat;
+      convertLength?: (value: number) => number;
+    }[];
     padding?: number;
     mobilePadding?: number;
     resultsScalePx?: number;
@@ -68,6 +74,7 @@ const props = withDefaults(
     convertForce?: (value: number) => number;
     convertMoment?: (value: number) => number;
     convertLength?: (value: number) => number;
+    numberFormat?: Intl.NumberFormat;
     zoomEnabled?: boolean;
     fontSize?: number;
   }>(),
@@ -110,6 +117,7 @@ const props = withDefaults(
     convertForce: (v) => v,
     convertMoment: (v) => v,
     convertLength: (v) => v,
+    numberFormat: () => new Intl.NumberFormat(),
     zoomEnabled: false,
     fontSize: 13,
   }
@@ -120,6 +128,8 @@ const grid = ref<InstanceType<typeof SvgGrid> | null>(null);
 
 const svg = ref<SVGSVGElement>();
 const viewport = ref<SVGGElement>();
+
+provide('viewer_uuid', props.id);
 
 const update = () => {
   fitContent();
@@ -154,7 +164,7 @@ const update = () => {
 };
 
 watch(props.solver, update);
-watch(props.elements, update);
+// watch(props.elements, update);
 watch(() => props.showDeformedShape, update);
 watch(() => props.showNormalForce, update);
 watch(() => props.showShearForce, update);
@@ -281,7 +291,7 @@ defineExpose({ centerContent, fitContent });
             <g v-if="props.showLoads">
               <template v-for="(eload, index) in props.elementLoads">
                 <SVGElementLoad
-                  v-if="eload instanceof BeamElementUniformEdgeLoad"
+                  v-if="eload instanceof BeamElementUniformEdgeLoad || eload instanceof BeamElementTrapezoidalEdgeLoad"
                   :key="`element-udl-${index}`"
                   :data-element-load-id="index"
                   :eload="eload"
@@ -375,6 +385,8 @@ defineExpose({ centerContent, fitContent });
               :distance="dim.distance"
               :scale="scale"
               :font-size="props.fontSize"
+              :number-format="dim.numberFormat ?? props.numberFormat"
+              :convert-length="dim.convertLength ?? props.convertLength"
               :interactive="false"
             />
           </g>

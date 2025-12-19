@@ -1,6 +1,44 @@
 {
   "releases": [
     {
+    "version": "1.0.3",
+      "title": "Lineárně proměnné zatížení & kóty",
+      "date": "19. prosince 2025",
+      "highlights": [
+        "Přidána podpora pro lineárně proměnné zatížení na prvcích.",
+        "Opravena možnost přidávání, mazání a výběru kót mezi uzly.",
+        "Kóty lze posouvat myší pro lepší přehlednost."
+      ],
+      "tag": "Aktuální",
+      "media": [
+        {
+          "src": "/changelog/media/trapezoidal1.png",
+          "alt": "Lineárně proměnné zatížení - trojúhelníkové",
+          "caption": "Lineárně proměnné zatížení - trojúhelníkové"
+        },
+        {
+          "src": "/changelog/media/trapezoidal2.png",
+          "alt": "Lineárně proměnné zatížení - lichoběžníkové",
+          "caption": "Lineárně proměnné zatížení - lichoběžníkové"
+        },
+        {
+          "src": "/changelog/media/trapezoidal3.png",
+          "alt": "Lineárně proměnné zatížení - kladné a záporné",
+          "caption": "Lineárně proměnné zatížení - kladné a záporné"
+        },
+        {
+          "src": "/changelog/media/dimlines1.gif",
+          "alt": "Posouvání kót myší",
+          "caption": "Posouvání kót myší"
+        },
+        {
+          "src": "/changelog/media/dimlines2.gif",
+          "alt": "Posouvání kót myší",
+          "caption": "Posouvání kót myší"
+        }
+      ]
+    },
+    {
       "version": "1.0.2",
       "title": "Skládání zatížení pro větší přehlednost",
       "date": "5. prosince 2025",
@@ -8,7 +46,6 @@
         "Spojitá zatížení na se nyní skládají nad sebe při umístění více zatížení na stejný prvek.",
         "Uzlová zatížení ve stejném směru se nyní skládají nad sebe pro lepší přehlednost."
       ],
-      "tag": "Aktuální",
       "media": [
         {
           "src": "/changelog/media/stacked-loads.png",

@@ -555,6 +555,9 @@
               <template v-if="item.ref instanceof BeamElementUniformEdgeLoad">
                 {{ $t('loadType.udl') }}
               </template>
+              <template v-else-if="item.ref instanceof BeamElementTrapezoidalEdgeLoad">
+                {{ $t('loadType.trapezoidal') }}
+              </template>
               <template v-else-if="item.ref instanceof BeamConcentratedLoad">
                 {{ $t('loadType.concentrated') }}
               </template>
@@ -663,96 +666,178 @@
             </div>
 
             <div v-if="item.type === 'element'" class="d-flex flex-grow-0 align-content-center">
-              <div class="inline-edit-group load mr-2">
-                <span v-if="loadType(item.ref) === 'udl'" class="input-before">f<sub>x</sub></span>
-                <span v-else-if="loadType(item.ref) === 'concentrated'" class="input-before">F<sub>x</sub></span>
-                <span
-                  v-else-if="loadType(item.ref) === 'temperature'"
-                  class="input-before"
-                  v-html="$t('loads.temperatureDeltaTs')"
-                ></span>
-                <input
-                  :value="
-                    loadType(item.ref) !== 'temperature'
-                      ? appStore.convertForce(item.ref.values[0])
-                      : appStore.convertTemperature(item.ref.values[0])
-                  "
-                  class="inline-edit"
-                  style="width: 60px"
-                  @keydown="checkNumber($event)"
-                  @change="
-                    changeSetArrayItem(
-                      item.ref,
-                      'values',
-                      0,
-                      $event.target as HTMLInputElement,
+              <template
+                v-if="loadType(item.ref) === 'trapezoidal' && item.ref instanceof BeamElementTrapezoidalEdgeLoad"
+              >
+                <div class="inline-edit-group load mr-2">
+                  <span class="input-before" v-html="'f<sub>x0</sub>'"></span>
+                  <input
+                    :value="appStore.convertForce(item.ref.startValues[0])"
+                    class="inline-edit"
+                    style="width: 60px"
+                    @keydown="checkNumber($event)"
+                    @change="
+                      changeSetArrayItem(
+                        item.ref,
+                        'startValues',
+                        0,
+                        $event.target as HTMLInputElement,
+                        appStore.convertInverseForce
+                      )
+                    "
+                  />
+                  <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.ForceDistance)"></div>
+                </div>
+                <div class="inline-edit-group load mr-2">
+                  <span class="input-before" v-html="'f<sub>x1</sub>'"></span>
+                  <input
+                    :value="appStore.convertForce(item.ref.endValues[0])"
+                    class="inline-edit"
+                    style="width: 60px"
+                    @keydown="checkNumber($event)"
+                    @change="
+                      changeSetArrayItem(
+                        item.ref,
+                        'endValues',
+                        0,
+                        $event.target as HTMLInputElement,
+                        appStore.convertInverseForce
+                      )
+                    "
+                  />
+                  <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.ForceDistance)"></div>
+                </div>
+                <div class="inline-edit-group load mr-2">
+                  <span class="input-before" v-html="'f<sub>z0</sub>'"></span>
+                  <input
+                    :value="appStore.convertForce(item.ref.startValues[1])"
+                    class="inline-edit"
+                    style="width: 60px"
+                    @keydown="checkNumber($event)"
+                    @change="
+                      changeSetArrayItem(
+                        item.ref,
+                        'startValues',
+                        1,
+                        $event.target as HTMLInputElement,
+                        appStore.convertInverseForce
+                      )
+                    "
+                  />
+                  <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.ForceDistance)"></div>
+                </div>
+                <div class="inline-edit-group load mr-2">
+                  <span class="input-before" v-html="'f<sub>z1</sub>'"></span>
+                  <input
+                    :value="appStore.convertForce(item.ref.endValues[1])"
+                    class="inline-edit"
+                    style="width: 60px"
+                    @keydown="checkNumber($event)"
+                    @change="
+                      changeSetArrayItem(
+                        item.ref,
+                        'endValues',
+                        1,
+                        $event.target as HTMLInputElement,
+                        appStore.convertInverseForce
+                      )
+                    "
+                  />
+                  <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.ForceDistance)"></div>
+                </div>
+              </template>
+              <template v-else>
+                <div class="inline-edit-group load mr-2">
+                  <span v-if="loadType(item.ref) === 'udl'" class="input-before">f<sub>x</sub></span>
+                  <span v-else-if="loadType(item.ref) === 'concentrated'" class="input-before">F<sub>x</sub></span>
+                  <span
+                    v-else-if="loadType(item.ref) === 'temperature'"
+                    class="input-before"
+                    v-html="$t('loads.temperatureDeltaTs')"
+                  ></span>
+                  <input
+                    :value="
                       loadType(item.ref) !== 'temperature'
-                        ? appStore.convertInverseForce
-                        : appStore.convertInverseTemperature
-                    )
-                  "
-                />
-                <div
-                  v-if="loadType(item.ref) === 'udl'"
-                  class="input-after"
-                  v-html="formatMeasureAsHTML(appStore.units.ForceDistance)"
-                ></div>
-                <div
-                  v-else-if="loadType(item.ref) === 'concentrated'"
-                  class="input-after"
-                  v-html="formatMeasureAsHTML(appStore.units.Force)"
-                ></div>
-                <div
-                  v-else-if="loadType(item.ref) === 'temperature'"
-                  class="input-after"
-                  v-html="formatMeasureAsHTML(appStore.units.Temperature)"
-                ></div>
-              </div>
-              <div class="inline-edit-group load mr-2">
-                <span v-if="loadType(item.ref) === 'udl'" class="input-before">f<sub>z</sub></span>
-                <span v-else-if="loadType(item.ref) === 'concentrated'" class="input-before">F<sub>z</sub></span>
-                <span
-                  v-else-if="loadType(item.ref) === 'temperature'"
-                  class="input-before"
-                  v-html="$t('loads.temperatureDeltaTbt')"
-                ></span>
-                <input
-                  :value="
-                    loadType(item.ref) !== 'temperature'
-                      ? appStore.convertForce(item.ref.values[1])
-                      : appStore.convertTemperature(item.ref.values[1])
-                  "
-                  class="inline-edit"
-                  style="width: 60px"
-                  @keydown="checkNumber($event)"
-                  @change="
-                    changeSetArrayItem(
-                      item.ref,
-                      'values',
-                      1,
-                      $event.target as HTMLInputElement,
+                        ? appStore.convertForce(item.ref.values[0])
+                        : appStore.convertTemperature(item.ref.values[0])
+                    "
+                    class="inline-edit"
+                    style="width: 60px"
+                    @keydown="checkNumber($event)"
+                    @change="
+                      changeSetArrayItem(
+                        item.ref,
+                        'values',
+                        0,
+                        $event.target as HTMLInputElement,
+                        loadType(item.ref) !== 'temperature'
+                          ? appStore.convertInverseForce
+                          : appStore.convertInverseTemperature
+                      )
+                    "
+                  />
+                  <div
+                    v-if="loadType(item.ref) === 'udl'"
+                    class="input-after"
+                    v-html="formatMeasureAsHTML(appStore.units.ForceDistance)"
+                  ></div>
+                  <div
+                    v-else-if="loadType(item.ref) === 'concentrated'"
+                    class="input-after"
+                    v-html="formatMeasureAsHTML(appStore.units.Force)"
+                  ></div>
+                  <div
+                    v-else-if="loadType(item.ref) === 'temperature'"
+                    class="input-after"
+                    v-html="formatMeasureAsHTML(appStore.units.Temperature)"
+                  ></div>
+                </div>
+                <div class="inline-edit-group load mr-2">
+                  <span v-if="loadType(item.ref) === 'udl'" class="input-before">f<sub>z</sub></span>
+                  <span v-else-if="loadType(item.ref) === 'concentrated'" class="input-before">F<sub>z</sub></span>
+                  <span
+                    v-else-if="loadType(item.ref) === 'temperature'"
+                    class="input-before"
+                    v-html="$t('loads.temperatureDeltaTbt')"
+                  ></span>
+                  <input
+                    :value="
                       loadType(item.ref) !== 'temperature'
-                        ? appStore.convertInverseForce
-                        : appStore.convertInverseTemperature
-                    )
-                  "
-                />
-                <div
-                  v-if="loadType(item.ref) === 'udl'"
-                  class="input-after"
-                  v-html="formatMeasureAsHTML(appStore.units.ForceDistance)"
-                ></div>
-                <div
-                  v-else-if="loadType(item.ref) === 'concentrated'"
-                  class="input-after"
-                  v-html="formatMeasureAsHTML(appStore.units.Force)"
-                ></div>
-                <div
-                  v-else-if="loadType(item.ref) === 'temperature'"
-                  class="input-after"
-                  v-html="formatMeasureAsHTML(appStore.units.Temperature)"
-                ></div>
-              </div>
+                        ? appStore.convertForce(item.ref.values[1])
+                        : appStore.convertTemperature(item.ref.values[1])
+                    "
+                    class="inline-edit"
+                    style="width: 60px"
+                    @keydown="checkNumber($event)"
+                    @change="
+                      changeSetArrayItem(
+                        item.ref,
+                        'values',
+                        1,
+                        $event.target as HTMLInputElement,
+                        loadType(item.ref) !== 'temperature'
+                          ? appStore.convertInverseForce
+                          : appStore.convertInverseTemperature
+                      )
+                    "
+                  />
+                  <div
+                    v-if="loadType(item.ref) === 'udl'"
+                    class="input-after"
+                    v-html="formatMeasureAsHTML(appStore.units.ForceDistance)"
+                  ></div>
+                  <div
+                    v-else-if="loadType(item.ref) === 'concentrated'"
+                    class="input-after"
+                    v-html="formatMeasureAsHTML(appStore.units.Force)"
+                  ></div>
+                  <div
+                    v-else-if="loadType(item.ref) === 'temperature'"
+                    class="input-after"
+                    v-html="formatMeasureAsHTML(appStore.units.Temperature)"
+                  ></div>
+                </div>
+              </template>
 
               <div v-if="item.ref instanceof BeamConcentratedLoad" class="inline-edit-group load mr-2">
                 <span class="input-before">d</span>
@@ -782,6 +867,7 @@
                   v-html="formatMeasureAsHTML(appStore.units.Length)"
                 ></div>
               </div>
+              <!-- TODO: Trapezoidal load cant render non LCS -->
               <div
                 v-if="item.ref instanceof BeamElementUniformEdgeLoad || item.ref instanceof BeamConcentratedLoad"
                 v-tooltip.bottom="$t('common.lcs')"
@@ -1312,6 +1398,7 @@ import {
   Domain,
   LoadCase,
   BeamElementUniformEdgeLoad,
+  BeamElementTrapezoidalEdgeLoad,
   BeamConcentratedLoad,
   NodalLoad,
 } from 'ts-fem';
@@ -1445,7 +1532,12 @@ const loads = computed(() => {
     type: string;
     loadCase: LoadCase;
     values: unknown;
-    ref: BeamElementUniformEdgeLoad | NodalLoad | PrescribedDisplacement;
+    ref:
+      | BeamElementUniformEdgeLoad
+      | BeamElementTrapezoidalEdgeLoad
+      | BeamConcentratedLoad
+      | NodalLoad
+      | PrescribedDisplacement;
   }[] = [];
 
   for (const item of items) {
@@ -1543,7 +1635,7 @@ const formatElementLoadsAtElement = (item: Beam2D): [number, string][] => {
         type: loadType(nl),
         index,
         target: nl.target,
-        values: nl.values,
+        ref: nl,
       };
     })
     .filter((nl) => nl.target === item.label);
@@ -1552,14 +1644,31 @@ const formatElementLoadsAtElement = (item: Beam2D): [number, string][] => {
     const tmp = [];
 
     const ff = nl.type === 'concentrated' ? 'F' : 'f';
-    if (nl.type === 'temperature') {
-      if (Math.abs(nl.values[0]) > 1e-12)
-        tmp.push(t('loads.temperatureDeltaTs') + ' = ' + appStore.convertTemperature(nl.values[0]));
-      if (Math.abs(nl.values[1]) > 1e-12)
-        tmp.push(t('loads.temperatureDeltaTbt') + ' = ' + appStore.convertTemperature(nl.values[1]));
-    } else {
-      if (Math.abs(nl.values[0]) > 1e-12) tmp.push(ff + '<sub>x</sub> = ' + appStore.convertForce(nl.values[0]));
-      if (Math.abs(nl.values[1]) > 1e-12) tmp.push(ff + '<sub>z</sub> = ' + appStore.convertForce(nl.values[1]));
+    if (nl.type === 'temperature' && 'values' in nl.ref) {
+      if (Math.abs(nl.ref.values[0]) > 1e-12)
+        tmp.push(t('loads.temperatureDeltaTs') + ' = ' + appStore.convertTemperature(nl.ref.values[0]));
+      if (Math.abs(nl.ref.values[1]) > 1e-12)
+        tmp.push(t('loads.temperatureDeltaTbt') + ' = ' + appStore.convertTemperature(nl.ref.values[1]));
+    } else if (nl.type === 'trapezoidal' && nl.ref instanceof BeamElementTrapezoidalEdgeLoad) {
+      const startFx = nl.ref.startValues[0];
+      const endFx = nl.ref.endValues[0];
+      const startFz = nl.ref.startValues[1];
+      const endFz = nl.ref.endValues[1];
+      if (Math.abs(startFx) > 1e-12 || Math.abs(endFx) > 1e-12) {
+        const startText = appStore.convertForce(startFx);
+        const endText = appStore.convertForce(endFx);
+        tmp.push(`${ff}<sub>x</sub> = ${startText} → ${endText}`);
+      }
+      if (Math.abs(startFz) > 1e-12 || Math.abs(endFz) > 1e-12) {
+        const startText = appStore.convertForce(startFz);
+        const endText = appStore.convertForce(endFz);
+        tmp.push(`${ff}<sub>z</sub> = ${startText} → ${endText}`);
+      }
+    } else if ('values' in nl.ref) {
+      if (Math.abs(nl.ref.values[0]) > 1e-12)
+        tmp.push(ff + '<sub>x</sub> = ' + appStore.convertForce(nl.ref.values[0]));
+      if (Math.abs(nl.ref.values[1]) > 1e-12)
+        tmp.push(ff + '<sub>z</sub> = ' + appStore.convertForce(nl.ref.values[1]));
     }
     return [nl.index, tmp.join(', ')];
   });

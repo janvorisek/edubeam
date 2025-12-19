@@ -9,6 +9,7 @@ const props = withDefaults(
     distance?: number;
     fontSize?: number;
     numberFormat?: Intl.NumberFormat;
+    convertLength?: (value: number) => number;
     selected?: boolean;
     interactive?: boolean;
   }>(),
@@ -16,6 +17,7 @@ const props = withDefaults(
     distance: 42,
     fontSize: 13,
     numberFormat: new Intl.NumberFormat(),
+    convertLength: (value: number) => value,
     selected: false,
     interactive: true,
   }
@@ -81,8 +83,12 @@ const angle = computed(() => {
   );
 });
 
+const convertedLength = computed(() => {
+  return props.convertLength ? props.convertLength(dimensionLength.value) : dimensionLength.value;
+});
+
 const labelText = computed(() => {
-  return props.numberFormat.format(dimensionLength.value);
+  return props.numberFormat.format(convertedLength.value);
 });
 
 const handlePointerUp = (event: PointerEvent) => {

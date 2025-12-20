@@ -181,12 +181,12 @@
   },
   "sharing": {
     "shareViaURL": "通过URL分享模型",
-    "instructions": "Click anywhere inside the field to copy the link, then send it to your collaborators.",
-    "copyCue": "Copy link",
-    "openLink": "Open link",
-    "nativeShare": "Share via system dialog",
-    "linkCopied": "Link copied to clipboard",
-    "copyFailed": "Could not copy automatically. Please use your keyboard shortcuts."
+    "instructions": "点击字段内任意位置复制链接，然后发送给您的协作者。",
+    "copyCue": "复制链接",
+    "openLink": "打开链接",
+    "nativeShare": "通过系统对话框分享",
+    "linkCopied": "链接已复制到剪贴板",
+    "copyFailed": "无法自动复制。请使用键盘快捷键。"
   },
   "tour": {
     "startTour": "开始导览",

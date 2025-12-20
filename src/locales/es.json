@@ -202,6 +202,12 @@
     "description": "Para ayudarle a empezar, hemos preparado un rápido recorrido que le guiará a través de las características y funcionalidades de nuestro programa."
   },
   "sharing": {
-    "shareViaURL": "Compartir modelo mediante URL"
+    "shareViaURL": "Compartir modelo mediante URL",
+    "instructions": "Haz clic en cualquier lugar del campo para copiar el enlace y enviarlo a tus colaboradores.",
+    "copyCue": "Copiar enlace",
+    "openLink": "Abrir enlace",
+    "nativeShare": "Compartir mediante el sistema",
+    "linkCopied": "Enlace copiado al portapapeles",
+    "copyFailed": "No se pudo copiar automáticamente. Por favor, usa los atajos de teclado."
   }
 }

@@ -230,28 +230,12 @@ const shareMesh = () => {
 const openChangelog = () => {
   openModal(Changelog);
 };
+const currentAppVersion = APP_VERSION;
 
-type ChangelogPayload = {
-  releases?: { version?: string }[];
-};
-
-const fetchLatestChangelogVersion = async (): Promise<string | null> => {
-  try {
-    const response = await fetch('/changelog/en.json', { cache: 'no-cache' });
-    if (!response.ok) return null;
-    const payload = (await response.json()) as ChangelogPayload;
-    return payload.releases?.[0]?.version ?? null;
-  } catch (error) {
-    console.warn('Skipping changelog auto-open because the dataset could not be fetched.', error);
-    return null;
-  }
-};
-
-const maybeShowChangelog = async () => {
+const maybeShowChangelog = () => {
   if (appStore.inViewerMode) return;
-  const latestVersion = await fetchLatestChangelogVersion();
-  if (!latestVersion) return;
-  if (appStore.lastSeenChangelogVersion === latestVersion) return;
+  if (!currentAppVersion) return;
+  if (appStore.lastSeenChangelogVersion === currentAppVersion) return;
   openModal(Changelog);
 };
 
@@ -316,7 +300,7 @@ const saveProject = () => {
   download('project.json', JSON.stringify(exportJSON()));
 };
 
-const app_version = APP_VERSION;
+const app_version = currentAppVersion;
 const app_released = APP_RELEASED;
 const app_commit = APP_COMMIT;
 </script>

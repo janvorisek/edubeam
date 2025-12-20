@@ -202,6 +202,12 @@
     }
   },
   "sharing": {
-    "shareViaURL": "Modell über URL teilen"
+    "shareViaURL": "Modell über URL teilen",
+    "instructions": "Klicken Sie irgendwo in das Feld, um den Link zu kopieren, und senden Sie ihn dann an Ihre Mitarbeiter.",
+    "copyCue": "Link kopieren",
+    "openLink": "Link öffnen",
+    "nativeShare": "Über Systemdialog teilen",
+    "linkCopied": "Link in die Zwischenablage kopiert",
+    "copyFailed": "Konnte nicht automatisch kopieren. Bitte verwenden Sie Ihre Tastenkombinationen."
   }
 }

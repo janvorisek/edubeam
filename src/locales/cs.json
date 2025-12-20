@@ -238,7 +238,13 @@
     "requestFeature": "Navrhnout novou funkci"
   },
   "sharing": {
-    "shareViaURL": "Sdílejte konstrukci pomocí odkazu"
+    "shareViaURL": "Sdílejte konstrukci pomocí odkazu",
+    "instructions": "Kliknutím kamkoli do pole zkopírujete odkaz a poté jej odešlete svým spolupracovníkům.",
+    "copyCue": "Kopírovat odkaz",
+    "openLink": "Otevřít odkaz",
+    "nativeShare": "Sdílet přes systémové dialogové okno",
+    "linkCopied": "Odkaz zkopírován do schránky",
+    "copyFailed": "Nepodařilo se automaticky zkopírovat. Použijte prosím klávesové zkratky."
   },
   "tour": {
     "skipTour": "Přeskočit",

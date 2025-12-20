@@ -122,10 +122,10 @@ const upcoming = ref<UpcomingEntry[]>([]);
 const loading = ref(false);
 const error = ref('');
 const resolvedLocale = ref('');
-const topVersion = ref('');
 
 const { locale } = useI18n();
 const appStore = useAppStore();
+const currentAppVersion = APP_VERSION;
 
 let latestRequest: symbol | null = null;
 const baseLocale = 'en';
@@ -246,7 +246,6 @@ const loadChangelog = async () => {
   releases.value = mergedData.releases ?? [];
   upcoming.value = mergedData.upcoming ?? [];
   resolvedLocale.value = displayLocale;
-  topVersion.value = releases.value[0]?.version ?? '';
   loading.value = false;
 };
 
@@ -259,9 +258,9 @@ watch(
 );
 
 const markSeen = () => {
-  if (!topVersion.value) return;
-  if (appStore.lastSeenChangelogVersion === topVersion.value) return;
-  appStore.lastSeenChangelogVersion = topVersion.value;
+  if (!currentAppVersion) return;
+  if (appStore.lastSeenChangelogVersion === currentAppVersion) return;
+  appStore.lastSeenChangelogVersion = currentAppVersion;
 };
 
 const closeAndTrack = () => {

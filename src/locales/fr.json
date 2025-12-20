@@ -179,7 +179,13 @@
     "released": "version"
   },
   "sharing": {
-    "shareViaURL": "Partager le modèle via URL"
+    "shareViaURL": "Partager le modèle via URL",
+    "instructions": "Click anywhere inside the field to copy the link, then send it to your collaborators.",
+    "copyCue": "Copy link",
+    "openLink": "Open link",
+    "nativeShare": "Share via system dialog",
+    "linkCopied": "Link copied to clipboard",
+    "copyFailed": "Could not copy automatically. Please use your keyboard shortcuts."
   },
   "tour": {
     "startTour": "Commencer la visite",

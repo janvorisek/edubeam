@@ -203,11 +203,11 @@
   },
   "sharing": {
     "shareViaURL": "Compartir modelo mediante URL",
-    "instructions": "Click anywhere inside the field to copy the link, then send it to your collaborators.",
-    "copyCue": "Copy link",
-    "openLink": "Open link",
-    "nativeShare": "Share via system dialog",
-    "linkCopied": "Link copied to clipboard",
-    "copyFailed": "Could not copy automatically. Please use your keyboard shortcuts."
+    "instructions": "Haz clic en cualquier lugar del campo para copiar el enlace y enviarlo a tus colaboradores.",
+    "copyCue": "Copiar enlace",
+    "openLink": "Abrir enlace",
+    "nativeShare": "Compartir mediante el sistema",
+    "linkCopied": "Enlace copiado al portapapeles",
+    "copyFailed": "No se pudo copiar automáticamente. Por favor, usa los atajos de teclado."
   }
 }

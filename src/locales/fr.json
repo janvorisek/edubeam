@@ -180,12 +180,12 @@
   },
   "sharing": {
     "shareViaURL": "Partager le modèle via URL",
-    "instructions": "Click anywhere inside the field to copy the link, then send it to your collaborators.",
-    "copyCue": "Copy link",
-    "openLink": "Open link",
-    "nativeShare": "Share via system dialog",
-    "linkCopied": "Link copied to clipboard",
-    "copyFailed": "Could not copy automatically. Please use your keyboard shortcuts."
+    "instructions": "Cliquez n'importe où dans le champ pour copier le lien, puis envoyez-le à vos collaborateurs.",
+    "copyCue": "Copier le lien",
+    "openLink": "Ouvrir le lien",
+    "nativeShare": "Partager via la boîte de dialogue système",
+    "linkCopied": "Lien copié dans le presse-papiers",
+    "copyFailed": "Impossible de copier automatiquement. Veuillez utiliser les raccourcis clavier."
   },
   "tour": {
     "startTour": "Commencer la visite",

@@ -54,7 +54,7 @@ A: We do not keep user models or personal data on our servers. All computations 
 
 ### Q: My model shows “system is unstable.” What should I check?
 
-A: Ensure the structure has enough restraints (no free rigid-body modes), confirm elements are properly connected, and verify units. The [Essentials](/essentials/elements) and [Guide](/guide/user-interface) sections walk through common fixes.
+A: Ensure the structure has enough restraints (no free rigid-body modes), confirm elements are properly connected, and verify units. The [Essentials](/essentials/elements) and [Guide](/essentials/user-interface) sections walk through common fixes.
 
 ### Q: How do I report a bug or request a feature?
 

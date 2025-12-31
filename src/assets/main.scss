@@ -220,6 +220,14 @@ select.mini-select {
   transition: none;
 }
 
+.v-tabs.bg-primary {
+  .v-tab-item--selected,
+  .v-tab.v-tab--selected {
+    background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06)) !important;
+    box-shadow: inset 0 -3px 0 rgba(255,255,255,0.35);
+  }
+}
+
 // Bottom bar table
 .v-table {
   --v-table-header-height: 26px;

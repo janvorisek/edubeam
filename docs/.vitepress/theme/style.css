@@ -147,6 +147,11 @@
 .edubeam {
   font-family: "Lobster", "Barlow", sans-serif;
   font-weight: 400;
+  display: inline;
+}
+
+.content-body {
+  z-index: 10000;
 }
 
 .VPNav {

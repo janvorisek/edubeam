@@ -246,7 +246,7 @@ defineExpose({ centerContent, fitContent });
 </script>
 
 <template>
-  <div class="d-flex flex-column fill-height svg-viewer">
+  <div class="d-flex flex-column fill-height svg-viewer" style="z-index: 1">
     <svg v-if="false" class="w-100 fill-height" style="position: absolute">
       <SvgGrid ref="grid" :svg="svg as SVGSVGElement" :viewport="viewport as SVGGElement" :zoom="scale" />
     </svg>

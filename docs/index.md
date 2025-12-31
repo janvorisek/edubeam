@@ -3,29 +3,42 @@
 layout: home
 
 hero:
-  name: "edubeam"
-  text: "Building Knowledge, One Beam at a Time"
-  tagline: Explore 2D structural analysis directly in your web browser – tailored for students and educators alike.
+  name: "EduBeam"
+  text: "Free structural analysis online"
+  tagline: Draw a beam, add a load, and watch it recompute instantly—full FEM results inside your browser with no installs or fees.
   image:
     src: /download.png
-    alt: edubeam app
+    alt: EduBeam app live preview
     link: https://run.edubeam.app
   actions:
     - theme: brand
-      text: Get started
+      text: Launch the app
+      link: https://run.edubeam.app
+    - theme: alt
+      text: Read the guide
       link: /guide/introduction
     - theme: alt
-      text: Examples
+      text: See examples
       link: /examples/
 
 features:
-  - icon: 🚀
-    title: Real-Time 2D Computation
-    details: Experience instant analysis and visualization of 2D structures, adapting dynamically to parameter changes for an interactive learning and design journey.
-  - icon: 🌎
-    title: Universal Availability
-    details: Structural analysis made simple. No installations required — access edubeam instantly from any device with internet, at anytime.
-  - icon: 🔍
-    title: Detailed Analysis Made Easy
-    details: Gain insights into displacements, inner forces, end forces, stiffness matrices, and other critical data with edubeam.
+  - icon: ⚡
+    title: Immediate feedback
+    details: Change a span, drag a support, or bump a load and watch the diagrams react instantly.
+  - icon: 🧑‍🏫
+    title: Classroom friendly
+    details: Big buttons, undo/redo, and clear tooltips mean less explaining and more exploring.
+  - icon: 🌍
+    title: Works in your language
+    details: Switch between EN, CS, DE, ES, FR, and ZH without leaving the page.
+  - icon: 🔗
+    title: Shareable models
+    details: Copy a link, export JSON, or drop clean images into slides and handouts.
 ---
+## Who is this for?
+
+- **Students** who want to check homework or visualize ideas during study groups.
+- **Teachers** who need a reliable way to demo supports, loads, and diagrams live.
+- **Teams and hobbyists** who just want clear answers without hunting for expensive desktop software.
+
+If you can drag a mouse, you can use <Edubeam />. 🙂

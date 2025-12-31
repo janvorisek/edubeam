@@ -138,6 +138,7 @@ solver.value.solve();
           :padding="32"
           :mobile-padding="32"
           :results-scale-px="resultsScalePx"
+          :support-size="0.75"
         />
       </div>
     </ClientOnly>

@@ -94,7 +94,7 @@ const customElements = [
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: 'edubeam',
+  title: 'EduBeam',
   description: 'Learn, Contribute, Excel in Structural Analysis!',
   sitemap: {
     hostname: 'https://www.edubeam.app',
@@ -116,13 +116,13 @@ export default defineConfig({
             text: 'Getting started',
             items: [
               { text: 'Introduction', link: '/guide/introduction' },
-              { text: 'User Interface', link: '/guide/user-interface' },
               { text: 'Examples', link: '/examples/' },
             ],
           },
           {
             text: 'Essentials',
             items: [
+              { text: 'User Interface', link: '/essentials/user-interface' },
               { text: 'Elements', link: '/essentials/elements' },
               { text: 'Loads', link: '/essentials/loads' },
               { text: 'Results', link: '/essentials/results' },
@@ -174,6 +174,10 @@ export default defineConfig({
       label: '中文',
       lang: 'zh',
     },
+    hi: {
+      label: 'हिन्दी',
+      lang: 'hi',
+    },
   },
   themeConfig: {
     outline: 'deep',
@@ -215,6 +219,23 @@ export default defineConfig({
               },
             },
           },
+          hi: {
+            translations: {
+              button: {
+                buttonText: 'दस्तावेज़ खोजें',
+                buttonAriaLabel: 'दस्तावेज़ खोजें',
+              },
+              modal: {
+                noResultsText: 'कोई परिणाम नहीं मिला',
+                resetButtonTitle: 'खोज शर्तें साफ़ करें',
+                footer: {
+                  selectText: 'चुनें',
+                  navigateText: 'स्विच करें',
+                  closeText: 'बंद करें',
+                },
+              },
+            },
+          },
         },
       },
     },
@@ -239,6 +260,14 @@ export default defineConfig({
       'script',
       {},
       "window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', 'G-FGX9PYDV0G');",
+    ],
+    [
+      'script',
+      {
+        async: '',
+        src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3761845630657739',
+        crossorigin: 'anonymous',
+      },
     ],
   ],
   markdown: {

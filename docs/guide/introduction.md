@@ -5,7 +5,7 @@ const members = [
   {
     avatar: 'https://www.github.com/janvorisek.png',
     name: 'Jan Voříšek',
-    title: 'Maintainer, UI/UX',
+    title: 'Lead developer & product designer',
     links: [
       { icon: 'github', link: 'https://github.com/janvorisek' },
       { icon: 'twitter', link: 'https://twitter.com/janvorisekdev' },
@@ -14,7 +14,7 @@ const members = [
   {
    avatar: 'https://www.github.com/bpatzak.png',
     name: 'Bořek Patzák',
-    title: 'Original author, FEA implementation',
+    title: 'FEM solver, Author of the legacy app',
     links: [
       { icon: 'github', link: 'https://github.com/bpatzak' },
       { icon: { svg: '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="style=stroke" clip-path="url(#clip0_1_1828)"> <g id="web"> <path id="vector (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M10.4425 2.44429C10.0752 3.64002 9.32073 6.25569 8.89915 8.83258C9.99331 9.00921 11.0621 9.12209 12 9.12209C12.9379 9.12209 14.0067 9.00921 15.1009 8.83258C14.6793 6.25569 13.9248 3.64002 13.5575 2.44429C13.0509 2.3624 12.5307 2.31977 12 2.31977C11.4693 2.31977 10.9491 2.3624 10.4425 2.44429ZM15.3337 2.90893C15.737 4.305 16.2958 6.42828 16.6448 8.54737C18.1513 8.23703 19.5727 7.85824 20.605 7.56109C19.4986 5.42102 17.6172 3.74662 15.3337 2.90893ZM21.2129 9.01933C20.1222 9.33683 18.5423 9.76328 16.8594 10.1057C16.9295 10.7564 16.9709 11.3958 16.9709 12C16.9709 12.8816 16.8827 13.8411 16.7445 14.8058C18.759 14.3858 20.6068 13.849 21.5557 13.5575C21.6376 13.0509 21.6802 12.5307 21.6802 12C21.6802 10.959 21.5162 9.95751 21.2129 9.01933ZM21.0911 15.3337C19.9166 15.6729 18.229 16.1219 16.4634 16.4634C16.1219 18.229 15.6729 19.9166 15.3337 21.0911C17.9978 20.1138 20.1138 17.9978 21.0911 15.3337ZM13.5576 21.5557C13.849 20.6068 14.3858 18.759 14.8058 16.7445C13.8411 16.8827 12.8816 16.9709 12 16.9709C11.1184 16.9709 10.1589 16.8827 9.19423 16.7445C9.61421 18.759 10.151 20.6068 10.4425 21.5557C10.9491 21.6376 11.4693 21.6802 12 21.6802C12.5307 21.6802 13.0509 21.6376 13.5576 21.5557ZM8.66629 21.0911C8.32707 19.9166 7.8781 18.229 7.53658 16.4634C5.77099 16.1219 4.08335 15.6729 2.90891 15.3337C3.88622 17.9978 6.00216 20.1138 8.66629 21.0911ZM2.44429 13.5575C3.39316 13.849 5.24101 14.3858 7.25548 14.8058C7.1173 13.8411 7.02907 12.8816 7.02907 12C7.02907 11.3958 7.07048 10.7564 7.14056 10.1057C5.45769 9.76328 3.87779 9.33683 2.78712 9.01933C2.48383 9.95751 2.31977 10.959 2.31977 12C2.31977 12.5307 2.3624 13.0509 2.44429 13.5575ZM3.39504 7.56109C4.42731 7.85824 5.84865 8.23703 7.35522 8.54737C7.70416 6.42827 8.26303 4.305 8.66626 2.90893C6.38282 3.74662 4.50139 5.42102 3.39504 7.56109ZM8.68924 10.3888C8.63137 10.9544 8.59884 11.4968 8.59884 12C8.59884 12.9399 8.71224 14.012 8.88985 15.1102C9.98798 15.2878 11.0601 15.4012 12 15.4012C12.9399 15.4012 14.012 15.2878 15.1102 15.1102C15.2878 14.012 15.4012 12.9399 15.4012 12C15.4012 11.4968 15.3686 10.9544 15.3108 10.3888C14.1776 10.5703 13.0348 10.6919 12 10.6919C10.9652 10.6919 9.82236 10.5703 8.68924 10.3888ZM9.67273 0.991173C10.4243 0.833026 11.2029 0.75 12 0.75C12.7971 0.75 13.5757 0.833026 14.3273 0.991174C18.0108 1.76627 21.0281 4.34097 22.42 7.75174C22.9554 9.06356 23.25 10.4983 23.25 12C23.25 12.7971 23.167 13.5757 23.0088 14.3273C22.0943 18.6736 18.6736 22.0943 14.3273 23.0088C13.5757 23.167 12.7971 23.25 12 23.25C11.2029 23.25 10.4243 23.167 9.67273 23.0088C5.32644 22.0943 1.90572 18.6736 0.991173 14.3273C0.833026 13.5757 0.75 12.7971 0.75 12C0.75 10.4972 1.04509 9.06132 1.58123 7.74866C2.97369 4.33943 5.99026 1.76604 9.67273 0.991173Z" fill="currentColor"></path> </g> </g> <defs> <clipPath id="clip0_1_1828"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg>'}, link: 'http://ksm.fsv.cvut.cz/~bp/'}
@@ -25,101 +25,91 @@ const members = [
 
 # Introduction
 
-Welcome to <Edubeam />, your free online web app for structural analysis. Structural analysis becomes accessible within your web browser without the need for installation or complex setup. Access anytime, anywhere, completely free of charge. Tailored for education, our platform is designed with students and educators in mind, ensuring an optimal learning experience.
+Welcome to <Edubeam />, a browser-based workspace for **structural analysis and teaching**. Build beams, trusses, and frames; apply point and distributed loads; and review finite element (FEM) reactions, displacements, and internal forces in real time. Everything runs in the browser—no installers, license servers, or admin rights required—making EduBeam a reliable companion for classrooms, studios, and quick design checks.
 
-<hr>
-
-Click [here](https://run.edubeam.app) to launch <Edubeam /> and start your structural analysis journey.
+[Launch EduBeam](https://run.edubeam.app) in a new tab to explore alongside this guide.
 
 <figure>
   <a href="https://run.edubeam.app" target="_blank">
     <WelcomeStructure />
-    </a>
-  <figcaption>edubeam in action</figcaption>
+  </a>
+  <figcaption>See EduBeam in action</figcaption>
 </figure>
 
-## Features
+## Why engineers choose EduBeam
 
-- **2D Beam/Truss Solver**: Seamlessly analyze and solve any 2D structures.
-- **User-Friendly Interface**: Intuitive design for effortless navigation.
-- **Free and Online**: Access anytime, anywhere for ultimate convenience.
-- **Student & Teacher Focus**: Tailored features for an optimal learning experience.
-- **Open-Source Innovation**: Collaborate and contribute to the evolution of <Edubeam />.
-- **Easy Project Sharing**: Share your projects effortlessly with an URL feature.
+- **Live feedback:** edit geometry, supports, or loads and see displacements, reactions, shear, and bending moment diagrams update instantly.
+- **Zero-install and cross-platform:** runs on any modern browser, so students, reviewers, and clients stay aligned without software setup.
+- **Publish-ready outputs:** export share links or JSON files for easy sharing with colleagues.
+- **Guided, classroom-friendly UX:** clear labels, contextual menus, and full undo/redo keep beginners productive while supporting expert shortcuts.
+- **Consistent units and templates:** pick unit systems, reuse structures, and maintain repeatable calculations for teaching and verification.
 
-Unlock the full potential of structural analysis with advanced features:
+## When to reach for EduBeam
 
-- **Static Condensation**: Analyze truss structures and internal hinges with ease using static condensation at each beam end.
-- **Detailed Results Visualization**: Gain comprehensive insights with detailed normal force, shear force, and bending moment diagrams, as well as precise deformed shape and reaction displays.
-- **Custom Nodal Coordinate Systems**: Specify custom local coordinate systems at each node, including support for inclined supports.
-- **Temperature Load Support**: Apply temperature loads on beams and uniformly distributed loads for thorough structural analysis.
+- Teaching structural mechanics with live visuals that match lecture pacing.
+- Comparing design options before committing time in heavier desktop software.
+- Reviewing assignments or peer work with consistent, exportable diagrams.
+- Demonstrating “what-if” scenarios in client or stakeholder meetings.
+
+## Quick start in five moves
+
+1. [Launch EduBeam](https://run.edubeam.app) and select your preferred unit system.
+2. **Place nodes** via the Add Node tool or with mouse clicks, then connect them with elements.
+3. **Assign properties** (materials and sections) so each member carries the right stiffness and cross-section.
+4. **Apply supports and loads** from the action bar or the Viewer context menu, including nodal, temperature and distributed cases.
+5. **Review and share** by toggling deformation and force overlays, then copy the Share link or export JSON file for documentation.
 
 ## Localization
 
-<Edubeam /> is available in available in multiple languages to enhance your user experience.
+<Edubeam /> supports multiple languages so teams and classrooms can work comfortably. Switch languages in the app bar or open the app with `?lang=` followed by the language code.
 
 <div>
 
 <table>
-    <tr>
-        <td><img src="language-icons/icons/en.svg" style="height: 24px;" alt="English" /></td>
-        <td><a href="https://run.edubeam.app/?lang=en" target="_blank">English</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/de.svg" style="height: 24px;" alt="Deutsch" /></td>
-        <td><a href="https://run.edubeam.app/?lang=de" target="_blank">Deutsch</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/es.svg" style="height: 24px;" alt="Español" /></td>
-        <td><a href="https://run.edubeam.app/?lang=es" target="_blank">Español</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/fr.svg" style="height: 24px;" alt="Français" /></td>
-        <td><a href="https://run.edubeam.app/?lang=fr" target="_blank">Français</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/cs.svg" style="height: 24px;" alt="Čeština" /></td>
-        <td><a href="https://run.edubeam.app/?lang=cs" target="_blank">Čeština</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/zh.svg" style="height: 24px;" alt="中文" /></td>
-        <td><a href="https://run.edubeam.app/?lang=cn" target="_blank">中文</a></td>
-    </tr>
+  <tr>
+    <td><img src="language-icons/icons/en.svg" style="height: 24px;" alt="English" /></td>
+    <td><a href="https://run.edubeam.app/?lang=en" target="_blank">English</a></td>
+  </tr>
+  <tr>
+    <td><img src="language-icons/icons/de.svg" style="height: 24px;" alt="Deutsch" /></td>
+    <td><a href="https://run.edubeam.app/?lang=de" target="_blank">Deutsch</a></td>
+  </tr>
+  <tr>
+    <td><img src="language-icons/icons/es.svg" style="height: 24px;" alt="Español" /></td>
+    <td><a href="https://run.edubeam.app/?lang=es" target="_blank">Español</a></td>
+  </tr>
+  <tr>
+    <td><img src="language-icons/icons/fr.svg" style="height: 24px;" alt="Français" /></td>
+    <td><a href="https://run.edubeam.app/?lang=fr" target="_blank">Français</a></td>
+  </tr>
+  <tr>
+    <td><img src="language-icons/icons/cs.svg" style="height: 24px;" alt="Čeština" /></td>
+    <td><a href="https://run.edubeam.app/?lang=cs" target="_blank">Čeština</a></td>
+  </tr>
+  <tr>
+    <td><img src="language-icons/icons/zh.svg" style="height: 24px;" alt="中文" /></td>
+    <td><a href="https://run.edubeam.app/?lang=cn" target="_blank">中文</a></td>
+  </tr>
+  <tr>
+    <td><img src="language-icons/icons/th.svg" style="height: 24px;" alt="ไทย" /></td>
+    <td><a href="https://run.edubeam.app/?lang=th" target="_blank">ไทย</a></td>
+  </tr>
 </table>
 
 </div>
 
-## The Authors
+## Authors & credits
 
-<Edubeam /> is a collaborative project fueled by a dedicated community of contributors who are passionate about advancing structural analysis education. It is developed and maintained by a small team from the Department of Mechanics at [CTU Prague - Faculty of Civil Engineering](https://www.fsv.cvut.cz/en).
+<Edubeam /> is led by [Jan Voříšek](https://github.com/janvorisek), the maintainer and product designer behind the modern web edition. The current browser version is developed independently of CTU, while the legacy desktop EduBeam was created by researchers at the Department of Mechanics, [CTU Prague – Faculty of Civil Engineering](https://www.fsv.cvut.cz/en). Their foundational work is acknowledged with thanks.
 
 <VPTeamMembers size="small" :members="members" />
 
-The original [desktop application](https://www.oofem.org/wiki/doku.php?id=edubeam:edubeam_en) was developed by [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) and [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/).
+The original [desktop version](https://www.oofem.org/wiki/doku.php?id=edubeam:edubeam_en) for Windows/Linux was created by [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/), and [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/). Their work inspired the current browser experience.
 
-## Get Involved
+## Contribute
 
-Feel free to join our community and contribute to the growth of <Edubeam />. Your involvement can range from testing and reporting issues to actively participating in the development process.
+- Tell us what feels confusing by opening an [issue on GitHub](https://github.com/janvorisek/edubeam/issues).
+- Improve translations or screenshots by editing the files inside `docs/`.
+- Share EduBeam with classmates and colleagues so we can keep making it better for everyone.
 
-Here are some ways you can get involved and contribute to <Edubeam />:
-
-1. **Contribute Code:**
-
-   - Explore our [GitHub repository](https://github.com/janvorisek/edubeam) and contribute to code development.
-   - Choose from a variety of tasks, from basic structural analysis to advanced feature implementation.
-
-2. **Testing and Bug Reporting:**
-
-   - Test <Edubeam /> and report any bugs or issues on our [issue tracker](https://github.com/janvorisek/edubeam/issues).
-   - Your feedback is crucial for improving the reliability and functionality of <Edubeam />.
-
-3. **Documentation:**
-
-   - Help improve our documentation to make <Edubeam /> more user-friendly.
-   - Contribute tutorials, guides, or FAQs to enhance the learning experience for users.
-
-4. **Spread the Word:**
-   - Share <Edubeam /> with your peers and on social media.
-   - Your support helps grow our community and ensures more students benefit from <Edubeam />.
-
-Ready to get started? Choose a contribution path that suits your skills and interests, and become a valuable part of the <Edubeam /> community!
+Thanks for being here—now jump into the app and start experimenting!

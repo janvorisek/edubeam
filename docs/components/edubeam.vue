@@ -1,3 +1,1 @@
-<template>
-  <span class="edubeam">edubeam</span>
-</template>
+<template><span class="edubeam">EduBeam</span></template>

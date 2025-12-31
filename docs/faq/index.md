@@ -1,39 +1,67 @@
 # Frequently Asked Questions
 
-## General Questions
+## Getting started
 
 ### Q: What is <Edubeam />?
 
-A: <Edubeam /> is an online structural analysis software designed for engineers, students, and professionals to perform 2D beam and truss analysis.
+A: <Edubeam /> is a browser-based solver for 2D beams, trusses, and simple frames. It is built for students, teachers, and practitioners who need quick FEM feedback without installing desktop software.
 
-### Q: Is <Edubeam /> free to use?
+### Q: Is it really free?
 
-A: Yes, Edubeam is a free-to-use online software for structural mechanics.
+A: Yes. Edubeam runs entirely in your browser and is free to use in classrooms, studios, and personal projects. The codebase is open source, so you can audit or contribute to it.
 
-### Q: Do I need to download any software to use <Edubeam />?
+### Q: Do I have to sign up or download anything?
 
-A: No, <Edubeam /> is an online platform, and there is no need to download or install any software. It can be accessed directly from your web browser.
+A: Nope. Launch [run.edubeam.app](https://run.edubeam.app) in any modern browser and you are ready to model. There are no accounts, logins, or installers.
 
-### Q: Is there a limit to the number of projects I can create in <Edubeam />?
+### Q: Which browsers and devices are supported?
 
-A: <Edubeam /> does not impose a limit on the number of projects you can create. You can create and manage multiple projects based on your needs.
+A: Chrome, Edge, Firefox, and Safari on desktop provide the best experience. Tablets work for quick edits or reviews, but precise modeling is easier with a keyboard and mouse.
 
-### Q: Can I use Edubeam on mobile devices?
+### Q: Does Edubeam limit the number of projects?
 
-A: <Edubeam /> is optimized for use on desktop and laptop devices. While it works on tablets and phones, we recommend using a desktop or laptop for the best user experience.
+A: There is no project cap. Models stay in your browser storage or in files you export, so you can keep as many as your device can handle.
 
-### Q: How secure is my data on Edubeam?
+## Working with models
 
-A: Your data security is a top priority at <Edubeam />. We want to assure you that **we do not store any user data on our servers**. Your structural analysis projects and sensitive information remain solely on your device. This approach enhances privacy and security by eliminating the storage of user data on our servers.
+### Q: Where do I find sample projects or templates?
 
-## Collaboration and Sharing
+A: Open the [Examples](/examples/) page in the docs and click any preset to load it directly in the app. It is the fastest way to explore supported scenarios.
 
-### Q: How can I share my current analysis state with others?
+### Q: Can I change units or language?
 
-A: Use the **Share model** button to generate a unique URL that captures the current configuration of your structural model. Share this URL with collaborators for them to view and interact with your analysis.
+A: Yes. Units are selectable when you create or open a model, and languages can be switched from the app bar or by adding `?lang=` (for example, `?lang=cs`) to the app URL.
 
-It's important to note that changes made by collaborators are not synchronized with the original project, as <Edubeam /> operates without servers. All data and modifications are processed client-side, ensuring the privacy and autonomy of your analysis.
+### Q: How do I recover an earlier state of my model?
 
-<hr>
+A: Use the built-in undo/redo history in the bottom bar. For longer sessions, export the project as JSON so you can re-import it later.
 
-Feel free to reach out to our support team at [support@edubeam.app](mailto:support@edubeam.app) for any additional questions or assistance.
+## Sharing and privacy
+
+### Q: How do I share my model with others?
+
+A: Click **Share model** to generate a URL that encodes your current setup. Send that link to classmates or reviewers and they can open the exact same configuration.
+
+### Q: Are edits synchronized between collaborators?
+
+A: No. Edubeam has no real-time server component. Each person who opens the link works on their own local copy, so remember to resend the link after making changes.
+
+### Q: What happens to my data—do you store it?
+
+A: We do not keep user models or personal data on our servers. All computations run in your browser, and anything you save stays on your device unless you choose to share it.
+
+## Troubleshooting and support
+
+### Q: My model shows “system is unstable.” What should I check?
+
+A: Ensure the structure has enough restraints (no free rigid-body modes), confirm elements are properly connected, and verify units. The [Essentials](/essentials/elements) and [Guide](/essentials/user-interface) sections walk through common fixes.
+
+### Q: How do I report a bug or request a feature?
+
+A: Open an issue on [GitHub](https://github.com/janvorisek/edubeam/issues) with steps to reproduce or a description of the enhancement you need. Screenshots and attached JSON exports help a lot.
+
+### Q: Who do I contact for private support?
+
+A: Email [support@edubeam.app](mailto:support@edubeam.app). Include your browser version, operating system, and (if possible) the share link or export that demonstrates the problem.
+
+Still curious? Explore the rest of the docs or jump straight into the app to experiment.

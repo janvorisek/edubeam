@@ -1728,6 +1728,7 @@ defineExpose({ centerContent, fitContent });
           '--marker-force-tip': markerForceTip,
           '--marker-dim-tip': markerDimTip,
           '--filter-text-label': markerTextLabel,
+          '--colors-loads': viewerStore.colors.loads,
         }"
         @click.right.prevent="openCtxMenu($event)"
         @pointermove="mouseMove"

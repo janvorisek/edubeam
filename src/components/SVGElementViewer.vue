@@ -283,6 +283,7 @@ defineExpose({ centerContent, fitContent });
           '--marker-force-tip': markerForceTip,
           '--marker-dim-tip': markerDimTip,
           '--filter-text-label': markerTextLabel,
+          '--colors-loads': props.colors.loads,
         }"
       >
         <SvgViewerDefs :id="id" :colors="colors" :support-size="supportSize" :scale="scale" />

@@ -3,6 +3,7 @@ import { computed, ref } from 'vue';
 import SVGElementViewer from './SVGElementViewer.vue';
 import { useAppStore } from '@/store/app';
 import { Beam2D, BeamConcentratedLoad, BeamElementLoad, LinearStaticSolver, Node } from 'ts-fem';
+import { useViewerStore } from '@/store/viewer';
 
 const props = withDefaults(
   defineProps<{
@@ -19,6 +20,7 @@ const props = withDefaults(
   }
 );
 
+const viewerStore = useViewerStore();
 const viewer = ref<InstanceType<typeof SVGElementViewer> | null>(null);
 const solver = ref(new LinearStaticSolver());
 const appStore = useAppStore();
@@ -100,6 +102,7 @@ const dimensionLines = computed(() => {
       :support-size="0.75"
       :number-format="appStore.numberFormatter"
       :convert-length="appStore.convertLength"
+      :colors="viewerStore.colors"
     />
   </div>
 </template>

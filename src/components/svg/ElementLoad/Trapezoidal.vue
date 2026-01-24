@@ -400,6 +400,7 @@ const stackedTransform = computed(() => {
         :d="eloadPathData"
         fill="transparent"
         class="drawable"
+        style="stroke: var(--colors-loads)"
         vector-effect="non-scaling-stroke"
       />
       <clipPath :id="eloadClipPathId" clipPathUnits="userSpaceOnUse">

@@ -2152,6 +2152,14 @@ defineExpose({ centerContent, fitContent });
       font-weight: bold;
     }
 
+    use {
+      stroke: v-bind('viewerStore.colors.loads');
+    }
+
+    use:hover {
+      stroke-width: 3px; /* affects the referenced element */
+    }
+
     &:hover path.drawable,
     &:hover polygon.drawable {
       //stroke: blue;
@@ -2188,6 +2196,11 @@ defineExpose({ centerContent, fitContent });
         stroke-width: 4px;
         stroke-linejoin: round;
         fill: rgba(0, 55, 149, 0.15);
+      }
+
+      use {
+        stroke-width: 3px; /* affects the referenced element */
+        stroke: rgb(0, 94, 255);
       }
     }
   }

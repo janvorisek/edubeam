@@ -21,7 +21,7 @@
   "dependencies": {
     "@imengyu/vue3-context-menu": "^1.5.2",
     "@intlify/unplugin-vue-i18n": "^11.0.3",
-    "@sentry/vite-plugin": "^4.6.1",
+    "@sentry/vite-plugin": "^4.9.0",
     "@sentry/vue": "^10.32.1",
     "@tweakpane/plugin-essentials": "^0.2.1",
     "@types/js-quantities": "^1.6.6",

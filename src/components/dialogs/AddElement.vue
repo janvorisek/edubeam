@@ -39,13 +39,9 @@
                   <template #text>
                     <div class="d-flex align-center">
                       {{ $t('warnings.noMaterialsDefined') }}
-                      <v-btn
-                        variant="text"
-                        density="compact"
-                        size="small"
-                        @click="openModal(AddMaterialDialog)"
-                        >{{ $t('common.addNew') }}</v-btn
-                      >
+                      <v-btn variant="text" density="compact" size="small" @click="openModal(AddMaterialDialog)">{{
+                        $t('common.addNew')
+                      }}</v-btn>
                     </div>
                   </template>
                 </v-alert>
@@ -56,13 +52,9 @@
                   <template #text>
                     <div class="d-flex align-center">
                       {{ $t('warnings.noCrossSectionsDefined') }}
-                      <v-btn
-                        variant="text"
-                        density="compact"
-                        size="small"
-                        @click="openModal(AddCrossSectionDialog)"
-                        >{{ $t('common.addNew') }}</v-btn
-                      >
+                      <v-btn variant="text" density="compact" size="small" @click="openModal(AddCrossSectionDialog)">{{
+                        $t('common.addNew')
+                      }}</v-btn>
                     </div>
                   </template>
                 </v-alert>

@@ -967,13 +967,7 @@
         :reverse-transition="false"
       >
         <div class="border-b border-t">
-          <v-btn
-            size="small"
-            variant="flat"
-            color="secondary"
-            :rounded="0"
-            @click.stop="openModal(AddMaterialDialog)"
-          >
+          <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="openModal(AddMaterialDialog)">
             <v-icon small>mdi-plus</v-icon> {{ $t('materials.addMaterial') }}
           </v-btn>
           <v-btn

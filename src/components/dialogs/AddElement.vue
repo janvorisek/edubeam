@@ -43,7 +43,7 @@
                         variant="text"
                         density="compact"
                         size="small"
-                        @click="appStore.dialogs['addMaterial'] = true"
+                        @click="openModal(AddMaterialDialog)"
                         >{{ $t('common.addNew') }}</v-btn
                       >
                     </div>
@@ -60,7 +60,7 @@
                         variant="text"
                         density="compact"
                         size="small"
-                        @click="appStore.dialogs['addCrossSection'] = true"
+                        @click="openModal(AddCrossSectionDialog)"
                         >{{ $t('common.addNew') }}</v-btn
                       >
                     </div>
@@ -116,10 +116,12 @@
 import { ref, reactive, computed } from 'vue';
 import { useProjectStore } from '../../store/project';
 import { DofID, NodalLoad } from 'ts-fem';
-import { closeModal } from 'jenesius-vue-modal';
+import { closeModal, openModal } from 'jenesius-vue-modal';
 import { useAppStore } from '@/store/app';
 import { checkNumber } from '@/utils';
 import { onMounted } from 'vue';
+import AddMaterialDialog from './AddMaterial.vue';
+import AddCrossSectionDialog from './AddCrossSection.vue';
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();

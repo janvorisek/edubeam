@@ -967,7 +967,13 @@
         :reverse-transition="false"
       >
         <div class="border-b border-t">
-          <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addMaterial')">
+          <v-btn
+            size="small"
+            variant="flat"
+            color="secondary"
+            :rounded="0"
+            @click.stop="openModal(AddMaterialDialog)"
+          >
             <v-icon small>mdi-plus</v-icon> {{ $t('materials.addMaterial') }}
           </v-btn>
           <v-btn
@@ -976,7 +982,7 @@
             color="secondary"
             :rounded="0"
             style="border-left: 1px solid #ccc"
-            @click.stop="showDialog('addMaterial')"
+            @click.stop="openModal(AddMaterialDialog)"
           >
             <v-icon small>mdi-database-search-outline</v-icon> {{ $t('materials.material_library') }}
           </v-btn>
@@ -1081,7 +1087,13 @@
         :reverse-transition="false"
       >
         <div class="border-b border-t">
-          <v-btn size="small" variant="flat" color="secondary" :rounded="0" @click.stop="showDialog('addCrossSection')">
+          <v-btn
+            size="small"
+            variant="flat"
+            color="secondary"
+            :rounded="0"
+            @click.stop="openModal(AddCrossSectionDialog)"
+          >
             <v-icon small>mdi-plus</v-icon> {{ $t('crossSections.addCrossSection') }}
           </v-btn>
           <v-btn
@@ -1090,7 +1102,7 @@
             color="secondary"
             :rounded="0"
             style="border-left: 1px solid #ccc"
-            @click.stop="showDialog('addCrossSection')"
+            @click.stop="openModal(AddCrossSectionDialog)"
           >
             <v-icon small>mdi-database-search-outline</v-icon> {{ $t('materials.section_library') }}
           </v-btn>
@@ -1440,6 +1452,8 @@ import EditNodalLoad from './dialogs/EditNodalLoad.vue';
 import EditElementLoad from './dialogs/EditElementLoad.vue';
 import AddElementDialog from './dialogs/AddElement.vue';
 import AddNodeDialog from './dialogs/AddNode.vue';
+import AddMaterialDialog from './dialogs/AddMaterial.vue';
+import AddCrossSectionDialog from './dialogs/AddCrossSection.vue';
 import EditNode from './dialogs/EditNode.vue';
 
 import { useLayoutStore } from '@/store/layout';
@@ -1467,12 +1481,6 @@ onMounted(() => {
     }
   });
 });
-
-const showDialog = (
-  name: 'addNode' | 'addElement' | 'addNodalLoad' | 'addElementLoad' | 'addMaterial' | 'addCrossSection'
-) => {
-  appStore.dialogs[name] = true;
-};
 
 const nodes = computed(() => {
   const nodeVals = useProjectStore().solver.domain.nodes.values();

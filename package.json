@@ -19,7 +19,7 @@
     "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
-    "@imengyu/vue3-context-menu": "^1.5.2",
+    "@imengyu/vue3-context-menu": "^1.5.4",
     "@intlify/unplugin-vue-i18n": "^11.0.3",
     "@sentry/vite-plugin": "^4.6.1",
     "@sentry/vue": "^10.32.1",

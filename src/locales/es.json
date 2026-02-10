@@ -129,7 +129,8 @@
       "addNode": "Agregar nodo"
     },
     "common": {
-      "cancel": "Cancelar"
+      "cancel": "Cancelar",
+      "orChooseFromLibrary": "O elegir de la biblioteca"
     },
     "addElement": {
       "fromNodeId": "Nodo inicial",

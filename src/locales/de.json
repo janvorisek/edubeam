@@ -129,7 +129,8 @@
       "addNode": "Knoten hinzufügen"
     },
     "common": {
-      "cancel": "Abbrechen"
+      "cancel": "Abbrechen",
+      "orChooseFromLibrary": "Oder aus der Bibliothek wählen"
     },
     "addElement": {
       "fromNodeId": "Anfangsknoten",

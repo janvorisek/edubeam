@@ -177,7 +177,8 @@
       "addNode": "Add node"
     },
     "common": {
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "orChooseFromLibrary": "Or choose from library"
     },
     "addElement": {
       "fromNodeId": "Initial node",

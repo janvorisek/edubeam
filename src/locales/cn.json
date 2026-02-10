@@ -130,7 +130,8 @@
       "addNode": "添加节点"
     },
     "common": {
-      "cancel": "取消"
+      "cancel": "取消",
+      "orChooseFromLibrary": "或从库中选择"
     },
     "addElement": {
       "fromNodeId": "初始节点",

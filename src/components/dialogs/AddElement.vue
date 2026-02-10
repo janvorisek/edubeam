@@ -39,13 +39,9 @@
                   <template #text>
                     <div class="d-flex align-center">
                       {{ $t('warnings.noMaterialsDefined') }}
-                      <v-btn
-                        variant="text"
-                        density="compact"
-                        size="small"
-                        @click="appStore.dialogs['addMaterial'] = true"
-                        >{{ $t('common.addNew') }}</v-btn
-                      >
+                      <v-btn variant="text" density="compact" size="small" @click="openModal(AddMaterialDialog)">{{
+                        $t('common.addNew')
+                      }}</v-btn>
                     </div>
                   </template>
                 </v-alert>
@@ -56,13 +52,9 @@
                   <template #text>
                     <div class="d-flex align-center">
                       {{ $t('warnings.noCrossSectionsDefined') }}
-                      <v-btn
-                        variant="text"
-                        density="compact"
-                        size="small"
-                        @click="appStore.dialogs['addCrossSection'] = true"
-                        >{{ $t('common.addNew') }}</v-btn
-                      >
+                      <v-btn variant="text" density="compact" size="small" @click="openModal(AddCrossSectionDialog)">{{
+                        $t('common.addNew')
+                      }}</v-btn>
                     </div>
                   </template>
                 </v-alert>
@@ -116,10 +108,12 @@
 import { ref, reactive, computed } from 'vue';
 import { useProjectStore } from '../../store/project';
 import { DofID, NodalLoad } from 'ts-fem';
-import { closeModal } from 'jenesius-vue-modal';
+import { closeModal, openModal } from 'jenesius-vue-modal';
 import { useAppStore } from '@/store/app';
 import { checkNumber } from '@/utils';
 import { onMounted } from 'vue';
+import AddMaterialDialog from './AddMaterial.vue';
+import AddCrossSectionDialog from './AddCrossSection.vue';
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();

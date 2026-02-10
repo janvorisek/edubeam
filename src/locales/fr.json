@@ -129,7 +129,8 @@
       "addNode": "Ajouter un nœud"
     },
     "common": {
-      "cancel": "Annuler"
+      "cancel": "Annuler",
+      "orChooseFromLibrary": "Ou choisir dans la bibliothèque"
     },
     "addElement": {
       "fromNodeId": "Nœud initial",

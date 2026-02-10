@@ -3,7 +3,7 @@
     <v-card>
       <v-card-title> {{ $t('dialogs.addMaterial.addNewMaterial') }} </v-card-title>
 
-      <v-card-text>
+      <v-card-text class="px-0">
         <v-form v-model="valid">
           <v-container>
             <v-row no-gutters>
@@ -62,6 +62,17 @@
             </v-row>
           </v-container>
         </v-form>
+        <div class="px-2">
+          <v-btn
+            variant="text"
+            density="default"
+            size="default"
+            class="text-none"
+            @click="openModal(MaterialLibraryDialog)"
+          >
+            {{ $t('dialogs.common.orChooseFromLibrary') }}
+          </v-btn>
+        </div>
       </v-card-text>
 
       <v-card-actions>
@@ -79,10 +90,11 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { closeModal } from 'jenesius-vue-modal';
+import { closeModal, openModal } from 'jenesius-vue-modal';
 import { useProjectStore } from '@/store/project';
 import { useAppStore } from '@/store/app';
 import { checkNumber, numberRules, parseFloat2, setUnsolved } from '@/utils';
+import MaterialLibraryDialog from './MaterialLibrary.vue';
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();

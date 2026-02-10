@@ -174,7 +174,8 @@
       "addNode": "Přidat uzel"
     },
     "common": {
-      "cancel": "Zrušit"
+      "cancel": "Zrušit",
+      "orChooseFromLibrary": "Nebo vybrat z knihovny"
     },
     "addElement": {
       "fromNodeId": "Počáteční uzel",

@@ -982,7 +982,7 @@
             color="secondary"
             :rounded="0"
             style="border-left: 1px solid #ccc"
-            @click.stop="openModal(AddMaterialDialog)"
+            @click.stop="openModal(MaterialLibraryDialog)"
           >
             <v-icon small>mdi-database-search-outline</v-icon> {{ $t('materials.material_library') }}
           </v-btn>
@@ -1102,7 +1102,7 @@
             color="secondary"
             :rounded="0"
             style="border-left: 1px solid #ccc"
-            @click.stop="openModal(AddCrossSectionDialog)"
+            @click.stop="openModal(CrossSectionLibraryDialog)"
           >
             <v-icon small>mdi-database-search-outline</v-icon> {{ $t('materials.section_library') }}
           </v-btn>
@@ -1454,6 +1454,8 @@ import AddElementDialog from './dialogs/AddElement.vue';
 import AddNodeDialog from './dialogs/AddNode.vue';
 import AddMaterialDialog from './dialogs/AddMaterial.vue';
 import AddCrossSectionDialog from './dialogs/AddCrossSection.vue';
+import MaterialLibraryDialog from './dialogs/MaterialLibrary.vue';
+import CrossSectionLibraryDialog from './dialogs/CrossSectionLibrary.vue';
 import EditNode from './dialogs/EditNode.vue';
 
 import { useLayoutStore } from '@/store/layout';

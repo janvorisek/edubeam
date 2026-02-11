@@ -11,6 +11,8 @@ import { useAppStore } from '@/store/app';
 
 import AddElementDialog from './dialogs/AddElement.vue';
 import AddNodeDialog from './dialogs/AddNode.vue';
+import AddMaterialDialog from './dialogs/AddMaterial.vue';
+import AddCrossSectionDialog from './dialogs/AddCrossSection.vue';
 import Confirmation from './dialogs/Confirmation.vue';
 
 import EditNodalLoadDialog from './dialogs/EditNodalLoad.vue';
@@ -1660,7 +1662,7 @@ defineExpose({ centerContent, fitContent });
           <template #text>
             <div class="d-flex align-center">
               {{ $t('warnings.noMaterialsDefined') }}
-              <v-btn variant="text" density="compact" size="small" @click="appStore.dialogs['addMaterial'] = true">{{
+              <v-btn variant="text" density="compact" size="small" @click="openModal(AddMaterialDialog)">{{
                 $t('common.addNew')
               }}</v-btn>
             </div>
@@ -1672,13 +1674,9 @@ defineExpose({ centerContent, fitContent });
           <template #text>
             <div class="d-flex align-center">
               {{ $t('warnings.noCrossSectionsDefined') }}
-              <v-btn
-                variant="text"
-                density="compact"
-                size="small"
-                @click="appStore.dialogs['addCrossSection'] = true"
-                >{{ $t('common.addNew') }}</v-btn
-              >
+              <v-btn variant="text" density="compact" size="small" @click="openModal(AddCrossSectionDialog)">
+                {{ $t('common.addNew') }}
+              </v-btn>
             </div>
           </template>
         </v-alert>

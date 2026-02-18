@@ -2,19 +2,30 @@ import { Node, DofID, Beam2D, NodalLoad, BeamElementUniformEdgeLoad, PrescribedD
 
 export function supportMarker(node: Node) {
   const sdofs = Array.from(node.bcs);
+  const hasDx = sdofs.includes(DofID.Dx);
+  const hasDz = sdofs.includes(DofID.Dz);
+  const hasRy = sdofs.includes(DofID.Ry);
 
   // cantilever
-  if (sdofs.includes(DofID.Dx) && sdofs.includes(DofID.Dz) && sdofs.includes(DofID.Ry))
-    return `url(#nodeEditDialog-dot)`;
+  if (hasDx && hasDz && hasRy) return `url(#nodeEditDialog-dot)`;
+
+  // moving cantilever X (Dz + Ry => free Dx)
+  if (hasDz && hasRy && !hasDx) return `url(#nodeEditDialog-dot-moving-x)`;
+
+  // moving cantilever Z (Dx + Ry => free Dz)
+  if (hasDx && hasRy && !hasDz) return `url(#nodeEditDialog-dot-moving-x)`;
+
+  // torsional cantilever (Ry)
+  if (hasRy && !hasDx && !hasDz) return `url(#nodeEditDialog-dot-torsion)`;
 
   // Hinge XY
-  if (sdofs.includes(DofID.Dx) && sdofs.includes(DofID.Dz)) return `url(#nodeEditDialog-hinge-xy)`;
+  if (hasDx && hasDz) return `url(#nodeEditDialog-hinge-xy)`;
 
   // Hinge X
-  if (sdofs.includes(DofID.Dx)) return `url(#nodeEditDialog-hinge-y)`;
+  if (hasDx) return `url(#nodeEditDialog-hinge-y)`;
 
   // Hinge Z
-  if (sdofs.includes(DofID.Dz)) return `url(#nodeEditDialog-hinge-x)`;
+  if (hasDz) return `url(#nodeEditDialog-hinge-x)`;
 
   return `none`;
 }

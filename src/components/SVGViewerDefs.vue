@@ -319,6 +319,58 @@ const props = withDefaults(
     </marker>
 
     <marker
+      :id="`${id}-dot-moving-x`"
+      viewBox="-26 -10 52 70"
+      refX="0"
+      refY="24.5"
+      :markerWidth="(supportSize * 52) / scale"
+      :markerHeight="(supportSize * 80) / scale"
+      orient="auto"
+      markerUnits="userSpaceOnUse"
+    >
+      <line y1="6" x1="-8" y2="40" x2="-8" :stroke-width="2 / supportSize" stroke="black" />
+      <line
+        v-for="i in 7"
+        :key="`mx-${i}`"
+        :y1="(i * 40) / 7"
+        x1="-8"
+        :y2="10 + (i * 40) / 7"
+        x2="-18"
+        :stroke-width="1 / supportSize"
+        stroke="black"
+        fill="none"
+      />
+      <line y1="6" x1="8" y2="40" x2="8" :stroke-width="2 / supportSize" stroke="black" />
+      <line
+        v-for="i in 7"
+        :key="`mxr-${i}`"
+        :y1="(i * 40) / 7"
+        x1="8"
+        :y2="10 + (i * 40) / 7"
+        x2="18"
+        :stroke-width="1 / supportSize"
+        stroke="black"
+        fill="none"
+      />
+    </marker>
+
+    <marker
+      :id="`${id}-dot-torsion`"
+      viewBox="-20 -20 40 40"
+      refX="0"
+      refY="0"
+      :markerWidth="(supportSize * 40) / scale"
+      :markerHeight="(supportSize * 40) / scale"
+      orient="auto"
+      markerUnits="userSpaceOnUse"
+    >
+      <line y1="0" x1="-14" y2="0" x2="-8" :stroke-width="2 / supportSize" stroke="black" stroke-linecap="round" />
+      <line y1="0" x1="8" y2="0" x2="14" :stroke-width="2 / supportSize" stroke="black" stroke-linecap="round" />
+      <line y1="-14" x1="0" y2="-8" x2="0" :stroke-width="2 / supportSize" stroke="black" stroke-linecap="round" />
+      <line y1="8" x1="0" y2="14" x2="0" :stroke-width="2 / supportSize" stroke="black" stroke-linecap="round" />
+    </marker>
+
+    <marker
       :id="`${id}-hinge-xy`"
       viewBox="0 0 20 20"
       refX="10"

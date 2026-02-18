@@ -2,12 +2,24 @@
 import { computed } from 'vue';
 import SVGViewerDefs from '../SVGViewerDefs.vue';
 import { supportMarker } from '@/SVGUtils';
-import { Node } from 'ts-fem';
+import { DofID, Node } from 'ts-fem';
 
 const props = defineProps<{
   angle: number;
   node: Node;
 }>();
+
+const isMovingCantileverX = computed(() => {
+  const hasDx = props.node.bcs.has(DofID.Dx);
+  const hasDz = props.node.bcs.has(DofID.Dz);
+  const hasRy = props.node.bcs.has(DofID.Ry);
+
+  return hasDz && hasRy && !hasDx;
+});
+
+const supportAngle = computed(() => {
+  return props.angle + (isMovingCantileverX.value ? -90 : 0);
+});
 
 const end = computed(() => {
   const x = 30 * Math.cos((props.angle * Math.PI) / 180);
@@ -37,7 +49,7 @@ const flag = computed(() => (props.angle > 0 ? 1 : 0));
         :marker-start="supportMarker(props.node)"
         stroke-width="1"
         vector-effect="non-scaling-stroke"
-        :transform="`rotate(${props.angle} 0 -40)`"
+        :transform="`rotate(${supportAngle} 0 -40)`"
       />
 
       <path

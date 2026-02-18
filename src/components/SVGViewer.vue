@@ -1451,6 +1451,8 @@ const markerReaction = computed(() => dynamicMarker('reaction'));
 const markerMomentReactionCcw = computed(() => dynamicMarker('moment_reaction_ccw'));
 const markerMomentReactionCw = computed(() => dynamicMarker('moment_reaction_cw'));
 const markerDot = computed(() => dynamicMarker('dot'));
+const markerDotMovingX = computed(() => dynamicMarker('dot-moving-x'));
+const markerDotTorsion = computed(() => dynamicMarker('dot-torsion'));
 const markerHingeXY = computed(() => dynamicMarker('hinge-xy'));
 const markerHingeX = computed(() => dynamicMarker('hinge-x'));
 const markerHingeY = computed(() => dynamicMarker('hinge-y'));
@@ -1720,6 +1722,8 @@ defineExpose({ centerContent, fitContent });
           '--marker-moment-reaction-ccw': markerMomentReactionCcw,
           '--marker-moment-reaction-cw': markerMomentReactionCw,
           '--marker-dot': markerDot,
+          '--marker-dot-moving-x': markerDotMovingX,
+          '--marker-dot-torsion': markerDotTorsion,
           '--marker-hinge-xy': markerHingeXY,
           '--marker-hinge-x': markerHingeX,
           '--marker-hinge-y': markerHingeY,
@@ -2419,6 +2423,14 @@ defineExpose({ centerContent, fitContent });
 
   .marker-dot {
     marker-start: var(--marker-dot);
+  }
+
+  .marker-dot-moving-x {
+    marker-start: var(--marker-dot-moving-x);
+  }
+
+  .marker-dot-torsion {
+    marker-start: var(--marker-dot-torsion);
   }
 
   .marker-hinge-xy {

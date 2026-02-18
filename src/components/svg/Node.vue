@@ -30,6 +30,24 @@ const isCantilever = computed(() => {
   return sdofs.includes(DofID.Dx) && sdofs.includes(DofID.Dz) && sdofs.includes(DofID.Ry);
 });
 
+const isMovingCantileverX = computed(() => {
+  const sdofs = Array.from(props.node.bcs);
+
+  return sdofs.includes(DofID.Dz) && sdofs.includes(DofID.Ry) && !sdofs.includes(DofID.Dx);
+});
+
+const isMovingCantileverZ = computed(() => {
+  const sdofs = Array.from(props.node.bcs);
+
+  return sdofs.includes(DofID.Dx) && sdofs.includes(DofID.Ry) && !sdofs.includes(DofID.Dz);
+});
+
+const isTorsionalCantilever = computed(() => {
+  const sdofs = Array.from(props.node.bcs);
+
+  return sdofs.includes(DofID.Ry) && !sdofs.includes(DofID.Dx) && !sdofs.includes(DofID.Dz);
+});
+
 const isHingeXY = computed(() => {
   const sdofs = Array.from(props.node.bcs);
 
@@ -52,6 +70,15 @@ const supportMarker = computed(() => {
   // cantilever
   if (isCantilever.value) return `marker-dot`;
 
+  // moving cantilever X
+  if (isMovingCantileverX.value) return `marker-dot-moving-x`;
+
+  // moving cantilever Z
+  if (isMovingCantileverZ.value) return `marker-dot-moving-x`;
+
+  // torsional cantilever
+  if (isTorsionalCantilever.value) return `marker-dot-torsion`;
+
   // Hinge XY
   if (isHingeXY.value) return `marker-hinge-xy`;
 
@@ -69,12 +96,20 @@ const nodeCoords = computed(() => {
 });
 
 const orientedNodeCoords = computed(() => {
-  const isHinge =
+  const isOrientedSupport =
     (isSupported(props.node, DofID.Dx) || isSupported(props.node, DofID.Dz)) && !isSupported(props.node, DofID.Ry);
 
-  // Rotate hinge if has lcs
-  if (props.node.hasLcs() && isHinge) {
-    const angle = getSupportAngle(props.node);
+  const isMovingCantilever =
+    (isSupported(props.node, DofID.Dx) || isSupported(props.node, DofID.Dz)) &&
+    isSupported(props.node, DofID.Ry) &&
+    !isCantilever.value;
+
+  const orientBySupportDirection = isOrientedSupport || isMovingCantilever;
+  const movingCantileverAngleOffset = isMovingCantileverX.value ? -90 : 0;
+
+  // Rotate support symbols if has lcs
+  if (props.node.hasLcs() && orientBySupportDirection) {
+    const angle = getSupportAngle(props.node) + movingCantileverAngleOffset;
     const x = props.node.coords[0] + 1 * Math.cos((angle * Math.PI) / 180);
     const z = props.node.coords[2] + 1 * Math.sin((angle * Math.PI) / 180);
 
@@ -82,7 +117,11 @@ const orientedNodeCoords = computed(() => {
   }
 
   // if not cantilever
-  if (isHinge) {
+  if (orientBySupportDirection) {
+    if (isMovingCantileverX.value) {
+      return `${props.node.coords[0]},${props.node.coords[2]} ${props.node.coords[0]},${props.node.coords[2] - 1e-6}`;
+    }
+
     return `${props.node.coords[0]},${props.node.coords[2]} ${props.node.coords[0] + 1e-6},${props.node.coords[2]}`;
   }
 
@@ -214,6 +253,30 @@ const emit = defineEmits(['nodemousemove', 'nodepointerup', 'nodedefomousemove']
     <template v-if="showSupports && isSupportedAtAll">
       <polyline
         v-if="isCantilever"
+        :points="orientedNodeCoords"
+        :class="supportMarker"
+        stroke-width="1"
+        class="decoration"
+      />
+
+      <polyline
+        v-if="isMovingCantileverX"
+        :points="orientedNodeCoords"
+        :class="supportMarker"
+        stroke-width="1"
+        class="decoration"
+      />
+
+      <polyline
+        v-if="isMovingCantileverZ"
+        :points="orientedNodeCoords"
+        :class="supportMarker"
+        stroke-width="1"
+        class="decoration"
+      />
+
+      <polyline
+        v-if="isTorsionalCantilever"
         :points="orientedNodeCoords"
         :class="supportMarker"
         stroke-width="1"

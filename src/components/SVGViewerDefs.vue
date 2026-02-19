@@ -328,26 +328,26 @@ const props = withDefaults(
       orient="auto"
       markerUnits="userSpaceOnUse"
     >
-      <line y1="6" x1="-8" y2="40" x2="-8" :stroke-width="2 / supportSize" stroke="black" />
+      <line y1="6" x1="-5" y2="40" x2="-5" :stroke-width="1 / supportSize" stroke="black" />
       <line
         v-for="i in 7"
         :key="`mx-${i}`"
         :y1="(i * 40) / 7"
-        x1="-8"
+        x1="-5"
         :y2="10 + (i * 40) / 7"
-        x2="-18"
+        x2="-15"
         :stroke-width="1 / supportSize"
         stroke="black"
         fill="none"
       />
-      <line y1="6" x1="8" y2="40" x2="8" :stroke-width="2 / supportSize" stroke="black" />
+      <line y1="6" x1="5" y2="40" x2="5" :stroke-width="1 / supportSize" stroke="black" />
       <line
         v-for="i in 7"
         :key="`mxr-${i}`"
         :y1="(i * 40) / 7"
-        x1="8"
+        x1="5"
         :y2="10 + (i * 40) / 7"
-        x2="18"
+        x2="15"
         :stroke-width="1 / supportSize"
         stroke="black"
         fill="none"
@@ -364,10 +364,63 @@ const props = withDefaults(
       orient="auto"
       markerUnits="userSpaceOnUse"
     >
-      <line y1="0" x1="-14" y2="0" x2="-8" :stroke-width="2 / supportSize" stroke="black" stroke-linecap="round" />
-      <line y1="0" x1="8" y2="0" x2="14" :stroke-width="2 / supportSize" stroke="black" stroke-linecap="round" />
-      <line y1="-14" x1="0" y2="-8" x2="0" :stroke-width="2 / supportSize" stroke="black" stroke-linecap="round" />
-      <line y1="8" x1="0" y2="14" x2="0" :stroke-width="2 / supportSize" stroke="black" stroke-linecap="round" />
+      <line y1="5" x1="-20" y2="5" x2="-5" :stroke-width="1 / supportSize" stroke="black" stroke-linecap="round" />
+      <line y1="-5" x1="-20" y2="-5" x2="-5" :stroke-width="1 / supportSize" stroke="black" stroke-linecap="round" />
+
+      <line y1="-5" x1="5" y2="-5" x2="20" :stroke-width="1 / supportSize" stroke="black" stroke-linecap="round" />
+      <line y1="5" x1="5" y2="5" x2="20" :stroke-width="1 / supportSize" stroke="black" stroke-linecap="round" />
+
+      <line y1="-20" x1="-5" y2="-5" x2="-5" :stroke-width="1 / supportSize" stroke="black" stroke-linecap="round" />
+      <line y1="-20" x1="5" y2="-5" x2="5" :stroke-width="1 / supportSize" stroke="black" stroke-linecap="round" />
+
+      <line y1="5" x1="5" y2="20" x2="5" :stroke-width="1 / supportSize" stroke="black" stroke-linecap="round" />
+      <line y1="5" x1="-5" y2="20" x2="-5" :stroke-width="1 / supportSize" stroke="black" stroke-linecap="round" />
+
+      <!-- Diagonal dashes in the corners -->
+      <line
+        v-for="i in 3"
+        :key="i"
+        :y1="7"
+        :x1="8 + (i - 1) * 4"
+        :y2="8 + (i - 1) * 4"
+        :x2="7"
+        :stroke-width="1 / supportSize"
+        stroke="black"
+        stroke-linecap="round"
+      />
+      <line
+        v-for="i in 3"
+        :key="i"
+        :y1="-7"
+        :x1="-8 - (i - 1) * 4"
+        :y2="-8 - (i - 1) * 4"
+        :x2="-7"
+        :stroke-width="1 / supportSize"
+        stroke="black"
+        stroke-linecap="round"
+      />
+      <line
+        v-for="i in 3"
+        :key="i"
+        :y1="7"
+        :x1="-8 - (i - 1) * 4"
+        :y2="8 + (i - 1) * 4"
+        :x2="-7"
+        :stroke-width="1 / supportSize"
+        stroke="black"
+        stroke-linecap="round"
+      />
+      <line
+        v-for="i in 3"
+        :key="i"
+        :y1="-7"
+        :x1="8 + (i - 1) * 4"
+        :y2="-8 - (i - 1) * 4"
+        :x2="7"
+        :stroke-width="1 / supportSize"
+        stroke="black"
+        stroke-linecap="round"
+      />
     </marker>
 
     <marker

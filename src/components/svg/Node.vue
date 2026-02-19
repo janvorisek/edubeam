@@ -428,7 +428,7 @@ const emit = defineEmits(['nodemousemove', 'nodepointerup', 'nodedefomousemove']
         :cx="node.coords[0]"
         :cy="node.coords[2]"
         :r="(1 + (fontSize / 2) * (1 + Math.pow(node.label.toString().length - 1, 1.7) * 0.3)) / scale"
-        fill="transparent"
+        fill="rgba(255, 255, 255, 0.8)"
         stroke="black"
         vector-effect="non-scaling-stroke"
       ></circle>

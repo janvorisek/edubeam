@@ -1,13 +1,13 @@
 {
   "tabView": {
-    "viewer": "查看器",
+    "viewer": "视图",
     "settings": "设置",
     "results": "结果"
   },
   "common": {
     "label": "标签",
     "node": "节点",
-    "element": "元素",
+    "element": "单元",
     "crossSection": "截面",
     "material": "材料",
     "settings": "设置",
@@ -15,43 +15,67 @@
     "coords": "坐标",
     "type": "类型",
     "nodes": "节点",
-    "endHinges": "端铰支座",
+    "endHinges": "端部铰接",
     "massMatrix": "质量矩阵",
-    "target": "目标",
-    "components": "组件",
+    "target": "作用位置",
+    "components": "分量",
     "loadCase": "荷载工况",
     "loads": "荷载",
-    "clearMesh": "清除网格",
-    "shareModel": "共享模型",
+    "clearMesh": "清空结构",
+    "shareModel": "分享模型",
     "documentation": "文档",
-    "addUsingDialog": "使用对话框添加",
-    "addUsingMouse": "使用鼠标添加",
+    "addUsingDialog": "通过对话框添加",
+    "addUsingMouse": "通过鼠标添加",
     "edit": "编辑",
     "copy": "复制",
     "delete": "删除",
-    "stiffnessMatrix": "刚度矩阵"
+    "stiffnessMatrix": "刚度矩阵",
+    "normalForce": "轴力",
+    "shearForce": "剪力",
+    "bendingMoment": "弯矩",
+    "deformedShape": "变形图",
+    "reactions": "支反力",
+    "elements": "单元",
+    "confirm": "确认",
+    "saveProject": "保存项目",
+    "openProject": "打开项目",
+    "lcs": "局部坐标系",
+    "paste": "粘贴",
+    "addNew": "新增",
+    "whatisnew": "更新内容"
   },
   "nodes": {
     "addNode": "添加节点",
-    "editNode": "编辑节点"
+    "editNode": "编辑节点",
+    "defineSupports": "节点支座",
+    "lcsAngle": "节点局部坐标系角度"
   },
   "elements": {
-    "addElement": "添加元素",
-    "editElement": "编辑元素",
+    "addElement": "添加单元",
+    "editElement": "编辑单元",
     "swapNodeOrder": "交换节点顺序"
   },
   "loads": {
     "addNodalLoad": "添加节点荷载",
-    "addElementLoad": "添加元素荷载",
+    "addElementLoad": "添加单元荷载",
     "addLoad": "添加荷载",
     "nodalLoad": "节点荷载",
-    "elementLoad": "元素荷载",
-    "prescribedDisplacement": "规定位移",
-    "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>"
+    "elementLoad": "单元荷载",
+    "prescribedDisplacement": "位移约束",
+    "addPrescribedDisplacement": "施加位移约束",
+    "UDL": "UDL",
+    "forceMoment": "力/力矩",
+    "editLoad": "编辑荷载",
+    "loadPositionOnBeam": "距起始节点的荷载位置",
+    "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... 下缘与上缘纤维温差",
+    "temperatureBending": "ΔT<sub>s</sub> ... 轴向温度变化",
+    "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
+    "temperatureDeltaTs": "ΔT<sub>s</sub>",
+    "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
   },
   "tabs": {
     "nodes": "节点",
-    "elements": "元素",
+    "elements": "单元",
     "loads": "荷载",
     "materials": "材料",
     "crossSections": "截面",
@@ -70,49 +94,72 @@
     "alphaT": "α_T"
   },
   "settings": {
-    "results_scale": "结果比例",
-    "grid_snap_step": "网格吸附步进",
+    "results_scale": "结果缩放",
+    "grid_snap_step": "网格吸附步长",
     "snap_to_grid": "吸附到网格",
     "language": "语言",
-    "language_and_locale": "语言和区域设置",
-    "show_normal_force": "显示法向力",
-    "show_shear_force": "显示剪切力",
+    "language_and_locale": "语言与区域",
+    "show_normal_force": "显示轴力",
+    "show_shear_force": "显示剪力",
     "show_bending_moment": "显示弯矩",
-    "show_deformed_shape": "显示变形形状",
+    "show_deformed_shape": "显示变形图",
     "show_loads": "显示荷载",
     "units": {
       "units": "单位",
       "length": "长度",
       "mass": "质量",
       "force": "力",
-      "pressure": "压力",
+      "moment": "弯矩",
+      "pressure": "应力",
       "area": "面积",
-      "areaM2": "截面二阶矩"
+      "areaM2": "截面二次矩"
     },
     "grid": "网格",
     "show_grid": "显示网格",
     "mouse": {
       "mouse": "鼠标",
-      "pan_button": "平移使用",
-      "wheel": "鼠标滚轮",
+      "pan_button": "平移方式",
+      "wheel": "滚轮",
       "right_button": "右键"
-    }
+    },
+    "colors": {
+      "colors": "颜色"
+    },
+    "results": {
+      "results": "结果"
+    },
+    "viewer_settings": "视图设置",
+    "controls_and_shortcuts": "控制与快捷键",
+    "language_and_locale_subtitle": "语言、本地化与单位设置",
+    "viewer_settings_subtitle": "缩放、颜色、网格等",
+    "controls_and_shortcuts_subtitle": "键盘与鼠标设置",
+    "viewer_preview": "视图预览",
+    "language_description": "选择界面显示语言。",
+    "units_description": "选择常用计量单位。",
+    "reset_settings": "重置设置",
+    "sizes": {
+      "sizes": "尺寸",
+      "supportSize": "支座大小"
+    },
+    "font_size": "字号"
   },
   "sideSettings": {
-    "showDeformedShape": "变形形状",
+    "showDeformedShape": "变形图",
     "supports": "支座",
     "loads": "荷载",
     "nodeLabels": "节点标签",
-    "elementLabels": "元素标签",
-    "more_settings": "更多设置"
+    "elementLabels": "单元标签",
+    "more_settings": "更多设置",
+    "showReactions": "支反力"
   },
   "dofs": {
-    "bcs": "支持的自由度"
+    "bcs": "受约束自由度"
   },
   "results": {
     "results": "结果",
     "nodal_results": "节点结果",
-    "element_results": "元素结果"
+    "element_results": "单元结果",
+    "end_forces": "单元端力（局部坐标系）"
   },
   "materials": {
     "addMaterial": "添加材料",
@@ -125,8 +172,8 @@
   "dialogs": {
     "addNode": {
       "addNewNode": "添加新节点",
-      "coordinate_x": "X坐标",
-      "coordinate_z": "Z坐标",
+      "coordinate_x": "X 坐标",
+      "coordinate_z": "Z 坐标",
       "addNode": "添加节点"
     },
     "common": {
@@ -134,18 +181,20 @@
       "orChooseFromLibrary": "或从库中选择"
     },
     "addElement": {
-      "fromNodeId": "初始节点",
-      "toNodeId": "末端节点",
-      "addElement": "添加元素",
-      "addNewElement": "添加新元素"
+      "fromNodeId": "起始节点",
+      "toNodeId": "终止节点",
+      "addElement": "添加单元",
+      "addNewElement": "添加新单元",
+      "material": "材料",
+      "crossSection": "截面"
     },
     "addNodalLoad": {
       "addNewNodalLoad": "添加新节点荷载",
       "addNodalLoad": "添加节点荷载"
     },
     "addElementLoad": {
-      "addNewElementLoad": "添加新元素荷载",
-      "addElementLoad": "添加元素荷载"
+      "addNewElementLoad": "添加新单元荷载",
+      "addElementLoad": "添加单元荷载"
     },
     "addMaterial": {
       "addNewMaterial": "添加新材料",
@@ -153,7 +202,7 @@
       "E": "E - 杨氏模量",
       "G": "G - 剪切模量",
       "density": "ρ - 密度",
-      "alphaT": "α - 热膨胀系数"
+      "alphaT": "α - 线膨胀系数"
     },
     "addCrossSection": {
       "addNewCrossSection": "添加新截面",
@@ -163,53 +212,110 @@
       "editNodalLoad": "编辑节点荷载"
     },
     "editElementLoad": {
-      "editElementLoad": "编辑元素荷载"
+      "editElementLoad": "编辑单元荷载"
+    },
+    "update": {
+      "title": "有可用更新",
+      "update": "更新",
+      "text1": "我们正在发布一项需要重置应用的更新。这意味着当前进度将会丢失。",
+      "text2": "如果你希望保留当前进度，可以取消本次更新。"
+    },
+    "editNode": {
+      "editNode": "编辑节点"
+    },
+    "changelog": {
+      "title": "更新内容",
+      "description": "新功能、改进以及我们正在开发内容的预览。"
     }
   },
   "tooltip": {
     "materials": {},
     "material": {
-      "alphaT": "热膨胀系数描述了物体随温度变化的尺寸变化。",
-      "e": "杨氏模量测量在长度方向施加力时的拉伸或压缩刚度。",
-      "g": "剪切模量是一种衡量材料在剪切应力下变形抵抗力的属性，指示材料在与其表面平行的方向上受力时的刚度。",
-      "density": "密度是物质在给定体积内包含多少质量的度量。"
+      "alphaT": "线膨胀系数描述了物体尺寸随温度变化的规律。",
+      "e": "杨氏模量用于衡量材料在轴向拉压作用下的刚度。",
+      "g": "剪切模量表示材料在剪切应力作用下抵抗变形的能力，即材料对平行于其表面的力的刚度响应。",
+      "density": "密度表示单位体积内所含质量的多少。"
     }
   },
   "footer": {
     "reportIssue": "报告问题",
-    "requestFeature": "请求功能",
-    "released": "发布版本"
+    "requestFeature": "功能请求",
+    "released": "发布"
   },
   "sharing": {
-    "shareViaURL": "通过URL分享模型",
-    "instructions": "点击字段内任意位置复制链接，然后发送给您的协作者。",
+    "shareViaURL": "通过 URL 分享模型",
+    "instructions": "点击输入框任意位置即可复制链接，然后发送给协作者。",
     "copyCue": "复制链接",
     "openLink": "打开链接",
-    "nativeShare": "通过系统对话框分享",
+    "nativeShare": "通过系统分享对话框",
     "linkCopied": "链接已复制到剪贴板",
-    "copyFailed": "无法自动复制。请使用键盘快捷键。"
+    "copyFailed": "无法自动复制，请使用键盘快捷键。"
   },
   "tour": {
     "startTour": "开始导览",
     "skipTour": "暂时跳过",
     "viewerControls": {
-      "title": "查看器按钮",
-      "description": "查看器控件是居中或适应屏幕结构，以及选择要显示的内容的方式。"
+      "title": "视图按钮",
+      "description": "使用视图控制可将结构居中或适配屏幕，并选择需要显示的内容。"
     },
     "viewerSettings": {
       "title": "自定义显示选项",
-      "description": "选择要显示的内容 – 包括法向力、剪切力、弯矩、变形形状或全部显示。"
+      "description": "可选择显示轴力、剪力、弯矩、变形图，或同时显示全部。"
     },
     "bottomBar": {
-      "title": "添加、删除和修改实体",
-      "description": "中央枢纽，可以轻松转换结构的每个方面。从节点到元素、荷载、材料和截面，这是快速和全面变更的理想场所。"
+      "title": "添加、删除与修改对象",
+      "description": "底部栏是编辑结构的核心区域，可快速管理节点、单元、荷载、材料和截面。"
     },
-    "previousButton": "上一页",
-    "nextButton": "下一页",
+    "previousButton": "上一步",
+    "nextButton": "下一步",
     "finishButton": "完成"
   },
   "welcome": {
-    "title": "欢迎来到 <span class=\"edubeam\">edubeam</span>！ 🚀",
-    "description": "为了帮助您入门，我们准备了一个快速的导览，将引导您了解我们的程序的功能和功能。"
+    "title": "欢迎使用 <span class=\"edubeam\">edubeam</span>！ 🚀",
+    "description": "为了帮助你快速上手，我们准备了一个简短的入门导览，带你了解本程序的主要功能。"
+  },
+  "confirmation": {
+    "clearMesh": {
+      "message": "确定要清空结构吗？此操作不可撤销。",
+      "title": "清空结构？",
+      "materials": "删除材料",
+      "crossSections": "删除截面"
+    },
+    "resetSettings": {
+      "title": "重置设置？",
+      "message": "确定要将所有设置恢复为默认值吗？此操作不可撤销。"
+    },
+    "splitElementAndPlaceNode": {
+      "title": "节点放置确认",
+      "message": "<p>你似乎正在梁 {label} 上放置节点。</p><p class=\"mt-3\">你希望将该单元拆分并连接该节点，还是将节点作为独立节点放置在结构上？</p>",
+      "split": "连接到结构"
+    },
+    "placeIndividualNode": "放置独立节点"
+  },
+  "selection": {
+    "node": "节点",
+    "element": "单元",
+    "dimension": "尺寸标注",
+    "nodal-load": "节点荷载",
+    "element-load": "单元荷载",
+    "prescribedbc-load": "位移约束"
+  },
+  "validators": {
+    "enterValue": "请输入数值",
+    "invalidNumber": "无效数字"
+  },
+  "loadType": {
+    "loadType": "荷载类型",
+    "concentrated": "集中荷载",
+    "trapezoidal": "梯形分布荷载",
+    "udl": "均布荷载",
+    "temperature": "温度荷载"
+  },
+  "dimensioning": {
+    "add_dimension": "添加标注"
+  },
+  "warnings": {
+    "noMaterialsDefined": "尚未定义材料。",
+    "noCrossSectionsDefined": "尚未定义截面。"
   }
 }

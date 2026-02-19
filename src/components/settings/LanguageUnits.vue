@@ -175,11 +175,27 @@ import Czech from 'language-icons/icons/cs.svg';
 import German from 'language-icons/icons/de.svg';
 import Spanish from 'language-icons/icons/es.svg';
 import French from 'language-icons/icons/fr.svg';
+import Portuguese from 'language-icons/icons/pt.svg';
 import Chinese from 'language-icons/icons/zh.svg';
+import Polish from 'language-icons/icons/pl.svg';
+import Ukrainian from 'language-icons/icons/uk.svg';
+import Russian from 'language-icons/icons/ru.svg';
 import ThaiFlag from '../../assets/th-flag.svg';
 import { computed } from 'vue';
 
-const flags = { en: English, cs: Czech, de: German, es: Spanish, fr: French, cn: Chinese, th: ThaiFlag };
+const flags = {
+  en: English,
+  cs: Czech,
+  de: German,
+  es: Spanish,
+  fr: French,
+  pt: Portuguese,
+  cn: Chinese,
+  th: ThaiFlag,
+  pl: Polish,
+  uk: Ukrainian,
+  ru: Russian,
+};
 
 function getImageUrl(name) {
   return flags[name];

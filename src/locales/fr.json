@@ -1,11 +1,11 @@
 {
   "tabView": {
-    "viewer": "Visionneuse",
+    "viewer": "Structure",
     "settings": "Paramètres",
     "results": "Résultats"
   },
   "common": {
-    "label": "Étiquette",
+    "label": "Libellé",
     "node": "Nœud",
     "element": "Élément",
     "crossSection": "Section",
@@ -15,30 +15,45 @@
     "coords": "Coordonnées",
     "type": "Type",
     "nodes": "Nœuds",
-    "endHinges": "Articulations finales",
+    "endHinges": "Rotules d'extrémité",
     "massMatrix": "Matrice de masse",
-    "target": "Cible",
-    "components": "Composants",
+    "target": "Point d'application",
+    "components": "Composantes",
     "loadCase": "Cas de charge",
     "loads": "Charges",
-    "clearMesh": "Effacer le maillage",
+    "clearMesh": "Effacer la structure",
     "shareModel": "Partager le modèle",
     "documentation": "Documentation",
     "addUsingDialog": "Ajouter via la boîte de dialogue",
-    "addUsingMouse": "Ajouter avec la souris",
+    "addUsingMouse": "Ajouter à la souris",
     "edit": "Modifier",
     "copy": "Copier",
     "delete": "Supprimer",
-    "stiffnessMatrix": "Matrice de rigidité"
+    "stiffnessMatrix": "Matrice de rigidité",
+    "normalForce": "Effort normal",
+    "shearForce": "Effort tranchant",
+    "bendingMoment": "Moment fléchissant",
+    "deformedShape": "Déformée",
+    "reactions": "Réactions",
+    "elements": "Éléments",
+    "confirm": "Confirmer",
+    "saveProject": "Enregistrer le projet",
+    "openProject": "Ouvrir le projet",
+    "lcs": "Système de coordonnées local",
+    "paste": "Coller",
+    "addNew": "Ajouter",
+    "whatisnew": "Quoi de neuf ?"
   },
   "nodes": {
     "addNode": "Ajouter un nœud",
-    "editNode": "Modifier le nœud"
+    "editNode": "Modifier le nœud",
+    "defineSupports": "Appuis du nœud",
+    "lcsAngle": "Angle du SCL nodal"
   },
   "elements": {
-    "addElement": "Ajouter des éléments",
+    "addElement": "Ajouter un élément",
     "editElement": "Modifier l'élément",
-    "swapNodeOrder": "Permuter les nœuds"
+    "swapNodeOrder": "Inverser les nœuds"
   },
   "loads": {
     "addNodalLoad": "Ajouter une charge nodale",
@@ -46,7 +61,17 @@
     "addLoad": "Ajouter une charge",
     "nodalLoad": "Charge nodale",
     "elementLoad": "Charge d'élément",
-    "prescribedDisplacement": "Déplacement prescrit"
+    "prescribedDisplacement": "Déplacement imposé",
+    "addPrescribedDisplacement": "Imposer un déplacement",
+    "UDL": "Charge uniformément répartie",
+    "forceMoment": "Force/Moment",
+    "editLoad": "Modifier la charge",
+    "loadPositionOnBeam": "Position de la charge depuis le nœud initial",
+    "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Variation de température des fibres inférieures moins supérieures",
+    "temperatureBending": "ΔT<sub>s</sub> ... Variation uniforme de température",
+    "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
+    "temperatureDeltaTs": "ΔT<sub>s</sub>",
+    "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
   },
   "tabs": {
     "nodes": "Nœuds",
@@ -57,7 +82,7 @@
     "results": "Résultats"
   },
   "crossSection": {
-    "area": "Surface",
+    "area": "Aire",
     "h": "Hauteur",
     "iy": "Iy",
     "k": "Coefficient de cisaillement"
@@ -70,48 +95,71 @@
   },
   "settings": {
     "results_scale": "Échelle des résultats",
-    "grid_snap_step": "Pas de grille magnétique",
+    "grid_snap_step": "Pas de magnétisme de la grille",
     "snap_to_grid": "Magnétisme à la grille",
     "language": "Langue",
-    "language_and_locale": "Langue & Locale",
-    "show_normal_force": "Afficher la force normale",
-    "show_shear_force": "Afficher la force de cisaillement",
-    "show_bending_moment": "Afficher le moment de flexion",
-    "show_deformed_shape": "Afficher la forme déformée",
+    "language_and_locale": "Langue et paramètres régionaux",
+    "show_normal_force": "Afficher l'effort normal",
+    "show_shear_force": "Afficher l'effort tranchant",
+    "show_bending_moment": "Afficher le moment fléchissant",
+    "show_deformed_shape": "Afficher la déformée",
     "show_loads": "Afficher les charges",
     "units": {
       "units": "Unités",
       "length": "Longueur",
       "mass": "Masse",
       "force": "Force",
-      "pressure": "Pression",
-      "area": "Surface",
+      "moment": "Moment fléchissant",
+      "pressure": "Contrainte",
+      "area": "Aire",
       "areaM2": "Moment quadratique"
     },
     "grid": "Grille",
     "show_grid": "Afficher la grille",
     "mouse": {
       "mouse": "Souris",
-      "pan_button": "Déplacer avec",
-      "wheel": "Roulette de la souris",
+      "pan_button": "Déplacer la vue avec",
+      "wheel": "Molette de la souris",
       "right_button": "Bouton droit"
-    }
+    },
+    "colors": {
+      "colors": "Couleurs"
+    },
+    "results": {
+      "results": "Résultats"
+    },
+    "viewer_settings": "Paramètres d'affichage",
+    "controls_and_shortcuts": "Commandes et raccourcis",
+    "language_and_locale_subtitle": "Langue, localisation et unités",
+    "viewer_settings_subtitle": "Échelle, couleurs, grille et autres options",
+    "controls_and_shortcuts_subtitle": "Paramètres du clavier et de la souris",
+    "viewer_preview": "Aperçu",
+    "language_description": "Choisissez votre langue d'interface préférée.",
+    "units_description": "Choisissez vos unités de mesure préférées.",
+    "reset_settings": "Réinitialiser les paramètres",
+    "sizes": {
+      "sizes": "Tailles",
+      "supportSize": "Taille des appuis"
+    },
+    "font_size": "Taille de police"
   },
   "sideSettings": {
-    "showDeformedShape": "Forme déformée",
-    "supports": "Supports",
+    "showDeformedShape": "Déformée",
+    "supports": "Appuis",
     "loads": "Charges",
     "nodeLabels": "Étiquettes des nœuds",
     "elementLabels": "Étiquettes des éléments",
-    "more_settings": "Plus de paramètres"
+    "more_settings": "Plus de paramètres",
+    "showReactions": "Réactions"
   },
   "dofs": {
-    "bcs": "DDL soutenus"
+    "bcs": "DDL bloqués"
   },
   "results": {
     "results": "Résultats",
     "nodal_results": "Résultats nodaux",
-    "element_results": "Résultats d'éléments"
+    "element_results": "Résultats par élément",
+    "end_forces": "Efforts aux extrémités (dans le système de coordonnées local)"
   },
   "materials": {
     "addMaterial": "Ajouter un matériau",
@@ -136,7 +184,9 @@
       "fromNodeId": "Nœud initial",
       "toNodeId": "Nœud final",
       "addElement": "Ajouter un élément",
-      "addNewElement": "Ajouter un nouvel élément"
+      "addNewElement": "Ajouter un nouvel élément",
+      "material": "Matériau",
+      "crossSection": "Section"
     },
     "addNodalLoad": {
       "addNewNodalLoad": "Ajouter une nouvelle charge nodale",
@@ -163,21 +213,34 @@
     },
     "editElementLoad": {
       "editElementLoad": "Modifier la charge d'élément"
+    },
+    "update": {
+      "title": "Mise à jour disponible",
+      "update": "Mettre à jour",
+      "text1": "Nous déployons une mise à jour qui nécessite de réinitialiser l'application. Toute progression non enregistrée sera perdue.",
+      "text2": "Si vous souhaitez conserver votre progression actuelle, vous pouvez annuler la mise à jour."
+    },
+    "editNode": {
+      "editNode": "Modifier le nœud"
+    },
+    "changelog": {
+      "title": "Quoi de neuf ?",
+      "description": "Nouvelles fonctionnalités, améliorations et aperçu de ce que nous préparons."
     }
   },
   "tooltip": {
     "materials": {},
     "material": {
-      "alphaT": "Le coefficient de dilatation thermique décrit la variation de taille d'un objet en fonction de la température.",
-      "e": "Le module d'Young mesure la rigidité en traction ou compression lorsque la force est appliquée dans le sens de la longueur.",
-      "g": "Le module de cisaillement est une propriété qui mesure la résistance à la déformation sous contrainte de cisaillement, indiquant la rigidité du matériau en réponse aux forces appliquées parallèlement à sa surface.",
-      "density": "La densité est une mesure de la quantité de masse contenue dans un volume donné d'une substance."
+      "alphaT": "Le coefficient de dilatation thermique décrit la variation de dimensions d'un objet en fonction de la température.",
+      "e": "Le module d'Young mesure la raideur en traction ou en compression lorsque la force est appliquée suivant la longueur.",
+      "g": "Le module de cisaillement mesure la résistance à la déformation sous contrainte de cisaillement et indique la rigidité du matériau face à des forces appliquées parallèlement à sa surface.",
+      "density": "La densité est une mesure de la masse contenue dans un volume donné d'une substance."
     }
   },
   "footer": {
     "reportIssue": "Signaler un problème",
     "requestFeature": "Demander une fonctionnalité",
-    "released": "version"
+    "released": "publié"
   },
   "sharing": {
     "shareViaURL": "Partager le modèle via URL",
@@ -186,29 +249,73 @@
     "openLink": "Ouvrir le lien",
     "nativeShare": "Partager via la boîte de dialogue système",
     "linkCopied": "Lien copié dans le presse-papiers",
-    "copyFailed": "Impossible de copier automatiquement. Veuillez utiliser les raccourcis clavier."
+    "copyFailed": "Impossible de copier automatiquement. Veuillez utiliser vos raccourcis clavier."
   },
   "tour": {
     "startTour": "Commencer la visite",
-    "skipTour": "Passer pour le moment",
+    "skipTour": "Passer pour l'instant",
     "viewerControls": {
-      "title": "Boutons de la visionneuse",
-      "description": "Les commandes de la visionneuse permettent de centrer ou d'ajuster la structure à l'écran, et de choisir ce qu'il faut afficher."
+      "title": "Boutons de visualisation",
+      "description": "Les commandes d'affichage servent à centrer la structure, à l'ajuster à l'écran et à choisir les éléments à afficher."
     },
     "viewerSettings": {
-      "title": "Options d'affichage personnalisées",
-      "description": "Choisissez ce qu'il faut afficher, que ce soit la force normale, la force de cisaillement, le moment de flexion, la forme déformée ou tout à la fois."
+      "title": "Personnaliser l'affichage",
+      "description": "Choisissez ce qu'il faut afficher : effort normal, effort tranchant, moment fléchissant, déformée, ou tout à la fois."
     },
     "bottomBar": {
       "title": "Ajouter, supprimer et modifier des entités",
-      "description": "Le hub central où chaque aspect de votre structure peut être transformé sans effort. Des nœuds aux éléments, en passant par les charges, les matériaux et les sections, c'est l'endroit idéal pour des modifications rapides et complètes."
+      "description": "Le centre de contrôle où chaque aspect de votre structure peut être modifié facilement. Des nœuds aux éléments, charges, matériaux et sections : tout y est pour des modifications rapides et complètes."
     },
     "previousButton": "Précédent",
     "nextButton": "Suivant",
     "finishButton": "Terminer"
   },
   "welcome": {
-    "title": "Bienvenue sur <span class=\"edubeam\">edubeam</span> ! 🚀",
-    "description": "Pour vous aider à démarrer, nous avons préparé une visite guidée rapide qui vous guidera à travers les fonctionnalités de notre programme."
+    "title": "Bienvenue dans <span class=\"edubeam\">edubeam</span> ! 🚀",
+    "description": "Pour vous aider à démarrer, nous avons préparé une courte visite guidée qui présente les principales fonctionnalités du programme."
+  },
+  "confirmation": {
+    "clearMesh": {
+      "message": "Voulez-vous vraiment effacer la structure ? Cette action est irréversible.",
+      "title": "Effacer la structure ?",
+      "materials": "Supprimer les matériaux",
+      "crossSections": "Supprimer les sections"
+    },
+    "resetSettings": {
+      "title": "Réinitialiser les paramètres ?",
+      "message": "Voulez-vous vraiment réinitialiser tous les paramètres par défaut ? Cette action est irréversible."
+    },
+    "splitElementAndPlaceNode": {
+      "title": "Confirmation du placement du nœud",
+      "message": "<p>Vous êtes en train de placer un nœud sur la poutre {label}.</p><p class=\"mt-3\">Souhaitez-vous scinder l'élément et connecter le nœud, ou placer un nœud non connecté sur la structure ?</p>",
+      "split": "Connecter à la structure"
+    },
+    "placeIndividualNode": "Placer un nœud isolé"
+  },
+  "selection": {
+    "node": "Nœud",
+    "element": "Élément",
+    "dimension": "Ligne de cote",
+    "nodal-load": "Charge nodale",
+    "element-load": "Charge d'élément",
+    "prescribedbc-load": "Déplacement imposé"
+  },
+  "validators": {
+    "enterValue": "Saisissez une valeur",
+    "invalidNumber": "Nombre invalide"
+  },
+  "loadType": {
+    "loadType": "Type de charge",
+    "concentrated": "Charge ponctuelle",
+    "trapezoidal": "Charge trapézoïdale",
+    "udl": "Charge uniformément répartie",
+    "temperature": "Charge thermique"
+  },
+  "dimensioning": {
+    "add_dimension": "Ajouter une cote"
+  },
+  "warnings": {
+    "noMaterialsDefined": "Aucun matériau défini.",
+    "noCrossSectionsDefined": "Aucune section définie."
   }
 }

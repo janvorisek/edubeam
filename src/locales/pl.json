@@ -1,0 +1,321 @@
+{
+  "tabView": {
+    "viewer": "Widok",
+    "settings": "Ustawienia",
+    "results": "Wyniki"
+  },
+  "common": {
+    "label": "Etykieta",
+    "node": "Węzeł",
+    "element": "Element",
+    "crossSection": "Przekrój",
+    "material": "Materiał",
+    "settings": "Ustawienia",
+    "actions": "Akcje",
+    "coords": "Współrzędne",
+    "type": "Typ",
+    "nodes": "Węzły",
+    "endHinges": "Przeguby końcowe",
+    "massMatrix": "Macierz masy",
+    "target": "Miejsce przyłożenia",
+    "components": "Składowe",
+    "loadCase": "Przypadek obciążenia",
+    "loads": "Obciążenia",
+    "clearMesh": "Wyczyść model",
+    "shareModel": "Udostępnij model",
+    "documentation": "Dokumentacja",
+    "addUsingDialog": "Dodaj przez okno dialogowe",
+    "addUsingMouse": "Dodaj myszą",
+    "edit": "Edytuj",
+    "copy": "Kopiuj",
+    "delete": "Usuń",
+    "stiffnessMatrix": "Macierz sztywności",
+    "normalForce": "Siła normalna",
+    "shearForce": "Siła tnąca",
+    "bendingMoment": "Moment zginający",
+    "deformedShape": "Kształt odkształcony",
+    "reactions": "Reakcje",
+    "elements": "Elementy",
+    "confirm": "Potwierdź",
+    "saveProject": "Zapisz projekt",
+    "openProject": "Otwórz projekt",
+    "lcs": "Lokalny układ współrzędnych",
+    "paste": "Wklej",
+    "addNew": "Dodaj nowy",
+    "whatisnew": "Co nowego?"
+  },
+  "nodes": {
+    "addNode": "Dodaj węzeł",
+    "editNode": "Edytuj węzeł",
+    "defineSupports": "Podpory węzła",
+    "lcsAngle": "Kąt lokalnego układu"
+  },
+  "elements": {
+    "addElement": "Dodaj element",
+    "editElement": "Edytuj element",
+    "swapNodeOrder": "Zamień kolejność węzłów"
+  },
+  "loads": {
+    "addNodalLoad": "Dodaj obciążenie węzłowe",
+    "addElementLoad": "Dodaj obciążenie elementu",
+    "addLoad": "Dodaj obciążenie",
+    "nodalLoad": "Obciążenie węzłowe",
+    "elementLoad": "Obciążenie elementu",
+    "prescribedDisplacement": "Zadane przemieszczenie",
+    "addPrescribedDisplacement": "Zadaj przemieszczenie",
+    "UDL": "Obciążenie równomiernie rozłożone",
+    "forceMoment": "Siła/Moment",
+    "editLoad": "Edytuj obciążenie",
+    "loadPositionOnBeam": "Pozycja obciążenia od węzła początkowego",
+    "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Zmiana temperatury dolnych minus górnych włókien",
+    "temperatureBending": "ΔT<sub>s</sub> ... Osiowa zmiana temperatury",
+    "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
+    "temperatureDeltaTs": "ΔT<sub>s</sub>",
+    "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
+  },
+  "tabs": {
+    "nodes": "Węzły",
+    "elements": "Elementy",
+    "loads": "Obciążenia",
+    "materials": "Materiały",
+    "crossSections": "Przekroje",
+    "results": "Wyniki"
+  },
+  "crossSection": {
+    "area": "Pole",
+    "h": "Wysokość",
+    "iy": "Iy",
+    "k": "Współczynnik ścinania"
+  },
+  "material": {
+    "e": "E",
+    "g": "G",
+    "density": "Gęstość",
+    "alphaT": "α_T"
+  },
+  "settings": {
+    "results_scale": "Skala wyników",
+    "grid_snap_step": "Krok przyciągania do siatki",
+    "snap_to_grid": "Przyciągaj do siatki",
+    "language": "Język",
+    "language_and_locale": "Język i ustawienia regionalne",
+    "show_normal_force": "Pokaż siłę normalną",
+    "show_shear_force": "Pokaż siłę tnącą",
+    "show_bending_moment": "Pokaż moment zginający",
+    "show_deformed_shape": "Pokaż kształt odkształcony",
+    "show_loads": "Pokaż obciążenia",
+    "units": {
+      "units": "Jednostki",
+      "length": "Długość",
+      "mass": "Masa",
+      "force": "Siła",
+      "moment": "Moment zginający",
+      "pressure": "Naprężenie",
+      "area": "Pole",
+      "areaM2": "Geometryczny moment bezwładności"
+    },
+    "grid": "Siatka",
+    "show_grid": "Pokaż siatkę",
+    "mouse": {
+      "mouse": "Mysz",
+      "pan_button": "Przesuwanie widoku przez",
+      "wheel": "Kółko myszy",
+      "right_button": "Prawy przycisk"
+    },
+    "colors": {
+      "colors": "Kolory"
+    },
+    "results": {
+      "results": "Wyniki"
+    },
+    "viewer_settings": "Ustawienia widoku",
+    "controls_and_shortcuts": "Sterowanie i skróty",
+    "language_and_locale_subtitle": "Ustawienia języka, lokalizacji i jednostek",
+    "viewer_settings_subtitle": "Skala, kolory, siatka i więcej",
+    "controls_and_shortcuts_subtitle": "Ustawienia klawiatury i myszy",
+    "viewer_preview": "Podgląd widoku",
+    "language_description": "Wybierz preferowany język interfejsu.",
+    "units_description": "Wybierz preferowane jednostki miary.",
+    "reset_settings": "Przywróć ustawienia",
+    "sizes": {
+      "sizes": "Rozmiary",
+      "supportSize": "Rozmiar podpór"
+    },
+    "font_size": "Rozmiar czcionki"
+  },
+  "sideSettings": {
+    "showDeformedShape": "Kształt odkształcony",
+    "supports": "Podpory",
+    "loads": "Obciążenia",
+    "nodeLabels": "Etykiety węzłów",
+    "elementLabels": "Etykiety elementów",
+    "more_settings": "Więcej ustawień",
+    "showReactions": "Reakcje"
+  },
+  "dofs": {
+    "bcs": "Podparte stopnie swobody"
+  },
+  "results": {
+    "results": "Wyniki",
+    "nodal_results": "Wyniki węzłowe",
+    "element_results": "Wyniki elementów",
+    "end_forces": "Siły końcowe (w lokalnym układzie współrzędnych)"
+  },
+  "materials": {
+    "addMaterial": "Dodaj materiał",
+    "material_library": "Biblioteka materiałów",
+    "section_library": "Biblioteka przekrojów"
+  },
+  "crossSections": {
+    "addCrossSection": "Dodaj przekrój"
+  },
+  "dialogs": {
+    "addNode": {
+      "addNewNode": "Dodaj nowy węzeł",
+      "coordinate_x": "Współrzędna X",
+      "coordinate_z": "Współrzędna Z",
+      "addNode": "Dodaj węzeł"
+    },
+    "common": {
+      "cancel": "Anuluj",
+      "orChooseFromLibrary": "Lub wybierz z biblioteki"
+    },
+    "addElement": {
+      "fromNodeId": "Węzeł początkowy",
+      "toNodeId": "Węzeł końcowy",
+      "addElement": "Dodaj element",
+      "addNewElement": "Dodaj nowy element",
+      "material": "Materiał",
+      "crossSection": "Przekrój"
+    },
+    "addNodalLoad": {
+      "addNewNodalLoad": "Dodaj nowe obciążenie węzłowe",
+      "addNodalLoad": "Dodaj obciążenie węzłowe"
+    },
+    "addElementLoad": {
+      "addNewElementLoad": "Dodaj nowe obciążenie elementu",
+      "addElementLoad": "Dodaj obciążenie elementu"
+    },
+    "addMaterial": {
+      "addNewMaterial": "Dodaj nowy materiał",
+      "addMaterial": "Dodaj materiał",
+      "E": "E - moduł Younga",
+      "G": "G - moduł Kirchhoffa",
+      "density": "ρ - gęstość",
+      "alphaT": "α - współczynnik rozszerzalności cieplnej"
+    },
+    "addCrossSection": {
+      "addNewCrossSection": "Dodaj nowy przekrój",
+      "addCrossSection": "Dodaj przekrój"
+    },
+    "editNodalLoad": {
+      "editNodalLoad": "Edytuj obciążenie węzłowe"
+    },
+    "editElementLoad": {
+      "editElementLoad": "Edytuj obciążenie elementu"
+    },
+    "update": {
+      "title": "Dostępna aktualizacja",
+      "update": "Aktualizuj",
+      "text1": "Wdrażamy aktualizację, która wymaga ponownego uruchomienia aplikacji. Oznacza to, że bieżący postęp zostanie utracony.",
+      "text2": "Jeśli chcesz zachować bieżący postęp, możesz anulować aktualizację."
+    },
+    "editNode": {
+      "editNode": "Edytuj węzeł"
+    },
+    "changelog": {
+      "title": "Co nowego?",
+      "description": "Nowe funkcje, usprawnienia i zapowiedzi tego, nad czym pracujemy."
+    }
+  },
+  "tooltip": {
+    "materials": {},
+    "material": {
+      "alphaT": "Współczynnik rozszerzalności cieplnej opisuje, jak zmieniają się wymiary obiektu wraz ze zmianą temperatury.",
+      "e": "Moduł Younga określa sztywność na rozciąganie lub ściskanie, gdy siła działa wzdłuż długości.",
+      "g": "Moduł ścinania to własność opisująca odporność materiału na odkształcenie pod wpływem naprężeń ścinających.",
+      "density": "Gęstość to miara tego, ile masy znajduje się w danej objętości substancji."
+    }
+  },
+  "footer": {
+    "reportIssue": "Zgłoś problem",
+    "requestFeature": "Zaproponuj funkcję",
+    "released": "wydano"
+  },
+  "sharing": {
+    "shareViaURL": "Udostępnij model przez URL",
+    "instructions": "Kliknij w dowolnym miejscu pola, aby skopiować link, a następnie wyślij go współpracownikom.",
+    "copyCue": "Kopiuj link",
+    "openLink": "Otwórz link",
+    "nativeShare": "Udostępnij przez systemowe okno dialogowe",
+    "linkCopied": "Link skopiowany do schowka",
+    "copyFailed": "Nie udało się skopiować automatycznie. Użyj skrótów klawiaturowych."
+  },
+  "tour": {
+    "startTour": "Rozpocznij samouczek",
+    "skipTour": "Pomiń na razie",
+    "viewerControls": {
+      "title": "Przyciski widoku",
+      "description": "Przyciski widoku służą do wyśrodkowania lub dopasowania konstrukcji do ekranu oraz wyboru wyświetlanych danych."
+    },
+    "viewerSettings": {
+      "title": "Dostosuj opcje wyświetlania",
+      "description": "Wybierz, co wyświetlać — siłę normalną, siłę tnącą, moment zginający, kształt odkształcony lub wszystko naraz."
+    },
+    "bottomBar": {
+      "title": "Dodawaj, usuwaj i modyfikuj obiekty",
+      "description": "Centralne miejsce, w którym możesz łatwo modyfikować każdy aspekt konstrukcji — od węzłów i elementów po obciążenia, materiały i przekroje."
+    },
+    "previousButton": "Wstecz",
+    "nextButton": "Dalej",
+    "finishButton": "Zakończ"
+  },
+  "welcome": {
+    "title": "Witamy w <span class=\"edubeam\">edubeam</span>! 🚀",
+    "description": "Aby ułatwić start, przygotowaliśmy krótki samouczek wprowadzający, który pokaże najważniejsze funkcje programu."
+  },
+  "confirmation": {
+    "clearMesh": {
+      "message": "Czy na pewno chcesz wyczyścić model? Tej operacji nie można cofnąć.",
+      "title": "Wyczyścić model?",
+      "materials": "Usuń materiały",
+      "crossSections": "Usuń przekroje"
+    },
+    "resetSettings": {
+      "title": "Przywrócić ustawienia?",
+      "message": "Czy na pewno chcesz przywrócić wszystkie ustawienia domyślne? Tej operacji nie można cofnąć."
+    },
+    "splitElementAndPlaceNode": {
+      "title": "Potwierdzenie umieszczenia węzła",
+      "message": "<p>Wygląda na to, że umieszczasz węzeł na belce {label}.</p><p class=\"mt-3\">Czy chcesz podzielić element i połączyć węzeł, czy umieścić go jako niepołączony?</p>",
+      "split": "Połącz z konstrukcją"
+    },
+    "placeIndividualNode": "Umieść pojedynczy węzeł"
+  },
+  "selection": {
+    "node": "Węzeł",
+    "element": "Element",
+    "dimension": "Linia wymiarowa",
+    "nodal-load": "Obciążenie węzłowe",
+    "element-load": "Obciążenie elementu",
+    "prescribedbc-load": "Zadane przemieszczenie"
+  },
+  "validators": {
+    "enterValue": "Wprowadź wartość",
+    "invalidNumber": "Nieprawidłowa liczba"
+  },
+  "loadType": {
+    "loadType": "Typ obciążenia",
+    "concentrated": "Obciążenie skupione",
+    "trapezoidal": "Obciążenie trapezowe",
+    "udl": "Obciążenie równomiernie rozłożone",
+    "temperature": "Obciążenie termiczne"
+  },
+  "dimensioning": {
+    "add_dimension": "Dodaj wymiar"
+  },
+  "warnings": {
+    "noMaterialsDefined": "Nie zdefiniowano materiałów.",
+    "noCrossSectionsDefined": "Nie zdefiniowano przekrojów."
+  }
+}

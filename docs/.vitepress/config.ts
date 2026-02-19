@@ -155,6 +155,17 @@ export default defineConfig({
       label: 'Español',
       lang: 'es',
     },
+    pt: {
+      label: 'Português',
+      lang: 'pt',
+      themeConfig: {
+        nav: [
+          { text: 'Início', link: '/pt/' },
+          { text: 'FAQ', link: '/pt/faq' },
+          { text: 'Exemplos', link: '/pt/examples' },
+        ],
+      },
+    },
     fr: {
       label: 'Français',
       lang: 'fr',
@@ -177,6 +188,39 @@ export default defineConfig({
     hi: {
       label: 'हिन्दी',
       lang: 'hi',
+    },
+    pl: {
+      label: 'Polski',
+      lang: 'pl',
+      themeConfig: {
+        nav: [
+          { text: 'Strona główna', link: '/pl/' },
+          { text: 'FAQ', link: '/pl/faq' },
+          { text: 'Przykłady', link: '/pl/examples' },
+        ],
+      },
+    },
+    uk: {
+      label: 'Українська',
+      lang: 'uk',
+      themeConfig: {
+        nav: [
+          { text: 'Головна', link: '/uk/' },
+          { text: 'FAQ', link: '/uk/faq' },
+          { text: 'Приклади', link: '/uk/examples' },
+        ],
+      },
+    },
+    ru: {
+      label: 'Русский',
+      lang: 'ru',
+      themeConfig: {
+        nav: [
+          { text: 'Главная', link: '/ru/' },
+          { text: 'FAQ', link: '/ru/faq' },
+          { text: 'Примеры', link: '/ru/examples' },
+        ],
+      },
     },
   },
   themeConfig: {
@@ -233,6 +277,74 @@ export default defineConfig({
                   navigateText: 'स्विच करें',
                   closeText: 'बंद करें',
                 },
+              },
+            },
+          },
+          pt: {
+            translations: {
+              button: {
+                buttonText: 'Pesquisar na documentação',
+                buttonAriaLabel: 'Pesquisar na documentação',
+              },
+              modal: {
+                noResultsText: 'Nenhum resultado encontrado para',
+                resetButtonTitle: 'Limpar pesquisa',
+                footer: {
+                  selectText: 'Selecionar',
+                  navigateText: 'Navegar',
+                  closeText: 'Fechar',
+                },
+              },
+            },
+          },
+        },
+        pl: {
+          translations: {
+            button: {
+              buttonText: 'Szukaj w dokumentacji',
+              buttonAriaLabel: 'Szukaj w dokumentacji',
+            },
+            modal: {
+              noResultsText: 'Brak wyników dla zapytania',
+              resetButtonTitle: 'Wyczyść zapytanie',
+              footer: {
+                selectText: 'Wybierz',
+                navigateText: 'Nawiguj',
+                closeText: 'Zamknij',
+              },
+            },
+          },
+        },
+        uk: {
+          translations: {
+            button: {
+              buttonText: 'Пошук у документації',
+              buttonAriaLabel: 'Пошук у документації',
+            },
+            modal: {
+              noResultsText: 'Нічого не знайдено за запитом',
+              resetButtonTitle: 'Очистити запит',
+              footer: {
+                selectText: 'Обрати',
+                navigateText: 'Перейти',
+                closeText: 'Закрити',
+              },
+            },
+          },
+        },
+        ru: {
+          translations: {
+            button: {
+              buttonText: 'Поиск по документации',
+              buttonAriaLabel: 'Поиск по документации',
+            },
+            modal: {
+              noResultsText: 'Ничего не найдено по запросу',
+              resetButtonTitle: 'Очистить запрос',
+              footer: {
+                selectText: 'Выбрать',
+                navigateText: 'Перейти',
+                closeText: 'Закрыть',
               },
             },
           },

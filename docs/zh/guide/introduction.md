@@ -25,36 +25,45 @@ const members = [
 
 # 简介
 
-欢迎使用结构分析在线网络应用程序 <Edubeam />。无需安装或复杂设置，即可进行结构分析。
+欢迎使用 <Edubeam />。这是一个面向**结构分析与教学**的浏览器工作空间。你可以搭建梁、桁架和框架，施加集中荷载与分布荷载，并实时查看有限元（FEM）计算得到的位移、支反力和内力结果。所有功能都在浏览器内运行——无需安装程序、无需许可证服务器、无需管理员权限，适用于课堂教学、课程设计和快速校核。
 
-点击 [此处](https://run.edubeam.app/?lang=cn) 访问 <Edubeam />，开始您的结构分析之旅。
+[打开 EduBeam](https://run.edubeam.app/?lang=cn) 并配合本指南一起体验。
 
-运行中的 edubeam
+EduBeam 运行示意
 
 <figure>
   <a href="https://run.edubeam.app/?lang=cn" target="_blank">
     <WelcomeStructure />
     </a>
-  <figcaption>运行中的 edubeam</figcaption>
+  <figcaption>查看 EduBeam 实际运行效果</figcaption>
 </figure>
 
-## 功能
+## 为什么工程学习者会选择 EduBeam
 
-- **二维梁/桁架求解器**: 无缝分析和求解二维结构。
+- **实时反馈**：编辑几何、支座或荷载后，位移、支反力、剪力和弯矩图会立即更新。
+- **零安装、跨平台**：任意现代浏览器即可运行，学生、教师和协作者无需额外配置软件。
+- **便捷分享与归档**：支持分享链接与 JSON 导出，便于课堂分发、评阅与复现。
+- **教学友好交互**：清晰标签、上下文菜单与完整撤销/重做，既适合新手，也支持高效操作。
+- **单位与模板一致性**：可选择单位制、复用结构，提高教学演示与校核的一致性。
 
-- **用户友好界面**: 直观设计，轻松导航。
+## 何时使用 EduBeam
 
-- **免费在线**: 随时随地访问，方便快捷。
+- 结构力学课程中进行动态可视化讲解。
+- 在进入重型桌面软件前快速比较多种方案。
+- 评阅作业或同伴模型时输出一致、可共享的结果图。
+- 在评审或汇报中演示“参数变化会怎样”的情景。
 
-- **以学生和教师为中心**: 量身定制的功能，提供最佳的学习体验。
+## 五步快速开始
 
-- **开源创新**: 合作并为 <Edubeam /> 的发展做出贡献。
-
-- **轻松共享项目**: 使用 URL 功能轻松共享您的项目。
+1. [打开 EduBeam](https://run.edubeam.app/?lang=cn)，选择所需单位制。
+2. **放置节点**：通过“添加节点”工具或鼠标点击创建节点，再连接成单元。
+3. **设置属性**：为单元分配材料与截面，建立正确刚度模型。
+4. **施加支座与荷载**：通过操作栏或视图上下文菜单添加节点荷载、温度荷载和分布荷载等。
+5. **查看并分享**：切换变形图和内力图层，复制分享链接或导出 JSON 归档。
 
 ## 本地化
 
-<Edubeam /> 提供多种语言版本，以增强用户体验。
+<Edubeam /> 提供多语言支持，方便不同课堂与团队协作。你也可以通过在 URL 后追加 `?lang=` 与语言代码直接切换语言。
 
 <div>
 
@@ -83,41 +92,26 @@ const members = [
         <td><img src="language-icons/icons/zh.svg" style="height: 24px;" alt="中文" /></td>
         <td><a href="https://run.edubeam.app/?lang=cn" target="_blank">中文</a></td>
     </tr>
+    <tr>
+      <td><img src="language-icons/icons/th.svg" style="height: 24px;" alt="ไทย" /></td>
+      <td><a href="https://run.edubeam.app/?lang=th" target="_blank">ไทย</a></td>
+    </tr>
 </table>
 
 </div>
 
-## 作者
+  ## 作者与致谢
 
-<Edubeam /> 是一个合作项目，由一群热衷于推动结构分析教育的贡献者组成。它由[布拉格 CTU - 土木工程系](https://www.fsv.cvut.cz/en)力学系的一个小团队开发和维护。
+  <Edubeam /> 由 [Jan Voříšek](https://github.com/janvorisek) 主导维护与产品设计。当前浏览器版本为独立开发项目；早期桌面版 EduBeam 由 [布拉格捷克理工大学土木工程学院（CTU Prague – Faculty of Civil Engineering）](https://www.fsv.cvut.cz/en) 力学系研究人员开发完成，特此致谢。
 
 <VPTeamMembers size="small" :members="members" />
 
-最初的[桌面应用程序](https://www.oofem.org/wiki/doku.php?id=edubeam:edubeam_en)由[Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/)、[Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/)和[Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/)开发。
+  最初的[桌面版应用](https://www.oofem.org/wiki/doku.php?id=edubeam:edubeam_en)（Windows/Linux）由 [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/)、[Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) 与 [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) 开发，其成果为当前网页版提供了重要启发。
 
-## 加入我们
+  ## 参与贡献
 
-欢迎加入我们的社区，为 <Edubeam /> 的发展做出贡献。您的参与范围可以从测试和报告问题到积极参与开发过程。
+  - 在 [GitHub issue 区](https://github.com/janvorisek/edubeam/issues) 提交问题与改进建议。
+  - 改进翻译、截图或文档内容（相关文件位于 `docs/`）。
+  - 将 EduBeam 分享给同学与同事，帮助项目持续改进。
 
-以下是一些您可以参与并为 <Edubeam /> 做出贡献的方式：
-
-1. **贡献代码：**
-
-   - 访问我们的 [GitHub 代码库](https://github.com/janvorisek/edubeam) 并参与代码开发。
-   - 您可以选择从基本结构分析到高级功能实现等各种任务。
-
-2. 测试和 Bug 报告：\*\* \*\*
-
-   - 测试 <Edubeam />，并在我们的 [issue tracker](https://github.com/janvorisek/edubeam/issues) 上报告任何错误或问题。
-   - 您的反馈对于提高 <Edubeam /> 的可靠性和功能至关重要。
-
-3. **文档：**
-
-   - 帮助改进我们的文档，使 <Edubeam /> 更方便用户使用。
-   - 贡献教程、指南或常见问题，以增强用户的学习体验。
-
-4. **传播信息：**
-   - 与您的同行和社交媒体分享 <Edubeam />。
-   - 您的支持有助于发展我们的社区，确保更多的学生受益于 <Edubeam />。
-
-准备好开始了吗？选择适合您的技能和兴趣的贡献途径，成为 <Edubeam /> 社区的宝贵一员！
+  感谢你的关注，欢迎马上打开应用开始尝试。

@@ -8,8 +8,12 @@ export const availableLocales = [
   { code: 'de', name: 'Deutsch' },
   { code: 'fr', name: 'Français' },
   { code: 'es', name: 'Español' },
+  { code: 'pt', name: 'Português' },
+  { code: 'pl', name: 'Polski' },
   { code: 'cn', name: '汉语' },
   { code: 'th', name: 'ไทย' },
+  { code: 'uk', name: 'Українська' },
+  { code: 'ru', name: 'Русский' },
 ];
 
 // Create Vue I18n instance.

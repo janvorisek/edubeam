@@ -80,6 +80,10 @@ EduBeam je k dispozici v několika jazycích.
         <td><a href="https://run.edubeam.app/?lang=cs" target="_blank">Čeština</a></td>
     </tr>
     <tr>
+      <td><img src="language-icons/icons/pl.svg" style="height: 24px;" alt="Polski" /></td>
+      <td><a href="https://run.edubeam.app/?lang=pl" target="_blank">Polski</a></td>
+    </tr>
+    <tr>
         <td><img src="language-icons/icons/zh.svg" style="height: 24px;" alt="中文" /></td>
         <td><a href="https://run.edubeam.app/?lang=cn" target="_blank">中文</a></td>
     </tr>

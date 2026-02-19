@@ -30,7 +30,7 @@ features:
     details: Big buttons, undo/redo, and clear tooltips mean less explaining and more exploring.
   - icon: 🌍
     title: Works in your language
-    details: Switch between EN, CS, DE, ES, FR, and ZH without leaving the page.
+    details: Switch between EN, CS, PL, DE, ES, FR, and ZH without leaving the page.
   - icon: 🔗
     title: Shareable models
     details: Copy a link, export JSON, or drop clean images into slides and handouts.

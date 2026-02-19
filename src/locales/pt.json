@@ -1,0 +1,321 @@
+{
+  "tabView": {
+    "viewer": "Estrutura",
+    "settings": "Configurações",
+    "results": "Resultados"
+  },
+  "common": {
+    "label": "Rótulo",
+    "node": "Nó",
+    "element": "Elemento",
+    "crossSection": "Seção",
+    "material": "Material",
+    "settings": "Configurações",
+    "actions": "Ações",
+    "coords": "Coordenadas",
+    "type": "Tipo",
+    "nodes": "Nós",
+    "endHinges": "Rótulas de extremidade",
+    "massMatrix": "Matriz de massa",
+    "target": "Alvo",
+    "components": "Componentes",
+    "loadCase": "Caso de carga",
+    "loads": "Cargas",
+    "clearMesh": "Limpar estrutura",
+    "shareModel": "Compartilhar modelo",
+    "documentation": "Documentação",
+    "addUsingDialog": "Adicionar por diálogo",
+    "addUsingMouse": "Adicionar com o mouse",
+    "edit": "Editar",
+    "copy": "Copiar",
+    "delete": "Excluir",
+    "stiffnessMatrix": "Matriz de rigidez",
+    "normalForce": "Esforço normal",
+    "shearForce": "Esforço cortante",
+    "bendingMoment": "Momento fletor",
+    "deformedShape": "Forma deformada",
+    "reactions": "Reações",
+    "elements": "Elementos",
+    "confirm": "Confirmar",
+    "saveProject": "Salvar projeto",
+    "openProject": "Abrir projeto",
+    "lcs": "Sistema de Coordenadas Local",
+    "paste": "Colar",
+    "addNew": "Adicionar",
+    "whatisnew": "O que há de novo?"
+  },
+  "nodes": {
+    "addNode": "Adicionar nó",
+    "editNode": "Editar nó",
+    "defineSupports": "Apoios do nó",
+    "lcsAngle": "Ângulo do SCL nodal"
+  },
+  "elements": {
+    "addElement": "Adicionar elemento",
+    "editElement": "Editar elemento",
+    "swapNodeOrder": "Inverter nós"
+  },
+  "loads": {
+    "addNodalLoad": "Adicionar carga nodal",
+    "addElementLoad": "Adicionar carga de elemento",
+    "addLoad": "Adicionar carga",
+    "nodalLoad": "Carga nodal",
+    "elementLoad": "Carga de elemento",
+    "prescribedDisplacement": "Deslocamento prescrito",
+    "addPrescribedDisplacement": "Prescrever deslocamento",
+    "UDL": "Carga distribuída uniforme",
+    "forceMoment": "Força/Momento",
+    "editLoad": "Editar carga",
+    "loadPositionOnBeam": "Posição da carga a partir do nó inicial",
+    "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Variação de temperatura da fibra inferior menos superior",
+    "temperatureBending": "ΔT<sub>s</sub> ... Variação axial de temperatura",
+    "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
+    "temperatureDeltaTs": "ΔT<sub>s</sub>",
+    "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
+  },
+  "tabs": {
+    "nodes": "Nós",
+    "elements": "Elementos",
+    "loads": "Cargas",
+    "materials": "Materiais",
+    "crossSections": "Seções",
+    "results": "Resultados"
+  },
+  "crossSection": {
+    "area": "Área",
+    "h": "Altura",
+    "iy": "Iy",
+    "k": "Coeficiente de cisalhamento"
+  },
+  "material": {
+    "e": "E",
+    "g": "G",
+    "density": "Densidade",
+    "alphaT": "α_T"
+  },
+  "settings": {
+    "results_scale": "Escala de resultados",
+    "grid_snap_step": "Passo do encaixe na grade",
+    "snap_to_grid": "Encaixar na grade",
+    "language": "Idioma",
+    "language_and_locale": "Idioma e localidade",
+    "show_normal_force": "Mostrar esforço normal",
+    "show_shear_force": "Mostrar esforço cortante",
+    "show_bending_moment": "Mostrar momento fletor",
+    "show_deformed_shape": "Mostrar forma deformada",
+    "show_loads": "Mostrar cargas",
+    "units": {
+      "units": "Unidades",
+      "length": "Comprimento",
+      "mass": "Massa",
+      "force": "Força",
+      "moment": "Momento fletor",
+      "pressure": "Tensão",
+      "area": "Área",
+      "areaM2": "Segundo momento de área"
+    },
+    "grid": "Grade",
+    "show_grid": "Mostrar grade",
+    "mouse": {
+      "mouse": "Mouse",
+      "pan_button": "Panorâmica com",
+      "wheel": "Roda do mouse",
+      "right_button": "Botão direito"
+    },
+    "colors": {
+      "colors": "Cores"
+    },
+    "results": {
+      "results": "Resultados"
+    },
+    "viewer_settings": "Configurações de visualização",
+    "controls_and_shortcuts": "Controles e atalhos",
+    "language_and_locale_subtitle": "Idioma, localização e unidades",
+    "viewer_settings_subtitle": "Escala, cores, grade e mais",
+    "controls_and_shortcuts_subtitle": "Configurações de teclado e mouse",
+    "viewer_preview": "Pré-visualização",
+    "language_description": "Selecione o idioma preferido da interface.",
+    "units_description": "Escolha suas unidades de medida preferidas.",
+    "reset_settings": "Redefinir configurações",
+    "sizes": {
+      "sizes": "Tamanhos",
+      "supportSize": "Tamanho dos apoios"
+    },
+    "font_size": "Tamanho da fonte"
+  },
+  "sideSettings": {
+    "showDeformedShape": "Forma deformada",
+    "supports": "Apoios",
+    "loads": "Cargas",
+    "nodeLabels": "Rótulos dos nós",
+    "elementLabels": "Rótulos dos elementos",
+    "more_settings": "Mais configurações",
+    "showReactions": "Reações"
+  },
+  "dofs": {
+    "bcs": "GLs restringidos"
+  },
+  "results": {
+    "results": "Resultados",
+    "nodal_results": "Resultados nodais",
+    "element_results": "Resultados dos elementos",
+    "end_forces": "Esforços de extremidade (no sistema de coordenadas local)"
+  },
+  "materials": {
+    "addMaterial": "Adicionar material",
+    "material_library": "Biblioteca de materiais",
+    "section_library": "Biblioteca de seções"
+  },
+  "crossSections": {
+    "addCrossSection": "Adicionar seção"
+  },
+  "dialogs": {
+    "addNode": {
+      "addNewNode": "Adicionar novo nó",
+      "coordinate_x": "Coordenada X",
+      "coordinate_z": "Coordenada Z",
+      "addNode": "Adicionar nó"
+    },
+    "common": {
+      "cancel": "Cancelar",
+      "orChooseFromLibrary": "Ou escolha da biblioteca"
+    },
+    "addElement": {
+      "fromNodeId": "Nó inicial",
+      "toNodeId": "Nó final",
+      "addElement": "Adicionar elemento",
+      "addNewElement": "Adicionar novo elemento",
+      "material": "Material",
+      "crossSection": "Seção"
+    },
+    "addNodalLoad": {
+      "addNewNodalLoad": "Adicionar nova carga nodal",
+      "addNodalLoad": "Adicionar carga nodal"
+    },
+    "addElementLoad": {
+      "addNewElementLoad": "Adicionar nova carga de elemento",
+      "addElementLoad": "Adicionar carga de elemento"
+    },
+    "addMaterial": {
+      "addNewMaterial": "Adicionar novo material",
+      "addMaterial": "Adicionar material",
+      "E": "E - Módulo de Young",
+      "G": "G - Módulo de cisalhamento",
+      "density": "ρ - densidade",
+      "alphaT": "α - Coeficiente de dilatação térmica"
+    },
+    "addCrossSection": {
+      "addNewCrossSection": "Adicionar nova seção",
+      "addCrossSection": "Adicionar seção"
+    },
+    "editNodalLoad": {
+      "editNodalLoad": "Editar carga nodal"
+    },
+    "editElementLoad": {
+      "editElementLoad": "Editar carga de elemento"
+    },
+    "update": {
+      "title": "Atualização disponível",
+      "update": "Atualizar",
+      "text1": "Estamos lançando uma atualização que exige redefinir o aplicativo. Isso significa que qualquer progresso será perdido.",
+      "text2": "Se quiser manter o progresso atual, você pode cancelar a atualização."
+    },
+    "editNode": {
+      "editNode": "Editar nó"
+    },
+    "changelog": {
+      "title": "O que há de novo?",
+      "description": "Novos recursos, melhorias e prévias do que estamos desenvolvendo."
+    }
+  },
+  "tooltip": {
+    "materials": {},
+    "material": {
+      "alphaT": "O coeficiente de dilatação térmica descreve como o tamanho de um objeto muda com a variação de temperatura.",
+      "e": "O módulo de Young mede a rigidez à tração ou compressão quando a força é aplicada longitudinalmente.",
+      "g": "O módulo de cisalhamento mede a resistência à deformação sob tensão de cisalhamento, indicando a rigidez do material em resposta a forças aplicadas paralelamente à superfície.",
+      "density": "Densidade é uma medida de quanta massa está contida em um determinado volume de uma substância."
+    }
+  },
+  "footer": {
+    "reportIssue": "Relatar problema",
+    "requestFeature": "Solicitar recurso",
+    "released": "lançado"
+  },
+  "sharing": {
+    "shareViaURL": "Compartilhar modelo por URL",
+    "instructions": "Clique em qualquer lugar dentro do campo para copiar o link e depois envie aos seus colaboradores.",
+    "copyCue": "Copiar link",
+    "openLink": "Abrir link",
+    "nativeShare": "Compartilhar via diálogo do sistema",
+    "linkCopied": "Link copiado para a área de transferência",
+    "copyFailed": "Não foi possível copiar automaticamente. Use os atalhos de teclado."
+  },
+  "tour": {
+    "startTour": "Iniciar tour",
+    "skipTour": "Pular por enquanto",
+    "viewerControls": {
+      "title": "Botões de visualização",
+      "description": "Os controles do visualizador servem para centralizar ou ajustar a estrutura à tela e selecionar o que será exibido."
+    },
+    "viewerSettings": {
+      "title": "Personalizar opções de exibição",
+      "description": "Escolha o que exibir — esforço normal, esforço cortante, momento fletor, forma deformada ou tudo junto."
+    },
+    "bottomBar": {
+      "title": "Adicionar, remover e modificar entidades",
+      "description": "O centro principal onde cada aspecto da sua estrutura pode ser transformado com facilidade. De nós a elementos, cargas, materiais e seções, é o local ideal para mudanças rápidas e completas."
+    },
+    "previousButton": "Anterior",
+    "nextButton": "Próximo",
+    "finishButton": "Concluir"
+  },
+  "welcome": {
+    "title": "Bem-vindo ao <span class=\"edubeam\">edubeam</span>! 🚀",
+    "description": "Para ajudar você a começar, preparamos um tour rápido de introdução que guia pelos recursos e funcionalidades do programa."
+  },
+  "confirmation": {
+    "clearMesh": {
+      "message": "Tem certeza de que deseja limpar a estrutura? Esta ação não pode ser desfeita.",
+      "title": "Limpar estrutura?",
+      "materials": "Excluir materiais",
+      "crossSections": "Excluir seções"
+    },
+    "resetSettings": {
+      "title": "Redefinir configurações?",
+      "message": "Tem certeza de que deseja restaurar todas as configurações para o padrão? Esta ação não pode ser desfeita."
+    },
+    "splitElementAndPlaceNode": {
+      "title": "Confirmação de posicionamento do nó",
+      "message": "<p>Parece que você está posicionando um nó na viga {label}.</p><p class=\"mt-3\">Deseja dividir o elemento e conectar o nó, ou posicionar um nó desconectado na estrutura?</p>",
+      "split": "Conectar à estrutura"
+    },
+    "placeIndividualNode": "Posicionar nó individual"
+  },
+  "selection": {
+    "node": "Nó",
+    "element": "Elemento",
+    "dimension": "Linha de cota",
+    "nodal-load": "Carga nodal",
+    "element-load": "Carga de elemento",
+    "prescribedbc-load": "Deslocamento prescrito"
+  },
+  "validators": {
+    "enterValue": "Insira um valor",
+    "invalidNumber": "Número inválido"
+  },
+  "loadType": {
+    "loadType": "Tipo de carga",
+    "concentrated": "Carga concentrada",
+    "trapezoidal": "Carga trapezoidal",
+    "udl": "Carga distribuída uniforme",
+    "temperature": "Carga térmica"
+  },
+  "dimensioning": {
+    "add_dimension": "Adicionar cota"
+  },
+  "warnings": {
+    "noMaterialsDefined": "Nenhum material definido.",
+    "noCrossSectionsDefined": "Nenhuma seção definida."
+  }
+}

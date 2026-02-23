@@ -957,7 +957,7 @@ const onMouseDown = (e: PointerEvent) => {
 
                   const startNode = projectStore.solver.domain.nodes.get(el.nodes[0])!;
                   const endNode = projectStore.solver.domain.nodes.get(el.nodes[1])!;
-                  const newNode = projectStore.solver.domain.nodes.get(newNodeId)!;
+                  const newNode = projectStore.solver.domain.nodes.get(newNodeId.toString())!;
                   const totalLength = Math.hypot(
                     endNode.coords[0] - startNode.coords[0],
                     endNode.coords[2] - startNode.coords[2]

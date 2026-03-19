@@ -64,7 +64,14 @@ import { Command, IKeyValue, undoRedoManager } from '../CommandManager';
 import { EventType, eventBus } from '../EventBus';
 import { BeamConcentratedLoad } from 'ts-fem';
 import { useClipboardStore } from '../store/clipboard';
-import type { DimensionLine } from '@/types/dimension';
+import {
+  createDimensionPoint,
+  createDimensionPointFromNode,
+  createDimensionRenderableNode,
+  resolveDimensionPoint,
+  type DimensionLine,
+  type DimensionPoint,
+} from '@/types/dimension';
 
 const props = defineProps<{
   id: string;
@@ -77,7 +84,12 @@ let mouseStartY = 0;
 const mouseXReal = ref(0);
 const mouseYReal = ref(0);
 
-const startNode = ref<{ label: string | number; x: number; y: number } | null>(null);
+const startNode = ref<{
+  label: string | number | null;
+  x: number;
+  y: number;
+  sourceNodeLabel?: string | number | null;
+} | null>(null);
 const deltaPaste = ref<{ x: number; y: number } | null>({ x: 0, y: 0 });
 const dimlineDist = ref(48); // preview offset
 
@@ -107,16 +119,40 @@ const previewDimensionDistance = computed(() => {
   return pxOffset / currentScale;
 });
 
-const previewDimensionNodes = computed<Node[] | null>(() => {
+const DIMENSION_POINT_SNAP_RADIUS_PX = 12;
+
+const getNearestDimensionSnapNode = () => {
+  const snapRadius = DIMENSION_POINT_SNAP_RADIUS_PX / (scale.value || 1);
+  let nearestNode: Node | null = null;
+  let nearestDistance = Number.POSITIVE_INFINITY;
+
+  for (const node of projectStore.nodes) {
+    const distance = Math.hypot(node.coords[0] - mouseXReal.value, node.coords[2] - mouseYReal.value);
+    if (distance > snapRadius || distance >= nearestDistance) continue;
+
+    nearestNode = node;
+    nearestDistance = distance;
+  }
+
+  return nearestNode;
+};
+
+const getPointerDimensionPoint = (): DimensionPoint => {
+  const snappedNode = getNearestDimensionSnapNode();
+  if (snappedNode) return createDimensionPointFromNode(snappedNode);
+
+  return createDimensionPoint(mouseXReal.value, mouseYReal.value);
+};
+
+const previewDimensionPoints = computed(() => {
   if (appStore.mouseMode !== MouseMode.ADD_DIMLINE || !startNode.value) return null;
-  const start = projectStore.solver.domain.nodes.get(String(startNode.value.label));
-  if (!start) return null;
 
-  const previewEnd = {
-    coords: [mouseXReal.value, 0, mouseYReal.value],
-  } as unknown as Node;
+  const previewEnd = getPointerDimensionPoint();
 
-  return [start, previewEnd];
+  return [
+    createDimensionRenderableNode({ x: startNode.value.x, y: startNode.value.y }, startNode.value.sourceNodeLabel),
+    createDimensionRenderableNode(previewEnd, previewEnd.sourceNodeLabel),
+  ];
 });
 
 const intersected = ref<{
@@ -138,7 +174,9 @@ const hideTooltip = (clearHoverState = true) => {
 
   if (!clearHoverState) return;
 
-  if ([MouseMode.HOVER, MouseMode.SELECTING, MouseMode.ADD_ELEMENT].includes(appStore.mouseMode)) {
+  if (
+    [MouseMode.HOVER, MouseMode.SELECTING, MouseMode.ADD_ELEMENT, MouseMode.ADD_DIMLINE].includes(appStore.mouseMode)
+  ) {
     if (appStore.mouseMode === MouseMode.HOVER) appStore.mouseMode = MouseMode.NONE;
 
     intersected.value.type = null;
@@ -297,6 +335,7 @@ watch(ctrl_v, (v) => {
 watch(escape, (v) => {
   if (v) {
     cancelDimensionDrag();
+    cancelDimensionPointDrag();
     if ('activeElement' in document) (document.activeElement as HTMLElement).blur();
     appStore.mouseMode = MouseMode.NONE;
     projectStore.clearSelection();
@@ -560,7 +599,7 @@ const onNodeClick = (e: MouseEvent) => {
   useProjectStore().selection.label = index;
 
   projectStore.clearSelection2();
-  projectStore.selection2.nodes = [useProjectStore().selection.label];
+  projectStore.selection2.nodes = [String(useProjectStore().selection.label)];
 
   //useProjectStore().selection.x = e.offsetX;
   //useProjectStore().selection.y = e.offsetY;
@@ -593,7 +632,7 @@ const onElementClick = (e: MouseEvent) => {
   useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
 
   projectStore.clearSelection2();
-  projectStore.selection2.elements = [useProjectStore().selection.label];
+  projectStore.selection2.elements = [String(useProjectStore().selection.label)];
 };
 
 const onDimensionClick = (e: PointerEvent, dimensionId: string) => {
@@ -638,6 +677,38 @@ const onDimensionPointerUp = (e: PointerEvent, dimensionId: string) => {
   if (isDraggingDimension()) return;
 
   pendingDimensionId = null;
+  onDimensionClick(e, dimensionId);
+};
+
+const onDimensionPointPointerDown = (e: PointerEvent, dimensionId: string, pointIndex: number) => {
+  const dimension = findDimensionById(dimensionId);
+  if (!dimension || pointIndex < 0 || pointIndex > 1) return;
+
+  ensureDimensionSelected(dimensionId);
+  convertDistanceToWorld(dimension);
+
+  const currentPoint = dimension.points[pointIndex];
+  dragDimensionPoint = {
+    id: dimensionId,
+    dimension,
+    pointIndex: pointIndex as 0 | 1,
+    startPoint: createDimensionPoint(currentPoint.x, currentPoint.y, currentPoint.sourceNodeLabel ?? null),
+    lastPoint: createDimensionPoint(currentPoint.x, currentPoint.y, currentPoint.sourceNodeLabel ?? null),
+  };
+
+  pointerDownOriginatesFromDimension = true;
+  intersected.value.type = 'dimension-point';
+  intersected.value.index = `${dimensionId}:${pointIndex}`;
+  appStore.mouseMode = MouseMode.MOVING;
+  e.stopPropagation();
+};
+
+const onDimensionPointPointerUp = (e: PointerEvent, dimensionId: string) => {
+  if (isDraggingDimensionPoint()) {
+    finishDimensionPointDrag();
+    return;
+  }
+
   onDimensionClick(e, dimensionId);
 };
 
@@ -704,12 +775,19 @@ const onPrescribedBCClick = (e: MouseEvent, index: number) => {
   projectStore.selection2.prescribedBC = [index];
 };
 
-let drgNode = null;
+let drgNode: Node | null = null;
 let origX = 0;
 let origZ = 0;
 let finalX = 0;
 let finalZ = 0;
 let dragDimension: { id: string; dimension: DimensionEntry; startDistance: number; lastDistance: number } | null = null;
+let dragDimensionPoint: {
+  id: string;
+  dimension: DimensionEntry;
+  pointIndex: 0 | 1;
+  startPoint: DimensionPoint;
+  lastPoint: DimensionPoint;
+} | null = null;
 let pendingDimensionId: string | null = null;
 let pointerDownOriginatesFromDimension = false;
 
@@ -720,15 +798,17 @@ const moveNode = () => {
   {
     const setCommand = new Command<IKeyValue>(
       (value) => {
+        const commandValue = value as { item: Node; prev: { x: number; z: number }; next: { x: number; z: number } };
         setUnsolved();
-        value.item.coords[0] = value.next.x;
-        value.item.coords[2] = value.next.z;
+        commandValue.item.coords[0] = commandValue.next.x;
+        commandValue.item.coords[2] = commandValue.next.z;
         solve();
       },
       (value) => {
+        const commandValue = value as { item: Node; prev: { x: number; z: number }; next: { x: number; z: number } };
         setUnsolved();
-        value.item.coords[0] = value.prev.x;
-        value.item.coords[2] = value.prev.z;
+        commandValue.item.coords[0] = commandValue.prev.x;
+        commandValue.item.coords[2] = commandValue.prev.z;
         solve();
       },
       { item: drgNode, prev: { x: origX, z: origZ }, next: { x: finalX, z: finalZ } }
@@ -742,21 +822,32 @@ const moveNode = () => {
 
 const isDraggingDimension = () => dragDimension !== null;
 
+const isDraggingDimensionPoint = () => dragDimensionPoint !== null;
+
+const updateDimensionPointFromPointer = () => {
+  if (!dragDimensionPoint) return;
+
+  const nextPoint = getPointerDimensionPoint();
+  const updatedPoint = createDimensionPoint(nextPoint.x, nextPoint.y, nextPoint.sourceNodeLabel ?? null);
+  dragDimensionPoint.dimension.points[dragDimensionPoint.pointIndex] = updatedPoint;
+  dragDimensionPoint.lastPoint = updatedPoint;
+};
+
 const updateDimensionDistanceFromPointer = () => {
   if (!dragDimension) return;
-  const nodes = dragDimension.dimension.nodes;
-  if (!nodes[0] || !nodes[1]) return;
+  const points = getDimensionResolvedPoints(dragDimension.dimension);
+  if (!points) return;
 
   convertDistanceToWorld(dragDimension.dimension);
 
-  const dx = nodes[1].coords[0] - nodes[0].coords[0];
-  const dz = nodes[1].coords[2] - nodes[0].coords[2];
+  const dx = points[1].x - points[0].x;
+  const dz = points[1].y - points[0].y;
   const length = Math.sqrt(dx * dx + dz * dz);
   if (!isFinite(length) || length === 0) return;
 
   const normalX = dz / length;
   const normalY = -dx / length;
-  const offset = (mouseXReal.value - nodes[0].coords[0]) * normalX + (mouseYReal.value - nodes[0].coords[2]) * normalY;
+  const offset = (mouseXReal.value - points[0].x) * normalX + (mouseYReal.value - points[0].y) * normalY;
   const newDistance = -offset;
 
   if (!Number.isFinite(newDistance)) return;
@@ -797,12 +888,14 @@ const finishDimensionDrag = (shouldCommit = true) => {
   if (shouldCommit && Math.abs(lastDistance - startDistance) > 1e-6) {
     const setCommand = new Command<IKeyValue>(
       (value) => {
-        value.item.distance = value.next as number;
-        value.item.distanceUnit = 'world';
+        const commandValue = value as { item: DimensionEntry; prev: number; next: number };
+        commandValue.item.distance = commandValue.next;
+        commandValue.item.distanceUnit = 'world';
       },
       (value) => {
-        value.item.distance = value.prev as number;
-        value.item.distanceUnit = 'world';
+        const commandValue = value as { item: DimensionEntry; prev: number; next: number };
+        commandValue.item.distance = commandValue.prev;
+        commandValue.item.distanceUnit = 'world';
       },
       { item: dimension, prev: startDistance, next: lastDistance }
     );
@@ -818,6 +911,56 @@ const finishDimensionDrag = (shouldCommit = true) => {
   pendingDimensionId = null;
 };
 
+const finishDimensionPointDrag = (shouldCommit = true) => {
+  if (!dragDimensionPoint) return;
+
+  const { dimension, pointIndex, startPoint, lastPoint } = dragDimensionPoint;
+  const changed =
+    Math.abs(lastPoint.x - startPoint.x) > 1e-9 ||
+    Math.abs(lastPoint.y - startPoint.y) > 1e-9 ||
+    (lastPoint.sourceNodeLabel ?? null) !== (startPoint.sourceNodeLabel ?? null);
+
+  if (shouldCommit && changed) {
+    const setCommand = new Command<IKeyValue>(
+      (value) => {
+        const commandValue = value as {
+          item: DimensionEntry;
+          pointIndex: 0 | 1;
+          prev: DimensionPoint;
+          next: DimensionPoint;
+        };
+        commandValue.item.points[commandValue.pointIndex] = createDimensionPoint(
+          commandValue.next.x,
+          commandValue.next.y,
+          commandValue.next.sourceNodeLabel ?? null
+        );
+      },
+      (value) => {
+        const commandValue = value as {
+          item: DimensionEntry;
+          pointIndex: 0 | 1;
+          prev: DimensionPoint;
+          next: DimensionPoint;
+        };
+        commandValue.item.points[commandValue.pointIndex] = createDimensionPoint(
+          commandValue.prev.x,
+          commandValue.prev.y,
+          commandValue.prev.sourceNodeLabel ?? null
+        );
+      },
+      { item: dimension, pointIndex, prev: startPoint, next: lastPoint }
+    );
+
+    undoRedoManager.executeCommand(setCommand);
+  } else if (!shouldCommit) {
+    dimension.points[pointIndex] = createDimensionPoint(startPoint.x, startPoint.y, startPoint.sourceNodeLabel ?? null);
+  }
+
+  dragDimensionPoint = null;
+  appStore.mouseMode = MouseMode.NONE;
+  pendingDimensionId = null;
+};
+
 const cancelDimensionDrag = () => {
   if (!dragDimension) {
     pendingDimensionId = null;
@@ -825,6 +968,11 @@ const cancelDimensionDrag = () => {
   }
 
   finishDimensionDrag(false);
+};
+
+const cancelDimensionPointDrag = () => {
+  if (!dragDimensionPoint) return;
+  finishDimensionPointDrag(false);
 };
 
 const mouseMove = (e: PointerEvent) => {
@@ -857,6 +1005,10 @@ const mouseMove = (e: PointerEvent) => {
     }
   }
 
+  if (isDraggingDimensionPoint()) {
+    updateDimensionPointFromPointer();
+  }
+
   if (isDraggingDimension()) {
     updateDimensionDistanceFromPointer();
   }
@@ -865,7 +1017,7 @@ const mouseMove = (e: PointerEvent) => {
     const index = intersected.value.index;
     if (index === null) return;
 
-    const item = useProjectStore().solver.domain.nodes.get(index)!;
+    const item = useProjectStore().solver.domain.nodes.get(String(index))!;
 
     if (drgNode === null) {
       drgNode = item;
@@ -873,11 +1025,9 @@ const mouseMove = (e: PointerEvent) => {
       origZ = item.coords[2];
     }
 
-    // @ts-expect-error ts-fem is wrongly typed
-    useProjectStore().solver.domain.nodes.get(index)!.coords[0] = mouseXReal.value;
+    useProjectStore().solver.domain.nodes.get(String(index))!.coords[0] = mouseXReal.value;
 
-    // @ts-expect-error ts-fem is wrongly typed
-    useProjectStore().solver.domain.nodes.get(index)!.coords[2] = mouseYReal.value;
+    useProjectStore().solver.domain.nodes.get(String(index))!.coords[2] = mouseYReal.value;
 
     finalX = mouseXReal.value;
     finalZ = mouseYReal.value;
@@ -929,9 +1079,10 @@ const onMouseDown = (e: PointerEvent) => {
 
       // Check whether the node is being placed onto some of the existing elements
       // If so, we need to ask the user if they want split the existing element or place individual node
-      for (const [label, el] of projectStore.solver.domain.elements) {
-        const n1 = projectStore.solver.domain.nodes.get(el.nodes[0])!;
-        const n2 = projectStore.solver.domain.nodes.get(el.nodes[1])!;
+      for (const [, el] of projectStore.solver.domain.elements) {
+        const beam = el as Beam2D;
+        const n1 = projectStore.solver.domain.nodes.get(beam.nodes[0])!;
+        const n2 = projectStore.solver.domain.nodes.get(beam.nodes[1])!;
 
         const dist = distanceToLineSegment(
           { x: mouseXReal.value, y: mouseYReal.value },
@@ -942,7 +1093,7 @@ const onMouseDown = (e: PointerEvent) => {
         if (dist < 0.1) {
           openModal(Confirmation, {
             title: t('confirmation.splitElementAndPlaceNode.title'),
-            message: t('confirmation.splitElementAndPlaceNode.message', { label: el.label }),
+            message: t('confirmation.splitElementAndPlaceNode.message', { label: String(beam.label) }),
             actions: [
               {
                 label: t('confirmation.splitElementAndPlaceNode.split'),
@@ -953,11 +1104,11 @@ const onMouseDown = (e: PointerEvent) => {
                   // Create the new node
                   projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
 
-                  const prevHinges = el.hinges;
+                  const prevHinges = beam.hinges;
 
-                  const startNode = projectStore.solver.domain.nodes.get(el.nodes[0])!;
-                  const endNode = projectStore.solver.domain.nodes.get(el.nodes[1])!;
-                  const newNode = projectStore.solver.domain.nodes.get(newNodeId.toString())!;
+                  const startNode = projectStore.solver.domain.nodes.get(beam.nodes[0])!;
+                  const endNode = projectStore.solver.domain.nodes.get(beam.nodes[1])!;
+                  const newNode = projectStore.solver.domain.nodes.get(String(newNodeId))!;
                   const totalLength = Math.hypot(
                     endNode.coords[0] - startNode.coords[0],
                     endNode.coords[2] - startNode.coords[2]
@@ -1079,9 +1230,10 @@ const onMouseDown = (e: PointerEvent) => {
         }
 
         const nid = startNode.value.label;
+        if (nid === null || intersected.value.index === null) return;
         const mat = [...useProjectStore().solver.domain.materials.values()][0].label;
         const cs = [...useProjectStore().solver.domain.crossSections.values()][0].label;
-        projectStore.solver.domain.createBeam2D(newElId, [nid, intersected.value.index], mat, cs);
+        projectStore.solver.domain.createBeam2D(newElId, [String(nid), String(intersected.value.index)], mat, cs);
 
         const n = projectStore.solver.domain.nodes.get(intersected.value.index as string)!;
         startNode.value = { label: intersected.value.index, x: n.coords[0], y: n.coords[2] };
@@ -1105,9 +1257,10 @@ const onMouseDown = (e: PointerEvent) => {
         }
 
         const nid = startNode.value.label;
+        if (nid === null) return;
         const mat = [...useProjectStore().solver.domain.materials.values()][0].label;
         const cs = [...useProjectStore().solver.domain.crossSections.values()][0].label;
-        projectStore.solver.domain.createBeam2D(newElId, [nid, newNodeId], mat, cs);
+        projectStore.solver.domain.createBeam2D(newElId, [String(nid), String(newNodeId)], mat, cs);
 
         startNode.value = { label: newNodeId, x: mouseXReal.value, y: mouseYReal.value };
 
@@ -1119,14 +1272,19 @@ const onMouseDown = (e: PointerEvent) => {
 
     if (appStore.mouseMode === MouseMode.ADD_DIMLINE) {
       mouseStartX = -9999;
-      if (startNode.value === null && intersected.value.type === 'node') {
-        const n = projectStore.solver.domain.nodes.get(intersected.value.index as string);
-        startNode.value = { label: intersected.value.index, x: n.coords[0], y: n.coords[2] };
-      } else if (intersected.value.type === 'node') {
-        const n1 = projectStore.solver.domain.nodes.get(startNode.value.label)!;
-        const n2 = projectStore.solver.domain.nodes.get(intersected.value.index as string)!;
+      if (startNode.value === null) {
+        const startPoint = getPointerDimensionPoint();
+        startNode.value = {
+          label: startPoint.sourceNodeLabel ?? null,
+          x: startPoint.x,
+          y: startPoint.y,
+          sourceNodeLabel: startPoint.sourceNodeLabel ?? null,
+        };
+      } else {
+        const endPoint = getPointerDimensionPoint();
+        const samePoint = Math.hypot(endPoint.x - startNode.value.x, endPoint.y - startNode.value.y) < 1e-9;
 
-        if (n1.label === n2.label) {
+        if (samePoint) {
           startNode.value = null;
           appStore.mouseMode = MouseMode.NONE;
           return;
@@ -1136,13 +1294,14 @@ const onMouseDown = (e: PointerEvent) => {
           id: createDimensionId(),
           distance: dimlineDist.value / (scale.value || 1),
           distanceUnit: 'world',
-          nodes: [n1, n2],
+          points: [
+            createDimensionPoint(startNode.value.x, startNode.value.y, startNode.value.sourceNodeLabel ?? null),
+            endPoint,
+          ],
         });
 
         startNode.value = null;
         appStore.mouseMode = MouseMode.NONE;
-      } else {
-        // No effect when no node selected as end
       }
 
       return;
@@ -1190,13 +1349,33 @@ const normalizedDimensions = computed(() => {
   return projectStore.dimensions as DimensionEntry[];
 });
 
+const getDimensionResolvedPoints = (dim: DimensionEntry): [DimensionPoint, DimensionPoint] | null => {
+  if (!dim.points[0] || !dim.points[1]) return null;
+
+  return [
+    resolveDimensionPoint(dim.points[0], projectStore.solver.domain.nodes),
+    resolveDimensionPoint(dim.points[1], projectStore.solver.domain.nodes),
+  ];
+};
+
+const getDimensionRenderableNodes = (dim: DimensionEntry) => {
+  const points = getDimensionResolvedPoints(dim);
+  if (!points) return null;
+
+  return [
+    createDimensionRenderableNode(points[0], dim.points[0].sourceNodeLabel ?? null),
+    createDimensionRenderableNode(points[1], dim.points[1].sourceNodeLabel ?? null),
+  ];
+};
+
 const getDimensionSegment = (dim: DimensionEntry): { start: Point; end: Point } | null => {
-  if (!dim.nodes[0] || !dim.nodes[1]) return null;
+  const points = getDimensionResolvedPoints(dim);
+  if (!points) return null;
 
   convertDistanceToWorld(dim);
 
-  const dx = dim.nodes[1].coords[0] - dim.nodes[0].coords[0];
-  const dz = dim.nodes[1].coords[2] - dim.nodes[0].coords[2];
+  const dx = points[1].x - points[0].x;
+  const dz = points[1].y - points[0].y;
   const length = Math.sqrt(dx * dx + dz * dz);
 
   if (!isFinite(length) || length === 0) return null;
@@ -1209,8 +1388,8 @@ const getDimensionSegment = (dim: DimensionEntry): { start: Point; end: Point } 
   const dny = offset * normalY;
 
   return {
-    start: { x: dim.nodes[0].coords[0] + dnx, y: dim.nodes[0].coords[2] + dny },
-    end: { x: dim.nodes[1].coords[0] + dnx, y: dim.nodes[1].coords[2] + dny },
+    start: { x: points[0].x + dnx, y: points[0].y + dny },
+    end: { x: points[1].x + dnx, y: points[1].y + dny },
   };
 };
 
@@ -1288,12 +1467,14 @@ const onMouseUp = (e: PointerEvent) => {
   if (appStore.mouseMode === MouseMode.MOVING) {
     if (intersected.value.type === 'node') {
       moveNode();
+    } else if (intersected.value.type === 'dimension-point') {
+      finishDimensionPointDrag();
     } else if (intersected.value.type === 'dimension') {
       finishDimensionDrag();
     }
   }
 
-  if (!isDraggingDimension()) {
+  if (!isDraggingDimension() && !isDraggingDimensionPoint()) {
     pendingDimensionId = null;
   }
 
@@ -1935,23 +2116,27 @@ defineExpose({ centerContent, fitContent });
             <SVGDimensioning
               v-for="(dim, index) in normalizedDimensions"
               :key="getDimensionId(dim)"
-              :nodes="dim.nodes"
+              :points="getDimensionRenderableNodes(dim)!"
               :distance="dim.distance"
               :scale="scale"
               :font-size="viewerStore.fontSize"
               :number-format="appStore.numberFormatter"
               :selected="projectStore.selection2.dimensions.includes(getDimensionId(dim))"
+              :show-points="projectStore.selection2.dimensions.includes(getDimensionId(dim))"
               @dimensionpointerdown="onDimensionPointerDown($event, getDimensionId(dim))"
               @dimensionpointerup="onDimensionPointerUp($event, getDimensionId(dim))"
+              @dimensionpointpointerdown="onDimensionPointPointerDown($event.event, getDimensionId(dim), $event.index)"
+              @dimensionpointpointerup="onDimensionPointPointerUp($event.event, getDimensionId(dim))"
             />
             <SVGDimensioning
-              v-if="previewDimensionNodes"
+              v-if="previewDimensionPoints"
               key="add-dimline"
-              :nodes="previewDimensionNodes"
+              :points="previewDimensionPoints"
               :distance="previewDimensionDistance"
               :scale="scale"
               :font-size="viewerStore.fontSize"
               :number-format="appStore.numberFormatter"
+              :show-points="true"
               :interactive="false"
             />
           </g>

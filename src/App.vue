@@ -7,6 +7,7 @@ import { useViewerStore } from './store/viewer';
 import Confirmation from './components/dialogs/Confirmation.vue';
 import ReloadPrompt from './components/ReloadPrompt.vue';
 import { createDimensionId } from './utils/id';
+import { createDimensionPointFromNode } from './types/dimension';
 
 export default {
   name: 'App',
@@ -189,7 +190,10 @@ onMounted(() => {
 
   useProjectStore().dimensions.push({
     id: createDimensionId(),
-    nodes: [domain.nodes.get('1')!, domain.nodes.get('4')!],
+    points: [
+      createDimensionPointFromNode(domain.nodes.get('1')!),
+      createDimensionPointFromNode(domain.nodes.get('4')!),
+    ],
     distance: 1,
   });
 

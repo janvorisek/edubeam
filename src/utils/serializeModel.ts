@@ -8,7 +8,12 @@ import {
   BeamElementTrapezoidalEdgeLoad,
 } from 'ts-fem';
 import { createDimensionId, ensureDimensionId } from './id';
-import type { DimensionLine } from '@/types/dimension';
+import {
+  createDimensionPoint,
+  createDimensionPointFromNode,
+  type DimensionLine,
+  type DimensionPoint,
+} from '@/types/dimension';
 
 function objectToBase64(obj: unknown) {
   try {
@@ -133,7 +138,13 @@ export const serializeModel = (ls: LinearStaticSolver, dims: DimensionLine[]) =>
   obj.d = dims.map((e) => {
     const id = ensureDimensionId(e);
     const distanceUnit = e.distanceUnit ?? 'world';
-    return [e.distance, e.nodes.map((n) => n.label), id, distanceUnit];
+    return [
+      e.distance,
+      e.points.map((point) => [point.x, point.y]),
+      id,
+      distanceUnit,
+      e.points.map((point) => point.sourceNodeLabel ?? null),
+    ];
   });
 
   return objectToBase64(obj);
@@ -224,7 +235,26 @@ export const deserializeModel = (base64String: string, ls: LinearStaticSolver, d
       try {
         const id = e[2] ?? createDimensionId();
         const distanceUnit = e[3] ?? 'pixel';
-        dims.push({ id, distance: e[0], distanceUnit, nodes: e[1].map((n) => ls.domain.getNode(n)) });
+        const serializedPoints = Array.isArray(e[1]) ? e[1] : [];
+        const sourceNodeLabels = Array.isArray(e[4]) ? e[4] : [];
+
+        const points = serializedPoints.every((point) => Array.isArray(point) && point.length >= 2)
+          ? serializedPoints
+              .slice(0, 2)
+              .map((point, index) => createDimensionPoint(point[0], point[1], sourceNodeLabels[index] ?? null))
+          : serializedPoints.slice(0, 2).map((nodeLabel) => {
+              const node = ls.domain.getNode(nodeLabel);
+              return createDimensionPointFromNode(node);
+            });
+
+        if (points.length < 2) continue;
+
+        dims.push({
+          id,
+          distance: e[0],
+          distanceUnit,
+          points: [points[0] as DimensionPoint, points[1] as DimensionPoint],
+        });
       } catch (e) {
         console.warn('Error deserializing dimensions: ', e);
       }

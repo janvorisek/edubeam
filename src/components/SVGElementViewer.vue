@@ -29,6 +29,7 @@ import SVGElement from './svg/Element.vue';
 import SVGElementTemperatureLoad from './svg/ElementTemperatureLoad.vue';
 import SVGDimensioning from './svg/Dimensioning.vue';
 import { loadType } from '../utils/loadType';
+import type { DimensionRenderableNode } from '@/types/dimension';
 
 const props = withDefaults(
   defineProps<{
@@ -52,7 +53,7 @@ const props = withDefaults(
     elementLoads?: BeamElementLoad[];
     prescribedDisplacements?: PrescribedDisplacement[];
     dimlines?: {
-      nodes: Node[];
+      points: DimensionRenderableNode[];
       distance: number;
       numberFormat?: Intl.NumberFormat;
       convertLength?: (value: number) => number;
@@ -386,7 +387,7 @@ defineExpose({ centerContent, fitContent });
             <SVGDimensioning
               v-for="(dim, index) in props.dimlines"
               :key="index"
-              :nodes="dim.nodes"
+              :points="dim.points"
               :distance="dim.distance"
               :scale="scale"
               :font-size="props.fontSize"

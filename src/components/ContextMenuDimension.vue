@@ -2,8 +2,11 @@
 import { computed, ref, watch } from 'vue';
 import { useProjectStore } from '@/store/project';
 import { ensureDimensionId } from '@/utils/id';
+import { parseFloat2 } from '@/utils';
+import { useI18n } from 'vue-i18n';
 
 const projectStore = useProjectStore();
+const { t } = useI18n();
 
 const selectedDimensionId = computed(() => {
   if (projectStore.selection.type !== 'dimension') return null;
@@ -15,39 +18,71 @@ const selectedDimension = computed(() => {
   return projectStore.dimensions.find((dim) => ensureDimensionId(dim) === selectedDimensionId.value) ?? null;
 });
 
-const n1 = ref('');
-const n2 = ref('');
+const x1 = ref('');
+const y1 = ref('');
+const x2 = ref('');
+const y2 = ref('');
 
 let syncingFromDimension = false;
 
+const syncInputsFromDimension = () => {
+  const dim = selectedDimension.value;
+
+  syncingFromDimension = true;
+  x1.value = dim?.points[0]?.x?.toString() ?? '';
+  y1.value = dim?.points[0]?.y?.toString() ?? '';
+  x2.value = dim?.points[1]?.x?.toString() ?? '';
+  y2.value = dim?.points[1]?.y?.toString() ?? '';
+  syncingFromDimension = false;
+};
+
 watch(
   selectedDimension,
-  (dim) => {
-    syncingFromDimension = true;
-    n1.value = dim?.nodes[0]?.label?.toString() ?? '';
-    n2.value = dim?.nodes[1]?.label?.toString() ?? '';
-    syncingFromDimension = false;
+  () => {
+    syncInputsFromDimension();
   },
   { immediate: true }
 );
 
-watch([n1, n2], ([newN1, newN2]) => {
+watch([x1, y1, x2, y2], ([newX1, newY1, newX2, newY2]) => {
   if (syncingFromDimension) return;
   const dim = selectedDimension.value;
   if (!dim) return;
-  if (!newN1 || !newN2) return;
-  if (newN1 === newN2) return;
+  if (!newX1 || !newY1 || !newX2 || !newY2) return;
 
-  const currentN1 = dim.nodes[0]?.label?.toString();
-  const currentN2 = dim.nodes[1]?.label?.toString();
-  if (currentN1 === newN1 && currentN2 === newN2) return;
+  const nextPoints = [
+    { ...dim.points[0], x: parseFloat2(newX1), y: parseFloat2(newY1), sourceNodeLabel: null },
+    { ...dim.points[1], x: parseFloat2(newX2), y: parseFloat2(newY2), sourceNodeLabel: null },
+  ] as const;
 
-  const node1 = projectStore.solver.domain.nodes.get(newN1);
-  const node2 = projectStore.solver.domain.nodes.get(newN2);
-  if (!node1 || !node2) return;
+  const unchanged = dim.points.every((point, index) => {
+    const nextPoint = nextPoints[index];
+    return (
+      point.x === nextPoint.x &&
+      point.y === nextPoint.y &&
+      (point.sourceNodeLabel ?? null) === nextPoint.sourceNodeLabel
+    );
+  });
 
-  dim.nodes = [node1, node2];
+  if (unchanged) return;
+
+  dim.points = [nextPoints[0], nextPoints[1]];
 });
+
+const snappedLabels = computed(() => {
+  const dim = selectedDimension.value;
+  if (!dim) return [null, null] as const;
+
+  return [dim.points[0]?.sourceNodeLabel ?? null, dim.points[1]?.sourceNodeLabel ?? null] as const;
+});
+
+const reverseDimension = () => {
+  const dim = selectedDimension.value;
+  if (!dim) return;
+
+  dim.points = [dim.points[1], dim.points[0]];
+  syncInputsFromDimension();
+};
 
 const removeDimension = () => {
   if (!selectedDimensionId.value) return;
@@ -67,40 +102,61 @@ const removeDimension = () => {
         <div class="pr-2"><v-icon size="16" icon="mdi-pencil" /></div>
       </template>
       {{ $t('common.edit') }}
-      <v-menu activator="parent" open-on-click location="end" :close-on-content-click="false">
+      <v-menu activator="parent" open-on-click location="end" :close-on-content-click="false" max-width="200">
         <v-list density="compact" class="py-0">
           <v-row no-gutters>
-            <v-col>
-              <v-select
-                v-model="n1"
+            <v-col cols="6">
+              <v-text-field
+                v-model="x1"
                 density="compact"
-                label="From"
+                label="X1"
                 hide-details="auto"
-                item-title="label"
-                item-value="label"
-                :items="projectStore.nodes"
                 class="menu-select"
-                style="width: 90px"
-              ></v-select>
+              ></v-text-field>
             </v-col>
-            <v-col>
-              <v-select
-                v-model="n2"
+            <v-col cols="6">
+              <v-text-field
+                v-model="y1"
                 density="compact"
-                label="To"
+                label="Y1"
                 hide-details="auto"
-                item-title="label"
-                item-value="label"
-                :items="projectStore.nodes"
                 class="menu-select"
-                style="width: 90px"
-              ></v-select>
+              ></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field
+                v-model="x2"
+                density="compact"
+                label="X2"
+                hide-details="auto"
+                class="menu-select"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field
+                v-model="y2"
+                density="compact"
+                label="Y2"
+                hide-details="auto"
+                class="menu-select"
+              ></v-text-field>
             </v-col>
           </v-row>
+          <v-list-item v-if="snappedLabels[0] || snappedLabels[1]" class="text-caption px-4 py-1">
+            {{ snappedLabels[0] ? `P1 snaps to node ${snappedLabels[0]}` : 'P1 is free' }}
+            {{ snappedLabels[1] ? `, P2 snaps to node ${snappedLabels[1]}` : ', P2 is free' }}
+          </v-list-item>
         </v-list>
       </v-menu>
     </v-list-item>
-    <v-divider v-if="selectedDimension" class="my-1" />
+    <v-divider v-if="selectedDimension" />
+    <v-list-item v-if="selectedDimension" link class="text-body-2" @click="reverseDimension">
+      <template #prepend>
+        <div class="pr-2"><v-icon size="16" icon="mdi-swap-horizontal" /></div>
+      </template>
+      {{ t('elements.swapNodeOrder') }}
+    </v-list-item>
+    <v-divider v-if="selectedDimension" />
     <v-list-item link class="text-body-2 text-error" @click="removeDimension">
       <template #prepend>
         <div class="pr-2"><v-icon size="16" color="error" icon="mdi-delete" /></div>

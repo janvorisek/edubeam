@@ -19,6 +19,7 @@ import { useViewerStore } from '../store/viewer';
 
 import { loadType } from './loadType';
 import { ensureDimensionId, createDimensionId } from './id';
+import { createDimensionPoint, createDimensionPointFromNode, type DimensionPoint } from '@/types/dimension';
 
 export type EntityWithLabel = { label: string & { [key: string]: unknown } };
 
@@ -166,7 +167,11 @@ export const exportJSON = () => {
       id,
       distance: dim.distance,
       distanceUnit: dim.distanceUnit ?? 'world',
-      nodes: dim.nodes.map((n) => n.label),
+      points: dim.points.map((point) => ({
+        x: point.x,
+        y: point.y,
+        sourceNodeLabel: point.sourceNodeLabel ?? null,
+      })),
     };
   });
 
@@ -270,17 +275,31 @@ export const importJSON = (json: any) => {
     const nodeMap = useProjectStore().solver.domain.nodes;
 
     for (const dim of jObj.dimensions) {
-      if (!dim || !Array.isArray(dim.nodes) || dim.nodes.length < 2) continue;
+      if (!dim) continue;
 
-      const nodes = dim.nodes.map((label) => nodeMap.get(label)).filter((node): node is Node => Boolean(node));
+      let points: DimensionPoint[] = [];
 
-      if (nodes.length !== dim.nodes.length) continue;
+      if (Array.isArray(dim.points) && dim.points.length >= 2) {
+        points = dim.points.slice(0, 2).map((point) => {
+          if (Array.isArray(point) && point.length >= 2) {
+            return createDimensionPoint(point[0], point[1]);
+          }
+
+          return createDimensionPoint(point.x, point.y, point.sourceNodeLabel ?? null);
+        });
+      } else if (Array.isArray(dim.nodes) && dim.nodes.length >= 2) {
+        const nodes = dim.nodes.map((label) => nodeMap.get(label)).filter((node): node is Node => Boolean(node));
+        if (nodes.length !== dim.nodes.length) continue;
+        points = nodes.slice(0, 2).map((node) => createDimensionPointFromNode(node));
+      }
+
+      if (points.length < 2) continue;
 
       restoredDimensions.push({
         id: typeof dim.id === 'string' ? dim.id : createDimensionId(),
         distance: typeof dim.distance === 'number' ? dim.distance : 0,
         distanceUnit: dim.distanceUnit === 'pixel' ? 'pixel' : 'world',
-        nodes,
+        points: [points[0], points[1]] as [DimensionPoint, DimensionPoint],
       });
     }
 
@@ -605,7 +624,7 @@ export const deleteNode = (id: string) => {
   // delete relevant dimensioning
   const removedDimensionIds: string[] = [];
   useProjectStore().dimensions = useProjectStore().dimensions.filter((dim) => {
-    const shouldRemove = dim.nodes[0].label === id || dim.nodes[1].label === id;
+    const shouldRemove = dim.points.some((point) => String(point.sourceNodeLabel ?? '') === id);
     if (shouldRemove) removedDimensionIds.push(ensureDimensionId(dim));
     return !shouldRemove;
   });

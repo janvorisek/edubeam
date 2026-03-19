@@ -1,6 +1,25 @@
 {
   "releases": [
     {
+      "version": "1.0.4",
+      "title": "Kótování na libovolné body",
+      "date": "19. března 2026",
+      "highlights": [
+        "Kóty nyní mohou začínat a končit v libovolném bodě obrazovky bez vytváření nevyužitých FE uzlů.",
+        "Koncové body kót nyní viditelně zobrazují body uchopení a lze je přímo přetahovat.",
+        "Přichytávání koncových bodů nyní funguje spolehlivě při vytváření i přetahování, a to pro volné body i uzly.",
+        "Kontextové menu kót nyní umožňuje obrátit pořadí koncových bodů a přímo upravit jejich souřadnice."
+      ],
+      "tag": "Aktuální",
+      "media": [
+        {
+          "src": "/changelog/media/freedimpoints.gif",
+          "alt": "Kótování na libovolné body",
+          "caption": "Kótování na libovolné body"
+        }
+      ]
+    },
+    {
     "version": "1.0.3",
       "title": "Lineárně proměnné zatížení & kóty",
       "date": "19. prosince 2025",
@@ -9,7 +28,6 @@
         "Opravena možnost přidávání, mazání a výběru kót mezi uzly.",
         "Kóty lze posouvat myší pro lepší přehlednost."
       ],
-      "tag": "Aktuální",
       "media": [
         {
           "src": "/changelog/media/trapezoidal1.png",

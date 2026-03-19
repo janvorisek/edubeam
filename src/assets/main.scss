@@ -117,7 +117,7 @@ div.inline-edit.fw {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
-  
+
   &:has(.input-after) {
     .inline-edit {
       border-right: none;
@@ -134,7 +134,7 @@ div.inline-edit.fw {
   &:has(.input-before) .inline-edit {
     width: 60px;
   }
-  
+
   &:has(.input-after) {
     .input-after {
       width: 48px;
@@ -212,7 +212,7 @@ select.mini-select {
   border-radius: 8px;
   overflow: hidden;
   background: #fff;
-  z-index: 100;
+  z-index: 101;
   width: 210px;
 }
 
@@ -232,7 +232,7 @@ select.mini-select {
 .v-table {
   --v-table-header-height: 26px;
   --v-table-row-height: 32px;
-  --fixed-column-size: 48px;  
+  --fixed-column-size: 48px;
   overflow-x: visible;
   position: relative;
   .v-table__wrapper {
@@ -243,7 +243,7 @@ select.mini-select {
     border-bottom: 1px solid #ddd;
   }
   thead {
-    
+
   }
   table tr:nth-child(even) td {
     background: #ffffff !important;
@@ -433,6 +433,26 @@ select.mini-select {
 
   .handle {
     pointer-events: stroke;
+  }
+
+  .endpoint {
+    stroke: #000;
+    stroke-width: 1.5px;
+    fill: #fff;
+    vector-effect: non-scaling-stroke;
+    pointer-events: all;
+    cursor: move;
+
+    &.snapped {
+      fill: rgb(0, 94, 255);
+      stroke: rgb(0, 94, 255);
+    }
+  }
+
+  &.selected {
+    .endpoint.free {
+      stroke: rgb(0, 94, 255);
+    }
   }
 }
 

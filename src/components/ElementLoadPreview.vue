@@ -4,6 +4,7 @@ import SVGElementViewer from './SVGElementViewer.vue';
 import { useAppStore } from '@/store/app';
 import { Beam2D, BeamConcentratedLoad, BeamElementLoad, LinearStaticSolver, Node } from 'ts-fem';
 import { useViewerStore } from '@/store/viewer';
+import { createDimensionRenderableNode } from '@/types/dimension';
 
 const props = withDefaults(
   defineProps<{
@@ -68,9 +69,12 @@ const dimensionLines = computed(() => {
 
   return [
     {
-      nodes: [startNode, loadNode],
+      points: [
+        createDimensionRenderableNode({ x: startNode.coords[0], y: startNode.coords[2] }, startNode.label),
+        createDimensionRenderableNode({ x: loadNode.coords[0], y: loadNode.coords[2] }, loadNode.label),
+      ],
       distance: offset,
-      numberFormat: appStore.numberFormatter.value,
+      numberFormat: new Intl.NumberFormat(),
       convertLength: appStore.convertLength,
     },
   ];

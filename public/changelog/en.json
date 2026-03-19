@@ -1,6 +1,25 @@
 {
   "releases": [
     {
+      "version": "1.0.4",
+      "title": "Free-Point Dimensioning",
+      "date": "March 19, 2026",
+      "highlights": [
+        "Dimensions can now start and end at any point on screen without creating unused FE nodes.",
+        "Dimension endpoints visibly show their snap points and can be dragged directly.",
+        "Endpoint snapping now works reliably during creation and dragging, including free points and node snaps.",
+        "Dimension context menu now supports reversing endpoint order and editing endpoint coordinates directly."
+      ],
+      "tag": "Latest",
+      "media": [
+        {
+          "src": "/changelog/media/freedimpoints.gif",
+          "alt": "Free-point dimensioning demo",
+          "caption": "Free-point dimensioning demo"
+        }
+      ]
+    },
+    {
     "version": "1.0.3",
       "title": "Linearly Variable Loads & Dimensions",
       "date": "December 19, 2025",
@@ -9,7 +28,6 @@
         "Fixed the ability to add, delete, and select dimensions between nodes.",
         "Dimensions can be moved with the mouse for better clarity."
       ],
-      "tag": "Latest",
       "media": [
         {
           "src": "/changelog/media/trapezoidal1.png",

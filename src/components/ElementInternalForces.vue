@@ -54,18 +54,10 @@ const panelMessage = computed(() => {
   return tt("elements.noElementSelected", "Není vybraný žádný prvek");
 });
 
-// ========================
-// Jednotky
-// ========================
-
 const toKN = (v: number) => v / 1000;
 const toKNm = (v: number) => v / 1000;
 const toKNperM = (v: number) => v / 1000;
 const toKNperM2 = (v: number) => v / 1000;
-
-// ========================
-// Pomocné funkce
-// ========================
 
 const isZero = (v: number, eps = EPS) => Math.abs(v) < eps;
 
@@ -129,7 +121,7 @@ const sortUniqueNumbers = (values: number[], eps = POINT_EPS) => {
 };
 
 // ========================
-// Polynomy
+// Polynoms
 // ========================
 
 type PolynomialCoefficients = {

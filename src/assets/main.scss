@@ -313,6 +313,69 @@ select.mini-select {
   }
 }
 
+.edubeam-widget {
+  transition: transform 160ms ease, filter 160ms ease;
+
+  &:hover {
+    filter: drop-shadow(0 20px 36px rgba(15, 23, 42, 0.12));
+  }
+}
+
+.widget-shell {
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.16);
+}
+
+.widget-header {
+  min-height: 68px;
+  padding: 10px 12px;
+  background:
+    linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(244, 247, 251, 0.94)),
+    radial-gradient(circle at top right, rgba(0, 94, 255, 0.08), transparent 10rem);
+  border-bottom: 1px solid rgba(19, 39, 65, 0.08);
+  cursor: grab;
+}
+
+.widget-header:active {
+  cursor: grabbing;
+}
+
+.widget-preview {
+  width: 72px;
+  height: 52px;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.16);
+}
+
+.widget-title {
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.widget-subtitle {
+  margin-top: 4px;
+}
+
+.widget-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(0, 94, 255, 0.08);
+  color: rgb(0, 94, 255);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.widget-close-btn {
+  background: rgba(19, 39, 65, 0.04);
+}
+
+.widget-body {
+  max-height: min(72dvh, 760px);
+  overflow: auto;
+}
+
 .menu-select .v-field {
   border-radius: 0 !important;
 }

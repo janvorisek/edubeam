@@ -935,27 +935,37 @@
           </template>
 
           <template #item.actions="{ item, index }">
-            <v-btn
-              v-if="item.type === 'element'"
-              density="compact"
-              variant="text"
-              icon="mdi-close"
-              @click="deleteElementLoad(item, index)"
-            ></v-btn>
-            <v-btn
-              v-if="item.type === 'node'"
-              density="compact"
-              variant="text"
-              icon="mdi-close"
-              @click="deleteNodalLoad(item, index)"
-            ></v-btn>
-            <v-btn
-              v-if="item.type === 'prescribed'"
-              density="compact"
-              variant="text"
-              icon="mdi-close"
-              @click="deletePrescribedDisplacement(item, index)"
-            ></v-btn>
+            <div class="text-no-wrap">
+              <v-btn
+                v-if="item.type !== 'prescribed'"
+                v-tooltip.bottom="$t('common.copy')"
+                density="compact"
+                variant="text"
+                icon="mdi-content-copy"
+                @click="duplicateLoad(item)"
+              ></v-btn>
+              <v-btn
+                v-if="item.type === 'element'"
+                density="compact"
+                variant="text"
+                icon="mdi-close"
+                @click="deleteElementLoad(item, index)"
+              ></v-btn>
+              <v-btn
+                v-if="item.type === 'node'"
+                density="compact"
+                variant="text"
+                icon="mdi-close"
+                @click="deleteNodalLoad(item, index)"
+              ></v-btn>
+              <v-btn
+                v-if="item.type === 'prescribed'"
+                density="compact"
+                variant="text"
+                icon="mdi-close"
+                @click="deletePrescribedDisplacement(item, index)"
+              ></v-btn>
+            </div>
           </template>
         </v-data-table>
       </v-window-item>
@@ -1578,6 +1588,33 @@ const loads = computed(() => {
 
   return display;
 });
+
+const duplicateLoad = (item: (typeof loads.value)[number]) => {
+  if (item.type === 'prescribed') return;
+
+  setUnsolved();
+
+  if (item.type === 'node' && item.ref instanceof NodalLoad) {
+    item.loadCase.createNodalLoad(item.ref.target, { ...item.ref.values });
+  } else if (item.type === 'element') {
+    if (item.ref instanceof BeamElementUniformEdgeLoad) {
+      item.loadCase.createBeamElementUniformEdgeLoad(item.ref.target, [...item.ref.values], item.ref.lcs);
+    } else if (item.ref instanceof BeamElementTrapezoidalEdgeLoad) {
+      item.loadCase.createBeamElementTrapezoidalEdgeLoad(
+        item.ref.target,
+        [...item.ref.startValues],
+        [...item.ref.endValues],
+        item.ref.lcs
+      );
+    } else if (item.ref instanceof BeamConcentratedLoad) {
+      item.loadCase.createBeamConcentratedLoad(item.ref.target, [...item.ref.values], item.ref.lcs);
+    } else {
+      item.loadCase.createBeamTemperatureLoad(item.ref.target, [...item.ref.values]);
+    }
+  }
+
+  solve();
+};
 
 const materials = computed(() => {
   const items = useProjectStore().solver.domain.materials.values();

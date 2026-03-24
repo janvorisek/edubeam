@@ -42,7 +42,8 @@
     "lcs": "Local Coordinate System",
     "paste": "Paste",
     "addNew": "Add new",
-    "whatisnew": "What’s New?"
+    "whatisnew": "What’s New?",
+    "reverse_orientation": "Flip dimension"
   },
   "nodes": {
     "addNode": "Add node",

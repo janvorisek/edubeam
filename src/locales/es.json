@@ -42,7 +42,8 @@
     "lcs": "Sistema de coordenadas local",
     "paste": "Pegar",
     "addNew": "Añadir",
-    "whatisnew": "¿Qué hay de nuevo?"
+    "whatisnew": "¿Qué hay de nuevo?",
+    "reverse_orientation": "Invertir cota"
   },
   "nodes": {
     "addNode": "Añadir nodo",

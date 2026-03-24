@@ -81,6 +81,7 @@ const reverseDimension = () => {
   if (!dim) return;
 
   dim.points = [dim.points[1], dim.points[0]];
+  dim.distance = -dim.distance; // keep original position
   syncInputsFromDimension();
 };
 
@@ -154,7 +155,7 @@ const removeDimension = () => {
       <template #prepend>
         <div class="pr-2"><v-icon size="16" icon="mdi-swap-horizontal" /></div>
       </template>
-      {{ t('elements.swapNodeOrder') }}
+      {{ t('common.reverse_orientation') }}
     </v-list-item>
     <v-divider v-if="selectedDimension" />
     <v-list-item link class="text-body-2 text-error" @click="removeDimension">

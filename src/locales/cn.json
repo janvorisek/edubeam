@@ -42,7 +42,8 @@
     "lcs": "局部坐标系",
     "paste": "粘贴",
     "addNew": "新增",
-    "whatisnew": "更新内容"
+    "whatisnew": "更新内容",
+    "reverse_orientation": "翻转标注"
   },
   "nodes": {
     "addNode": "添加节点",

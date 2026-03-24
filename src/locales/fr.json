@@ -42,7 +42,8 @@
     "lcs": "Système de coordonnées local",
     "paste": "Coller",
     "addNew": "Ajouter",
-    "whatisnew": "Quoi de neuf ?"
+    "whatisnew": "Quoi de neuf ?",
+    "reverse_orientation": "Inverser la cote"
   },
   "nodes": {
     "addNode": "Ajouter un nœud",

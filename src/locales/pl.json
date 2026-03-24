@@ -42,7 +42,8 @@
     "lcs": "Lokalny układ współrzędnych",
     "paste": "Wklej",
     "addNew": "Dodaj nowy",
-    "whatisnew": "Co nowego?"
+    "whatisnew": "Co nowego?",
+    "reverse_orientation": "Odwróć wymiar"
   },
   "nodes": {
     "addNode": "Dodaj węzeł",

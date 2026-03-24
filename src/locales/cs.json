@@ -37,7 +37,8 @@
     "lcs": "Lokální souřadný systém",
     "paste": "Vložit",
     "addNew": "Přidat",
-    "whatisnew": "Co je nového?"
+    "whatisnew": "Co je nového?",
+    "reverse_orientation": "Převrátit kótu"
   },
   "tabs": {
     "nodes": "Uzly",

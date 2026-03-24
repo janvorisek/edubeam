@@ -41,7 +41,8 @@
     "openProject": "เปิดโปรเจค",
     "lcs": "ระบบพิกัดท้องถิ่น",
     "paste": "วาง",
-    "addNew": "เพิ่มใหม่"
+    "addNew": "เพิ่มใหม่",
+    "reverse_orientation": "พลิกมิติ"
   },
   "nodes": {
     "addNode": "เพิ่มโหนด",

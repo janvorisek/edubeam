@@ -44,30 +44,34 @@ watch(
   { immediate: true }
 );
 
-watch([x1, y1, x2, y2], ([newX1, newY1, newX2, newY2]) => {
-  if (syncingFromDimension) return;
-  const dim = selectedDimension.value;
-  if (!dim) return;
-  if (!newX1 || !newY1 || !newX2 || !newY2) return;
+watch(
+  [x1, y1, x2, y2],
+  ([newX1, newY1, newX2, newY2]) => {
+    if (syncingFromDimension) return;
+    const dim = selectedDimension.value;
+    if (!dim) return;
+    if (!newX1 || !newY1 || !newX2 || !newY2) return;
 
-  const nextPoints = [
-    { ...dim.points[0], x: parseFloat2(newX1), y: parseFloat2(newY1), sourceNodeLabel: null },
-    { ...dim.points[1], x: parseFloat2(newX2), y: parseFloat2(newY2), sourceNodeLabel: null },
-  ] as const;
+    const nextPoints = [
+      { ...dim.points[0], x: parseFloat2(newX1), y: parseFloat2(newY1), sourceNodeLabel: null },
+      { ...dim.points[1], x: parseFloat2(newX2), y: parseFloat2(newY2), sourceNodeLabel: null },
+    ] as const;
 
-  const unchanged = dim.points.every((point, index) => {
-    const nextPoint = nextPoints[index];
-    return (
-      point.x === nextPoint.x &&
-      point.y === nextPoint.y &&
-      (point.sourceNodeLabel ?? null) === nextPoint.sourceNodeLabel
-    );
-  });
+    const unchanged = dim.points.every((point, index) => {
+      const nextPoint = nextPoints[index];
+      return (
+        point.x === nextPoint.x &&
+        point.y === nextPoint.y &&
+        (point.sourceNodeLabel ?? null) === nextPoint.sourceNodeLabel
+      );
+    });
 
-  if (unchanged) return;
+    if (unchanged) return;
 
-  dim.points = [nextPoints[0], nextPoints[1]];
-});
+    dim.points = [nextPoints[0], nextPoints[1]];
+  },
+  { flush: 'sync' }
+);
 
 const snappedLabels = computed(() => {
   const dim = selectedDimension.value;

@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@imengyu/vue3-context-menu": "^1.5.2",
-    "@intlify/unplugin-vue-i18n": "^11.0.3",
+    "@intlify/unplugin-vue-i18n": "^11.0.7",
     "@sentry/vite-plugin": "^4.6.1",
     "@sentry/vue": "^10.32.1",
     "@tweakpane/plugin-essentials": "^0.2.1",

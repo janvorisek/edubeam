@@ -321,7 +321,9 @@ defineExpose({ centerContent, fitContent });
                   :eload="eload"
                   :scale="scale"
                   :convert-force="props.convertForce"
+                  :convert-moment="props.convertMoment"
                   :font-size="props.fontSize"
+                  :number-format="props.numberFormat"
                 />
               </template>
               <SVGNodalLoad

@@ -171,12 +171,22 @@ const forces = computed(() => {
   ) as BeamConcentratedLoad[];
 
   for (const c of concentrated) {
-    labelsXM.push(c.values[3]);
     labelsX.push(c.values[3] - 1e-7);
     labelsX.push(c.values[3] + 1e-7);
-    mvalues.push(c.values[3]);
+
     nvvalues.push(c.values[3] - 1e-7);
     nvvalues.push(c.values[3] + 1e-7);
+
+    // if concentrated moment
+    if (Math.abs(c.values[2]) > 1e-32) {
+      labelsXM.push(c.values[3] - 1e-7);
+      labelsXM.push(c.values[3] + 1e-7);
+      mvalues.push(c.values[3] - 1e-7);
+      mvalues.push(c.values[3] + 1e-7);
+    } else {
+      labelsXM.push(c.values[3]);
+      mvalues.push(c.values[3]);
+    }
   }
 
   // if element contains trapezoidal load, need to use segments

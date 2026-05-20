@@ -1,6 +1,24 @@
 {
   "releases": [
     {
+      "version": "1.0.5",
+      "title": "Element Concentrated Moment Loads",
+      "date": "May 20, 2026",
+      "highlights": [
+        "Added support for concentrated moment loads on beam elements.",
+        "Element load previews now show the concentrated moment symbol and value correctly.",
+        "Preview labels now respect the active force and moment units, including kN and derived moment units."
+      ],
+      "tag": "Latest",
+      "media": [
+        {
+          "src": "/changelog/media/element-concentrated-moment-load.png",
+          "alt": "Element concentrated moment load preview",
+          "caption": "Element concentrated moment load"
+        }
+      ]
+    },
+    {
       "version": "1.0.4",
       "title": "Free-Point Dimensioning",
       "date": "March 19, 2026",
@@ -10,7 +28,6 @@
         "Endpoint snapping now works reliably during creation and dragging, including free points and node snaps.",
         "Dimension context menu now supports reversing endpoint order and editing endpoint coordinates directly."
       ],
-      "tag": "Latest",
       "media": [
         {
           "src": "/changelog/media/freedimpoints.gif",

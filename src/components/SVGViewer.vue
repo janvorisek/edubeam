@@ -2008,6 +2008,7 @@ defineExpose({ centerContent, fitContent });
                   :eload="eload"
                   :scale="scale"
                   :convert-force="appStore.convertForce"
+                  :convert-moment="appStore.convertMoment"
                   :font-size="viewerStore.fontSize"
                   :number-format="appStore.numberFormatter"
                   @mousemove="onElementLoadHover($event, eload)"

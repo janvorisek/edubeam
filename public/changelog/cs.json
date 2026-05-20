@@ -1,6 +1,24 @@
 {
   "releases": [
     {
+      "version": "1.0.5",
+      "title": "Momentová osamělá zatížení na prvcích",
+      "date": "20. května 2026",
+      "highlights": [
+        "Přidána podpora pro osamělá momentová zatížení na prvcích.",
+        "Náhled zatížení prvku nyní správně zobrazuje symbol a hodnotu osamělého momentu.",
+        "Hodnoty v náhledu nyní respektují aktivní jednotky síly a momentu včetně kN a odvozených momentových jednotek."
+      ],
+      "tag": "Aktuální",
+      "media": [
+        {
+          "src": "/changelog/media/element-concentrated-moment-load.png",
+          "alt": "Náhled osamělého momentového zatížení na prvku",
+          "caption": "Osamělé momentové zatížení na prvku"
+        }
+      ]
+    },
+    {
       "version": "1.0.4",
       "title": "Kótování na libovolné body",
       "date": "19. března 2026",
@@ -10,7 +28,6 @@
         "Přichytávání koncových bodů nyní funguje spolehlivě při vytváření i přetahování, a to pro volné body i uzly.",
         "Kontextové menu kót nyní umožňuje obrátit pořadí koncových bodů a přímo upravit jejich souřadnice."
       ],
-      "tag": "Aktuální",
       "media": [
         {
           "src": "/changelog/media/freedimpoints.gif",

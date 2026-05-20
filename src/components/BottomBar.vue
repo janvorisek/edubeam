@@ -840,6 +840,26 @@
               </template>
 
               <div v-if="item.ref instanceof BeamConcentratedLoad" class="inline-edit-group load mr-2">
+                <span class="input-before">M<sub>y</sub></span>
+                <input
+                  :value="appStore.convertMoment(item.ref.values[2])"
+                  class="inline-edit"
+                  style="width: 60px"
+                  @keydown="checkNumber($event)"
+                  @change="
+                    changeSetArrayItem(
+                      item.ref,
+                      'values',
+                      2,
+                      $event.target as HTMLInputElement,
+                      appStore.convertInverseMoment
+                    )
+                  "
+                />
+                <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Moment)"></div>
+              </div>
+
+              <div v-if="item.ref instanceof BeamConcentratedLoad" class="inline-edit-group load mr-2">
                 <span class="input-before">d</span>
                 <input
                   :value="appStore.convertLength(item.ref.values[3])"

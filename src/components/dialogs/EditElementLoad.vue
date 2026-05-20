@@ -51,6 +51,17 @@
 
                     <v-col v-if="loadType === 'concentrated'" cols="12" md="12">
                       <v-text-field
+                        v-model="loadNodeValueMy"
+                        :label="`My`"
+                        hide-details="auto"
+                        :rules="numberRules"
+                        :suffix="unitAndLabel.r"
+                        @keydown="checkNumber($event)"
+                      ></v-text-field>
+                    </v-col>
+
+                    <v-col v-if="loadType === 'concentrated'" cols="12" md="12">
+                      <v-text-field
                         v-model="elementLoadPos"
                         :label="$t('loads.loadPositionOnBeam')"
                         hide-details="auto"
@@ -169,6 +180,12 @@ import {
 } from 'ts-fem';
 import ElementLoadPreview from '../ElementLoadPreview.vue';
 
+type EditableElementLoad =
+  | BeamElementUniformEdgeLoad
+  | BeamElementTrapezoidalEdgeLoad
+  | BeamConcentratedLoad
+  | BeamTemperatureLoad;
+
 const projectStore = useProjectStore();
 const appStore = useAppStore();
 
@@ -187,13 +204,14 @@ const elementd = computed(() => {
   return useProjectStore().solver.loadCases[0].elementLoadList[props.index].target;
 });
 
-const load = computed(() => {
-  return useProjectStore().solver.loadCases[0].elementLoadList[props.index];
+const load = computed<EditableElementLoad>(() => {
+  return useProjectStore().solver.loadCases[0].elementLoadList[props.index] as EditableElementLoad;
 });
 
 const loadType = computed(() => LT(load.value));
 const unitAndLabel = computed(() => {
   let u = appStore.units.Force;
+  let r = appStore.units.Moment;
   let l = 'F';
 
   if (loadType.value === 'udl' || loadType.value === 'trapezoidal') {
@@ -201,7 +219,7 @@ const unitAndLabel = computed(() => {
     l = 'f';
   }
 
-  return { l, u };
+  return { l, u, r };
 });
 
 // TODO: LCS is forced on trapezoidal loads for now, rendering GCS load is not supported graphically
@@ -213,6 +231,7 @@ watch(loadType, (newVal) => {
 
 const elementNodeValueFx = ref('0.0');
 const elementNodeValueFz = ref('0.0');
+const loadNodeValueMy = ref(`${appStore.convertMoment(0)}`);
 const trapezoidStartFx = ref('0.0');
 const trapezoidStartFz = ref('0.0');
 const trapezoidEndFx = ref('0.0');
@@ -230,6 +249,7 @@ const minMax = (v) => {
 
 const realFx = computed(() => appStore.convertInverseForce(parseFloat2(elementNodeValueFx.value)));
 const realFz = computed(() => appStore.convertInverseForce(parseFloat2(elementNodeValueFz.value)));
+const realMy = computed(() => appStore.convertInverseMoment(parseFloat2(loadNodeValueMy.value)));
 const realTrapStartFx = computed(() => appStore.convertInverseForce(parseFloat2(trapezoidStartFx.value)));
 const realTrapStartFz = computed(() => appStore.convertInverseForce(parseFloat2(trapezoidStartFz.value)));
 const realTrapEndFx = computed(() => appStore.convertInverseForce(parseFloat2(trapezoidEndFx.value)));
@@ -257,7 +277,7 @@ const previewLoad = computed(() => {
     return new BeamConcentratedLoad(
       load.value.target,
       domain,
-      [realFx.value, realFz.value, 0, realDist.value],
+      [realFx.value, realFz.value, realMy.value, realDist.value],
       elementLCS.value
     );
   }
@@ -274,7 +294,13 @@ onMounted(() => {
     elementNodeValueFx.value = appStore.convertForce(load.value.values[0]).toString();
     elementNodeValueFz.value = appStore.convertForce(load.value.values[1]).toString();
   }
-  elementLCS.value = load.value.lcs;
+  if (
+    load.value instanceof BeamElementUniformEdgeLoad ||
+    load.value instanceof BeamElementTrapezoidalEdgeLoad ||
+    load.value instanceof BeamConcentratedLoad
+  ) {
+    elementLCS.value = load.value.lcs;
+  }
 
   if (load.value instanceof BeamElementTrapezoidalEdgeLoad) {
     trapezoidStartFx.value = appStore.convertForce(load.value.startValues[0]).toString();
@@ -283,7 +309,10 @@ onMounted(() => {
     trapezoidEndFz.value = appStore.convertForce(load.value.endValues[1]).toString();
   }
 
-  if (loadType.value === 'concentrated') elementLoadPos.value = appStore.convertLength(load.value.values[3]).toString();
+  if (load.value instanceof BeamConcentratedLoad) {
+    elementLoadPos.value = appStore.convertLength(load.value.values[3]).toString();
+    loadNodeValueMy.value = appStore.convertMoment(load.value.values[2]).toString();
+  }
 
   //elementNodeValueMy.value = load.values[DofID.Ry];
 });
@@ -296,7 +325,13 @@ const editNodalLoad = () => {
     load.value.values[1] = realFz.value;
   }
 
-  load.value.lcs = elementLCS.value;
+  if (
+    load.value instanceof BeamElementUniformEdgeLoad ||
+    load.value instanceof BeamElementTrapezoidalEdgeLoad ||
+    load.value instanceof BeamConcentratedLoad
+  ) {
+    load.value.lcs = elementLCS.value;
+  }
 
   if (load.value instanceof BeamElementTrapezoidalEdgeLoad) {
     load.value.change(
@@ -307,7 +342,10 @@ const editNodalLoad = () => {
     );
   }
 
-  if (load.value instanceof BeamConcentratedLoad) load.value.values[3] = realDist.value;
+  if (load.value instanceof BeamConcentratedLoad) {
+    load.value.values[2] = realMy.value;
+    load.value.values[3] = realDist.value;
+  }
 
   //load.values[DofID.Ry] = loadNodeValueMy.value;
 

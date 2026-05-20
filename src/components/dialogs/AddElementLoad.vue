@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="open" max-width="480" attach=".v-application">
+  <v-dialog v-model="open" max-width="420" attach=".v-application">
     <v-card>
       <v-card-title> {{ $t('dialogs.addElementLoad.addNewElementLoad') }} </v-card-title>
 
@@ -33,7 +33,7 @@
                 </v-col>
 
                 <template v-if="['udl', 'concentrated'].includes(loadType)">
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="12">
                     <v-text-field
                       v-model="loadNodeValueFx"
                       :label="`${unitAndLabel.l}x`"
@@ -44,13 +44,24 @@
                     ></v-text-field>
                   </v-col>
 
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="12">
                     <v-text-field
                       v-model="loadNodeValueFz"
                       :label="`${unitAndLabel.l}z`"
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="unitAndLabel.u"
+                      @keydown="checkNumber($event)"
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col v-if="loadType === 'concentrated'" cols="12" md="12">
+                    <v-text-field
+                      v-model="loadNodeValueMy"
+                      :label="`My`"
+                      hide-details="auto"
+                      :rules="numberRules"
+                      :suffix="unitAndLabel.r"
                       @keydown="checkNumber($event)"
                     ></v-text-field>
                   </v-col>
@@ -70,7 +81,7 @@
                 <template v-else-if="loadType === 'trapezoidal'">
                   <v-col cols="12">
                     <v-row no-gutters>
-                      <v-col cols="12" md="6">
+                      <v-col cols="12" md="12">
                         <v-text-field
                           v-model="loadTrapezoidStartFx"
                           hide-details="auto"
@@ -83,7 +94,7 @@
                           </template>
                         </v-text-field>
                       </v-col>
-                      <v-col cols="12" md="6">
+                      <v-col cols="12" md="12">
                         <v-text-field
                           v-model="loadTrapezoidEndFx"
                           hide-details="auto"
@@ -100,7 +111,7 @@
                   </v-col>
                   <v-col cols="12">
                     <v-row no-gutters>
-                      <v-col cols="12" md="6">
+                      <v-col cols="12" md="12">
                         <v-text-field
                           v-model="loadTrapezoidStartFz"
                           hide-details="auto"
@@ -113,7 +124,7 @@
                           </template>
                         </v-text-field>
                       </v-col>
-                      <v-col cols="12" md="6">
+                      <v-col cols="12" md="12">
                         <v-text-field
                           v-model="loadTrapezoidEndFz"
                           hide-details="auto"
@@ -189,7 +200,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useProjectStore } from '../../store/project';
 import { useAppStore } from '../../store/app';
 import { closeModal } from 'jenesius-vue-modal';
@@ -226,6 +237,7 @@ const loadTypes = [
 
 const unitAndLabel = computed(() => {
   let u = appStore.units.Force;
+  let r = appStore.units.Moment;
   let l = 'F';
 
   if (loadType.value === 'udl' || loadType.value === 'trapezoidal') {
@@ -233,7 +245,7 @@ const unitAndLabel = computed(() => {
     l = 'f';
   }
 
-  return { l, u };
+  return { l, u, r };
 });
 
 // TODO: LCS is forced on trapezoidal loads for now, rendering GCS load is not supported graphically
@@ -243,9 +255,10 @@ watch(loadType, (newVal) => {
   }
 });
 
-const loadElementId = ref(props.label ?? [...useProjectStore().solver.domain.elements.values()][0].label);
+const loadElementId = ref(String(props.label ?? [...useProjectStore().solver.domain.elements.values()][0].label));
 const loadNodeValueFx = ref(`${appStore.convertForce(4000)}`);
 const loadNodeValueFz = ref(`${appStore.convertForce(3000)}`);
+const loadNodeValueMy = ref(`${appStore.convertMoment(0)}`);
 const loadTrapezoidStartFx = ref(`${appStore.convertForce(0)}`);
 const loadTrapezoidStartFz = ref(`${appStore.convertForce(1000)}`);
 const loadTrapezoidEndFx = ref(`${appStore.convertForce(0)}`);
@@ -257,6 +270,7 @@ const elementLCS = ref(true);
 
 const realFx = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueFx.value)));
 const realFz = computed(() => appStore.convertInverseForce(parseFloat2(loadNodeValueFz.value)));
+const realMy = computed(() => appStore.convertInverseMoment(parseFloat2(loadNodeValueMy.value)));
 const realTrapStartFx = computed(() => appStore.convertInverseForce(parseFloat2(loadTrapezoidStartFx.value)));
 const realTrapStartFz = computed(() => appStore.convertInverseForce(parseFloat2(loadTrapezoidStartFz.value)));
 const realTrapEndFx = computed(() => appStore.convertInverseForce(parseFloat2(loadTrapezoidEndFx.value)));
@@ -286,7 +300,7 @@ const previewLoad = computed(() => {
     return new BeamConcentratedLoad(
       loadElementId.value,
       domain,
-      [realFx.value, realFz.value, 0, realDist.value],
+      [realFx.value, realFz.value, realMy.value, realDist.value],
       elementLCS.value
     );
   }
@@ -329,7 +343,7 @@ const addElementLoad = () => {
   if (loadType.value === 'concentrated')
     useProjectStore().solver.loadCases[0].createBeamConcentratedLoad(
       loadElementId.value,
-      [realFx.value, realFz.value, 0, realDist.value],
+      [realFx.value, realFz.value, realMy.value, realDist.value],
       elementLCS.value
     );
 

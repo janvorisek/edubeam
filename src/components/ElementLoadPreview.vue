@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 import SVGElementViewer from './SVGElementViewer.vue';
 import { useAppStore } from '@/store/app';
 import { Beam2D, BeamConcentratedLoad, BeamElementLoad, LinearStaticSolver, Node } from 'ts-fem';
@@ -74,11 +74,22 @@ const dimensionLines = computed(() => {
         createDimensionRenderableNode({ x: loadNode.coords[0], y: loadNode.coords[2] }, loadNode.label),
       ],
       distance: offset,
-      numberFormat: new Intl.NumberFormat(),
+      numberFormat: appStore.numberFormatter,
       convertLength: appStore.convertLength,
     },
   ];
 });
+
+watch(
+  () => props.load?.target,
+  async (target, previousTarget) => {
+    if (!target || target === previousTarget) return;
+
+    await nextTick();
+    viewer.value?.fitContent();
+  },
+  { flush: 'post' }
+);
 </script>
 
 <template>
@@ -105,6 +116,8 @@ const dimensionLines = computed(() => {
       :results-scale-px="32"
       :support-size="0.75"
       :number-format="appStore.numberFormatter"
+      :convert-force="appStore.convertForce"
+      :convert-moment="appStore.convertMoment"
       :convert-length="appStore.convertLength"
       :colors="viewerStore.colors"
     />

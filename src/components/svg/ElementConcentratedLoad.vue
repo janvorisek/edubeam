@@ -7,10 +7,11 @@ const props = withDefaults(
     eload: BeamConcentratedLoad;
     scale: number;
     convertForce: (f: number) => number;
+    convertMoment?: (m: number) => number;
     fontSize?: number;
-    numberFormat?: Intl.NumberFormat;
+    numberFormat: Intl.NumberFormat;
   }>(),
-  { fontSize: 13, numberFormat: new Intl.NumberFormat() }
+  { fontSize: 13, convertMoment: (m: number) => m }
 );
 
 const target = computed(() => {
@@ -65,6 +66,15 @@ const labelPosition = computed(() => {
 
   return `translate(${px} ${pz})`;
 });
+
+const momentHandlePoints = computed(() => {
+  return `${position.value.x},${position.value.z} ${position.value.x + 1e-6},${position.value.z}`;
+});
+
+const momentLabelPosition = computed(() => {
+  return `translate(${position.value.x + (props.fontSize + 8) / props.scale}
+          ${position.value.z - (props.fontSize / 2 + 2) / props.scale})`;
+});
 </script>
 
 <template>
@@ -78,10 +88,33 @@ const labelPosition = computed(() => {
     />
 
     <polyline
+      v-if="eload.values[2] !== 0"
+      points="0,0 0,0"
+      vector-effect="non-scaling-stroke"
+      class="decoration moment"
+      :class="{ cw: eload.values[2] < 0, ccw: eload.values[2] > 0 }"
+      :transform="`translate(${position.x} ${position.z})`"
+    />
+
+    <polyline
+      v-if="eload.values[0] !== 0 || eload.values[1] !== 0"
       :points="`${position.x},${position.z} ${position.x + 40 / scale},${position.z}`"
       :transform="`rotate(${angle - 90} ${position.x} ${position.z})`"
       class="handle"
     />
+
+    <polyline v-if="eload.values[2] !== 0" :points="momentHandlePoints" class="handle moment" />
+
+    <text
+      v-if="eload.values[2] !== 0"
+      :font-size="fontSize / scale"
+      font-weight="normal"
+      text-anchor="start"
+      dominant-baseline="central"
+      :transform="momentLabelPosition"
+    >
+      {{ numberFormat.format(Math.abs(convertMoment(eload.values[2]))) }}
+    </text>
 
     <text
       v-if="eload.values[0] !== 0 || eload.values[1] !== 0"

@@ -1868,7 +1868,7 @@ defineExpose({ centerContent, fitContent });
     <SvgPanZoom
       ref="panZoom"
       :on-update="onUpdate"
-      :padding="128"
+      :padding="64"
       :mobile-padding="32"
       :touch="appStore.mouseMode !== MouseMode.MOVING"
       :can-fit-content="projectStore.solver.domain.nodes.size >= 2"

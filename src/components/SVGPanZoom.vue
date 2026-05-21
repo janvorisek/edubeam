@@ -256,25 +256,15 @@ const fitContent = (n = 0) => {
   const svgEl = svgRef.value as SVGElement;
   const rootG = svgEl.getElementsByTagName('g')[0] as SVGGElement;
 
-  const rootBBox = svgEl.getBoundingClientRect();
-  //const bBox = rootG.getBoundingClientRect();
-
   const bBoxW = rootG.getBBox().width * scale.value;
   const bBoxH = rootG.getBBox().height * scale.value;
 
   if (isNaN(bBoxW) || isNaN(bBoxH) || bBoxH <= 0 || bBoxW <= 0) return;
 
-  let zoomBy = bBoxH / (svgEl.clientHeight - FIT_CONTENT_PADDING);
-
-  const r1 = bBoxW / bBoxH;
-  const r2 = rootBBox.width / rootBBox.height;
-
-  if (r2 < r1) {
-    zoomBy = bBoxW / (svgEl.clientWidth - FIT_CONTENT_PADDING);
-    //   console.log({ bBoxW, cw: svgEl.clientWidth - FIT_CONTENT_PADDING, zoomBy });
-    // } else {
-    //   console.log({ bBoxH, cw: svgEl.clientHeight - FIT_CONTENT_PADDING, zoomBy });
-  }
+  const availableWidth = Math.max(svgEl.clientWidth - FIT_CONTENT_PADDING, 1);
+  const availableHeight = Math.max(svgEl.clientHeight - FIT_CONTENT_PADDING, 1);
+  const limitingViewportDimension = Math.min(availableWidth, availableHeight);
+  const zoomBy = Math.max(bBoxW / limitingViewportDimension, bBoxH / limitingViewportDimension);
 
   viewBox.h *= zoomBy;
   viewBox.w *= zoomBy;

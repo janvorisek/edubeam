@@ -59,6 +59,35 @@ const elementAngle = computed(() => {
   return Math.atan2(geo.dz, geo.dx) * (180 / Math.PI);
 });
 
+function resultLabelOffset(rawValue: number, nx: number, ny: number, factor = 0.45) {
+  const offset = (props.fontSize * factor) / props.scale;
+  const direction = Math.sign(rawValue) || 1;
+
+  return [nx * direction * offset, ny * direction * offset];
+}
+
+function resultLabelOrientation(rawValue: number, nx: number, ny: number) {
+  const direction = Math.sign(rawValue) || 1;
+  const outwardX = nx * direction;
+  const outwardY = ny * direction;
+  let angle = (Math.atan2(ny * direction, nx * direction) * 180) / Math.PI;
+
+  if (Math.abs(Math.abs(angle) - 90) < 1e-6) {
+    angle = -90;
+  } else if (angle > 90) {
+    angle -= 180;
+  } else if (angle <= -90) {
+    angle += 180;
+  }
+
+  const angleRad = (angle * Math.PI) / 180;
+  const localXWorldX = Math.cos(angleRad);
+  const localXWorldY = Math.sin(angleRad);
+  const flipped = localXWorldX * outwardX + localXWorldY * outwardY < 0;
+
+  return { angle, flipped };
+}
+
 const elementLabel = computed(() => {
   const geo = props.element.computeGeo();
   const ny = geo.dx / geo.l;
@@ -149,6 +178,8 @@ const forces = computed(() => {
 
   const nx = geo.dz / geo.l;
   const ny = -geo.dx / geo.l;
+  const momentNx = -geo.dz / geo.l;
+  const momentNy = geo.dx / geo.l;
 
   // Calculate V(x)=0
   //const dV = forcesV.V[nseg] - forcesV.V[0];
@@ -283,15 +314,29 @@ const forces = computed(() => {
     const vNraw = props.element.computeNormalForceAt(props.loadCase, labelsX[s]);
     const vN = props.convertForce(vNraw);
     if (Math.abs(vN) > 1e-8) {
-      const p = (vN > 0 ? -4 : 4) / props.scale;
-      result2.push([xc + vNraw * nx * scaleBy + p, zc + vNraw * ny * scaleBy + p, vN]);
+      const [dx, dy] = resultLabelOffset(vNraw, nx, ny);
+      const orientation = resultLabelOrientation(vNraw, nx, ny);
+      result2.push([
+        xc + vNraw * nx * scaleBy + dx,
+        zc + vNraw * ny * scaleBy + dy,
+        vN,
+        orientation.angle,
+        orientation.flipped,
+      ]);
     }
 
     const vVraw = props.element.computeShearForceAt(props.loadCase, labelsX[s]);
     const vV = props.convertForce(vVraw);
     if (Math.abs(vV) > 1e-8) {
-      const p = (vV > 0 ? -4 : 4) / props.scale;
-      result2V.push([xc + vVraw * nx * scaleByV + p, zc + vVraw * ny * scaleByV + p, vV]);
+      const [dx, dy] = resultLabelOffset(vVraw, nx, ny);
+      const orientation = resultLabelOrientation(vVraw, nx, ny);
+      result2V.push([
+        xc + vVraw * nx * scaleByV + dx,
+        zc + vVraw * ny * scaleByV + dy,
+        vV,
+        orientation.angle,
+        orientation.flipped,
+      ]);
     }
   }
 
@@ -302,24 +347,23 @@ const forces = computed(() => {
     const vMraw = props.element.computeBendingMomentAt(props.loadCase, labelsXM[s]);
     const vM = props.convertMoment(vMraw);
     if (Math.abs(vMraw) > 1e-8) {
-      let px = 0,
-        pz = 0;
-      px = pz = (vM < 0 ? -props.fontSize / 4 : props.fontSize / 4) / props.scale;
-
-      // if max M
-      if (labelsXM.length > 2 && s !== 0 && s !== labelsXM.length - 1) {
-        px = 3 / props.scale;
-        pz = (vM < 0 ? -props.fontSize / 2 : props.fontSize) / props.scale;
-      }
+      const isExtrema = labelsXM.length > 2 && s !== 0 && s !== labelsXM.length - 1;
+      const chartX = xc + vMraw * momentNx * scaleByM;
+      const chartY = zc + vMraw * momentNy * scaleByM;
+      const [dx, dy] = resultLabelOffset(vMraw, momentNx, momentNy, isExtrema ? 0.7 : 0.45);
+      const orientation = resultLabelOrientation(vMraw, momentNx, momentNy);
 
       result2M.push([
         xc,
         zc,
-        xc - vMraw * nx * scaleByM,
-        zc - vMraw * ny * scaleByM,
-        xc - vMraw * nx * scaleByM + px,
-        zc - vMraw * ny * scaleByM + pz,
+        chartX,
+        chartY,
+        chartX + dx,
+        chartY + dy,
         vM,
+        isExtrema,
+        orientation.angle,
+        orientation.flipped,
       ]);
     }
   }
@@ -369,13 +413,19 @@ const emit = defineEmits(['elementmousemove', 'elementpointerup']);
         stroke-linecap="round"
         stroke-linejoin="round"
       />
-      <g v-for="(mv, mli) in forces.normal.text" :key="mli" :transform="`translate(${mv[0]} ${mv[1]})`">
+      <g
+        v-for="(mv, mli) in forces.normal.text"
+        :key="mli"
+        :transform="`translate(${mv[0]} ${mv[1]}) rotate(${mv[3]})`"
+      >
         <text
           :font-size="fontSize / scale"
           class="moment-label filter-text-label"
           font-weight="normal"
-          :text-anchor="mv[2] > 0 ? 'end' : 'start'"
-          dominant-baseline="baseline"
+          :x="mv[4] ? -2 / scale : 2 / scale"
+          y="0"
+          :text-anchor="mv[4] ? 'end' : 'start'"
+          dominant-baseline="central"
         >
           {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }}
         </text>
@@ -383,8 +433,10 @@ const emit = defineEmits(['elementmousemove', 'elementpointerup']);
           :font-size="fontSize / scale"
           class="moment-label"
           font-weight="normal"
-          :text-anchor="mv[2] > 0 ? 'end' : 'start'"
-          dominant-baseline="baseline"
+          :x="mv[4] ? -2 / scale : 2 / scale"
+          y="0"
+          :text-anchor="mv[4] ? 'end' : 'start'"
+          dominant-baseline="central"
         >
           {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }}
         </text>
@@ -397,13 +449,15 @@ const emit = defineEmits(['elementmousemove', 'elementpointerup']);
         stroke-linecap="round"
         stroke-linejoin="round"
       />
-      <g v-for="(mv, mli) in forces.shear.text" :key="mli" :transform="`translate(${mv[0]} ${mv[1]})`">
+      <g v-for="(mv, mli) in forces.shear.text" :key="mli" :transform="`translate(${mv[0]} ${mv[1]}) rotate(${mv[3]})`">
         <text
           :font-size="fontSize / scale"
           class="moment-label filter-text-label"
           font-weight="normal"
-          :text-anchor="mv[2] > 0 ? 'end' : 'start'"
-          dominant-baseline="baseline"
+          :x="mv[4] ? -2 / scale : 2 / scale"
+          y="0"
+          :text-anchor="mv[4] ? 'end' : 'start'"
+          dominant-baseline="central"
         >
           {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }}
         </text>
@@ -411,8 +465,10 @@ const emit = defineEmits(['elementmousemove', 'elementpointerup']);
           :font-size="fontSize / scale"
           class="moment-label"
           font-weight="normal"
-          :text-anchor="mv[2] > 0 ? 'end' : 'start'"
-          dominant-baseline="baseline"
+          :x="mv[4] ? -2 / scale : 2 / scale"
+          y="0"
+          :text-anchor="mv[4] ? 'end' : 'start'"
+          dominant-baseline="central"
         >
           {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }}
         </text>
@@ -437,9 +493,11 @@ const emit = defineEmits(['elementmousemove', 'elementpointerup']);
           :font-size="fontSize / scale"
           class="moment-label filter-text-label"
           font-weight="normal"
-          :text-anchor="mv[6] < 0 ? 'end' : 'start'"
-          dominant-baseline="baseline"
-          :transform="`translate(${mv[4]} ${mv[5]})`"
+          :x="mv[9] ? -2 / scale : 2 / scale"
+          y="0"
+          :text-anchor="mv[9] ? 'end' : 'start'"
+          dominant-baseline="central"
+          :transform="`translate(${mv[4]} ${mv[5]}) rotate(${mv[8]})`"
         >
           {{ numberFormat.format(Math.abs(mv[6]) < 1e-6 ? 0 : mv[6]) }}
         </text>
@@ -447,9 +505,11 @@ const emit = defineEmits(['elementmousemove', 'elementpointerup']);
           :font-size="fontSize / scale"
           class="moment-label"
           font-weight="normal"
-          :text-anchor="mv[6] < 0 ? 'end' : 'start'"
-          dominant-baseline="baseline"
-          :transform="`translate(${mv[4]} ${mv[5]})`"
+          :x="mv[9] ? -2 / scale : 2 / scale"
+          y="0"
+          :text-anchor="mv[9] ? 'end' : 'start'"
+          dominant-baseline="central"
+          :transform="`translate(${mv[4]} ${mv[5]}) rotate(${mv[8]})`"
         >
           {{ numberFormat.format(Math.abs(mv[6]) < 1e-6 ? 0 : mv[6]) }}
         </text>

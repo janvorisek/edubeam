@@ -1,9 +1,16 @@
 // Utilities
 import { defineStore } from 'pinia';
-import { LinearStaticSolver, Beam2D, Node } from 'ts-fem';
+import { LinearStaticSolver, Beam2D } from 'ts-fem';
 import { ref, computed, reactive } from 'vue';
 import { max, min } from 'mathjs';
-import { deleteElement, deleteNode, deserializeModel, serializeModel, throttle } from '@/utils';
+import {
+  deleteElement,
+  deleteNode,
+  deserializeModel,
+  executeModelMutationWithUndo,
+  serializeModel,
+  throttle,
+} from '@/utils';
 import { ensureDimensionId } from '@/utils/id';
 import type { DimensionLine } from '@/types/dimension';
 
@@ -114,7 +121,7 @@ export const useProjectStore = defineStore(
 
       try {
         solver.value.solve();
-      } catch (e) {
+      } catch {
         solver.value.loadCases[0].solved = false;
         return;
       }
@@ -226,58 +233,55 @@ export const useProjectStore = defineStore(
     };
 
     const deleteSelection2 = () => {
-      // Delete selected elements and corresponding element loads
-      let toDelete = [];
-      for (const element of selection2.elements) {
-        toDelete.push(element);
-      }
+      executeModelMutationWithUndo(() => {
+        let toDelete = [];
+        for (const element of selection2.elements) {
+          toDelete.push(element);
+        }
 
-      for (const element of toDelete) {
-        deleteElement(element);
-      }
+        for (const element of toDelete) {
+          deleteElement(element, false);
+        }
 
-      // Delete selected nodes and corresponding elements & nodal loads
-      toDelete = [];
-      for (const node of selection2.nodes) {
-        toDelete.push(node);
-      }
+        toDelete = [];
+        for (const node of selection2.nodes) {
+          toDelete.push(node);
+        }
 
-      for (const node of toDelete) {
-        deleteNode(node);
-      }
+        for (const node of toDelete) {
+          deleteNode(node, false);
+        }
 
-      // Delete selected nodal loads
-      const loadCase = solver.value.loadCases[0];
-      for (const i of selection2.nodalLoads.sort((a, b) => b - a)) {
-        if (loadCase.nodalLoadList[i] === undefined) continue;
+        const loadCase = solver.value.loadCases[0];
+        for (const i of [...selection2.nodalLoads].sort((a, b) => b - a)) {
+          if (loadCase.nodalLoadList[i] === undefined) continue;
 
-        loadCase.solved = false;
-        loadCase.nodalLoadList.splice(i, 1);
-      }
+          loadCase.solved = false;
+          loadCase.nodalLoadList.splice(i, 1);
+        }
 
-      // Delete selected element loads
-      for (const i of selection2.elementLoads.sort((a, b) => b - a)) {
-        if (loadCase.elementLoadList[i] === undefined) continue;
+        for (const i of [...selection2.elementLoads].sort((a, b) => b - a)) {
+          if (loadCase.elementLoadList[i] === undefined) continue;
 
-        loadCase.solved = false;
-        loadCase.elementLoadList.splice(i, 1);
-      }
+          loadCase.solved = false;
+          loadCase.elementLoadList.splice(i, 1);
+        }
 
-      // Delete selected prescribed BCs
-      for (const i of selection2.prescribedBC.sort((a, b) => b - a)) {
-        if (loadCase.prescribedBC[i] === undefined) continue;
+        for (const i of [...selection2.prescribedBC].sort((a, b) => b - a)) {
+          if (loadCase.prescribedBC[i] === undefined) continue;
 
-        loadCase.solved = false;
-        loadCase.prescribedBC.splice(i, 1);
-      }
+          loadCase.solved = false;
+          loadCase.prescribedBC.splice(i, 1);
+        }
 
-      if (selection2.dimensions.length > 0) {
-        const toDelete = new Set(selection2.dimensions);
-        dimensions.value = dimensions.value.filter((dim) => !toDelete.has(ensureDimensionId(dim)));
-      }
+        if (selection2.dimensions.length > 0) {
+          const toDelete = new Set(selection2.dimensions);
+          dimensions.value = dimensions.value.filter((dim) => !toDelete.has(ensureDimensionId(dim)));
+        }
 
-      clearSelection();
-      clearSelection2();
+        clearSelection();
+        clearSelection2();
+      });
     };
 
     const dimensions = ref<DimensionLine[]>([]);

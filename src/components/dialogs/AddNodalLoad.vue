@@ -98,15 +98,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useProjectStore } from '../../store/project';
-import { DofID, NodalLoad, PrescribedDisplacement } from 'ts-fem';
+import { DofID } from 'ts-fem';
 import { closeModal } from 'jenesius-vue-modal';
 import { useAppStore } from '@/store/app';
-import { checkNumber, parseFloat2, numberRules } from '@/utils';
+import { checkNumber, executeModelMutationWithUndo, parseFloat2, numberRules } from '@/utils';
 import Vector2DHelper from '../Vector2DHelper.vue';
-import { onMounted } from 'vue';
-import { watch } from 'vue';
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
@@ -117,6 +115,7 @@ const props = withDefaults(
     type?: 'force' | 'displacement';
   }>(),
   {
+    label: undefined,
     type: 'force',
   }
 );
@@ -159,15 +158,7 @@ onMounted(() => {
 const addNodalLoad = () => {
   if (valid.value === false) return;
 
-  useProjectStore().solver.loadCases[0].solved = false;
-
-  if (loadType.value === 'force') {
-    useProjectStore().solver.loadCases[0].createNodalLoad(loadNodeId.value, {
-      [DofID.Dx]: realFx.value,
-      [DofID.Dz]: realFz.value,
-      [DofID.Ry]: realMy.value,
-    });
-  } else {
+  if (loadType.value !== 'force') {
     // check if the node already has a prescribed displacement
     for (const load of projectStore.solver.loadCases[0].prescribedBC) {
       if (load.target === loadNodeId.value) {
@@ -176,15 +167,26 @@ const addNodalLoad = () => {
         return;
       }
     }
-
-    useProjectStore().solver.loadCases[0].createPrescribedDisplacement(loadNodeId.value, {
-      [DofID.Dx]: realDx.value,
-      [DofID.Dz]: realDz.value,
-      [DofID.Ry]: realRy.value,
-    });
   }
 
-  useProjectStore().solve();
+  executeModelMutationWithUndo(() => {
+    useProjectStore().solver.loadCases[0].solved = false;
+
+    if (loadType.value === 'force') {
+      useProjectStore().solver.loadCases[0].createNodalLoad(loadNodeId.value, {
+        [DofID.Dx]: realFx.value,
+        [DofID.Dz]: realFz.value,
+        [DofID.Ry]: realMy.value,
+      });
+    } else {
+      useProjectStore().solver.loadCases[0].createPrescribedDisplacement(loadNodeId.value, {
+        [DofID.Dx]: realDx.value,
+        [DofID.Dz]: realDz.value,
+        [DofID.Ry]: realRy.value,
+      });
+    }
+  });
+
   projectStore.clearSelection();
   closeModal();
 };

@@ -105,18 +105,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useProjectStore } from '../../store/project';
-import { DofID, NodalLoad } from 'ts-fem';
 import { closeModal, openModal } from 'jenesius-vue-modal';
-import { useAppStore } from '@/store/app';
-import { checkNumber } from '@/utils';
-import { onMounted } from 'vue';
+import { executeModelMutationWithUndo } from '@/utils';
 import AddMaterialDialog from './AddMaterial.vue';
 import AddCrossSectionDialog from './AddCrossSection.vue';
 
 const projectStore = useProjectStore();
-const appStore = useAppStore();
 
 const open = ref(true);
 
@@ -157,13 +153,12 @@ const addElement = () => {
     nid++;
   }
 
-  domain.createBeam2D(nid, [newElementFrom.value, newElementTo.value], newElementMat.value, newElementCS.value);
-
-  domain.elements = new Map(domain.elements);
+  executeModelMutationWithUndo(() => {
+    domain.createBeam2D(nid, [newElementFrom.value, newElementTo.value], newElementMat.value, newElementCS.value);
+    domain.elements = new Map(domain.elements);
+  });
 
   useAppStore().dialogs.addElement = false;
-
-  useProjectStore().solve();
 
   closeModal();
 };

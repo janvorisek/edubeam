@@ -92,7 +92,7 @@ import { ref } from 'vue';
 import { closeModal, openModal } from 'jenesius-vue-modal';
 import { useProjectStore } from '@/store/project';
 import { useAppStore } from '@/store/app';
-import { checkNumber, numberRules, parseFloat2, setUnsolved } from '@/utils';
+import { checkNumber, executeModelMutationWithUndo, numberRules, parseFloat2, setUnsolved } from '@/utils';
 import CrossSectionLibraryDialog from './CrossSectionLibrary.vue';
 
 const projectStore = useProjectStore();
@@ -118,16 +118,17 @@ const addCrossSection = () => {
     nid++;
   }
 
-  domain.createCrossSection(nid, {
-    a: appStore.convertInverseArea(parseFloat2(csArea.value)),
-    iy: appStore.convertInverseAreaM2(parseFloat2(csIy.value)),
-    h: appStore.convertInverseLength(parseFloat2(csH.value)),
-    k: parseFloat2(csShear.value),
+  executeModelMutationWithUndo(() => {
+    domain.createCrossSection(nid, {
+      a: appStore.convertInverseArea(parseFloat2(csArea.value)),
+      iy: appStore.convertInverseAreaM2(parseFloat2(csIy.value)),
+      h: appStore.convertInverseLength(parseFloat2(csH.value)),
+      k: parseFloat2(csShear.value),
+    });
+
+    domain.crossSections = new Map(domain.crossSections);
   });
 
-  domain.crossSections = new Map(domain.crossSections);
-
-  projectStore.solve();
   closeModal();
 };
 </script>

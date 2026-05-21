@@ -28,7 +28,7 @@ import SVGElementTemperatureLoad from './svg/ElementTemperatureLoad.vue';
 import SVGDimensioning from './svg/Dimensioning.vue';
 
 import { formatExpValueAsHTML } from '../SVGUtils';
-import { loadType, throttle } from '../utils';
+import { executeModelMutationWithUndo, loadType, throttle } from '../utils';
 import { createDimensionId, ensureDimensionId } from '@/utils/id';
 import {
   Node,
@@ -41,7 +41,6 @@ import {
   BeamElementUniformEdgeLoad,
   BeamTemperatureLoad,
 } from 'ts-fem';
-import { Matrix } from 'mathjs';
 import { useMagicKeys } from '@vueuse/core';
 import { OnLongPress } from '@vueuse/components';
 
@@ -1099,67 +1098,63 @@ const onMouseDown = (e: PointerEvent) => {
                 label: t('confirmation.splitElementAndPlaceNode.split'),
                 color: 'green darken-1',
                 action: () => {
-                  projectStore.solver.loadCases[0].solved = false;
+                  executeModelMutationWithUndo(() => {
+                    projectStore.solver.loadCases[0].solved = false;
+                    projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
 
-                  // Create the new node
-                  projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
+                    const prevHinges = beam.hinges;
 
-                  const prevHinges = beam.hinges;
+                    const startNode = projectStore.solver.domain.nodes.get(beam.nodes[0])!;
+                    const endNode = projectStore.solver.domain.nodes.get(beam.nodes[1])!;
+                    const newNode = projectStore.solver.domain.nodes.get(String(newNodeId))!;
+                    const totalLength = Math.hypot(
+                      endNode.coords[0] - startNode.coords[0],
+                      endNode.coords[2] - startNode.coords[2]
+                    );
+                    const partialLength = Math.hypot(
+                      newNode.coords[0] - startNode.coords[0],
+                      newNode.coords[2] - startNode.coords[2]
+                    );
+                    const splitRatio = totalLength > 0 ? Math.min(Math.max(partialLength / totalLength, 0), 1) : 0.5;
 
-                  const startNode = projectStore.solver.domain.nodes.get(beam.nodes[0])!;
-                  const endNode = projectStore.solver.domain.nodes.get(beam.nodes[1])!;
-                  const newNode = projectStore.solver.domain.nodes.get(String(newNodeId))!;
-                  const totalLength = Math.hypot(
-                    endNode.coords[0] - startNode.coords[0],
-                    endNode.coords[2] - startNode.coords[2]
-                  );
-                  const partialLength = Math.hypot(
-                    newNode.coords[0] - startNode.coords[0],
-                    newNode.coords[2] - startNode.coords[2]
-                  );
-                  const splitRatio = totalLength > 0 ? Math.min(Math.max(partialLength / totalLength, 0), 1) : 0.5;
+                    projectStore.solver.domain.createBeam2D(el.label + 'a', [el.nodes[0], newNodeId], el.mat, el.cs, [
+                      prevHinges[0],
+                      false,
+                    ]);
 
-                  // Add two new elements
-                  projectStore.solver.domain.createBeam2D(el.label + 'a', [el.nodes[0], newNodeId], el.mat, el.cs, [
-                    prevHinges[0],
-                    false,
-                  ]);
+                    projectStore.solver.domain.createBeam2D(el.label + 'b', [newNodeId, el.nodes[1]], el.mat, el.cs, [
+                      false,
+                      prevHinges[1],
+                    ]);
 
-                  projectStore.solver.domain.createBeam2D(el.label + 'b', [newNodeId, el.nodes[1]], el.mat, el.cs, [
-                    false,
-                    prevHinges[1],
-                  ]);
+                    for (const loadCase of projectStore.solver.loadCases) {
+                      loadCase.solved = false;
+                      for (let i = loadCase.elementLoadList.length - 1; i >= 0; i--) {
+                        const load = loadCase.elementLoadList[i];
+                        if (load.target !== el.label) continue;
 
-                  // Move old load to new elements
-                  for (const loadCase of projectStore.solver.loadCases) {
-                    loadCase.solved = false;
-                    for (let i = loadCase.elementLoadList.length - 1; i >= 0; i--) {
-                      const load = loadCase.elementLoadList[i];
-                      if (load.target !== el.label) continue;
-
-                      if (load instanceof BeamElementUniformEdgeLoad) {
-                        load.target = el.label + 'a';
-                        loadCase.createBeamElementUniformEdgeLoad(el.label + 'b', [...load.values], load.lcs);
-                      } else if (load instanceof BeamElementTrapezoidalEdgeLoad) {
-                        const midValues: [number, number] = [
-                          load.startValues[0] + (load.endValues[0] - load.startValues[0]) * splitRatio,
-                          load.startValues[1] + (load.endValues[1] - load.startValues[1]) * splitRatio,
-                        ];
-                        const startValues: [number, number] = [...load.startValues] as [number, number];
-                        const endValues: [number, number] = [...load.endValues] as [number, number];
-                        load.change(el.label + 'a', startValues, midValues, load.lcs);
-                        loadCase.createBeamElementTrapezoidalEdgeLoad(el.label + 'b', midValues, endValues, load.lcs);
-                      } else {
-                        load.target = el.label + 'a';
+                        if (load instanceof BeamElementUniformEdgeLoad) {
+                          load.target = el.label + 'a';
+                          loadCase.createBeamElementUniformEdgeLoad(el.label + 'b', [...load.values], load.lcs);
+                        } else if (load instanceof BeamElementTrapezoidalEdgeLoad) {
+                          const midValues: [number, number] = [
+                            load.startValues[0] + (load.endValues[0] - load.startValues[0]) * splitRatio,
+                            load.startValues[1] + (load.endValues[1] - load.startValues[1]) * splitRatio,
+                          ];
+                          const startValues: [number, number] = [...load.startValues] as [number, number];
+                          const endValues: [number, number] = [...load.endValues] as [number, number];
+                          load.change(el.label + 'a', startValues, midValues, load.lcs);
+                          loadCase.createBeamElementTrapezoidalEdgeLoad(el.label + 'b', midValues, endValues, load.lcs);
+                        } else {
+                          load.target = el.label + 'a';
+                        }
                       }
                     }
-                  }
 
-                  // Remove old element
-                  projectStore.solver.domain.elements.delete(el.label);
+                    projectStore.solver.domain.elements.delete(el.label);
+                  });
 
                   appStore.mouseMode = MouseMode.NONE;
-                  solve();
                   closeModal();
                 },
               },
@@ -1167,13 +1162,12 @@ const onMouseDown = (e: PointerEvent) => {
                 label: t('confirmation.placeIndividualNode'),
                 color: 'blue darken-1',
                 action: () => {
-                  projectStore.solver.loadCases[0].solved = false;
-
-                  // Just add the node, its up to the user to connect it wherever he wants to
-                  projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
+                  executeModelMutationWithUndo(() => {
+                    projectStore.solver.loadCases[0].solved = false;
+                    projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
+                  });
 
                   appStore.mouseMode = MouseMode.NONE;
-                  solve();
                   closeModal();
                 },
               },
@@ -1195,8 +1189,10 @@ const onMouseDown = (e: PointerEvent) => {
       }
 
       // No existing element was found, just add the node
-      projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
-      solve();
+      executeModelMutationWithUndo(() => {
+        projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
+      });
+
       return;
     }
 
@@ -1214,7 +1210,10 @@ const onMouseDown = (e: PointerEvent) => {
             newNodeId++;
           }
 
-          projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
+          executeModelMutationWithUndo(() => {
+            projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
+          });
+
           startNode.value = { label: newNodeId, x: mouseXReal.value, y: mouseYReal.value };
 
           return;
@@ -1233,11 +1232,12 @@ const onMouseDown = (e: PointerEvent) => {
         if (nid === null || intersected.value.index === null) return;
         const mat = [...useProjectStore().solver.domain.materials.values()][0].label;
         const cs = [...useProjectStore().solver.domain.crossSections.values()][0].label;
-        projectStore.solver.domain.createBeam2D(newElId, [String(nid), String(intersected.value.index)], mat, cs);
+        executeModelMutationWithUndo(() => {
+          projectStore.solver.domain.createBeam2D(newElId, [String(nid), String(intersected.value.index)], mat, cs);
+        });
 
         const n = projectStore.solver.domain.nodes.get(intersected.value.index as string)!;
         startNode.value = { label: intersected.value.index, x: n.coords[0], y: n.coords[2] };
-        solve();
       } else {
         projectStore.solver.loadCases[0].solved = false;
 
@@ -1247,8 +1247,6 @@ const onMouseDown = (e: PointerEvent) => {
         while (projectStore.solver.domain.nodes.has(newNodeId.toString())) {
           newNodeId++;
         }
-
-        projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
 
         let newElId = projectStore.solver.domain.elements.size + 1;
 
@@ -1260,11 +1258,12 @@ const onMouseDown = (e: PointerEvent) => {
         if (nid === null) return;
         const mat = [...useProjectStore().solver.domain.materials.values()][0].label;
         const cs = [...useProjectStore().solver.domain.crossSections.values()][0].label;
-        projectStore.solver.domain.createBeam2D(newElId, [String(nid), String(newNodeId)], mat, cs);
+        executeModelMutationWithUndo(() => {
+          projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
+          projectStore.solver.domain.createBeam2D(newElId, [String(nid), String(newNodeId)], mat, cs);
+        });
 
         startNode.value = { label: newNodeId, x: mouseXReal.value, y: mouseYReal.value };
-
-        solve();
       }
 
       return;
@@ -1290,14 +1289,16 @@ const onMouseDown = (e: PointerEvent) => {
           return;
         }
 
-        projectStore.dimensions.push({
-          id: createDimensionId(),
-          distance: dimlineDist.value / (scale.value || 1),
-          distanceUnit: 'world',
-          points: [
-            createDimensionPoint(startNode.value.x, startNode.value.y, startNode.value.sourceNodeLabel ?? null),
-            endPoint,
-          ],
+        executeModelMutationWithUndo(() => {
+          projectStore.dimensions.push({
+            id: createDimensionId(),
+            distance: dimlineDist.value / (scale.value || 1),
+            distanceUnit: 'world',
+            points: [
+              createDimensionPoint(startNode.value!.x, startNode.value!.y, startNode.value!.sourceNodeLabel ?? null),
+              endPoint,
+            ],
+          });
         });
 
         startNode.value = null;
@@ -1589,18 +1590,6 @@ const openCtxMenu = (e: MouseEvent) => {
   showCtxMenu.value = true;
 };
 
-const alertContextMenuItemClicked = (s: string) => {
-  //
-};
-
-const isLoaded = computed(() => {
-  return (
-    projectStore.solver.loadCases[0].nodalLoadList.length > 0 ||
-    projectStore.solver.loadCases[0].elementLoadList.length > 0 ||
-    projectStore.solver.loadCases[0].prescribedBC.length > 0
-  );
-});
-
 const isZooming = computed(() => {
   return panZoom.value?.zooming;
 });
@@ -1714,7 +1703,7 @@ defineExpose({ centerContent, fitContent });
         class="mr-1"
         rounded="lg"
         title="Undo"
-        @click.native="undoRedoManager.undo()"
+        @click="undoRedoManager.undo()"
       ></v-btn>
       <v-btn
         icon="mdi:mdi-redo"
@@ -1723,7 +1712,7 @@ defineExpose({ centerContent, fitContent });
         class="mr-1"
         rounded="lg"
         title="Redo"
-        @click.native="undoRedoManager.redo()"
+        @click="undoRedoManager.redo()"
       ></v-btn>
     </div>
     <div id="viewerControls" class="text-black d-flex" style="position: absolute; z-index: 100; top: 24px; right: 24px">
@@ -1734,7 +1723,7 @@ defineExpose({ centerContent, fitContent });
         class="mr-1"
         rounded="lg"
         title="Center content"
-        @click.native="centerContent"
+        @click="centerContent"
       ></v-btn>
       <v-btn
         icon="mdi:mdi-fit-to-screen-outline"
@@ -2115,7 +2104,7 @@ defineExpose({ centerContent, fitContent });
           </g>
           <g>
             <SVGDimensioning
-              v-for="(dim, index) in normalizedDimensions"
+              v-for="dim in normalizedDimensions"
               :key="getDimensionId(dim)"
               :points="getDimensionRenderableNodes(dim)!"
               :distance="dim.distance"

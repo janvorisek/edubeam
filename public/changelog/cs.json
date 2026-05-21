@@ -1,6 +1,17 @@
 {
   "releases": [
     {
+      "version": "1.0.6",
+      "title": "Přepracované vrácení a zopakování akcí",
+      "date": "21. května 2026",
+      "highlights": [
+        "Undo (Ctrl+Z) a Redo (Ctrl+Shift+Z) bylo přepracováno, aby se v celé aplikaci chovalo konzistentněji.",
+        "Operace kopírování, vkládání a mazání by nyní měly fungovat správně a vracet se tak, jak uživatel očekává."
+      ],
+      "tag": "Aktuální",
+      "media": []
+    },
+    {
       "version": "1.0.5",
       "title": "Momentová osamělá zatížení na prvcích",
       "date": "20. května 2026",
@@ -9,7 +20,6 @@
         "Náhled zatížení prvku nyní správně zobrazuje symbol a hodnotu osamělého momentu.",
         "Hodnoty v náhledu nyní respektují aktivní jednotky síly a momentu včetně kN a odvozených momentových jednotek."
       ],
-      "tag": "Aktuální",
       "media": [
         {
           "src": "/changelog/media/element-concentrated-moment-load.png",

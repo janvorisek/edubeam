@@ -116,8 +116,6 @@ const headers = computed(() => [
 ]);
 
 const addPreset = (preset: CrossSectionPreset) => {
-  setUnsolved();
-
   const domain = projectStore.solver.domain;
   let label = preset.name;
   let suffix = 2;
@@ -127,16 +125,18 @@ const addPreset = (preset: CrossSectionPreset) => {
     suffix++;
   }
 
-  domain.createCrossSection(label, {
-    a: preset.a,
-    iy: preset.iy,
-    h: preset.h,
-    k: preset.k,
+  executeModelMutationWithUndo(() => {
+    setUnsolved();
+
+    domain.createCrossSection(label, {
+      a: preset.a,
+      iy: preset.iy,
+      h: preset.h,
+      k: preset.k,
+    });
+
+    domain.crossSections = new Map(domain.crossSections);
   });
-
-  domain.crossSections = new Map(domain.crossSections);
-
-  projectStore.solve();
 };
 </script>
 

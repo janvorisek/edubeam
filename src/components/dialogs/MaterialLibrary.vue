@@ -295,8 +295,6 @@ const headers = computed(() => [
 ]);
 
 const addPreset = (preset: MaterialPreset) => {
-  setUnsolved();
-
   const domain = projectStore.solver.domain;
   let label = preset.name;
   let suffix = 2;
@@ -306,16 +304,18 @@ const addPreset = (preset: MaterialPreset) => {
     suffix++;
   }
 
-  domain.createMaterial(label, {
-    e: preset.e,
-    g: preset.g,
-    alpha: preset.alpha,
-    d: preset.d,
+  executeModelMutationWithUndo(() => {
+    setUnsolved();
+
+    domain.createMaterial(label, {
+      e: preset.e,
+      g: preset.g,
+      alpha: preset.alpha,
+      d: preset.d,
+    });
+
+    domain.materials = new Map(domain.materials);
   });
-
-  domain.materials = new Map(domain.materials);
-
-  projectStore.solve();
 };
 </script>
 

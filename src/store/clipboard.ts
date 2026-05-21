@@ -8,7 +8,7 @@ import {
   BeamElementUniformEdgeLoad,
   BeamTemperatureLoad,
 } from 'ts-fem';
-import { copyNode, loadType, setUnsolved, solve } from '@/utils';
+import { copyNode, executeModelMutationWithUndo, setUnsolved } from '@/utils';
 
 type Selection = {
   nodes: string[];
@@ -17,6 +17,18 @@ type Selection = {
   elementLoads: number[];
   prescribedBC: number[];
   dimensions: string[];
+};
+
+const cloneClipboardValue = <T>(value: T): T => {
+  if (Array.isArray(value)) {
+    return value.map((item) => cloneClipboardValue(item)) as T;
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(Object.entries(value).map(([key, entry]) => [key, cloneClipboardValue(entry)])) as T;
+  }
+
+  return value;
 };
 
 export const useClipboardStore = defineStore('clipboard', () => {
@@ -30,74 +42,92 @@ export const useClipboardStore = defineStore('clipboard', () => {
   });
 
   const select = (sel: Selection) => {
-    selection.nodes = sel.nodes;
-    selection.elements = sel.elements;
-    selection.nodalLoads = sel.nodalLoads;
-    selection.elementLoads = sel.elementLoads;
-    selection.prescribedBC = sel.prescribedBC;
-    selection.dimensions = sel.dimensions;
+    selection.nodes = [...sel.nodes];
+    selection.elements = [...sel.elements];
+    selection.nodalLoads = [...sel.nodalLoads];
+    selection.elementLoads = [...sel.elementLoads];
+    selection.prescribedBC = [...sel.prescribedBC];
+    selection.dimensions = [...sel.dimensions];
   };
 
   const paste = (d: { x: number; z: number } = { x: 0, z: 0 }) => {
-    const projectStore = useProjectStore();
-    setUnsolved();
-    const nodeMap = new Map<string, string>();
-    const elMap = new Map<string, string>();
+    executeModelMutationWithUndo(() => {
+      const projectStore = useProjectStore();
+      setUnsolved();
+      const nodeMap = new Map<string, string>();
+      const elMap = new Map<string, string>();
 
-    // Loop and and nodes
-    for (const node of selection.nodes) {
-      const n = projectStore.solver.domain.nodes.get(node);
+      for (const node of selection.nodes) {
+        const n = projectStore.solver.domain.nodes.get(node);
 
-      const newNodeId = copyNode(n, d);
-      nodeMap.set(node, newNodeId.toString());
-    }
-
-    // Loop and add elements
-    for (const element of selection.elements) {
-      const e = projectStore.solver.domain.elements.get(element) as Beam2D;
-
-      const nodes = e.nodes.map((n) => nodeMap.get(n) ?? copyNode(projectStore.solver.domain.nodes.get(n)!, d));
-
-      let newElId = projectStore.solver.domain.elements.size + 1;
-
-      while (projectStore.solver.domain.elements.has(newElId.toString())) {
-        newElId++;
+        const newNodeId = copyNode(n, d);
+        nodeMap.set(node, newNodeId.toString());
       }
 
-      elMap.set(element, newElId.toString());
+      for (const element of selection.elements) {
+        const e = projectStore.solver.domain.elements.get(element) as Beam2D;
 
-      projectStore.solver.domain.createBeam2D(newElId.toString(), nodes, e.mat, e.cs, e.hinges);
-    }
+        const nodes = e.nodes.map((n) => nodeMap.get(n) ?? copyNode(projectStore.solver.domain.nodes.get(n)!, d));
 
-    for (const load of selection.nodalLoads) {
-      const l = projectStore.solver.loadCases[0].nodalLoadList[load];
-      projectStore.solver.loadCases[0].createNodalLoad(nodeMap.get(l.target)!, l.values);
-    }
+        let newElId = projectStore.solver.domain.elements.size + 1;
 
-    for (const load of selection.prescribedBC) {
-      const l = projectStore.solver.loadCases[0].prescribedBC[load];
-      projectStore.solver.loadCases[0].createPrescribedDisplacement(nodeMap.get(l.target)!, l.prescribedValues);
-    }
+        while (projectStore.solver.domain.elements.has(newElId.toString())) {
+          newElId++;
+        }
 
-    for (const load of selection.elementLoads) {
-      const l = projectStore.solver.loadCases[0].elementLoadList[load];
-      if (l instanceof BeamConcentratedLoad) {
-        projectStore.solver.loadCases[0].createBeamConcentratedLoad(elMap.get(l.target)!, l.values, l.lcs);
-      } else if (l instanceof BeamElementUniformEdgeLoad) {
-        projectStore.solver.loadCases[0].createBeamElementUniformEdgeLoad(elMap.get(l.target)!, l.values, l.lcs);
-      } else if (l instanceof BeamElementTrapezoidalEdgeLoad) {
-        projectStore.solver.loadCases[0].createBeamElementTrapezoidalEdgeLoad(
-          elMap.get(l.target)!,
-          [...l.startValues] as [number, number],
-          [...l.endValues] as [number, number],
-          l.lcs
+        elMap.set(element, newElId.toString());
+
+        projectStore.solver.domain.createBeam2D(
+          newElId.toString(),
+          nodes,
+          e.mat,
+          e.cs,
+          cloneClipboardValue(e.hinges) as [boolean, boolean]
         );
-      } else if (l instanceof BeamTemperatureLoad) {
-        projectStore.solver.loadCases[0].createBeamTemperatureLoad(elMap.get(l.target)!, l.values);
       }
-    }
 
-    solve();
+      for (const load of selection.nodalLoads) {
+        const l = projectStore.solver.loadCases[0].nodalLoadList[load];
+        projectStore.solver.loadCases[0].createNodalLoad(nodeMap.get(l.target)!, cloneClipboardValue(l.values));
+      }
+
+      for (const load of selection.prescribedBC) {
+        const l = projectStore.solver.loadCases[0].prescribedBC[load];
+        projectStore.solver.loadCases[0].createPrescribedDisplacement(
+          nodeMap.get(l.target)!,
+          cloneClipboardValue(l.prescribedValues)
+        );
+      }
+
+      for (const load of selection.elementLoads) {
+        const l = projectStore.solver.loadCases[0].elementLoadList[load];
+        if (l instanceof BeamConcentratedLoad) {
+          projectStore.solver.loadCases[0].createBeamConcentratedLoad(
+            elMap.get(l.target)!,
+            cloneClipboardValue(l.values),
+            l.lcs
+          );
+        } else if (l instanceof BeamElementUniformEdgeLoad) {
+          projectStore.solver.loadCases[0].createBeamElementUniformEdgeLoad(
+            elMap.get(l.target)!,
+            cloneClipboardValue(l.values),
+            l.lcs
+          );
+        } else if (l instanceof BeamElementTrapezoidalEdgeLoad) {
+          projectStore.solver.loadCases[0].createBeamElementTrapezoidalEdgeLoad(
+            elMap.get(l.target)!,
+            cloneClipboardValue(l.startValues) as [number, number],
+            cloneClipboardValue(l.endValues) as [number, number],
+            l.lcs
+          );
+        } else if (l instanceof BeamTemperatureLoad) {
+          projectStore.solver.loadCases[0].createBeamTemperatureLoad(
+            elMap.get(l.target)!,
+            cloneClipboardValue(l.values)
+          );
+        }
+      }
+    });
   };
 
   const midpoint = () => {

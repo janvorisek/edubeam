@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue';
 import { useProjectStore } from '@/store/project';
 import { ensureDimensionId } from '@/utils/id';
-import { parseFloat2 } from '@/utils';
+import { executeModelMutationWithUndo, parseFloat2 } from '@/utils';
 import { useI18n } from 'vue-i18n';
 
 const projectStore = useProjectStore();
@@ -84,8 +84,11 @@ const reverseDimension = () => {
   const dim = selectedDimension.value;
   if (!dim) return;
 
-  dim.points = [dim.points[1], dim.points[0]];
-  dim.distance = -dim.distance; // keep original position
+  executeModelMutationWithUndo(() => {
+    dim.points = [dim.points[1], dim.points[0]];
+    dim.distance = -dim.distance;
+  });
+
   syncInputsFromDimension();
 };
 
@@ -93,10 +96,12 @@ const removeDimension = () => {
   if (!selectedDimensionId.value) return;
 
   const idToRemove = selectedDimensionId.value;
-  projectStore.dimensions = projectStore.dimensions.filter((dim) => ensureDimensionId(dim) !== idToRemove);
-  projectStore.selection2.dimensions = projectStore.selection2.dimensions.filter((id) => id !== idToRemove);
-  projectStore.selection.label = null;
-  projectStore.selection.type = null;
+  executeModelMutationWithUndo(() => {
+    projectStore.dimensions = projectStore.dimensions.filter((dim) => ensureDimensionId(dim) !== idToRemove);
+    projectStore.selection2.dimensions = projectStore.selection2.dimensions.filter((id) => id !== idToRemove);
+    projectStore.selection.label = null;
+    projectStore.selection.type = null;
+  });
 };
 </script>
 

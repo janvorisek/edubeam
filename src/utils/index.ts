@@ -19,6 +19,7 @@ import { useViewerStore } from '../store/viewer';
 
 import { loadType } from './loadType';
 import { ensureDimensionId, createDimensionId } from './id';
+import { deserializeModel, serializeModel } from './serializeModel';
 import { createDimensionPoint, createDimensionPointFromNode, type DimensionPoint } from '@/types/dimension';
 
 export type EntityWithLabel = { label: string & { [key: string]: unknown } };
@@ -26,8 +27,8 @@ export type EntityWithLabel = { label: string & { [key: string]: unknown } };
 export { throttle } from './throttle';
 export { debounce } from './debounce';
 
-export { serializeModel } from './serializeModel';
-export { deserializeModel } from './serializeModel';
+export { serializeModel };
+export { deserializeModel };
 
 export { smoothPath } from './smoothPath';
 export { loadType } from './loadType';
@@ -35,6 +36,118 @@ export { loadType } from './loadType';
 export { loadXmlFile } from './loadXmlFile';
 
 export { formatScientificNumber } from './formatScientificNumber';
+
+type ProjectSnapshot = {
+  model: string | null;
+  selection: {
+    label: number | string | null;
+    type: string | null;
+    x: number;
+    y: number;
+  };
+  selection2: {
+    nodes: string[];
+    elements: string[];
+    nodalLoads: number[];
+    elementLoads: number[];
+    prescribedBC: number[];
+    dimensions: string[];
+  };
+};
+
+let modelMutationDepth = 0;
+
+const captureProjectSnapshot = (): ProjectSnapshot => {
+  const projectStore = useProjectStore();
+
+  return {
+    model: serializeModel(projectStore.solver, projectStore.dimensions),
+    selection: {
+      label: projectStore.selection.label,
+      type: projectStore.selection.type,
+      x: projectStore.selection.x,
+      y: projectStore.selection.y,
+    },
+    selection2: {
+      nodes: [...projectStore.selection2.nodes],
+      elements: [...projectStore.selection2.elements],
+      nodalLoads: [...projectStore.selection2.nodalLoads],
+      elementLoads: [...projectStore.selection2.elementLoads],
+      prescribedBC: [...projectStore.selection2.prescribedBC],
+      dimensions: [...projectStore.selection2.dimensions],
+    },
+  };
+};
+
+const restoreProjectSnapshot = (snapshot: ProjectSnapshot) => {
+  const projectStore = useProjectStore();
+
+  for (const loadCase of projectStore.solver.loadCases) {
+    loadCase.solved = false;
+    loadCase.prescribedBC = [];
+    loadCase.nodalLoadList = [];
+    loadCase.elementLoadList = [];
+  }
+
+  projectStore.solver.domain.elements.clear();
+  projectStore.solver.domain.nodes.clear();
+  projectStore.solver.domain.materials.clear();
+  projectStore.solver.domain.crossSections.clear();
+  projectStore.dimensions = [];
+
+  if (snapshot.model) {
+    deserializeModel(snapshot.model, projectStore.solver, projectStore.dimensions);
+  }
+
+  projectStore.selection.label = snapshot.selection.label;
+  projectStore.selection.type = snapshot.selection.type;
+  projectStore.selection.x = snapshot.selection.x;
+  projectStore.selection.y = snapshot.selection.y;
+
+  projectStore.selection2.nodes = [...snapshot.selection2.nodes];
+  projectStore.selection2.elements = [...snapshot.selection2.elements];
+  projectStore.selection2.nodalLoads = [...snapshot.selection2.nodalLoads];
+  projectStore.selection2.elementLoads = [...snapshot.selection2.elementLoads];
+  projectStore.selection2.prescribedBC = [...snapshot.selection2.prescribedBC];
+  projectStore.selection2.dimensions = [...snapshot.selection2.dimensions];
+
+  solve();
+};
+
+export const executeModelMutationWithUndo = (mutate: () => void) => {
+  if (modelMutationDepth > 0) {
+    mutate();
+    return;
+  }
+
+  const prev = captureProjectSnapshot();
+
+  modelMutationDepth++;
+
+  try {
+    mutate();
+  } finally {
+    modelMutationDepth--;
+  }
+
+  const next = captureProjectSnapshot();
+  if (prev.model === null || next.model === null || prev.model === next.model) {
+    solve();
+    return;
+  }
+
+  const setCommand = new Command<IKeyValue>(
+    (value) => {
+      restoreProjectSnapshot((value as { prev: ProjectSnapshot; next: ProjectSnapshot }).next);
+    },
+    (value) => {
+      restoreProjectSnapshot((value as { prev: ProjectSnapshot; next: ProjectSnapshot }).prev);
+    },
+    { prev, next }
+  );
+
+  undoRedoManager.executeCommand(setCommand);
+};
 
 export const capitalize = (s: string) => {
   return s.charAt(0).toUpperCase() + s.slice(1);
@@ -594,7 +707,7 @@ export const toggleBoolean = (item: unknown, value: string) => {
   solve();
 };
 
-export const deleteElement = (id: string) => {
+const removeElementFromModel = (id: string) => {
   setUnsolved();
 
   // delete element load
@@ -613,11 +726,18 @@ export const deleteElement = (id: string) => {
   useProjectStore().clearSelection();
 
   useProjectStore().solver.domain.elements.delete(id);
-
-  solve();
 };
 
-export const deleteNode = (id: string) => {
+export const deleteElement = (id: string, trackHistory = true) => {
+  if (!trackHistory) {
+    removeElementFromModel(id);
+    return;
+  }
+
+  executeModelMutationWithUndo(() => removeElementFromModel(id));
+};
+
+const removeNodeFromModel = (id: string) => {
   setUnsolved();
   useProjectStore().clearSelection();
 
@@ -638,7 +758,7 @@ export const deleteNode = (id: string) => {
   // delete elements first
   for (const [key, value] of useProjectStore().solver.domain.elements) {
     if (value.nodes[0] === id || value.nodes[1] === id) {
-      deleteElement(key);
+      removeElementFromModel(key);
     }
   }
 
@@ -664,23 +784,46 @@ export const deleteNode = (id: string) => {
   useProjectStore().clearSelection();
 
   useProjectStore().solver.domain.nodes.delete(id);
-
-  solve();
 };
 
-export const deleteMaterial = (id: string) => {
+export const deleteNode = (id: string, trackHistory = true) => {
+  if (!trackHistory) {
+    removeNodeFromModel(id);
+    return;
+  }
+
+  executeModelMutationWithUndo(() => removeNodeFromModel(id));
+};
+
+const removeMaterialFromModel = (id: string) => {
   setUnsolved();
   useProjectStore().solver.domain.materials.delete(id);
-  solve();
 };
 
-export const deleteCrossSection = (id: string) => {
+export const deleteMaterial = (id: string, trackHistory = true) => {
+  if (!trackHistory) {
+    removeMaterialFromModel(id);
+    return;
+  }
+
+  executeModelMutationWithUndo(() => removeMaterialFromModel(id));
+};
+
+const removeCrossSectionFromModel = (id: string) => {
   setUnsolved();
   useProjectStore().solver.domain.crossSections.delete(id);
-  solve();
 };
 
-export const deleteNodalLoad = (load: NodalLoad, id: number) => {
+export const deleteCrossSection = (id: string, trackHistory = true) => {
+  if (!trackHistory) {
+    removeCrossSectionFromModel(id);
+    return;
+  }
+
+  executeModelMutationWithUndo(() => removeCrossSectionFromModel(id));
+};
+
+const removeNodalLoadFromModel = (id: number) => {
   setUnsolved();
   useProjectStore().clearSelection();
   const _id =
@@ -688,22 +831,46 @@ export const deleteNodalLoad = (load: NodalLoad, id: number) => {
     useProjectStore().solver.loadCases[0].elementLoadList.length -
     useProjectStore().solver.loadCases[0].prescribedBC.length;
   useProjectStore().solver.loadCases[0].nodalLoadList.splice(_id, 1);
-  solve();
 };
 
-export const deleteElementLoad = (load: BeamElementUniformEdgeLoad, id: number) => {
+export const deleteNodalLoad = (_load: NodalLoad, id: number, trackHistory = true) => {
+  if (!trackHistory) {
+    removeNodalLoadFromModel(id);
+    return;
+  }
+
+  executeModelMutationWithUndo(() => removeNodalLoadFromModel(id));
+};
+
+const removeElementLoadFromModel = (id: number) => {
   setUnsolved();
   useProjectStore().clearSelection();
   useProjectStore().solver.loadCases[0].elementLoadList.splice(id, 1);
-  solve();
 };
 
-export const deletePrescribedDisplacement = (load: BeamElementUniformEdgeLoad, id: number) => {
+export const deleteElementLoad = (_load: BeamElementUniformEdgeLoad, id: number, trackHistory = true) => {
+  if (!trackHistory) {
+    removeElementLoadFromModel(id);
+    return;
+  }
+
+  executeModelMutationWithUndo(() => removeElementLoadFromModel(id));
+};
+
+const removePrescribedDisplacementFromModel = (id: number) => {
   setUnsolved();
   useProjectStore().clearSelection();
   const _id = id - useProjectStore().solver.loadCases[0].elementLoadList.length;
   useProjectStore().solver.loadCases[0].prescribedBC.splice(_id, 1);
-  solve();
+};
+
+export const deletePrescribedDisplacement = (_load: BeamElementUniformEdgeLoad, id: number, trackHistory = true) => {
+  if (!trackHistory) {
+    removePrescribedDisplacementFromModel(id);
+    return;
+  }
+
+  executeModelMutationWithUndo(() => removePrescribedDisplacementFromModel(id));
 };
 
 export const nameBeamForce = (dof: number) => {

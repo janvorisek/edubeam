@@ -93,7 +93,7 @@ import { computed, ref } from 'vue';
 import { closeModal, openModal } from 'jenesius-vue-modal';
 import { useProjectStore } from '@/store/project';
 import { useAppStore } from '@/store/app';
-import { checkNumber, numberRules, parseFloat2, setUnsolved } from '@/utils';
+import { checkNumber, executeModelMutationWithUndo, numberRules, parseFloat2, setUnsolved } from '@/utils';
 import MaterialLibraryDialog from './MaterialLibrary.vue';
 
 const projectStore = useProjectStore();
@@ -122,16 +122,17 @@ const addMaterial = () => {
     nid++;
   }
 
-  domain.createMaterial(nid, {
-    e: appStore.convertInversePressure(parseFloat2(matE.value)),
-    g: appStore.convertInversePressure(parseFloat2(matG.value)),
-    alpha: parseFloat2(matAlphaTemp.value),
-    d: parseFloat2(matDensity.value),
+  executeModelMutationWithUndo(() => {
+    domain.createMaterial(nid, {
+      e: appStore.convertInversePressure(parseFloat2(matE.value)),
+      g: appStore.convertInversePressure(parseFloat2(matG.value)),
+      alpha: parseFloat2(matAlphaTemp.value),
+      d: parseFloat2(matDensity.value),
+    });
+
+    domain.materials = new Map(domain.materials);
   });
 
-  domain.materials = new Map(domain.materials);
-
-  projectStore.solve();
   closeModal();
 };
 </script>

@@ -204,7 +204,7 @@ import { computed, ref, watch } from 'vue';
 import { useProjectStore } from '../../store/project';
 import { useAppStore } from '../../store/app';
 import { closeModal } from 'jenesius-vue-modal';
-import { checkNumber, parseFloat2, numberRules } from '@/utils';
+import { checkNumber, executeModelMutationWithUndo, parseFloat2, numberRules } from '@/utils';
 import ElementLoadPreview from '../ElementLoadPreview.vue';
 import {
   BeamConcentratedLoad,
@@ -323,38 +323,39 @@ const minMax = (v) => {
 const addElementLoad = () => {
   if (valid.value === false) return;
 
-  useProjectStore().solver.loadCases[0].solved = false;
+  executeModelMutationWithUndo(() => {
+    useProjectStore().solver.loadCases[0].solved = false;
 
-  if (loadType.value === 'udl')
-    useProjectStore().solver.loadCases[0].createBeamElementUniformEdgeLoad(
-      loadElementId.value,
-      [realFx.value, realFz.value],
-      elementLCS.value
-    );
+    if (loadType.value === 'udl')
+      useProjectStore().solver.loadCases[0].createBeamElementUniformEdgeLoad(
+        loadElementId.value,
+        [realFx.value, realFz.value],
+        elementLCS.value
+      );
 
-  if (loadType.value === 'trapezoidal')
-    useProjectStore().solver.loadCases[0].createBeamElementTrapezoidalEdgeLoad(
-      loadElementId.value,
-      [realTrapStartFx.value, realTrapStartFz.value],
-      [realTrapEndFx.value, realTrapEndFz.value],
-      elementLCS.value
-    );
+    if (loadType.value === 'trapezoidal')
+      useProjectStore().solver.loadCases[0].createBeamElementTrapezoidalEdgeLoad(
+        loadElementId.value,
+        [realTrapStartFx.value, realTrapStartFz.value],
+        [realTrapEndFx.value, realTrapEndFz.value],
+        elementLCS.value
+      );
 
-  if (loadType.value === 'concentrated')
-    useProjectStore().solver.loadCases[0].createBeamConcentratedLoad(
-      loadElementId.value,
-      [realFx.value, realFz.value, realMy.value, realDist.value],
-      elementLCS.value
-    );
+    if (loadType.value === 'concentrated')
+      useProjectStore().solver.loadCases[0].createBeamConcentratedLoad(
+        loadElementId.value,
+        [realFx.value, realFz.value, realMy.value, realDist.value],
+        elementLCS.value
+      );
 
-  if (loadType.value === 'temperature')
-    useProjectStore().solver.loadCases[0].createBeamTemperatureLoad(loadElementId.value, [
-      realTc.value,
-      realTbt.value,
-      0,
-    ]);
+    if (loadType.value === 'temperature')
+      useProjectStore().solver.loadCases[0].createBeamTemperatureLoad(loadElementId.value, [
+        realTc.value,
+        realTbt.value,
+        0,
+      ]);
+  });
 
-  useProjectStore().solve();
   projectStore.clearSelection();
   closeModal();
 };

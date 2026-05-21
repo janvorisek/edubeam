@@ -52,12 +52,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue';
+import { ref } from 'vue';
 import { useProjectStore } from '../../store/project';
-import { DofID, NodalLoad } from 'ts-fem';
 import { closeModal } from 'jenesius-vue-modal';
 import { useAppStore } from '@/store/app';
-import { checkNumber, changeRefNumValue, numberRules } from '../../utils';
+import { checkNumber, changeRefNumValue, executeModelMutationWithUndo, numberRules } from '../../utils';
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
@@ -83,11 +82,11 @@ const addNode = () => {
   const nx = appStore.convertInverseLength(changeRefNumValue(newNodeX.value.toString()));
   const nz = appStore.convertInverseLength(changeRefNumValue(newNodeZ.value.toString()));
 
-  domain.createNode(nid, [nx, 0.0, nz]);
-
-  domain.nodes = new Map(domain.nodes);
+  executeModelMutationWithUndo(() => {
+    domain.createNode(nid, [nx, 0.0, nz]);
+    domain.nodes = new Map(domain.nodes);
+  });
 
   closeModal();
-  useProjectStore().solve();
 };
 </script>

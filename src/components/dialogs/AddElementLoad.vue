@@ -256,14 +256,14 @@ watch(loadType, (newVal) => {
 });
 
 const loadElementId = ref(String(props.label ?? [...useProjectStore().solver.domain.elements.values()][0].label));
-const loadNodeValueFx = ref(`${appStore.convertForce(4000)}`);
-const loadNodeValueFz = ref(`${appStore.convertForce(3000)}`);
+const loadNodeValueFx = ref(`${appStore.convertForce(0)}`);
+const loadNodeValueFz = ref(`${appStore.convertForce(0)}`);
 const loadNodeValueMy = ref(`${appStore.convertMoment(0)}`);
 const loadTrapezoidStartFx = ref(`${appStore.convertForce(0)}`);
-const loadTrapezoidStartFz = ref(`${appStore.convertForce(1000)}`);
+const loadTrapezoidStartFz = ref(`${appStore.convertForce(0)}`);
 const loadTrapezoidEndFx = ref(`${appStore.convertForce(0)}`);
-const loadTrapezoidEndFz = ref(`${appStore.convertForce(2000)}`);
-const loadNodeValueTc = ref('10.0');
+const loadTrapezoidEndFz = ref(`${appStore.convertForce(0)}`);
+const loadNodeValueTc = ref('0.0');
 const loadNodeValueTbt = ref('0.0');
 const elementLoadPos = ref('0.0');
 const elementLCS = ref(true);

@@ -125,8 +125,8 @@ const valid = ref(false);
 
 const loadType = ref('force');
 const loadNodeId = ref(props.label ?? [...useProjectStore().solver.domain.nodes.values()][0].label);
-const loadNodeValueFx = ref(`${appStore.convertForce(4000)}`);
-const loadNodeValueFz = ref(`${appStore.convertForce(3000)}`);
+const loadNodeValueFx = ref(`${appStore.convertForce(0)}`);
+const loadNodeValueFz = ref(`${appStore.convertForce(0)}`);
 const loadNodeValueMy = ref('0');
 
 watch(loadNodeId, () => {

@@ -158,8 +158,6 @@ const addElement = () => {
     domain.elements = new Map(domain.elements);
   });
 
-  useAppStore().dialogs.addElement = false;
-
   closeModal();
 };
 </script>

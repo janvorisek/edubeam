@@ -389,7 +389,7 @@ const onElementHover = (e: MouseEvent, el: Beam2D) => {
 
   tt.style.top = e.offsetY + 'px';
   tt.style.left = e.offsetX + 'px';
-  tooltipContent.innerHTML = `<strong>${t('common.element')} ${el.label}</strong>`;
+  tooltipContent.innerHTML = `<strong>${t('common.element')} ${el.label}</strong><br>CS=${el.cs}, Mat=${el.mat}`;
   tt.style.display = 'block';
   document.body.style.cursor = 'pointer';
 

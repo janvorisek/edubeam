@@ -5,6 +5,7 @@ import { reactive, ref } from 'vue';
 export const useViewerStore = defineStore(
   'viewer',
   () => {
+    const resultLabelMode = ref<'axis' | 'horizontal'>('axis');
     const showSupports = ref(true);
     const showNodeLabels = ref(true);
     const showElementLabels = ref(true);
@@ -39,6 +40,7 @@ export const useViewerStore = defineStore(
     const settingsOpen = ref(true);
 
     const reset = () => {
+      resultLabelMode.value = 'axis';
       showSupports.value = true;
       showNodeLabels.value = true;
       showElementLabels.value = true;
@@ -72,6 +74,7 @@ export const useViewerStore = defineStore(
     };
 
     return {
+      resultLabelMode,
       colors,
       showNodeLabels,
       showLoads,

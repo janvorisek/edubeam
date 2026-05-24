@@ -142,7 +142,10 @@
       "sizes": "Größen",
       "supportSize": "Lagergröße"
     },
-    "font_size": "Schriftgröße"
+    "font_size": "Schriftgröße",
+    "result_label_orientation": "Ausrichtung der Ergebnisbeschriftungen",
+    "result_label_orientation_axis": "Senkrecht zum Diagramm",
+    "result_label_orientation_horizontal": "Immer horizontal"
   },
   "sideSettings": {
     "showDeformedShape": "Verformte Form",

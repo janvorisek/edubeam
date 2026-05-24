@@ -142,7 +142,10 @@
       "sizes": "Розміри",
       "supportSize": "Розмір опор"
     },
-    "font_size": "Розмір шрифту"
+    "font_size": "Розмір шрифту",
+    "result_label_orientation": "Орієнтація підписів результатів",
+    "result_label_orientation_axis": "Перпендикулярно до епюри",
+    "result_label_orientation_horizontal": "Завжди горизонтально"
   },
   "sideSettings": {
     "showDeformedShape": "Деформована форма",

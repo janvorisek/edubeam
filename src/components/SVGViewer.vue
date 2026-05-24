@@ -74,6 +74,7 @@ import {
 
 const props = defineProps<{
   id: string;
+  resultLabelMode?: 'axis' | 'horizontal';
 }>();
 
 const { mobile } = useDisplay();
@@ -96,6 +97,8 @@ const appStore = useAppStore();
 const projectStore = useProjectStore();
 const viewerStore = useViewerStore();
 const layoutStore = useLayoutStore();
+
+const resolvedResultLabelMode = computed(() => props.resultLabelMode ?? viewerStore.resultLabelMode);
 
 const panZoom = ref<InstanceType<typeof SvgPanZoom> | null>(null);
 const grid = ref<InstanceType<typeof SvgGrid> | null>(null);
@@ -162,6 +165,16 @@ const intersected = ref<{
   type: null,
   index: null,
   originalPosition: { x: 0, y: 0 },
+});
+
+const hoveredElement = computed(() => {
+  if (intersected.value.type !== 'element' || intersected.value.index === null) return null;
+  return projectStore.beams.find((e) => e.label === intersected.value.index) || null;
+});
+
+const hoveredNode = computed(() => {
+  if (intersected.value.type !== 'node' || intersected.value.index === null) return null;
+  return projectStore.nodes.find((n) => n.label === intersected.value.index) || null;
 });
 
 const hideTooltip = (clearHoverState = true) => {
@@ -378,7 +391,7 @@ const paste = () => {
   appStore.mouseMode = MouseMode.PASTE_CLIPBOARD;
 };
 
-const onElementHover = (e: MouseEvent, el: Beam2D) => {
+const onElementHover = (e: MouseEvent, el: Beam2D, showTooltip = true) => {
   if (appStore.mouseMode === MouseMode.MOVING) return;
 
   const tt = tooltip.value as HTMLElement;
@@ -387,11 +400,16 @@ const onElementHover = (e: MouseEvent, el: Beam2D) => {
   intersected.value.type = 'element';
   intersected.value.index = el.label;
 
-  tt.style.top = e.offsetY + 'px';
-  tt.style.left = e.offsetX + 'px';
-  tooltipContent.innerHTML = `<strong>${t('common.element')} ${el.label}</strong><br>CS=${el.cs}, Mat=${el.mat}`;
-  tt.style.display = 'block';
-  document.body.style.cursor = 'pointer';
+  if (showTooltip) {
+    tt.style.top = e.offsetY + 'px';
+    tt.style.left = e.offsetX + 'px';
+    tooltipContent.innerHTML = `<strong>${t('common.element')} ${el.label}</strong><br>CS=${el.cs}, Mat=${el.mat}`;
+    tt.style.display = 'block';
+    document.body.style.cursor = 'pointer';
+  } else {
+    tt.style.display = 'none';
+    document.body.style.cursor = 'auto';
+  }
 
   if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
 };
@@ -1636,6 +1654,7 @@ defineExpose({ centerContent, fitContent });
 
 <template>
   <div class="d-flex flex-column fill-height svg-viewer">
+    <!-- <div style="position: absolute; top: 0; left: 0; background: red; z-index: 101">{{ intersected }}</div> -->
     <div
       v-if="!appStore.inViewerMode"
       class="text-body-2 d-flex ga-1 line-height-1"
@@ -2047,7 +2066,7 @@ defineExpose({ centerContent, fitContent });
               />
             </g>
           </g>
-          <g>
+          <g :style="`opacity: ${intersected?.type === 'element' ? 0.5 : 1} !important`">
             <SVGElement
               v-for="(element, index) in projectStore.beams"
               :key="`element-${index}`"
@@ -2064,11 +2083,13 @@ defineExpose({ centerContent, fitContent });
               :normal-force-multiplier="projectStore.normalForceScale * viewerStore.resultsScalePx_"
               :shear-force-multiplier="projectStore.shearForceScale * viewerStore.resultsScalePx_"
               :bending-moment-multiplier="projectStore.bendingMomentScale * viewerStore.resultsScalePx_"
+              :result-label-mode="resolvedResultLabelMode"
               :convert-force="appStore.convertForce"
               :convert-moment="appStore.convertMoment"
               :font-size="viewerStore.fontSize"
               :number-format="appStore.numberFormatter"
               @elementmousemove="onElementHover($event, element)"
+              @elementresultsmousemove="onElementHover($event, element, false)"
               @mouseleave="hideTooltip"
               @elementpointerup="onElementClick"
             />
@@ -2130,6 +2151,33 @@ defineExpose({ centerContent, fitContent });
               :interactive="false"
             />
           </g>
+          <!-- Currently hovered -->
+          <g>
+            <SVGElement
+              v-if="hoveredElement"
+              :key="`element-${hoveredElement.label}`"
+              class="pointer-events-none"
+              :class="{ selected: projectStore.selection2.elements.includes(hoveredElement.label) }"
+              :element="hoveredElement"
+              :scale="scale"
+              :show-deformed-shape="!isZooming && viewerStore.showDeformedShape"
+              :show-normal-force="!isZooming && viewerStore.showNormalForce"
+              :show-shear-force="!isZooming && viewerStore.showShearForce"
+              :show-bending-moment="!isZooming && viewerStore.showBendingMoment"
+              :show-label="!isZooming && viewerStore.showElementLabels"
+              show-label-background
+              :load-case="projectStore.solver.loadCases[0]"
+              :deformed-shape-multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
+              :normal-force-multiplier="projectStore.normalForceScale * viewerStore.resultsScalePx_"
+              :shear-force-multiplier="projectStore.shearForceScale * viewerStore.resultsScalePx_"
+              :bending-moment-multiplier="projectStore.bendingMomentScale * viewerStore.resultsScalePx_"
+              :result-label-mode="resolvedResultLabelMode"
+              :convert-force="appStore.convertForce"
+              :convert-moment="appStore.convertMoment"
+              :font-size="viewerStore.fontSize"
+              :number-format="appStore.numberFormatter"
+            />
+          </g>
           <!-- Paste preview -->
           <g
             v-if="appStore.mouseMode === MouseMode.PASTE_CLIPBOARD"
@@ -2151,6 +2199,7 @@ defineExpose({ centerContent, fitContent });
                 :normal-force-multiplier="projectStore.normalForceScale * viewerStore.resultsScalePx_"
                 :shear-force-multiplier="projectStore.shearForceScale * viewerStore.resultsScalePx_"
                 :bending-moment-multiplier="projectStore.bendingMomentScale * viewerStore.resultsScalePx_"
+                :result-label-mode="resolvedResultLabelMode"
                 :convert-force="appStore.convertForce"
                 :convert-moment="appStore.convertMoment"
                 :font-size="viewerStore.fontSize"

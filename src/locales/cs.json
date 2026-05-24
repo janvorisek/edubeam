@@ -101,7 +101,11 @@
     "sizes": {
       "sizes": "Velikost",
       "supportSize": "Velikost podpor"
-    }
+    },
+    "font_size": "Velikost písma",
+    "result_label_orientation": "Orientace popisků výsledků",
+    "result_label_orientation_axis": "Kolmo k vykreslení grafu",
+    "result_label_orientation_horizontal": "Vždy vodorovně"
   },
   "elements": {
     "addElement": "Přidat prvek",

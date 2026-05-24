@@ -142,7 +142,10 @@
       "sizes": "Rozmiary",
       "supportSize": "Rozmiar podpór"
     },
-    "font_size": "Rozmiar czcionki"
+    "font_size": "Rozmiar czcionki",
+    "result_label_orientation": "Orientacja etykiet wyników",
+    "result_label_orientation_axis": "Prostopadle do wykresu",
+    "result_label_orientation_horizontal": "Zawsze poziomo"
   },
   "sideSettings": {
     "showDeformedShape": "Kształt odkształcony",

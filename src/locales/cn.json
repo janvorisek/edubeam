@@ -142,7 +142,10 @@
       "sizes": "尺寸",
       "supportSize": "支座大小"
     },
-    "font_size": "字号"
+    "font_size": "字号",
+    "result_label_orientation": "结果标签方向",
+    "result_label_orientation_axis": "垂直于图表",
+    "result_label_orientation_horizontal": "始终水平"
   },
   "sideSettings": {
     "showDeformedShape": "变形图",

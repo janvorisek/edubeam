@@ -140,7 +140,10 @@
       "sizes": "ขนาด",
       "supportSize": "ขนาดจุดรองรับ"
     },
-    "font_size": "ขนาดตัวอักษร"
+    "font_size": "ขนาดตัวอักษร",
+    "result_label_orientation": "ทิศทางป้ายผลลัพธ์",
+    "result_label_orientation_axis": "ตั้งฉากกับแผนภาพ",
+    "result_label_orientation_horizontal": "แนวนอนเสมอ"
   },
   "sideSettings": {
     "showDeformedShape": "รูปร่างที่เสียรูป",

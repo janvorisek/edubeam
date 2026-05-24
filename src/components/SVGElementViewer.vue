@@ -75,6 +75,7 @@ const props = withDefaults(
     convertForce?: (value: number) => number;
     convertMoment?: (value: number) => number;
     convertLength?: (value: number) => number;
+    resultLabelMode?: 'axis' | 'horizontal';
     numberFormat?: Intl.NumberFormat;
     zoomEnabled?: boolean;
     fontSize?: number;
@@ -118,6 +119,7 @@ const props = withDefaults(
     convertForce: (v) => v,
     convertMoment: (v) => v,
     convertLength: (v) => v,
+    resultLabelMode: 'axis',
     numberFormat: () => new Intl.NumberFormat(),
     zoomEnabled: false,
     fontSize: 13,
@@ -361,6 +363,7 @@ defineExpose({ centerContent, fitContent });
               :normal-force-multiplier="normalForceScale * props.resultsScalePx"
               :shear-force-multiplier="shearForceScale * props.resultsScalePx"
               :bending-moment-multiplier="bendingMomentScale * props.resultsScalePx"
+              :result-label-mode="props.resultLabelMode"
               :convert-force="props.convertForce"
               :convert-moment="props.convertMoment"
               :font-size="props.fontSize"

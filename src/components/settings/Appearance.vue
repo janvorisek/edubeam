@@ -26,12 +26,13 @@
           :colors="viewerStore.colors"
           :support-size="viewerStore.supportSize"
           :font-size="viewerStore.fontSize"
+          :result-label-mode="viewerStore.resultLabelMode"
         />
       </div>
 
-      <h3 class="mb-2">{{ $t('settings.grid') }}</h3>
+      <h3 class="mb-0">{{ $t('settings.grid') }}</h3>
 
-      <v-row>
+      <v-row no-gutters>
         <v-col>
           <v-checkbox
             v-model="viewerStore.showGrid"
@@ -60,7 +61,22 @@
         step="0.001"
         suffix="m"
       />
+
+      <h3 class="mt-3 mb-2">{{ $t('settings.result_labels') }}</h3>
+      <v-row>
+        <v-col>
+          <v-select
+            v-model="viewerStore.resultLabelMode"
+            :items="resultLabelModeItems"
+            item-title="title"
+            item-value="value"
+            :label="$t('settings.result_label_orientation')"
+            hide-details="auto"
+          />
+        </v-col>
+      </v-row>
     </div>
+
     <div class="v-col-6">
       <h3 class="mb-2">{{ $t('settings.sizes.sizes') }}</h3>
 
@@ -264,15 +280,20 @@
 </template>
 
 <script lang="ts" setup>
-import { useProjectStore } from '@/store/project';
 import { useViewerStore } from '@/store/viewer';
 import SVGElementViewer from '../SVGElementViewer.vue';
 import { LinearStaticSolver, DofID } from 'ts-fem';
-import { ref, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const viewerStore = useViewerStore();
-const projectStore = useProjectStore();
 const showQuantity = ref('deformedShape');
+const { t } = useI18n();
+
+const resultLabelModeItems = computed(() => [
+  { title: t('settings.result_label_orientation_axis'), value: 'axis' },
+  { title: t('settings.result_label_orientation_horizontal'), value: 'horizontal' },
+]);
 
 const solver = ref(new LinearStaticSolver());
 const domain = solver.value.domain;

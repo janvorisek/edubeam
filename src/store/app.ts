@@ -31,7 +31,7 @@ export const useAppStore = defineStore(
     );
 
     // The converter cant handle moment units, so we store them separately and call the converter for length and force separately
-    const momentUnits = ref({ force: 'N', length: 'm' });
+    const momentUnits = ref({ force: 'kN', length: 'm' });
 
     const units = reactive({
       Length: 'm',
@@ -185,7 +185,7 @@ export const useAppStore = defineStore(
       tab.value = tabs.value.length - 1;*/
     };
 
-    const panButton = ref(4);
+    const panButton = ref(-1);
 
     const test = ref(20);
 

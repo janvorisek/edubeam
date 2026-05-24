@@ -142,7 +142,10 @@
       "sizes": "Tamaños",
       "supportSize": "Tamaño de apoyos"
     },
-    "font_size": "Tamaño de fuente"
+    "font_size": "Tamaño de fuente",
+    "result_label_orientation": "Orientación de las etiquetas de resultados",
+    "result_label_orientation_axis": "Perpendicular al diagrama",
+    "result_label_orientation_horizontal": "Siempre horizontales"
   },
   "sideSettings": {
     "showDeformedShape": "Forma deformada",

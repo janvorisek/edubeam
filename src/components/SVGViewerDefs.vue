@@ -493,8 +493,8 @@ const props = withDefaults(
       <circle r="7" fill="white" stroke="black" stroke-width="2" />
     </marker>
 
-    <filter :id="`${id}-textLabel`" x="-5%" width="110%" y="0%" height="100%">
-      <feFlood flood-color="white" flood-opacity="0.75" />
+    <filter :id="`${id}-textLabel`" x="-2.5%" width="105%" y="0%" height="100%">
+      <feFlood flood-color="white" flood-opacity="0.8" />
     </filter>
   </defs>
 </template>

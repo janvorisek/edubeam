@@ -175,7 +175,9 @@ const onTouchMove = (event: TouchEvent): void => {
 };
 
 const onMouseMove = (event: MouseEvent): void => {
-  if (event.buttons !== appStore.panButton) return;
+  if (appStore.panButton === -1 && !(event.buttons === 4 || event.buttons === 2)) return;
+
+  if (appStore.panButton !== -1 && event.buttons !== appStore.panButton) return;
 
   panning.value = true;
 

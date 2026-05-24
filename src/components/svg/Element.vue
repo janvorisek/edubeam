@@ -12,6 +12,9 @@ import {
 } from 'ts-fem';
 import { computed } from 'vue';
 
+type ResultLabelMode = 'axis' | 'horizontal';
+type ResultLabelAnchor = 'start' | 'end' | 'middle';
+
 const props = withDefaults(
   defineProps<{
     element: Beam2D;
@@ -21,6 +24,7 @@ const props = withDefaults(
     showShearForce: boolean;
     showBendingMoment: boolean;
     showLabel: boolean;
+    showLabelBackground?: boolean;
     convertForce: (f: number) => number;
     convertMoment: (m: number) => number;
     loadCase: LoadCase;
@@ -28,6 +32,7 @@ const props = withDefaults(
     normalForceMultiplier: number;
     shearForceMultiplier: number;
     bendingMomentMultiplier: number;
+    resultLabelMode?: ResultLabelMode;
     padding?: number;
     fontSize?: number;
     numberFormat?: Intl.NumberFormat;
@@ -35,6 +40,8 @@ const props = withDefaults(
   {
     padding: 10,
     fontSize: 13,
+    showLabelBackground: true,
+    resultLabelMode: 'axis',
     numberFormat: new Intl.NumberFormat(),
   }
 );
@@ -66,7 +73,33 @@ function resultLabelOffset(rawValue: number, nx: number, ny: number, factor = 0.
   return [nx * direction * offset, ny * direction * offset];
 }
 
-function resultLabelOrientation(rawValue: number, nx: number, ny: number) {
+function resultLabelOrientation(
+  rawValue: number,
+  nx: number,
+  ny: number,
+  position: number,
+  length: number,
+  labelDx: number,
+  tangentX: number,
+  labelX: number,
+  beamMidX: number
+) {
+  if (props.resultLabelMode === 'horizontal') {
+    const endpointTolerance = 1e-6;
+    const horizontalAnchor: ResultLabelAnchor =
+      Math.abs(labelX - beamMidX) < 1e-6 ? (tangentX >= 0 ? 'start' : 'end') : labelX < beamMidX ? 'end' : 'start';
+
+    if (position <= endpointTolerance) {
+      return { angle: 0, anchor: horizontalAnchor };
+    }
+
+    if (Math.abs(position - length) <= endpointTolerance) {
+      return { angle: 0, anchor: horizontalAnchor };
+    }
+
+    return { angle: 0, anchor: 'middle' as ResultLabelAnchor };
+  }
+
   const direction = Math.sign(rawValue) || 1;
   const outwardX = nx * direction;
   const outwardY = ny * direction;
@@ -83,9 +116,14 @@ function resultLabelOrientation(rawValue: number, nx: number, ny: number) {
   const angleRad = (angle * Math.PI) / 180;
   const localXWorldX = Math.cos(angleRad);
   const localXWorldY = Math.sin(angleRad);
-  const flipped = localXWorldX * outwardX + localXWorldY * outwardY < 0;
+  const anchor = localXWorldX * outwardX + localXWorldY * outwardY < 0 ? 'end' : 'start';
 
-  return { angle, flipped };
+  return { angle, anchor };
+}
+
+function labelAnchorOffset(anchor: ResultLabelAnchor) {
+  if (anchor === 'middle') return 0;
+  return anchor === 'end' ? -2 / props.scale : 2 / props.scale;
 }
 
 const elementLabel = computed(() => {
@@ -315,28 +353,38 @@ const forces = computed(() => {
     const vN = props.convertForce(vNraw);
     if (Math.abs(vN) > 1e-8) {
       const [dx, dy] = resultLabelOffset(vNraw, nx, ny);
-      const orientation = resultLabelOrientation(vNraw, nx, ny);
-      result2.push([
-        xc + vNraw * nx * scaleBy + dx,
-        zc + vNraw * ny * scaleBy + dy,
-        vN,
-        orientation.angle,
-        orientation.flipped,
-      ]);
+      const labelX = xc + vNraw * nx * scaleBy + dx;
+      const orientation = resultLabelOrientation(
+        vNraw,
+        nx,
+        ny,
+        labelsX[s],
+        geo.l,
+        vNraw * nx * scaleBy + dx,
+        cos,
+        labelX,
+        (n1.coords[0] + n2.coords[0]) / 2
+      );
+      result2.push([labelX, zc + vNraw * ny * scaleBy + dy, vN, orientation.angle, orientation.anchor]);
     }
 
     const vVraw = props.element.computeShearForceAt(props.loadCase, labelsX[s]);
     const vV = props.convertForce(vVraw);
     if (Math.abs(vV) > 1e-8) {
       const [dx, dy] = resultLabelOffset(vVraw, nx, ny);
-      const orientation = resultLabelOrientation(vVraw, nx, ny);
-      result2V.push([
-        xc + vVraw * nx * scaleByV + dx,
-        zc + vVraw * ny * scaleByV + dy,
-        vV,
-        orientation.angle,
-        orientation.flipped,
-      ]);
+      const labelX = xc + vVraw * nx * scaleByV + dx;
+      const orientation = resultLabelOrientation(
+        vVraw,
+        nx,
+        ny,
+        labelsX[s],
+        geo.l,
+        vVraw * nx * scaleByV + dx,
+        cos,
+        labelX,
+        (n1.coords[0] + n2.coords[0]) / 2
+      );
+      result2V.push([labelX, zc + vVraw * ny * scaleByV + dy, vV, orientation.angle, orientation.anchor]);
     }
   }
 
@@ -351,7 +399,17 @@ const forces = computed(() => {
       const chartX = xc + vMraw * momentNx * scaleByM;
       const chartY = zc + vMraw * momentNy * scaleByM;
       const [dx, dy] = resultLabelOffset(vMraw, momentNx, momentNy, isExtrema ? 0.7 : 0.45);
-      const orientation = resultLabelOrientation(vMraw, momentNx, momentNy);
+      const orientation = resultLabelOrientation(
+        vMraw,
+        momentNx,
+        momentNy,
+        labelsXM[s],
+        geo.l,
+        chartX + dx - xc,
+        cos,
+        chartX + dx,
+        (n1.coords[0] + n2.coords[0]) / 2
+      );
 
       result2M.push([
         xc,
@@ -363,7 +421,7 @@ const forces = computed(() => {
         vM,
         isExtrema,
         orientation.angle,
-        orientation.flipped,
+        orientation.anchor,
       ]);
     }
   }
@@ -392,7 +450,7 @@ const forces = computed(() => {
   return ret;
 });
 
-const emit = defineEmits(['elementmousemove', 'elementpointerup']);
+const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elementpointerup']);
 </script>
 
 <template>
@@ -401,12 +459,17 @@ const emit = defineEmits(['elementmousemove', 'elementpointerup']);
       v-if="loadCase.solved && showDeformedShape"
       :d="results"
       vector-effect="non-scaling-stroke"
-      class="deformedShape"
+      class="deformedShape pointer-events-none"
       stroke-linecap="round"
       stroke-linejoin="round"
     />
 
-    <g v-if="loadCase.solved && showNormalForce" class="normal">
+    <g
+      v-if="loadCase.solved && showNormalForce"
+      class="normal"
+      @mousemove="emit('elementresultsmousemove', $event, element)"
+      @pointerup="emit('elementpointerup', $event)"
+    >
       <polyline
         :points="forces.normal.values"
         vector-effect="non-scaling-stroke"
@@ -419,12 +482,13 @@ const emit = defineEmits(['elementmousemove', 'elementpointerup']);
         :transform="`translate(${mv[0]} ${mv[1]}) rotate(${mv[3]})`"
       >
         <text
+          v-if="showLabelBackground"
           :font-size="fontSize / scale"
           class="moment-label filter-text-label"
           font-weight="normal"
-          :x="mv[4] ? -2 / scale : 2 / scale"
+          :x="labelAnchorOffset(mv[4])"
           y="0"
-          :text-anchor="mv[4] ? 'end' : 'start'"
+          :text-anchor="mv[4]"
           dominant-baseline="central"
         >
           {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }}
@@ -433,16 +497,21 @@ const emit = defineEmits(['elementmousemove', 'elementpointerup']);
           :font-size="fontSize / scale"
           class="moment-label"
           font-weight="normal"
-          :x="mv[4] ? -2 / scale : 2 / scale"
+          :x="labelAnchorOffset(mv[4])"
           y="0"
-          :text-anchor="mv[4] ? 'end' : 'start'"
+          :text-anchor="mv[4]"
           dominant-baseline="central"
         >
           {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }}
         </text>
       </g>
     </g>
-    <g v-if="loadCase.solved && showShearForce" class="shear">
+    <g
+      v-if="loadCase.solved && showShearForce"
+      class="shear"
+      @mousemove="emit('elementresultsmousemove', $event, element)"
+      @pointerup="emit('elementpointerup', $event)"
+    >
       <polyline
         :points="forces.shear.values"
         vector-effect="non-scaling-stroke"
@@ -451,12 +520,13 @@ const emit = defineEmits(['elementmousemove', 'elementpointerup']);
       />
       <g v-for="(mv, mli) in forces.shear.text" :key="mli" :transform="`translate(${mv[0]} ${mv[1]}) rotate(${mv[3]})`">
         <text
+          v-if="showLabelBackground"
           :font-size="fontSize / scale"
           class="moment-label filter-text-label"
           font-weight="normal"
-          :x="mv[4] ? -2 / scale : 2 / scale"
+          :x="labelAnchorOffset(mv[4])"
           y="0"
-          :text-anchor="mv[4] ? 'end' : 'start'"
+          :text-anchor="mv[4]"
           dominant-baseline="central"
         >
           {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }}
@@ -465,9 +535,9 @@ const emit = defineEmits(['elementmousemove', 'elementpointerup']);
           :font-size="fontSize / scale"
           class="moment-label"
           font-weight="normal"
-          :x="mv[4] ? -2 / scale : 2 / scale"
+          :x="labelAnchorOffset(mv[4])"
           y="0"
-          :text-anchor="mv[4] ? 'end' : 'start'"
+          :text-anchor="mv[4]"
           dominant-baseline="central"
         >
           {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }}
@@ -475,7 +545,12 @@ const emit = defineEmits(['elementmousemove', 'elementpointerup']);
       </g>
     </g>
 
-    <g v-if="loadCase.solved && showBendingMoment" class="moment">
+    <g
+      v-if="loadCase.solved && showBendingMoment"
+      class="moment"
+      @mousemove="emit('elementresultsmousemove', $event, element)"
+      @pointerup="emit('elementpointerup', $event)"
+    >
       <polyline
         :points="forces.moment.values"
         vector-effect="non-scaling-stroke"
@@ -490,12 +565,13 @@ const emit = defineEmits(['elementmousemove', 'elementpointerup']);
           stroke-linejoin="round"
         />
         <text
+          v-if="showLabelBackground"
           :font-size="fontSize / scale"
           class="moment-label filter-text-label"
           font-weight="normal"
-          :x="mv[9] ? -2 / scale : 2 / scale"
+          :x="labelAnchorOffset(mv[9])"
           y="0"
-          :text-anchor="mv[9] ? 'end' : 'start'"
+          :text-anchor="mv[9]"
           dominant-baseline="central"
           :transform="`translate(${mv[4]} ${mv[5]}) rotate(${mv[8]})`"
         >
@@ -505,9 +581,9 @@ const emit = defineEmits(['elementmousemove', 'elementpointerup']);
           :font-size="fontSize / scale"
           class="moment-label"
           font-weight="normal"
-          :x="mv[9] ? -2 / scale : 2 / scale"
+          :x="labelAnchorOffset(mv[9])"
           y="0"
-          :text-anchor="mv[9] ? 'end' : 'start'"
+          :text-anchor="mv[9]"
           dominant-baseline="central"
           :transform="`translate(${mv[4]} ${mv[5]}) rotate(${mv[8]})`"
         >

@@ -142,7 +142,11 @@
       "sizes": "Sizes",
       "supportSize": "Support size"
     },
-    "font_size": "Font size"
+    "font_size": "Font size",
+    "result_label_orientation": "Result label orientation",
+    "result_label_orientation_axis": "Perpendicular to chart",
+    "result_label_orientation_horizontal": "Always horizontal",
+    "result_labels": "Result labels"
   },
   "sideSettings": {
     "showDeformedShape": "Deformed shape",

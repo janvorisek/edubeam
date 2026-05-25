@@ -440,27 +440,43 @@ defineExpose({ centerContent, fitContent });
     text {
       fill: v-bind('colors.loads');
     }
+
     stroke-linecap: butt;
+
     &:hover text {
       //fill: blue;
+      font-weight: bold;
     }
+
+    use {
+      stroke: v-bind('colors.loads');
+    }
+
+    use:hover {
+      stroke-width: 3px; /* affects the referenced element */
+    }
+
     &:hover path.drawable,
     &:hover polygon.drawable {
       //stroke: blue;
       stroke-width: 3px;
     }
+
     &:hover polyline {
       marker-end: var(--marker-centered-hover);
     }
+
     polygon,
     path {
       stroke: v-bind('colors.loads');
       stroke-width: 1px;
+
       &.handle {
         stroke-width: 12px;
         stroke: transparent;
       }
     }
+
     polyline {
       marker-end: var(--marker-centered);
     }
@@ -469,9 +485,18 @@ defineExpose({ centerContent, fitContent });
       text {
         fill: rgb(0, 55, 149);
       }
-      polygon {
+
+      polygon.drawable,
+      path.drawable {
+        stroke: rgb(0, 94, 255);
+        stroke-width: 4px;
         stroke-linejoin: round;
-        fill: rgba(0, 55, 149, 0.1);
+        fill: rgba(0, 55, 149, 0.15);
+      }
+
+      use {
+        stroke-width: 3px; /* affects the referenced element */
+        stroke: rgb(0, 94, 255);
       }
     }
   }

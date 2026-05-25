@@ -81,7 +81,7 @@ const dimensionLines = computed(() => {
 });
 
 watch(
-  () => props.load?.target,
+  () => props.load,
   async (target, previousTarget) => {
     if (!target || target === previousTarget) return;
 

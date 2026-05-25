@@ -145,6 +145,35 @@
                       :disabled="loadType === 'trapezoidal'"
                     />
                   </v-col>
+
+                  <template v-if="loadType === 'temperature'">
+                    <v-col cols="12" md="12">
+                      <v-text-field
+                        v-model="loadNodeValueTc"
+                        hide-details="auto"
+                        :rules="numberRules"
+                        :suffix="formatMeasureAsHTML(appStore.units.Temperature)"
+                        @keydown="checkNumber($event)"
+                      >
+                        <template #label>
+                          <span v-html="$t('loads.temperatureBending')"></span>
+                        </template>
+                      </v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="12">
+                      <v-text-field
+                        v-model="loadNodeValueTbt"
+                        hide-details="auto"
+                        :rules="numberRules"
+                        :suffix="formatMeasureAsHTML(appStore.units.Temperature)"
+                        @keydown="checkNumber($event)"
+                      >
+                        <template #label>
+                          <span v-html="$t('loads.temperatureAxial')"></span>
+                        </template>
+                      </v-text-field>
+                    </v-col>
+                  </template>
                 </v-row>
               </v-col>
             </v-row>
@@ -179,6 +208,7 @@ import {
   BeamTemperatureLoad,
 } from 'ts-fem';
 import ElementLoadPreview from '../ElementLoadPreview.vue';
+import { formatMeasureAsHTML } from '@/SVGUtils';
 
 type EditableElementLoad =
   | BeamElementUniformEdgeLoad
@@ -236,6 +266,8 @@ const trapezoidStartFx = ref('0.0');
 const trapezoidStartFz = ref('0.0');
 const trapezoidEndFx = ref('0.0');
 const trapezoidEndFz = ref('0.0');
+const loadNodeValueTc = ref('0.0');
+const loadNodeValueTbt = ref('0.0');
 const elementLoadPos = ref('0.0');
 const elementLCS = ref(false);
 
@@ -255,6 +287,8 @@ const realTrapStartFz = computed(() => appStore.convertInverseForce(parseFloat2(
 const realTrapEndFx = computed(() => appStore.convertInverseForce(parseFloat2(trapezoidEndFx.value)));
 const realTrapEndFz = computed(() => appStore.convertInverseForce(parseFloat2(trapezoidEndFz.value)));
 const realDist = computed(() => appStore.convertInverseLength(parseFloat2(elementLoadPos.value)));
+const realTc = computed(() => appStore.convertInverseTemperature(parseFloat2(loadNodeValueTc.value)));
+const realTbt = computed(() => appStore.convertInverseTemperature(parseFloat2(loadNodeValueTbt.value)));
 
 const previewLoad = computed(() => {
   const domain = projectStore.solver.domain;
@@ -283,7 +317,7 @@ const previewLoad = computed(() => {
   }
 
   if (loadType.value === 'temperature') {
-    return load.value as BeamTemperatureLoad;
+    return new BeamTemperatureLoad(load.value.target, domain, [realTc.value, realTbt.value, 0]);
   }
 
   return null;
@@ -312,6 +346,11 @@ onMounted(() => {
   if (load.value instanceof BeamConcentratedLoad) {
     elementLoadPos.value = appStore.convertLength(load.value.values[3]).toString();
     loadNodeValueMy.value = appStore.convertMoment(load.value.values[2]).toString();
+  }
+
+  if (load.value instanceof BeamTemperatureLoad) {
+    loadNodeValueTc.value = appStore.convertTemperature(load.value.values[0]).toString();
+    loadNodeValueTbt.value = appStore.convertTemperature(load.value.values[1]).toString();
   }
 
   //elementNodeValueMy.value = load.values[DofID.Ry];
@@ -345,6 +384,11 @@ const editNodalLoad = () => {
   if (load.value instanceof BeamConcentratedLoad) {
     load.value.values[2] = realMy.value;
     load.value.values[3] = realDist.value;
+  }
+
+  if (load.value instanceof BeamTemperatureLoad) {
+    load.value.values[0] = realTc.value;
+    load.value.values[1] = realTbt.value;
   }
 
   //load.values[DofID.Ry] = loadNodeValueMy.value;

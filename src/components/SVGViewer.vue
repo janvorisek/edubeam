@@ -661,13 +661,14 @@ const onNodeClick = (e: MouseEvent) => {
   useProjectStore().selection.y = target.getBoundingClientRect().top - 64;
 };
 
-const onElementClick = (e: MouseEvent) => {
+const onElementClick = (e: MouseEvent, element: Beam2D) => {
   if (hasMoved(e)) return;
 
   appStore.bottomBarTab = 'tab-elements';
 
   const target = e.target as HTMLElement;
-  const index = target.getAttribute('data-element-id') || '-1';
+  // const index = target.getAttribute('data-element-id') || '-1';
+  const index = element.label;
 
   let nx = target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 - TTWIDTH / 2;
 
@@ -2139,7 +2140,7 @@ defineExpose({ centerContent, fitContent });
               @elementmousemove="onElementHover($event, element)"
               @elementresultsmousemove="onElementHover($event, element, false)"
               @mouseleave="hideTooltip"
-              @elementpointerup="onElementClick"
+              @elementpointerup="onElementClick($event, element)"
             />
           </g>
 
@@ -2170,7 +2171,7 @@ defineExpose({ centerContent, fitContent });
               @elementmousemove="onElementHover($event, element)"
               @elementresultsmousemove="onElementHover($event, element, false)"
               @mouseleave="hideTooltip"
-              @elementpointerup="onElementClick"
+              @elementpointerup="onElementClick($event, element)"
             />
           </g>
 

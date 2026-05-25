@@ -13,6 +13,7 @@ import AddElementDialog from './dialogs/AddElement.vue';
 import AddNodeDialog from './dialogs/AddNode.vue';
 import AddMaterialDialog from './dialogs/AddMaterial.vue';
 import AddCrossSectionDialog from './dialogs/AddCrossSection.vue';
+import SolveDiagnosticsDialog from './dialogs/SolveDiagnostics.vue';
 import Confirmation from './dialogs/Confirmation.vue';
 
 import EditNodalLoadDialog from './dialogs/EditNodalLoad.vue';
@@ -240,6 +241,36 @@ const setUnsolved = () => {
 const solve = () => {
   nextTick(() => {
     useProjectStore().solve();
+  });
+};
+
+const hasSolveDiagnosticsIssues = computed(
+  () => projectStore.solveDiagnostics.errors.length > 0 || projectStore.solveDiagnostics.warnings.length > 0
+);
+
+const hasBlockingSolveIssues = computed(() => projectStore.solveDiagnostics.errors.length > 0);
+
+const solveDiagnosticsSummary = computed(() => {
+  const errors = projectStore.solveDiagnostics.errors.length;
+  const warnings = projectStore.solveDiagnostics.warnings.length;
+
+  if (errors > 0 && warnings > 0) {
+    return `Model has ${errors} error(s) and ${warnings} warning(s).`;
+  }
+
+  if (errors > 0) {
+    return `Model has ${errors} error(s).`;
+  }
+
+  return `Model has ${warnings} warning(s).`;
+});
+
+const openSolveDiagnostics = () => {
+  if (!hasSolveDiagnosticsIssues.value) return;
+
+  openModal(SolveDiagnosticsDialog, {
+    diagnostics: projectStore.solveDiagnostics,
+    blocked: hasBlockingSolveIssues.value,
   });
 };
 
@@ -1848,6 +1879,21 @@ defineExpose({ centerContent, fitContent });
     </div>
 
     <div class="text-body-2 warning ga-1 d-flex flex-column pr-6">
+      <div style="width: fit-content">
+        <v-alert
+          v-if="hasSolveDiagnosticsIssues"
+          icon="$warning"
+          density="compact"
+          :type="hasBlockingSolveIssues ? 'error' : 'warning'"
+        >
+          <template #text>
+            <div class="d-flex align-center">
+              {{ solveDiagnosticsSummary }}
+              <v-btn variant="text" density="compact" size="small" @click="openSolveDiagnostics">Show details</v-btn>
+            </div>
+          </template>
+        </v-alert>
+      </div>
       <div style="width: fit-content">
         <v-alert v-if="projectStore.materials.length === 0" icon="$warning" density="compact" type="error">
           <template #text>

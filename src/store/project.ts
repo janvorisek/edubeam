@@ -13,6 +13,7 @@ import {
 } from '@/utils';
 import { ensureDimensionId } from '@/utils/id';
 import type { DimensionLine } from '@/types/dimension';
+import { validateSolverModel, type SolveDiagnostics, type SolveIssue } from '@/utils/validateSolverModel';
 
 export const useProjectStore = defineStore(
   'project',
@@ -107,6 +108,11 @@ export const useProjectStore = defineStore(
       return [...solver.value.domain.crossSections.values()];
     });
 
+    const solveDiagnostics = ref<SolveDiagnostics>({
+      errors: [],
+      warnings: [],
+    });
+
     const beams = computed(() => {
       const vals = solver.value.domain.elements.values();
       const arr = Array.from(vals);
@@ -117,11 +123,28 @@ export const useProjectStore = defineStore(
     const _solve = () => {
       solver.value.codeNumberGenerated = false;
 
+      const diagnostics = validateSolverModel(solver.value);
+      solveDiagnostics.value = diagnostics;
+
+      if (diagnostics.errors.length > 0) {
+        solver.value.loadCases[0].solved = false;
+        return;
+      }
+
       if (solver.value.domain.elements.size === 0 || solver.value.domain.nodes.size === 0) return;
 
       try {
         solver.value.solve();
       } catch {
+        const runtimeIssue: SolveIssue = {
+          level: 'error',
+          code: 'SOLVER_RUNTIME_EXCEPTION',
+          message: 'Solver failed due to an internal model inconsistency. Please review model references and loads.',
+        };
+        solveDiagnostics.value = {
+          errors: [...diagnostics.errors, runtimeIssue],
+          warnings: diagnostics.warnings,
+        };
         solver.value.loadCases[0].solved = false;
         return;
       }
@@ -310,6 +333,7 @@ export const useProjectStore = defineStore(
       materials,
       crossSections,
       dimensions,
+      solveDiagnostics,
     };
   },
   {

@@ -1,15 +1,6 @@
 <script lang="ts" setup>
 import { smoothPath } from '../../utils/smoothPath';
-import { Matrix } from 'mathjs';
-import {
-  Node,
-  DofID,
-  LoadCase,
-  Beam2D,
-  BeamConcentratedLoad,
-  BeamElementUniformEdgeLoad,
-  BeamElementTrapezoidalEdgeLoad,
-} from 'ts-fem';
+import { Node, LoadCase, Beam2D, BeamConcentratedLoad, BeamElementTrapezoidalEdgeLoad } from 'ts-fem';
 import { computed } from 'vue';
 
 type ResultLabelMode = 'axis' | 'horizontal';
@@ -36,13 +27,17 @@ const props = withDefaults(
     padding?: number;
     fontSize?: number;
     numberFormat?: Intl.NumberFormat;
+    showGeometry?: boolean;
+    showResults?: boolean;
   }>(),
   {
     padding: 10,
     fontSize: 13,
     showLabelBackground: true,
     resultLabelMode: 'axis',
-    numberFormat: new Intl.NumberFormat(),
+    numberFormat: () => new Intl.NumberFormat(),
+    showGeometry: true,
+    showResults: true,
   }
 );
 
@@ -456,7 +451,7 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
 <template>
   <g class="element element-1d">
     <path
-      v-if="loadCase.solved && showDeformedShape"
+      v-if="showResults && loadCase.solved && showDeformedShape"
       :d="results"
       vector-effect="non-scaling-stroke"
       class="deformedShape pointer-events-none"
@@ -465,7 +460,7 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
     />
 
     <g
-      v-if="loadCase.solved && showNormalForce"
+      v-if="showResults && loadCase.solved && showNormalForce"
       class="normal"
       @mousemove="emit('elementresultsmousemove', $event, element)"
       @pointerup="emit('elementpointerup', $event)"
@@ -507,7 +502,7 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
       </g>
     </g>
     <g
-      v-if="loadCase.solved && showShearForce"
+      v-if="showResults && loadCase.solved && showShearForce"
       class="shear"
       @mousemove="emit('elementresultsmousemove', $event, element)"
       @pointerup="emit('elementpointerup', $event)"
@@ -546,7 +541,7 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
     </g>
 
     <g
-      v-if="loadCase.solved && showBendingMoment"
+      v-if="showResults && loadCase.solved && showBendingMoment"
       class="moment"
       @mousemove="emit('elementresultsmousemove', $event, element)"
       @pointerup="emit('elementpointerup', $event)"
@@ -592,68 +587,70 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
       </g>
     </g>
 
-    <polyline :points="elementCoords" vector-effect="non-scaling-stroke" class="drawable" stroke-linecap="round" />
+    <template v-if="showGeometry">
+      <polyline :points="elementCoords" vector-effect="non-scaling-stroke" class="drawable" stroke-linecap="round" />
 
-    <polyline :points="elementFibers" class="fibers" stroke-dasharray="5 4" vector-effect="non-scaling-stroke" />
+      <polyline :points="elementFibers" class="fibers" stroke-dasharray="5 4" vector-effect="non-scaling-stroke" />
 
-    <circle
-      v-if="element.hinges[0]"
-      :transform="`translate(${elementHinges[0]})`"
-      :r="6 / scale"
-      fill="white"
-      stroke="black"
-      vector-effect="non-scaling-stroke"
-      stroke-width="2"
-    />
+      <circle
+        v-if="element.hinges[0]"
+        :transform="`translate(${elementHinges[0]})`"
+        :r="6 / scale"
+        fill="white"
+        stroke="black"
+        vector-effect="non-scaling-stroke"
+        stroke-width="2"
+      />
 
-    <circle
-      v-if="element.hinges[1]"
-      :transform="`translate(${elementHinges[1]})`"
-      :r="6 / scale"
-      fill="white"
-      stroke="black"
-      vector-effect="non-scaling-stroke"
-      stroke-width="2"
-    />
+      <circle
+        v-if="element.hinges[1]"
+        :transform="`translate(${elementHinges[1]})`"
+        :r="6 / scale"
+        fill="white"
+        stroke="black"
+        vector-effect="non-scaling-stroke"
+        stroke-width="2"
+      />
 
-    <g>
-      <text
-        v-if="showLabel"
-        :x="
-          (element.domain.nodes.get(element.nodes[0])!.coords[0] +
-            element.domain.nodes.get(element.nodes[1])!.coords[0]) /
-          2
-        "
-        :y="
-          (element.domain.nodes.get(element.nodes[0])!.coords[2] +
-            element.domain.nodes.get(element.nodes[1])!.coords[2]) /
-          2
-        "
-        :font-size="fontSize / scale"
-        font-weight="normal"
-        text-anchor="middle"
-        dominant-baseline="central"
-        :transform="`${elementLabel} rotate(${elementAngle} ${
-          (element.domain.nodes.get(element.nodes[0])!.coords[0] +
-            element.domain.nodes.get(element.nodes[1])!.coords[0]) /
-          2
-        } ${
-          (element.domain.nodes.get(element.nodes[0])!.coords[2] +
-            element.domain.nodes.get(element.nodes[1])!.coords[2]) /
-          2
-        })`"
-      >
-        {{ element.label }}
-      </text>
-    </g>
+      <g>
+        <text
+          v-if="showLabel"
+          :x="
+            (element.domain.nodes.get(element.nodes[0])!.coords[0] +
+              element.domain.nodes.get(element.nodes[1])!.coords[0]) /
+            2
+          "
+          :y="
+            (element.domain.nodes.get(element.nodes[0])!.coords[2] +
+              element.domain.nodes.get(element.nodes[1])!.coords[2]) /
+            2
+          "
+          :font-size="fontSize / scale"
+          font-weight="normal"
+          text-anchor="middle"
+          dominant-baseline="central"
+          :transform="`${elementLabel} rotate(${elementAngle} ${
+            (element.domain.nodes.get(element.nodes[0])!.coords[0] +
+              element.domain.nodes.get(element.nodes[1])!.coords[0]) /
+            2
+          } ${
+            (element.domain.nodes.get(element.nodes[0])!.coords[2] +
+              element.domain.nodes.get(element.nodes[1])!.coords[2]) /
+            2
+          })`"
+        >
+          {{ element.label }}
+        </text>
+      </g>
 
-    <polyline
-      :points="elementCoords"
-      vector-effect="non-scaling-stroke"
-      class="handle"
-      :data-element-id="element.label"
-      @mousemove="emit('elementmousemove', $event, element)"
-      @pointerup="emit('elementpointerup', $event)"
-    />
+      <polyline
+        :points="elementCoords"
+        vector-effect="non-scaling-stroke"
+        class="handle"
+        :data-element-id="element.label"
+        @mousemove="emit('elementmousemove', $event, element)"
+        @pointerup="emit('elementpointerup', $event)"
+      />
+    </template>
   </g>
 </template>

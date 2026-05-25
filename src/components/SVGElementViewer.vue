@@ -350,7 +350,34 @@ defineExpose({ centerContent, fitContent });
           <g>
             <SVGElement
               v-for="(element, index) in props.elements"
-              :key="`element-${index}`"
+              :key="`element-geometry-${index}`"
+              :show-geometry="true"
+              :show-results="false"
+              :element="element"
+              :scale="scale"
+              :show-deformed-shape="props.showDeformedShape"
+              :show-normal-force="props.showNormalForce"
+              :show-shear-force="props.showShearForce"
+              :show-bending-moment="props.showMoments"
+              :show-label="props.showElementLabels"
+              :load-case="props.solver.loadCases[0]"
+              :deformed-shape-multiplier="defoScale * props.resultsScalePx"
+              :normal-force-multiplier="normalForceScale * props.resultsScalePx"
+              :shear-force-multiplier="shearForceScale * props.resultsScalePx"
+              :bending-moment-multiplier="bendingMomentScale * props.resultsScalePx"
+              :result-label-mode="props.resultLabelMode"
+              :convert-force="props.convertForce"
+              :convert-moment="props.convertMoment"
+              :font-size="props.fontSize"
+            />
+          </g>
+
+          <g>
+            <SVGElement
+              v-for="(element, index) in props.elements"
+              :key="`element-results-${index}`"
+              :show-geometry="false"
+              :show-results="true"
               :element="element"
               :scale="scale"
               :show-deformed-shape="props.showDeformedShape"

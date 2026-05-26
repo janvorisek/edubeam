@@ -4,6 +4,7 @@ import AddElementLoadDialog from './dialogs/AddElementLoad.vue';
 import { useProjectStore } from '@/store/project';
 import { useLayoutStore } from '@/store/layout';
 import StiffnessMatrix from './StiffnessMatrix.vue';
+import ElementInternalForces from './ElementInternalForces.vue';
 import { ref, computed, onMounted, watch } from 'vue';
 import { deleteElement, setUnsolved, solve } from '../utils';
 
@@ -126,6 +127,20 @@ watch([n1, n2], () => {
       {{ $t('common.stiffnessMatrix') }}
       <template #prepend>
         <div class="pr-2"><v-icon size="16" icon="mdi-matrix" /></div>
+      </template>
+    </v-list-item>
+    <v-list-item
+      v-if="projectStore.selection.type === 'element'"
+      link
+      class="text-body-2"
+      @click="
+        layoutStore.openWidget($t('elements.analyticalInternalForces'), ElementInternalForces, { label: projectStore.selection.label });
+        projectStore.selection.type = null;
+      "
+    >
+      {{ $t('elements.analyticalInternalForces') }}
+      <template #prepend>
+        <div class="pr-2"><v-icon size="16" icon="mdi-shape-outline" /></div>
       </template>
     </v-list-item>
     <v-divider v-if="projectStore.selection.type === 'element'" />

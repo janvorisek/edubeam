@@ -44,7 +44,6 @@ import {
   BeamTemperatureLoad,
 } from 'ts-fem';
 import { useMagicKeys } from '@vueuse/core';
-import { OnLongPress } from '@vueuse/components';
 
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
@@ -641,20 +640,6 @@ const hasMoved = (e: MouseEvent | PointerEvent) => {
   if (d > 10) return true;
 
   return false;
-};
-
-const onNodeLongPress = (e, node: Node) => {
-  e.stopImmediatePropagation();
-  e.preventDefault();
-
-  intersected.value.index = node.label;
-  intersected.value.type = 'node';
-
-  hideTooltip(false);
-  appStore.mouseMode = MouseMode.MOVING;
-
-  const canVibrate = window.navigator.vibrate;
-  if (canVibrate) window.navigator.vibrate(300);
 };
 
 const TTWIDTH = 210;
@@ -2165,32 +2150,28 @@ defineExpose({ centerContent, fitContent });
           </g>
 
           <g class="nodes">
-            <OnLongPress
+            <SVGNode
               v-for="(node, index) in projectStore.nodes"
               :key="`node-${index}`"
-              as="g"
-              @trigger="onNodeLongPress($event, node)"
-            >
-              <SVGNode
-                :class="{ selected: projectStore.selection2.nodes.includes(node.label) }"
-                :node="node"
-                :scale="scale"
-                :show-label="!isZooming && viewerStore.showNodeLabels"
-                :show-supports="viewerStore.showSupports"
-                :show-deformed-shape="!isZooming && viewerStore.showDeformedShape"
-                :show-reactions="!isZooming && viewerStore.showReactions"
-                :convert-force="appStore.convertForce"
-                :convert-moment="appStore.convertMoment"
-                :load-case="projectStore.solver.loadCases[0]"
-                :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
-                :font-size="viewerStore.fontSize"
-                :number-format="appStore.numberFormatter"
-                @nodemousemove="onNodeHover($event, node)"
-                @nodedefomousemove="onNodeHover($event, node)"
-                @mouseleave="hideTooltip"
-                @nodepointerup="onNodeClick"
-              />
-            </OnLongPress>
+              :class="{ selected: projectStore.selection2.nodes.includes(node.label) }"
+              :node="node"
+              :scale="scale"
+              :show-label="!isZooming && viewerStore.showNodeLabels"
+              :show-supports="viewerStore.showSupports"
+              :show-deformed-shape="!isZooming && viewerStore.showDeformedShape"
+              :show-reactions="!isZooming && viewerStore.showReactions"
+              :convert-force="appStore.convertForce"
+              :convert-moment="appStore.convertMoment"
+              :load-case="projectStore.solver.loadCases[0]"
+              :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
+              :font-size="viewerStore.fontSize"
+              :number-format="appStore.numberFormatter"
+              @nodemousemove="onNodeHover($event, node)"
+              @nodedefomousemove="onNodeHover($event, node)"
+              @nodepointerdown="onNodeHover($event, node)"
+              @mouseleave="hideTooltip"
+              @nodepointerup="onNodeClick"
+            />
           </g>
           <g>
             <SVGDimensioning

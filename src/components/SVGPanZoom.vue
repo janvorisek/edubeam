@@ -5,6 +5,7 @@ import { nextTick, onMounted, onUnmounted, ref } from 'vue';
 import { useAppStore } from '@/store/app';
 import { debounce } from '@/utils';
 import { useResizeObserver } from '@vueuse/core';
+import { MouseMode } from '@/mouse';
 
 const appStore = useAppStore();
 
@@ -127,19 +128,20 @@ const onMouseWheel = (event: WheelEvent): void => {
   debonceZoom();
 };
 
+// A single finger pans, unless it starts on a node (the viewer switches mouseMode to drag it instead).
 const onTouchStart = (event: TouchEvent): void => {
   if (!props.touch) return;
 
   if (event.touches.length === 1) {
+    touchPointer.value.move = appStore.mouseMode === MouseMode.NONE;
     touchPointer.value.x = event.touches[0].clientX;
     touchPointer.value.y = event.touches[0].clientY;
-
-    touchPointer.value.move = true;
     touchPointer.value.pinch = false;
   }
 
   if (event.touches.length === 2) {
     zooming.value = true;
+    panning.value = true;
 
     touchPointer.value.ds = Math.hypot(
       event.touches[0].pageX - event.touches[1].pageX,
@@ -151,7 +153,6 @@ const onTouchStart = (event: TouchEvent): void => {
     touchPointer.value.x = (event.touches[0].clientX + event.touches[1].clientX) / 2 - rect.left;
     touchPointer.value.y = (event.touches[0].clientY + event.touches[1].clientY) / 2 - rect.top;
 
-    touchPointer.value.move = false;
     touchPointer.value.pinch = true;
   }
 };
@@ -167,14 +168,6 @@ const onTouchMove = (event: TouchEvent): void => {
   if (!props.touch) return;
 
   if (event.touches.length === 1 && touchPointer.value.move) {
-    // Only pan when sufficient distance
-    const dist = Math.hypot(
-      event.touches[0].clientX - touchPointer.value.x,
-      event.touches[0].clientY - touchPointer.value.y
-    );
-
-    if (dist < 10) return;
-
     panning.value = true;
     autoFit.value = false;
 
@@ -187,14 +180,31 @@ const onTouchMove = (event: TouchEvent): void => {
   }
 
   if (event.touches.length === 2 && touchPointer.value.pinch) {
+    const rootEl = rootRef.value as unknown as HTMLElement;
+    const rect = rootEl.getBoundingClientRect();
+    const midX = (event.touches[0].clientX + event.touches[1].clientX) / 2 - rect.left;
+    const midY = (event.touches[0].clientY + event.touches[1].clientY) / 2 - rect.top;
+
+    // Two-finger drag pans the canvas
+    viewBox.x -= (midX - touchPointer.value.x) / scale.value;
+    viewBox.y -= (midY - touchPointer.value.y) / scale.value;
+
+    // Pinch distance change zooms the canvas
     const distance = Math.hypot(
       event.touches[0].pageX - event.touches[1].pageX,
       event.touches[0].pageY - event.touches[1].pageY
     );
+    const deltaY = Math.sign(touchPointer.value.ds - distance) * 0.025;
 
-    zoom(touchPointer.value.x, touchPointer.value.y, Math.sign(touchPointer.value.ds - distance) * 0.025);
+    if (deltaY !== 0) {
+      zoom(midX, midY, deltaY);
+    } else {
+      updateMatrix(true);
+    }
 
     touchPointer.value.ds = distance;
+    touchPointer.value.x = midX;
+    touchPointer.value.y = midY;
   }
 };
 

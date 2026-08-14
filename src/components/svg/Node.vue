@@ -245,7 +245,7 @@ const getRotSupportAngle = (node: Node, dof: DofID) => {
   return angle;
 };
 
-const emit = defineEmits(['nodemousemove', 'nodepointerup', 'nodedefomousemove']);
+const emit = defineEmits(['nodemousemove', 'nodepointerdown', 'nodepointerup', 'nodedefomousemove']);
 </script>
 
 <template>
@@ -459,6 +459,7 @@ const emit = defineEmits(['nodemousemove', 'nodepointerup', 'nodedefomousemove']
       class="handle"
       :data-node-id="node.label"
       @mousemove="emit('nodemousemove', $event, node)"
+      @pointerdown="emit('nodepointerdown', $event, node)"
       @pointerup="emit('nodepointerup', $event)"
     />
   </g>

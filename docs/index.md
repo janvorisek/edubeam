@@ -27,18 +27,18 @@ features:
     details: Change a span, drag a support, or bump a load and watch the diagrams react instantly.
   - icon: 🧑‍🏫
     title: Classroom friendly
-    details: Big buttons, undo/redo, and clear tooltips mean less explaining and more exploring.
+    details: Undo/redo, hover tooltips with values, hinges and supports as checkboxes—less explaining, more exploring.
   - icon: 🌍
     title: Works in your language
-    details: Switch between EN, CS, PL, DE, ES, FR, and ZH without leaving the page.
+    details: 11 interface languages, independently selectable metric or imperial units.
   - icon: 🔗
     title: Shareable models
-    details: Copy a link, export JSON, or drop clean images into slides and handouts.
+    details: Copy a link that contains the whole model, save JSON files, or embed a read-only viewer in slides and web pages.
 ---
 ## Who is this for?
 
-- **Students** who want to check homework or visualize ideas during study groups.
-- **Teachers** who need a reliable way to demo supports, loads, and diagrams live.
-- **Teams and hobbyists** who just want clear answers without hunting for expensive desktop software.
+- **Students** checking hand calculations—start with the [10-minute Quick start](/guide/quick-start) and [Checking results by hand](/guide/verification).
+- **Teachers** demonstrating supports, hinges, loads and diagrams live, in the classroom's language.
+- **Engineers and hobbyists** who want a fast 2D sanity check without a desktop package.
 
 If you can drag a mouse, you can use <Edubeam />. 🙂

@@ -4,7 +4,7 @@ layout: home
 hero:
   name: "EduBeam"
   text: "Darmowa analiza konstrukcji online"
-  tagline: Narysuj belkę, dodaj obciążenie i zobacz natychmiastowe przeliczenie — pełne wyniki MES bez instalacji i opłat.
+  tagline: "Narysuj belkę, dodaj obciążenie i obserwuj, jak wszystko przelicza się natychmiast — pełne wyniki MES w przeglądarce, bez instalacji i bez opłat."
   image:
     src: /download.png
     alt: Podgląd aplikacji EduBeam
@@ -23,21 +23,21 @@ hero:
 features:
   - icon: ⚡
     title: Natychmiastowa odpowiedź
-    details: Zmień geometrię, podporę lub obciążenie i od razu zobacz zaktualizowane wykresy.
+    details: Zmień rozpiętość, przeciągnij podporę albo zwiększ obciążenie i patrz, jak wykresy reagują od razu.
   - icon: 🧑‍🏫
-    title: Przyjazne dla nauczania
-    details: Duże przyciski, cofanie/ponawianie i czytelny interfejs ułatwiają pracę na zajęciach.
+    title: Stworzony z myślą o zajęciach
+    details: Cofnij/ponów, podpowiedzi z wartościami po najechaniu, przeguby i podpory jako pola wyboru — mniej tłumaczenia, więcej eksperymentowania.
   - icon: 🌍
-    title: Działa w Twoim języku
-    details: Przełączaj się między EN, CS, PL, DE, ES, FR i ZH bez opuszczania strony.
+    title: W Twoim języku
+    details: 11 języków interfejsu, jednostki metryczne lub imperialne wybierane niezależnie dla każdej wielkości.
   - icon: 🔗
-    title: Łatwe udostępnianie
-    details: Skopiuj link, eksportuj JSON lub użyj obrazów w prezentacji i materiałach.
+    title: Modele do udostępniania
+    details: Skopiuj link zawierający cały model, zapisuj pliki JSON lub osadź widok tylko do odczytu w prezentacji czy na stronie WWW.
 ---
 ## Dla kogo jest EduBeam?
 
-- **Studenci**, którzy chcą szybko sprawdzić zadanie lub lepiej zrozumieć zachowanie konstrukcji.
-- **Nauczyciele**, którzy potrzebują pewnego narzędzia do prezentacji podpór, obciążeń i wykresów na żywo.
-- **Zespoły i pasjonaci**, którzy szukają jasnych wyników bez kosztownego oprogramowania desktopowego.
+- **Studenci** sprawdzający obliczenia ręczne — zacznij od [10-minutowego szybkiego startu](/pl/guide/quick-start) i strony [Sprawdzanie wyników ręcznie](/pl/guide/verification).
+- **Wykładowcy** pokazujący na żywo podpory, przeguby, obciążenia i wykresy sił przekrojowych — w języku swoich studentów.
+- **Inżynierowie i hobbyści**, którzy chcą szybko sprawdzić płaski układ bez uruchamiania dużego pakietu obliczeniowego.
 
-Jeśli potrafisz przeciągać myszą, poradzisz sobie z <Edubeam />. 🙂
+Jeśli potrafisz przeciągnąć myszą, poradzisz sobie z <Edubeam />. 🙂

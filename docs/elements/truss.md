@@ -1,6 +1,6 @@
 # Truss Element
 
-A truss element is a structural component designed to bear only axial forces, commonly used in bridges and buildings.
+A truss element carries axial force only. In <Edubeam /> there is no separate truss element type: a truss bar is a [beam element](/elements/beam) with **both end hinges** ticked, which condenses out the bending terms and leaves the axial stiffness below.
 
 <TrussElement :hinges="[true, true]"  caption="Schematic of 2D truss element" />
 

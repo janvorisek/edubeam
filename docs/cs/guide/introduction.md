@@ -5,19 +5,18 @@ const members = [
   {
     avatar: 'https://www.github.com/janvorisek.png',
     name: 'Jan Voříšek',
-    title: 'Maintainer, UI/UX',
+    title: 'Hlavní vývojář a autor návrhu aplikace',
     links: [
       { icon: 'github', link: 'https://github.com/janvorisek' },
       { icon: 'twitter', link: 'https://twitter.com/janvorisekdev' },
     ]
   },
   {
-   avatar: 'https://www.github.com/bpatzak.png',
+    avatar: 'https://www.github.com/bpatzak.png',
     name: 'Bořek Patzák',
-    title: 'Original author',
+    title: 'MKP řešič, autor původní aplikace',
     links: [
       { icon: 'github', link: 'https://github.com/bpatzak' },
-      { icon: { svg: '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="style=stroke" clip-path="url(#clip0_1_1828)"> <g id="web"> <path id="vector (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M10.4425 2.44429C10.0752 3.64002 9.32073 6.25569 8.89915 8.83258C9.99331 9.00921 11.0621 9.12209 12 9.12209C12.9379 9.12209 14.0067 9.00921 15.1009 8.83258C14.6793 6.25569 13.9248 3.64002 13.5575 2.44429C13.0509 2.3624 12.5307 2.31977 12 2.31977C11.4693 2.31977 10.9491 2.3624 10.4425 2.44429ZM15.3337 2.90893C15.737 4.305 16.2958 6.42828 16.6448 8.54737C18.1513 8.23703 19.5727 7.85824 20.605 7.56109C19.4986 5.42102 17.6172 3.74662 15.3337 2.90893ZM21.2129 9.01933C20.1222 9.33683 18.5423 9.76328 16.8594 10.1057C16.9295 10.7564 16.9709 11.3958 16.9709 12C16.9709 12.8816 16.8827 13.8411 16.7445 14.8058C18.759 14.3858 20.6068 13.849 21.5557 13.5575C21.6376 13.0509 21.6802 12.5307 21.6802 12C21.6802 10.959 21.5162 9.95751 21.2129 9.01933ZM21.0911 15.3337C19.9166 15.6729 18.229 16.1219 16.4634 16.4634C16.1219 18.229 15.6729 19.9166 15.3337 21.0911C17.9978 20.1138 20.1138 17.9978 21.0911 15.3337ZM13.5576 21.5557C13.849 20.6068 14.3858 18.759 14.8058 16.7445C13.8411 16.8827 12.8816 16.9709 12 16.9709C11.1184 16.9709 10.1589 16.8827 9.19423 16.7445C9.61421 18.759 10.151 20.6068 10.4425 21.5557C10.9491 21.6376 11.4693 21.6802 12 21.6802C12.5307 21.6802 13.0509 21.6376 13.5576 21.5557ZM8.66629 21.0911C8.32707 19.9166 7.8781 18.229 7.53658 16.4634C5.77099 16.1219 4.08335 15.6729 2.90891 15.3337C3.88622 17.9978 6.00216 20.1138 8.66629 21.0911ZM2.44429 13.5575C3.39316 13.849 5.24101 14.3858 7.25548 14.8058C7.1173 13.8411 7.02907 12.8816 7.02907 12C7.02907 11.3958 7.07048 10.7564 7.14056 10.1057C5.45769 9.76328 3.87779 9.33683 2.78712 9.01933C2.48383 9.95751 2.31977 10.959 2.31977 12C2.31977 12.5307 2.3624 13.0509 2.44429 13.5575ZM3.39504 7.56109C4.42731 7.85824 5.84865 8.23703 7.35522 8.54737C7.70416 6.42827 8.26303 4.305 8.66626 2.90893C6.38282 3.74662 4.50139 5.42102 3.39504 7.56109ZM8.68924 10.3888C8.63137 10.9544 8.59884 11.4968 8.59884 12C8.59884 12.9399 8.71224 14.012 8.88985 15.1102C9.98798 15.2878 11.0601 15.4012 12 15.4012C12.9399 15.4012 14.012 15.2878 15.1102 15.1102C15.2878 14.012 15.4012 12.9399 15.4012 12C15.4012 11.4968 15.3686 10.9544 15.3108 10.3888C14.1776 10.5703 13.0348 10.6919 12 10.6919C10.9652 10.6919 9.82236 10.5703 8.68924 10.3888ZM9.67273 0.991173C10.4243 0.833026 11.2029 0.75 12 0.75C12.7971 0.75 13.5757 0.833026 14.3273 0.991174C18.0108 1.76627 21.0281 4.34097 22.42 7.75174C22.9554 9.06356 23.25 10.4983 23.25 12C23.25 12.7971 23.167 13.5757 23.0088 14.3273C22.0943 18.6736 18.6736 22.0943 14.3273 23.0088C13.5757 23.167 12.7971 23.25 12 23.25C11.2029 23.25 10.4243 23.167 9.67273 23.0088C5.32644 22.0943 1.90572 18.6736 0.991173 14.3273C0.833026 13.5757 0.75 12.7971 0.75 12C0.75 10.4972 1.04509 9.06132 1.58123 7.74866C2.97369 4.33943 5.99026 1.76604 9.67273 0.991173Z" fill="currentColor"></path> </g> </g> <defs> <clipPath id="clip0_1_1828"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg>'}, link: 'http://ksm.fsv.cvut.cz/~bp/'}
     ]
   }
 ]
@@ -25,103 +24,68 @@ const members = [
 
 # Úvod
 
-Vítejte v EduBeamu, vaší online webové aplikaci pro statickou analýzu. Statická analýza je nyní dostupná bez nutnosti instalace nebo složitého nastavování.
+<Edubeam /> je bezplatný nástroj pro **statickou analýzu rovinných prutových konstrukcí** – nosníků, rámů a příhradových konstrukcí – běžící přímo v prohlížeči. Nakreslíte konstrukci, přidáte podpory a zatížení a řešič metodou konečných prvků vše přepočítá v okamžiku, kdy cokoli změníte. Žádné tlačítko „Spočítat“, žádná instalace, žádný účet.
 
-<hr>
-
-Kliknutím [sem](https://run.edubeam.app/?lang=cs) získáte přístup k aplikaci EduBeam a můžete se vydat na cestu statické analýzy.
+[Spusťte EduBeam](https://run.edubeam.app/?lang=cs){target="_blank"} v nové záložce a projděte si [Rychlý start](/cs/guide/quick-start).
 
 <figure>
   <a href="https://run.edubeam.app/?lang=cs" target="_blank">
     <WelcomeStructure />
-    </a>
-  <figcaption>EduBeam v akci</figcaption>
+  </a>
+  <figcaption>Staticky neurčitý nosník řešený přímo v prohlížeči</figcaption>
 </figure>
 
-## Funkce
+## Co umí
 
-- **Řešení 2D nosníků/příhradových prutů**: Můžete snadno řešit a analyzovat 2D konstrukce.
+| Oblast | Možnosti |
+| --- | --- |
+| **Konstrukce** | Rovinné (x–z) nosníky, spojité nosníky, rámy a příhradové konstrukce složené z uzlů a 2D prutových prvků (Timoshenkův nosník). Koncové klouby změní libovolný prut na příhradový. |
+| **Podpory** | Libovolná kombinace podepřených stupňů volnosti `Dx`, `Dz`, `Ry` v uzlu → vetknutí, kloubová podpora, posuvný kloub, posuvné vetknutí… Šikmé podpory pomocí pootočení souřadného systému uzlu. |
+| **Zatížení** | Uzlové síly a momenty, předepsaná posunutí (poklesy podpor), rovnoměrné a lineárně proměnné spojité zatížení (v globálních i lokálních souřadnicích), osamělé síly kdekoli na prutu, rovnoměrné i nerovnoměrné oteplení. |
+| **Výsledky** | Deformovaný tvar, normálová síla **N**, posouvající síla **V<sub>z</sub>**, ohybový moment **M<sub>y</sub>**, reakce, posunutí uzlů, koncové síly prvků a matice tuhosti jednotlivých prvků. |
+| **Výpočet** | Lineární statická analýza s jedním zatěžovacím stavem. Výsledky jsou pro lineární model přesné (není potřeba zjemňovat síť). |
+| **Soubory** | Ukládání a otevírání projektů ve formátu JSON, sdílení celého modelu odkazem, vložení prohlížeče do vlastní stránky. Vše zůstává ve vašem zařízení. |
+| **Jednotky** | Nezávisle volitelné jednotky délky, plochy, momentu setrvačnosti, hmotnosti, síly, momentu a napětí (metrické i imperiální). |
 
-- **Uživatelsky přívětivé rozhraní**: Intuitivní ovládání pro rychlé a efektivní použití.
+## Co (zatím) neumí
 
-- **Zdarma a online**: Přístup kdykoli a odkudkoli pro maximální pohodlí.
+Znalost omezení předem ušetří čas:
 
-- **Zaměřeno na studenty a učitele**: Funkce na míru pro co nejlepší zážitek z výuky.
+- **Pouze 2D** – žádné chování z roviny, žádné prostorové rámy.
+- **Pouze lineární statika** – žádná teorie II. řádu (P–Δ), stabilita, dynamika ani plasticita.
+- **Jeden zatěžovací stav** – žádné kombinace zatížení ani obálky. Každý stav modelujte zvlášť (uložte jako samostatný soubor nebo odkaz).
+- **Žádná vlastní tíha** – zadejte ji v případě potřeby jako spojité zatížení.
+- **Žádné posudky** – EduBeam poskytne vnitřní síly a přetvoření; posouzení podle norem je na vás.
 
-- **Otevřený zdrojový kód**: Podílejte se na vývoji EduBeamu a spolupracujte s námi.
+Pokud vám chybějící funkce vadí, [založte issue](https://github.com/janvorisek/edubeam/issues).
 
-- **Snadné sdílení projektů**: Sdílejte své projekty bez námahy pomocí URL adresy.
+## Pro koho je určen
 
-## Lokalizace
+- **Studenti** stavební mechaniky a pružnosti, kteří chtějí okamžitou zpětnou vazbu k ručním výpočtům. Viz [Ověření výsledků ručně](/cs/guide/verification).
+- **Vyučující**, kteří ukazují, jak podpory, klouby a zatížení mění průběhy vnitřních sil – živě, na projektoru, v jednom z 11 jazyků.
+- **Inženýři**, kteří potřebují rychlou kontrolu, než otevřou „velký“ program.
 
-EduBeam je k dispozici v několika jazycích.
+## Jak je dokumentace uspořádána
 
-<div>
+1. **Začínáme** – tato stránka, [Rychlý start na 10 minut](/cs/guide/quick-start) a hotové [Příklady](/cs/examples/).
+2. **Modelování** – jedna stránka pro každý stavební kámen: [uživatelské rozhraní](/cs/essentials/user-interface), [uzly a podpory](/cs/essentials/nodes-supports), [prvky, materiály a průřezy](/cs/essentials/elements), [zatížení](/cs/essentials/loads), [jednotky a nastavení](/cs/essentials/units-settings).
+3. **Výsledky** – jak [číst průběhy a tabulky](/cs/essentials/results) a jak je [ověřit](/cs/guide/verification).
+4. **Soubory a sdílení** – [projekty JSON, sdílené odkazy a vložený prohlížeč](/cs/essentials/import-export).
+5. **Reference** – [klávesnice a myš](/cs/reference/shortcuts), [řešení problémů](/cs/reference/troubleshooting) a [FAQ](/cs/faq/).
+6. **Teoretický manuál** – [znaménková konvence](/cs/elements/conventions) a formulace prvků [nosníku](/cs/elements/beam) a [příhradového prutu](/cs/elements/truss).
 
-<table>
-    <tr>
-        <td><img src="language-icons/icons/en.svg" style="height: 24px;" alt="English" /></td>
-        <td><a href="https://run.edubeam.app/?lang=en" target="_blank">English</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/de.svg" style="height: 24px;" alt="Deutsch" /></td>
-        <td><a href="https://run.edubeam.app/?lang=de" target="_blank">Deutsch</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/es.svg" style="height: 24px;" alt="Español" /></td>
-        <td><a href="https://run.edubeam.app/?lang=es" target="_blank">Español</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/fr.svg" style="height: 24px;" alt="Français" /></td>
-        <td><a href="https://run.edubeam.app/?lang=fr" target="_blank">Français</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/cs.svg" style="height: 24px;" alt="Čeština" /></td>
-        <td><a href="https://run.edubeam.app/?lang=cs" target="_blank">Čeština</a></td>
-    </tr>
-    <tr>
-      <td><img src="language-icons/icons/pl.svg" style="height: 24px;" alt="Polski" /></td>
-      <td><a href="https://run.edubeam.app/?lang=pl" target="_blank">Polski</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/zh.svg" style="height: 24px;" alt="中文" /></td>
-        <td><a href="https://run.edubeam.app/?lang=cn" target="_blank">中文</a></td>
-    </tr>
-</table>
+## Jazyky
 
-</div>
+Rozhraní je k dispozici v češtině, angličtině, němčině, španělštině, francouzštině, polštině, portugalštině, ruštině, ukrajinštině, thajštině a čínštině. EduBeam volí jazyk podle prohlížeče; změníte jej v **Nastavení → Jazyk a prostředí** nebo parametrem `?lang=`, např. [run.edubeam.app/?lang=cs](https://run.edubeam.app/?lang=cs){target="_blank"}.
 
-## Autoři
+## Autoři a poděkování
 
-EduBeam je projekt založený na spolupráci komunity přispěvatelů, jejichž nadšením je rozvoj vzdělávání v oblasti statické analýzy. Je vyvíjen a udržován malým týmem z katedry mechaniky [ČVUT Praha - Fakulta stavební](https://www.fsv.cvut.cz).
+<Edubeam /> vede [Jan Voříšek](https://github.com/janvorisek), správce a autor návrhu moderní webové verze. Webová verze je vyvíjena nezávisle na ČVUT; původní desktopový EduBeam pro Windows/Linux vytvořili [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/) a [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) na Katedře mechaniky [Fakulty stavební ČVUT v Praze](https://www.fsv.cvut.cz/). Řešičem je open-source knihovna [ts-fem](https://github.com/janvorisek/ts-fem).
 
 <VPTeamMembers size="small" :members="members" />
 
-Původní [desktopovou aplikaci](https://www.oofem.org/wiki/doku.php?id=edubeam:edubeam) vytvořili [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/) a [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/).
+## Přispějte
 
-## Zapojte se
-
-Neváhejte se připojit k naší komunitě a přispět k rozvoji EduBeamu. Vaše zapojení může zahrnovat jak testování a hlášení problémů, tak aktivní účast na vývoji.
-
-Zde je několik možností, jak se můžete zapojit a přispět k rozvoji EduBeamu:
-
-1. **Přispějte kódem:**
-
-- Prohlédněte si náš [repozitář GitHub](https://github.com/janvorisek/edubeam) a přispějte k rozvoji kódu.
-  - Vyberte si z různých úkolů, od základní statické analýzy až po implementaci pokročilých funkcí.
-
-2. **Testování a hlášení chyb:**
-
-   - Testujte EduBeam a ohlaste jakékoli chyby nebo problémy na našem [issue trackeru](https://github.com/janvorisek/edubeam/issues).
-   - Vaše zpětná vazba je zásadní pro zlepšení funkčnosti a spolehlivosti EduBeamu.
-
-3. **Dokumentace:**
-
-   - Pomozte zlepšit naši dokumentaci, aby byl EduBeam uživatelsky přívětivější.
-   - Přispívejte do návodu nebo často kladených otázek, abyste zlepšili uživatelům zážitek z používání.
-
-4. **Šíření povědomí:**
-   - Sdílejte EduBeam se svými kolegy a na sociálních sítích.
-   - Vaše podpora pomáhá rozšiřovat naši komunitu a zajišťuje, že EduBeam bude využívat více studentů.
-
-Jste připraveni začít? Vyberte si způsob podpory, který vyhovuje vašim dovednostem a zájmům, a staňte se cennou součástí komunity EduBeam!
+- Nejasné chování nebo chyby hlaste jako [issue na GitHubu](https://github.com/janvorisek/edubeam/issues).
+- Vylepšete tuto dokumentaci nebo překlady úpravou souborů v `docs/` a pull requestem.
+- Řekněte o EduBeamu spolužákům a kolegům.

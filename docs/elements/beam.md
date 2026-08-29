@@ -1,6 +1,6 @@
 # Beam Element
 
-Timoshenko beam theory accommodates shear deformation and rotational bending in thick beams and high-frequency situations.
+The only element in <Edubeam /> is a two-node **Timoshenko beam** in the x–z plane. Compared with the classic Euler–Bernoulli beam it adds shear deformation, which matters for deep or short members and disappears for slender ones. Sign conventions are summarised on the [conventions](/elements/conventions) page.
 
 <TrussElement :moment="true" caption="Schematic of 2D Timoshenko beam" />
 
@@ -40,7 +40,21 @@ where:
 - $A$ is the cross-sectional area of the beam
 - $L$ is the length of the beam
 - $I_y$ is the second moment of area about the y-axis
-- $\varphi$ is the shear correction factor
+- $\varphi$ is the dimensionless shear-flexibility parameter
+
+$$
+\varphi = \frac{12\,E I_y}{k\,G\,A\,L^2}
+$$
+
+with $G$ the shear modulus and $k$ the cross-section's **shear coefficient** (effective shear area $kA$). For $\varphi \to 0$ (slender beam, or a very large $k$) the matrix reduces to the Euler–Bernoulli beam stiffness.
+
+## End hinges
+
+A hinge at an element end releases the corresponding rotational DOF: the rotation is condensed out of the 6 × 6 matrix (static condensation, $M = 0$ at that end) and the element is assembled with the remaining DOFs. With both ends released only the axial terms survive and the element behaves as a [truss bar](/elements/truss).
+
+## Element loads
+
+Distributed, concentrated and temperature loads are converted to **equivalent nodal loads** $\mathbf{f}_{eq}$ (the negative of the fixed-end forces) and added to the global load vector. After the solution, internal forces along the element are recovered from the end displacements plus the exact particular solution of the element load, so diagrams are exact along the member.
 
 ## Transformation Matrix
 

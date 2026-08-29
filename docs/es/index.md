@@ -2,42 +2,42 @@
 layout: home
 
 hero:
-  name: "edubeam"
-  text: "Análisis estructural gratuito en línea"
-  tagline: "Dibuje una viga, añada una carga y vea el recálculo al instante: resultados FEM completos en su navegador, sin instalaciones ni cuotas."
+  name: "EduBeam"
+  text: "Análisis de estructuras en línea"
+  tagline: "Dibuja una viga, añade una carga y observa cómo se recalcula al instante: resultados MEF completos en tu navegador, sin instalación y gratis."
   image:
     src: /download.png
-    alt: Vista previa en vivo de la app EduBeam
-    link: https://run.edubeam.app
+    alt: EduBeam en el navegador
+    link: https://run.edubeam.app/?lang=es
   actions:
     - theme: brand
       text: Abrir la aplicación
       link: https://run.edubeam.app/?lang=es
     - theme: alt
-      text: Leer la guía
-      link: /es/guide/introduction
+      text: Inicio rápido
+      link: /es/guide/quick-start
     - theme: alt
-      text: Ver ejemplos
-      link: /examples/
+      text: Ejemplos
+      link: /es/examples/
 
 features:
   - icon: ⚡
     title: Respuesta inmediata
-    details: Modifique una luz, arrastre un apoyo o ajuste una carga y vea cómo los diagramas se actualizan al instante.
+    details: "Cambia una luz, arrastra un apoyo o modifica una carga y los diagramas de esfuerzos reaccionan al instante."
   - icon: 🧑‍🏫
-    title: Ideal para clases
-    details: Botones grandes, deshacer/rehacer y ayudas claras para dedicar menos tiempo a explicar la interfaz y más a explorar conceptos.
+    title: Pensado para el aula
+    details: "Deshacer/rehacer, tooltips con valores, rótulas y apoyos como casillas de verificación: menos explicar, más explorar."
   - icon: 🌍
-    title: Disponible en su idioma
-    details: Cambie entre EN, CS, DE, ES, FR y ZH sin salir de la página.
+    title: En tu idioma
+    details: "11 idiomas de interfaz y unidades métricas o imperiales seleccionables magnitud por magnitud."
   - icon: 🔗
-    title: Modelos fáciles de compartir
-    details: Copie un enlace, exporte JSON o inserte imágenes limpias en diapositivas y material docente.
+    title: Compartir con un clic
+    details: "Un enlace que contiene todo el modelo, proyectos JSON o un visor de solo lectura para diapositivas y páginas web."
 ---
-## ¿Para quién es edubeam?
+## ¿Para quién es EduBeam?
 
-- **Estudiantes** que quieren revisar tareas o visualizar ideas durante sesiones de estudio.
-- **Docentes** que necesitan demostrar apoyos, cargas y diagramas en vivo de forma fiable.
-- **Equipos y aficionados** que buscan resultados claros sin depender de software de escritorio costoso.
+- **Estudiantes** que comprueban cálculos a mano: empieza con el [Inicio rápido de 10 minutos](/es/guide/quick-start) y [Comprobar resultados a mano](/es/guide/verification).
+- **Docentes** que muestran apoyos, rótulas, cargas y diagramas en directo, en el idioma de sus alumnos.
+- **Ingenieros y aficionados** que quieren una comprobación rápida de una estructura plana sin un programa «grande».
 
-Si puede arrastrar con el ratón, puede usar <Edubeam />. 🙂
+Si sabes arrastrar un ratón, sabes usar <Edubeam />. 🙂

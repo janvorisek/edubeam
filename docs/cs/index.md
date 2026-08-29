@@ -2,42 +2,42 @@
 layout: home
 
 hero:
-  name: "edubeam"
+  name: "EduBeam"
   text: "Stavební mechanika online"
-  tagline: Zadejte nosník, přidejte zatížení a okamžitě sledujte výsledky přímo v prohlížeči.
+  tagline: Zadejte nosník, přidejte zatížení a sledujte, jak se vnitřní síly přepočítají okamžitě – kompletní výsledky MKP přímo v prohlížeči, bez instalace a zdarma.
   image:
     src: /download.png
-    alt: edubeam aplikace v prohlížeči
-    link: https://run.edubeam.app
+    alt: EduBeam v prohlížeči
+    link: https://run.edubeam.app/?lang=cs
   actions:
     - theme: brand
       text: Spustit aplikaci
       link: https://run.edubeam.app/?lang=cs
     - theme: alt
-      text: Přečíst průvodce
-      link: /cs/guide/introduction
+      text: Rychlý start
+      link: /cs/guide/quick-start
     - theme: alt
-      text: Prohlédnout příklady
+      text: Příklady
       link: /cs/examples/
 
 features:
   - icon: ⚡
     title: Okamžitá odezva
-    details: Upravte geometrii, přidejte podporu nebo zatížení a vnitřní síly se přepočítají během mrknutí.
+    details: Změňte rozpětí, přetáhněte podporu nebo upravte zatížení a průběhy vnitřních sil se překreslí okamžitě.
   - icon: 🧑‍🏫
     title: Přátelské pro výuku
-    details: Velká tlačítka, jasné popisky a jednoduché uživatelské rozhraní vás nezahltí.
+    details: Zpět/znovu, popisky s hodnotami po najetí myší, klouby a podpory jako zaškrtávací políčka – méně vysvětlování, více zkoušení.
   - icon: 🌍
-    title: Funguje ve vašem jazyce
-    details: Přepínejte mezi EN, CS, DE, ES, FR a ZH, aniž byste museli opustit aplikaci.
+    title: Ve vašem jazyce
+    details: 11 jazyků rozhraní, nezávisle volitelné metrické či imperiální jednotky.
   - icon: 🔗
     title: Sdílení jedním klikem
-    details: Sdílejte vaši konstrukci pomocí odkazu, export projektu ve formátu JSON nebo jako obrázek.
+    details: Odkaz obsahující celý model, projekty ve formátu JSON nebo prohlížeč jen pro čtení vložený do prezentace či webu.
 ---
-## Pro koho je edubeam?
+## Pro koho je EduBeam?
 
-- **Studenti**, kteří si chtějí rychle ověřit domácí úkol nebo namodelovat libovolné zadání příkladu.
-- **Pedagogové**, kteří potřebují spolehlivě demonstrovat chování konstrukce v závislosti na různých zatíženích a zajistit zobrazení odpovídajících vnitřních sil.
-- **Týmy a nadšenci**, kteří ocení jednoduché a srozumitelné výsledky bez honičky za drahými licencemi.
+- **Studenti**, kteří si ověřují ruční výpočty – začněte [Rychlým startem na 10 minut](/cs/guide/quick-start) a kapitolou [Ověření výsledků ručně](/cs/guide/verification).
+- **Vyučující**, kteří živě předvádějí podpory, klouby, zatížení a průběhy vnitřních sil, v jazyce svých studentů.
+- **Inženýři a nadšenci**, kteří chtějí rychlou kontrolu rovinné konstrukce bez „velkého“ programu.
 
-Pokud dokážete táhnout myší, zvládnete i edubeam. 🙂
+Pokud umíte táhnout myší, zvládnete i <Edubeam />. 🙂

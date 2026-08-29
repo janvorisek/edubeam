@@ -5,19 +5,18 @@ const members = [
   {
     avatar: 'https://www.github.com/janvorisek.png',
     name: 'Jan Voříšek',
-    title: 'Maintainer, UI/UX',
+    title: 'Leitender Entwickler & Produktdesigner',
     links: [
       { icon: 'github', link: 'https://github.com/janvorisek' },
       { icon: 'twitter', link: 'https://twitter.com/janvorisekdev' },
     ]
   },
   {
-   avatar: 'https://www.github.com/bpatzak.png',
+    avatar: 'https://www.github.com/bpatzak.png',
     name: 'Bořek Patzák',
-    title: 'Originalautor',
+    title: 'FEM-Solver, Autor der ursprünglichen Anwendung',
     links: [
       { icon: 'github', link: 'https://github.com/bpatzak' },
-      { icon: { svg: '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="style=stroke" clip-path="url(#clip0_1_1828)"> <g id="web"> <path id="vector (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M10.4425 2.44429C10.0752 3.64002 9.32073 6.25569 8.89915 8.83258C9.99331 9.00921 11.0621 9.12209 12 9.12209C12.9379 9.12209 14.0067 9.00921 15.1009 8.83258C14.6793 6.25569 13.9248 3.64002 13.5575 2.44429C13.0509 2.3624 12.5307 2.31977 12 2.31977C11.4693 2.31977 10.9491 2.3624 10.4425 2.44429ZM15.3337 2.90893C15.737 4.305 16.2958 6.42828 16.6448 8.54737C18.1513 8.23703 19.5727 7.85824 20.605 7.56109C19.4986 5.42102 17.6172 3.74662 15.3337 2.90893ZM21.2129 9.01933C20.1222 9.33683 18.5423 9.76328 16.8594 10.1057C16.9295 10.7564 16.9709 11.3958 16.9709 12C16.9709 12.8816 16.8827 13.8411 16.7445 14.8058C18.759 14.3858 20.6068 13.849 21.5557 13.5575C21.6376 13.0509 21.6802 12.5307 21.6802 12C21.6802 10.959 21.5162 9.95751 21.2129 9.01933ZM21.0911 15.3337C19.9166 15.6729 18.229 16.1219 16.4634 16.4634C16.1219 18.229 15.6729 19.9166 15.3337 21.0911C17.9978 20.1138 20.1138 17.9978 21.0911 15.3337ZM13.5576 21.5557C13.849 20.6068 14.3858 18.759 14.8058 16.7445C13.8411 16.8827 12.8816 16.9709 12 16.9709C11.1184 16.9709 10.1589 16.8827 9.19423 16.7445C9.61421 18.759 10.151 20.6068 10.4425 21.5557C10.9491 21.6376 11.4693 21.6802 12 21.6802C12.5307 21.6802 13.0509 21.6376 13.5576 21.5557ZM8.66629 21.0911C8.32707 19.9166 7.8781 18.229 7.53658 16.4634C5.77099 16.1219 4.08335 15.6729 2.90891 15.3337C3.88622 17.9978 6.00216 20.1138 8.66629 21.0911ZM2.44429 13.5575C3.39316 13.849 5.24101 14.3858 7.25548 14.8058C7.1173 13.8411 7.02907 12.8816 7.02907 12C7.02907 11.3958 7.07048 10.7564 7.14056 10.1057C5.45769 9.76328 3.87779 9.33683 2.78712 9.01933C2.48383 9.95751 2.31977 10.959 2.31977 12C2.31977 12.5307 2.3624 13.0509 2.44429 13.5575ZM3.39504 7.56109C4.42731 7.85824 5.84865 8.23703 7.35522 8.54737C7.70416 6.42827 8.26303 4.305 8.66626 2.90893C6.38282 3.74662 4.50139 5.42102 3.39504 7.56109ZM8.68924 10.3888C8.63137 10.9544 8.59884 11.4968 8.59884 12C8.59884 12.9399 8.71224 14.012 8.88985 15.1102C9.98798 15.2878 11.0601 15.4012 12 15.4012C12.9399 15.4012 14.012 15.2878 15.1102 15.1102C15.2878 14.012 15.4012 12.9399 15.4012 12C15.4012 11.4968 15.3686 10.9544 15.3108 10.3888C14.1776 10.5703 13.0348 10.6919 12 10.6919C10.9652 10.6919 9.82236 10.5703 8.68924 10.3888ZM9.67273 0.991173C10.4243 0.833026 11.2029 0.75 12 0.75C12.7971 0.75 13.5757 0.833026 14.3273 0.991174C18.0108 1.76627 21.0281 4.34097 22.42 7.75174C22.9554 9.06356 23.25 10.4983 23.25 12C23.25 12.7971 23.167 13.5757 23.0088 14.3273C22.0943 18.6736 18.6736 22.0943 14.3273 23.0088C13.5757 23.167 12.7971 23.25 12 23.25C11.2029 23.25 10.4243 23.167 9.67273 23.0088C5.32644 22.0943 1.90572 18.6736 0.991173 14.3273C0.833026 13.5757 0.75 12.7971 0.75 12C0.75 10.4972 1.04509 9.06132 1.58123 7.74866C2.97369 4.33943 5.99026 1.76604 9.67273 0.991173Z" fill="currentColor"></path> </g> </g> <defs> <clipPath id="clip0_1_1828"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg>'}, link: 'http://ksm.fsv.cvut.cz/~bp/'}
     ]
   }
 ]
@@ -25,91 +24,68 @@ const members = [
 
 # Einführung
 
-Willkommen bei <Edubeam />, einem browserbasierten Arbeitsbereich für **Strukturanalyse in Lehre und Praxis**. Modellieren Sie Träger, Fachwerke und Rahmen, definieren Sie Einzellasten und verteilte Lasten und prüfen Sie FEM-Ergebnisse wie Auflagerreaktionen, Verschiebungen und innere Kräfte in Echtzeit. Alles läuft direkt im Browser – ohne Installation, Lizenzserver oder Administratorrechte.
+<Edubeam /> ist ein kostenloses, browserbasiertes Werkzeug für die **Statik ebener Stabtragwerke** – Balken, Rahmen und Fachwerke. Sie zeichnen das Tragwerk, setzen Lager und Lasten, und der Finite-Elemente-Solver rechnet alles in dem Moment neu, in dem Sie etwas ändern. Keine Schaltfläche „Berechnen“, keine Installation, kein Konto.
 
-Öffnen Sie [EduBeam](https://run.edubeam.app/?lang=de) in einem neuen Tab und folgen Sie dieser Anleitung parallel.
+[Starten Sie EduBeam](https://run.edubeam.app/?lang=de){target="_blank"} in einem neuen Tab und folgen Sie dem [Schnellstart](/de/guide/quick-start).
 
 <figure>
   <a href="https://run.edubeam.app/?lang=de" target="_blank">
     <WelcomeStructure />
   </a>
-  <figcaption>EduBeam in Aktion</figcaption>
+  <figcaption>Ein statisch unbestimmter Balken, live im Browser gelöst</figcaption>
 </figure>
 
-## Warum Ingenieur:innen EduBeam einsetzen
+## Was EduBeam kann
 
-- **Live-Feedback:** Geometrie, Lager oder Lasten ändern und sofort aktualisierte Verformungen, Auflagerreaktionen, Querkräfte und Biegemomente sehen.
-- **Ohne Installation, plattformunabhängig:** Läuft in modernen Browsern auf allen gängigen Betriebssystemen.
-- **Ausgabe für Lehre und Austausch:** Teilen per Link oder JSON-Export für Kolleg:innen und Studierende.
-- **Lernfreundliche Benutzeroberfläche:** Klare Beschriftungen, Kontextmenüs und vollständiges Rückgängig/Wiederholen.
-- **Konsistente Einheiten und Vorlagen:** Einheitensysteme wählen, Modelle wiederverwenden und Berechnungen reproduzierbar halten.
+| Bereich | Möglichkeiten |
+| --- | --- |
+| **Tragwerke** | Ebene (x–z) Balken, Durchlaufträger, Rahmen und Fachwerke aus Knoten und 2D-Balkenelementen (Timoshenko-Balken). Endgelenke machen aus jedem Stab einen Fachwerkstab. |
+| **Lager** | Beliebige Kombination gehaltener Freiheitsgrade `Dx`, `Dz`, `Ry` an einem Knoten → Einspannung, Festlager, Loslager, Schiebehülse … Schräge Lager über einen Winkel des Knotenkoordinatensystems. |
+| **Lasten** | Knotenkräfte und -momente, vorgegebene Verschiebungen (Auflagersenkungen), gleichmäßig verteilte und Trapez-Streckenlasten (global oder lokal), Einzellasten an beliebiger Stelle eines Stabs sowie gleichmäßige und ungleichmäßige Temperaturlasten. |
+| **Ergebnisse** | Verformte Form (Biegelinie), Normalkraft **N**, Querkraft **V<sub>z</sub>**, Biegemoment **M<sub>y</sub>**, Auflagerreaktionen, Knotenverschiebungen, Stabendkräfte und Elementsteifigkeitsmatrizen. |
+| **Berechnung** | Lineare statische Berechnung mit einem Lastfall. Die Ergebnisse sind für das lineare Modell exakt (keine Netzverfeinerung nötig). |
+| **Dateien** | Projekte als JSON speichern/öffnen, ein ganzes Modell als URL teilen, einen schreibgeschützten Viewer einbetten. Alles bleibt auf Ihrem Gerät. |
+| **Einheiten** | Unabhängig wählbare Einheiten für Länge, Fläche, Flächenträgheitsmoment, Masse, Kraft, Moment und Spannung (metrisch und angloamerikanisch). |
 
-## Typische Einsatzszenarien
+## Was EduBeam (noch) nicht kann
 
-- Vorlesungen und Übungen in der Baustatik mit Live-Demonstrationen.
-- Schneller Variantenvergleich vor der Arbeit in umfangreicher Desktop-Software.
-- Korrektur von Aufgaben und Peer-Review mit einheitlichen Diagrammen.
-- Veranschaulichung von „Was-wäre-wenn“-Fällen in Besprechungen.
+Die Grenzen vorab zu kennen spart Zeit:
 
-## Schnellstart in fünf Schritten
+- **Nur 2D** – kein Verhalten aus der Ebene heraus, keine räumlichen Rahmen.
+- **Nur lineare Statik** – keine Theorie II. Ordnung (P–Δ), kein Knicken, keine Dynamik, keine Plastizität.
+- **Ein Lastfall** – keine Lastfallkombinationen oder Umhüllenden. Modellieren Sie jeden Fall getrennt (als eigene Datei oder eigenen Link speichern).
+- **Kein Eigengewicht** – bei Bedarf als Streckenlast ansetzen.
+- **Keine Nachweise** – EduBeam liefert Schnittgrößen und Verformungen; die Bemessung nach Norm bleibt Ihnen überlassen.
 
-1. [EduBeam starten](https://run.edubeam.app/?lang=de) und gewünschte Einheiten wählen.
-2. **Knoten setzen** und mit Elementen verbinden.
-3. **Eigenschaften zuweisen** (Materialien und Querschnitte).
-4. **Lager und Lasten definieren**, inklusive Knoten-, Temperatur- und Streckenlasten.
-5. **Ergebnisse prüfen und teilen** über Verformung/Schnittgrößen sowie den Share-Link oder JSON-Export.
+Wenn Ihnen eine Funktion fehlt, [eröffnen Sie ein Issue](https://github.com/janvorisek/edubeam/issues).
 
-## Lokalisierung
+## Für wen ist EduBeam gedacht?
 
-<Edubeam /> ist in mehreren Sprachen verfügbar. Wechseln Sie die Sprache in der App oder öffnen Sie die Anwendung mit `?lang=` und dem jeweiligen Sprachcode.
+- **Studierende** der Technischen Mechanik und Baustatik, die sofortige Rückmeldung zu Handrechnungen wollen. Siehe [Ergebnisse von Hand prüfen](/de/guide/verification).
+- **Lehrende**, die zeigen, wie Lager, Gelenke und Lasten die Schnittgrößenverläufe verändern – live, am Beamer, in einer von 11 Sprachen.
+- **Ingenieurinnen und Ingenieure**, die eine schnelle Plausibilitätsprüfung brauchen, bevor sie das „große“ Programm öffnen.
 
-<div>
+## Aufbau der Dokumentation
 
-<table>
-    <tr>
-        <td><img src="language-icons/icons/en.svg" style="height: 24px;" alt="English" /></td>
-        <td><a href="https://run.edubeam.app/?lang=en" target="_blank">English</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/de.svg" style="height: 24px;" alt="Deutsch" /></td>
-        <td><a href="https://run.edubeam.app/?lang=de" target="_blank">Deutsch</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/es.svg" style="height: 24px;" alt="Español" /></td>
-        <td><a href="https://run.edubeam.app/?lang=es" target="_blank">Español</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/fr.svg" style="height: 24px;" alt="Français" /></td>
-        <td><a href="https://run.edubeam.app/?lang=fr" target="_blank">Français</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/cs.svg" style="height: 24px;" alt="Čeština" /></td>
-        <td><a href="https://run.edubeam.app/?lang=cs" target="_blank">Čeština</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/zh.svg" style="height: 24px;" alt="中文" /></td>
-        <td><a href="https://run.edubeam.app/?lang=cn" target="_blank">中文</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/th.svg" style="height: 24px;" alt="ไทย" /></td>
-        <td><a href="https://run.edubeam.app/?lang=th" target="_blank">ไทย</a></td>
-    </tr>
-</table>
+1. **Erste Schritte** – diese Seite, der [10-Minuten-Schnellstart](/de/guide/quick-start) und fertige [Beispiele](/de/examples/).
+2. **Modellierung** – je eine Seite pro Baustein: [Benutzeroberfläche](/de/essentials/user-interface), [Knoten & Lager](/de/essentials/nodes-supports), [Elemente, Materialien & Querschnitte](/de/essentials/elements), [Lasten](/de/essentials/loads), [Einheiten & Einstellungen](/de/essentials/units-settings).
+3. **Ergebnisse** – wie man [Diagramme und Tabellen liest](/de/essentials/results) und sie [überprüft](/de/guide/verification).
+4. **Dateien & Teilen** – [JSON-Projekte, Links und der einbettbare Viewer](/de/essentials/import-export).
+5. **Referenz** – [Tastatur & Maus](/de/reference/shortcuts), [Fehlerbehebung](/de/reference/troubleshooting) und die [FAQ](/de/faq/).
+6. **Theoriehandbuch** – [Vorzeichenkonvention](/de/elements/conventions) und die Elementformulierungen für [Balken](/de/elements/beam) und [Fachwerkstab](/de/elements/truss).
 
-</div>
+## Sprachen
 
-## Autor:innen und Credits
+Die Oberfläche ist auf Deutsch, Englisch, Tschechisch, Spanisch, Französisch, Polnisch, Portugiesisch, Russisch, Ukrainisch, Thai und Chinesisch verfügbar. EduBeam wählt die Sprache anhand des Browsers; ändern Sie sie unter **Einstellungen → Sprache & Region** oder öffnen Sie die App mit dem Parameter `?lang=`, z. B. [run.edubeam.app/?lang=de](https://run.edubeam.app/?lang=de){target="_blank"}.
 
-<Edubeam /> wird von [Jan Voříšek](https://github.com/janvorisek) als Maintainer und Product Designer der modernen Web-Version geführt. Die ursprüngliche Desktop-Version von EduBeam wurde von Forschenden der Fakultät für Bauingenieurwesen an der [CTU Prag](https://www.fsv.cvut.cz/en) entwickelt – diese Grundlage wird mit großem Dank anerkannt.
+## Autoren & Danksagung
+
+<Edubeam /> wird von [Jan Voříšek](https://github.com/janvorisek) geleitet, dem Maintainer und Produktdesigner der modernen Web-Version. Die Browser-Version wird unabhängig von der ČVUT entwickelt; das ursprüngliche Desktop-EduBeam für Windows/Linux wurde von [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) und [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) am Lehrstuhl für Mechanik der [Fakultät für Bauingenieurwesen der Tschechischen Technischen Universität Prag](https://www.fsv.cvut.cz/en) entwickelt. Der Solver ist die Open-Source-Bibliothek [ts-fem](https://github.com/janvorisek/ts-fem).
 
 <VPTeamMembers size="small" :members="members" />
 
-Die frühere [Desktop-Anwendung](https://www.oofem.org/wiki/doku.php?id=edubeam:edubeam_en) wurde von [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) und [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) erstellt.
-
 ## Mitmachen
 
-- Melden Sie Unklarheiten oder Fehler über den [GitHub-Issue-Tracker](https://github.com/janvorisek/edubeam/issues).
-- Verbessern Sie Übersetzungen oder Screenshots direkt in den Dateien unter `docs/`.
-- Teilen Sie EduBeam mit Kolleg:innen und Studierenden, damit das Projekt weiter wächst.
-
-Viel Erfolg – und jetzt direkt im Modell loslegen!
+- Melden Sie unklares Verhalten oder Fehler als [GitHub-Issue](https://github.com/janvorisek/edubeam/issues).
+- Verbessern Sie diese Dokumentation oder Übersetzungen durch Bearbeiten der Dateien in `docs/` und einen Pull Request.
+- Empfehlen Sie EduBeam Kommilitonen und Kollegen weiter.

@@ -1,67 +1,99 @@
-# Frequently Asked Questions
+# Frequently asked questions
 
-## Getting started
+## General
 
-### Q: What is <Edubeam />?
+### What is EduBeam?
 
-A: <Edubeam /> is a browser-based solver for 2D beams, trusses, and simple frames. It is built for students, teachers, and practitioners who need quick FEM feedback without installing desktop software.
+A free, open-source, browser-based solver for 2D beams, frames and trusses aimed at students, teachers and engineers who want instant feedback. See the [Introduction](/guide/introduction).
 
-### Q: Is it really free?
+### Is it really free? Do I need an account?
 
-A: Yes. Edubeam runs entirely in your browser and is free to use in classrooms, studios, and personal projects. The codebase is open source, so you can audit or contribute to it.
+Yes, and no. Open [run.edubeam.app](https://run.edubeam.app) and start modelling. There are no accounts, no installers and no usage limits. The source is on [GitHub](https://github.com/janvorisek/edubeam).
 
-### Q: Do I have to sign up or download anything?
+### Which browsers and devices work?
 
-A: Nope. Launch [run.edubeam.app](https://run.edubeam.app) in any modern browser and you are ready to model. There are no accounts, logins, or installers.
+Any current Chrome, Edge, Firefox or Safari. Tablets and phones work (tap, drag to pan, pinch to zoom, long-press to move a node), but a mouse and keyboard make modelling much faster.
 
-### Q: Which browsers and devices are supported?
+### Can I use it offline?
 
-A: Chrome, Edge, Firefox, and Safari on desktop provide the best experience. Tablets work for quick edits or reviews, but precise modeling is easier with a keyboard and mouse.
+EduBeam is a progressive web app: once loaded it keeps working without a connection, and the browser may offer to install it. When a new version is available a dialog asks before updating.
 
-### Q: Does Edubeam limit the number of projects?
+### Where is my data stored?
 
-A: There is no project cap. Models stay in your browser storage or in files you export, so you can keep as many as your device can handle.
+Only in your browser. Models are never sent to a server; the share link *is* the model. See [Import, export & sharing](/essentials/import-export).
 
-## Working with models
+## Modelling
 
-### Q: Where do I find sample projects or templates?
+### How do I make a fixed / pinned / roller support?
 
-A: Open the [Examples](/examples/) page in the docs and click any preset to load it directly in the app. It is the fastest way to explore supported scenarios.
+Tick DOF checkboxes: **Dx + Dz + Ry** = fixed, **Dx + Dz** = pinned, **Dz** = roller. Every combination and its symbol is listed in [Nodes & supports](/essentials/nodes-supports#supports).
 
-### Q: Can I change units or language?
+### How do I make a truss?
 
-A: Yes. Units are selectable when you create or open a model, and languages can be switched from the app bar or by adding `?lang=` (for example, `?lang=cs`) to the app URL.
+Use beam elements and tick **both End hinges** for every bar in the *Elements* tab. Apply loads at the joints. See [Elements](/essentials/elements#end-hinges).
 
-### Q: How do I recover an earlier state of my model?
+### How do I put a hinge in a frame?
 
-A: Use the built-in undo/redo history in the bottom bar. For longer sessions, export the project as JSON so you can re-import it later.
+Tick the **End hinge** of the element on the side of the joint where the moment should be released. Hinging *one* element at a joint releases only that element.
 
-## Sharing and privacy
+### How do I add a support or a point load in the middle of a beam?
 
-### Q: How do I share my model with others?
+Add a node on the beam with *Add using mouse* and choose **Connect to structure**—the beam is split in two. For a point load alone you do not even need a node: use a **Concentrated load** element load with a position.
 
-A: Click **Share model** to generate a URL that encodes your current setup. Send that link to classmates or reviewers and they can open the exact same configuration.
+### Can I apply self-weight?
 
-### Q: Are edits synchronized between collaborators?
+Not automatically. Enter it as a uniformly distributed load $f_z = \rho g A$.
 
-A: No. Edubeam has no real-time server component. Each person who opens the link works on their own local copy, so remember to resend the link after making changes.
+### Can I model inclined supports?
 
-### Q: What happens to my data—do you store it?
+Yes—set a **Nodal LCS angle** on the node; its DOFs are then interpreted in the rotated system.
 
-A: We do not keep user models or personal data on our servers. All computations run in your browser, and anything you save stays on your device unless you choose to share it.
+### Are there load cases or combinations?
 
-## Troubleshooting and support
+No, one load case only. Model each case separately and save or share it.
 
-### Q: My model shows “system is unstable.” What should I check?
+### Why do my loads point up?
 
-A: Ensure the structure has enough restraints (no free rigid-body modes), confirm elements are properly connected, and verify units. The [Essentials](/essentials/elements) and [Guide](/essentials/user-interface) sections walk through common fixes.
+Because global z points **down**: positive `Fz` is downward. See [conventions](/elements/conventions).
 
-### Q: How do I report a bug or request a feature?
+## Results
 
-A: Open an issue on [GitHub](https://github.com/janvorisek/edubeam/issues) with steps to reproduce or a description of the enhancement you need. Screenshots and attached JSON exports help a lot.
+### Why is there no "Solve" button?
 
-### Q: Who do I contact for private support?
+The model is solved automatically after every change. If no results appear the model is not solvable yet—[Troubleshooting](/reference/troubleshooting) lists what to check.
 
-A: Email [support@edubeam.app](mailto:support@edubeam.app). Include your browser version, operating system, and (if possible) the share link or export that demonstrates the problem.
+### Why does my deflection differ slightly from the formula?
 
-Still curious? Explore the rest of the docs or jump straight into the app to experiment.
+EduBeam uses Timoshenko beams, so deflections include shear deformation. For slender members the difference is well below 1 %. Details and worked comparisons in [Checking results by hand](/guide/verification).
+
+### How accurate are the results? Do I need more elements?
+
+For linear static analysis the beam element is exact under the supported load types, so one element per member suffices. Extra nodes are only needed where you want a support, hinge, section change or node to attach a load to.
+
+### Where are the reactions listed?
+
+In the viewer, as arrows with values (enable **Reactions** in the display settings). Element end forces and nodal displacements are in the **Results** tab.
+
+## Files & sharing
+
+### How do I share a model?
+
+**Share model** → **Copy**. The link contains the whole model. Recipients get their own editable copy; there is no live collaboration.
+
+### Can I embed a model on my website or in slides?
+
+Yes—add `&viewer=1` to a share link and put it in an `<iframe>`. See [Embed a read-only viewer](/essentials/import-export#embed-a-read-only-viewer).
+
+### Can I export images or tables?
+
+Not yet. Use a screenshot for images and copy the table text for numbers. Vote for the feature on [GitHub](https://github.com/janvorisek/edubeam/issues).
+
+### Can I generate models programmatically?
+
+Yes. The project file is plain JSON in SI units—see the [format description](/essentials/import-export#project-file-format)—and can be opened with *Open project* or drag-and-drop.
+
+## Support
+
+### How do I report a bug or request a feature?
+
+Open an issue on [GitHub](https://github.com/janvorisek/edubeam/issues) and attach a share link or project file that reproduces it. Private support: [support@edubeam.app](mailto:support@edubeam.app).

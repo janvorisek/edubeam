@@ -3,41 +3,41 @@ layout: home
 
 hero:
   name: "EduBeam"
-  text: "Kostenlose Strukturanalyse online"
-  tagline: Zeichnen Sie einen Träger, fügen Sie eine Last hinzu und sehen Sie die Neuberechnung sofort im Browser – vollständige FEM-Ergebnisse ohne Installation oder Lizenzkosten.
+  text: "Baustatik online"
+  tagline: Zeichnen Sie einen Balken, setzen Sie eine Last und sehen Sie zu, wie alles sofort neu berechnet wird – vollständige FEM-Ergebnisse im Browser, ohne Installation und kostenlos.
   image:
     src: /download.png
-    alt: EduBeam App-Vorschau im Browser
-    link: https://run.edubeam.app
+    alt: EduBeam im Browser
+    link: https://run.edubeam.app/?lang=de
   actions:
     - theme: brand
       text: App starten
       link: https://run.edubeam.app/?lang=de
     - theme: alt
-      text: Anleitung lesen
-      link: /de/guide/introduction
+      text: Schnellstart
+      link: /de/guide/quick-start
     - theme: alt
-      text: Beispiele ansehen
+      text: Beispiele
       link: /de/examples/
 
 features:
   - icon: ⚡
-    title: Sofortiges Feedback
-    details: Ändern Sie Geometrie, Lager oder Lasten und sehen Sie sofort aktualisierte Verformungen, Auflagerreaktionen und Schnittgrößen.
+    title: Sofortige Rückmeldung
+    details: Spannweite ändern, Lager verschieben oder Last anpassen – die Schnittgrößenverläufe reagieren augenblicklich.
   - icon: 🧑‍🏫
     title: Für die Lehre gemacht
-    details: Große Schaltflächen, Rückgängig/Wiederholen und klare Hinweise erleichtern den Einsatz in Übungen und Vorlesungen.
+    details: Rückgängig/Wiederholen, Tooltips mit Werten, Gelenke und Lager als Kontrollkästchen – weniger Erklären, mehr Ausprobieren.
   - icon: 🌍
-    title: Mehrsprachig
-    details: Wechseln Sie direkt in der App zwischen EN, CS, DE, ES, FR und ZH.
+    title: In Ihrer Sprache
+    details: 11 Oberflächensprachen, metrische oder angloamerikanische Einheiten je Größe frei wählbar.
   - icon: 🔗
-    title: Einfach teilen
-    details: Teilen Sie Modelle per Link, exportieren Sie JSON-Dateien oder erzeugen Sie saubere Bilder für Folien und Handouts.
+    title: Teilen mit einem Klick
+    details: Ein Link, der das ganze Modell enthält, JSON-Projekte oder ein schreibgeschützter Viewer für Folien und Webseiten.
 ---
 ## Für wen ist EduBeam?
 
-- **Studierende**, die Aufgaben schnell prüfen oder Strukturverhalten visualisieren möchten.
-- **Lehrende**, die Lasten, Lager und Ergebnisse live und nachvollziehbar demonstrieren wollen.
-- **Teams und Praktiker**, die klare Ergebnisse ohne komplexe Desktop-Software benötigen.
+- **Studierende**, die Handrechnungen prüfen – starten Sie mit dem [10-Minuten-Schnellstart](/de/guide/quick-start) und [Ergebnisse von Hand prüfen](/de/guide/verification).
+- **Lehrende**, die Lager, Gelenke, Lasten und Schnittgrößen live vorführen, in der Sprache ihrer Studierenden.
+- **Ingenieure und Tüftler**, die eine schnelle Plausibilitätsprüfung ebener Tragwerke ohne „großes“ Programm wollen.
 
-Wenn Sie mit der Maus ziehen können, können Sie EduBeam nutzen. 🙂
+Wer eine Maus ziehen kann, kann auch <Edubeam /> bedienen. 🙂

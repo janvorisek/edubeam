@@ -44,12 +44,12 @@ const domain = solver.value.domain;
 }
 
 const nodes = ref<Node[]>([domain.getNode('a'), domain.getNode('b')]);
-const elements = ref<Beam2D[]>([]);
+const elements = ref<Beam2D[]>([domain.getElement(1)]);
 const showLoads = ref(false);
 const showShearForces = ref(false);
 const showMoments = ref(false);
 const showDeformedShape = ref(false);
-const resultsScalePx = ref(48);
+const resultsScalePx = ref(32);
 
 const functionsArray: (() => void)[] = [
   () => {
@@ -65,13 +65,11 @@ const functionsArray: (() => void)[] = [
     showLoads.value = true;
   },
   () => {
-    resultsScalePx.value = 24;
     showDeformedShape.value = true;
   },
   () => {
     showLoads.value = false;
     showDeformedShape.value = false;
-    resultsScalePx.value = 48;
     showShearForces.value = true;
   },
   () => {
@@ -135,9 +133,10 @@ solver.value.solve();
           :show-moments="showMoments"
           :show-normal-force="false"
           :show-shear-force="showShearForces"
-          :padding="32"
-          :mobile-padding="32"
+          :padding="6"
+          :mobile-padding="6"
           :results-scale-px="resultsScalePx"
+          :fit-reserve-px="60"
           :support-size="0.75"
         />
       </div>

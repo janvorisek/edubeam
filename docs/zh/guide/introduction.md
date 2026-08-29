@@ -5,19 +5,18 @@ const members = [
   {
     avatar: 'https://www.github.com/janvorisek.png',
     name: 'Jan Voříšek',
-    title: 'Maintainer, UI/UX',
+    title: '首席开发者与产品设计师',
     links: [
       { icon: 'github', link: 'https://github.com/janvorisek' },
       { icon: 'twitter', link: 'https://twitter.com/janvorisekdev' },
     ]
   },
   {
-   avatar: 'https://www.github.com/bpatzak.png',
+    avatar: 'https://www.github.com/bpatzak.png',
     name: 'Bořek Patzák',
-    title: 'Original author',
+    title: '有限元求解器、原桌面版作者',
     links: [
       { icon: 'github', link: 'https://github.com/bpatzak' },
-      { icon: { svg: '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="style=stroke" clip-path="url(#clip0_1_1828)"> <g id="web"> <path id="vector (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M10.4425 2.44429C10.0752 3.64002 9.32073 6.25569 8.89915 8.83258C9.99331 9.00921 11.0621 9.12209 12 9.12209C12.9379 9.12209 14.0067 9.00921 15.1009 8.83258C14.6793 6.25569 13.9248 3.64002 13.5575 2.44429C13.0509 2.3624 12.5307 2.31977 12 2.31977C11.4693 2.31977 10.9491 2.3624 10.4425 2.44429ZM15.3337 2.90893C15.737 4.305 16.2958 6.42828 16.6448 8.54737C18.1513 8.23703 19.5727 7.85824 20.605 7.56109C19.4986 5.42102 17.6172 3.74662 15.3337 2.90893ZM21.2129 9.01933C20.1222 9.33683 18.5423 9.76328 16.8594 10.1057C16.9295 10.7564 16.9709 11.3958 16.9709 12C16.9709 12.8816 16.8827 13.8411 16.7445 14.8058C18.759 14.3858 20.6068 13.849 21.5557 13.5575C21.6376 13.0509 21.6802 12.5307 21.6802 12C21.6802 10.959 21.5162 9.95751 21.2129 9.01933ZM21.0911 15.3337C19.9166 15.6729 18.229 16.1219 16.4634 16.4634C16.1219 18.229 15.6729 19.9166 15.3337 21.0911C17.9978 20.1138 20.1138 17.9978 21.0911 15.3337ZM13.5576 21.5557C13.849 20.6068 14.3858 18.759 14.8058 16.7445C13.8411 16.8827 12.8816 16.9709 12 16.9709C11.1184 16.9709 10.1589 16.8827 9.19423 16.7445C9.61421 18.759 10.151 20.6068 10.4425 21.5557C10.9491 21.6376 11.4693 21.6802 12 21.6802C12.5307 21.6802 13.0509 21.6376 13.5576 21.5557ZM8.66629 21.0911C8.32707 19.9166 7.8781 18.229 7.53658 16.4634C5.77099 16.1219 4.08335 15.6729 2.90891 15.3337C3.88622 17.9978 6.00216 20.1138 8.66629 21.0911ZM2.44429 13.5575C3.39316 13.849 5.24101 14.3858 7.25548 14.8058C7.1173 13.8411 7.02907 12.8816 7.02907 12C7.02907 11.3958 7.07048 10.7564 7.14056 10.1057C5.45769 9.76328 3.87779 9.33683 2.78712 9.01933C2.48383 9.95751 2.31977 10.959 2.31977 12C2.31977 12.5307 2.3624 13.0509 2.44429 13.5575ZM3.39504 7.56109C4.42731 7.85824 5.84865 8.23703 7.35522 8.54737C7.70416 6.42827 8.26303 4.305 8.66626 2.90893C6.38282 3.74662 4.50139 5.42102 3.39504 7.56109ZM8.68924 10.3888C8.63137 10.9544 8.59884 11.4968 8.59884 12C8.59884 12.9399 8.71224 14.012 8.88985 15.1102C9.98798 15.2878 11.0601 15.4012 12 15.4012C12.9399 15.4012 14.012 15.2878 15.1102 15.1102C15.2878 14.012 15.4012 12.9399 15.4012 12C15.4012 11.4968 15.3686 10.9544 15.3108 10.3888C14.1776 10.5703 13.0348 10.6919 12 10.6919C10.9652 10.6919 9.82236 10.5703 8.68924 10.3888ZM9.67273 0.991173C10.4243 0.833026 11.2029 0.75 12 0.75C12.7971 0.75 13.5757 0.833026 14.3273 0.991174C18.0108 1.76627 21.0281 4.34097 22.42 7.75174C22.9554 9.06356 23.25 10.4983 23.25 12C23.25 12.7971 23.167 13.5757 23.0088 14.3273C22.0943 18.6736 18.6736 22.0943 14.3273 23.0088C13.5757 23.167 12.7971 23.25 12 23.25C11.2029 23.25 10.4243 23.167 9.67273 23.0088C5.32644 22.0943 1.90572 18.6736 0.991173 14.3273C0.833026 13.5757 0.75 12.7971 0.75 12C0.75 10.4972 1.04509 9.06132 1.58123 7.74866C2.97369 4.33943 5.99026 1.76604 9.67273 0.991173Z" fill="currentColor"></path> </g> </g> <defs> <clipPath id="clip0_1_1828"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg>'}, link: 'http://ksm.fsv.cvut.cz/~bp/'}
     ]
   }
 ]
@@ -25,93 +24,68 @@ const members = [
 
 # 简介
 
-欢迎使用 <Edubeam />。这是一个面向**结构分析与教学**的浏览器工作空间。你可以搭建梁、桁架和框架，施加集中荷载与分布荷载，并实时查看有限元（FEM）计算得到的位移、支反力和内力结果。所有功能都在浏览器内运行——无需安装程序、无需许可证服务器、无需管理员权限，适用于课堂教学、课程设计和快速校核。
+<Edubeam /> 是一款免费的、基于浏览器的**平面结构分析**工具，适用于梁、刚架和桁架。你只需画出结构、设置支座与荷载，有限元求解器就会在你每次修改的瞬间重新计算——没有"求解"按钮，无需安装，也不需要账号。
 
-[打开 EduBeam](https://run.edubeam.app/?lang=cn) 并配合本指南一起体验。
-
-EduBeam 运行示意
+在新标签页中[打开 EduBeam](https://run.edubeam.app/?lang=cn){target="_blank"}，然后跟着[快速入门](/zh/guide/quick-start)一步步操作。
 
 <figure>
   <a href="https://run.edubeam.app/?lang=cn" target="_blank">
     <WelcomeStructure />
-    </a>
-  <figcaption>查看 EduBeam 实际运行效果</figcaption>
+  </a>
+  <figcaption>一根超静定梁，在浏览器中实时求解</figcaption>
 </figure>
 
-## 为什么工程学习者会选择 EduBeam
+## 功能概览
 
-- **实时反馈**：编辑几何、支座或荷载后，位移、支反力、剪力和弯矩图会立即更新。
-- **零安装、跨平台**：任意现代浏览器即可运行，学生、教师和协作者无需额外配置软件。
-- **便捷分享与归档**：支持分享链接与 JSON 导出，便于课堂分发、评阅与复现。
-- **教学友好交互**：清晰标签、上下文菜单与完整撤销/重做，既适合新手，也支持高效操作。
-- **单位与模板一致性**：可选择单位制、复用结构，提高教学演示与校核的一致性。
+| 方面 | 功能 |
+| --- | --- |
+| **结构** | 由节点和平面 Timoshenko 梁单元组成的平面（x–z）梁、连续梁、刚架与桁架。设置端部铰接即可把任意杆件变成桁架杆。 |
+| **支座** | 在节点上任意组合约束 `Dx`、`Dz`、`Ry` → 固定端、固定铰支座、可动铰支座、定向支座……通过节点坐标系角度可设置斜向支座。 |
+| **荷载** | 节点力与力矩、位移约束（支座沉降）、均布与梯形线荷载（整体或局部坐标系）、作用在杆件上任意位置的集中荷载，以及均匀 / 梯度温度荷载。 |
+| **结果** | 变形图、轴力 **N**、剪力 **V<sub>z</sub>**、弯矩 **M<sub>y</sub>**、支座反力、节点位移、单元端力以及每个单元的刚度矩阵。 |
+| **分析** | 单一荷载工况的线性静力分析。对线性模型而言结果是精确的（无需细分网格）。 |
+| **文件** | 以 JSON 保存 / 打开项目，用一个 URL 分享整个模型，嵌入只读查看器。所有数据都留在你的设备上。 |
+| **单位** | 长度、面积、截面二次矩、质量、力、弯矩和应力的单位可独立选择（公制与英制）。 |
 
-## 何时使用 EduBeam
+## 目前尚不支持的功能
 
-- 结构力学课程中进行动态可视化讲解。
-- 在进入重型桌面软件前快速比较多种方案。
-- 评阅作业或同伴模型时输出一致、可共享的结果图。
-- 在评审或汇报中演示“参数变化会怎样”的情景。
+事先了解这些限制可以节省时间：
 
-## 五步快速开始
+- **仅限平面** —— 没有平面外行为，没有空间刚架。
+- **仅限线性静力** —— 没有二阶（P–Δ）效应、屈曲、动力分析或塑性。
+- **单一荷载工况** —— 没有荷载组合或包络。请把每种工况分别建模（各自保存为文件或分享链接）。
+- **没有自重** —— 需要时请以线荷载的形式施加。
+- **没有设计验算** —— EduBeam 给出内力和位移；规范校核由你自己完成。
 
-1. [打开 EduBeam](https://run.edubeam.app/?lang=cn)，选择所需单位制。
-2. **放置节点**：通过“添加节点”工具或鼠标点击创建节点，再连接成单元。
-3. **设置属性**：为单元分配材料与截面，建立正确刚度模型。
-4. **施加支座与荷载**：通过操作栏或视图上下文菜单添加节点荷载、温度荷载和分布荷载等。
-5. **查看并分享**：切换变形图和内力图层，复制分享链接或导出 JSON 归档。
+如果你需要某个缺失的功能，请[提交 issue](https://github.com/janvorisek/edubeam/issues)。
 
-## 本地化
+## 适合哪些人？
 
-<Edubeam /> 提供多语言支持，方便不同课堂与团队协作。你也可以通过在 URL 后追加 `?lang=` 与语言代码直接切换语言。
+- 正在学习结构力学、希望即时核对手算结果的**学生**。参见[手算校核](/zh/guide/verification)。
+- 在投影仪上用 11 种语言之一实时演示支座、铰和荷载如何改变内力的**教师**。
+- 在打开重量级桌面软件之前想快速做一次合理性校核的**工程师**。
 
-<div>
+## 文档结构
 
-<table>
-    <tr>
-        <td><img src="language-icons/icons/en.svg" style="height: 24px;" alt="English" /></td>
-        <td><a href="https://run.edubeam.app/?lang=en" target="_blank">English</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/de.svg" style="height: 24px;" alt="Deutsch" /></td>
-        <td><a href="https://run.edubeam.app/?lang=de" target="_blank">Deutsch</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/es.svg" style="height: 24px;" alt="Español" /></td>
-        <td><a href="https://run.edubeam.app/?lang=es" target="_blank">Español</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/fr.svg" style="height: 24px;" alt="Français" /></td>
-        <td><a href="https://run.edubeam.app/?lang=fr" target="_blank">Français</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/cs.svg" style="height: 24px;" alt="Čeština" /></td>
-        <td><a href="https://run.edubeam.app/?lang=cs" target="_blank">Čeština</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/zh.svg" style="height: 24px;" alt="中文" /></td>
-        <td><a href="https://run.edubeam.app/?lang=cn" target="_blank">中文</a></td>
-    </tr>
-    <tr>
-      <td><img src="language-icons/icons/th.svg" style="height: 24px;" alt="ไทย" /></td>
-      <td><a href="https://run.edubeam.app/?lang=th" target="_blank">ไทย</a></td>
-    </tr>
-</table>
+1. **入门** —— 本页、[10 分钟快速入门](/zh/guide/quick-start)以及现成的[示例](/zh/examples/)。
+2. **建模** —— 每个基本构件一页：[用户界面](/zh/essentials/user-interface)、[节点与支座](/zh/essentials/nodes-supports)、[单元、材料与截面](/zh/essentials/elements)、[荷载](/zh/essentials/loads)、[单位与设置](/zh/essentials/units-settings)。
+3. **结果** —— 如何[读懂内力图和表格](/zh/essentials/results)以及如何[校核结果](/zh/guide/verification)。
+4. **文件与分享** —— [JSON 项目、分享链接与可嵌入的查看器](/zh/essentials/import-export)。
+5. **参考** —— [键盘与鼠标](/zh/reference/shortcuts)、[故障排除](/zh/reference/troubleshooting)和[常见问题](/zh/faq/)。
+6. **理论手册** —— [符号约定](/zh/elements/conventions)以及[梁单元](/zh/elements/beam)和[桁架单元](/zh/elements/truss)的单元列式。
 
-</div>
+## 语言
 
-  ## 作者与致谢
+界面提供 English、Čeština、Deutsch、Español、Français、Polski、Português、Русский、Українська、ไทย 和汉语。EduBeam 会根据浏览器自动选择语言；可在**设置 → 语言与区域**中更改，或用 `?lang=` 参数打开应用，例如 [run.edubeam.app/?lang=cn](https://run.edubeam.app/?lang=cn){target="_blank"}。
 
-  <Edubeam /> 由 [Jan Voříšek](https://github.com/janvorisek) 主导维护与产品设计。当前浏览器版本为独立开发项目；早期桌面版 EduBeam 由 [布拉格捷克理工大学土木工程学院（CTU Prague – Faculty of Civil Engineering）](https://www.fsv.cvut.cz/en) 力学系研究人员开发完成，特此致谢。
+## 作者与致谢
+
+<Edubeam /> 由 [Jan Voříšek](https://github.com/janvorisek) 主导开发，他是现代网页版的维护者和产品设计师。浏览器版本独立于 CTU 开发；最初的 Windows/Linux 桌面版 EduBeam 由 [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/)、[Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) 和 [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) 在[布拉格捷克理工大学土木工程学院](https://www.fsv.cvut.cz/en)力学系创建。求解器是开源的 [ts-fem](https://github.com/janvorisek/ts-fem) 库。
 
 <VPTeamMembers size="small" :members="members" />
 
-  最初的[桌面版应用](https://www.oofem.org/wiki/doku.php?id=edubeam:edubeam_en)（Windows/Linux）由 [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/)、[Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) 与 [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) 开发，其成果为当前网页版提供了重要启发。
+## 参与贡献
 
-  ## 参与贡献
-
-  - 在 [GitHub issue 区](https://github.com/janvorisek/edubeam/issues) 提交问题与改进建议。
-  - 改进翻译、截图或文档内容（相关文件位于 `docs/`）。
-  - 将 EduBeam 分享给同学与同事，帮助项目持续改进。
-
-  感谢你的关注，欢迎马上打开应用开始尝试。
+- 通过 [GitHub issue](https://github.com/janvorisek/edubeam/issues) 报告令人困惑的行为或错误。
+- 编辑 `docs/` 中的文件并提交 pull request，改进本文档或翻译。
+- 把 EduBeam 分享给同学和同事。

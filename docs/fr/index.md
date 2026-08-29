@@ -3,42 +3,41 @@ layout: home
 
 hero:
   name: "EduBeam"
-  text: "Analyse des structures gratuite en ligne"
-  tagline: "Dessinez une poutre, ajoutez une charge et voyez le recalcul instantané : résultats FEM complets dans votre navigateur, sans installation ni frais."
+  text: "Calcul des structures en ligne"
+  tagline: "Dessinez une poutre, ajoutez une charge et regardez tout se recalculer instantanément : résultats éléments finis complets dans votre navigateur, sans installation et gratuitement."
   image:
     src: /download.png
-    alt: Aperçu en direct de l'application EduBeam
-    link: https://run.edubeam.app
+    alt: EduBeam dans le navigateur
+    link: https://run.edubeam.app/?lang=fr
   actions:
     - theme: brand
-      text: Lancer l'application
+      text: Lancer l’application
       link: https://run.edubeam.app/?lang=fr
     - theme: alt
-      text: Lire le guide
-      link: /fr/guide/introduction
+      text: Démarrage rapide
+      link: /fr/guide/quick-start
     - theme: alt
-      text: Voir des exemples
-      link: /fr/examples
+      text: Exemples
+      link: /fr/examples/
 
 features:
   - icon: ⚡
     title: Retour immédiat
-    details: Modifiez une portée, déplacez un appui ou changez une charge et observez la mise à jour instantanée des diagrammes.
+    details: "Changez une portée, déplacez un appui ou modifiez une charge : les diagrammes de sollicitations réagissent instantanément."
   - icon: 🧑‍🏫
-    title: Pensé pour l'enseignement
-    details: Grands boutons, annuler/rétablir et infobulles claires pour passer moins de temps à expliquer l'outil et plus de temps à explorer la mécanique.
+    title: Pensé pour la salle de cours
+    details: "Annuler/rétablir, infobulles avec valeurs, rotules et appuis en simples cases à cocher : moins d’explications, plus d’exploration."
   - icon: 🌍
-    title: Disponible dans votre langue
-    details: Basculez entre EN, CS, DE, ES, FR et ZH sans quitter la page.
+    title: Dans votre langue
+    details: "11 langues d’interface et unités métriques ou impériales choisies grandeur par grandeur."
   - icon: 🔗
-    title: Modèles faciles à partager
-    details: "Copiez un lien, exportez en JSON ou insérez des images propres dans vos supports de cours."
+    title: Partage en un clic
+    details: "Un lien qui contient tout le modèle, des projets JSON ou une visionneuse en lecture seule pour diapositives et pages web."
 ---
+## À qui s’adresse EduBeam ?
 
-## À qui s'adresse EduBeam ?
+- **Étudiants** qui vérifient leurs calculs à la main : commencez par le [Démarrage rapide en 10 minutes](/fr/guide/quick-start) et [Vérifier les résultats à la main](/fr/guide/verification).
+- **Enseignants** qui montrent appuis, rotules, charges et diagrammes en direct, dans la langue de leurs étudiants.
+- **Ingénieurs et passionnés** qui veulent une vérification rapide d’une structure plane sans « gros » logiciel.
 
-- **Étudiants** qui veulent vérifier un exercice ou visualiser des idées pendant le travail en groupe.
-- **Enseignants** qui ont besoin d'un outil fiable pour démontrer en direct appuis, charges et diagrammes.
-- **Équipes et passionnés** qui recherchent des résultats clairs sans logiciels lourds ni licences coûteuses.
-
-Si vous savez utiliser la souris, vous savez utiliser <Edubeam />. 🙂
+Si vous savez faire glisser une souris, vous savez utiliser <Edubeam />. 🙂

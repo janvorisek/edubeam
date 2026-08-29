@@ -5,19 +5,18 @@ const members = [
   {
     avatar: 'https://www.github.com/janvorisek.png',
     name: 'Jan Voříšek',
-    title: 'Mainteneur, UI/UX',
+    title: 'Développeur principal et concepteur du produit',
     links: [
       { icon: 'github', link: 'https://github.com/janvorisek' },
       { icon: 'twitter', link: 'https://twitter.com/janvorisekdev' },
     ]
   },
   {
-   avatar: 'https://www.github.com/bpatzak.png',
+    avatar: 'https://www.github.com/bpatzak.png',
     name: 'Bořek Patzák',
-    title: 'Auteur original',
+    title: 'Solveur EF, auteur de l’application d’origine',
     links: [
       { icon: 'github', link: 'https://github.com/bpatzak' },
-      { icon: { svg: '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="style=stroke" clip-path="url(#clip0_1_1828)"> <g id="web"> <path id="vector (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M10.4425 2.44429C10.0752 3.64002 9.32073 6.25569 8.89915 8.83258C9.99331 9.00921 11.0621 9.12209 12 9.12209C12.9379 9.12209 14.0067 9.00921 15.1009 8.83258C14.6793 6.25569 13.9248 3.64002 13.5575 2.44429C13.0509 2.3624 12.5307 2.31977 12 2.31977C11.4693 2.31977 10.9491 2.3624 10.4425 2.44429ZM15.3337 2.90893C15.737 4.305 16.2958 6.42828 16.6448 8.54737C18.1513 8.23703 19.5727 7.85824 20.605 7.56109C19.4986 5.42102 17.6172 3.74662 15.3337 2.90893ZM21.2129 9.01933C20.1222 9.33683 18.5423 9.76328 16.8594 10.1057C16.9295 10.7564 16.9709 11.3958 16.9709 12C16.9709 12.8816 16.8827 13.8411 16.7445 14.8058C18.759 14.3858 20.6068 13.849 21.5557 13.5575C21.6376 13.0509 21.6802 12.5307 21.6802 12C21.6802 10.959 21.5162 9.95751 21.2129 9.01933ZM21.0911 15.3337C19.9166 15.6729 18.229 16.1219 16.4634 16.4634C16.1219 18.229 15.6729 19.9166 15.3337 21.0911C17.9978 20.1138 20.1138 17.9978 21.0911 15.3337ZM13.5576 21.5557C13.849 20.6068 14.3858 18.759 14.8058 16.7445C13.8411 16.8827 12.8816 16.9709 12 16.9709C11.1184 16.9709 10.1589 16.8827 9.19423 16.7445C9.61421 18.759 10.151 20.6068 10.4425 21.5557C10.9491 21.6376 11.4693 21.6802 12 21.6802C12.5307 21.6802 13.0509 21.6376 13.5576 21.5557ZM8.66629 21.0911C8.32707 19.9166 7.8781 18.229 7.53658 16.4634C5.77099 16.1219 4.08335 15.6729 2.90891 15.3337C3.88622 17.9978 6.00216 20.1138 8.66629 21.0911ZM2.44429 13.5575C3.39316 13.849 5.24101 14.3858 7.25548 14.8058C7.1173 13.8411 7.02907 12.8816 7.02907 12C7.02907 11.3958 7.07048 10.7564 7.14056 10.1057C5.45769 9.76328 3.87779 9.33683 2.78712 9.01933C2.48383 9.95751 2.31977 10.959 2.31977 12C2.31977 12.5307 2.3624 13.0509 2.44429 13.5575ZM3.39504 7.56109C4.42731 7.85824 5.84865 8.23703 7.35522 8.54737C7.70416 6.42827 8.26303 4.305 8.66626 2.90893C6.38282 3.74662 4.50139 5.42102 3.39504 7.56109ZM8.68924 10.3888C8.63137 10.9544 8.59884 11.4968 8.59884 12C8.59884 12.9399 8.71224 14.012 8.88985 15.1102C9.98798 15.2878 11.0601 15.4012 12 15.4012C12.9399 15.4012 14.012 15.2878 15.1102 15.1102C15.2878 14.012 15.4012 12.9399 15.4012 12C15.4012 11.4968 15.3686 10.9544 15.3108 10.3888C14.1776 10.5703 13.0348 10.6919 12 10.6919C10.9652 10.6919 9.82236 10.5703 8.68924 10.3888ZM9.67273 0.991173C10.4243 0.833026 11.2029 0.75 12 0.75C12.7971 0.75 13.5757 0.833026 14.3273 0.991174C18.0108 1.76627 21.0281 4.34097 22.42 7.75174C22.9554 9.06356 23.25 10.4983 23.25 12C23.25 12.7971 23.167 13.5757 23.0088 14.3273C22.0943 18.6736 18.6736 22.0943 14.3273 23.0088C13.5757 23.167 12.7971 23.25 12 23.25C11.2029 23.25 10.4243 23.167 9.67273 23.0088C5.32644 22.0943 1.90572 18.6736 0.991173 14.3273C0.833026 13.5757 0.75 12.7971 0.75 12C0.75 10.4972 1.04509 9.06132 1.58123 7.74866C2.97369 4.33943 5.99026 1.76604 9.67273 0.991173Z" fill="currentColor"></path> </g> </g> <defs> <clipPath id="clip0_1_1828"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg>'}, link: 'http://ksm.fsv.cvut.cz/~bp/'}
     ]
   }
 ]
@@ -25,93 +24,68 @@ const members = [
 
 # Introduction
 
-Bienvenue dans <Edubeam />, un espace de travail dans le navigateur pour **l'analyse et l'enseignement des structures**. Créez des poutres, treillis et portiques, appliquez des charges ponctuelles ou réparties, puis consultez en temps réel les réactions, déplacements et efforts internes issus du calcul par éléments finis (FEM). Tout fonctionne dans le navigateur : sans installation, sans serveur de licences et sans droits administrateur.
+<Edubeam /> est un outil gratuit, exécuté dans le navigateur, pour le **calcul des structures planes à barres** : poutres, portiques et treillis. Vous dessinez la structure, placez appuis et charges, et le solveur par éléments finis recalcule tout à l’instant où vous modifiez quoi que ce soit. Pas de bouton « Calculer », pas d’installation, pas de compte.
 
-<hr>
-
-Ouvrez [EduBeam](https://run.edubeam.app/?lang=fr) dans un nouvel onglet pour suivre ce guide pas à pas.
+[Lancez EduBeam](https://run.edubeam.app/?lang=fr){target="_blank"} dans un nouvel onglet et suivez le [Démarrage rapide](/fr/guide/quick-start).
 
 <figure>
   <a href="https://run.edubeam.app/?lang=fr" target="_blank">
     <WelcomeStructure />
-    </a>
-  <figcaption>EduBeam en action</figcaption>
+  </a>
+  <figcaption>Une poutre hyperstatique résolue en direct dans le navigateur</figcaption>
 </figure>
 
-## Pourquoi les ingénieurs choisissent EduBeam
+## Ce qu’il fait
 
-- **Retour visuel immédiat :** modifiez la géométrie, les appuis ou les charges et voyez instantanément les déplacements, réactions, efforts tranchants et moments fléchissants.
-- **Zéro installation, multi-plateforme :** fonctionne dans tout navigateur moderne, pour que les étudiants, enseignants et collaborateurs restent synchronisés sans configuration logicielle.
-- **Sorties prêtes à partager :** exportez un lien ou un fichier JSON pour diffuser rapidement vos modèles.
-- **Interface guidée pour l'enseignement :** libellés clairs, menus contextuels et annuler/rétablir complet pour accompagner les débutants tout en restant efficace pour les utilisateurs avancés.
-- **Unités cohérentes et réutilisation :** choisissez votre système d'unités, réutilisez des modèles et obtenez des calculs répétables pour l'apprentissage et la vérification.
+| Domaine | Possibilités |
+| --- | --- |
+| **Structures** | Poutres, poutres continues, portiques et treillis plans (x–z) composés de nœuds et d’éléments poutre 2D (poutre de Timoshenko). Les rotules d’extrémité transforment n’importe quelle barre en barre de treillis. |
+| **Appuis** | Toute combinaison de degrés de liberté bloqués `Dx`, `Dz`, `Ry` en un nœud → encastrement, articulation (appui double), appui simple (glissant), encastrement glissant… Appuis inclinés via un angle du repère du nœud. |
+| **Charges** | Forces et moments nodaux, déplacements imposés (tassements d’appui), charges réparties uniformes et trapézoïdales (en repère global ou local), charges ponctuelles en tout point d’une barre, charges thermiques uniformes ou avec gradient. |
+| **Résultats** | Déformée, effort normal **N**, effort tranchant **V<sub>z</sub>**, moment fléchissant **M<sub>y</sub>**, réactions, déplacements nodaux, efforts aux extrémités des barres et matrices de rigidité élémentaires. |
+| **Calcul** | Analyse statique linéaire avec un seul cas de charge. Les résultats sont exacts pour le modèle linéaire (aucun raffinement de maillage nécessaire). |
+| **Fichiers** | Enregistrer/ouvrir des projets en JSON, partager un modèle complet sous forme d’URL, intégrer une visionneuse en lecture seule. Tout reste sur votre appareil. |
+| **Unités** | Unités choisies indépendamment pour la longueur, l’aire, le moment quadratique, la masse, la force, le moment et la contrainte (métriques et impériales). |
 
-## Quand utiliser EduBeam
+## Ce qu’il ne fait pas (encore)
 
-- Enseigner la mécanique des structures avec des visualisations en direct.
-- Comparer plusieurs variantes de conception avant de passer à un logiciel plus lourd.
-- Corriger des exercices ou relire un travail avec des résultats exportables et homogènes.
-- Illustrer des scénarios « et si… » en réunion avec des décideurs ou des clients.
+Connaître les limites à l’avance fait gagner du temps :
 
-## Démarrage rapide en 5 étapes
+- **2D uniquement** : pas de comportement hors plan, pas de portiques spatiaux.
+- **Statique linéaire uniquement** : pas d’effets du second ordre (P–Δ), de flambement, de dynamique ni de plasticité.
+- **Un seul cas de charge** : pas de combinaisons ni d’enveloppes. Modélisez chaque cas séparément (enregistrez-le comme fichier ou lien distinct).
+- **Pas de poids propre** : appliquez-le comme charge répartie si nécessaire.
+- **Pas de vérifications réglementaires** : EduBeam fournit sollicitations et déplacements ; la justification selon les normes vous appartient.
 
-1. Lancez [EduBeam](https://run.edubeam.app/?lang=fr) et choisissez votre système d'unités.
-2. **Placez les nœuds** avec l'outil d'ajout ou par clic souris, puis reliez-les par des éléments.
-3. **Attribuez les propriétés** (matériaux et sections) pour définir la raideur de chaque barre.
-4. **Appliquez appuis et charges** depuis la barre d'actions ou le menu contextuel du Viewer, y compris les cas nodaux, thermiques et répartis.
-5. **Analysez et partagez** en activant les superpositions (déformée/efforts), puis copiez le lien de partage ou exportez le JSON.
+Si une fonctionnalité manquante vous importe, [ouvrez un ticket](https://github.com/janvorisek/edubeam/issues).
 
-## Localisation
+## À qui s’adresse-t-il ?
 
-<Edubeam /> est disponible en plusieurs langues pour faciliter le travail en équipe et en salle de classe.
+- **Étudiants** en résistance des matériaux et calcul des structures qui veulent vérifier instantanément leurs calculs à la main. Voir [Vérifier les résultats à la main](/fr/guide/verification).
+- **Enseignants** qui montrent comment appuis, rotules et charges modifient les diagrammes de sollicitations — en direct, au vidéoprojecteur, dans l’une des 11 langues.
+- **Ingénieurs** qui ont besoin d’une vérification rapide avant d’ouvrir le « gros » logiciel.
 
-<div>
+## Organisation de la documentation
 
-<table>
-    <tr>
-        <td><img src="language-icons/icons/en.svg" style="height: 24px;" alt="English" /></td>
-        <td><a href="https://run.edubeam.app/?lang=en" target="_blank">English</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/de.svg" style="height: 24px;" alt="Deutsch" /></td>
-        <td><a href="https://run.edubeam.app/?lang=de" target="_blank">Deutsch</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/es.svg" style="height: 24px;" alt="Español" /></td>
-        <td><a href="https://run.edubeam.app/?lang=es" target="_blank">Español</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/fr.svg" style="height: 24px;" alt="Français" /></td>
-        <td><a href="https://run.edubeam.app/?lang=fr" target="_blank">Français</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/cs.svg" style="height: 24px;" alt="Čeština" /></td>
-        <td><a href="https://run.edubeam.app/?lang=cs" target="_blank">Čeština</a></td>
-    </tr>
-    <tr>
-        <td><img src="language-icons/icons/zh.svg" style="height: 24px;" alt="中文" /></td>
-        <td><a href="https://run.edubeam.app/?lang=cn" target="_blank">中文</a></td>
-    </tr>
-    <tr>
-      <td><img src="language-icons/icons/th.svg" style="height: 24px;" alt="ไทย" /></td>
-      <td><a href="https://run.edubeam.app/?lang=th" target="_blank">ไทย</a></td>
-    </tr>
-</table>
+1. **Premiers pas** : cette page, le [Démarrage rapide en 10 minutes](/fr/guide/quick-start) et les [Exemples](/fr/examples/) prêts à l’emploi.
+2. **Modélisation** : une page par brique : [interface](/fr/essentials/user-interface), [nœuds et appuis](/fr/essentials/nodes-supports), [éléments, matériaux et sections](/fr/essentials/elements), [charges](/fr/essentials/loads), [unités et paramètres](/fr/essentials/units-settings).
+3. **Résultats** : comment [lire les diagrammes et tableaux](/fr/essentials/results) et comment les [vérifier](/fr/guide/verification).
+4. **Fichiers et partage** : [projets JSON, liens et visionneuse intégrable](/fr/essentials/import-export).
+5. **Référence** : [clavier et souris](/fr/reference/shortcuts), [dépannage](/fr/reference/troubleshooting) et la [FAQ](/fr/faq/).
+6. **Manuel théorique** : [conventions de signe](/fr/elements/conventions) et formulations des éléments [poutre](/fr/elements/beam) et [barre de treillis](/fr/elements/truss).
 
-</div>
+## Langues
 
-  ## Auteurs et crédits
+L’interface est disponible en français, anglais, tchèque, allemand, espagnol, polonais, portugais, russe, ukrainien, thaï et chinois. EduBeam choisit la langue d’après le navigateur ; changez-la dans **Paramètres → Langue et paramètres régionaux** ou ouvrez l’application avec le paramètre `?lang=`, par exemple [run.edubeam.app/?lang=fr](https://run.edubeam.app/?lang=fr){target="_blank"}.
 
-  <Edubeam /> est piloté par [Jan Voříšek](https://github.com/janvorisek), mainteneur et product designer de l'édition web moderne. La version navigateur actuelle est développée indépendamment de la CTU, tandis que la version desktop historique d'EduBeam a été créée par des chercheurs du département de mécanique de la [CTU Prague – Faculté de génie civil](https://www.fsv.cvut.cz/en). Leur contribution fondatrice est reconnue avec gratitude.
+## Auteurs et remerciements
+
+<Edubeam /> est dirigé par [Jan Voříšek](https://github.com/janvorisek), mainteneur et concepteur de l’édition web moderne. La version navigateur est développée indépendamment de la ČVUT ; l’EduBeam de bureau d’origine pour Windows/Linux a été créé par [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) et [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) au Département de mécanique de la [Faculté de génie civil de l’Université technique tchèque de Prague](https://www.fsv.cvut.cz/en). Le solveur est la bibliothèque open source [ts-fem](https://github.com/janvorisek/ts-fem).
 
 <VPTeamMembers size="small" :members="members" />
 
-  La [version desktop originale](https://www.oofem.org/wiki/doku.php?id=edubeam:edubeam_en) pour Windows/Linux a été créée par [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) et [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/). Leur travail a inspiré l'expérience web actuelle.
+## Contribuer
 
-  ## Contribuer
-
-  - Dites-nous ce qui manque de clarté en ouvrant une [issue GitHub](https://github.com/janvorisek/edubeam/issues).
-  - Améliorez les traductions ou captures d'écran en modifiant les fichiers dans `docs/`.
-  - Partagez EduBeam avec vos camarades et collègues pour nous aider à améliorer l'outil pour tous.
-
-  Merci d'être là. Ouvrez l'application et commencez vos essais !
+- Signalez les comportements déroutants ou les bogues dans un [ticket GitHub](https://github.com/janvorisek/edubeam/issues).
+- Améliorez cette documentation ou les traductions en modifiant les fichiers de `docs/` et en ouvrant une pull request.
+- Faites connaître EduBeam à vos camarades et collègues.

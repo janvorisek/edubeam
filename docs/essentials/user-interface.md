@@ -1,87 +1,96 @@
-# User Interface
+# User interface
 
-Think of Edubeam as three simple zones that work together:
+<Edubeam /> has three zones. Learn what lives where and the rest of the docs will make sense.
 
-- [App bar](#app-bar) across the top for project actions.
-- [Viewer](#viewer) in the middle where you draw and inspect the model.
-- [Bottom bar](#bottom-bar) with tabs for the details.
-
-Once you know what lives in each zone, the app feels as easy as a whiteboard.
+```
+┌──────────────────────────────────────────────────────────────┐
+│ ☰  edubeam        🗑 Clear mesh   🔗 Share model   What's New │  ← App bar
+├──────────────────────────────────────────────────────────────┤
+│ Viewer | Settings                                            │  ← Tabs
+│ ↶ ↷                                        ⌖  ⤢  ⚙            │
+│                                                              │
+│                     canvas (the model)          [display     │  ← Viewer
+│                                                   toggles]   │
+│                                       G  S  m·kN·kNm·MPa     │
+├──────────────────────────────────────────────────────────────┤
+│ Nodes | Elements | Loads | Materials | Cross sections | Results│  ← Bottom bar
+│ [Add node] [Add using mouse]        table of entities …      │
+└──────────────────────────────────────────────────────────────┘
+```
 
 ## App bar
 
-The app bar is your command center. From left to right you will find:
+| Control | What it does |
+| --- | --- |
+| **☰ menu** | **Open project**, **Save project**, **Share model**, **Clear mesh**, plus the app version. |
+| **Clear mesh** 🗑 | Deletes all nodes, elements and loads after a confirmation. Two checkboxes let you also delete materials and cross sections. Not undoable. |
+| **Share model** 🔗 | Opens the [share dialog](/essentials/import-export#share-a-link) with a URL that encodes the whole model. |
+| **What's New?** | Release notes. |
+| **Documentation** / GitHub | Links to this site and to the source code. |
 
-### Project controls
-
-- **File** – start fresh, open a JSON file, or restore an autosave. *Share* creates a link you can send to anyone.
-- **Units & settings** – switch between metric/imperial, adjust autosave, and pick the background/grid style.
-- **Language** – change the interface language on the fly.
-
-### Modeling tools
-
-- **Add nodes / elements** – drop geometry directly from these buttons (they match the keyboard shortcuts shown in the tooltips).
-- **Load tools** – quick buttons for point loads, distributed loads, settlements, temperature changes, and more.
-- **Undo / redo / history** – step backward, forward, or open the history list if you want to explain what changed.
-
-### Results & exports
-
-- **Auto-solve toggle** – keep it on for instant updates or pause it while you make a batch of edits.
-- **Display toggles** – turn on/off reactions, diagrams, deformation shapes, coordinate axes, or background aids.
-- **Export** – download JSON, SVG, or PNG snapshots, or copy tables straight to your clipboard.
+The app bar is hidden in [viewer mode](/essentials/import-export#embed-a-read-only-viewer).
 
 ## Viewer
 
-This is the canvas where you spend most of your time.
+The canvas is where you draw and inspect the model. Everything else in the app reflects what you select here.
 
-- **Move around** – scroll or pinch to zoom, hold space (or the middle mouse button) to pan. Double-click zooms to your selection.
-- **Select things** – click a node or member, Shift-click to add more, or drag a box to select several at once.
-- **Right-click** – opens a mini menu with edit/delete shortcuts so you don’t need to leave the canvas.
-- **Turn on helpers** – grid, snap, and coordinate readouts live in the app bar so you can keep drawings tidy.
-- **Press `H`** – shows the keyboard shortcut palette whenever you need a reminder.
+### Overlay buttons
+
+- **Top-left:** **Undo** / **Redo** (also <kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd>). Every model change—adding, editing, dragging, deleting—is undoable.
+- **Top-right:** **Center content** (<kbd>C</kbd>), **Fit content to screen** (<kbd>F</kbd>) and the **display settings** toggle ⚙.
+- **Bottom-right:** **G** toggles the grid, **S** toggles snap-to-grid; the **units chip** shows the active units and opens the settings when clicked.
+
+### Display settings panel
+
+Open with the ⚙ button. Two rows of checkboxes:
+
+- **Results:** *Deformed shape*, *N (x)*, *V<sub>z</sub> (x)*, *M<sub>y</sub> (x)*, *Reactions*.
+- **Model:** *Supports*, *Loads*, *Node labels*, *Element labels*.
+
+**More settings** opens the full [settings dialog](/essentials/units-settings).
+
+### Navigating
+
+| Action | Mouse / touch |
+| --- | --- |
+| Zoom | Mouse wheel (zooms towards the cursor), <kbd>Ctrl</kbd>+<kbd>=</kbd> / <kbd>Ctrl</kbd>+<kbd>-</kbd>; pinch on touch screens |
+| Pan | Drag with the **middle or right** mouse button (configurable in *Settings → Controls & Shortcuts*); one-finger drag on touch |
+| Fit / center | <kbd>F</kbd> / <kbd>C</kbd> or the top-right buttons |
+
+### Selecting and editing
+
+- **Click** a node, element, load or dimension line to select it. The bottom bar jumps to the matching tab and a small **popover menu** appears next to the selection with the actions available for that object (e.g. *Add load*, *Node supports*, *Edit element*, *Stiffness matrix*, *Delete*).
+- **Drag on empty canvas** to draw a selection rectangle. Everything inside—nodes, elements, their loads and dimension lines—is selected. Press <kbd>Delete</kbd> to remove it all, <kbd>Ctrl</kbd>+<kbd>C</kbd> / <kbd>Ctrl</kbd>+<kbd>V</kbd> to copy and paste it elsewhere.
+- **Drag a node** to move it. With snap on it lands on the grid. Connected elements and their loads follow.
+- **Double-click a load** to edit it.
+- **Hover** anything for a tooltip: nodes show their displacements and rotation, elements their material and cross section, loads their components.
+- **Right-click empty canvas** for the canvas menu: *Add node*, *Add element*, *Add dimension*, *Edit* (opens a table of the current selection), *Copy*, *Paste*, *Delete*. Hold <kbd>Ctrl</kbd> while choosing *Add node* / *Add element* to place them with the mouse instead of a dialog.
+
+All shortcuts are listed on the [Keyboard & mouse](/reference/shortcuts) page.
+
+### Alerts
+
+Messages appear in the top-left of the viewer when something is wrong: *No materials defined* / *No cross sections defined* (with an **Add new** button) or *Model has N error(s)*, with a **Show details** button that lists every problem. See [Troubleshooting](/reference/troubleshooting).
 
 ## Bottom bar
 
-All the structured data (numbers, labels, and presets) sit in tabs along the bottom. Work from left to right the first time; afterward you can jump between tabs as needed.
+Six tabs, each with a count badge, a toolbar and an editable table. Drag the divider above the bar to resize it, or minimise it with the button on the right.
 
-### Nodes tab
+| Tab | Toolbar | Table |
+| --- | --- | --- |
+| **Nodes** | Add node (dialog), Add using mouse | Label, X, Z, **Supported DOFs** checkboxes, loads on the node, delete |
+| **Elements** | Add element (dialog), Add using mouse | Label, type, from/to node (+ *Swap nodes*), material, cross section, **End hinges**, loads on the element, stiffness matrix, delete |
+| **Loads** | Add nodal load, Add element load | Type, target, editable components, delete |
+| **Materials** | Add material, Material library | Label, E, G, α<sub>T</sub>, delete |
+| **Cross sections** | Add cross section, Section library | Label, A, I<sub>y</sub>, h, k, delete |
+| **Results** | Nodal results / Element results switch | Displacements & rotations per node, or end forces per element |
 
-- Enter coordinates, paste spreadsheets, or duplicate existing nodes.
-- Lock positions when you don’t want a support to move.
+Cells are edited in place—click, type, press <kbd>Enter</kbd> (or <kbd>Esc</kbd> to leave the cell). Values are shown and entered in the [current units](/essentials/units-settings).
 
-![Nodes](/nodes.png)
+## Tabs above the viewer
 
-### Elements tab
+The **Viewer** tab is always present. Opening the settings adds a closable **Settings** tab next to it, so you can adjust colours or units while looking at the model.
 
-- Pick two nodes to create a member, then assign its material and section from the dropdowns.
-- Use the toggles for hinges or releases when you need them.
+## Floating widgets
 
-![Elements](/elements.png)
-
-### Materials tab
-
-- Store the properties you use often (steel grade, timber class, concrete mix, etc.).
-- Pin favorites so they stay at the top of the list.
-
-![Materials](/materials.png)
-
-### Cross sections tab
-
-- Enter area and inertia values or use the built-in templates for quick shapes.
-- Rename sections so you can spot them easily inside the element table.
-
-![Cross sections](/css.png)
-
-### Loads tab
-
-- Apply nodal forces, moments, distributed loads, settlements, or temperature effects from one place.
-- Group loads into cases to compare different scenarios (service vs. ultimate, demo A vs. demo B, etc.).
-
-### Results tab
-
-- Read exact numbers for displacements, internal forces, and reactions.
-- Highlight a row to see the matching member in the viewer and export CSV when you need a report.
-
-![Results](/results.png)
-
-Once you get the rhythm—App bar for actions, Viewer for visuals, Bottom bar for data—you can guide a class, review a homework submission, or test a design sketch without touching other software.
+Some actions open draggable windows on top of the viewer: **Stiffness matrix** (from an element's popover or table row) shows the element's 6 × 6 stiffness matrix in local and global coordinates; **Edit** on the canvas menu opens a table of the current selection. Close them with the ×.

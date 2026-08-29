@@ -29,6 +29,7 @@ import SVGElement from './svg/Element.vue';
 import SVGElementTemperatureLoad from './svg/ElementTemperatureLoad.vue';
 import SVGDimensioning from './svg/Dimensioning.vue';
 import { loadType } from '../utils/loadType';
+import { boundsFromPoints } from '@/utils/fitBounds';
 import type { DimensionRenderableNode } from '@/types/dimension';
 
 const props = withDefaults(
@@ -61,6 +62,10 @@ const props = withDefaults(
     padding?: number;
     mobilePadding?: number;
     resultsScalePx?: number;
+    /** Decorations excluded from the fit (their room comes from `fitReservePx`). */
+    fitIgnore?: string;
+    /** Pixels kept free around the structure on every side; defaults to results + loads + a label. */
+    fitReservePx?: number;
     colors?: {
       normalForce: string;
       shearForce: string;
@@ -103,6 +108,8 @@ const props = withDefaults(
     padding: 12,
     mobilePadding: 12,
     resultsScalePx: 64,
+    fitIgnore: '[data-fit-ignore]',
+    fitReservePx: undefined,
     colors: () => {
       return {
         normalForce: '#2222ff',
@@ -135,8 +142,11 @@ const viewport = ref<SVGGElement>();
 provide('viewer_uuid', props.id);
 
 const update = () => {
+  updateResultScales();
   fitContent();
+};
 
+const updateResultScales = () => {
   if (!props.solver.loadCases[0].solved) return;
 
   let maxDefo = 0;
@@ -167,6 +177,7 @@ const update = () => {
 };
 
 watch(props.solver, update);
+watch(() => [props.nodes, props.elements], update);
 // watch(props.elements, update);
 watch(() => props.showDeformedShape, update);
 watch(() => props.showNormalForce, update);
@@ -185,10 +196,7 @@ const scale = computed(() => {
 });
 
 onMounted(() => {
-  window.setTimeout(() => {
-    fitContent();
-    update();
-  }, 100);
+  window.setTimeout(update, 100);
 });
 
 const centerContent = () => {
@@ -199,16 +207,27 @@ const centerContent = () => {
   if (grid.value) grid.value.refreshGrid(true);
 };
 
-const fitContent = () => {
+const fitContent = async () => {
   if (!panZoom.value) return;
 
-  panZoom.value.onWindowResize();
+  await panZoom.value.fitContent();
 
-  requestAnimationFrame(() => {
-    panZoom.value.fitContent();
-    if (grid.value) grid.value.refreshGrid(true);
-  });
+  if (grid.value) grid.value.refreshGrid(true);
 };
+
+/** Distributed load arrows are drawn 60 px long (see ElementLoad/UDL.vue). */
+const LOAD_DECORATION_PX = 60;
+
+/**
+ * Space kept around the structure for result diagrams, loads and one line of
+ * labels. It does not depend on what is currently shown, so toggling results or
+ * loads (or animating `resultsScalePx` below the load size) never moves the view.
+ */
+const fitReserve = computed(
+  () => props.fitReservePx ?? Math.max(props.resultsScalePx, LOAD_DECORATION_PX) + props.fontSize + 8
+);
+
+const modelBounds = () => boundsFromPoints(props.nodes.map((node) => [node.coords[0], node.coords[2]] as const));
 
 const onUpdate = throttle((zooming: boolean) => {
   if (grid.value) grid.value.refreshGrid(zooming);
@@ -262,11 +281,15 @@ defineExpose({ centerContent, fitContent });
       :padding="props.padding"
       :mobile-padding="props.mobilePadding"
       :zoom-enabled="props.zoomEnabled"
+      :model-bounds="modelBounds"
+      :fit-ignore="props.fitIgnore"
+      :fit-reserve="fitReserve"
       style="overflow: visible; z-index: 50; min-height: 0"
     >
       <svg
         ref="svg"
         :style="{
+          opacity: panZoom?.fitted ? 1 : 0,
           '--marker-force': markerForce,
           '--marker-force-hover': markerForceHover,
           '--marker-force-selected': markerForceSelected,
@@ -296,7 +319,7 @@ defineExpose({ centerContent, fitContent });
         <SvgViewerDefs :id="id" :colors="colors" :support-size="supportSize" :scale="scale" />
         <g ref="viewport">
           <g>
-            <g v-if="props.showLoads">
+            <g v-if="props.showLoads" data-fit-ignore="loads">
               <template v-for="(eload, index) in props.elementLoads">
                 <SVGElementLoad
                   v-if="eload instanceof BeamElementUniformEdgeLoad || eload instanceof BeamElementTrapezoidalEdgeLoad"

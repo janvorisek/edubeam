@@ -1,6 +1,23 @@
 {
   "releases": [
     {
+      "version": "1.0.7",
+      "title": "Smarter Fit to Content & Stability Fixes",
+      "date": "August 29, 2026",
+      "highlights": [
+        "Fit to content is now precise in a single step: labels, load arrows, supports and result diagrams are all accounted for, so the whole structure fills the viewport without clipping or excess margin. Works for single beams too.",
+        "Editing a node or nodal load now respects the selected units - previously coordinates, moments and prescribed rotations could be scaled incorrectly when using mm or kN·m.",
+        "Projects with labels containing accented or non-Latin characters (e.g. Czech, Thai) are now saved and shared correctly instead of being lost on reload.",
+        "Undo/redo works reliably after deleting or restoring entities; edits to materials, cross-sections, supports, hinges and drags are all tracked in one consistent history.",
+        "Deleting a load from the Loads table removes the correct one even after sorting; prescribed displacements can now be selected independently of nodal loads.",
+        "The viewer no longer gets stuck after panning with the mouse button released outside the window.",
+        "Stricter input validation: non-positive E, G, A, Iy, h or k are rejected, zero-length elements can't be created, materials and cross-sections in use can't be deleted, and invalid share links or files no longer wipe the current project.",
+        "Small negative values are now shown in plain notation instead of exponential."
+      ],
+      "tag": "Latest",
+      "media": []
+    },
+    {
       "version": "1.0.6",
       "title": "Undo/Redo Rework",
       "date": "May 21, 2026",
@@ -8,7 +25,6 @@
         "Undo and redo have been reworked to behave more consistently across the app.",
         "Copy, paste, and delete operations should now be tracked properly and undo as expected."
       ],
-      "tag": "Latest",
       "media": []
     },
     {
@@ -47,7 +63,7 @@
       ]
     },
     {
-    "version": "1.0.3",
+      "version": "1.0.3",
       "title": "Linearly Variable Loads & Dimensions",
       "date": "December 19, 2025",
       "highlights": [

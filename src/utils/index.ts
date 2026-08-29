@@ -19,7 +19,7 @@ import { useViewerStore } from '../store/viewer';
 
 import { loadType } from './loadType';
 import { ensureDimensionId, createDimensionId } from './id';
-import { deserializeModel, serializeModel } from './serializeModel';
+import { deserializeModel, parseSerializedModel, serializeModel } from './serializeModel';
 import { createDimensionPoint, createDimensionPointFromNode, type DimensionPoint } from '@/types/dimension';
 
 export type EntityWithLabel = { label: string & { [key: string]: unknown } };
@@ -29,6 +29,7 @@ export { debounce } from './debounce';
 
 export { serializeModel };
 export { deserializeModel };
+export { parseSerializedModel };
 
 export { smoothPath } from './smoothPath';
 export { loadType } from './loadType';
@@ -95,8 +96,8 @@ const restoreProjectSnapshot = (snapshot: ProjectSnapshot) => {
   projectStore.solver.domain.crossSections.clear();
   projectStore.dimensions = [];
 
-  if (snapshot.model) {
-    deserializeModel(snapshot.model, projectStore.solver, projectStore.dimensions);
+  if (snapshot.model && !deserializeModel(snapshot.model, projectStore.solver, projectStore.dimensions)) {
+    console.error('Could not restore project snapshot');
   }
 
   projectStore.selection.label = snapshot.selection.label;
@@ -467,36 +468,15 @@ export const changeSetArrayItem = (
   el?: HTMLInputElement,
   formatter?: (v: number) => number
 ) => {
-  setUnsolved();
-
-  const prevVal = item[set][value];
-
   if (el.value === '') el.value = '0';
 
   const val = parseFloat(el.value.replace(/\s/g, '').replace(',', '.'));
-  if (isNaN(val)) return (el.value = item[set][value]);
+  if (!Number.isFinite(val)) return (el.value = item[set][value]);
 
-  if (formatter) item[set][value] = formatter(val);
-  else item[set][value] = val;
-
-  // undo/redo
-  {
-    const setCommand = new Command<IKeyValue>(
-      (value) => {
-        value.item[value.set][value.value] = value.next as number;
-        solve();
-      },
-      (value) => {
-        value.item[value.set][value.value] = value.prev as number;
-        solve();
-      },
-      { item, set, value, prev: prevVal, next: item[set][value] }
-    );
-
-    undoRedoManager.executeCommand(setCommand); // execute command
-  }
-
-  solve();
+  executeModelMutationWithUndo(() => {
+    setUnsolved();
+    item[set][value] = formatter ? formatter(val) : val;
+  });
 };
 
 export const changeRefNumValue = (value: string) => {
@@ -519,37 +499,27 @@ export const numberRules = [
   },
 ];
 
+/** Like `numberRules`, but additionally requires a finite value strictly greater than zero. */
+export const positiveNumberRules = [
+  ...numberRules,
+  (v: string) => {
+    const val = parseFloat(v.replace(/\s/g, '').replace(',', '.'));
+    if (!Number.isFinite(val) || val <= 0) return i18n.global.t('validators.positiveNumber');
+
+    return true;
+  },
+];
+
 export const changeItem = (item: object, value: string, el?: HTMLInputElement, formatter?: (v: number) => number) => {
-  setUnsolved();
-
-  const prevVal = item[value];
-
   if (el.value === '') el.value = '0';
 
   const val = parseFloat(el.value.replace(/\s/g, '').replace(',', '.'));
-  //if (isNaN(val)) return (el.value = item[value]);
+  if (!Number.isFinite(val)) return (el.value = item[value]);
 
-  if (formatter) item[value] = formatter(val);
-  else item[value] = val;
-
-  // undo/redo
-  {
-    const setCommand = new Command<IKeyValue>(
-      (value) => {
-        value.item[value.value] = value.next as number;
-        solve();
-      },
-      (value) => {
-        value.item[value.value] = value.prev as number;
-        solve();
-      },
-      { item, value, prev: prevVal, next: item[value] }
-    );
-
-    undoRedoManager.executeCommand(setCommand); // execute command
-  }
-
-  solve();
+  executeModelMutationWithUndo(() => {
+    setUnsolved();
+    item[value] = formatter ? formatter(val) : val;
+  });
 };
 
 export const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputElement) => {
@@ -618,93 +588,28 @@ export const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputEl
 };
 
 export const toggleSet = (item: unknown, set: string, value: number) => {
-  setUnsolved();
+  executeModelMutationWithUndo(() => {
+    setUnsolved();
 
-  const prevVal = new Set(Array.from(item[set]));
+    if (item[set].has(value)) item[set].delete(value);
+    else item[set].add(value);
 
-  if (item[set].has(value)) item[set].delete(value);
-  else item[set].add(value);
-
-  item[set] = new Set(item[set].values());
-
-  const nextVal = new Set(Array.from(item[set]));
-
-  // undo/redo
-  {
-    const setCommand = new Command<IKeyValue>(
-      (value) => {
-        setUnsolved();
-        value.item[value.set] = value.next;
-        solve();
-      },
-      (value) => {
-        setUnsolved();
-        value.item[value.set] = value.prev;
-        solve();
-      },
-      { item, set, prev: prevVal, next: nextVal }
-    );
-
-    undoRedoManager.executeCommand(setCommand); // execute command
-  }
-
-  solve();
+    item[set] = new Set(item[set].values());
+  });
 };
 
 export const toggleArray = (item: unknown, set: string, value: number) => {
-  setUnsolved();
-
-  const prevVal = item[set][value];
-  item[set][value] = !item[set][value];
-
-  // undo/redo
-  {
-    const setCommand = new Command<IKeyValue>(
-      (value) => {
-        setUnsolved();
-        value.item[value.set][value.value] = value.next as number;
-        solve();
-      },
-      (value) => {
-        setUnsolved();
-        value.item[value.set][value.value] = value.prev as number;
-        solve();
-      },
-      { item, set, value, prev: prevVal, next: item[set][value] }
-    );
-
-    undoRedoManager.executeCommand(setCommand); // execute command
-  }
-
-  solve();
+  executeModelMutationWithUndo(() => {
+    setUnsolved();
+    item[set][value] = !item[set][value];
+  });
 };
 
 export const toggleBoolean = (item: unknown, value: string) => {
-  setUnsolved();
-  const prevVal = item[value];
-
-  item[value] = !item[value];
-
-  // undo/redo
-  {
-    const setCommand = new Command<IKeyValue>(
-      (value) => {
-        setUnsolved();
-        value.item[value.value] = value.next as number;
-        solve();
-      },
-      (value) => {
-        setUnsolved();
-        value.item[value.value] = value.prev as number;
-        solve();
-      },
-      { item, value, prev: prevVal, next: item[value] }
-    );
-
-    undoRedoManager.executeCommand(setCommand); // execute command
-  }
-
-  solve();
+  executeModelMutationWithUndo(() => {
+    setUnsolved();
+    item[value] = !item[value];
+  });
 };
 
 const removeElementFromModel = (id: string) => {
@@ -800,13 +705,31 @@ const removeMaterialFromModel = (id: string) => {
   useProjectStore().solver.domain.materials.delete(id);
 };
 
+/** Labels of elements that reference the given material. */
+export const elementsUsingMaterial = (id: string) =>
+  [...useProjectStore().solver.domain.elements.values()]
+    .filter((e) => String(e.mat) === String(id))
+    .map((e) => e.label);
+
+/** Labels of elements that reference the given cross-section. */
+export const elementsUsingCrossSection = (id: string) =>
+  [...useProjectStore().solver.domain.elements.values()].filter((e) => String(e.cs) === String(id)).map((e) => e.label);
+
+/** Deletes a material. Refuses (returns `false`) while any element still references it. */
 export const deleteMaterial = (id: string, trackHistory = true) => {
+  const used = elementsUsingMaterial(id);
+  if (used.length > 0) {
+    alert(i18n.global.t('validators.materialInUse', { elements: used.join(', ') }));
+    return false;
+  }
+
   if (!trackHistory) {
     removeMaterialFromModel(id);
-    return;
+    return true;
   }
 
   executeModelMutationWithUndo(() => removeMaterialFromModel(id));
+  return true;
 };
 
 const removeCrossSectionFromModel = (id: string) => {
@@ -814,63 +737,70 @@ const removeCrossSectionFromModel = (id: string) => {
   useProjectStore().solver.domain.crossSections.delete(id);
 };
 
+/** Deletes a cross-section. Refuses (returns `false`) while any element still references it. */
 export const deleteCrossSection = (id: string, trackHistory = true) => {
+  const used = elementsUsingCrossSection(id);
+  if (used.length > 0) {
+    alert(i18n.global.t('validators.crossSectionInUse', { elements: used.join(', ') }));
+    return false;
+  }
+
   if (!trackHistory) {
     removeCrossSectionFromModel(id);
-    return;
+    return true;
   }
 
   executeModelMutationWithUndo(() => removeCrossSectionFromModel(id));
+  return true;
 };
 
-const removeNodalLoadFromModel = (id: number) => {
+/** Removes `load` from `list` by identity; the row index in a (sortable) table is not a model index. */
+const removeLoadFromList = (list: unknown[], load: unknown) => {
+  const index = list.indexOf(load);
+  if (index < 0) return;
+
   setUnsolved();
   useProjectStore().clearSelection();
-  const _id =
-    id -
-    useProjectStore().solver.loadCases[0].elementLoadList.length -
-    useProjectStore().solver.loadCases[0].prescribedBC.length;
-  useProjectStore().solver.loadCases[0].nodalLoadList.splice(_id, 1);
+  list.splice(index, 1);
 };
 
-export const deleteNodalLoad = (_load: NodalLoad, id: number, trackHistory = true) => {
+const removeNodalLoadFromModel = (load: NodalLoad) => {
+  removeLoadFromList(useProjectStore().solver.loadCases[0].nodalLoadList, load);
+};
+
+export const deleteNodalLoad = (load: NodalLoad, _id?: number, trackHistory = true) => {
   if (!trackHistory) {
-    removeNodalLoadFromModel(id);
+    removeNodalLoadFromModel(load);
     return;
   }
 
-  executeModelMutationWithUndo(() => removeNodalLoadFromModel(id));
+  executeModelMutationWithUndo(() => removeNodalLoadFromModel(load));
 };
 
-const removeElementLoadFromModel = (id: number) => {
-  setUnsolved();
-  useProjectStore().clearSelection();
-  useProjectStore().solver.loadCases[0].elementLoadList.splice(id, 1);
+const removeElementLoadFromModel = (load: unknown) => {
+  removeLoadFromList(useProjectStore().solver.loadCases[0].elementLoadList, load);
 };
 
-export const deleteElementLoad = (_load: BeamElementUniformEdgeLoad, id: number, trackHistory = true) => {
+export const deleteElementLoad = (load: unknown, _id?: number, trackHistory = true) => {
   if (!trackHistory) {
-    removeElementLoadFromModel(id);
+    removeElementLoadFromModel(load);
     return;
   }
 
-  executeModelMutationWithUndo(() => removeElementLoadFromModel(id));
+  executeModelMutationWithUndo(() => removeElementLoadFromModel(load));
 };
 
-const removePrescribedDisplacementFromModel = (id: number) => {
-  setUnsolved();
-  useProjectStore().clearSelection();
-  const _id = id - useProjectStore().solver.loadCases[0].elementLoadList.length;
-  useProjectStore().solver.loadCases[0].prescribedBC.splice(_id, 1);
+const removePrescribedDisplacementFromModel = (load: unknown) => {
+  removeLoadFromList(useProjectStore().solver.loadCases[0].prescribedBC, load);
 };
 
-export const deletePrescribedDisplacement = (_load: BeamElementUniformEdgeLoad, id: number, trackHistory = true) => {
+export const deletePrescribedDisplacement = (load: unknown, _id?: number, trackHistory = true) => {
   if (!trackHistory) {
-    removePrescribedDisplacementFromModel(id);
+    removePrescribedDisplacementFromModel(load);
     return;
   }
 
-  executeModelMutationWithUndo(() => removePrescribedDisplacementFromModel(id));
+  executeModelMutationWithUndo(() => removePrescribedDisplacementFromModel(load));
 };
 
 export const nameBeamForce = (dof: number) => {

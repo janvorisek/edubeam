@@ -31,6 +31,7 @@ import SVGDimensioning from './svg/Dimensioning.vue';
 import { formatExpValueAsHTML } from '../SVGUtils';
 import { executeModelMutationWithUndo, loadType, throttle } from '../utils';
 import { createDimensionId, ensureDimensionId } from '@/utils/id';
+import { boundsFromPoints } from '@/utils/fitBounds';
 import {
   Node,
   DofID,
@@ -60,7 +61,7 @@ import { formatMeasureAsHTML } from '../SVGUtils';
 import Selection from './Selection.vue';
 
 import { useLayoutStore } from '@/store/layout';
-import { Command, IKeyValue, undoRedoManager } from '../CommandManager';
+import { undoRedoManager } from '../CommandManager';
 import { EventType, eventBus } from '../EventBus';
 import { BeamConcentratedLoad } from 'ts-fem';
 import { useClipboardStore } from '../store/clipboard';
@@ -210,12 +211,7 @@ const zoom = (e: KeyboardEvent) => {
 };
 
 const resetAndFit = () => {
-  if (!panZoom.value) return;
-  panZoom.value.reset();
-
-  nextTick(() => {
-    panZoom.value.fitContent();
-  });
+  fitContent();
 };
 
 onMounted(() => {
@@ -282,12 +278,25 @@ const centerContent = () => {
   if (grid.value) grid.value.refreshGrid(true);
 };
 
-const fitContent = () => {
+const fitContent = async () => {
   if (!panZoom.value) return;
 
-  panZoom.value.onWindowResize();
-  panZoom.value.fitContent();
+  await panZoom.value.fitContent();
+
+  if (grid.value) grid.value.refreshGrid(true);
 };
+
+/** Distributed load arrows are drawn 60 px long (see ElementLoad/UDL.vue). */
+const LOAD_DECORATION_PX = 60;
+
+/**
+ * Space kept around the structure for everything that can be switched on: result
+ * diagrams, reactions and loads plus one line of labels. Reserving it whether or
+ * not they are shown keeps the fitted view identical across display settings.
+ */
+const fitReserve = computed(() => Math.max(viewerStore.resultsScalePx_, LOAD_DECORATION_PX) + viewerStore.fontSize + 8);
+
+const modelBounds = () => boundsFromPoints(projectStore.nodes.map((node) => [node.coords[0], node.coords[2]] as const));
 
 const onUpdate = throttle((zooming: boolean) => {
   if (zooming) hideTooltip();
@@ -422,6 +431,15 @@ const paste = () => {
   appStore.mouseMode = MouseMode.PASTE_CLIPBOARD;
 };
 
+/** Labels come from share links / imported files, so never interpolate them into HTML unescaped. */
+const escapeHtml = (value: unknown) =>
+  String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
 const onElementHover = (e: MouseEvent, el: Beam2D, showTooltip = true) => {
   if (appStore.mouseMode === MouseMode.MOVING) return;
 
@@ -434,7 +452,7 @@ const onElementHover = (e: MouseEvent, el: Beam2D, showTooltip = true) => {
   if (showTooltip) {
     tt.style.top = e.offsetY + 'px';
     tt.style.left = e.offsetX + 'px';
-    tooltipContent.innerHTML = `<strong>${t('common.element')} ${el.label}</strong><br>CS=${el.cs}, Mat=${el.mat}`;
+    tooltipContent.innerHTML = `<strong>${t('common.element')} ${escapeHtml(el.label)}</strong><br>CS=${escapeHtml(el.cs)}, Mat=${escapeHtml(el.mat)}`;
     tt.style.display = 'block';
     document.body.style.cursor = 'pointer';
   } else {
@@ -564,7 +582,7 @@ const onPrescribedBCHover = (e: MouseEvent, el: PrescribedDisplacement) => {
 };
 
 const buildNodeTooltipContent = (node: Node) => {
-  let content = `<strong>${t('common.node')} ${node.label}</strong>`;
+  let content = `<strong>${t('common.node')} ${escapeHtml(node.label)}</strong>`;
 
   if (
     projectStore.solver.loadCases[0].solved &&
@@ -843,27 +861,18 @@ let pointerDownOriginatesFromDimension = false;
 const moveNode = () => {
   if (!drgNode) return;
 
-  // undo/redo
+  // undo/redo: rewind to the drag origin so the snapshot captures the pre-drag state,
+  // then apply the final position as a single undoable mutation.
   {
-    const setCommand = new Command<IKeyValue>(
-      (value) => {
-        const commandValue = value as { item: Node; prev: { x: number; z: number }; next: { x: number; z: number } };
-        setUnsolved();
-        commandValue.item.coords[0] = commandValue.next.x;
-        commandValue.item.coords[2] = commandValue.next.z;
-        solve();
-      },
-      (value) => {
-        const commandValue = value as { item: Node; prev: { x: number; z: number }; next: { x: number; z: number } };
-        setUnsolved();
-        commandValue.item.coords[0] = commandValue.prev.x;
-        commandValue.item.coords[2] = commandValue.prev.z;
-        solve();
-      },
-      { item: drgNode, prev: { x: origX, z: origZ }, next: { x: finalX, z: finalZ } }
-    );
+    const node = drgNode;
+    node.coords[0] = origX;
+    node.coords[2] = origZ;
 
-    undoRedoManager.executeCommand(setCommand); // execute command
+    executeModelMutationWithUndo(() => {
+      setUnsolved();
+      node.coords[0] = finalX;
+      node.coords[2] = finalZ;
+    });
   }
 
   drgNode = null;
@@ -935,21 +944,13 @@ const finishDimensionDrag = (shouldCommit = true) => {
 
   const { dimension, startDistance, lastDistance } = dragDimension;
   if (shouldCommit && Math.abs(lastDistance - startDistance) > 1e-6) {
-    const setCommand = new Command<IKeyValue>(
-      (value) => {
-        const commandValue = value as { item: DimensionEntry; prev: number; next: number };
-        commandValue.item.distance = commandValue.next;
-        commandValue.item.distanceUnit = 'world';
-      },
-      (value) => {
-        const commandValue = value as { item: DimensionEntry; prev: number; next: number };
-        commandValue.item.distance = commandValue.prev;
-        commandValue.item.distanceUnit = 'world';
-      },
-      { item: dimension, prev: startDistance, next: lastDistance }
-    );
+    dimension.distance = startDistance;
+    dimension.distanceUnit = 'world';
 
-    undoRedoManager.executeCommand(setCommand);
+    executeModelMutationWithUndo(() => {
+      dimension.distance = lastDistance;
+      dimension.distanceUnit = 'world';
+    });
   } else if (!shouldCommit) {
     dimension.distance = startDistance;
     dimension.distanceUnit = 'world';
@@ -970,37 +971,11 @@ const finishDimensionPointDrag = (shouldCommit = true) => {
     (lastPoint.sourceNodeLabel ?? null) !== (startPoint.sourceNodeLabel ?? null);
 
   if (shouldCommit && changed) {
-    const setCommand = new Command<IKeyValue>(
-      (value) => {
-        const commandValue = value as {
-          item: DimensionEntry;
-          pointIndex: 0 | 1;
-          prev: DimensionPoint;
-          next: DimensionPoint;
-        };
-        commandValue.item.points[commandValue.pointIndex] = createDimensionPoint(
-          commandValue.next.x,
-          commandValue.next.y,
-          commandValue.next.sourceNodeLabel ?? null
-        );
-      },
-      (value) => {
-        const commandValue = value as {
-          item: DimensionEntry;
-          pointIndex: 0 | 1;
-          prev: DimensionPoint;
-          next: DimensionPoint;
-        };
-        commandValue.item.points[commandValue.pointIndex] = createDimensionPoint(
-          commandValue.prev.x,
-          commandValue.prev.y,
-          commandValue.prev.sourceNodeLabel ?? null
-        );
-      },
-      { item: dimension, pointIndex, prev: startPoint, next: lastPoint }
-    );
+    dimension.points[pointIndex] = createDimensionPoint(startPoint.x, startPoint.y, startPoint.sourceNodeLabel ?? null);
 
-    undoRedoManager.executeCommand(setCommand);
+    executeModelMutationWithUndo(() => {
+      dimension.points[pointIndex] = createDimensionPoint(lastPoint.x, lastPoint.y, lastPoint.sourceNodeLabel ?? null);
+    });
   } else if (!shouldCommit) {
     dimension.points[pointIndex] = createDimensionPoint(startPoint.x, startPoint.y, startPoint.sourceNodeLabel ?? null);
   }
@@ -1041,12 +1016,13 @@ const mouseMove = (e: PointerEvent) => {
   const mYReal = svgP1.y; // * zoom;
 
   const realStep = viewerStore.gridStep;
+  const canSnap = viewerStore.snapToGrid && Number.isFinite(realStep) && realStep > 0;
 
   const snappedX = Math.round(mXReal / realStep) * realStep;
   const snappedY = Math.round(mYReal / realStep) * realStep;
 
-  mouseXReal.value = viewerStore.snapToGrid ? snappedX : mXReal;
-  mouseYReal.value = viewerStore.snapToGrid ? snappedY : mYReal;
+  mouseXReal.value = canSnap ? snappedX : mXReal;
+  mouseYReal.value = canSnap ? snappedY : mYReal;
 
   if (pendingDimensionId && !isDraggingDimension() && hasMoved(e)) {
     if (startDimensionDrag(pendingDimensionId)) {
@@ -1640,6 +1616,9 @@ const openCtxMenu = (e: MouseEvent) => {
   showCtxMenu.value = true;
 };
 
+/** The drawing stays invisible until the first fit has landed, so it never jumps into place. */
+const isFitted = computed(() => panZoom.value?.fitted ?? false);
+
 const isZooming = computed(() => {
   return panZoom.value?.zooming;
 });
@@ -1934,15 +1913,20 @@ defineExpose({ centerContent, fitContent });
     <SvgPanZoom
       ref="panZoom"
       :on-update="onUpdate"
-      :padding="64"
-      :mobile-padding="32"
+      :padding="16"
+      :mobile-padding="12"
       :touch="appStore.mouseMode !== MouseMode.MOVING"
       :can-fit-content="projectStore.solver.domain.nodes.size >= 2"
+      :model-bounds="modelBounds"
+      fit-ignore="[data-fit-ignore]"
+      :fit-reserve="fitReserve"
+      center-after-fit
       style="overflow: visible; z-index: 50; min-height: 0"
     >
       <svg
         ref="svg"
         :style="{
+          opacity: isFitted ? 1 : 0,
           '--marker-force': markerForce,
           '--marker-force-hover': markerForceHover,
           '--marker-force-selected': markerForceSelected,
@@ -2017,7 +2001,7 @@ defineExpose({ centerContent, fitContent });
             />
           </g>
           <g>
-            <g v-if="!isZooming && useViewerStore().showLoads">
+            <g v-if="!isZooming && useViewerStore().showLoads" data-fit-ignore="loads">
               <template v-for="(eload, index) in useProjectStore().solver.loadCases[0].elementLoadList">
                 <SVGElementLoad
                   v-if="eload instanceof BeamElementUniformEdgeLoad || eload instanceof BeamElementTrapezoidalEdgeLoad"
@@ -2095,8 +2079,8 @@ defineExpose({ centerContent, fitContent });
               />
               <SVGPrescribedDisplacement
                 v-for="(nload, index) in useProjectStore().solver.loadCases[0].prescribedBC"
-                :key="`nodal-load-${index}`"
-                :class="{ selected: projectStore.selection2.nodalLoads.includes(index) }"
+                :key="`prescribed-bc-${index}`"
+                :class="{ selected: projectStore.selection2.prescribedBC.includes(index) }"
                 :nload="nload"
                 :scale="scale"
                 :convert-length="appStore.convertLength"

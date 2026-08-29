@@ -452,6 +452,7 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
   <g class="element element-1d">
     <path
       v-if="showResults && loadCase.solved && showDeformedShape"
+      data-fit-ignore="results"
       :d="results"
       vector-effect="non-scaling-stroke"
       class="deformedShape pointer-events-none"
@@ -462,6 +463,7 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
     <g
       v-if="showResults && loadCase.solved && showNormalForce"
       class="normal"
+      data-fit-ignore="results"
       @mousemove="emit('elementresultsmousemove', $event, element)"
       @pointerup="emit('elementpointerup', $event)"
     >
@@ -504,6 +506,7 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
     <g
       v-if="showResults && loadCase.solved && showShearForce"
       class="shear"
+      data-fit-ignore="results"
       @mousemove="emit('elementresultsmousemove', $event, element)"
       @pointerup="emit('elementpointerup', $event)"
     >
@@ -543,6 +546,7 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
     <g
       v-if="showResults && loadCase.solved && showBendingMoment"
       class="moment"
+      data-fit-ignore="results"
       @mousemove="emit('elementresultsmousemove', $event, element)"
       @pointerup="emit('elementpointerup', $event)"
     >

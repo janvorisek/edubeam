@@ -954,27 +954,27 @@
             </select>
           </template>
 
-          <template #item.actions="{ item, index }">
+          <template #item.actions="{ item }">
             <v-btn
               v-if="item.type === 'element'"
               density="compact"
               variant="text"
               icon="mdi-close"
-              @click="deleteElementLoad(item, index)"
+              @click="deleteElementLoad(item.ref)"
             ></v-btn>
             <v-btn
               v-if="item.type === 'node'"
               density="compact"
               variant="text"
               icon="mdi-close"
-              @click="deleteNodalLoad(item, index)"
+              @click="deleteNodalLoad(item.ref)"
             ></v-btn>
             <v-btn
               v-if="item.type === 'prescribed'"
               density="compact"
               variant="text"
               icon="mdi-close"
-              @click="deletePrescribedDisplacement(item, index)"
+              @click="deletePrescribedDisplacement(item.ref)"
             ></v-btn>
           </template>
         </v-data-table>

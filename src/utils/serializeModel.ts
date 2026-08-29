@@ -15,35 +15,106 @@ import {
   type DimensionPoint,
 } from '@/types/dimension';
 
+/** `btoa` only accepts Latin-1; encode as UTF-8 bytes first so labels in any script survive. */
 function objectToBase64(obj: unknown) {
   try {
-    // Convert the object to a JSON string
-    const jsonString = JSON.stringify(obj);
-
-    // Use btoa to convert the JSON string to base64
-    const base64String = btoa(jsonString);
-
-    return base64String;
+    const bytes = new TextEncoder().encode(JSON.stringify(obj));
+    let binary = '';
+    for (let i = 0; i < bytes.length; i += 0x8000) {
+      binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+    }
+    return btoa(binary);
   } catch (error) {
     console.error('Error converting object to base64:', error);
     return null;
   }
 }
 
-function base64ToObject(base64String) {
+function base64ToObject(base64String: string) {
   try {
-    // Use atob to decode the base64 string
-    const jsonString = atob(base64String);
-
-    // Parse the JSON string to get the original object
-    const obj = JSON.parse(jsonString);
-
-    return obj;
+    const binary = atob(base64String);
+    const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
+    // Models written before UTF-8 encoding are plain Latin-1 JSON; `fatal` makes
+    // those fall through to the legacy path instead of decoding as garbage.
+    let jsonString: string;
+    try {
+      jsonString = new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+    } catch {
+      jsonString = binary;
+    }
+    return JSON.parse(jsonString);
   } catch (error) {
     console.warn('Error decoding base64 to object:', error);
     return null;
   }
 }
+
+const MAX_ENTITIES = 10000;
+
+const isLabel = (v: unknown) =>
+  (typeof v === 'string' && v.length <= 64) || (typeof v === 'number' && Number.isFinite(v));
+const isFiniteNumber = (v: unknown) => typeof v === 'number' && Number.isFinite(v);
+const isNumberArray = (v: unknown, len?: number) =>
+  Array.isArray(v) && (len === undefined || v.length === len) && v.every(isFiniteNumber);
+const isOptionalBool = (v: unknown) => v === undefined || typeof v === 'boolean';
+
+const isRowList = (v: unknown, check: (row: unknown[]) => boolean) =>
+  v === undefined ||
+  (Array.isArray(v) && v.length <= MAX_ENTITIES && v.every((row) => Array.isArray(row) && check(row)));
+
+/**
+ * Structural validation of a decoded model. Rejects anything that would put NaN,
+ * non-arrays or absurd counts into the solver; referential integrity (element → node,
+ * load → element) is still left to the solver's own diagnostics.
+ */
+export const isValidSerializedModel = (tmp: unknown): boolean => {
+  if (typeof tmp !== 'object' || tmp === null || Array.isArray(tmp)) return false;
+  const m = tmp as Record<string, unknown>;
+
+  return (
+    isRowList(
+      m.n,
+      (r) =>
+        isLabel(r[0]) &&
+        isNumberArray(r[1], 3) &&
+        (r[2] === undefined || isNumberArray(r[2])) &&
+        (r[3] === undefined || r[3] === null || isNumberArray(r[3], 6))
+    ) &&
+    isRowList(
+      m.e,
+      (r) =>
+        isLabel(r[0]) &&
+        Array.isArray(r[1]) &&
+        r[1].length === 2 &&
+        r[1].every(isLabel) &&
+        isLabel(r[2]) &&
+        isLabel(r[3]) &&
+        (r[4] === undefined || (Array.isArray(r[4]) && r[4].length === 2 && r[4].every((h) => typeof h === 'boolean')))
+    ) &&
+    isRowList(m.m, (r) => isLabel(r[0]) && r.slice(1, 5).every(isFiniteNumber)) &&
+    isRowList(m.cs, (r) => isLabel(r[0]) && r.slice(1, 5).every(isFiniteNumber)) &&
+    isRowList(m.el, (r) => isLabel(r[0]) && isNumberArray(r[1], 2) && isOptionalBool(r[2])) &&
+    isRowList(m.ecl, (r) => isLabel(r[0]) && isNumberArray(r[1]) && isOptionalBool(r[2])) &&
+    isRowList(m.etl, (r) => isLabel(r[0]) && isNumberArray(r[1])) &&
+    isRowList(
+      m.etr,
+      (r) =>
+        isLabel(r[0]) &&
+        (r[1] === undefined || isNumberArray(r[1], 2)) &&
+        (r[2] === undefined || isNumberArray(r[2], 2)) &&
+        isOptionalBool(r[3])
+    ) &&
+    isRowList(m.nl, (r) => isLabel(r[0]) && isNumberArray(r[1])) &&
+    isRowList(m.pd, (r) => isLabel(r[0]) && isNumberArray(r[1])) &&
+    (m.d === undefined || (Array.isArray(m.d) && m.d.length <= MAX_ENTITIES))
+  );
+};
+
+/** Decodes and validates a serialized model without touching the solver. `null` when invalid. */
+export const parseSerializedModel = (base64String: string) => {
+  const tmp = base64ToObject(base64String);
+  return isValidSerializedModel(tmp) ? tmp : null;
+};
 
 export const serializeModel = (ls: LinearStaticSolver, dims: DimensionLine[]) => {
   const _nodes = [];
@@ -150,13 +221,17 @@ export const serializeModel = (ls: LinearStaticSolver, dims: DimensionLine[]) =>
   return objectToBase64(obj);
 };
 
-export const deserializeModel = (base64String: string, ls: LinearStaticSolver, dims) => {
-  const tmp = base64ToObject(base64String);
+/**
+ * Loads a serialized model into `ls`. Returns `false` (and leaves the solver untouched)
+ * when the payload is malformed, so callers never end up with a half-cleared model.
+ */
+export const deserializeModel = (base64String: string, ls: LinearStaticSolver, dims): boolean => {
+  const tmp = parseSerializedModel(base64String);
+
+  if (tmp === null) return false;
 
   ls.domain.nodes.clear();
   ls.domain.elements.clear();
-
-  if (tmp === null) return;
 
   if ('n' in tmp) {
     for (const e of tmp.n) {
@@ -260,4 +335,6 @@ export const deserializeModel = (base64String: string, ls: LinearStaticSolver, d
       }
     }
   }
+
+  return true;
 };

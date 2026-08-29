@@ -114,6 +114,8 @@ watch(
       :padding="24"
       :mobile-padding="24"
       :results-scale-px="32"
+      fit-ignore="[data-fit-ignore='results']"
+      :fit-reserve-px="0"
       :support-size="0.75"
       :number-format="appStore.numberFormatter"
       :convert-force="appStore.convertForce"

@@ -307,7 +307,11 @@
   },
   "validators": {
     "enterValue": "Enter a value",
-    "invalidNumber": "Invalid number"
+    "invalidNumber": "Invalid number",
+    "positiveNumber": "Enter a number greater than zero",
+    "sameNodes": "An element must connect two different nodes",
+    "materialInUse": "Material is used by element(s) {elements}. Reassign them before deleting it.",
+    "crossSectionInUse": "Cross-section is used by element(s) {elements}. Reassign them before deleting it."
   },
   "loadType": {
     "loadType": "Load type",

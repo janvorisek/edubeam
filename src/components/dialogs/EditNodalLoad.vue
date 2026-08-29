@@ -97,7 +97,7 @@ import { closeModal } from 'jenesius-vue-modal';
 import { useAppStore } from '@/store/app';
 import { checkNumber, parseFloat2 } from '@/utils';
 import Vector2DHelper from '../Vector2DHelper.vue';
-import { numberRules } from '../../utils';
+import { executeModelMutationWithUndo, numberRules } from '../../utils';
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
@@ -138,17 +138,18 @@ const realFz = computed(() => {
 
 const realMy = computed(() => {
   if (loadType.value === 'force') {
-    return appStore.convertInverseForce(parseFloat2(loadNodeValueMy.value));
+    return appStore.convertInverseMoment(parseFloat2(loadNodeValueMy.value));
   }
 
-  return appStore.convertInverseLength(parseFloat2(loadNodeValueMy.value));
+  // Prescribed rotation is stored and displayed in radians - no conversion.
+  return parseFloat2(loadNodeValueMy.value);
 });
 
 const mainLabel = computed(() => (loadType.value === 'force' ? 'F' : 'D'));
 const momentLabel = computed(() => (loadType.value === 'force' ? 'M' : 'R'));
 
 const mainUnits = computed(() => (loadType.value === 'force' ? appStore.units.Force : appStore.units.Length));
-const momentUnits = computed(() => (loadType.value === 'force' ? appStore.units.Force + 'm' : 'rad'));
+const momentUnits = computed(() => (loadType.value === 'force' ? appStore.units.Moment : 'rad'));
 
 onMounted(() => {
   if (props.type === 'displacement') {
@@ -159,7 +160,7 @@ onMounted(() => {
     const load = useProjectStore().solver.loadCases[0].prescribedBC[props.index];
     loadNodeValueFx.value = appStore.convertLength(load.prescribedValues[DofID.Dx]).toString();
     loadNodeValueFz.value = appStore.convertLength(load.prescribedValues[DofID.Dz]).toString();
-    loadNodeValueMy.value = appStore.convertLength(load.prescribedValues[DofID.Ry]).toString();
+    loadNodeValueMy.value = load.prescribedValues[DofID.Ry].toString();
   } else {
     const load = useProjectStore().solver.loadCases[0].nodalLoadList[props.index];
     loadNodeValueFx.value = appStore.convertForce(load.values[DofID.Dx]).toString();
@@ -171,19 +172,20 @@ onMounted(() => {
 const editNodalLoad = () => {
   if (valid.value === false) return;
 
-  if (props.type === 'displacement') {
-    const load = useProjectStore().solver.loadCases[0].prescribedBC[props.index];
-    load.prescribedValues[DofID.Dx] = realFx.value;
-    load.prescribedValues[DofID.Dz] = realFz.value;
-    load.prescribedValues[DofID.Ry] = realMy.value;
-  } else {
-    const load = useProjectStore().solver.loadCases[0].nodalLoadList[props.index];
-    load.values[DofID.Dx] = realFx.value;
-    load.values[DofID.Dz] = realFz.value;
-    load.values[DofID.Ry] = realMy.value;
-  }
+  executeModelMutationWithUndo(() => {
+    if (props.type === 'displacement') {
+      const load = useProjectStore().solver.loadCases[0].prescribedBC[props.index];
+      load.prescribedValues[DofID.Dx] = realFx.value;
+      load.prescribedValues[DofID.Dz] = realFz.value;
+      load.prescribedValues[DofID.Ry] = realMy.value;
+    } else {
+      const load = useProjectStore().solver.loadCases[0].nodalLoadList[props.index];
+      load.values[DofID.Dx] = realFx.value;
+      load.values[DofID.Dz] = realFz.value;
+      load.values[DofID.Ry] = realMy.value;
+    }
+  });
 
-  useProjectStore().solve();
   projectStore.clearSelection();
   closeModal();
 };

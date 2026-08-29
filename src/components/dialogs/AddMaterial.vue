@@ -13,7 +13,7 @@
                   :label="$t('dialogs.addMaterial.E')"
                   :suffix="appStore.units.Pressure"
                   hide-details="auto"
-                  :rules="numberRules"
+                  :rules="positiveNumberRules"
                   required
                   autofocus
                   :rounded="0"
@@ -27,7 +27,7 @@
                   :label="$t('dialogs.addMaterial.G')"
                   :suffix="appStore.units.Pressure"
                   hide-details="auto"
-                  :rules="numberRules"
+                  :rules="positiveNumberRules"
                   required
                   :rounded="0"
                   @keydown="checkNumber($event)"
@@ -93,7 +93,14 @@ import { computed, ref } from 'vue';
 import { closeModal, openModal } from 'jenesius-vue-modal';
 import { useProjectStore } from '@/store/project';
 import { useAppStore } from '@/store/app';
-import { checkNumber, executeModelMutationWithUndo, numberRules, parseFloat2, setUnsolved } from '@/utils';
+import {
+  checkNumber,
+  executeModelMutationWithUndo,
+  numberRules,
+  positiveNumberRules,
+  parseFloat2,
+  setUnsolved,
+} from '@/utils';
 import MaterialLibraryDialog from './MaterialLibrary.vue';
 
 const projectStore = useProjectStore();

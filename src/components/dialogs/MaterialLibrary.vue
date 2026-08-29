@@ -66,7 +66,7 @@ import { computed, ref } from 'vue';
 import { closeModal } from 'jenesius-vue-modal';
 import { useProjectStore } from '@/store/project';
 import { useAppStore } from '@/store/app';
-import { formatScientificNumber, setUnsolved } from '@/utils';
+import { executeModelMutationWithUndo, formatScientificNumber, setUnsolved } from '@/utils';
 import { formatMeasureAsHTML } from '@/SVGUtils';
 import { useI18n } from 'vue-i18n';
 

@@ -120,7 +120,7 @@ import { useProjectStore } from '../../store/project';
 import { Node } from 'ts-fem';
 import { closeModal } from 'jenesius-vue-modal';
 import { useAppStore } from '@/store/app';
-import { checkNumber, parseFloat2, setUnsolved, solve, toggleSet } from '@/utils';
+import { checkNumber, executeModelMutationWithUndo, parseFloat2, setUnsolved, toggleSet } from '@/utils';
 import SupportHelper from '../svg/SupportHelper.vue';
 import { numberRules } from '../../utils';
 
@@ -160,8 +160,8 @@ onMounted(() => {
   nodalAngle.value = node.value.hasLcs() ? angle.value.toString() : '0';
   tmpNode.value = new Node(node.value.label, node.value.domain, node.value.coords, [...node.value.bcs.values()]);
 
-  newNodeX.value = node.value.coords[0].toString();
-  newNodeZ.value = node.value.coords[2].toString();
+  newNodeX.value = appStore.convertLength(node.value.coords[0]).toString();
+  newNodeZ.value = appStore.convertLength(node.value.coords[2]).toString();
 });
 
 const angle = computed(() => {
@@ -179,25 +179,25 @@ const node = computed(() => {
 const edit = () => {
   if (!valid.value) return;
 
-  setUnsolved();
-
   const ang = parseFloat(nodalAngle.value) * (Math.PI / 180);
+  const x = appStore.convertInverseLength(parseFloat2(newNodeX.value));
+  const z = appStore.convertInverseLength(parseFloat2(newNodeZ.value));
 
-  if (isNaN(ang) || Math.abs(ang) < 1e-8) {
-    node.value.lcs = undefined;
-  } else {
-    const locx = [Math.cos(ang), 0, Math.sin(ang)];
-    const locy = [0, 1, 0];
-    node.value.updateLcs({ locx, locy });
-  }
+  executeModelMutationWithUndo(() => {
+    setUnsolved();
 
-  node.value.coords = [parseFloat2(newNodeX.value), 0, parseFloat2(newNodeZ.value)];
+    if (isNaN(ang) || Math.abs(ang) < 1e-8) {
+      node.value.lcs = undefined;
+    } else {
+      const locx = [Math.cos(ang), 0, Math.sin(ang)];
+      const locy = [0, 1, 0];
+      node.value.updateLcs({ locx, locy });
+    }
 
-  console.log('BCS before:', node.value.bcs);
-  node.value.bcs = new Set(tmpNode.value.bcs);
-  console.log('BCS after:', node.value.bcs);
+    node.value.coords = [x, 0, z];
+    node.value.bcs = new Set(tmpNode.value.bcs);
+  });
 
-  solve();
   closeModal();
 };
 </script>

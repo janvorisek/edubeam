@@ -1,12 +1,21 @@
 <script setup lang="ts">
+import type { Bounds } from '@/utils/fitBounds';
+import { centerSvgContent, fitSvgContent } from '@/utils/fitSvgContent';
 import { nextTick, onMounted, onBeforeUnmount, ref } from 'vue';
 
 const props = withDefaults(
   defineProps<{
     onUpdate: (zooming: boolean) => void;
+    /** Screen pixels kept free on every side of the fitted content. */
     padding?: number;
     mobilePadding?: number;
     canFitContent?: boolean;
+    /** Pure model-space bounds of the drawing (node coordinates); seeds the fit. */
+    modelBounds?: () => Bounds | null;
+    /** Selector for decorations excluded from the fit; `fitReserve` makes room for them. */
+    fitIgnore?: string;
+    /** Screen pixels guaranteed free around the geometry for the ignored decorations. */
+    fitReserve?: number;
     panButton?: number;
     zoomEnabled?: boolean;
   }>(),
@@ -15,6 +24,9 @@ const props = withDefaults(
     padding: 0,
     mobilePadding: 0,
     canFitContent: true,
+    modelBounds: () => null,
+    fitIgnore: '',
+    fitReserve: 0,
     panButton: 4,
     zoomEnabled: true,
   }
@@ -22,6 +34,10 @@ const props = withDefaults(
 
 let viewBox = { x: 0, y: 0, w: 0, h: 0 };
 const scale = ref(1);
+/** A fit has been shown at least once; the drawing can be revealed. */
+const fitted = ref(false);
+/** Keep the drawing fitted on viewport changes until the user pans or zooms. */
+const autoFit = ref(true);
 
 const touchPointer = ref({ x: 0, y: 0, ds: 0, move: false, pinch: false });
 
@@ -53,6 +69,8 @@ const updateMatrix = (zooming = false): void => {
 
 const zoom = (mx: number, my: number, deltaY: number): void => {
   if (deltaY === 0 || !props.zoomEnabled) return;
+
+  autoFit.value = false;
 
   const svgEl = svgRef.value as SVGElement;
 
@@ -110,6 +128,7 @@ const onTouchEnd = (): void => {
 const onTouchMove = (event: TouchEvent): void => {
   //console.log({ touchmove: event.touches.length, pointer: JSON.stringify(touchPointer) })
   if (event.touches.length === 1 && touchPointer.value.move) {
+    autoFit.value = false;
     viewBox.x -= (event.touches[0].clientX - touchPointer.value.x) / scale.value;
     viewBox.y -= (event.touches[0].clientY - touchPointer.value.y) / scale.value;
     updateMatrix();
@@ -133,6 +152,7 @@ const onTouchMove = (event: TouchEvent): void => {
 const onMouseMove = (event: MouseEvent): void => {
   if (event.buttons !== props.panButton) return;
 
+  autoFit.value = false;
   viewBox.x -= (event.movementX * 1) / scale.value;
   viewBox.y -= (event.movementY * 1) / scale.value;
 
@@ -140,62 +160,68 @@ const onMouseMove = (event: MouseEvent): void => {
 };
 
 const centerContent = (): void => {
-  const rootG = (svgRef.value as SVGElement).getElementsByTagName('g')[0] as SVGGElement;
-  const bBox = rootG.getBBox();
+  if (!svgRef.value) return;
 
-  viewBox.x = -viewBox.w / 2 + bBox.x + bBox.width / 2;
-  viewBox.y = -viewBox.h / 2 + bBox.y + bBox.height / 2;
+  const centered = centerSvgContent(svgRef.value, viewBox);
+  if (!centered) return;
 
+  viewBox = centered;
   updateMatrix(true);
 };
 
-const fitContent = (n = 0): void => {
-  if (n > 5) return;
+let fitVersion = 0;
 
-  if (!props.canFitContent) return;
+/**
+ * Zoom and pan so that everything drawn - geometry, labels, loads and result
+ * diagrams - fills the viewport minus the padding. Resolves once the final view is
+ * shown; `false` when there was nothing to fit or a newer fit took over.
+ */
+const fitContent = async (): Promise<boolean> => {
+  const svgEl = svgRef.value as SVGSVGElement | null;
 
-  const FIT_CONTENT_PADDING = window.innerWidth > 768 ? props.padding : props.mobilePadding;
+  if (!rootRef.value || !svgEl) return false;
 
-  const svgEl = svgRef.value as SVGElement;
-  const rootG = svgEl.getElementsByTagName('g')[0] as SVGGElement;
+  onWindowResize();
 
-  const rootBBox = svgEl.getBoundingClientRect();
-  //const bBox = rootG.getBoundingClientRect();
+  if (!svgEl.clientWidth || !svgEl.clientHeight) return false;
 
-  const bBoxW = rootG.getBBox().width * scale.value;
-  const bBoxH = rootG.getBBox().height * scale.value;
-
-  let zoomBy = bBoxH / (svgEl.clientHeight - FIT_CONTENT_PADDING);
-
-  //console.log(svgEl.clientHeight);
-
-  const r1 = bBoxW / bBoxH;
-  const r2 = rootBBox.width / rootBBox.height;
-
-  if (r2 < r1) {
-    zoomBy = bBoxW / (svgEl.clientWidth - FIT_CONTENT_PADDING);
-    //   console.log({ bBoxW, cw: svgEl.clientWidth - FIT_CONTENT_PADDING, zoomBy });
-    // } else {
-    //   console.log({ bBoxH, cw: svgEl.clientHeight - FIT_CONTENT_PADDING, zoomBy });
+  if (!props.canFitContent) {
+    centerContent();
+    return false;
   }
 
-  viewBox.h *= zoomBy;
-  viewBox.w *= zoomBy;
-  /*viewBox.h = bBox.height
-  //viewBox.w = bBox.width
-  const realScale = svgEl.clientHeight / bBox.height
-  viewBox.w = bBox.width / realScale*/
+  const version = ++fitVersion;
 
-  scale.value = svgEl.clientWidth / viewBox.w;
+  // Label widths change when the web font arrives; a fit measured before that lands
+  // slightly off. Resolves immediately once loaded.
+  if (typeof document !== 'undefined' && document.fonts?.ready) await document.fonts.ready;
+  if (version !== fitVersion || svgRef.value !== svgEl) return false;
 
-  //console.log(bBox)
-  //console.log(viewBox)
+  const result = await fitSvgContent(
+    {
+      svg: svgEl,
+      ignore: props.fitIgnore || undefined,
+      apply: (fit) => {
+        viewBox = { ...fit.viewBox };
+        scale.value = fit.scale;
+        updateMatrix(true);
+      },
+      isCancelled: () => version !== fitVersion || svgRef.value !== svgEl,
+    },
+    {
+      padding: window.innerWidth > 768 ? props.padding : props.mobilePadding,
+      reserve: props.fitReserve,
+      modelBounds: props.modelBounds?.() ?? null,
+      viewBox,
+    }
+  );
 
-  centerContent();
-  updateMatrix(true);
+  if (result) {
+    fitted.value = true;
+    autoFit.value = true;
+  }
 
-  requestAnimationFrame(() => fitContent(n + 1));
-  //nextTick(() => fitContent(n + 1));
+  return result !== null;
 };
 
 let resizewatcher: ResizeObserver;
@@ -206,7 +232,8 @@ onMounted(() => {
     svgRef.value! = rootRef.value!.children[0] as SVGElement;
 
     resizewatcher = new ResizeObserver(() => {
-      onWindowResize();
+      if (autoFit.value && fitted.value) fitContent();
+      else onWindowResize();
     });
 
     resizewatcher.observe(rootRef.value!);
@@ -230,7 +257,7 @@ const onMouseUp = () => {
 const rootRef = ref<HTMLElement | null>(null);
 const svgRef = ref<SVGElement | null>(null);
 
-defineExpose({ scale, centerContent, fitContent, updateMatrix, onWindowResize, zoom });
+defineExpose({ scale, fitted, centerContent, fitContent, updateMatrix, onWindowResize, zoom });
 </script>
 
 <template>

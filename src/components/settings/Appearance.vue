@@ -56,8 +56,10 @@
       <v-text-field
         v-model.number="viewerStore.gridStep"
         :label="$t('settings.grid_snap_step')"
+        :rules="positiveNumberRules"
         hide-details="auto"
         type="number"
+        min="0.001"
         step="0.001"
         suffix="m"
       />
@@ -285,6 +287,7 @@ import SVGElementViewer from '../SVGElementViewer.vue';
 import { LinearStaticSolver, DofID } from 'ts-fem';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { positiveNumberRules } from '@/utils';
 
 const viewerStore = useViewerStore();
 const showQuantity = ref('deformedShape');

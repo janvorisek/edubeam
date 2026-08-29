@@ -105,6 +105,7 @@
 </template>
 
 <script setup lang="ts">
+import { i18n } from '@/plugins/i18n';
 import { ref, onMounted } from 'vue';
 import { useProjectStore } from '../../store/project';
 import { closeModal, openModal } from 'jenesius-vue-modal';
@@ -140,6 +141,10 @@ const addElement = () => {
   // check if material and cross section are selected
   if (newElementMat.value === '' || newElementCS.value === '') {
     return alert('Please select a material and cross section');
+  }
+
+  if (String(newElementFrom.value) === String(newElementTo.value)) {
+    return alert(i18n.global.t('validators.sameNodes'));
   }
 
   useProjectStore().solver.loadCases[0].solved = false;

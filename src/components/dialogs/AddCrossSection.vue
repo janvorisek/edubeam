@@ -13,7 +13,7 @@
                   :label="$t('crossSection.area')"
                   :suffix="appStore.units.Area"
                   hide-details="auto"
-                  :rules="numberRules"
+                  :rules="positiveNumberRules"
                   required
                   autofocus
                   :rounded="0"
@@ -27,7 +27,7 @@
                   :label="$t('crossSection.iy')"
                   :suffix="appStore.units.AreaM2"
                   hide-details="auto"
-                  :rules="numberRules"
+                  :rules="positiveNumberRules"
                   required
                   :rounded="0"
                   @keydown="checkNumber($event)"
@@ -40,7 +40,7 @@
                   :label="$t('crossSection.h')"
                   :suffix="appStore.units.Length"
                   hide-details="auto"
-                  :rules="numberRules"
+                  :rules="positiveNumberRules"
                   required
                   :rounded="0"
                   @keydown="checkNumber($event)"
@@ -52,7 +52,7 @@
                   v-model="csShear"
                   :label="$t('crossSection.k')"
                   hide-details="auto"
-                  :rules="numberRules"
+                  :rules="positiveNumberRules"
                   required
                   :rounded="0"
                   @keydown="checkNumber($event)"
@@ -92,7 +92,7 @@ import { ref } from 'vue';
 import { closeModal, openModal } from 'jenesius-vue-modal';
 import { useProjectStore } from '@/store/project';
 import { useAppStore } from '@/store/app';
-import { checkNumber, executeModelMutationWithUndo, numberRules, parseFloat2, setUnsolved } from '@/utils';
+import { checkNumber, executeModelMutationWithUndo, positiveNumberRules, parseFloat2, setUnsolved } from '@/utils';
 import CrossSectionLibraryDialog from './CrossSectionLibrary.vue';
 
 const projectStore = useProjectStore();

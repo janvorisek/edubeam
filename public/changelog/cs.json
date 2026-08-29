@@ -1,6 +1,23 @@
 {
   "releases": [
     {
+      "version": "1.0.7",
+      "title": "Chytřejší přizpůsobení obsahu a opravy stability",
+      "date": "29. srpna 2026",
+      "highlights": [
+        "Přizpůsobení obsahu (fit to content) je nyní přesné na jeden krok: zohledňuje popisky, šipky zatížení, podpory i diagramy výsledků, takže celá konstrukce vyplní okno bez oříznutí či zbytečných okrajů. Funguje i pro jednotlivé nosníky.",
+        "Úprava uzlu nebo uzlového zatížení nyní respektuje zvolené jednotky - dříve mohly být souřadnice, momenty a předepsaná pootočení chybně přepočteny při použití mm nebo kN·m.",
+        "Projekty s popisky obsahujícími diakritiku nebo jiné než latinské znaky (např. čeština, thajština) se nyní správně ukládají a sdílejí a po obnovení stránky se neztratí.",
+        "Zpět/znovu funguje spolehlivě i po smazání nebo obnovení entit; úpravy materiálů, průřezů, podpor, kloubů a přesuny jsou sledovány v jedné konzistentní historii.",
+        "Smazání zatížení z tabulky zatížení odstraní správnou položku i po seřazení tabulky; předepsaná posunutí lze nyní vybírat nezávisle na uzlových zatíženích.",
+        "Prohlížeč se již nezasekne po posouvání, pokud bylo tlačítko myši uvolněno mimo okno.",
+        "Přísnější kontrola vstupů: nekladné hodnoty E, G, A, Iy, h nebo k jsou odmítnuty, nelze vytvořit prvek nulové délky, nelze smazat používaný materiál či průřez a neplatné odkazy nebo soubory již nesmažou aktuální projekt.",
+        "Malé záporné hodnoty se nyní zobrazují v běžném zápisu místo exponenciálního."
+      ],
+      "tag": "Latest",
+      "media": []
+    },
+    {
       "version": "1.0.6",
       "title": "Přepracované vrácení a zopakování akcí",
       "date": "21. května 2026",
@@ -8,7 +25,6 @@
         "Undo (Ctrl+Z) a Redo (Ctrl+Shift+Z) bylo přepracováno, aby se v celé aplikaci chovalo konzistentněji.",
         "Operace kopírování, vkládání a mazání by nyní měly fungovat správně a vracet se tak, jak uživatel očekává."
       ],
-      "tag": "Aktuální",
       "media": []
     },
     {
@@ -47,7 +63,7 @@
       ]
     },
     {
-    "version": "1.0.3",
+      "version": "1.0.3",
       "title": "Lineárně proměnné zatížení & kóty",
       "date": "19. prosince 2025",
       "highlights": [

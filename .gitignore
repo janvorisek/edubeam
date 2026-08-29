@@ -28,3 +28,6 @@ pnpm-debug.log*
 
 # Sentry Config File
 .env.sentry-build-plugin
+
+# Cloudflare cache purge script (contains API token)
+.refreshcfcache

@@ -1,6 +1,6 @@
 <script lang="ts">
 import { container, openModal } from 'jenesius-vue-modal';
-import { deserializeModel, download, exportJSON, importJSON } from './utils';
+import { deserializeModel, parseSerializedModel, download, exportJSON, importJSON } from './utils';
 import { provide, nextTick } from 'vue';
 import { undoRedoManager } from './CommandManager';
 import { useViewerStore } from './store/viewer';
@@ -128,8 +128,14 @@ onMounted(() => {
   }
 
   if (name) {
-    clearMesh(true, true);
-    deserializeModel(name, solver, useProjectStore().dimensions);
+    // Validate the shared model before touching the current one, so a broken link
+    // cannot wipe the project persisted in localStorage.
+    if (parseSerializedModel(name) !== null) {
+      clearMesh(true, true);
+      deserializeModel(name, solver, useProjectStore().dimensions);
+    } else {
+      console.warn('Ignoring invalid ?model= parameter');
+    }
     solve();
 
     const url = document.location.href;
@@ -265,9 +271,12 @@ function onDrop(e) {
     const reader = new FileReader();
     reader.onload = function (e) {
       const text = e.target.result.toString();
-      clearMesh(true, true);
       try {
-        importJSON(JSON.parse(text));
+        const json = JSON.parse(text);
+        if (typeof json !== 'object' || json === null || typeof json.domain !== 'object')
+          throw new Error('Not a project');
+        clearMesh(true, true);
+        importJSON(json);
         solve();
       } catch (e) {
         alert('Could not import the file. Please check the file format.');
@@ -285,10 +294,13 @@ function openFile(e) {
   const reader = new FileReader();
   reader.onload = function (e) {
     const text = e.target.result.toString();
-    clearMesh(true, true);
 
     try {
-      importJSON(JSON.parse(text));
+      const json = JSON.parse(text);
+      if (typeof json !== 'object' || json === null || typeof json.domain !== 'object')
+        throw new Error('Not a project');
+      clearMesh(true, true);
+      importJSON(json);
       solve();
     } catch (e) {
       alert('Could not import the file. Please check the file format.');

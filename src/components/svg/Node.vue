@@ -318,6 +318,7 @@ const emit = defineEmits(['nodemousemove', 'nodepointerup', 'nodedefomousemove']
         isConnected &&
         Math.abs(getReaction(node, DofID.Dz)) > 1e-32
       "
+      data-fit-ignore="results"
       points="0,0 0.0001,0.0001"
       class="decoration marker-reaction"
       :transform="`translate(${node.coords[0]} ${node.coords[2]}) rotate(${
@@ -333,6 +334,7 @@ const emit = defineEmits(['nodemousemove', 'nodepointerup', 'nodedefomousemove']
         isConnected &&
         Math.abs(getReaction(node, DofID.Dz)) > 1e-32
       "
+      data-fit-ignore="results"
       class="reaction"
       :font-size="fontSize / scale"
       font-weight="normal"
@@ -351,6 +353,7 @@ const emit = defineEmits(['nodemousemove', 'nodepointerup', 'nodedefomousemove']
         isConnected &&
         Math.abs(getReaction(node, DofID.Dx)) > 1e-32
       "
+      data-fit-ignore="results"
       points="0,0 0.0001,0.0001"
       class="decoration marker-reaction"
       :transform="`translate(${node.coords[0]} ${node.coords[2]}) rotate(${
@@ -366,6 +369,7 @@ const emit = defineEmits(['nodemousemove', 'nodepointerup', 'nodedefomousemove']
         isConnected &&
         Math.abs(getReaction(node, DofID.Dx)) > 1e-32
       "
+      data-fit-ignore="results"
       class="reaction"
       :font-size="fontSize / scale"
       font-weight="normal"
@@ -384,6 +388,7 @@ const emit = defineEmits(['nodemousemove', 'nodepointerup', 'nodedefomousemove']
         isConnected &&
         Math.abs(getReaction(node, DofID.Ry)) > 1e-32
       "
+      data-fit-ignore="results"
       points="0,0 0.0001,0.0001"
       class="decoration"
       :class="`marker-${getReaction(node, DofID.Ry) > 0 ? 'moment_reaction_ccw' : 'moment_reaction_cw'}`"
@@ -398,6 +403,7 @@ const emit = defineEmits(['nodemousemove', 'nodepointerup', 'nodedefomousemove']
         isConnected &&
         Math.abs(getReaction(node, DofID.Ry)) > 1e-32
       "
+      data-fit-ignore="results"
       class="reaction"
       :font-size="fontSize / scale"
       font-weight="normal"
@@ -409,7 +415,11 @@ const emit = defineEmits(['nodemousemove', 'nodepointerup', 'nodedefomousemove']
       {{ numberFormat.format(convertMoment(Math.abs(getReaction(node, DofID.Ry)))) }}
     </text>
 
-    <g v-if="loadCase.solved && showDeformedShape && isConnected" :transform="deformedPosition">
+    <g
+      v-if="loadCase.solved && showDeformedShape && isConnected"
+      data-fit-ignore="results"
+      :transform="deformedPosition"
+    >
       <polyline :points="nodeCoords" class="drawable deformed" />
 
       <polyline

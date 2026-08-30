@@ -9,7 +9,7 @@
           <v-radio
             :label="$t('loads.prescribedDisplacement')"
             value="displacement"
-            :disabled="projectStore.solver.domain.nodes.get(loadNodeId).bcs.size === 0"
+            :disabled="nodeBcs.size === 0"
           ></v-radio>
         </v-radio-group>
         <v-form v-model="valid">
@@ -42,9 +42,7 @@
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="mainUnits"
-                      :disabled="
-                        loadType === 'displacement' && !projectStore.solver.domain.nodes.get(loadNodeId).bcs.has(0)
-                      "
+                      :disabled="loadType === 'displacement' && !nodeBcs.has(0)"
                       @keydown="checkNumber($event)"
                     ></v-text-field>
                   </v-col>
@@ -56,9 +54,7 @@
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="mainUnits"
-                      :disabled="
-                        loadType === 'displacement' && !projectStore.solver.domain.nodes.get(loadNodeId).bcs.has(2)
-                      "
+                      :disabled="loadType === 'displacement' && !nodeBcs.has(2)"
                       @keydown="checkNumber($event)"
                     ></v-text-field>
                   </v-col>
@@ -70,9 +66,7 @@
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="`${momentUnits}`"
-                      :disabled="
-                        loadType === 'displacement' && !projectStore.solver.domain.nodes.get(loadNodeId).bcs.has(4)
-                      "
+                      :disabled="loadType === 'displacement' && !nodeBcs.has(4)"
                       @keydown="checkNumber($event)"
                     >
                     </v-text-field>
@@ -124,13 +118,18 @@ const open = ref(true);
 const valid = ref(false);
 
 const loadType = ref('force');
-const loadNodeId = ref(props.label ?? [...useProjectStore().solver.domain.nodes.values()][0].label);
+const nodes = projectStore.solver.domain.nodes;
+const firstNodeLabel = nodes.size > 0 ? [...nodes.values()][0].label : undefined;
+const loadNodeId = ref(props.label != null && nodes.has(props.label) ? props.label : firstNodeLabel);
+
+const selectedNode = computed(() => nodes.get(loadNodeId.value));
+const nodeBcs = computed<Set<number>>(() => selectedNode.value?.bcs ?? new Set());
 const loadNodeValueFx = ref(`${appStore.convertForce(0)}`);
 const loadNodeValueFz = ref(`${appStore.convertForce(0)}`);
 const loadNodeValueMy = ref('0');
 
 watch(loadNodeId, () => {
-  if (projectStore.solver.domain.nodes.get(loadNodeId.value).bcs.size === 0) {
+  if (nodeBcs.value.size === 0) {
     loadType.value = 'force';
   }
 });
@@ -156,7 +155,7 @@ onMounted(() => {
 });
 
 const addNodalLoad = () => {
-  if (valid.value === false) return;
+  if (valid.value === false || !selectedNode.value) return;
 
   if (loadType.value !== 'force') {
     // check if the node already has a prescribed displacement

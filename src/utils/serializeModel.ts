@@ -8,6 +8,7 @@ import {
   BeamElementTrapezoidalEdgeLoad,
 } from 'ts-fem';
 import { createDimensionId, ensureDimensionId } from './id';
+import { deserializeShape, isSerializedShape, serializeShape } from './sectionProperties';
 import {
   createDimensionPoint,
   createDimensionPointFromNode,
@@ -57,6 +58,13 @@ const isFiniteNumber = (v: unknown) => typeof v === 'number' && Number.isFinite(
 const isNumberArray = (v: unknown, len?: number) =>
   Array.isArray(v) && (len === undefined || v.length === len) && v.every(isFiniteNumber);
 const isOptionalBool = (v: unknown) => v === undefined || typeof v === 'boolean';
+/** Nodal values are either a per-DOF array or a DofID-keyed object (`{ 0: fx, 2: fz, 4: my }`). */
+const isDofValues = (v: unknown) =>
+  isNumberArray(v) ||
+  (typeof v === 'object' &&
+    v !== null &&
+    !Array.isArray(v) &&
+    Object.entries(v).every(([k, n]) => /^\d+$/.test(k) && isFiniteNumber(n)));
 
 const isRowList = (v: unknown, check: (row: unknown[]) => boolean) =>
   v === undefined ||
@@ -92,7 +100,10 @@ export const isValidSerializedModel = (tmp: unknown): boolean => {
         (r[4] === undefined || (Array.isArray(r[4]) && r[4].length === 2 && r[4].every((h) => typeof h === 'boolean')))
     ) &&
     isRowList(m.m, (r) => isLabel(r[0]) && r.slice(1, 5).every(isFiniteNumber)) &&
-    isRowList(m.cs, (r) => isLabel(r[0]) && r.slice(1, 5).every(isFiniteNumber)) &&
+    isRowList(
+      m.cs,
+      (r) => isLabel(r[0]) && r.slice(1, 5).every(isFiniteNumber) && (r[5] === undefined || isSerializedShape(r[5]))
+    ) &&
     isRowList(m.el, (r) => isLabel(r[0]) && isNumberArray(r[1], 2) && isOptionalBool(r[2])) &&
     isRowList(m.ecl, (r) => isLabel(r[0]) && isNumberArray(r[1]) && isOptionalBool(r[2])) &&
     isRowList(m.etl, (r) => isLabel(r[0]) && isNumberArray(r[1])) &&
@@ -104,8 +115,8 @@ export const isValidSerializedModel = (tmp: unknown): boolean => {
         (r[2] === undefined || isNumberArray(r[2], 2)) &&
         isOptionalBool(r[3])
     ) &&
-    isRowList(m.nl, (r) => isLabel(r[0]) && isNumberArray(r[1])) &&
-    isRowList(m.pd, (r) => isLabel(r[0]) && isNumberArray(r[1])) &&
+    isRowList(m.nl, (r) => isLabel(r[0]) && isDofValues(r[1])) &&
+    isRowList(m.pd, (r) => isLabel(r[0]) && isDofValues(r[1])) &&
     (m.d === undefined || (Array.isArray(m.d) && m.d.length <= MAX_ENTITIES))
   );
 };
@@ -146,7 +157,9 @@ export const serializeModel = (ls: LinearStaticSolver, dims: DimensionLine[]) =>
   });
 
   ls.domain.crossSections.forEach((cs, id) => {
-    _css.push([id, cs.a, cs.iy, cs.h, cs.k]);
+    const row: unknown[] = [id, cs.a, cs.iy, cs.h, cs.k];
+    if (cs.shape) row.push(serializeShape(cs.shape));
+    _css.push(row);
   });
 
   ls.loadCases[0].elementLoadList
@@ -260,7 +273,9 @@ export const deserializeModel = (base64String: string, ls: LinearStaticSolver, d
 
   if ('cs' in tmp) {
     for (const e of tmp.cs) {
-      ls.domain.createCrossSection(e[0], { a: e[1], iy: e[2], h: e[3], k: e[4] });
+      const cs = ls.domain.createCrossSection(e[0], { a: e[1], iy: e[2], h: e[3], k: e[4] });
+      const shape = e[5] !== undefined ? deserializeShape(e[5]) : null;
+      if (shape) cs.shape = shape;
     }
   }
 

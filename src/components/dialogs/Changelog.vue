@@ -47,7 +47,12 @@
               </ul>
 
               <div v-if="release.media?.length" class="changelog-media-grid">
-                <figure v-for="media in release.media" :key="media.src" class="changelog-media-item">
+                <figure
+                  v-for="media in release.media"
+                  :key="media.src"
+                  class="changelog-media-item"
+                  :class="{ 'changelog-media-item--large': media.size === 'large' }"
+                >
                   <video
                     v-if="isVideoMedia(media)"
                     :src="media.src"
@@ -95,6 +100,8 @@ type MediaEntry = {
   src: string;
   alt?: string;
   caption?: string;
+  /** 'large' spans the full row instead of a thumbnail cell */
+  size?: 'large';
   type?: 'image' | 'video';
 };
 
@@ -140,6 +147,7 @@ const cloneMedia = (entry: MediaEntry): MediaEntry => ({
   alt: entry.alt,
   caption: entry.caption,
   type: entry.type,
+  size: entry.size,
 });
 
 const cloneRelease = (entry: ReleaseEntry): ReleaseEntry => ({
@@ -343,6 +351,16 @@ onBeforeUnmount(() => {
   max-height: 150px;
   width: auto;
   object-fit: contain;
+}
+
+/* Opt-in per image (size: "large" in the JSON); everything else stays a thumbnail */
+.changelog-media-item--large {
+  grid-column: 1 / -1;
+}
+
+.changelog-media-item--large .changelog-media-img {
+  max-height: 360px;
+  width: 100%;
 }
 
 .changelog-media-video {

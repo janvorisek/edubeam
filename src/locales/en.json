@@ -284,7 +284,9 @@
       "legendPrincipal": "Principal axes & ellipse of inertia",
       "legendCentroid": "Centroid",
       "shape": "Shape",
-      "noShape": "No polygonal shape"
+      "noShape": "No polygonal shape",
+      "centroidal": "centroidal",
+      "centroidalNote": "All second moments of area are taken about axes through the centroid; I₁, I₂ are the principal values and α is the angle from the y axis to axis 1."
     }
   },
   "tooltip": {

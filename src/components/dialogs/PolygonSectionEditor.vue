@@ -367,6 +367,9 @@
                 <v-alert v-if="!shapeValid" type="warning" density="compact" variant="tonal" class="mb-2">
                   {{ $t('dialogs.polygonSection.invalidShape') }}
                 </v-alert>
+                <div class="text-caption text-medium-emphasis mb-1">
+                  {{ $t('dialogs.polygonSection.centroidalNote') }}
+                </div>
                 <table class="props-table">
                   <tbody>
                     <tr v-for="row in propertyRows" :key="row.key">
@@ -772,6 +775,11 @@ const sectionPath = computed(() =>
     .join(' ')
 );
 
+/** Short "(centroidal)" marker used in the property labels. */
+const centroidalSuffix = computed(
+  () => `<span class="text-medium-emphasis">(${t('dialogs.polygonSection.centroidal')})</span>`
+);
+
 const propertyRows = computed(() => {
   const p = properties.value;
   const lengthU = formatMeasureAsHTML(appStore.units.Length);
@@ -784,9 +792,24 @@ const propertyRows = computed(() => {
     { key: 'a', title: t('crossSection.area') + ' A', value: num(appStore.convertArea(p.a)), units: areaU },
     { key: 'cy', title: t('crossSection.centroid') + ' y<sub>c</sub>', value: len(p.cy), units: lengthU },
     { key: 'cz', title: t('crossSection.centroid') + ' z<sub>c</sub>', value: len(p.cz), units: lengthU },
-    { key: 'iy', title: 'I<sub>y</sub>', value: num(appStore.convertAreaM2(p.iy)), units: inertiaU },
-    { key: 'iz', title: 'I<sub>z</sub>', value: num(appStore.convertAreaM2(p.iz)), units: inertiaU },
-    { key: 'iyz', title: 'I<sub>yz</sub>', value: num(appStore.convertAreaM2(p.iyz)), units: inertiaU },
+    {
+      key: 'iy',
+      title: 'I<sub>y</sub> ' + centroidalSuffix.value,
+      value: num(appStore.convertAreaM2(p.iy)),
+      units: inertiaU,
+    },
+    {
+      key: 'iz',
+      title: 'I<sub>z</sub> ' + centroidalSuffix.value,
+      value: num(appStore.convertAreaM2(p.iz)),
+      units: inertiaU,
+    },
+    {
+      key: 'iyz',
+      title: 'I<sub>yz</sub> ' + centroidalSuffix.value,
+      value: num(appStore.convertAreaM2(p.iyz)),
+      units: inertiaU,
+    },
     { key: 'i1', title: 'I<sub>1</sub>', value: num(appStore.convertAreaM2(p.i1)), units: inertiaU },
     { key: 'i2', title: 'I<sub>2</sub>', value: num(appStore.convertAreaM2(p.i2)), units: inertiaU },
     { key: 'alpha', title: t('crossSection.alpha') + ' α', value: formatCompactNumber(alphaDeg.value, 4), units: '°' },

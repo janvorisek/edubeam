@@ -1,6 +1,26 @@
 {
   "releases": [
     {
+      "version": "1.1.0",
+      "title": "Polygonal Cross Sections",
+      "date": "August 30, 2026",
+      "highlights": [
+        "New polygonal cross section editor: draw any shape, with holes, and A, Iy, Iz, Iyz, principal moments, radii of gyration and the ellipse of inertia are computed for you.",
+        "Presets for rectangle, I, T, L, channel, box, circle and pipe; drag vertices, insert or delete them, or type coordinates.",
+        "Shape thumbnails in the cross section table, element menu and selection panel.",
+        "Shapes are saved with the project and share links."
+      ],
+      "tag": "Latest",
+      "media": [
+        {
+          "src": "/changelog/media/polygonal-section-editor.png",
+          "alt": "Polygonal cross section editor",
+          "caption": "Polygonal cross section editor",
+          "size": "large"
+        }
+      ]
+    },
+    {
       "version": "1.0.7",
       "title": "Smarter Fit to Content & Stability Fixes",
       "date": "August 29, 2026",
@@ -14,7 +34,6 @@
         "Stricter input validation: non-positive E, G, A, Iy, h or k are rejected, zero-length elements can't be created, materials and cross-sections in use can't be deleted, and invalid share links or files no longer wipe the current project.",
         "Small negative values are now shown in plain notation instead of exponential."
       ],
-      "tag": "Latest",
       "media": []
     },
     {

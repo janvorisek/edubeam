@@ -281,7 +281,9 @@
       "legendPrincipal": "Hlavní osy a elipsa setrvačnosti",
       "legendCentroid": "Těžiště",
       "shape": "Tvar",
-      "noShape": "Bez polygonálního tvaru"
+      "noShape": "Bez polygonálního tvaru",
+      "centroidal": "těžišťové",
+      "centroidalNote": "Všechny momenty setrvačnosti jsou vztaženy k osám procházejícím těžištěm; I₁, I₂ jsou hlavní momenty a α je úhel od osy y k ose 1."
     }
   },
   "tooltip": {

@@ -1,6 +1,26 @@
 {
   "releases": [
     {
+      "version": "1.1.0",
+      "title": "Polygonální průřezy",
+      "date": "30. srpna 2026",
+      "highlights": [
+        "Nový editor polygonálních průřezů: nakreslete libovolný tvar včetně otvorů a A, Iy, Iz, Iyz, hlavní momenty, poloměry setrvačnosti i elipsa setrvačnosti se spočítají samy.",
+        "Předlohy pro obdélník, I, T, L, U, trubku, kruh a kruhovou trubku; vrcholy lze tahat, vkládat, mazat nebo zadat souřadnice.",
+        "Miniatury tvaru v tabulce průřezů, v menu prvku a v panelu výběru.",
+        "Tvary se ukládají s projektem i do odkazů pro sdílení."
+      ],
+      "tag": "Latest",
+      "media": [
+        {
+          "src": "/changelog/media/polygonal-section-editor.png",
+          "alt": "Polygonal cross section editor",
+          "caption": "Polygonal cross section editor",
+          "size": "large"
+        }
+      ]
+    },
+    {
       "version": "1.0.7",
       "title": "Chytřejší přizpůsobení obsahu a opravy stability",
       "date": "29. srpna 2026",
@@ -14,7 +34,6 @@
         "Přísnější kontrola vstupů: nekladné hodnoty E, G, A, Iy, h nebo k jsou odmítnuty, nelze vytvořit prvek nulové délky, nelze smazat používaný materiál či průřez a neplatné odkazy nebo soubory již nesmažou aktuální projekt.",
         "Malé záporné hodnoty se nyní zobrazují v běžném zápisu místo exponenciálního."
       ],
-      "tag": "Latest",
       "media": []
     },
     {

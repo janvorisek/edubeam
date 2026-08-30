@@ -165,6 +165,8 @@
   .name {
     font-family: "Lobster", "Barlow", sans-serif;
     font-weight: 400;
+    /* collapse the trailing space added in config.ts transformPageData */
+    white-space: normal;
   }
   .text {
     font-size: 2rem;

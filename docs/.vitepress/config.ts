@@ -813,6 +813,15 @@ export default defineConfig({
       { icon: 'twitter', link: 'https://twitter.com/EdubeamApp' },
     ],
   },
+  // VitePress renders hero `name` and `text` as adjacent <span>s inside one <h1> with no
+  // whitespace between them, so search engines read "EduBeamFree structural analysis online".
+  // Append a space to the name; `.VPHero .name { white-space: normal }` collapses it visually.
+  transformPageData(pageData) {
+    const hero = pageData.frontmatter.hero;
+    if (hero?.name && hero.text && !hero.name.endsWith(' ')) {
+      hero.name += ' ';
+    }
+  },
   head: [
     ['link', { rel: 'icon', href: '/logo.png' }],
     [

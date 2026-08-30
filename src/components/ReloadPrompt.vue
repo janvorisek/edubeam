@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useRegisterSW } from 'virtual:pwa-register/vue';
+
+const updating = ref(false);
 
 const { offlineReady, needRefresh, updateServiceWorker } = useRegisterSW({
   immediate: true,
@@ -22,14 +25,19 @@ async function close() {
 }
 
 async function update() {
-  updateServiceWorker(true).catch((err) => {
+  if (updating.value) return;
+  updating.value = true;
+  try {
+    await updateServiceWorker(true);
+  } catch (err) {
     console.error('Error updating service worker:', err);
-  });
+    updating.value = false;
+  }
 }
 </script>
 
 <template>
-  <v-dialog v-model="needRefresh" max-width="420">
+  <v-dialog v-model="needRefresh" max-width="420" :persistent="updating">
     <v-card>
       <v-card-title> {{ $t('dialogs.update.title') }} </v-card-title>
 
@@ -41,10 +49,12 @@ async function update() {
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="green darken-1" @click="update" @keydown.enter="update">
+        <v-btn color="green darken-1" :loading="updating" :disabled="updating" @click="update" @keydown.enter="update">
           {{ $t('dialogs.update.update') }}
         </v-btn>
-        <v-btn color="red darken-1" @click="close()" @keydown.enter="close">{{ $t('dialogs.common.cancel') }}</v-btn>
+        <v-btn color="red darken-1" :disabled="updating" @click="close()" @keydown.enter="close">{{
+          $t('dialogs.common.cancel')
+        }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

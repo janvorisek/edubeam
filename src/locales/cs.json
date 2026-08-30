@@ -52,7 +52,14 @@
     "area": "Plocha",
     "h": "Výška",
     "iy": "Iy",
-    "k": "Smykový součinitel"
+    "k": "Smykový součinitel",
+    "iz": "Iz",
+    "b": "Šířka",
+    "centroid": "Těžiště",
+    "alpha": "Úhel hlavních os",
+    "radiusOfGyration": "Poloměr setrvačnosti",
+    "polygonal": "Polygonální tvar",
+    "derivedFromShape": "Odvozeno z polygonálního tvaru – změňte tvar pro úpravu"
   },
   "settings": {
     "results_scale": "Měřítko výsledků",
@@ -163,7 +170,8 @@
     "section_library": "Knihovna průřezů"
   },
   "crossSections": {
-    "addCrossSection": "Přidat průřez"
+    "addCrossSection": "Přidat průřez",
+    "addPolygonal": "Polygonální průřez"
   },
   "results": {
     "results": "Výsledky",
@@ -208,7 +216,8 @@
     },
     "addCrossSection": {
       "addNewCrossSection": "Přidat nový průřez",
-      "addCrossSection": "Přidat průřez"
+      "addCrossSection": "Přidat průřez",
+      "orDefinePolygon": "Nebo zadat polygonální tvar"
     },
     "editNodalLoad": {
       "editNodalLoad": "Upravit uzlové zatížení"
@@ -228,6 +237,51 @@
     "changelog": {
       "title": "Co je nového?",
       "description": "Novinky, vylepšení a ukázky toho, co chystáme dál."
+    },
+    "polygonSection": {
+      "title": "Nový polygonální průřez",
+      "editTitle": "Upravit polygonální průřez",
+      "preset": "Předloha",
+      "apply": "Použít",
+      "snapStep": "Krok přichytávání",
+      "centerAtCentroid": "Vystředit do těžiště",
+      "hint": "Tažením přesunete vrcholy, kliknutím na střed hrany vložíte vrchol, dvojklikem vrchol odstraníte.",
+      "outline": "Obrys",
+      "hole": "Otvor",
+      "addHole": "Přidat otvor",
+      "addVertex": "Přidat vrchol",
+      "removeContour": "Odebrat otvor",
+      "properties": "Průřezové charakteristiky",
+      "invalidShape": "Tvar musí být jednoduchý polygon s kladnou plochou: hrany se nesmí křížit a otvory musí ležet uvnitř obrysu.",
+      "labelInUse": "Označení je již použito",
+      "save": "Uložit",
+      "editShape": "Upravit polygonální tvar",
+      "presets": {
+        "rectangle": "Obdélník",
+        "iSection": "I-profil",
+        "tSection": "T-profil",
+        "lSection": "L-profil",
+        "channel": "U-profil",
+        "box": "Obdélníková trubka",
+        "circle": "Kruh",
+        "pipe": "Kruhová trubka"
+      },
+      "params": {
+        "b": "Šířka b",
+        "h": "Výška h",
+        "tw": "Stojina tw",
+        "tf": "Pásnice tf",
+        "t": "Tloušťka t",
+        "d": "Průměr d",
+        "n": "Počet segmentů"
+      },
+      "vertices": "Vrcholy",
+      "legendOutline": "Obrys",
+      "legendHole": "Otvor",
+      "legendPrincipal": "Hlavní osy a elipsa setrvačnosti",
+      "legendCentroid": "Těžiště",
+      "shape": "Tvar",
+      "noShape": "Bez polygonálního tvaru"
     }
   },
   "tooltip": {

@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { LinearStaticSolver, DofID, Beam2D, BeamElementUniformEdgeLoad } from 'ts-fem';
 import { serializeModel, deserializeModel, parseSerializedModel } from '@/utils/serializeModel';
+import { createPresetShape } from '@/utils/sectionProperties';
 
 const buildSolver = () => {
   const ls = new LinearStaticSolver();
@@ -61,5 +62,35 @@ describe('serializeModel', () => {
       expect(deserializeModel(payload, dst, [])).toBe(false);
       expect(serializeModel(dst, [])).toBe(before);
     }
+  });
+
+  it('round-trips DofID-keyed nodal loads and prescribed displacements (as created by the dialogs)', () => {
+    const src = buildSolver();
+    src.loadCases[0].createNodalLoad('2', { [DofID.Dx]: 5, [DofID.Dz]: -10, [DofID.Ry]: 2 });
+    src.loadCases[0].createPrescribedDisplacement('Ústí', { [DofID.Dx]: 0.001, [DofID.Dz]: 0, [DofID.Ry]: 0 });
+
+    const encoded = serializeModel(src, []) as string;
+    expect(parseSerializedModel(encoded)).not.toBeNull();
+
+    const dst = new LinearStaticSolver();
+    expect(deserializeModel(encoded, dst, [])).toBe(true);
+    expect(dst.loadCases[0].nodalLoadList[1].values).toEqual({ 0: 5, 2: -10, 4: 2 });
+    expect(dst.loadCases[0].prescribedBC[0].prescribedValues).toEqual({ 0: 0.001, 2: 0, 4: 0 });
+
+    expect(parseSerializedModel(btoa(JSON.stringify({ nl: [['1', { 0: 'x' }]] })))).toBeNull();
+    expect(parseSerializedModel(btoa(JSON.stringify({ pd: [['1', { foo: 1 }]] })))).toBeNull();
+  });
+
+  it('round-trips a polygonal section shape', () => {
+    const src = buildSolver();
+    const shape = createPresetShape('box', { b: 0.1, h: 0.2, t: 0.005 });
+    src.domain.createCrossSection('poly', { a: 0.1, iy: 1e-5, h: 0.2, k: 0.833 }).shape = shape;
+
+    const encoded = serializeModel(src, []) as string;
+    const dst = new LinearStaticSolver();
+    expect(deserializeModel(encoded, dst, [])).toBe(true);
+    expect(dst.domain.crossSections.get('poly').shape).toEqual(shape);
+    expect(dst.domain.crossSections.get('IPE').shape).toBeUndefined();
+    expect(serializeModel(dst, [])).toBe(encoded);
   });
 });

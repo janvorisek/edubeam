@@ -4,10 +4,17 @@ import AddElementLoadDialog from './dialogs/AddElementLoad.vue';
 import { useProjectStore } from '@/store/project';
 import { useLayoutStore } from '@/store/layout';
 import StiffnessMatrix from './StiffnessMatrix.vue';
+import SectionThumbnail from './SectionThumbnail.vue';
+import '@/types/crossSection';
 import { ref, computed, onMounted, watch } from 'vue';
 import { deleteElement, setUnsolved, solve } from '../utils';
 
 const projectStore = useProjectStore();
+
+const selectedShape = computed(() => {
+  const cs = element.value?.cs;
+  return cs !== undefined ? projectStore.solver.domain.crossSections.get(cs)?.shape : undefined;
+});
 const layoutStore = useLayoutStore();
 
 const n1 = ref('');
@@ -85,7 +92,7 @@ watch([n1, n2], () => {
                 class="menu-select"
               ></v-select>
             </v-col>
-            <v-col cols="12">
+            <v-col cols="12" class="d-flex align-center ga-2">
               <v-select
                 v-model="element.cs"
                 density="compact"
@@ -94,8 +101,18 @@ watch([n1, n2], () => {
                 item-title="label"
                 item-value="label"
                 :items="projectStore.crossSections"
-                class="menu-select"
-              ></v-select>
+                class="menu-select flex-grow-1"
+              >
+                <template #item="{ props: itemProps, item }">
+                  <v-list-item v-bind="itemProps">
+                    <template #prepend>
+                      <SectionThumbnail v-if="item.raw.shape" :shape="item.raw.shape" :size="22" class="mr-2" />
+                      <v-icon v-else size="18" class="text-disabled mr-2">mdi-vector-polygon-variant</v-icon>
+                    </template>
+                  </v-list-item>
+                </template>
+              </v-select>
+              <SectionThumbnail v-if="selectedShape" :shape="selectedShape" :size="34" />
             </v-col> </v-row
         ></v-list>
       </v-menu>

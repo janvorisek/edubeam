@@ -1120,6 +1120,16 @@
           >
             <v-icon small>mdi-database-search-outline</v-icon> {{ $t('materials.section_library') }}
           </v-btn>
+          <v-btn
+            size="small"
+            variant="flat"
+            color="secondary"
+            :rounded="0"
+            style="border-left: 1px solid #ccc"
+            @click.stop="openModal(PolygonSectionEditor)"
+          >
+            <v-icon small>mdi-vector-polygon</v-icon> {{ $t('crossSections.addPolygonal') }}
+          </v-btn>
         </div>
 
         <v-data-table
@@ -1165,6 +1175,16 @@
             </tr>
           </template>
 
+          <template #item.shape="{ item }">
+            <button
+              class="shape-cell"
+              :title="item.shape ? $t('dialogs.polygonSection.editShape') : $t('dialogs.polygonSection.noShape')"
+              @click="openModal(PolygonSectionEditor, { label: item.label })"
+            >
+              <SectionThumbnail v-if="item.shape" :shape="item.shape" :size="26" />
+              <v-icon v-else size="18" class="text-disabled">mdi-vector-polygon-variant</v-icon>
+            </button>
+          </template>
           <template #item.label="{ item }">
             <input
               :value="item.label"
@@ -1173,7 +1193,11 @@
             />
           </template>
           <template #item.a="{ item }">
+            <span v-if="item.shape" class="derived-value" :title="$t('crossSection.derivedFromShape')">
+              {{ formatScientificNumber(appStore.convertArea(item.a)) }}
+            </span>
             <input
+              v-else
               :value="formatScientificNumber(appStore.convertArea(item.a))"
               class="inline-edit"
               @keydown="checkNumber($event)"
@@ -1181,7 +1205,11 @@
             />
           </template>
           <template #item.iy="{ item }">
+            <span v-if="item.shape" class="derived-value" :title="$t('crossSection.derivedFromShape')">
+              {{ formatScientificNumber(appStore.convertAreaM2(item.iy)) }}
+            </span>
             <input
+              v-else
               :value="formatScientificNumber(appStore.convertAreaM2(item.iy))"
               class="inline-edit"
               @keydown="checkNumber($event)"
@@ -1189,11 +1217,15 @@
             />
           </template>
           <template #item.h="{ item }">
+            <span v-if="item.shape" class="derived-value" :title="$t('crossSection.derivedFromShape')">
+              {{ formatScientificNumber(appStore.convertLength(item.h)) }}
+            </span>
             <input
-              :value="item.h"
+              v-else
+              :value="formatScientificNumber(appStore.convertLength(item.h))"
               class="inline-edit"
               @keydown="checkNumber($event)"
-              @change="changeItem(item, 'h', $event.target as HTMLInputElement)"
+              @change="changeItem(item, 'h', $event.target as HTMLInputElement, appStore.convertInverseLength)"
             />
           </template>
           <template #item.k="{ item }">
@@ -1205,6 +1237,14 @@
             />
           </template>
           <template #item.actions="{ item }">
+            <v-btn
+              density="compact"
+              variant="text"
+              :icon="item.shape ? 'mdi-vector-polygon' : 'mdi-vector-polygon-variant'"
+              :color="item.shape ? 'primary' : undefined"
+              :title="$t('dialogs.polygonSection.editShape')"
+              @click="openModal(PolygonSectionEditor, { label: item.label })"
+            ></v-btn>
             <v-btn density="compact" variant="text" icon="mdi-close" @click="deleteCrossSection(item.label)"></v-btn>
           </template>
         </v-data-table>
@@ -1470,6 +1510,9 @@ import AddMaterialDialog from './dialogs/AddMaterial.vue';
 import AddCrossSectionDialog from './dialogs/AddCrossSection.vue';
 import MaterialLibraryDialog from './dialogs/MaterialLibrary.vue';
 import CrossSectionLibraryDialog from './dialogs/CrossSectionLibrary.vue';
+import PolygonSectionEditor from './dialogs/PolygonSectionEditor.vue';
+import SectionThumbnail from './SectionThumbnail.vue';
+import '@/types/crossSection';
 import EditNode from './dialogs/EditNode.vue';
 
 import { useLayoutStore } from '@/store/layout';
@@ -1891,6 +1934,12 @@ const headers = reactive({
     },
   ],
   crossSections: [
+    {
+      title: 'dialogs.polygonSection.shape',
+      key: 'shape',
+      width: 48,
+      sortable: false,
+    },
     {
       title: 'common.crossSection',
       key: 'label',

@@ -86,7 +86,14 @@
     "area": "Area",
     "h": "Height",
     "iy": "Iy",
-    "k": "Shear coefficient"
+    "k": "Shear coefficient",
+    "iz": "Iz",
+    "b": "Width",
+    "centroid": "Centroid",
+    "alpha": "Principal axis angle",
+    "radiusOfGyration": "Radius of gyration",
+    "polygonal": "Polygonal shape",
+    "derivedFromShape": "Derived from the polygonal shape – edit the shape to change it"
   },
   "material": {
     "e": "E",
@@ -172,7 +179,8 @@
     "section_library": "Section library"
   },
   "crossSections": {
-    "addCrossSection": "Add cross section"
+    "addCrossSection": "Add cross section",
+    "addPolygonal": "Polygonal section"
   },
   "dialogs": {
     "addNode": {
@@ -211,7 +219,8 @@
     },
     "addCrossSection": {
       "addNewCrossSection": "Add new cross section",
-      "addCrossSection": "Add cross section"
+      "addCrossSection": "Add cross section",
+      "orDefinePolygon": "Or define a polygonal shape"
     },
     "editNodalLoad": {
       "editNodalLoad": "Edit nodal load"
@@ -231,6 +240,51 @@
     "changelog": {
       "title": "What's New?",
       "description": "New features, improvements, and sneak peeks of what we’re working on."
+    },
+    "polygonSection": {
+      "title": "New polygonal cross section",
+      "editTitle": "Edit polygonal cross section",
+      "preset": "Preset",
+      "apply": "Apply",
+      "snapStep": "Snap step",
+      "centerAtCentroid": "Center at centroid",
+      "hint": "Drag vertices to move them, click an edge midpoint to insert a vertex, double-click a vertex to remove it.",
+      "outline": "Outline",
+      "hole": "Hole",
+      "addHole": "Add hole",
+      "addVertex": "Add vertex",
+      "removeContour": "Remove hole",
+      "properties": "Section properties",
+      "invalidShape": "The shape must be a simple polygon with a positive area: no crossing edges, and holes must stay inside the outline.",
+      "labelInUse": "Label already in use",
+      "save": "Save",
+      "editShape": "Edit polygonal shape",
+      "presets": {
+        "rectangle": "Rectangle",
+        "iSection": "I-section",
+        "tSection": "T-section",
+        "lSection": "L-section",
+        "channel": "Channel (U)",
+        "box": "Rectangular hollow",
+        "circle": "Circle",
+        "pipe": "Circular hollow"
+      },
+      "params": {
+        "b": "Width b",
+        "h": "Height h",
+        "tw": "Web tw",
+        "tf": "Flange tf",
+        "t": "Thickness t",
+        "d": "Diameter d",
+        "n": "Segments"
+      },
+      "vertices": "Vertices",
+      "legendOutline": "Outline",
+      "legendHole": "Hole",
+      "legendPrincipal": "Principal axes & ellipse of inertia",
+      "legendCentroid": "Centroid",
+      "shape": "Shape",
+      "noShape": "No polygonal shape"
     }
   },
   "tooltip": {

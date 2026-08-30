@@ -20,6 +20,7 @@ import { useViewerStore } from '../store/viewer';
 import { loadType } from './loadType';
 import { ensureDimensionId, createDimensionId } from './id';
 import { deserializeModel, parseSerializedModel, serializeModel } from './serializeModel';
+import { deserializeShape, serializeShape } from './sectionProperties';
 import { createDimensionPoint, createDimensionPointFromNode, type DimensionPoint } from '@/types/dimension';
 
 export type EntityWithLabel = { label: string & { [key: string]: unknown } };
@@ -36,7 +37,7 @@ export { loadType } from './loadType';
 
 export { loadXmlFile } from './loadXmlFile';
 
-export { formatScientificNumber } from './formatScientificNumber';
+export { formatScientificNumber, formatCompactNumber } from './formatScientificNumber';
 
 type ProjectSnapshot = {
   model: string | null;
@@ -234,6 +235,7 @@ export const exportJSON = () => {
       iy: cs.iy,
       h: cs.h,
       k: cs.k,
+      ...(cs.shape ? { shape: serializeShape(cs.shape) } : {}),
     };
   });
 
@@ -320,7 +322,10 @@ export const importJSON = (json: any) => {
   // Parse cross sections
   if (jObj.domain.crossSections) {
     for (const cs of jObj.domain.crossSections) {
-      useProjectStore().solver.domain.createCrossSection(cs.label, cs);
+      const { shape, ...params } = cs;
+      const created = useProjectStore().solver.domain.createCrossSection(cs.label, params);
+      const parsed = deserializeShape(shape);
+      if (parsed) created.shape = parsed;
     }
   }
 

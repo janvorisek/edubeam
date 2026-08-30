@@ -71,6 +71,16 @@
           >
             {{ $t('dialogs.common.orChooseFromLibrary') }}
           </v-btn>
+          <v-btn
+            variant="text"
+            density="default"
+            size="default"
+            class="text-none"
+            prepend-icon="mdi-vector-polygon"
+            @click="openPolygonEditor"
+          >
+            {{ $t('dialogs.addCrossSection.orDefinePolygon') }}
+          </v-btn>
         </div>
       </v-card-text>
 
@@ -94,6 +104,7 @@ import { useProjectStore } from '@/store/project';
 import { useAppStore } from '@/store/app';
 import { checkNumber, executeModelMutationWithUndo, positiveNumberRules, parseFloat2, setUnsolved } from '@/utils';
 import CrossSectionLibraryDialog from './CrossSectionLibrary.vue';
+import PolygonSectionEditor from './PolygonSectionEditor.vue';
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
@@ -105,6 +116,11 @@ const csArea = ref(`${appStore.convertArea(1)}`);
 const csIy = ref(`${appStore.convertAreaM2(0.0001)}`);
 const csH = ref(`${appStore.convertLength(1)}`);
 const csShear = ref('1');
+
+const openPolygonEditor = () => {
+  closeModal();
+  openModal(PolygonSectionEditor);
+};
 
 const addCrossSection = () => {
   if (valid.value === false) return;

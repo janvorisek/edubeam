@@ -98,7 +98,21 @@ describe('fitBounds', () => {
     expect(bottomPx + resultsPadding).toBeLessThanOrEqual(viewport.viewportHeight);
   });
 
-  it('only clamps padding that is larger than the viewport itself', () => {
+  it('keeps the structure visible when the reserved decorations exceed the viewport', () => {
+    // A preview card: a 3 m frame in a 375 x 248 px box that reserves 85 px per side for
+    // the diagrams - more than the box can give. The frame still has to be recognisable.
+    const viewport = { viewportWidth: 375, viewportHeight: 248 };
+    const fit = fitBounds({ minX: 0, minY: 0, maxX: 3, maxY: 3 }, { ...viewport, padding: 4 + 85 })!;
+
+    const topPx = toPx(0, fit.viewBox.y, fit.scale);
+    const bottomPx = toPx(3, fit.viewBox.y, fit.scale);
+
+    expect(bottomPx - topPx).toBeCloseTo(viewport.viewportHeight / 3);
+    expect(topPx).toBeGreaterThan(0);
+    expect(bottomPx).toBeLessThan(viewport.viewportHeight);
+  });
+
+  it('keeps the fit finite and centered for absurd padding', () => {
     const fit = fitBounds({ minX: 0, minY: 0, maxX: 10, maxY: 10 }, { ...VIEWPORT, padding: 5000 })!;
 
     expect(fit.scale).toBeGreaterThan(0);

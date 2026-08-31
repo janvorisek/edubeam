@@ -3,7 +3,7 @@
     <div class="v-col-6">
       <h3 class="mb-2">{{ $t('settings.viewer_preview') }}</h3>
 
-      <div style="height: 256px; pointer-events: none">
+      <div style="height: 288px; pointer-events: none">
         <SVGElementViewer
           v-if="_created"
           id="settings-appearance"
@@ -20,8 +20,8 @@
           :show-moments="showQuantity === 'bendingMoment'"
           :show-normal-force="showQuantity === 'normalForce'"
           :show-shear-force="showQuantity === 'shearForce'"
-          :padding="48"
-          :mobile-padding="48"
+          :padding="4"
+          :mobile-padding="4"
           :results-scale-px="viewerStore.resultsScalePx_"
           :colors="viewerStore.colors"
           :support-size="viewerStore.supportSize"

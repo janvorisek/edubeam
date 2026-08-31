@@ -54,6 +54,14 @@ const DEFAULT_MAX_ZOOM = 1e6;
  * result diagrams, and shrinking it draws them off screen.
  */
 const MIN_CONTENT_PX = 8;
+/**
+ * ... except in a viewport too small for the decorations, where honouring the padding
+ * would shrink the structure itself to nothing (a 140 px preview card reserving 85 px
+ * per side for the diagrams). There the structure keeps this share of the axis and the
+ * decorations are allowed to overflow, which reads as a small preview rather than a
+ * collapsed line.
+ */
+const MIN_CONTENT_FRACTION = 1 / 3;
 
 export const resolvePadding = (padding: number | Partial<Padding> | undefined): Padding => {
   if (typeof padding === 'number') {
@@ -126,12 +134,12 @@ export const mergeBounds = (a: Bounds | null, b: Bounds | null): Bounds | null =
   };
 };
 
-/** Only kicks in when the padding alone is larger than the viewport. */
+/** Only kicks in when the padding leaves the content less than its minimum share. */
 const clampPaddingPair = (near: number, far: number, size: number): [number, number] => {
   const a = Math.max(near, 0);
   const b = Math.max(far, 0);
   const total = a + b;
-  const limit = Math.max(size - MIN_CONTENT_PX, 0);
+  const limit = Math.max(size - Math.max(MIN_CONTENT_PX, size * MIN_CONTENT_FRACTION), 0);
 
   if (total <= limit || total === 0) return [a, b];
 

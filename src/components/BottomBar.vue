@@ -676,7 +676,7 @@
                 <div class="inline-edit-group load mr-2">
                   <span class="input-before" v-html="'f<sub>x1</sub>'"></span>
                   <input
-                    :value="appStore.convertForce(item.ref.startValues[0])"
+                    :value="appStore.convertForceDistance(item.ref.startValues[0])"
                     class="inline-edit"
                     style="width: 60px"
                     @keydown="checkNumber($event)"
@@ -686,7 +686,7 @@
                         'startValues',
                         0,
                         $event.target as HTMLInputElement,
-                        appStore.convertInverseForce
+                        appStore.convertInverseForceDistance
                       )
                     "
                   />
@@ -695,7 +695,7 @@
                 <div class="inline-edit-group load mr-2">
                   <span class="input-before" v-html="'f<sub>x2</sub>'"></span>
                   <input
-                    :value="appStore.convertForce(item.ref.endValues[0])"
+                    :value="appStore.convertForceDistance(item.ref.endValues[0])"
                     class="inline-edit"
                     style="width: 60px"
                     @keydown="checkNumber($event)"
@@ -705,7 +705,7 @@
                         'endValues',
                         0,
                         $event.target as HTMLInputElement,
-                        appStore.convertInverseForce
+                        appStore.convertInverseForceDistance
                       )
                     "
                   />
@@ -714,7 +714,7 @@
                 <div class="inline-edit-group load mr-2">
                   <span class="input-before" v-html="'f<sub>z1</sub>'"></span>
                   <input
-                    :value="appStore.convertForce(item.ref.startValues[1])"
+                    :value="appStore.convertForceDistance(item.ref.startValues[1])"
                     class="inline-edit"
                     style="width: 60px"
                     @keydown="checkNumber($event)"
@@ -724,7 +724,7 @@
                         'startValues',
                         1,
                         $event.target as HTMLInputElement,
-                        appStore.convertInverseForce
+                        appStore.convertInverseForceDistance
                       )
                     "
                   />
@@ -733,7 +733,7 @@
                 <div class="inline-edit-group load mr-2">
                   <span class="input-before" v-html="'f<sub>z2</sub>'"></span>
                   <input
-                    :value="appStore.convertForce(item.ref.endValues[1])"
+                    :value="appStore.convertForceDistance(item.ref.endValues[1])"
                     class="inline-edit"
                     style="width: 60px"
                     @keydown="checkNumber($event)"
@@ -743,7 +743,7 @@
                         'endValues',
                         1,
                         $event.target as HTMLInputElement,
-                        appStore.convertInverseForce
+                        appStore.convertInverseForceDistance
                       )
                     "
                   />
@@ -760,11 +760,7 @@
                     v-html="$t('loads.temperatureDeltaTs')"
                   ></span>
                   <input
-                    :value="
-                      loadType(item.ref) !== 'temperature'
-                        ? appStore.convertForce(item.ref.values[0])
-                        : appStore.convertTemperature(item.ref.values[0])
-                    "
+                    :value="elementLoadDisplayValue(item.ref, 0)"
                     class="inline-edit"
                     style="width: 60px"
                     @keydown="checkNumber($event)"
@@ -774,9 +770,7 @@
                         'values',
                         0,
                         $event.target as HTMLInputElement,
-                        loadType(item.ref) !== 'temperature'
-                          ? appStore.convertInverseForce
-                          : appStore.convertInverseTemperature
+                        elementLoadInverseConverter(item.ref)
                       )
                     "
                   />
@@ -805,11 +799,7 @@
                     v-html="$t('loads.temperatureDeltaTbt')"
                   ></span>
                   <input
-                    :value="
-                      loadType(item.ref) !== 'temperature'
-                        ? appStore.convertForce(item.ref.values[1])
-                        : appStore.convertTemperature(item.ref.values[1])
-                    "
+                    :value="elementLoadDisplayValue(item.ref, 1)"
                     class="inline-edit"
                     style="width: 60px"
                     @keydown="checkNumber($event)"
@@ -819,9 +809,7 @@
                         'values',
                         1,
                         $event.target as HTMLInputElement,
-                        loadType(item.ref) !== 'temperature'
-                          ? appStore.convertInverseForce
-                          : appStore.convertInverseTemperature
+                        elementLoadInverseConverter(item.ref)
                       )
                     "
                   />
@@ -1504,6 +1492,7 @@ import {
   BeamElementUniformEdgeLoad,
   BeamElementTrapezoidalEdgeLoad,
   BeamConcentratedLoad,
+  BeamTemperatureLoad,
   NodalLoad,
 } from 'ts-fem';
 
@@ -1684,6 +1673,30 @@ const loads = computed(() => {
   return display;
 });
 
+type ElementLoadValues = BeamElementUniformEdgeLoad | BeamConcentratedLoad | BeamTemperatureLoad;
+
+/**
+ * The same two inputs serve uniform, concentrated and temperature loads, and each carries a
+ * different quantity: an intensity (force per length), a force, and a temperature difference.
+ */
+const elementLoadDisplayValue = (load: ElementLoadValues, index: number) => {
+  const type = loadType(load);
+
+  if (type === 'temperature') return appStore.convertTemperature(load.values[index]);
+  if (type === 'udl') return appStore.convertForceDistance(load.values[index]);
+
+  return appStore.convertForce(load.values[index]);
+};
+
+const elementLoadInverseConverter = (load: ElementLoadValues) => {
+  const type = loadType(load);
+
+  if (type === 'temperature') return appStore.convertInverseTemperature;
+  if (type === 'udl') return appStore.convertInverseForceDistance;
+
+  return appStore.convertInverseForce;
+};
+
 const materials = computed(() => {
   const items = useProjectStore().solver.domain.materials.values();
   const display: Material[] = [];
@@ -1764,20 +1777,20 @@ const formatElementLoadsAtElement = (item: Beam2D): [number, string][] => {
       const startFz = nl.ref.startValues[1];
       const endFz = nl.ref.endValues[1];
       if (Math.abs(startFx) > 1e-12 || Math.abs(endFx) > 1e-12) {
-        const startText = appStore.convertForce(startFx);
-        const endText = appStore.convertForce(endFx);
+        const startText = appStore.convertForceDistance(startFx);
+        const endText = appStore.convertForceDistance(endFx);
         tmp.push(`${ff}<sub>x</sub> = ${startText} → ${endText}`);
       }
       if (Math.abs(startFz) > 1e-12 || Math.abs(endFz) > 1e-12) {
-        const startText = appStore.convertForce(startFz);
-        const endText = appStore.convertForce(endFz);
+        const startText = appStore.convertForceDistance(startFz);
+        const endText = appStore.convertForceDistance(endFz);
         tmp.push(`${ff}<sub>z</sub> = ${startText} → ${endText}`);
       }
     } else if ('values' in nl.ref) {
-      if (Math.abs(nl.ref.values[0]) > 1e-12)
-        tmp.push(ff + '<sub>x</sub> = ' + appStore.convertForce(nl.ref.values[0]));
-      if (Math.abs(nl.ref.values[1]) > 1e-12)
-        tmp.push(ff + '<sub>z</sub> = ' + appStore.convertForce(nl.ref.values[1]));
+      const convert = nl.type === 'udl' ? appStore.convertForceDistance : appStore.convertForce;
+
+      if (Math.abs(nl.ref.values[0]) > 1e-12) tmp.push(ff + '<sub>x</sub> = ' + convert(nl.ref.values[0]));
+      if (Math.abs(nl.ref.values[1]) > 1e-12) tmp.push(ff + '<sub>z</sub> = ' + convert(nl.ref.values[1]));
     }
     return [nl.index, tmp.join(', ')];
   });

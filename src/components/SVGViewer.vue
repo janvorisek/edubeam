@@ -489,7 +489,10 @@ const onElementLoadHover = (e: MouseEvent, el: BeamElementLoad) => {
   else if (el instanceof BeamConcentratedLoad) lt = 'loadType.concentrated';
   else if (el instanceof BeamTemperatureLoad) lt = 'loadType.temperature';
   const ff = isDistributed ? 'f' : 'F';
-  const uu = isDistributed ? `${appStore.units.Force}/${appStore.units.Length}` : `${appStore.units.Force}`;
+  // A distributed load is an intensity, a concentrated one a force; both parts of the unit count.
+  const convertIntensity = isDistributed ? appStore.convertForceDistance : appStore.convertForce;
+  let uu = isDistributed ? appStore.units.ForceDistance : appStore.units.Force;
+  if (el instanceof BeamTemperatureLoad) uu = appStore.units.Temperature;
 
   tooltipContent.innerHTML = `<strong>${t(lt)}</strong><br>`;
 
@@ -503,23 +506,23 @@ const onElementLoadHover = (e: MouseEvent, el: BeamElementLoad) => {
     }
   } else if (el instanceof BeamElementTrapezoidalEdgeLoad) {
     if (Math.abs(el.startValues[0]) > 1e-32 || Math.abs(el.endValues[0]) > 1e-32) {
-      tooltipContent.innerHTML += `${ff}<sub>x</sub> = ${appStore.convertForce(el.startValues[0])} → ${appStore.convertForce(
+      tooltipContent.innerHTML += `${ff}<sub>x</sub> = ${convertIntensity(el.startValues[0])} → ${convertIntensity(
         el.endValues[0]
       )} ${uu}<br>`;
     }
 
     if (Math.abs(el.startValues[1]) > 1e-32 || Math.abs(el.endValues[1]) > 1e-32) {
-      tooltipContent.innerHTML += `${ff}<sub>z</sub> = ${appStore.convertForce(el.startValues[1])} → ${appStore.convertForce(
+      tooltipContent.innerHTML += `${ff}<sub>z</sub> = ${convertIntensity(el.startValues[1])} → ${convertIntensity(
         el.endValues[1]
       )} ${uu}`;
     }
   } else if (el instanceof BeamElementUniformEdgeLoad || el instanceof BeamConcentratedLoad) {
     if (Math.abs(el.values[0]) > 1e-32) {
-      tooltipContent.innerHTML += `${ff}<sub>x</sub> = ${appStore.convertForce(el.values[0])} ${uu}<br>`;
+      tooltipContent.innerHTML += `${ff}<sub>x</sub> = ${convertIntensity(el.values[0])} ${uu}<br>`;
     }
 
     if (Math.abs(el.values[1]) > 1e-32) {
-      tooltipContent.innerHTML += `${ff}<sub>z</sub> = ${appStore.convertForce(el.values[1])} ${uu}`;
+      tooltipContent.innerHTML += `${ff}<sub>z</sub> = ${convertIntensity(el.values[1])} ${uu}`;
     }
   }
 
@@ -550,7 +553,7 @@ const onNodalLoadHover = (e: MouseEvent, el: NodalLoad) => {
   }
 
   if (Math.abs(el.values[4]) > 1e-32) {
-    tooltipContent.innerHTML += `M<sub>y</sub> = ${appStore.convertForce(el.values[4])} ${appStore.units.Force}${appStore.units.Length}`;
+    tooltipContent.innerHTML += `M<sub>y</sub> = ${appStore.convertMoment(el.values[4])} ${appStore.units.Moment}`;
   }
 
   tt.style.display = 'block';
@@ -2018,7 +2021,7 @@ defineExpose({ centerContent, fitContent });
                   :data-element-load-id="index"
                   :eload="eload"
                   :scale="scale"
-                  :convert-force="appStore.convertForce"
+                  :convert-force-distance="appStore.convertForceDistance"
                   :font-size="viewerStore.fontSize"
                   :number-format="appStore.numberFormatter"
                   @mousemove="onElementLoadHover($event, eload)"

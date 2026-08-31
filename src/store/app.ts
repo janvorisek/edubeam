@@ -128,6 +128,10 @@ export const useAppStore = defineStore(
     const convertInverseForce = (value: number) => _convertInverseForce(value);
     const convertMoment = (value: number) => _convertMoment(value);
     const convertInverseMoment = (value: number) => _convertInverseMoment(value);
+    // Distributed load intensities are a force per length, so both parts of the unit have to be
+    // converted. Length conversion is a pure scale factor, hence dividing by the factor for 1 m.
+    const convertForceDistance = (value: number) => _convertForce(value) / _convertLength(1);
+    const convertInverseForceDistance = (value: number) => _convertInverseForce(value * _convertLength(1));
     const convertTemperature = (value: number) => _convertTemperature(value);
     const convertInverseTemperature = (value: number) => _convertInverseTemperature(value);
 
@@ -226,6 +230,8 @@ export const useAppStore = defineStore(
       convertInverseForce,
       convertMoment,
       convertInverseMoment,
+      convertForceDistance,
+      convertInverseForceDistance,
       convertTemperature,
       convertInverseTemperature,
 

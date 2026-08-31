@@ -618,7 +618,7 @@
                       'values',
                       4,
                       $event.target as HTMLInputElement,
-                      appStore.convertInverseForce
+                      appStore.convertInverseMoment
                     )
                   "
                 />
@@ -627,35 +627,62 @@
             </div>
 
             <div v-if="item.type === 'prescribed'" class="d-flex">
-              <div class="inline-edit-group load mr-2" style="width: 128px">
+              <div
+                class="inline-edit-group load mr-2"
+                :class="{ disabled: !isDofSupported(item.target, DofID.Dx) }"
+                style="width: 128px"
+              >
                 <label class="input-before">D<sub>x</sub></label>
                 <input
-                  :value="item.ref.prescribedValues[0]"
+                  :value="appStore.convertLength(item.ref.prescribedValues[0])"
                   class="inline-edit"
+                  :disabled="!isDofSupported(item.target, DofID.Dx)"
                   @keydown="checkNumber($event)"
                   @change="
-                    changeSetArrayItem(item.ref, 'prescribedValues', 0, $event.target as HTMLInputElement, (v) => v)
+                    changeSetArrayItem(
+                      item.ref,
+                      'prescribedValues',
+                      0,
+                      $event.target as HTMLInputElement,
+                      appStore.convertInverseLength
+                    )
                   "
                 />
                 <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
               </div>
-              <div class="inline-edit-group load mr-2" style="width: 128px">
+              <div
+                class="inline-edit-group load mr-2"
+                :class="{ disabled: !isDofSupported(item.target, DofID.Dz) }"
+                style="width: 128px"
+              >
                 <span class="input-before">D<sub>z</sub></span>
                 <input
-                  :value="item.ref.prescribedValues[2]"
+                  :value="appStore.convertLength(item.ref.prescribedValues[2])"
                   class="inline-edit"
+                  :disabled="!isDofSupported(item.target, DofID.Dz)"
                   @keydown="checkNumber($event)"
                   @change="
-                    changeSetArrayItem(item.ref, 'prescribedValues', 2, $event.target as HTMLInputElement, (v) => v)
+                    changeSetArrayItem(
+                      item.ref,
+                      'prescribedValues',
+                      2,
+                      $event.target as HTMLInputElement,
+                      appStore.convertInverseLength
+                    )
                   "
                 />
                 <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
               </div>
-              <div class="inline-edit-group load" style="width: 128px">
+              <div
+                class="inline-edit-group load"
+                :class="{ disabled: !isDofSupported(item.target, DofID.Ry) }"
+                style="width: 128px"
+              >
                 <span class="input-before">R<sub>y</sub></span>
                 <input
                   :value="item.ref.prescribedValues[4]"
                   class="inline-edit"
+                  :disabled="!isDofSupported(item.target, DofID.Ry)"
                   @keydown="checkNumber($event)"
                   @change="
                     changeSetArrayItem(item.ref, 'prescribedValues', 4, $event.target as HTMLInputElement, (v) => v)
@@ -1691,6 +1718,11 @@ const elementLoadInverseConverter = (load: ElementLoadValues) => {
   if (type === 'udl') return appStore.convertInverseForceDistance;
 
   return appStore.convertInverseForce;
+};
+
+/** A displacement can only be prescribed in a DOF that is supported (constrained) at the target node. */
+const isDofSupported = (target: number, dof: DofID) => {
+  return projStore.solver.domain.nodes.get(target)?.bcs.has(dof) ?? false;
 };
 
 const materials = computed(() => {

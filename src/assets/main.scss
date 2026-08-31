@@ -118,6 +118,20 @@ body,
   }
 }
 
+input.inline-edit:disabled {
+  background: #f5f5f5;
+  color: rgba(0, 0, 0, 0.38);
+  cursor: not-allowed;
+}
+
+.inline-edit-group.disabled {
+  .input-before,
+  .input-after {
+    color: rgba(0, 0, 0, 0.38);
+    background: #f5f5f5;
+  }
+}
+
 .hinges .v-selection-control--density-compact {
   height: 20px !important;
   width: 20px !important;

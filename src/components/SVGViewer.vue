@@ -2491,7 +2491,9 @@ defineExpose({ centerContent, fitContent });
         <ContextMenuNode v-if="projectStore.selection.type === 'node'"></ContextMenuNode>
         <ContextMenuElement v-if="projectStore.selection.type === 'element'"></ContextMenuElement>
         <ContextMenuElementLoad v-if="projectStore.selection.type === 'element-load'"></ContextMenuElementLoad>
-        <ContextMenuNodalLoad v-if="projectStore.selection.type === 'nodal-load'"></ContextMenuNodalLoad>
+        <ContextMenuNodalLoad
+          v-if="['nodal-load', 'prescribedbc-load'].includes(projectStore.selection.type)"
+        ></ContextMenuNodalLoad>
         <ContextMenuDimension v-if="projectStore.selection.type === 'dimension'"></ContextMenuDimension>
         <!-- <ContextMenuNodalLoad v-if="projectStore.selection.type === 'nodal-load'"></ContextMenuNodalLoad>
         <ContextMenuElementLoad v-if="projectStore.selection.type === 'element-load'"></ContextMenuElementLoad> -->

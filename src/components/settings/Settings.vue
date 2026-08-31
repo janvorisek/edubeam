@@ -1,5 +1,5 @@
 <template>
-  <div class="settings-layout fill-height">
+  <div class="settings-layout">
     <div class="settings-shell">
       <div class="settings-sidebar-wrapper">
         <v-sheet class="settings-panel settings-sidebar">
@@ -184,14 +184,54 @@ const resetSettings = () => {
   padding: 24px;
 }
 
+/*
+ * Stacked, the sidebar and the options no longer get a viewport each: on a phone the nav alone can
+ * eat the whole dialog and squeeze the options pane to nothing, with its overflow hidden. So let
+ * the content flow at its natural height and leave the scrolling to the dialog card itself, which
+ * Vuetify already gives `overflow-y: auto`.
+ */
 @media (max-width: 1100px) {
+  .settings-layout {
+    height: auto;
+    overflow: visible;
+  }
+
   .settings-shell {
     flex-direction: column;
+    height: auto;
   }
 
   .settings-sidebar-wrapper {
     flex: 0 0 auto;
     max-width: none;
+    border-right: none;
+    border-bottom: 1px solid rgba(var(--v-border-color), 0.15);
+  }
+
+  .settings-sidebar-wrapper,
+  .settings-content-wrapper,
+  .settings-panel {
+    min-height: auto;
+  }
+
+  .settings-sidebar-scroll,
+  .settings-content-scroll {
+    flex: 0 0 auto;
+    overflow: visible;
+  }
+
+  .settings-content-scroll {
+    padding: 16px;
+  }
+
+  /* The nav is passed on the way to every option, so keep it short */
+  .settings-sidebar-wrapper .v-list-item-subtitle {
+    display: none;
+  }
+
+  .settings-sidebar-wrapper .v-list-item.py-3 {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
   }
 }
 </style>

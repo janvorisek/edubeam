@@ -54,14 +54,15 @@
       </v-row>
 
       <v-text-field
-        v-model.number="viewerStore.gridStep"
+        v-model="gridStepInput"
         :label="$t('settings.grid_snap_step')"
         :rules="positiveNumberRules"
         hide-details="auto"
-        type="number"
-        min="0.001"
-        step="0.001"
+        inputmode="decimal"
         suffix="m"
+        @keydown="checkNumber($event)"
+        @change="commitGridStep"
+        @blur="commitGridStep"
       />
 
       <h3 class="mt-3 mb-2">{{ $t('settings.result_labels') }}</h3>
@@ -285,11 +286,32 @@
 import { useViewerStore } from '@/store/viewer';
 import SVGElementViewer from '../SVGElementViewer.vue';
 import { LinearStaticSolver, DofID } from 'ts-fem';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { positiveNumberRules } from '@/utils';
+import { checkNumber, parseFloat2, positiveNumberRules } from '@/utils';
 
 const viewerStore = useViewerStore();
+
+/**
+ * Edited as text rather than `type="number"`: a decimal comma, which is what a phone keyboard
+ * offers in most locales, leaves a number input empty and the field then complains that nothing
+ * was entered. The store keeps a number, so the text is parsed on change.
+ */
+const gridStepInput = ref(String(viewerStore.gridStep));
+
+watch(
+  () => viewerStore.gridStep,
+  (step) => {
+    if (parseFloat2(gridStepInput.value) !== step) gridStepInput.value = String(step);
+  }
+);
+
+const commitGridStep = () => {
+  const step = parseFloat2(gridStepInput.value);
+  if (!Number.isFinite(step) || step <= 0) return;
+
+  viewerStore.gridStep = step;
+};
 const showQuantity = ref('deformedShape');
 const { t } = useI18n();
 

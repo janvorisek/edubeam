@@ -21,6 +21,12 @@
                   required
                   autofocus
                 />
+                <v-checkbox-btn
+                  v-model="newElementHinges[0]"
+                  class="hinges"
+                  density="compact"
+                  :label="$t('elements.hinge')"
+                />
               </v-col>
 
               <v-col cols="6" md="6">
@@ -32,6 +38,12 @@
                   :label="$t('dialogs.addElement.toNodeId')"
                   hide-details="auto"
                   required
+                />
+                <v-checkbox-btn
+                  v-model="newElementHinges[1]"
+                  class="hinges"
+                  density="compact"
+                  :label="$t('elements.hinge')"
                 />
               </v-col>
             </v-row>
@@ -123,6 +135,8 @@ const open = ref(true);
 
 const newElementFrom = ref('');
 const newElementTo = ref('');
+/** End releases of the new element, in the order of the From / To nodes above. */
+const newElementHinges = ref([false, false]);
 const newElementMat = ref('');
 const newElementCS = ref('');
 
@@ -163,10 +177,20 @@ const addElement = () => {
   }
 
   executeModelMutationWithUndo(() => {
-    domain.createBeam2D(nid, [newElementFrom.value, newElementTo.value], newElementMat.value, newElementCS.value);
+    domain.createBeam2D(nid, [newElementFrom.value, newElementTo.value], newElementMat.value, newElementCS.value, [
+      ...newElementHinges.value,
+    ]);
     domain.elements = new Map(domain.elements);
   });
 
   closeModal();
 };
 </script>
+
+<style scoped>
+/* The hinge label reads as a caption of the node select above it, so it matches its floating label. */
+.hinges :deep(.v-label) {
+  font-size: 0.75em;
+  opacity: var(--v-medium-emphasis-opacity);
+}
+</style>

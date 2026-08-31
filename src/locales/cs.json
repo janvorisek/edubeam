@@ -119,7 +119,8 @@
     "swapNodeOrder": "Přehodit pořadí uzlů",
     "editElement": "Upravit prvek",
     "hingeStart": "Kloub na začátku",
-    "hingeEnd": "Kloub na konci"
+    "hingeEnd": "Kloub na konci",
+    "hinge": "Kloub"
   },
   "loads": {
     "addElementLoad": "Přidat prvkové zatížení",

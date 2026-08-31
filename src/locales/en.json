@@ -56,7 +56,8 @@
     "editElement": "Edit element",
     "swapNodeOrder": "Swap nodes",
     "hingeStart": "Start hinge",
-    "hingeEnd": "End hinge"
+    "hingeEnd": "End hinge",
+    "hinge": "Hinge"
   },
   "loads": {
     "addNodalLoad": "Add nodal load",

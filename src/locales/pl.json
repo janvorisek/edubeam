@@ -56,7 +56,8 @@
     "editElement": "Edytuj element",
     "swapNodeOrder": "Zamień kolejność węzłów",
     "hingeStart": "Przegub na początku",
-    "hingeEnd": "Przegub na końcu"
+    "hingeEnd": "Przegub na końcu",
+    "hinge": "Przegub"
   },
   "loads": {
     "addNodalLoad": "Dodaj obciążenie węzłowe",

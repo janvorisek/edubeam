@@ -6,7 +6,7 @@ const props = withDefaults(
   defineProps<{
     eload: BeamElementTrapezoidalEdgeLoad;
     scale: number;
-    convertForce: (f: number) => number;
+    convertForceDistance: (f: number) => number;
     fontSize?: number;
     numberFormat?: Intl.NumberFormat;
   }>(),
@@ -325,7 +325,7 @@ const labelTransforms = computed(() => {
   };
 });
 
-const formatMagnitude = (value: number) => props.numberFormat.format(Math.abs(props.convertForce(value)));
+const formatMagnitude = (value: number) => props.numberFormat.format(Math.abs(props.convertForceDistance(value)));
 
 const fxConstantLabel = computed(() => formatMagnitude(props.eload.startValues[0]));
 const fxStartLabel = computed(() => formatMagnitude(props.eload.startValues[0]));

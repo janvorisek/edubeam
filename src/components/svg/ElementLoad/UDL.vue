@@ -6,7 +6,7 @@ const props = withDefaults(
   defineProps<{
     eload: BeamElementUniformEdgeLoad;
     scale: number;
-    convertForce: (f: number) => number;
+    convertForceDistance: (f: number) => number;
     fontSize?: number;
     numberFormat?: Intl.NumberFormat;
   }>(),
@@ -269,7 +269,7 @@ const stackedTransform = computed(() => {
         dominant-baseline="middle"
         :transform="eloadLabels[0]"
       >
-        {{ numberFormat.format(Math.abs(convertForce(eload.values[0]))) }}
+        {{ numberFormat.format(Math.abs(convertForceDistance(eload.values[0]))) }}
       </text>
       <text
         v-if="eload.values[1] !== 0"
@@ -279,7 +279,7 @@ const stackedTransform = computed(() => {
         dominant-baseline="middle"
         :transform="eloadLabels[1]"
       >
-        {{ numberFormat.format(Math.abs(convertForce(eload.values[1]))) }}
+        {{ numberFormat.format(Math.abs(convertForceDistance(eload.values[1]))) }}
       </text>
     </g>
     <polygon

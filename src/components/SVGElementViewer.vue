@@ -78,6 +78,7 @@ const props = withDefaults(
     };
     supportSize?: number;
     convertForce?: (value: number) => number;
+    convertForceDistance?: (value: number) => number;
     convertMoment?: (value: number) => number;
     convertLength?: (value: number) => number;
     resultLabelMode?: 'axis' | 'horizontal';
@@ -124,6 +125,7 @@ const props = withDefaults(
     },
     supportSize: 1,
     convertForce: (v) => v,
+    convertForceDistance: (v) => v,
     convertMoment: (v) => v,
     convertLength: (v) => v,
     resultLabelMode: 'axis',
@@ -343,7 +345,7 @@ defineExpose({ centerContent, fitContent });
                   :data-element-load-id="index"
                   :eload="eload"
                   :scale="scale"
-                  :convert-force="props.convertForce"
+                  :convert-force-distance="props.convertForceDistance"
                   :font-size="props.fontSize"
                 />
                 <SVGElementTemperatureLoad

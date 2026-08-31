@@ -119,6 +119,7 @@ watch(
       :support-size="0.75"
       :number-format="appStore.numberFormatter"
       :convert-force="appStore.convertForce"
+      :convert-force-distance="appStore.convertForceDistance"
       :convert-moment="appStore.convertMoment"
       :convert-length="appStore.convertLength"
       :colors="viewerStore.colors"

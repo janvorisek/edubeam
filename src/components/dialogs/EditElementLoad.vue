@@ -245,7 +245,7 @@ const unitAndLabel = computed(() => {
   let l = 'F';
 
   if (loadType.value === 'udl' || loadType.value === 'trapezoidal') {
-    u += '/m';
+    u = appStore.units.ForceDistance;
     l = 'f';
   }
 
@@ -279,13 +279,17 @@ const minMax = (v) => {
   return true;
 };
 
-const realFx = computed(() => appStore.convertInverseForce(parseFloat2(elementNodeValueFx.value)));
-const realFz = computed(() => appStore.convertInverseForce(parseFloat2(elementNodeValueFz.value)));
+const inverseIntensity = computed(() =>
+  loadType.value === 'udl' ? appStore.convertInverseForceDistance : appStore.convertInverseForce
+);
+
+const realFx = computed(() => inverseIntensity.value(parseFloat2(elementNodeValueFx.value)));
+const realFz = computed(() => inverseIntensity.value(parseFloat2(elementNodeValueFz.value)));
 const realMy = computed(() => appStore.convertInverseMoment(parseFloat2(loadNodeValueMy.value)));
-const realTrapStartFx = computed(() => appStore.convertInverseForce(parseFloat2(trapezoidStartFx.value)));
-const realTrapStartFz = computed(() => appStore.convertInverseForce(parseFloat2(trapezoidStartFz.value)));
-const realTrapEndFx = computed(() => appStore.convertInverseForce(parseFloat2(trapezoidEndFx.value)));
-const realTrapEndFz = computed(() => appStore.convertInverseForce(parseFloat2(trapezoidEndFz.value)));
+const realTrapStartFx = computed(() => appStore.convertInverseForceDistance(parseFloat2(trapezoidStartFx.value)));
+const realTrapStartFz = computed(() => appStore.convertInverseForceDistance(parseFloat2(trapezoidStartFz.value)));
+const realTrapEndFx = computed(() => appStore.convertInverseForceDistance(parseFloat2(trapezoidEndFx.value)));
+const realTrapEndFz = computed(() => appStore.convertInverseForceDistance(parseFloat2(trapezoidEndFz.value)));
 const realDist = computed(() => appStore.convertInverseLength(parseFloat2(elementLoadPos.value)));
 const realTc = computed(() => appStore.convertInverseTemperature(parseFloat2(loadNodeValueTc.value)));
 const realTbt = computed(() => appStore.convertInverseTemperature(parseFloat2(loadNodeValueTbt.value)));
@@ -325,8 +329,11 @@ const previewLoad = computed(() => {
 
 onMounted(() => {
   if (load.value instanceof BeamElementUniformEdgeLoad || load.value instanceof BeamConcentratedLoad) {
-    elementNodeValueFx.value = appStore.convertForce(load.value.values[0]).toString();
-    elementNodeValueFz.value = appStore.convertForce(load.value.values[1]).toString();
+    const convert =
+      load.value instanceof BeamElementUniformEdgeLoad ? appStore.convertForceDistance : appStore.convertForce;
+
+    elementNodeValueFx.value = convert(load.value.values[0]).toString();
+    elementNodeValueFz.value = convert(load.value.values[1]).toString();
   }
   if (
     load.value instanceof BeamElementUniformEdgeLoad ||
@@ -337,10 +344,10 @@ onMounted(() => {
   }
 
   if (load.value instanceof BeamElementTrapezoidalEdgeLoad) {
-    trapezoidStartFx.value = appStore.convertForce(load.value.startValues[0]).toString();
-    trapezoidStartFz.value = appStore.convertForce(load.value.startValues[1]).toString();
-    trapezoidEndFx.value = appStore.convertForce(load.value.endValues[0]).toString();
-    trapezoidEndFz.value = appStore.convertForce(load.value.endValues[1]).toString();
+    trapezoidStartFx.value = appStore.convertForceDistance(load.value.startValues[0]).toString();
+    trapezoidStartFz.value = appStore.convertForceDistance(load.value.startValues[1]).toString();
+    trapezoidEndFx.value = appStore.convertForceDistance(load.value.endValues[0]).toString();
+    trapezoidEndFz.value = appStore.convertForceDistance(load.value.endValues[1]).toString();
   }
 
   if (load.value instanceof BeamConcentratedLoad) {

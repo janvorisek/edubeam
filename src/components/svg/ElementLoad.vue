@@ -9,7 +9,7 @@ const props = withDefaults(
   defineProps<{
     eload: BeamElementUniformEdgeLoad | BeamElementTrapezoidalEdgeLoad;
     scale: number;
-    convertForce: (f: number) => number;
+    convertForceDistance: (f: number) => number;
     fontSize?: number;
     numberFormat?: Intl.NumberFormat;
   }>(),

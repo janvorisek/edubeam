@@ -1,245 +1,39 @@
 <script setup lang="ts">
-import { LinearStaticSolver, DofID, type Node, type Element, type NodalLoad, type BeamElementLoad } from 'ts-fem';
+import { type Node, type Element, type NodalLoad, type BeamElementLoad } from 'ts-fem';
 import SVGElementViewer from '../../src/components/SVGElementViewer.vue';
 import { serializeModel } from '../../src/utils/serializeModel';
-
-type ViewerFlags = {
-  showLoads: boolean;
-  showReactions: boolean;
-  showDeformedShape: boolean;
-  showNormalForce: boolean;
-  showShearForce: boolean;
-  showMoments: boolean;
-};
+// Single source of truth, shared with the Examples panel inside the app.
+import { buildExampleSolver, examples, type ExampleViewerFlags } from '../../src/utils/examples';
 
 type Sample = {
   id: string;
   title: string;
   blurb: string;
-  solver: LinearStaticSolver;
+  solver: ReturnType<typeof buildExampleSolver>;
   nodes: Node[];
   elements: Element[];
   nodalLoads: NodalLoad[];
   elementLoads: BeamElementLoad[];
-  viewer: ViewerFlags;
+  viewer: ExampleViewerFlags;
   openUrl: string;
 };
 
 const convertForce = (value: number) => value / 1000; // N → kN
 const convertMoment = (value: number) => value / 1000; // N·m → kN·m
 
-const baseSection = {
-  a: 1,
-  iy: 8.356e-5,
-  iz: 1.0,
-  dyz: 999991.0,
-  h: 1,
-  k: 1e32,
-  j: 99999.0,
-};
-
-const baseMaterial = {
-  e: 210000e6,
-  g: 210000e6 / (2 * (1 + 0.2)),
-  alpha: 1.0,
-  d: 4000,
-};
-
-const createBaseSolver = () => {
-  const solver = new LinearStaticSolver();
-  const domain = solver.domain;
-  domain.createCrossSection(1, baseSection);
-  domain.createMaterial(1, baseMaterial);
-  return solver;
-};
-
-const samples: Sample[] = ['welcome', 'cantilever', 'pratt', 'continuous', 'portal', 'temperature'].map((id) => {
-  const solver = createBaseSolver();
-  const domain = solver.domain;
-
-  if (id === 'welcome') {
-    domain.createNode('A', [0, 0, 0], [DofID.Dx, DofID.Dz, DofID.Ry]);
-    domain.createNode('B', [3, 0, 0], [DofID.Dz]);
-    domain.createBeam2D('E1', ['A', 'B'], 1, 1);
-    solver.loadCases[0].createBeamElementUniformEdgeLoad('E1', [0, 10000], true);
-  }
-
-  if (id === 'cantilever') {
-    domain.createNode('A', [0, 0, 0], [DofID.Dx, DofID.Dz, DofID.Ry]);
-    domain.createNode('B', [4, 0, 0], []);
-    domain.createBeam2D('E1', ['A', 'B'], 1, 1);
-    solver.loadCases[0].createNodalLoad('B', { [DofID.Dx]: 0, [DofID.Dz]: -18000, [DofID.Ry]: 0 });
-  }
-
-  if (id === 'pratt') {
-    const nodes = [
-      { id: 'A', coords: [0, 0, 0], dofs: [DofID.Dx, DofID.Dz] },
-      { id: 'B', coords: [3, 0, 0], dofs: [] },
-      { id: 'C', coords: [6, 0, 0], dofs: [] },
-      { id: 'D', coords: [9, 0, 0], dofs: [DofID.Dz] },
-      { id: 'E', coords: [1.5, 0, -1.8], dofs: [] },
-      { id: 'F', coords: [4.5, 0, -1.8], dofs: [] },
-      { id: 'G', coords: [7.5, 0, -1.8], dofs: [] },
-    ];
-
-    nodes.forEach((node) => domain.createNode(node.id, node.coords, node.dofs));
-
-    const elements: [string, string, string][] = [
-      ['E1', 'A', 'B'],
-      ['E2', 'B', 'C'],
-      ['E3', 'C', 'D'],
-      ['E4', 'E', 'F'],
-      ['E5', 'F', 'G'],
-      ['E6', 'A', 'E'],
-      ['E7', 'E', 'B'],
-      ['E8', 'B', 'F'],
-      ['E9', 'F', 'C'],
-      ['E10', 'C', 'G'],
-      ['E11', 'G', 'D'],
-    ];
-
-    elements.forEach(([label, start, end]) => domain.createBeam2D(label, [start, end], 1, 1));
-
-    ['E', 'F', 'G'].forEach((nodeId) => {
-      solver.loadCases[0].createNodalLoad(nodeId, { [DofID.Dx]: 0, [DofID.Dz]: 8000, [DofID.Ry]: 0 });
-    });
-  }
-
-  if (id === 'continuous') {
-    domain.createNode('A', [0, 0, 0], [DofID.Dx, DofID.Dz]);
-    domain.createNode('B', [5, 0, 0], []);
-    domain.createNode('C', [11, 0, 0], []);
-    domain.createNode('D', [16, 0, 0], [DofID.Dz]);
-
-    domain.createBeam2D('E1', ['A', 'B'], 1, 1);
-    domain.createBeam2D('E2', ['B', 'C'], 1, 1);
-    domain.createBeam2D('E3', ['C', 'D'], 1, 1);
-
-    solver.loadCases[0].createBeamElementUniformEdgeLoad('E1', [0, 8000], true);
-    solver.loadCases[0].createNodalLoad('C', { [DofID.Dx]: 0, [DofID.Dz]: -20000, [DofID.Ry]: 0 });
-    solver.loadCases[0].createBeamElementUniformEdgeLoad('E3', [0, 6000], true);
-  }
-
-  if (id === 'portal') {
-    domain.createNode('A', [0, 0, 0], [DofID.Dx, DofID.Dz, DofID.Ry]);
-    domain.createNode('B', [0, 0, -6], []);
-    domain.createNode('C', [8, 0, -6], []);
-    domain.createNode('D', [8, 0, 0], [DofID.Dz]);
-
-    domain.createBeam2D('E1', ['A', 'B'], 1, 1);
-    domain.createBeam2D('E2', ['B', 'C'], 1, 1);
-    domain.createBeam2D('E3', ['C', 'D'], 1, 1);
-
-    solver.loadCases[0].createBeamElementUniformEdgeLoad('E2', [0, 10000], true);
-    solver.loadCases[0].createNodalLoad('C', { [DofID.Dx]: -8000, [DofID.Dz]: 10000, [DofID.Ry]: 0 });
-  }
-
-  if (id === 'temperature') {
-    domain.createNode('A', [0, 0, 0], [DofID.Dx, DofID.Dz]);
-    domain.createNode('B', [8, 0, 0], [DofID.Dz]);
-
-    domain.createBeam2D('E1', ['A', 'B'], 1, 1);
-
-    solver.loadCases[0].createBeamTemperatureLoad('E1', [20, -10, 0]);
-  }
-
-  solver.solve();
-
-  const configs: Record<
-    string,
-    Omit<Sample, 'solver' | 'nodes' | 'elements' | 'nodalLoads' | 'elementLoads' | 'openUrl' | 'viewer'>
-  > = {
-    welcome: {
-      id: 'welcome',
-      title: 'Indeterminate beam',
-      blurb: 'Statically indeterminate 3 m fixed–roller beam under 10 kN/m UDL.',
-    },
-    cantilever: {
-      id: 'cantilever',
-      title: 'Cantilever',
-      blurb: '4 m cantilever resisting an 18 kN downward nodal load, highlighting curvature and tip deflection.',
-    },
-    pratt: {
-      id: 'pratt',
-      title: 'Pratt truss',
-      blurb: 'Simple Pratt truss with 8 kN joint loads showing axial force distribution and displacements.',
-    },
-    continuous: {
-      id: 'continuous',
-      title: 'Three-span continuous beam',
-      blurb: '5+6+5 m spans with UDL + point + UDL to compare curvature and support rotations.',
-    },
-    portal: {
-      id: 'portal',
-      title: 'Portal frame load case',
-      blurb: '8 m beam on 6 m columns under roof UDL and lateral + vertical knee loads for sway and bending checks.',
-    },
-    temperature: {
-      id: 'temperature',
-      title: 'Temperature load',
-      blurb: 'Simply supported 8 m beam with uniform and non-uniform temperature load.',
-    },
-  };
-
-  const viewerConfigs: Record<string, ViewerFlags> = {
-    welcome: {
-      showLoads: true,
-      showReactions: true,
-      showDeformedShape: true,
-      showNormalForce: false,
-      showShearForce: true,
-      showMoments: true,
-    },
-    cantilever: {
-      showLoads: true,
-      showReactions: true,
-      showDeformedShape: true,
-      showNormalForce: false,
-      showShearForce: false,
-      showMoments: true,
-    },
-    pratt: {
-      showLoads: true,
-      showReactions: true,
-      showDeformedShape: true,
-      showNormalForce: false,
-      showShearForce: false,
-      showMoments: false,
-    },
-    continuous: {
-      showLoads: true,
-      showReactions: true,
-      showDeformedShape: true,
-      showNormalForce: false,
-      showShearForce: true,
-      showMoments: true,
-    },
-    portal: {
-      showLoads: true,
-      showReactions: true,
-      showDeformedShape: true,
-      showNormalForce: false,
-      showShearForce: false,
-      showMoments: true,
-    },
-    temperature: {
-      showLoads: true,
-      showReactions: true,
-      showDeformedShape: true,
-      showNormalForce: false,
-      showShearForce: false,
-      showMoments: true,
-    },
-  };
+const samples: Sample[] = examples.map((example) => {
+  const solver = buildExampleSolver(example);
 
   return {
-    ...configs[id],
+    id: example.id,
+    title: example.title,
+    blurb: example.blurb,
+    viewer: example.viewer,
     solver,
-    nodes: [...domain.nodes.values()],
-    elements: [...domain.elements.values()],
+    nodes: [...solver.domain.nodes.values()],
+    elements: [...solver.domain.elements.values()],
     nodalLoads: solver.loadCases[0].nodalLoadList,
     elementLoads: solver.loadCases[0].elementLoadList,
-    viewer: viewerConfigs[id],
     openUrl: `https://run.edubeam.app/?model=${encodeURIComponent(serializeModel(solver, []))}`,
   };
 });

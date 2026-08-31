@@ -1,6 +1,35 @@
 {
   "releases": [
     {
+      "version": "1.1.1",
+      "title": "Chyby řešiče, příklady a export",
+      "date": "31. srpna 2026",
+      "highlights": [
+        "Modely, které nelze vyřešit, nyní řeknou proč a pojmenují uzel a směr, který se pohybuje.",
+        "Nová galerie příkladů s připravenými modely k otevření a zkoumání.",
+        "Export výkresu jako PNG v libovolné velikosti nebo kopie do schránky.",
+        "Export obou tabulek výsledků do CSV nebo do schránky, v zobrazených jednotkách.",
+        "Ikony nápovědy v celé aplikaci odkazují do dokumentace ve vašem jazyce."
+      ],
+      "media": [
+        {
+          "src": "/changelog/media/examples-gallery.png",
+          "alt": "Galerie příkladů",
+          "caption": "Galerie příkladů"
+        },
+        {
+          "src": "/changelog/media/export-image.png",
+          "alt": "Dialog exportu obrázku",
+          "caption": "Export obrázku"
+        },
+        {
+          "src": "/changelog/media/export-results.png",
+          "alt": "Tlačítka exportu CSV a kopírování v tabulce výsledků",
+          "caption": "Export výsledků"
+        }
+      ]
+    },
+    {
       "version": "1.1.0",
       "title": "Polygonální průřezy",
       "date": "30. srpna 2026",
@@ -10,7 +39,6 @@
         "Miniatury tvaru v tabulce průřezů, v menu prvku a v panelu výběru.",
         "Tvary se ukládají s projektem i do odkazů pro sdílení."
       ],
-      "tag": "Latest",
       "media": [
         {
           "src": "/changelog/media/polygonal-section-editor.png",

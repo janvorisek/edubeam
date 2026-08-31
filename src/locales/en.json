@@ -171,7 +171,11 @@
     "results": "Results",
     "nodal_results": "Nodal results",
     "element_results": "Element results",
-    "end_forces": "End forces (in local coordinate system)"
+    "end_forces": "End forces (in local coordinate system)",
+    "exportCsv": "Export CSV",
+    "exportHint": "Download both result tables in the units shown, ready for a spreadsheet.",
+    "copied": "Results copied to clipboard",
+    "copyFailed": "Could not copy the results to the clipboard."
   },
   "materials": {
     "addMaterial": "Add material",
@@ -447,5 +451,26 @@
       "title": "Saving & sharing",
       "body": "Save the model as a file, copy a link that carries the whole structure, or embed a read-only viewer in your own page."
     }
+  },
+  "exportImage": {
+    "title": "Export image",
+    "transparentBackground": "Transparent background",
+    "download": "Download PNG",
+    "copyToClipboard": "Copy to clipboard",
+    "copied": "Image copied to clipboard",
+    "failed": "Could not render the image.",
+    "previewAlt": "Preview of the exported image",
+    "instructions": "The drawing is laid out fresh for the size you pick, so lines and labels keep their real thickness. The same size always frames the structure the same way — handy for exporting M, N and V side by side.",
+    "width": "Width",
+    "height": "Height",
+    "lockAspect": "Keep aspect ratio",
+    "fitPreview": "Fit",
+    "actualSize": "Actual size",
+    "preview": "Preview"
+  },
+  "examples": {
+    "title": "Examples",
+    "instructions": "Open a ready-made model to explore. It replaces the current one, and Ctrl+Z brings yours back.",
+    "moreInDocs": "More examples and exercises"
   }
 }

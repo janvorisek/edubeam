@@ -21,7 +21,7 @@
         </v-tab>
       </v-tabs>
       <div class="bg-primary d-flex align-center">
-        <HelpTip :topic="activeHelpTopic" location="top left" size="small" align="center" />
+        <HelpTip :topic="activeHelpTopic" location="top left" size="small" density="comfortable" align="center" />
         <v-btn
           color="primary"
           density="compact"
@@ -1281,6 +1281,29 @@
           >
             <v-icon small>mdi-vector-line</v-icon> {{ $t('results.element_results') }}
           </v-btn>
+          <v-btn
+            v-tooltip.bottom="$t('results.exportHint')"
+            size="small"
+            variant="flat"
+            color="secondary"
+            style="border-left: 1px solid #ccc"
+            :rounded="0"
+            :disabled="!projStore.solver.loadCases[0].solved"
+            @click="exportResults"
+          >
+            <v-icon small>mdi-file-delimited-outline</v-icon> {{ $t('results.exportCsv') }}
+          </v-btn>
+          <v-btn
+            size="small"
+            variant="flat"
+            color="secondary"
+            style="border-left: 1px solid #ccc"
+            :rounded="0"
+            :disabled="!projStore.solver.loadCases[0].solved"
+            @click="copyResults"
+          >
+            <v-icon small>mdi-content-copy</v-icon> {{ $t('common.copy') }}
+          </v-btn>
         </div>
         <v-window v-model="layoutStore.bottomBarResultsTab" disabled>
           <v-window-item value="nodes" :transition="false" :reverse-transition="false">
@@ -1459,6 +1482,13 @@
         </v-window>
       </v-window-item>
     </v-window>
+    <v-snackbar
+      v-model="exportFeedbackVisible"
+      :color="exportFeedbackType === 'error' ? 'error' : 'primary'"
+      timeout="2600"
+    >
+      {{ $t(exportFeedbackMessage) }}
+    </v-snackbar>
   </div>
 </template>
 
@@ -1477,7 +1507,7 @@ import {
   NodalLoad,
 } from 'ts-fem';
 
-import { onMounted, computed, markRaw, nextTick, reactive } from 'vue';
+import { onMounted, computed, markRaw, nextTick, reactive, ref } from 'vue';
 import { useProjectStore } from '../store/project';
 import { useAppStore } from '../store/app';
 import { MouseMode } from '../mouse';
@@ -1506,6 +1536,7 @@ import {
 } from '../utils';
 import { DofID, Beam2D, PrescribedDisplacement } from 'ts-fem';
 import { formatExpValueAsHTML, formatMeasureAsHTML } from '../SVGUtils';
+import { buildResultsTsv, downloadResultsCsv, resultUnitsFromStore } from '../utils/exportResults';
 
 import HelpTip from './HelpTip.vue';
 import type { HelpTopicKey } from '../utils/helpTopics';
@@ -1802,6 +1833,31 @@ const tabs = reactive([
     icon: 'mdi-numeric',
   },
 ]);
+
+const exportFeedbackVisible = ref(false);
+const exportFeedbackType = ref<'success' | 'error'>('success');
+const exportFeedbackMessage = ref('results.copied');
+
+const notifyExport = (message: string, type: 'success' | 'error' = 'success') => {
+  exportFeedbackMessage.value = message;
+  exportFeedbackType.value = type;
+  exportFeedbackVisible.value = true;
+};
+
+const exportResults = () => {
+  downloadResultsCsv(projStore.solver, resultUnitsFromStore(appStore));
+};
+
+/** Tab separated so the two result tables paste straight into spreadsheet cells. */
+const copyResults = async () => {
+  try {
+    await navigator.clipboard.writeText(buildResultsTsv(projStore.solver, resultUnitsFromStore(appStore)));
+    notifyExport('results.copied');
+  } catch (e) {
+    console.error(e);
+    notifyExport('results.copyFailed', 'error');
+  }
+};
 
 // The bottom bar carries a single help icon that follows the open tab.
 const tabHelpTopics: Record<string, HelpTopicKey> = {

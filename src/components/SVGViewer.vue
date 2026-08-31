@@ -215,14 +215,21 @@ const resetAndFit = () => {
   fitContent();
 };
 
+/** Answers EventType.REQUEST_VIEWER_SVG so exports can reach the element we own. */
+const provideSvgForExport = (respond: (svg: SVGSVGElement | null) => void) => {
+  respond((svg.value as SVGSVGElement) ?? null);
+};
+
 onMounted(() => {
   window.addEventListener('keydown', zoom);
   eventBus.on(EventType.FIT_CONTENT, resetAndFit);
+  eventBus.on(EventType.REQUEST_VIEWER_SVG, provideSvgForExport);
 });
 
 onUnmounted(() => {
   window.removeEventListener('keydown', zoom);
   eventBus.off(EventType.FIT_CONTENT, resetAndFit);
+  eventBus.off(EventType.REQUEST_VIEWER_SVG, provideSvgForExport);
 });
 
 onMounted(() => {

@@ -13,7 +13,12 @@ import {
 } from '@/utils';
 import { ensureDimensionId } from '@/utils/id';
 import type { DimensionLine } from '@/types/dimension';
-import { validateSolverModel, type SolveDiagnostics, type SolveIssue } from '@/utils/validateSolverModel';
+import {
+  findMechanismIssues,
+  validateSolverModel,
+  type SolveDiagnostics,
+  type SolveIssue,
+} from '@/utils/validateSolverModel';
 
 export const useProjectStore = defineStore(
   'project',
@@ -133,38 +138,37 @@ export const useProjectStore = defineStore(
 
       if (solver.value.domain.elements.size === 0 || solver.value.domain.nodes.size === 0) return;
 
-      try {
-        solver.value.solve();
-      } catch {
-        const runtimeIssue: SolveIssue = {
-          level: 'error',
-          code: 'SOLVER_RUNTIME_EXCEPTION',
-          message: 'Solver failed due to an internal model inconsistency. Please review model references and loads.',
-        };
+      const failWith = (...issues: SolveIssue[]) => {
         solveDiagnostics.value = {
-          errors: [...diagnostics.errors, runtimeIssue],
+          errors: [...diagnostics.errors, ...issues],
           warnings: diagnostics.warnings,
         };
         solver.value.loadCases[0].solved = false;
+      };
+
+      try {
+        solver.value.solve();
+      } catch (e) {
+        // mathjs reports an exactly singular system, which for a structure means a mechanism.
+        const isSingular = /singular/i.test(e instanceof Error ? e.message : String(e));
+
+        failWith({
+          level: 'error',
+          code: isSingular ? 'SINGULAR_STIFFNESS_MATRIX' : 'SOLVER_RUNTIME_EXCEPTION',
+          message: isSingular
+            ? 'Structure is a mechanism: the stiffness matrix is singular. Check that every part is held by at least 3 restraints and that end hinges do not leave a member free to rotate.'
+            : 'Solver failed due to an internal model inconsistency. Please review model references and loads.',
+        });
         return;
       }
 
-      // Check if at least 3 dofs are supported
-      let nSup = 0;
+      // Insufficient supports are already reported by validateSolverModel before we get here.
+      // What is left is a structure that is restrained on paper but still a mechanism, which
+      // the solver answers with runaway displacements rather than an exception.
+      const mechanismIssues = findMechanismIssues(solver.value);
 
-      for (const node of solver.value.domain.nodes.values()) {
-        nSup += node.bcs.size;
-      }
-
-      if (nSup < 3) {
-        solver.value.loadCases[0].solved = false;
-        return;
-      }
-
-      // Check for large deformations - kinematically indeterminate structures
-      const maxU = Math.max(...(solver.value.loadCases[0].r.toArray() as number[]).map((v) => Math.abs(v)));
-      if (maxU > 1e6) {
-        solver.value.loadCases[0].solved = false;
+      if (mechanismIssues.length > 0) {
+        failWith(...mechanismIssues);
         return;
       }
 

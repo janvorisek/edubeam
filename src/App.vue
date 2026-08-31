@@ -22,6 +22,8 @@ import { setLocale, availableLocales } from './plugins/i18n';
 
 import Welcome from '@/components/dialogs/Welcome.vue';
 import Share from '@/components/dialogs/Share.vue';
+import Examples from '@/components/dialogs/Examples.vue';
+import ExportImage from '@/components/dialogs/ExportImage.vue';
 import Changelog from '@/components/dialogs/Changelog.vue';
 import Editor from '@/views/Editor.vue';
 import Dialogs from '@/components/Dialogs.vue';
@@ -119,9 +121,13 @@ onMounted(() => {
   const name = params.get('model');
   const lang = params.get('lang');
   const inViewerMode = params.get('viewer');
+  // Documented entry point: run.edubeam.app/?panel=examples opens the gallery straight away.
+  const panel = params.get('panel');
 
   if (inViewerMode) {
     appStore.inViewerMode = true;
+  } else if (panel === 'examples') {
+    openExamples();
   } else {
     if (!appStore.onboardingFinished) openModal(Welcome);
     else maybeShowChangelog();
@@ -146,6 +152,9 @@ onMounted(() => {
 
   if (lang && availableLocales.findIndex((l) => l.code === lang) >= 0) {
     appStore.locale = lang;
+  }
+
+  if (lang || panel) {
     const url = document.location.href;
     window.history.pushState({}, '', url.split('?')[0]);
   }
@@ -235,6 +244,14 @@ const clearMesh = (clearMaterials = false, clearCrossSects = false) => {
 
 const shareMesh = () => {
   openModal(Share);
+};
+
+const openExamples = () => {
+  openModal(Examples);
+};
+
+const openExportImage = () => {
+  openModal(ExportImage);
 };
 
 const openChangelog = () => {
@@ -435,10 +452,23 @@ const app_commit = APP_COMMIT;
           @click="saveProject"
         ></v-list-item>
         <v-list-item
+          prepend-icon="mdi-image-outline"
+          :title="$t('exportImage.title')"
+          value="exportImage"
+          @click="openExportImage"
+        ></v-list-item>
+        <v-list-item
           prepend-icon="mdi-share"
           :title="$t('common.shareModel')"
           value="share"
           @click="shareMesh"
+        ></v-list-item>
+        <v-divider class="my-1"></v-divider>
+        <v-list-item
+          prepend-icon="mdi-bookshelf"
+          :title="$t('examples.title')"
+          value="examples"
+          @click="openExamples"
         ></v-list-item>
         <v-list-item
           prepend-icon="mdi-delete-empty"

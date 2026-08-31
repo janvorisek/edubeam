@@ -177,7 +177,11 @@
     "results": "Výsledky",
     "nodal_results": "Výsledky v uzlech",
     "element_results": "Výsledky na prvcích",
-    "end_forces": "Koncové síly (v lokálních souřadnicích)"
+    "end_forces": "Koncové síly (v lokálních souřadnicích)",
+    "exportCsv": "Exportovat CSV",
+    "exportHint": "Stáhne obě tabulky výsledků v zobrazených jednotkách, připravené do tabulkového procesoru.",
+    "copied": "Výsledky zkopírovány do schránky",
+    "copyFailed": "Výsledky se nepodařilo zkopírovat do schránky."
   },
   "dialogs": {
     "addNode": {
@@ -439,5 +443,26 @@
       "title": "Ukládání a sdílení",
       "body": "Model uložíte do souboru, zkopírujete odkaz nesoucí celou konstrukci, nebo vložíte prohlížeč jen pro čtení do vlastní stránky."
     }
+  },
+  "exportImage": {
+    "title": "Exportovat obrázek",
+    "transparentBackground": "Průhledné pozadí",
+    "download": "Stáhnout PNG",
+    "copyToClipboard": "Kopírovat do schránky",
+    "copied": "Obrázek zkopírován do schránky",
+    "failed": "Obrázek se nepodařilo vykreslit.",
+    "previewAlt": "Náhled exportovaného obrázku",
+    "instructions": "Obrázek se vykreslí přímo pro zvolenou velikost, takže čáry i popisky si zachovají skutečnou tloušťku. Stejná velikost vždy zarámuje konstrukci stejně – hodí se pro export M, N a V vedle sebe.",
+    "width": "Šířka",
+    "height": "Výška",
+    "lockAspect": "Zachovat poměr stran",
+    "fitPreview": "Přizpůsobit",
+    "actualSize": "Skutečná velikost",
+    "preview": "Náhled"
+  },
+  "examples": {
+    "title": "Příklady",
+    "instructions": "Otevřete připravený model a zkoumejte ho. Nahradí ten současný, Ctrl+Z vám ho vrátí zpět.",
+    "moreInDocs": "Další příklady a cvičení"
   }
 }

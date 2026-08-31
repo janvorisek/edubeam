@@ -63,7 +63,18 @@
                     muted
                     playsinline
                   ></video>
-                  <v-img v-else :src="media.src" :alt="media.alt || release.title" class="changelog-media-img"></v-img>
+                  <button
+                    v-else
+                    type="button"
+                    class="changelog-media-button"
+                    :aria-label="media.caption || media.alt || release.title"
+                    @click="openLightbox(media, release)"
+                  >
+                    <v-img :src="media.src" :alt="media.alt || release.title" class="changelog-media-img"></v-img>
+                    <span class="changelog-media-zoom" aria-hidden="true">
+                      <v-icon size="16" icon="mdi-magnify-plus-outline" />
+                    </span>
+                  </button>
                   <figcaption v-if="media.caption" class="text-caption text-medium-emphasis text-center mt-1">
                     {{ media.caption }}
                   </figcaption>
@@ -85,12 +96,24 @@
           </section>
         </template>
       </div>
+
+      <v-dialog v-model="lightboxOpen" max-width="1600" @after-leave="lightboxMedia = null">
+        <div class="changelog-lightbox" @click="lightboxOpen = false">
+          <v-img
+            v-if="lightboxMedia"
+            :src="lightboxMedia.src"
+            :alt="lightboxMedia.alt || lightboxCaption"
+            class="changelog-lightbox-img"
+          ></v-img>
+          <div v-if="lightboxCaption" class="changelog-lightbox-caption">{{ lightboxCaption }}</div>
+        </div>
+      </v-dialog>
     </v-card>
   </v-dialog>
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import { closeModal } from 'jenesius-vue-modal';
 import { useI18n } from 'vue-i18n';
 import { useAppStore } from '@/store/app';
@@ -122,6 +145,16 @@ type UpcomingEntry = {
 type ChangelogData = {
   releases?: ReleaseEntry[];
   upcoming?: UpcomingEntry[];
+};
+
+const lightboxOpen = ref(false);
+const lightboxMedia = ref<MediaEntry | null>(null);
+const lightboxCaption = computed(() => lightboxMedia.value?.caption || lightboxMedia.value?.alt || '');
+
+/** Opens the full size view; falls back to the release title so the overlay is never unlabelled. */
+const openLightbox = (media: MediaEntry, release: ReleaseEntry) => {
+  lightboxMedia.value = { ...media, caption: media.caption || media.alt || release.title };
+  lightboxOpen.value = true;
 };
 
 const releases = ref<ReleaseEntry[]>([]);
@@ -361,6 +394,68 @@ onBeforeUnmount(() => {
 .changelog-media-item--large .changelog-media-img {
   max-height: 360px;
   width: 100%;
+}
+
+.changelog-media-button {
+  display: block;
+  position: relative;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  border-radius: 8px;
+  cursor: zoom-in;
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.changelog-media-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+.changelog-media-button:focus-visible {
+  outline: 2px solid rgb(var(--v-theme-primary));
+  outline-offset: 2px;
+}
+
+.changelog-media-zoom {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+.changelog-media-button:hover .changelog-media-zoom,
+.changelog-media-button:focus-visible .changelog-media-zoom {
+  opacity: 1;
+}
+
+.changelog-lightbox {
+  cursor: zoom-out;
+}
+
+.changelog-lightbox-img {
+  border-radius: 8px;
+  background-color: rgb(var(--v-theme-surface));
+  max-height: 85vh;
+}
+
+.changelog-lightbox-caption {
+  margin-top: 8px;
+  text-align: center;
+  color: #fff;
+  font-size: 0.85rem;
 }
 
 .changelog-media-video {

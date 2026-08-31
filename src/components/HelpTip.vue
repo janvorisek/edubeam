@@ -16,6 +16,7 @@
         :class="[`help-tip--${align}`, { 'help-tip--active': open }]"
         icon="mdi-help-circle-outline"
         :size="size"
+        :density="density"
         variant="text"
         :aria-label="$t('help.aria')"
         @click.stop
@@ -64,9 +65,11 @@ const props = withDefaults(
     topic: HelpTopicKey;
     location?: TipLocation;
     size?: string;
+    /** Icon buttons grow by 12px at the default density, use `compact` to fit a fixed-height bar. */
+    density?: 'default' | 'comfortable' | 'compact';
     align?: TipAlign;
   }>(),
-  { location: 'bottom', size: 'x-small', align: 'text' }
+  { location: 'bottom', size: 'x-small', density: 'default', align: 'text' }
 );
 
 const open = ref(false);

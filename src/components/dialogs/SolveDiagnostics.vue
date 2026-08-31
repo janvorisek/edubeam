@@ -8,26 +8,18 @@
 
         <div v-if="props.diagnostics.errors.length > 0" class="mb-4">
           <div class="text-subtitle-1 font-weight-medium mb-2">Errors</div>
-          <v-list density="compact" class="py-0">
-            <v-list-item v-for="issue in props.diagnostics.errors" :key="issue.code + issue.message">
-              <template #prepend>
-                <v-icon color="error" size="small">mdi-alert-circle</v-icon>
-              </template>
-              <v-list-item-title>{{ issue.message }}</v-list-item-title>
-            </v-list-item>
-          </v-list>
+          <div v-for="issue in props.diagnostics.errors" :key="issue.code + issue.message" class="issue">
+            <v-icon color="error" size="small" class="issue-icon">mdi-alert-circle</v-icon>
+            <span class="issue-message">{{ issue.message }}</span>
+          </div>
         </div>
 
         <div v-if="props.diagnostics.warnings.length > 0">
           <div class="text-subtitle-1 font-weight-medium mb-2">Warnings</div>
-          <v-list density="compact" class="py-0">
-            <v-list-item v-for="issue in props.diagnostics.warnings" :key="issue.code + issue.message">
-              <template #prepend>
-                <v-icon color="warning" size="small">mdi-alert</v-icon>
-              </template>
-              <v-list-item-title>{{ issue.message }}</v-list-item-title>
-            </v-list-item>
-          </v-list>
+          <div v-for="issue in props.diagnostics.warnings" :key="issue.code + issue.message" class="issue">
+            <v-icon color="warning" size="small" class="issue-icon">mdi-alert</v-icon>
+            <span class="issue-message">{{ issue.message }}</span>
+          </div>
         </div>
       </v-card-text>
 
@@ -74,3 +66,29 @@ const close = () => {
   popModal();
 };
 </script>
+
+<style scoped>
+.issue {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 5px 0;
+}
+
+.issue + .issue {
+  border-top: 1px solid rgba(var(--v-theme-on-surface), 0.08);
+}
+
+.issue-icon {
+  flex: 0 0 auto;
+  margin-top: 3px;
+}
+
+.issue-message {
+  /* The messages name nodes and directions; they have to wrap or the fix is cut off. */
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+</style>

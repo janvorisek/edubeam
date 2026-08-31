@@ -1,6 +1,36 @@
 {
   "releases": [
     {
+      "version": "1.1.1",
+      "title": "Solver Errors, Examples & Export",
+      "date": "August 31, 2026",
+      "highlights": [
+        "Models that cannot be solved now say why, naming the node and direction that moves.",
+        "New Examples gallery with ready-made models to open and explore.",
+        "Export the drawing as a PNG at any size, or copy it to the clipboard.",
+        "Export both result tables as CSV or copy them, in the units shown.",
+        "Help icons across the app link to the documentation in your language."
+      ],
+      "tag": "Latest",
+      "media": [
+        {
+          "src": "/changelog/media/examples-gallery.png",
+          "alt": "Examples gallery",
+          "caption": "Examples gallery"
+        },
+        {
+          "src": "/changelog/media/export-image.png",
+          "alt": "Export image dialog",
+          "caption": "Export image"
+        },
+        {
+          "src": "/changelog/media/export-results.png",
+          "alt": "Export CSV and copy buttons in the results table",
+          "caption": "Export results"
+        }
+      ]
+    },
+    {
       "version": "1.1.0",
       "title": "Polygonal Cross Sections",
       "date": "August 30, 2026",
@@ -10,7 +40,6 @@
         "Shape thumbnails in the cross section table, element menu and selection panel.",
         "Shapes are saved with the project and share links."
       ],
-      "tag": "Latest",
       "media": [
         {
           "src": "/changelog/media/polygonal-section-editor.png",

@@ -54,7 +54,9 @@
   "elements": {
     "addElement": "Añadir elemento",
     "editElement": "Editar elemento",
-    "swapNodeOrder": "Intercambiar nodos"
+    "swapNodeOrder": "Intercambiar nodos",
+    "hingeStart": "Rótula al inicio",
+    "hingeEnd": "Rótula al final"
   },
   "loads": {
     "addNodalLoad": "Añadir carga nodal",

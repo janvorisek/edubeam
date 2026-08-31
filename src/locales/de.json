@@ -54,7 +54,9 @@
   "elements": {
     "addElement": "Element hinzufügen",
     "editElement": "Element bearbeiten",
-    "swapNodeOrder": "Knotenreihenfolge tauschen"
+    "swapNodeOrder": "Knotenreihenfolge tauschen",
+    "hingeStart": "Gelenk am Anfang",
+    "hingeEnd": "Gelenk am Ende"
   },
   "loads": {
     "addNodalLoad": "Knotenlast hinzufügen",

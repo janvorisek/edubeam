@@ -80,6 +80,10 @@ const props = defineProps<{
 
 let mouseStartX = 0;
 let mouseStartY = 0;
+/** Pointers currently down on the canvas; more than one means a pinch or a two finger pan. */
+const activePointers = new Set<number>();
+/** A touch is down in a placing mode, and still qualifies as a tap. */
+let pendingTap = false;
 const mouseXReal = ref(0);
 const mouseYReal = ref(0);
 
@@ -388,15 +392,45 @@ watch(ctrl_v, (v) => {
   }
 });
 
+/** Leaves whatever mode the canvas is in - what Esc does, and what the mode banner button calls. */
+const cancelActiveMode = () => {
+  cancelDimensionDrag();
+  cancelDimensionPointDrag();
+  if ('activeElement' in document) (document.activeElement as HTMLElement).blur();
+  appStore.mouseMode = MouseMode.NONE;
+  projectStore.clearSelection();
+  projectStore.clearSelection2();
+  startNode.value = null;
+};
+
+/** Supports given to every node placed by the add node mode; kept across placements. */
+const addNodeBcs = ref<DofID[]>([]);
+/** End hinges given to every element placed by the add element mode. */
+const addElementHinges = ref([false, false]);
+
+/**
+ * A mode where clicking the canvas places something. There is no cursor and no Esc key on touch,
+ * so the mode has to be both visible and cancellable on screen.
+ */
+const activeAddMode = computed(() => {
+  if (appStore.mouseMode === MouseMode.ADD_NODE) return { icon: 'mdi-vector-point-plus', label: t('nodes.addNode') };
+
+  if (appStore.mouseMode === MouseMode.ADD_ELEMENT) {
+    return { icon: 'mdi-vector-polyline-plus', label: t('elements.addElement') };
+  }
+
+  if (appStore.mouseMode === MouseMode.ADD_DIMLINE) {
+    return { icon: 'mdi-arrow-expand-horizontal', label: t('dimensioning.add_dimension') };
+  }
+
+  if (appStore.mouseMode === MouseMode.PASTE_CLIPBOARD) return { icon: 'mdi-content-paste', label: t('common.paste') };
+
+  return null;
+});
+
 watch(escape, (v) => {
   if (v) {
-    cancelDimensionDrag();
-    cancelDimensionPointDrag();
-    if ('activeElement' in document) (document.activeElement as HTMLElement).blur();
-    appStore.mouseMode = MouseMode.NONE;
-    projectStore.clearSelection();
-    projectStore.clearSelection2();
-    startNode.value = null;
+    cancelActiveMode();
 
     //viewerStore.settingsOpen = false;
   }
@@ -634,8 +668,8 @@ const onNodeHover = (e: MouseEvent, node: Node) => {
 };
 
 const hasMoved = (e: MouseEvent | PointerEvent) => {
-  const dx = e.offsetX - mouseStartX;
-  const dy = e.offsetY - mouseStartY;
+  const dx = e.clientX - mouseStartX;
+  const dy = e.clientY - mouseStartY;
   const d = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
   if (d > 10) return true;
 
@@ -989,21 +1023,28 @@ const cancelDimensionPointDrag = () => {
   finishDimensionPointDrag(false);
 };
 
-const mouseMove = (e: PointerEvent) => {
+/**
+ * Model coordinates under the pointer, snapped to the grid when enabled.
+ *
+ * Screen coordinates are used rather than `offsetX`/`offsetY`, which are relative to whatever
+ * element the pointer happens to be over: a node handle, a load glyph or the grid. That differs
+ * between a pointerdown and the pointerup that follows it, and a touch lands on a child element
+ * far more often than a mouse does, which put placed nodes anywhere but under the finger.
+ */
+const updatePointerPosition = (e: PointerEvent) => {
   appStore.mouse.x = e.clientX;
   appStore.mouse.y = e.clientY;
 
-  const matrix = viewport.value!.getCTM() as DOMMatrix;
+  const matrix = viewport.value!.getScreenCTM() as DOMMatrix;
 
-  const leftTop = svg.value!.createSVGPoint();
-  leftTop.x = e.offsetX; //svgBB.left;
-  leftTop.y = e.offsetY; //svgBB.top;
+  const pointer = svg.value!.createSVGPoint();
+  pointer.x = e.clientX;
+  pointer.y = e.clientY;
 
-  const inv = matrix.inverse();
-  const svgP1 = leftTop.matrixTransform(inv);
+  const svgP1 = pointer.matrixTransform(matrix.inverse());
 
-  const mXReal = svgP1.x; // * zoom;
-  const mYReal = svgP1.y; // * zoom;
+  const mXReal = svgP1.x;
+  const mYReal = svgP1.y;
 
   const realStep = viewerStore.gridStep;
   const canSnap = viewerStore.snapToGrid && Number.isFinite(realStep) && realStep > 0;
@@ -1013,6 +1054,10 @@ const mouseMove = (e: PointerEvent) => {
 
   mouseXReal.value = canSnap ? snappedX : mXReal;
   mouseYReal.value = canSnap ? snappedY : mYReal;
+};
+
+const mouseMove = (e: PointerEvent) => {
+  updatePointerPosition(e);
 
   if (pendingDimensionId && !isDraggingDimension() && hasMoved(e)) {
     if (startDimensionDrag(pendingDimensionId)) {
@@ -1052,6 +1097,278 @@ const mouseMove = (e: PointerEvent) => {
   }
 };
 
+/**
+ * Runs the placing modes for a pointer at the current position. Returns whether it consumed the
+ * event. Called on pointerdown for a mouse, and on pointerup for touch, where a gesture only turns
+ * out to be a tap once the finger lifts.
+ */
+const placeAtPointer = (e: PointerEvent) => {
+  if (appStore.mouseMode === MouseMode.PASTE_CLIPBOARD) {
+    appStore.mouseMode = MouseMode.NONE;
+    useClipboardStore().paste({
+      x: mouseXReal.value - startNode.value.x + deltaPaste.value.x,
+      z: mouseYReal.value - startNode.value.y + deltaPaste.value.y,
+    });
+    startNode.value = null;
+    return true;
+  }
+
+  if (appStore.mouseMode === MouseMode.ADD_NODE) {
+    mouseStartX = -9999;
+
+    let newNodeId = projectStore.solver.domain.nodes.size + 1;
+
+    while (projectStore.solver.domain.nodes.has(newNodeId.toString())) {
+      newNodeId++;
+    }
+
+    // Check whether the node is being placed onto some of the existing elements
+    // If so, we need to ask the user if they want split the existing element or place individual node
+    for (const [, el] of projectStore.solver.domain.elements) {
+      const beam = el as Beam2D;
+      const n1 = projectStore.solver.domain.nodes.get(beam.nodes[0])!;
+      const n2 = projectStore.solver.domain.nodes.get(beam.nodes[1])!;
+
+      const dist = distanceToLineSegment(
+        { x: mouseXReal.value, y: mouseYReal.value },
+        { x: n1.coords[0], y: n1.coords[2] },
+        { x: n2.coords[0], y: n2.coords[2] }
+      );
+
+      if (dist < 0.1) {
+        openModal(Confirmation, {
+          title: t('confirmation.splitElementAndPlaceNode.title'),
+          message: t('confirmation.splitElementAndPlaceNode.message', { label: String(beam.label) }),
+          actions: [
+            {
+              label: t('confirmation.splitElementAndPlaceNode.split'),
+              color: 'green darken-1',
+              action: () => {
+                executeModelMutationWithUndo(() => {
+                  projectStore.solver.loadCases[0].solved = false;
+                  projectStore.solver.domain.createNode(
+                    newNodeId,
+                    [mouseXReal.value, 0, mouseYReal.value],
+                    [...addNodeBcs.value]
+                  );
+
+                  const prevHinges = beam.hinges;
+
+                  const startNode = projectStore.solver.domain.nodes.get(beam.nodes[0])!;
+                  const endNode = projectStore.solver.domain.nodes.get(beam.nodes[1])!;
+                  const newNode = projectStore.solver.domain.nodes.get(String(newNodeId))!;
+                  const totalLength = Math.hypot(
+                    endNode.coords[0] - startNode.coords[0],
+                    endNode.coords[2] - startNode.coords[2]
+                  );
+                  const partialLength = Math.hypot(
+                    newNode.coords[0] - startNode.coords[0],
+                    newNode.coords[2] - startNode.coords[2]
+                  );
+                  const splitRatio = totalLength > 0 ? Math.min(Math.max(partialLength / totalLength, 0), 1) : 0.5;
+
+                  projectStore.solver.domain.createBeam2D(el.label + 'a', [el.nodes[0], newNodeId], el.mat, el.cs, [
+                    prevHinges[0],
+                    false,
+                  ]);
+
+                  projectStore.solver.domain.createBeam2D(el.label + 'b', [newNodeId, el.nodes[1]], el.mat, el.cs, [
+                    false,
+                    prevHinges[1],
+                  ]);
+
+                  for (const loadCase of projectStore.solver.loadCases) {
+                    loadCase.solved = false;
+                    for (let i = loadCase.elementLoadList.length - 1; i >= 0; i--) {
+                      const load = loadCase.elementLoadList[i];
+                      if (load.target !== el.label) continue;
+
+                      if (load instanceof BeamElementUniformEdgeLoad) {
+                        load.target = el.label + 'a';
+                        loadCase.createBeamElementUniformEdgeLoad(el.label + 'b', [...load.values], load.lcs);
+                      } else if (load instanceof BeamElementTrapezoidalEdgeLoad) {
+                        const midValues: [number, number] = [
+                          load.startValues[0] + (load.endValues[0] - load.startValues[0]) * splitRatio,
+                          load.startValues[1] + (load.endValues[1] - load.startValues[1]) * splitRatio,
+                        ];
+                        const startValues: [number, number] = [...load.startValues] as [number, number];
+                        const endValues: [number, number] = [...load.endValues] as [number, number];
+                        load.change(el.label + 'a', startValues, midValues, load.lcs);
+                        loadCase.createBeamElementTrapezoidalEdgeLoad(el.label + 'b', midValues, endValues, load.lcs);
+                      } else {
+                        load.target = el.label + 'a';
+                      }
+                    }
+                  }
+
+                  projectStore.solver.domain.elements.delete(el.label);
+                });
+
+                appStore.mouseMode = MouseMode.NONE;
+                closeModal();
+              },
+            },
+            {
+              label: t('confirmation.placeIndividualNode'),
+              color: 'blue darken-1',
+              action: () => {
+                executeModelMutationWithUndo(() => {
+                  projectStore.solver.loadCases[0].solved = false;
+                  projectStore.solver.domain.createNode(
+                    newNodeId,
+                    [mouseXReal.value, 0, mouseYReal.value],
+                    [...addNodeBcs.value]
+                  );
+                });
+
+                appStore.mouseMode = MouseMode.NONE;
+                closeModal();
+              },
+            },
+            {
+              label: t('dialogs.common.cancel'),
+              color: 'red darken-1',
+              action: () => {
+                closeModal();
+              },
+            },
+          ],
+          minWidth: 480,
+        });
+
+        e.stopPropagation();
+        e.preventDefault();
+        return true;
+      }
+    }
+
+    // No existing element was found, just add the node
+    executeModelMutationWithUndo(() => {
+      projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value], [...addNodeBcs.value]);
+    });
+
+    return true;
+  }
+
+  if (appStore.mouseMode === MouseMode.ADD_ELEMENT) {
+    mouseStartX = -9999;
+    if (startNode.value === null) {
+      const n = projectStore.solver.domain.nodes.get(intersected.value.index as string);
+
+      // No node selected, but want to add element
+      // So we add a node for the user
+      if (!n) {
+        let newNodeId = projectStore.solver.domain.nodes.size + 1;
+
+        while (projectStore.solver.domain.nodes.has(newNodeId.toString())) {
+          newNodeId++;
+        }
+
+        executeModelMutationWithUndo(() => {
+          projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
+        });
+
+        startNode.value = { label: newNodeId, x: mouseXReal.value, y: mouseYReal.value };
+
+        return true;
+      }
+
+      startNode.value = { label: intersected.value.index, x: n.coords[0], y: n.coords[2] };
+    } else if (intersected.value.type === 'node') {
+      projectStore.solver.loadCases[0].solved = false;
+      let newElId = projectStore.solver.domain.elements.size + 1;
+
+      while (projectStore.solver.domain.elements.has(newElId.toString())) {
+        newElId++;
+      }
+
+      const nid = startNode.value.label;
+      if (nid === null || intersected.value.index === null) return true;
+      const mat = [...useProjectStore().solver.domain.materials.values()][0].label;
+      const cs = [...useProjectStore().solver.domain.crossSections.values()][0].label;
+      executeModelMutationWithUndo(() => {
+        projectStore.solver.domain.createBeam2D(newElId, [String(nid), String(intersected.value.index)], mat, cs, [
+          ...addElementHinges.value,
+        ]);
+      });
+
+      const n = projectStore.solver.domain.nodes.get(intersected.value.index as string)!;
+      startNode.value = { label: intersected.value.index, x: n.coords[0], y: n.coords[2] };
+    } else {
+      projectStore.solver.loadCases[0].solved = false;
+
+      // No end node selected, just add new
+      let newNodeId = projectStore.solver.domain.nodes.size + 1;
+
+      while (projectStore.solver.domain.nodes.has(newNodeId.toString())) {
+        newNodeId++;
+      }
+
+      let newElId = projectStore.solver.domain.elements.size + 1;
+
+      while (projectStore.solver.domain.elements.has(newElId.toString())) {
+        newElId++;
+      }
+
+      const nid = startNode.value.label;
+      if (nid === null) return true;
+      const mat = [...useProjectStore().solver.domain.materials.values()][0].label;
+      const cs = [...useProjectStore().solver.domain.crossSections.values()][0].label;
+      executeModelMutationWithUndo(() => {
+        projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
+        projectStore.solver.domain.createBeam2D(newElId, [String(nid), String(newNodeId)], mat, cs, [
+          ...addElementHinges.value,
+        ]);
+      });
+
+      startNode.value = { label: newNodeId, x: mouseXReal.value, y: mouseYReal.value };
+    }
+
+    return true;
+  }
+
+  if (appStore.mouseMode === MouseMode.ADD_DIMLINE) {
+    mouseStartX = -9999;
+    if (startNode.value === null) {
+      const startPoint = getPointerDimensionPoint();
+      startNode.value = {
+        label: startPoint.sourceNodeLabel ?? null,
+        x: startPoint.x,
+        y: startPoint.y,
+        sourceNodeLabel: startPoint.sourceNodeLabel ?? null,
+      };
+    } else {
+      const endPoint = getPointerDimensionPoint();
+      const samePoint = Math.hypot(endPoint.x - startNode.value.x, endPoint.y - startNode.value.y) < 1e-9;
+
+      if (samePoint) {
+        startNode.value = null;
+        appStore.mouseMode = MouseMode.NONE;
+        return true;
+      }
+
+      executeModelMutationWithUndo(() => {
+        projectStore.dimensions.push({
+          id: createDimensionId(),
+          distance: dimlineDist.value / (scale.value || 1),
+          distanceUnit: 'world',
+          points: [
+            createDimensionPoint(startNode.value!.x, startNode.value!.y, startNode.value!.sourceNodeLabel ?? null),
+            endPoint,
+          ],
+        });
+      });
+
+      startNode.value = null;
+      appStore.mouseMode = MouseMode.NONE;
+    }
+
+    return true;
+  }
+
+  return false;
+};
+
 const onMouseDown = (e: PointerEvent) => {
   //if (this.svgPanZoom == null) return;
   const skipClearingSelection = pointerDownOriginatesFromDimension;
@@ -1065,264 +1382,35 @@ const onMouseDown = (e: PointerEvent) => {
 
   if ('activeElement' in document) (document.activeElement as HTMLElement).blur();
 
-  mouseStartX = e.offsetX;
-  mouseStartY = e.offsetY;
+  // The primary pointer starts a fresh gesture; anything left over from a lost pointerup is stale.
+  if (e.isPrimary) activePointers.clear();
+  activePointers.add(e.pointerId);
+
+  // A second finger turns the gesture into a pinch or a two finger pan. Nothing may be placed by
+  // it, and the tap the first finger had started is off.
+  if (activePointers.size > 1) {
+    pendingTap = false;
+    return;
+  }
+
+  updatePointerPosition(e);
+
+  mouseStartX = e.clientX;
+  mouseStartY = e.clientY;
+
+  // Touch has no hover and no way to take a press back, so a placing mode waits for the finger to
+  // lift: by then a pinch, a pan or a drag has ruled itself out.
+  if (e.pointerType !== 'mouse' && e.button === 0 && activeAddMode.value) {
+    pendingTap = true;
+    return;
+  }
 
   if (e.button === 0 /* && typeof e.button !== "undefined" */) {
     //this.svgPanZoom.disablePan();
     //mouseStartX = e.offsetX;
     //mouseStartY = e.offsetY;
 
-    if (appStore.mouseMode === MouseMode.PASTE_CLIPBOARD) {
-      appStore.mouseMode = MouseMode.NONE;
-      useClipboardStore().paste({
-        x: mouseXReal.value - startNode.value.x + deltaPaste.value.x,
-        z: mouseYReal.value - startNode.value.y + deltaPaste.value.y,
-      });
-      startNode.value = null;
-      return;
-    }
-
-    if (appStore.mouseMode === MouseMode.ADD_NODE) {
-      mouseStartX = -9999;
-
-      let newNodeId = projectStore.solver.domain.nodes.size + 1;
-
-      while (projectStore.solver.domain.nodes.has(newNodeId.toString())) {
-        newNodeId++;
-      }
-
-      // Check whether the node is being placed onto some of the existing elements
-      // If so, we need to ask the user if they want split the existing element or place individual node
-      for (const [, el] of projectStore.solver.domain.elements) {
-        const beam = el as Beam2D;
-        const n1 = projectStore.solver.domain.nodes.get(beam.nodes[0])!;
-        const n2 = projectStore.solver.domain.nodes.get(beam.nodes[1])!;
-
-        const dist = distanceToLineSegment(
-          { x: mouseXReal.value, y: mouseYReal.value },
-          { x: n1.coords[0], y: n1.coords[2] },
-          { x: n2.coords[0], y: n2.coords[2] }
-        );
-
-        if (dist < 0.1) {
-          openModal(Confirmation, {
-            title: t('confirmation.splitElementAndPlaceNode.title'),
-            message: t('confirmation.splitElementAndPlaceNode.message', { label: String(beam.label) }),
-            actions: [
-              {
-                label: t('confirmation.splitElementAndPlaceNode.split'),
-                color: 'green darken-1',
-                action: () => {
-                  executeModelMutationWithUndo(() => {
-                    projectStore.solver.loadCases[0].solved = false;
-                    projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
-
-                    const prevHinges = beam.hinges;
-
-                    const startNode = projectStore.solver.domain.nodes.get(beam.nodes[0])!;
-                    const endNode = projectStore.solver.domain.nodes.get(beam.nodes[1])!;
-                    const newNode = projectStore.solver.domain.nodes.get(String(newNodeId))!;
-                    const totalLength = Math.hypot(
-                      endNode.coords[0] - startNode.coords[0],
-                      endNode.coords[2] - startNode.coords[2]
-                    );
-                    const partialLength = Math.hypot(
-                      newNode.coords[0] - startNode.coords[0],
-                      newNode.coords[2] - startNode.coords[2]
-                    );
-                    const splitRatio = totalLength > 0 ? Math.min(Math.max(partialLength / totalLength, 0), 1) : 0.5;
-
-                    projectStore.solver.domain.createBeam2D(el.label + 'a', [el.nodes[0], newNodeId], el.mat, el.cs, [
-                      prevHinges[0],
-                      false,
-                    ]);
-
-                    projectStore.solver.domain.createBeam2D(el.label + 'b', [newNodeId, el.nodes[1]], el.mat, el.cs, [
-                      false,
-                      prevHinges[1],
-                    ]);
-
-                    for (const loadCase of projectStore.solver.loadCases) {
-                      loadCase.solved = false;
-                      for (let i = loadCase.elementLoadList.length - 1; i >= 0; i--) {
-                        const load = loadCase.elementLoadList[i];
-                        if (load.target !== el.label) continue;
-
-                        if (load instanceof BeamElementUniformEdgeLoad) {
-                          load.target = el.label + 'a';
-                          loadCase.createBeamElementUniformEdgeLoad(el.label + 'b', [...load.values], load.lcs);
-                        } else if (load instanceof BeamElementTrapezoidalEdgeLoad) {
-                          const midValues: [number, number] = [
-                            load.startValues[0] + (load.endValues[0] - load.startValues[0]) * splitRatio,
-                            load.startValues[1] + (load.endValues[1] - load.startValues[1]) * splitRatio,
-                          ];
-                          const startValues: [number, number] = [...load.startValues] as [number, number];
-                          const endValues: [number, number] = [...load.endValues] as [number, number];
-                          load.change(el.label + 'a', startValues, midValues, load.lcs);
-                          loadCase.createBeamElementTrapezoidalEdgeLoad(el.label + 'b', midValues, endValues, load.lcs);
-                        } else {
-                          load.target = el.label + 'a';
-                        }
-                      }
-                    }
-
-                    projectStore.solver.domain.elements.delete(el.label);
-                  });
-
-                  appStore.mouseMode = MouseMode.NONE;
-                  closeModal();
-                },
-              },
-              {
-                label: t('confirmation.placeIndividualNode'),
-                color: 'blue darken-1',
-                action: () => {
-                  executeModelMutationWithUndo(() => {
-                    projectStore.solver.loadCases[0].solved = false;
-                    projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
-                  });
-
-                  appStore.mouseMode = MouseMode.NONE;
-                  closeModal();
-                },
-              },
-              {
-                label: t('dialogs.common.cancel'),
-                color: 'red darken-1',
-                action: () => {
-                  closeModal();
-                },
-              },
-            ],
-            minWidth: 480,
-          });
-
-          e.stopPropagation();
-          e.preventDefault();
-          return;
-        }
-      }
-
-      // No existing element was found, just add the node
-      executeModelMutationWithUndo(() => {
-        projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
-      });
-
-      return;
-    }
-
-    if (appStore.mouseMode === MouseMode.ADD_ELEMENT) {
-      mouseStartX = -9999;
-      if (startNode.value === null) {
-        const n = projectStore.solver.domain.nodes.get(intersected.value.index as string);
-
-        // No node selected, but want to add element
-        // So we add a node for the user
-        if (!n) {
-          let newNodeId = projectStore.solver.domain.nodes.size + 1;
-
-          while (projectStore.solver.domain.nodes.has(newNodeId.toString())) {
-            newNodeId++;
-          }
-
-          executeModelMutationWithUndo(() => {
-            projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
-          });
-
-          startNode.value = { label: newNodeId, x: mouseXReal.value, y: mouseYReal.value };
-
-          return;
-        }
-
-        startNode.value = { label: intersected.value.index, x: n.coords[0], y: n.coords[2] };
-      } else if (intersected.value.type === 'node') {
-        projectStore.solver.loadCases[0].solved = false;
-        let newElId = projectStore.solver.domain.elements.size + 1;
-
-        while (projectStore.solver.domain.elements.has(newElId.toString())) {
-          newElId++;
-        }
-
-        const nid = startNode.value.label;
-        if (nid === null || intersected.value.index === null) return;
-        const mat = [...useProjectStore().solver.domain.materials.values()][0].label;
-        const cs = [...useProjectStore().solver.domain.crossSections.values()][0].label;
-        executeModelMutationWithUndo(() => {
-          projectStore.solver.domain.createBeam2D(newElId, [String(nid), String(intersected.value.index)], mat, cs);
-        });
-
-        const n = projectStore.solver.domain.nodes.get(intersected.value.index as string)!;
-        startNode.value = { label: intersected.value.index, x: n.coords[0], y: n.coords[2] };
-      } else {
-        projectStore.solver.loadCases[0].solved = false;
-
-        // No end node selected, just add new
-        let newNodeId = projectStore.solver.domain.nodes.size + 1;
-
-        while (projectStore.solver.domain.nodes.has(newNodeId.toString())) {
-          newNodeId++;
-        }
-
-        let newElId = projectStore.solver.domain.elements.size + 1;
-
-        while (projectStore.solver.domain.elements.has(newElId.toString())) {
-          newElId++;
-        }
-
-        const nid = startNode.value.label;
-        if (nid === null) return;
-        const mat = [...useProjectStore().solver.domain.materials.values()][0].label;
-        const cs = [...useProjectStore().solver.domain.crossSections.values()][0].label;
-        executeModelMutationWithUndo(() => {
-          projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
-          projectStore.solver.domain.createBeam2D(newElId, [String(nid), String(newNodeId)], mat, cs);
-        });
-
-        startNode.value = { label: newNodeId, x: mouseXReal.value, y: mouseYReal.value };
-      }
-
-      return;
-    }
-
-    if (appStore.mouseMode === MouseMode.ADD_DIMLINE) {
-      mouseStartX = -9999;
-      if (startNode.value === null) {
-        const startPoint = getPointerDimensionPoint();
-        startNode.value = {
-          label: startPoint.sourceNodeLabel ?? null,
-          x: startPoint.x,
-          y: startPoint.y,
-          sourceNodeLabel: startPoint.sourceNodeLabel ?? null,
-        };
-      } else {
-        const endPoint = getPointerDimensionPoint();
-        const samePoint = Math.hypot(endPoint.x - startNode.value.x, endPoint.y - startNode.value.y) < 1e-9;
-
-        if (samePoint) {
-          startNode.value = null;
-          appStore.mouseMode = MouseMode.NONE;
-          return;
-        }
-
-        executeModelMutationWithUndo(() => {
-          projectStore.dimensions.push({
-            id: createDimensionId(),
-            distance: dimlineDist.value / (scale.value || 1),
-            distanceUnit: 'world',
-            points: [
-              createDimensionPoint(startNode.value!.x, startNode.value!.y, startNode.value!.sourceNodeLabel ?? null),
-              endPoint,
-            ],
-          });
-        });
-
-        startNode.value = null;
-        appStore.mouseMode = MouseMode.NONE;
-      }
-
-      return;
-    }
+    if (placeAtPointer(e)) return;
 
     if (appStore.mouseMode === MouseMode.HOVER) {
       if (intersected.value.type === 'node') hideTooltip(false);
@@ -1476,7 +1564,27 @@ const clientToSvgCoords = (ecoords: { x: number; y: number }, svgElement: SVGSVG
   return { x: cursorPt.x, y: cursorPt.y };
 };
 
+/** The browser took the gesture over (scroll, pinch, palm rejection); it places nothing. */
+const onPointerCancel = (e: PointerEvent) => {
+  activePointers.delete(e.pointerId);
+  pendingTap = false;
+};
+
 const onMouseUp = (e: PointerEvent) => {
+  activePointers.delete(e.pointerId);
+
+  if (pendingTap) {
+    pendingTap = false;
+
+    // Only a single finger that stayed put places anything
+    if (activePointers.size === 0 && !hasMoved(e)) {
+      updatePointerPosition(e);
+      placeAtPointer(e);
+    }
+
+    return;
+  }
+
   if (appStore.mouseMode === MouseMode.ADD_NODE) return;
   if (appStore.mouseMode === MouseMode.ADD_ELEMENT) return;
   if (appStore.mouseMode === MouseMode.ADD_DIMLINE) return;
@@ -1766,6 +1874,51 @@ defineExpose({ centerContent, fitContent });
       ></v-btn>
     </div>
 
+    <div
+      v-if="activeAddMode"
+      id="addModeBanner"
+      class="d-flex flex-column pl-3 pr-1 py-1 elevation-2 rounded-lg bg-surface"
+      style="
+        position: absolute;
+        z-index: 100;
+        top: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: calc(100% - 160px);
+      "
+    >
+      <div class="d-flex align-center ga-2">
+        <v-icon size="16" :icon="activeAddMode.icon" />
+        <span class="text-body-2 text-no-wrap">{{ activeAddMode.label }}</span>
+        <v-spacer />
+        <v-btn size="small" variant="text" color="error" density="comfortable" @click="cancelActiveMode">
+          {{ $t('dialogs.common.cancel') }}
+        </v-btn>
+      </div>
+
+      <!-- What the next placement gets; the mode stays open, so the options live with it -->
+      <div v-if="appStore.mouseMode === MouseMode.ADD_NODE" class="d-flex align-center ga-3">
+        <v-checkbox-btn v-model="addNodeBcs" :value="DofID.Dx" density="compact" label="Dx" class="flex-grow-0" />
+        <v-checkbox-btn v-model="addNodeBcs" :value="DofID.Dz" density="compact" label="Dz" class="flex-grow-0" />
+        <v-checkbox-btn v-model="addNodeBcs" :value="DofID.Ry" density="compact" label="Ry" class="flex-grow-0" />
+      </div>
+
+      <div v-if="appStore.mouseMode === MouseMode.ADD_ELEMENT" class="d-flex align-center ga-3">
+        <v-checkbox-btn
+          v-model="addElementHinges[0]"
+          density="compact"
+          :label="$t('elements.hingeStart')"
+          class="flex-grow-0"
+        />
+        <v-checkbox-btn
+          v-model="addElementHinges[1]"
+          density="compact"
+          :label="$t('elements.hingeEnd')"
+          class="flex-grow-0"
+        />
+      </div>
+    </div>
+
     <context-menu v-model:show="showCtxMenu" :options="optionsCtxMenu">
       <context-menu-item
         @click.ctrl="appStore.mouseMode = MouseMode.ADD_NODE"
@@ -1946,6 +2099,7 @@ defineExpose({ centerContent, fitContent });
         @pointermove="mouseMove"
         @pointerdown="onMouseDown"
         @pointerup="onMouseUp"
+        @pointercancel="onPointerCancel"
       >
         <SvgViewerDefs
           :id="props.id"

@@ -128,12 +128,13 @@ const onMouseWheel = (event: WheelEvent): void => {
   debonceZoom();
 };
 
-// A single finger pans, unless it starts on a node (the viewer switches mouseMode to drag it instead).
+// A single finger pans, unless it starts on a node (the viewer switches mouseMode to drag it
+// instead). In the placing modes it still pans: the viewer places on a tap, not on a drag.
 const onTouchStart = (event: TouchEvent): void => {
   if (!props.touch) return;
 
   if (event.touches.length === 1) {
-    touchPointer.value.move = appStore.mouseMode === MouseMode.NONE;
+    touchPointer.value.move = appStore.mouseMode !== MouseMode.MOVING;
     touchPointer.value.x = event.touches[0].clientX;
     touchPointer.value.y = event.touches[0].clientY;
     touchPointer.value.pinch = false;

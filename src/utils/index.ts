@@ -491,14 +491,29 @@ export const changeRefNumValue = (value: string) => {
   return val;
 };
 
+/**
+ * A field hands its rules whatever its model holds: a string, or a number where the template uses
+ * `v-model.number`. Returns NaN for anything that is not a number, so the rules can tell the two
+ * failure cases apart.
+ */
+const ruleValueAsNumber = (v: unknown) => {
+  if (typeof v === 'number') return v;
+  if (typeof v !== 'string') return NaN;
+
+  const normalized = v.replace(/\s/g, '').replace(',', '.');
+  if (normalized === '') return NaN;
+
+  // Number(), not parseFloat(): trailing junk like "5abc" has to stay invalid
+  return Number(normalized);
+};
+
+const isEmptyRuleValue = (v: unknown) => v === '' || v === null || v === undefined;
+
 export const numberRules = [
-  (v: string) => {
-    if (v === '') return i18n.global.t('validators.enterValue');
+  (v: unknown) => {
+    if (isEmptyRuleValue(v)) return i18n.global.t('validators.enterValue');
 
-    const tmp = v.replace(/\s/g, '').replace(',', '.');
-
-    // isNaN accepts a string, the types are wrong
-    if (isNaN(tmp as unknown as number)) return i18n.global.t('validators.invalidNumber');
+    if (!Number.isFinite(ruleValueAsNumber(v))) return i18n.global.t('validators.invalidNumber');
 
     return true;
   },
@@ -507,8 +522,8 @@ export const numberRules = [
 /** Like `numberRules`, but additionally requires a finite value strictly greater than zero. */
 export const positiveNumberRules = [
   ...numberRules,
-  (v: string) => {
-    const val = parseFloat(v.replace(/\s/g, '').replace(',', '.'));
+  (v: unknown) => {
+    const val = ruleValueAsNumber(v);
     if (!Number.isFinite(val) || val <= 0) return i18n.global.t('validators.positiveNumber');
 
     return true;

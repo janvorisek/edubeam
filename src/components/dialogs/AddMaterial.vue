@@ -1,7 +1,10 @@
 <template>
   <v-dialog v-model="open" max-width="420">
     <v-card>
-      <v-card-title> {{ $t('dialogs.addMaterial.addNewMaterial') }} </v-card-title>
+      <v-card-title class="d-flex align-center">
+        <span>{{ $t('dialogs.addMaterial.addNewMaterial') }}</span>
+        <HelpTip topic="materials" class="ml-1" />
+      </v-card-title>
 
       <v-card-text class="px-0">
         <v-form v-model="valid">
@@ -89,6 +92,7 @@
 </template>
 
 <script setup lang="ts">
+import HelpTip from '../HelpTip.vue';
 import { computed, ref } from 'vue';
 import { closeModal, openModal } from 'jenesius-vue-modal';
 import { useProjectStore } from '@/store/project';

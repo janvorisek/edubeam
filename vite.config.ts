@@ -34,6 +34,11 @@ export default defineConfig({
       mode: 'development',
       //registerType: "autoUpdate",
       injectRegister: 'script',
+      workbox: {
+        // The app bundle is a single chunk slightly over workbox's 2 MiB default; without
+        // this it would be dropped from the precache and the app would stop working offline.
+        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
+      },
       manifest: {
         name: 'edubeam',
         short_name: 'edubeam',

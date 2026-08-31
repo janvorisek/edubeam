@@ -1,10 +1,19 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import { resolve } from 'path'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
+import { resolve } from 'path';
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    // Needed by anything importing `@/plugins/i18n`, which bundles `src/locales/*.json`.
+    VueI18nPlugin({
+      include: resolve(__dirname, './src/locales/**'),
+      runtimeOnly: false,
+      strictMessage: false,
+    }),
+  ],
   test: {
     environment: 'happy-dom',
     globals: true,
@@ -14,4 +23,4 @@ export default defineConfig({
       '@': resolve(__dirname, './src'),
     },
   },
-})
+});

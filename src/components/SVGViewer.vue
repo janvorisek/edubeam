@@ -14,6 +14,7 @@ import AddNodeDialog from './dialogs/AddNode.vue';
 import AddMaterialDialog from './dialogs/AddMaterial.vue';
 import AddCrossSectionDialog from './dialogs/AddCrossSection.vue';
 import SolveDiagnosticsDialog from './dialogs/SolveDiagnostics.vue';
+import HelpTip from './HelpTip.vue';
 import Confirmation from './dialogs/Confirmation.vue';
 
 import EditNodalLoadDialog from './dialogs/EditNodalLoad.vue';
@@ -2443,7 +2444,8 @@ defineExpose({ centerContent, fitContent });
           />
         </div>
       </div>
-      <div class="text-right text-sm-body-2">
+      <div class="text-right text-sm-body-2 d-flex align-center justify-end">
+        <HelpTip topic="diagrams" location="bottom end" />
         <button class="text-decoration-underline bg-white" @click="appStore.openSettings()">
           {{ $t('sideSettings.more_settings') }}
         </button>

@@ -1,7 +1,10 @@
 <template>
   <v-dialog v-model="open" max-width="420">
     <v-card>
-      <v-card-title> {{ $t('dialogs.addElement.addNewElement') }} </v-card-title>
+      <v-card-title class="d-flex align-center">
+        <span>{{ $t('dialogs.addElement.addNewElement') }}</span>
+        <HelpTip topic="elements" class="ml-1" />
+      </v-card-title>
 
       <v-card-text>
         <v-form>
@@ -105,6 +108,7 @@
 </template>
 
 <script setup lang="ts">
+import HelpTip from '../HelpTip.vue';
 import { i18n } from '@/plugins/i18n';
 import { ref, onMounted } from 'vue';
 import { useProjectStore } from '../../store/project';

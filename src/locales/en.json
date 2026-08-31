@@ -382,5 +382,70 @@
   "warnings": {
     "noMaterialsDefined": "No materials defined.",
     "noCrossSectionsDefined": "No cross sections defined."
+  },
+  "help": {
+    "aria": "Show help",
+    "readMore": "Read more in the docs",
+    "troubleshooting": "Troubleshooting",
+    "nodes": {
+      "title": "Nodes",
+      "body": "Nodes are the points that hold the structure together. Their coordinates, supports, hinges and the loads applied to them are set per node."
+    },
+    "supports": {
+      "title": "Supports",
+      "body": "Tick a degree of freedom to restrain it: Dx and Dz block translation, Ry blocks rotation. A structure needs at least three independent restraints."
+    },
+    "elements": {
+      "title": "Elements",
+      "body": "Elements connect two nodes and carry a material and a cross section. Release an end to turn a beam into a hinged or truss member."
+    },
+    "loads": {
+      "title": "Loads",
+      "body": "Loads act on nodes or along elements. Positive values follow the global axes, with z pointing down."
+    },
+    "nodalLoads": {
+      "title": "Nodal loads",
+      "body": "A nodal load applies a force or a moment directly to a node. Prescribed displacements let you impose a support settlement instead."
+    },
+    "elementLoads": {
+      "title": "Element loads",
+      "body": "Element loads act along a member: uniform, trapezoidal, concentrated or temperature. They can be given in global or local axes."
+    },
+    "materials": {
+      "title": "Materials",
+      "body": "A material carries Young's modulus, shear modulus, density and thermal expansion. Only E and the section matter for a plain static analysis."
+    },
+    "crossSections": {
+      "title": "Cross sections",
+      "body": "A cross section supplies the area and second moment of area used for stiffness. Pick one from the library or draw your own polygon."
+    },
+    "hinges": {
+      "title": "End hinges",
+      "body": "A ticked box releases the bending moment at that end of the element. Tick both ends to make a truss bar, one end to put a pin inside a frame."
+    },
+    "signConvention": {
+      "title": "Sign convention",
+      "body": "Global z points down, so a positive Fz or fz pulls downwards and My is positive counter-clockwise. Loads switched to the local system follow the element instead."
+    },
+    "results": {
+      "title": "Results",
+      "body": "Once the model solves you get normal force, shear force, bending moment, deformed shape and reactions, both as diagrams and as tables."
+    },
+    "diagrams": {
+      "title": "Result overlays",
+      "body": "These switches draw the normal force, shear force, bending moment, deformed shape and reactions over the model. N is positive in tension, My positive when sagging."
+    },
+    "endForces": {
+      "title": "End forces",
+      "body": "X12, Z12 and M12 act at the start node, X21, Z21 and M21 at the end node, always in the element's local system running from its initial to its end node."
+    },
+    "settings": {
+      "title": "Units & settings",
+      "body": "Language, units, viewer scale, colors and shortcuts live here. Units convert existing values, they never change the model."
+    },
+    "sharing": {
+      "title": "Saving & sharing",
+      "body": "Save the model as a file, copy a link that carries the whole structure, or embed a read-only viewer in your own page."
+    }
   }
 }

@@ -1,7 +1,10 @@
 <template>
   <v-dialog v-model="open" max-width="420">
     <v-card>
-      <v-card-title> {{ $t('dialogs.addNodalLoad.addNewNodalLoad') }} </v-card-title>
+      <v-card-title class="d-flex align-center">
+        <span>{{ $t('dialogs.addNodalLoad.addNewNodalLoad') }}</span>
+        <HelpTip topic="nodalLoads" class="ml-1" />
+      </v-card-title>
 
       <div>
         <v-radio-group v-model="loadType" inline density="compact" class="mx-3">
@@ -92,6 +95,7 @@
 </template>
 
 <script setup lang="ts">
+import HelpTip from '../HelpTip.vue';
 import { ref, computed, onMounted, watch } from 'vue';
 import { useProjectStore } from '../../store/project';
 import { DofID } from 'ts-fem';

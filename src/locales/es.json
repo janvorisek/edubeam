@@ -321,5 +321,70 @@
   "warnings": {
     "noMaterialsDefined": "No hay materiales definidos.",
     "noCrossSectionsDefined": "No hay secciones definidas."
+  },
+  "help": {
+    "aria": "Mostrar ayuda",
+    "readMore": "Leer más en la documentación",
+    "troubleshooting": "Solución de problemas",
+    "nodes": {
+      "title": "Nodos",
+      "body": "Los nodos son los puntos que mantienen unida la estructura. Sus coordenadas, apoyos, rótulas y las cargas aplicadas se definen nodo a nodo."
+    },
+    "supports": {
+      "title": "Apoyos",
+      "body": "Marca un grado de libertad para restringirlo: Dx y Dz bloquean la traslación y Ry el giro. La estructura necesita al menos tres restricciones independientes."
+    },
+    "elements": {
+      "title": "Elementos",
+      "body": "Los elementos unen dos nodos y llevan un material y una sección. Liberar un extremo convierte la viga en una barra articulada o de celosía."
+    },
+    "loads": {
+      "title": "Cargas",
+      "body": "Las cargas actúan en los nodos o a lo largo de los elementos. Los valores positivos siguen los ejes globales, con z hacia abajo."
+    },
+    "nodalLoads": {
+      "title": "Cargas nodales",
+      "body": "Una carga nodal aplica una fuerza o un momento directamente en el nodo. Los desplazamientos impuestos permiten introducir un asiento de apoyo."
+    },
+    "elementLoads": {
+      "title": "Cargas de elemento",
+      "body": "Actúan a lo largo de la barra: uniforme, trapezoidal, concentrada o térmica. Pueden darse en ejes globales o locales."
+    },
+    "materials": {
+      "title": "Materiales",
+      "body": "Un material guarda el módulo de Young, el de cortante, la densidad y la dilatación térmica. En un análisis estático solo importan E y la sección."
+    },
+    "crossSections": {
+      "title": "Secciones",
+      "body": "La sección aporta el área y el momento de inercia usados en la rigidez. Elige una de la biblioteca o dibuja tu propio polígono."
+    },
+    "hinges": {
+      "title": "Rótulas de extremo",
+      "body": "La casilla libera el momento flector en ese extremo del elemento. Marca ambos extremos para una barra de celosía y uno solo para una rótula en un pórtico."
+    },
+    "signConvention": {
+      "title": "Convención de signos",
+      "body": "El eje global z apunta hacia abajo, así que un Fz o fz positivo actúa hacia abajo y My es positivo en sentido antihorario. Las cargas en ejes locales siguen al elemento."
+    },
+    "results": {
+      "title": "Resultados",
+      "body": "Cuando el modelo se resuelve obtienes axil, cortante, momento flector, deformada y reacciones, en diagramas y en tablas."
+    },
+    "diagrams": {
+      "title": "Diagramas de resultados",
+      "body": "Estos interruptores dibujan el axil, el cortante, el momento flector, la deformada y las reacciones sobre el modelo. N es positivo a tracción y My con tracción en la fibra inferior."
+    },
+    "endForces": {
+      "title": "Fuerzas en extremos",
+      "body": "X12, Z12 y M12 actúan en el nodo inicial y X21, Z21 y M21 en el final, siempre en el sistema local del elemento, que va del nodo inicial al final."
+    },
+    "settings": {
+      "title": "Unidades y ajustes",
+      "body": "Aquí están el idioma, las unidades, la escala del visor, los colores y los atajos. Las unidades solo convierten los valores, no cambian el modelo."
+    },
+    "sharing": {
+      "title": "Guardar y compartir",
+      "body": "Guarda el modelo como archivo, copia un enlace que contiene toda la estructura o incrusta un visor de solo lectura en tu propia página."
+    }
   }
 }

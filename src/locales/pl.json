@@ -321,5 +321,70 @@
   "warnings": {
     "noMaterialsDefined": "Nie zdefiniowano materiałów.",
     "noCrossSectionsDefined": "Nie zdefiniowano przekrojów."
+  },
+  "help": {
+    "aria": "Pokaż pomoc",
+    "readMore": "Więcej w dokumentacji",
+    "troubleshooting": "Rozwiązywanie problemów",
+    "nodes": {
+      "title": "Węzły",
+      "body": "Węzły to punkty spinające konstrukcję. Współrzędne, podpory, przeguby i przyłożone obciążenia ustawia się dla każdego węzła."
+    },
+    "supports": {
+      "title": "Podpory",
+      "body": "Zaznaczenie stopnia swobody odbiera go: Dx i Dz blokują przesuw, Ry obrót. Konstrukcja potrzebuje co najmniej trzech niezależnych więzów."
+    },
+    "elements": {
+      "title": "Elementy",
+      "body": "Element łączy dwa węzły i ma przypisany materiał oraz przekrój. Zwolnienie końca zamienia belkę w pręt przegubowy lub kratowy."
+    },
+    "loads": {
+      "title": "Obciążenia",
+      "body": "Obciążenia działają w węzłach lub wzdłuż elementów. Wartości dodatnie są zgodne z osiami globalnymi, przy czym oś z skierowana jest w dół."
+    },
+    "nodalLoads": {
+      "title": "Obciążenia węzłowe",
+      "body": "Obciążenie węzłowe przykłada siłę lub moment bezpośrednio w węźle. Zadane przemieszczenia pozwalają zamiast tego wprowadzić osiadanie podpory."
+    },
+    "elementLoads": {
+      "title": "Obciążenia elementu",
+      "body": "Działają wzdłuż pręta: równomierne, trapezowe, skupione lub termiczne. Można je podać w osiach globalnych albo lokalnych."
+    },
+    "materials": {
+      "title": "Materiały",
+      "body": "Materiał przechowuje moduł Younga, moduł Kirchhoffa, gęstość i rozszerzalność termiczną. W zwykłej statyce liczą się tylko E i przekrój."
+    },
+    "crossSections": {
+      "title": "Przekroje",
+      "body": "Przekrój dostarcza pole i moment bezwładności potrzebne do sztywności. Wybierz go z biblioteki lub narysuj własny wielobok."
+    },
+    "hinges": {
+      "title": "Przeguby końcowe",
+      "body": "Zaznaczenie zwalnia moment zginający na tym końcu elementu. Oba końce dają pręt kratowy, jeden – przegub w ramie."
+    },
+    "signConvention": {
+      "title": "Konwencja znaków",
+      "body": "Globalna oś z skierowana jest w dół, więc dodatnie Fz lub fz działa w dół, a My jest dodatni przeciwnie do ruchu wskazówek zegara. Obciążenia w układzie lokalnym podążają za elementem."
+    },
+    "results": {
+      "title": "Wyniki",
+      "body": "Po rozwiązaniu modelu otrzymujesz siłę normalną, tnącą, moment zginający, postać odkształconą i reakcje – w postaci wykresów i tabel."
+    },
+    "diagrams": {
+      "title": "Wykresy wyników",
+      "body": "Te przełączniki rysują siłę normalną, tnącą, moment zginający, postać odkształconą i reakcje na modelu. N jest dodatnia przy rozciąganiu, My przy rozciąganiu włókien dolnych."
+    },
+    "endForces": {
+      "title": "Siły końcowe",
+      "body": "X12, Z12 i M12 działają w węźle początkowym, a X21, Z21 i M21 w końcowym, zawsze w lokalnym układzie elementu biegnącym od węzła początkowego do końcowego."
+    },
+    "settings": {
+      "title": "Jednostki i ustawienia",
+      "body": "Tu znajdziesz język, jednostki, skalę widoku, kolory i skróty. Jednostki jedynie przeliczają wartości, nie zmieniają modelu."
+    },
+    "sharing": {
+      "title": "Zapis i udostępnianie",
+      "body": "Zapisz model do pliku, skopiuj link zawierający całą konstrukcję albo osadź podgląd tylko do odczytu na własnej stronie."
+    }
   }
 }

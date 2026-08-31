@@ -1,7 +1,10 @@
 <template>
   <v-dialog v-model="open" max-width="420" attach=".v-application">
     <v-card>
-      <v-card-title> {{ $t('dialogs.addElementLoad.addNewElementLoad') }} </v-card-title>
+      <v-card-title class="d-flex align-center">
+        <span>{{ $t('dialogs.addElementLoad.addNewElementLoad') }}</span>
+        <HelpTip topic="elementLoads" class="ml-1" />
+      </v-card-title>
 
       <v-card-text>
         <v-select
@@ -200,6 +203,7 @@
 </template>
 
 <script setup lang="ts">
+import HelpTip from '../HelpTip.vue';
 import { computed, ref, watch } from 'vue';
 import { useProjectStore } from '../../store/project';
 import { useAppStore } from '../../store/app';

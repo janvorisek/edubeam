@@ -4,6 +4,7 @@
       <v-card-title>
         <div class="d-flex">
           <div class="flex-grow-1">{{ $t('sharing.shareViaURL') }}</div>
+          <HelpTip topic="sharing" class="align-self-center" />
           <v-btn
             icon="mdi-close"
             size="small"
@@ -76,6 +77,7 @@
 </template>
 
 <script setup lang="ts">
+import HelpTip from '../HelpTip.vue';
 import { onMounted, ref } from 'vue';
 import { closeModal } from 'jenesius-vue-modal';
 import { serializeModel } from '@/utils';

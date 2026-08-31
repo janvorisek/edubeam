@@ -1,7 +1,10 @@
 <template>
   <v-dialog v-model="open" max-width="420">
     <v-card>
-      <v-card-title> {{ $t('dialogs.addNode.addNewNode') }} </v-card-title>
+      <v-card-title class="d-flex align-center">
+        <span>{{ $t('dialogs.addNode.addNewNode') }}</span>
+        <HelpTip topic="nodes" class="ml-1" />
+      </v-card-title>
 
       <v-card-text>
         <v-form v-model="valid">
@@ -107,6 +110,7 @@
 </template>
 
 <script setup lang="ts">
+import HelpTip from '../HelpTip.vue';
 import { computed, ref } from 'vue';
 import { useProjectStore } from '../../store/project';
 import { Node } from 'ts-fem';

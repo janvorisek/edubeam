@@ -32,6 +32,17 @@
       </v-card-text>
 
       <v-card-actions>
+        <v-btn
+          variant="text"
+          size="small"
+          :href="docsUrl('/reference/troubleshooting', 'solve-diagnostics')"
+          target="_blank"
+          rel="noopener"
+          append-icon="mdi-open-in-new"
+          @click="trackDocsClick('solve-diagnostics')"
+        >
+          {{ $t('help.troubleshooting') }}
+        </v-btn>
         <v-spacer></v-spacer>
         <v-btn color="primary" @click="close">OK</v-btn>
       </v-card-actions>
@@ -43,6 +54,7 @@
 import { computed, ref } from 'vue';
 import { popModal } from 'jenesius-vue-modal';
 import type { SolveDiagnostics } from '@/utils/validateSolverModel';
+import { docsUrl, trackDocsClick } from '@/utils/docs';
 
 const open = ref(true);
 

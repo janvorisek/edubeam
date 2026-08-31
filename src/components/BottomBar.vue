@@ -21,6 +21,7 @@
         </v-tab>
       </v-tabs>
       <div class="bg-primary d-flex align-center">
+        <HelpTip :topic="activeHelpTopic" location="top left" size="small" align="center" />
         <v-btn
           color="primary"
           density="compact"
@@ -93,6 +94,7 @@
                         v-html="`[${formatMeasureAsHTML(appStore.units[column.units])}]`"
                       ></span>
                     </div>
+                    <HelpTip v-if="column.help" :topic="column.help" location="top" />
                     <v-icon
                       v-if="column.sortable"
                       :icon="getSortIcon(column)"
@@ -297,6 +299,7 @@
                     <span class="cursor-pointer" @click="() => toggleSort(column)">{{
                       capitalize($t(column.title))
                     }}</span>
+                    <HelpTip v-if="column.help" :topic="column.help" location="top" />
                     <v-icon
                       v-if="column.sortable"
                       :icon="getSortIcon(column)"
@@ -537,6 +540,7 @@
                         v-html="`[${formatMeasureAsHTML(appStore.units[column.units])}]`"
                       ></span>
                     </div>
+                    <HelpTip v-if="column.help" :topic="column.help" location="top" />
                     <v-icon
                       v-if="column.sortable"
                       :icon="getSortIcon(column)"
@@ -1037,6 +1041,7 @@
                         $t(column.tooltip)
                       }}</v-tooltip>
                     </div>
+                    <HelpTip v-if="column.help" :topic="column.help" location="top" />
                     <v-icon
                       v-if="column.sortable"
                       :icon="getSortIcon(column)"
@@ -1163,6 +1168,7 @@
                         v-html="`[${formatMeasureAsHTML(appStore.units[column.units])}]`"
                       ></span>
                     </div>
+                    <HelpTip v-if="column.help" :topic="column.help" location="top" />
                     <v-icon
                       v-if="column.sortable"
                       :icon="getSortIcon(column)"
@@ -1304,6 +1310,7 @@
                         <span class="cursor-pointer" @click="() => toggleSort(column)">{{
                           capitalize($t(column.title))
                         }}</span>
+                        <HelpTip v-if="column.help" :topic="column.help" location="top" />
                         <v-icon
                           v-if="column.sortable"
                           :icon="getSortIcon(column)"
@@ -1405,6 +1412,7 @@
                             v-html="`[${formatMeasureAsHTML(appStore.units[column.units])}]`"
                           ></span>
                         </div>
+                        <HelpTip v-if="column.help" :topic="column.help" location="top" />
                         <v-icon
                           v-if="column.sortable"
                           :icon="getSortIcon(column)"
@@ -1498,6 +1506,9 @@ import {
 } from '../utils';
 import { DofID, Beam2D, PrescribedDisplacement } from 'ts-fem';
 import { formatExpValueAsHTML, formatMeasureAsHTML } from '../SVGUtils';
+
+import HelpTip from './HelpTip.vue';
+import type { HelpTopicKey } from '../utils/helpTopics';
 
 import { openModal } from 'jenesius-vue-modal';
 import AddNodalLoad from './dialogs/AddNodalLoad.vue';
@@ -1792,6 +1803,20 @@ const tabs = reactive([
   },
 ]);
 
+// The bottom bar carries a single help icon that follows the open tab.
+const tabHelpTopics: Record<string, HelpTopicKey> = {
+  nodes: 'nodes',
+  elements: 'elements',
+  loads: 'loads',
+  mats: 'materials',
+  cs: 'crossSections',
+  results: 'results',
+};
+
+const activeHelpTopic = computed<HelpTopicKey>(
+  () => tabHelpTopics[String(appStore.bottomBarTab).replace('tab-', '')] ?? 'nodes'
+);
+
 const headers = reactive({
   nodes: [
     {
@@ -1807,6 +1832,7 @@ const headers = reactive({
     },
     {
       title: 'dofs.bcs',
+      help: 'supports',
       key: 'bcs',
       width: 260,
       sortable: false,
@@ -1850,6 +1876,7 @@ const headers = reactive({
     },
     {
       title: 'common.endHinges',
+      help: 'hinges',
       key: 'hinges[0]',
       width: 140,
       sortable: false,
@@ -1884,6 +1911,7 @@ const headers = reactive({
     },
     {
       title: 'common.components',
+      help: 'signConvention',
       key: 'load.values',
       //width: 420,
       sortable: false,
@@ -1995,6 +2023,7 @@ const headers = reactive({
     },
     {
       title: 'results.end_forces',
+      help: 'endForces',
       key: 'end_forces',
       sortable: false,
     },

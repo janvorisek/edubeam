@@ -321,5 +321,70 @@
   "warnings": {
     "noMaterialsDefined": "Nenhum material definido.",
     "noCrossSectionsDefined": "Nenhuma seção definida."
+  },
+  "help": {
+    "aria": "Mostrar ajuda",
+    "readMore": "Saiba mais na documentação",
+    "troubleshooting": "Solução de problemas",
+    "nodes": {
+      "title": "Nós",
+      "body": "Os nós são os pontos que mantêm a estrutura unida. Coordenadas, apoios, rótulas e as cargas aplicadas são definidos nó a nó."
+    },
+    "supports": {
+      "title": "Apoios",
+      "body": "Marque um grau de liberdade para restringi-lo: Dx e Dz travam a translação e Ry a rotação. A estrutura precisa de pelo menos três restrições independentes."
+    },
+    "elements": {
+      "title": "Elementos",
+      "body": "Os elementos ligam dois nós e carregam um material e uma seção. Liberar uma extremidade transforma a viga em barra rotulada ou de treliça."
+    },
+    "loads": {
+      "title": "Cargas",
+      "body": "As cargas atuam nos nós ou ao longo dos elementos. Valores positivos seguem os eixos globais, com z apontando para baixo."
+    },
+    "nodalLoads": {
+      "title": "Cargas nodais",
+      "body": "Uma carga nodal aplica uma força ou um momento diretamente no nó. Deslocamentos prescritos permitem impor um recalque de apoio."
+    },
+    "elementLoads": {
+      "title": "Cargas de elemento",
+      "body": "Atuam ao longo da barra: uniforme, trapezoidal, concentrada ou térmica. Podem ser dadas em eixos globais ou locais."
+    },
+    "materials": {
+      "title": "Materiais",
+      "body": "Um material guarda o módulo de Young, o de cisalhamento, a densidade e a dilatação térmica. Numa análise estática simples só importam E e a seção."
+    },
+    "crossSections": {
+      "title": "Seções",
+      "body": "A seção fornece a área e o momento de inércia usados na rigidez. Escolha uma da biblioteca ou desenhe seu próprio polígono."
+    },
+    "hinges": {
+      "title": "Rótulas de extremidade",
+      "body": "A caixa libera o momento fletor naquela extremidade do elemento. Marque as duas para uma barra de treliça e apenas uma para uma rótula no pórtico."
+    },
+    "signConvention": {
+      "title": "Convenção de sinais",
+      "body": "O eixo global z aponta para baixo, então um Fz ou fz positivo age para baixo e My é positivo no sentido anti-horário. Cargas no sistema local acompanham o elemento."
+    },
+    "results": {
+      "title": "Resultados",
+      "body": "Depois de resolver o modelo você tem esforço normal, cortante, momento fletor, deformada e reações, em diagramas e em tabelas."
+    },
+    "diagrams": {
+      "title": "Diagramas de resultados",
+      "body": "Estes botões desenham o esforço normal, o cortante, o momento fletor, a deformada e as reações sobre o modelo. N é positivo à tração e My com tração na fibra inferior."
+    },
+    "endForces": {
+      "title": "Esforços de extremidade",
+      "body": "X12, Z12 e M12 atuam no nó inicial e X21, Z21 e M21 no nó final, sempre no sistema local do elemento, que vai do nó inicial ao final."
+    },
+    "settings": {
+      "title": "Unidades e configurações",
+      "body": "Idioma, unidades, escala da visualização, cores e atalhos ficam aqui. As unidades apenas convertem os valores, não alteram o modelo."
+    },
+    "sharing": {
+      "title": "Salvar e compartilhar",
+      "body": "Salve o modelo como arquivo, copie um link que carrega toda a estrutura ou incorpore um visualizador somente leitura na sua página."
+    }
   }
 }

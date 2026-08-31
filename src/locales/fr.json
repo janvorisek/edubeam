@@ -321,5 +321,70 @@
   "warnings": {
     "noMaterialsDefined": "Aucun matériau défini.",
     "noCrossSectionsDefined": "Aucune section définie."
+  },
+  "help": {
+    "aria": "Afficher l'aide",
+    "readMore": "En savoir plus dans la documentation",
+    "troubleshooting": "Dépannage",
+    "nodes": {
+      "title": "Nœuds",
+      "body": "Les nœuds sont les points qui tiennent la structure. Coordonnées, appuis, rotules et charges appliquées se définissent nœud par nœud."
+    },
+    "supports": {
+      "title": "Appuis",
+      "body": "Cochez un degré de liberté pour le bloquer : Dx et Dz bloquent la translation, Ry la rotation. Une structure exige au moins trois blocages indépendants."
+    },
+    "elements": {
+      "title": "Éléments",
+      "body": "Un élément relie deux nœuds et porte un matériau et une section. Libérer une extrémité transforme la poutre en barre articulée ou de treillis."
+    },
+    "loads": {
+      "title": "Charges",
+      "body": "Les charges agissent sur les nœuds ou le long des éléments. Les valeurs positives suivent les axes globaux, z étant dirigé vers le bas."
+    },
+    "nodalLoads": {
+      "title": "Charges nodales",
+      "body": "Une charge nodale applique une force ou un moment directement au nœud. Les déplacements imposés permettent plutôt de simuler un tassement d'appui."
+    },
+    "elementLoads": {
+      "title": "Charges d'élément",
+      "body": "Elles agissent le long de la barre : uniforme, trapézoïdale, concentrée ou thermique. Elles peuvent être données en axes globaux ou locaux."
+    },
+    "materials": {
+      "title": "Matériaux",
+      "body": "Un matériau porte le module de Young, le module de cisaillement, la masse volumique et la dilatation thermique. Pour une statique simple, seuls E et la section comptent."
+    },
+    "crossSections": {
+      "title": "Sections",
+      "body": "La section fournit l'aire et le moment quadratique utilisés pour la rigidité. Choisissez-en une dans la bibliothèque ou dessinez votre polygone."
+    },
+    "hinges": {
+      "title": "Rotules d'extrémité",
+      "body": "La case libère le moment fléchissant à cette extrémité. Cochez les deux extrémités pour une barre de treillis, une seule pour une rotule dans un portique."
+    },
+    "signConvention": {
+      "title": "Convention de signes",
+      "body": "L'axe global z pointe vers le bas : un Fz ou fz positif agit vers le bas et My est positif dans le sens antihoraire. Les charges en repère local suivent l'élément."
+    },
+    "results": {
+      "title": "Résultats",
+      "body": "Une fois le modèle résolu, vous obtenez effort normal, effort tranchant, moment fléchissant, déformée et réactions, en diagrammes et en tableaux."
+    },
+    "diagrams": {
+      "title": "Tracés des résultats",
+      "body": "Ces cases tracent l'effort normal, l'effort tranchant, le moment fléchissant, la déformée et les réactions sur le modèle. N est positif en traction, My lorsque la fibre inférieure est tendue."
+    },
+    "endForces": {
+      "title": "Efforts aux extrémités",
+      "body": "X12, Z12 et M12 agissent au nœud initial, X21, Z21 et M21 au nœud final, toujours dans le repère local de l'élément, orienté du nœud initial vers le nœud final."
+    },
+    "settings": {
+      "title": "Unités et réglages",
+      "body": "Langue, unités, échelle de l'affichage, couleurs et raccourcis sont ici. Les unités ne font que convertir les valeurs, elles ne modifient pas le modèle."
+    },
+    "sharing": {
+      "title": "Enregistrer et partager",
+      "body": "Enregistrez le modèle dans un fichier, copiez un lien contenant toute la structure, ou intégrez une vue en lecture seule dans votre page."
+    }
   }
 }

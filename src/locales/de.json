@@ -321,5 +321,70 @@
   "warnings": {
     "noMaterialsDefined": "Keine Materialien definiert.",
     "noCrossSectionsDefined": "Keine Querschnitte definiert."
+  },
+  "help": {
+    "aria": "Hilfe anzeigen",
+    "readMore": "Mehr in der Dokumentation",
+    "troubleshooting": "Fehlerbehebung",
+    "nodes": {
+      "title": "Knoten",
+      "body": "Knoten halten die Struktur zusammen. Koordinaten, Lager, Gelenke und die dort angreifenden Lasten werden je Knoten festgelegt."
+    },
+    "supports": {
+      "title": "Lager",
+      "body": "Ein angehakter Freiheitsgrad wird festgehalten: Dx und Dz sperren die Verschiebung, Ry die Verdrehung. Eine Struktur braucht mindestens drei unabhängige Bindungen."
+    },
+    "elements": {
+      "title": "Elemente",
+      "body": "Elemente verbinden zwei Knoten und tragen ein Material und einen Querschnitt. Ein freigegebenes Ende macht aus dem Balken einen Gelenk- oder Fachwerkstab."
+    },
+    "loads": {
+      "title": "Lasten",
+      "body": "Lasten wirken in Knoten oder entlang der Elemente. Positive Werte folgen den globalen Achsen, wobei z nach unten zeigt."
+    },
+    "nodalLoads": {
+      "title": "Knotenlasten",
+      "body": "Eine Knotenlast bringt eine Kraft oder ein Moment direkt im Knoten auf. Mit vorgeschriebenen Verschiebungen lässt sich stattdessen eine Lagersenkung aufbringen."
+    },
+    "elementLoads": {
+      "title": "Elementlasten",
+      "body": "Elementlasten wirken entlang des Stabes: gleichmäßig, trapezförmig, konzentriert oder als Temperatur. Sie können in globalen oder lokalen Achsen angegeben werden."
+    },
+    "materials": {
+      "title": "Materialien",
+      "body": "Ein Material trägt Elastizitätsmodul, Schubmodul, Dichte und Wärmeausdehnung. Für eine reine statische Berechnung zählen nur E und der Querschnitt."
+    },
+    "crossSections": {
+      "title": "Querschnitte",
+      "body": "Der Querschnitt liefert Fläche und Flächenträgheitsmoment für die Steifigkeit. Wähle einen aus der Bibliothek oder zeichne ein eigenes Polygon."
+    },
+    "hinges": {
+      "title": "Endgelenke",
+      "body": "Ein Haken gibt das Biegemoment an diesem Elementende frei. Beide Enden ergeben einen Fachwerkstab, ein Ende ein Gelenk im Rahmen."
+    },
+    "signConvention": {
+      "title": "Vorzeichenkonvention",
+      "body": "Die globale z-Achse zeigt nach unten, ein positives Fz oder fz wirkt also nach unten; My ist gegen den Uhrzeigersinn positiv. Lasten im lokalen System folgen dem Element."
+    },
+    "results": {
+      "title": "Ergebnisse",
+      "body": "Nach der Berechnung gibt es Normalkraft, Querkraft, Biegemoment, verformte Figur und Auflagerkräfte – als Diagramme und als Tabellen."
+    },
+    "diagrams": {
+      "title": "Ergebnisdarstellung",
+      "body": "Diese Schalter zeichnen Normalkraft, Querkraft, Biegemoment, verformte Figur und Auflagerkräfte über dem Modell. N ist im Zug positiv, My bei Zug an der Unterseite."
+    },
+    "endForces": {
+      "title": "Endkräfte",
+      "body": "X12, Z12 und M12 wirken im Anfangsknoten, X21, Z21 und M21 im Endknoten – stets im lokalen System des Elements, das vom Anfangs- zum Endknoten verläuft."
+    },
+    "settings": {
+      "title": "Einheiten & Einstellungen",
+      "body": "Sprache, Einheiten, Maßstab der Ansicht, Farben und Tastenkürzel sind hier. Einheiten rechnen die Werte nur um, das Modell ändern sie nicht."
+    },
+    "sharing": {
+      "title": "Speichern & Teilen",
+      "body": "Speichere das Modell als Datei, kopiere einen Link, der die ganze Struktur enthält, oder binde eine schreibgeschützte Ansicht in eine eigene Seite ein."
+    }
   }
 }

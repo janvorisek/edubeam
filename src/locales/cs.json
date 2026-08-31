@@ -374,5 +374,70 @@
   "warnings": {
     "noMaterialsDefined": "Není definovaný žádný materiál",
     "noCrossSectionsDefined": "Není definovaný žádný průřez"
+  },
+  "help": {
+    "aria": "Zobrazit nápovědu",
+    "readMore": "Více v dokumentaci",
+    "troubleshooting": "Řešení potíží",
+    "nodes": {
+      "title": "Uzly",
+      "body": "Uzly drží konstrukci pohromadě. Souřadnice, podpory, klouby i zatížení se zadávají pro každý uzel zvlášť."
+    },
+    "supports": {
+      "title": "Podpory",
+      "body": "Zaškrtnutím stupně volnosti jej podepřete: Dx a Dz brání posunu, Ry pootočení. Konstrukce potřebuje alespoň tři nezávislé vazby."
+    },
+    "elements": {
+      "title": "Prvky",
+      "body": "Prvek spojuje dva uzly a nese materiál a průřez. Uvolněním konce vznikne kloubově připojený nebo příhradový prut."
+    },
+    "loads": {
+      "title": "Zatížení",
+      "body": "Zatížení působí v uzlech nebo po délce prvku. Kladné hodnoty odpovídají globálním osám, osa z míří dolů."
+    },
+    "nodalLoads": {
+      "title": "Uzlová zatížení",
+      "body": "Uzlové zatížení vnáší do uzlu sílu nebo moment. Předepsaným přetvořením lze místo toho zadat pokles podpory."
+    },
+    "elementLoads": {
+      "title": "Zatížení prvku",
+      "body": "Zatížení prvku působí po jeho délce: rovnoměrné, lichoběžníkové, osamělé nebo teplotní. Lze je zadat v globálních i lokálních osách."
+    },
+    "materials": {
+      "title": "Materiály",
+      "body": "Materiál nese modul pružnosti, modul ve smyku, hustotu a teplotní roztažnost. Pro běžný statický výpočet stačí E a průřez."
+    },
+    "crossSections": {
+      "title": "Průřezy",
+      "body": "Průřez dodává plochu a moment setrvačnosti pro tuhost. Vyberte jej z knihovny nebo si nakreslete vlastní polygon."
+    },
+    "hinges": {
+      "title": "Klouby na koncích",
+      "body": "Zaškrtnutí uvolní na daném konci prvku ohybový moment. Oba konce udělají z prvku příhradový prut, jeden konec vloží do rámu kloub."
+    },
+    "signConvention": {
+      "title": "Znaménková konvence",
+      "body": "Globální osa z míří dolů, kladné Fz nebo fz tedy působí dolů a My je kladný proti směru hodinových ručiček. Zatížení v lokálním systému sleduje prvek."
+    },
+    "results": {
+      "title": "Výsledky",
+      "body": "Po výpočtu získáte normálovou a posouvající sílu, ohybový moment, deformovaný tvar a reakce, a to jako diagramy i tabulky."
+    },
+    "diagrams": {
+      "title": "Vykreslení výsledků",
+      "body": "Přepínače vykreslují normálovou a posouvající sílu, ohybový moment, deformovaný tvar a reakce. N je kladná v tahu, My kladný při ohybu dolů."
+    },
+    "endForces": {
+      "title": "Koncové síly",
+      "body": "X12, Z12 a M12 působí v počátečním uzlu, X21, Z21 a M21 v koncovém, vždy v lokálním systému prvku, který míří od počátečního ke koncovému uzlu."
+    },
+    "settings": {
+      "title": "Jednotky a nastavení",
+      "body": "Jazyk, jednotky, měřítko zobrazení, barvy a zkratky najdete zde. Jednotky pouze převádějí hodnoty, model nemění."
+    },
+    "sharing": {
+      "title": "Ukládání a sdílení",
+      "body": "Model uložíte do souboru, zkopírujete odkaz nesoucí celou konstrukci, nebo vložíte prohlížeč jen pro čtení do vlastní stránky."
+    }
   }
 }

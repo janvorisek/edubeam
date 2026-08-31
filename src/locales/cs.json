@@ -117,7 +117,8 @@
   "elements": {
     "addElement": "Přidat prvek",
     "swapNodeOrder": "Přehodit pořadí uzlů",
-    "editElement": "Upravit prvek"
+    "editElement": "Upravit prvek",
+    "hinge": "Kloub"
   },
   "loads": {
     "addElementLoad": "Přidat prvkové zatížení",

@@ -53,7 +53,8 @@
   "elements": {
     "addElement": "เพิ่มองค์ประกอบ",
     "editElement": "แก้ไของค์ประกอบ",
-    "swapNodeOrder": "สลับโหนด"
+    "swapNodeOrder": "สลับโหนด",
+    "hinge": "จุดหมุน"
   },
   "loads": {
     "addNodalLoad": "เพิ่มแรงกระทำที่โหนด",

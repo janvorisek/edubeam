@@ -54,7 +54,8 @@
   "elements": {
     "addElement": "Dodaj element",
     "editElement": "Edytuj element",
-    "swapNodeOrder": "Zamień kolejność węzłów"
+    "swapNodeOrder": "Zamień kolejność węzłów",
+    "hinge": "Przegub"
   },
   "loads": {
     "addNodalLoad": "Dodaj obciążenie węzłowe",

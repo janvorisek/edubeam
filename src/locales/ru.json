@@ -54,7 +54,8 @@
   "elements": {
     "addElement": "Добавить элемент",
     "editElement": "Редактировать элемент",
-    "swapNodeOrder": "Поменять порядок узлов"
+    "swapNodeOrder": "Поменять порядок узлов",
+    "hinge": "Шарнир"
   },
   "loads": {
     "addNodalLoad": "Добавить узловую нагрузку",

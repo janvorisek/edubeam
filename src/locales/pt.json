@@ -54,7 +54,8 @@
   "elements": {
     "addElement": "Adicionar elemento",
     "editElement": "Editar elemento",
-    "swapNodeOrder": "Inverter nós"
+    "swapNodeOrder": "Inverter nós",
+    "hinge": "Rótula"
   },
   "loads": {
     "addNodalLoad": "Adicionar carga nodal",

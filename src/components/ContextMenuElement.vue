@@ -7,7 +7,7 @@ import StiffnessMatrix from './StiffnessMatrix.vue';
 import SectionThumbnail from './SectionThumbnail.vue';
 import '@/types/crossSection';
 import { ref, computed, onMounted, watch } from 'vue';
-import { deleteElement, setUnsolved, solve } from '../utils';
+import { deleteElement, setUnsolved, solve, toggleArray } from '../utils';
 
 const projectStore = useProjectStore();
 
@@ -64,6 +64,13 @@ watch([n1, n2], () => {
                 class="menu-select"
                 style="width: 90px"
               ></v-select>
+              <v-checkbox-btn
+                class="hinges px-2"
+                density="compact"
+                :label="$t('elements.hinge')"
+                :model-value="element.hinges[0]"
+                @click="toggleArray(element, 'hinges', 0)"
+              />
             </v-col>
             <v-col>
               <v-select
@@ -77,6 +84,13 @@ watch([n1, n2], () => {
                 class="menu-select"
                 style="width: 90px"
               ></v-select>
+              <v-checkbox-btn
+                class="hinges px-2"
+                density="compact"
+                :label="$t('elements.hinge')"
+                :model-value="element.hinges[1]"
+                @click="toggleArray(element, 'hinges', 1)"
+              />
             </v-col>
           </v-row>
           <v-row no-gutters>
@@ -159,3 +173,11 @@ watch([n1, n2], () => {
     </v-list-item>
   </v-list>
 </template>
+
+<style scoped>
+/* The hinge label reads as a caption of the select above it, so it matches its floating label. */
+.hinges :deep(.v-label) {
+  font-size: 0.75em;
+  opacity: var(--v-medium-emphasis-opacity);
+}
+</style>

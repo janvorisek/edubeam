@@ -204,24 +204,20 @@
                 @click="openModal(AddNodalLoad, { label: item.label })"
               >
               </v-btn>
-              <div
-                v-if="
-                  useProjectStore().solver.loadCases[0].nodalLoadList.filter((nl) => nl.target === item.label).length >
-                  0
-                "
-              >
+              <div v-if="nodeLoadChips(item).length > 0">
                 <v-chip-group>
                   <v-chip
-                    v-for="(nl, index) in formatNodalLoadsAtNode(item)"
+                    v-for="(chip, index) in nodeLoadChips(item)"
                     :key="index"
                     density="compact"
                     @click="
                       openModal(EditNodalLoad, {
-                        index: nl[0],
+                        index: chip.index,
+                        type: chip.type,
                       })
                     "
                   >
-                    <span v-html="nl[1]"></span
+                    <span v-html="chip.text"></span
                   ></v-chip>
                 </v-chip-group>
               </div>
@@ -1718,23 +1714,51 @@ function elementRowProps(item) {
   }
 }
 
-const formatNodalLoadsAtNode = (item: Node): [number, string][] => {
-  const nls = useProjectStore()
-    .solver.loadCases[0].nodalLoadList.map((nl, index) => {
-      return { index, target: nl.target, components: nl.values };
-    })
-    .filter((nl) => nl.target === item.label);
+interface NodeLoadChip {
+  /** Index in the list the load lives in, which is what the edit dialog takes. */
+  index: number;
+  type: 'force' | 'displacement';
+  text: string;
+}
 
-  return nls.map((nl) => {
+/**
+ * Everything applied to a node: nodal forces and prescribed displacements alike. Both open the same
+ * edit dialog, which tells them apart by `type`.
+ */
+const nodeLoadChips = (item: Node): NodeLoadChip[] => {
+  const loadCase = useProjectStore().solver.loadCases[0];
+  const chips: NodeLoadChip[] = [];
+
+  loadCase.nodalLoadList.forEach((nl, index) => {
+    if (nl.target !== item.label) return;
+
     const tmp = [];
-    if (DofID.Dx in nl.components && Math.abs(nl.components[DofID.Dx]) > 1e-12)
-      tmp.push('F<sub>x</sub> = ' + appStore.convertForce(nl.components[DofID.Dx]));
-    if (DofID.Dz in nl.components && Math.abs(nl.components[DofID.Dz]) > 1e-12)
-      tmp.push('F<sub>z</sub> = ' + appStore.convertForce(nl.components[DofID.Dz]));
-    if (DofID.Ry in nl.components && Math.abs(nl.components[DofID.Ry]) > 1e-12)
-      tmp.push('M<sub>y</sub> = ' + appStore.convertMoment(nl.components[DofID.Ry]));
-    return [nl.index, tmp.join(', ')];
+    if (DofID.Dx in nl.values && Math.abs(nl.values[DofID.Dx]) > 1e-12)
+      tmp.push('F<sub>x</sub> = ' + appStore.convertForce(nl.values[DofID.Dx]));
+    if (DofID.Dz in nl.values && Math.abs(nl.values[DofID.Dz]) > 1e-12)
+      tmp.push('F<sub>z</sub> = ' + appStore.convertForce(nl.values[DofID.Dz]));
+    if (DofID.Ry in nl.values && Math.abs(nl.values[DofID.Ry]) > 1e-12)
+      tmp.push('M<sub>y</sub> = ' + appStore.convertMoment(nl.values[DofID.Ry]));
+
+    chips.push({ index, type: 'force', text: tmp.join(', ') });
   });
+
+  loadCase.prescribedBC.forEach((bc, index) => {
+    if (bc.target !== item.label) return;
+
+    const values = bc.prescribedValues;
+    const tmp = [];
+    // Displacements are lengths; a prescribed rotation is stored and shown in radians.
+    if (DofID.Dx in values && Math.abs(values[DofID.Dx]) > 1e-12)
+      tmp.push('D<sub>x</sub> = ' + appStore.convertLength(values[DofID.Dx]));
+    if (DofID.Dz in values && Math.abs(values[DofID.Dz]) > 1e-12)
+      tmp.push('D<sub>z</sub> = ' + appStore.convertLength(values[DofID.Dz]));
+    if (DofID.Ry in values && Math.abs(values[DofID.Ry]) > 1e-12) tmp.push('R<sub>y</sub> = ' + values[DofID.Ry]);
+
+    chips.push({ index, type: 'displacement', text: tmp.join(', ') });
+  });
+
+  return chips;
 };
 
 const formatElementLoadsAtElement = (item: Beam2D): [number, string][] => {

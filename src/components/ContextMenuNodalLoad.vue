@@ -1,43 +1,51 @@
 <script setup lang="ts">
 import { openModal } from 'jenesius-vue-modal';
 import EditNodalLoadDialog from './dialogs/EditNodalLoad.vue';
-import { deleteNodalLoad } from '@/utils';
+import { deleteNodalLoad, deletePrescribedDisplacement } from '@/utils';
 import { useProjectStore } from '@/store/project';
 import { computed } from 'vue';
 
 const projectStore = useProjectStore();
 
-const load = computed(() => {
-  return projectStore.solver.loadCases[0].nodalLoadList[projectStore.selection.label];
+/** The same menu serves nodal forces and prescribed displacements - they only differ in the list they live in. */
+const isPrescribed = computed(() => projectStore.selection.type === 'prescribedbc-load');
+
+const loadIndex = computed(() => {
+  if (projectStore.selection.label === null) return null;
+
+  const index = Number(projectStore.selection.label);
+  return Number.isNaN(index) ? null : index;
 });
 
+const editNodalLoad = () => {
+  if (loadIndex.value === null) return;
+
+  openModal(EditNodalLoadDialog, {
+    index: loadIndex.value,
+    type: isPrescribed.value ? 'displacement' : 'force',
+  });
+  projectStore.selection.type = null;
+};
+
 const removeNodalLoad = () => {
-  if (projectStore.selection.label === null) return;
+  if (loadIndex.value === null) return;
 
-  const nodalIndex = Number(projectStore.selection.label);
-  if (Number.isNaN(nodalIndex)) return;
+  const loadCase = projectStore.solver.loadCases[0];
 
-  const selectedLoad = projectStore.solver.loadCases[0].nodalLoadList[nodalIndex];
-  if (!selectedLoad) return;
+  if (isPrescribed.value) {
+    const prescribed = loadCase.prescribedBC[loadIndex.value];
+    if (prescribed) deletePrescribedDisplacement(prescribed);
+    return;
+  }
 
-  const elementLoadCount = projectStore.solver.loadCases[0].elementLoadList.length;
-  const prescribedCount = projectStore.solver.loadCases[0].prescribedBC.length;
-  const aggregatedIndex = elementLoadCount + prescribedCount + nodalIndex;
-
-  deleteNodalLoad(selectedLoad, aggregatedIndex);
+  const nodalLoad = loadCase.nodalLoadList[loadIndex.value];
+  if (nodalLoad) deleteNodalLoad(nodalLoad);
 };
 </script>
 
 <template>
   <v-list density="compact" class="py-0">
-    <v-list-item
-      link
-      class="text-body-2"
-      @click="
-        openModal(EditNodalLoadDialog, { index: projectStore.selection.label });
-        projectStore.selection.type = null;
-      "
-    >
+    <v-list-item link class="text-body-2" @click="editNodalLoad">
       <template #prepend>
         <div class="pr-2"><v-icon size="16" icon="mdi-pencil" /></div>
       </template>

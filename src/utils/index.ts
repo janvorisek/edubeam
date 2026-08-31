@@ -466,6 +466,18 @@ export const swapNodes = (el: Beam2D) => {
   solve();
 };
 
+/**
+ * Puts back the value Vue last rendered into the input. Inline fields show unit converted (and often
+ * formatted) values, so rejecting an invalid entry must not write the raw model value into them.
+ * The rendered value is kept by the runtime as `_value` when the input is bound with `:value`;
+ * the model value is only a fallback for inputs that are not.
+ */
+const restoreRenderedValue = (el: HTMLInputElement, modelValue: unknown) => {
+  const rendered = (el as HTMLInputElement & { _value?: unknown })._value;
+
+  el.value = String(rendered ?? modelValue ?? '');
+};
+
 export const changeSetArrayItem = (
   item: unknown,
   set: string,
@@ -476,7 +488,7 @@ export const changeSetArrayItem = (
   if (el.value === '') el.value = '0';
 
   const val = parseFloat(el.value.replace(/\s/g, '').replace(',', '.'));
-  if (!Number.isFinite(val)) return (el.value = item[set][value]);
+  if (!Number.isFinite(val)) return restoreRenderedValue(el, item[set][value]);
 
   executeModelMutationWithUndo(() => {
     setUnsolved();
@@ -519,7 +531,7 @@ export const changeItem = (item: object, value: string, el?: HTMLInputElement, f
   if (el.value === '') el.value = '0';
 
   const val = parseFloat(el.value.replace(/\s/g, '').replace(',', '.'));
-  if (!Number.isFinite(val)) return (el.value = item[value]);
+  if (!Number.isFinite(val)) return restoreRenderedValue(el, item[value]);
 
   executeModelMutationWithUndo(() => {
     setUnsolved();

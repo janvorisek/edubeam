@@ -45,7 +45,7 @@
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="mainUnits"
-                      :disabled="loadType === 'displacement' && !nodeBcs.has(0)"
+                      :disabled="loadType === 'displacement' && !nodeBcs.has(DofID.Dx)"
                       @keydown="checkNumber($event)"
                     ></v-text-field>
                   </v-col>
@@ -57,7 +57,7 @@
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="mainUnits"
-                      :disabled="loadType === 'displacement' && !nodeBcs.has(2)"
+                      :disabled="loadType === 'displacement' && !nodeBcs.has(DofID.Dz)"
                       @keydown="checkNumber($event)"
                     ></v-text-field>
                   </v-col>
@@ -69,7 +69,7 @@
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="`${momentUnits}`"
-                      :disabled="loadType === 'displacement' && !nodeBcs.has(4)"
+                      :disabled="loadType === 'displacement' && !nodeBcs.has(DofID.Ry)"
                       @keydown="checkNumber($event)"
                     >
                     </v-text-field>

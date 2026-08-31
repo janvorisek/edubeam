@@ -34,9 +34,7 @@
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="mainUnits"
-                      :disabled="
-                        loadType === 'displacement' && !projectStore.solver.domain.nodes.get(loadNodeId).bcs.has(0)
-                      "
+                      :disabled="loadType === 'displacement' && !nodeBcs.has(DofID.Dx)"
                       @keydown="checkNumber($event)"
                     ></v-text-field>
                   </v-col>
@@ -48,9 +46,7 @@
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="mainUnits"
-                      :disabled="
-                        loadType === 'displacement' && !projectStore.solver.domain.nodes.get(loadNodeId).bcs.has(2)
-                      "
+                      :disabled="loadType === 'displacement' && !nodeBcs.has(DofID.Dz)"
                       @keydown="checkNumber($event)"
                     ></v-text-field>
                   </v-col>
@@ -62,9 +58,7 @@
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="`${momentUnits}`"
-                      :disabled="
-                        loadType === 'displacement' && !projectStore.solver.domain.nodes.get(loadNodeId).bcs.has(4)
-                      "
+                      :disabled="loadType === 'displacement' && !nodeBcs.has(DofID.Ry)"
                       @keydown="checkNumber($event)"
                     >
                     </v-text-field>
@@ -195,4 +189,7 @@ const loadNodeId = computed(() => {
 
   return useProjectStore().solver.loadCases[0].nodalLoadList[props.index].target;
 });
+
+/** DOFs supported (constrained) at the target node - only those can carry a prescribed displacement. */
+const nodeBcs = computed<Set<number>>(() => projectStore.solver.domain.nodes.get(loadNodeId.value)?.bcs ?? new Set());
 </script>

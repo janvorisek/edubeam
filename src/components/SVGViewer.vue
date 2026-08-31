@@ -5,7 +5,6 @@ import SvgGrid from './SVGGrid.vue';
 import SvgViewerDefs from './SVGViewerDefs.vue';
 import { useProjectStore } from '../store/project';
 import { ref, onMounted, computed, nextTick, watch, reactive, onUnmounted, provide } from 'vue';
-import { useDisplay } from 'vuetify';
 import { useViewerStore } from '../store/viewer';
 import { useAppStore } from '@/store/app';
 
@@ -79,8 +78,6 @@ const props = defineProps<{
   id: string;
   resultLabelMode?: 'axis' | 'horizontal';
 }>();
-
-const { mobile } = useDisplay();
 
 let mouseStartX = 0;
 let mouseStartY = 0;
@@ -1679,7 +1676,7 @@ defineExpose({ centerContent, fitContent });
       class="text-body-2 d-flex ga-1 line-height-1"
       style="position: absolute; z-index: 100; bottom: 16px; right: 16px"
     >
-      <div v-if="!mobile" class="d-flex align-center ga-1">
+      <div class="d-flex align-center ga-1">
         <v-chip density="compact" class="d-flex pa-0 overflow-hidden">
           <!-- Grid toggle -->
           <v-tooltip text="Toggle grid (G)" location="top">

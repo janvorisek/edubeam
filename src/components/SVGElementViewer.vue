@@ -227,7 +227,23 @@ const fitReserve = computed(
   () => props.fitReservePx ?? Math.max(props.resultsScalePx, LOAD_DECORATION_PX) + props.fontSize + 8
 );
 
-const modelBounds = () => boundsFromPoints(props.nodes.map((node) => [node.coords[0], node.coords[2]] as const));
+/**
+ * Endpoints of everything drawn. Elements are included because a preview can be given elements
+ * without their nodes (the widget header does), and a fit with no bounds falls back to measuring
+ * the rendered SVG - decorations sized from the not yet fitted scale included.
+ */
+const modelBounds = () => {
+  const points = props.nodes.map((node) => [node.coords[0], node.coords[2]] as const);
+
+  for (const element of props.elements) {
+    for (const label of element.nodes) {
+      const node = element.domain.nodes.get(label);
+      if (node) points.push([node.coords[0], node.coords[2]] as const);
+    }
+  }
+
+  return boundsFromPoints(points);
+};
 
 const onUpdate = throttle((zooming: boolean) => {
   if (grid.value) grid.value.refreshGrid(zooming);

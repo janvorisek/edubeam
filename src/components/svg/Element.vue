@@ -129,24 +129,35 @@ const elementLabel = computed(() => {
   return `translate(${(-props.padding * nx) / props.scale}, ${(-props.padding * ny) / props.scale})`;
 });
 
+/** How far from its node a hinge circle sits, 9px unless the element is drawn shorter than that. */
+const HINGE_OFFSET_PX = 9;
+
+const hingeOffset = computed(() => {
+  const geo = props.element.computeGeo();
+
+  // In a small preview the element can be only a few pixels long, and an offset taken purely from
+  // the scale would put the circle past the far node - drawing the hinge at the wrong end.
+  return Math.min(HINGE_OFFSET_PX / props.scale, geo.l / 3);
+});
+
 const elementHinges = computed(() => {
   const n1 = props.element.domain.nodes.get(props.element.nodes[0]) as Node;
   const n2 = props.element.domain.nodes.get(props.element.nodes[1]) as Node;
 
   const geo = props.element.computeGeo();
-  const k1 = 1;
-  const k2 = -1;
+  const offset = hingeOffset.value;
 
-  const nx = ((geo.dx * 9) / geo.l / props.scale) * k1;
-  const nz = ((geo.dz * 9) / geo.l / props.scale) * k1;
+  const nx = (geo.dx / geo.l) * offset;
+  const nz = (geo.dz / geo.l) * offset;
+
   const line1 = `${n1.coords[0] + nx}, ${n1.coords[2] + nz}`;
-
-  const nx2 = ((geo.dx * 9) / geo.l / props.scale) * k2;
-  const nz2 = ((geo.dz * 9) / geo.l / props.scale) * k2;
-  const line2 = `${n2.coords[0] + nx2}, ${n2.coords[2] + nz2}`;
+  const line2 = `${n2.coords[0] - nx}, ${n2.coords[2] - nz}`;
 
   return { 0: line1, 1: line2 };
 });
+
+/** The circle has to stay inside the element too, for the same reason. */
+const hingeRadius = computed(() => Math.min(6 / props.scale, hingeOffset.value * (2 / 3)));
 
 const results = computed(() => {
   if (!props.loadCase.solved || !props.showDeformedShape) return '';
@@ -599,7 +610,7 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
       <circle
         v-if="element.hinges[0]"
         :transform="`translate(${elementHinges[0]})`"
-        :r="6 / scale"
+        :r="hingeRadius"
         fill="white"
         stroke="black"
         vector-effect="non-scaling-stroke"
@@ -609,7 +620,7 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
       <circle
         v-if="element.hinges[1]"
         :transform="`translate(${elementHinges[1]})`"
-        :r="6 / scale"
+        :r="hingeRadius"
         fill="white"
         stroke="black"
         vector-effect="non-scaling-stroke"

@@ -54,7 +54,9 @@
   "elements": {
     "addElement": "添加单元",
     "editElement": "编辑单元",
-    "swapNodeOrder": "交换节点顺序"
+    "swapNodeOrder": "交换节点顺序",
+    "hingeStart": "起点铰接",
+    "hingeEnd": "终点铰接"
   },
   "loads": {
     "addNodalLoad": "添加节点荷载",

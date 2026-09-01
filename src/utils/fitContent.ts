@@ -310,14 +310,13 @@ export const fitRenderedContent = async (
       reserve
     );
 
-    if (check.inside && (check.filled || iterations >= maxIterations)) {
-      return { ...view, converged: check.filled, iterations };
-    }
-
     // Remember the tightest view that keeps everything visible in case we never converge.
     if (check.inside && (!best || view.scale > best.fit.scale)) best = { fit: view, iterations };
 
-    if (iterations >= maxIterations) break;
+    if (iterations >= maxIterations) {
+      if (check.inside) return { ...view, converged: check.filled, iterations };
+      break;
+    }
 
     previous = current;
 
@@ -328,10 +327,19 @@ export const fitRenderedContent = async (
 
     if (!next) break;
 
-    // The exact split reproduces the current view, yet the check failed: the padding
-    // cannot be honoured (the diagrams alone are larger than the padded frame, or the
-    // zoom is clamped). `fitBounds` has already made the best compromise.
-    if (sameView(next, view)) return { ...view, converged: false, iterations };
+    // Refitting the current measurement reproduces the view: a fixed point, and the
+    // answer when the check passes. When it does not, the padding cannot be honoured
+    // (the diagrams alone are larger than the padded frame, or the zoom is clamped) and
+    // `fitBounds` has already made the best compromise.
+    //
+    // Passing the check is not on its own enough to stop. It only asks that the content
+    // sits inside the frame and fills one axis, which a view built from the very first
+    // measurement can satisfy while being badly placed on the other axis: with nothing
+    // to compare against, that measurement is taken as pure geometry, so a probe made at
+    // a zoom far from the answer fits the decorations as if they were the structure (a
+    // 64x48 preview starts at zoom 1, where a 6 px marker is twice the beam). The secant
+    // that follows separates them; only when it no longer moves the view is the fit done.
+    if (sameView(next, view)) return { ...view, converged: check.inside && check.filled, iterations };
 
     iterations++;
     view = next;

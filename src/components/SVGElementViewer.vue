@@ -66,6 +66,12 @@ const props = withDefaults(
     fitIgnore?: string;
     /** Pixels kept free around the structure on every side; defaults to results + loads + a label. */
     fitReservePx?: number;
+    /**
+     * The viewer never draws results or loads, so the fit reserves no room for them.
+     * Without it a small preview (the widget header is 64x48) spends most of its box on
+     * space for diagrams it never shows and the structure comes out absurdly small.
+     */
+    noFitForResults?: boolean;
     colors?: {
       normalForce: string;
       shearForce: string;
@@ -111,6 +117,7 @@ const props = withDefaults(
     resultsScalePx: 64,
     fitIgnore: '[data-fit-ignore]',
     fitReservePx: undefined,
+    noFitForResults: false,
     colors: () => {
       return {
         normalForce: '#2222ff',
@@ -225,9 +232,12 @@ const LOAD_DECORATION_PX = 60;
  * labels. It does not depend on what is currently shown, so toggling results or
  * loads (or animating `resultsScalePx` below the load size) never moves the view.
  */
-const fitReserve = computed(
-  () => props.fitReservePx ?? Math.max(props.resultsScalePx, LOAD_DECORATION_PX) + props.fontSize + 8
-);
+const fitReserve = computed(() => {
+  if (props.fitReservePx !== undefined) return props.fitReservePx;
+  if (props.noFitForResults) return 0;
+
+  return Math.max(props.resultsScalePx, LOAD_DECORATION_PX) + props.fontSize + 8;
+});
 
 /**
  * Endpoints of everything drawn. Elements are included because a preview can be given elements

@@ -167,6 +167,35 @@ describe('fitRenderedContent', () => {
     expect(top).toBeCloseTo(400 - bottom, 0);
   });
 
+  it('centers a tiny preview seeded from an unfitted view', async () => {
+    // The widget header preview: a 3 m column in 56 x 40 px, decorated only by a 3 px
+    // fibre line on one side and its 1 px stroke on the other. It starts from the
+    // leftover zoom 1 view, where those few pixels measure as metres - taken as geometry
+    // (there is nothing yet to separate them from it), their centre is what gets placed
+    // in the middle of the box, a quarter of the width off. The height fills the frame at
+    // either position, so only the horizontal placement tells the two apart.
+    const column: Item[] = [
+      { x: 0, y: 0 },
+      { x: 0, y: -3 },
+      { x: 0, y: -1.5, px: 3 },
+      { x: 0, y: -1.5, px: -1 },
+    ];
+
+    const sim = await simulate(
+      column,
+      { padding: 1, reserve: 0, modelBounds: modelBoundsOf(column), viewportWidth: 56, viewportHeight: 40 },
+      { x: 122, y: 55, w: 56, h: 40 }
+    );
+
+    expectFitted(sim, 56, 40, 1);
+
+    const fit = sim.result!;
+    const left = (sim.rendered!.minX - fit.viewBox.x) * fit.scale;
+    const right = (sim.rendered!.maxX - fit.viewBox.x) * fit.scale;
+
+    expect(left).toBeCloseTo(56 - right, 0);
+  });
+
   it('is stable - fitting an already fitted view changes nothing', async () => {
     const first = await simulate(BEAM, { padding: 32, modelBounds: modelBoundsOf(BEAM) });
     const second = await simulate(BEAM, { padding: 32, modelBounds: modelBoundsOf(BEAM) }, first.result!.viewBox);

@@ -40,6 +40,7 @@ const props = withDefaults(
               :elements="[projectStore.solver.domain.getElement(props.widget.props.label)]"
               :padding="1"
               :mobile-padding="1"
+              no-fit-for-results
             />
           </div>
           <div class="d-flex flex-column w-100 mb-1 px-3">

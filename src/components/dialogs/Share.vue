@@ -29,7 +29,7 @@
           @click="copyLink"
         >
           <template #append-inner>
-            <v-tooltip :text="$t('sharing.copyCue')" location="bottom">
+            <v-tooltip :text="$t('sharing.copyCue')" location="bottom" :open-on-click="!deviceHasHover">
               <template #activator="{ props }">
                 <v-btn
                   v-bind="props"
@@ -82,6 +82,7 @@ import { onMounted, ref } from 'vue';
 import { closeModal } from 'jenesius-vue-modal';
 import { serializeModel } from '@/utils';
 import { useProjectStore } from '@/store/project';
+import { deviceHasHover } from '@/utils/pointer';
 
 const open = ref(true);
 const val = ref('');

@@ -40,7 +40,7 @@
       >
         <div class="border-b border-t">
           <v-btn
-            v-tooltip.bottom="$t('common.addUsingDialog')"
+            v-tooltip="{ text: $t('common.addUsingDialog'), location: 'bottom', openOnClick: !deviceHasHover }"
             size="small"
             variant="flat"
             color="secondary"
@@ -50,7 +50,7 @@
             <v-icon small>mdi-plus</v-icon> {{ $t('nodes.addNode') }}
           </v-btn>
           <v-btn
-            v-tooltip.bottom="$t('common.addUsingMouse')"
+            v-tooltip="{ text: $t('common.addUsingMouse'), location: 'bottom', openOnClick: !deviceHasHover }"
             size="small"
             variant="flat"
             :color="appStore.mouseMode === MouseMode.ADD_NODE ? 'primary' : 'secondary'"
@@ -246,7 +246,7 @@
       >
         <div class="border-b border-t">
           <v-btn
-            v-tooltip.bottom="$t('common.addUsingDialog')"
+            v-tooltip="{ text: $t('common.addUsingDialog'), location: 'bottom', openOnClick: !deviceHasHover }"
             size="small"
             variant="flat"
             color="secondary"
@@ -256,7 +256,7 @@
             <v-icon small>mdi-plus</v-icon> {{ $t('elements.addElement') }}
           </v-btn>
           <v-btn
-            v-tooltip.bottom="$t('common.addUsingMouse')"
+            v-tooltip="{ text: $t('common.addUsingMouse'), location: 'bottom', openOnClick: !deviceHasHover }"
             size="small"
             variant="flat"
             :color="appStore.mouseMode === MouseMode.ADD_ELEMENT ? 'primary' : 'secondary'"
@@ -336,7 +336,7 @@
                 </option>
               </select>
               <a
-                v-tooltip.bottom="$t('elements.swapNodeOrder')"
+                v-tooltip="{ text: $t('elements.swapNodeOrder'), location: 'bottom', openOnClick: !deviceHasHover }"
                 href="#"
                 class="text-decoration-none text-primary"
                 @click.stop="swapNodes(item)"
@@ -905,7 +905,7 @@
               <!-- TODO: Trapezoidal load cant render non LCS -->
               <div
                 v-if="item.ref instanceof BeamElementUniformEdgeLoad || item.ref instanceof BeamConcentratedLoad"
-                v-tooltip.bottom="$t('common.lcs')"
+                v-tooltip="{ text: $t('common.lcs'), location: 'bottom', openOnClick: !deviceHasHover }"
                 class="inline-edit-group"
               >
                 <span class="input-before">LCS</span>
@@ -1048,9 +1048,14 @@
                         class="font-weight-regular"
                         v-html="`[${formatMeasureAsHTML(appStore.units[column.units])}]`"
                       ></span>
-                      <v-tooltip v-if="column.tooltip" activator="parent" location="top" :max-width="320">{{
-                        $t(column.tooltip)
-                      }}</v-tooltip>
+                      <v-tooltip
+                        v-if="column.tooltip"
+                        activator="parent"
+                        location="top"
+                        :max-width="320"
+                        :open-on-click="!deviceHasHover"
+                        >{{ $t(column.tooltip) }}</v-tooltip
+                      >
                     </div>
                     <HelpTip v-if="column.help" :topic="column.help" location="top" />
                     <v-icon
@@ -1293,7 +1298,7 @@
             <v-icon small>mdi-vector-line</v-icon> {{ $t('results.element_results') }}
           </v-btn>
           <v-btn
-            v-tooltip.bottom="$t('results.exportHint')"
+            v-tooltip="{ text: $t('results.exportHint'), location: 'bottom', openOnClick: !deviceHasHover }"
             size="small"
             variant="flat"
             color="secondary"
@@ -1560,6 +1565,7 @@ import EditNodalLoad from './dialogs/EditNodalLoad.vue';
 import EditElementLoad from './dialogs/EditElementLoad.vue';
 import AddElementDialog from './dialogs/AddElement.vue';
 import AddNodeDialog from './dialogs/AddNode.vue';
+import { deviceHasHover } from '@/utils/pointer';
 import AddMaterialDialog from './dialogs/AddMaterial.vue';
 import AddCrossSectionDialog from './dialogs/AddCrossSection.vue';
 import MaterialLibraryDialog from './dialogs/MaterialLibrary.vue';

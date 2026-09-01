@@ -2007,7 +2007,7 @@ defineExpose({ centerContent, fitContent });
       <div class="d-flex align-center ga-1">
         <v-chip density="compact" class="d-flex pa-0 overflow-hidden">
           <!-- Grid toggle -->
-          <v-tooltip text="Toggle grid (G)" location="top">
+          <v-tooltip text="Toggle grid (G)" location="top" :open-on-click="!deviceHasHover">
             <template #activator="{ props: tooltipProps }">
               <v-btn
                 v-bind="tooltipProps"
@@ -2023,7 +2023,7 @@ defineExpose({ centerContent, fitContent });
             </template>
           </v-tooltip>
           <!-- Snap to grid -->
-          <v-tooltip text="Toggle snap to grid (S)" location="top">
+          <v-tooltip text="Toggle snap to grid (S)" location="top" :open-on-click="!deviceHasHover">
             <template #activator="{ props: tooltipProps }">
               <v-btn
                 v-bind="tooltipProps"

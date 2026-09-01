@@ -36,14 +36,48 @@ const computedBottomBarHeight = computed(() => {
 // The last pointer position, not `movementY`: for touch pointers browsers report no movement.
 let dragLastY = 0;
 
+const MIN_BOTTOM_BAR_HEIGHT = 193;
+
+/**
+ * A press on the tab strip may yet turn out to be a tab tap, so it becomes a resize only once the
+ * pointer has travelled: the dedicated handle drags at once, a shared one has to earn it.
+ */
+const TAB_STRIP_DRAG_THRESHOLD_PX = 8;
+let pendingDragStartY: number | null = null;
+let dragStartedOnTabs = false;
+
+/** A drag across the tabs must not leave a click behind that switches the tab it ended on. */
+const swallowNextClick = () => {
+  const swallow = (e: MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+  };
+
+  window.addEventListener('click', swallow, { capture: true });
+  window.setTimeout(() => window.removeEventListener('click', swallow, { capture: true }), 300);
+};
+
 const mouseMove = (e: PointerEvent) => {
+  if (pendingDragStartY !== null && Math.abs(e.clientY - pendingDragStartY) > TAB_STRIP_DRAG_THRESHOLD_PX) {
+    pendingDragStartY = null;
+    dragStartedOnTabs = true;
+    drag.value = true;
+    dragLastY = e.clientY;
+
+    // Dragging the strip of a collapsed bar opens it at its smallest, and grows from there.
+    if (!appStore.bottomBarOpen) {
+      appStore.bottomBarOpen = true;
+      appStore.bottomBarHeight = MIN_BOTTOM_BAR_HEIGHT;
+    }
+  }
+
   if (drag.value) {
     const val = appStore.bottomBarHeight - (e.clientY - dragLastY);
     dragLastY = e.clientY;
 
     document.getSelection().removeAllRanges();
 
-    if (val < 193) return (appStore.bottomBarHeight = 193);
+    if (val < MIN_BOTTOM_BAR_HEIGHT) return (appStore.bottomBarHeight = MIN_BOTTOM_BAR_HEIGHT);
     if (val > window.innerHeight / 2) return (appStore.bottomBarHeight = window.innerHeight / 2);
 
     appStore.bottomBarHeight = val;
@@ -51,14 +85,23 @@ const mouseMove = (e: PointerEvent) => {
 };
 
 const onMouseDown = (e: PointerEvent) => {
+  if (!(e.target instanceof Element)) return;
+
   if (e.target instanceof HTMLElement && e.target.dataset.direction === 'vertical') {
     drag.value = true;
     dragLastY = e.clientY;
+    return;
   }
+
+  if (e.target.closest('[data-resize-handle="vertical"]')) pendingDragStartY = e.clientY;
 };
 
 const onMouseUp = () => {
+  if (drag.value && dragStartedOnTabs) swallowNextClick();
+
   drag.value = false;
+  dragStartedOnTabs = false;
+  pendingDragStartY = null;
 };
 
 onMounted(() => {
@@ -111,5 +154,13 @@ onUnmounted(() => {
     height: 24px;
     margin-top: -12px;
   }
+}
+
+/*
+ * The bottom bar tab strip doubles as a resize handle - a whole bar to grab rather than a line.
+ * Horizontal panning stays with the browser, so the tabs themselves can still be scrolled.
+ */
+[data-resize-handle='vertical'] {
+  touch-action: pan-x;
 }
 </style>

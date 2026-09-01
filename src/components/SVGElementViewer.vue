@@ -29,7 +29,7 @@ import SVGElement from './svg/Element.vue';
 import SVGElementTemperatureLoad from './svg/ElementTemperatureLoad.vue';
 import SVGDimensioning from './svg/Dimensioning.vue';
 import { loadType } from '../utils/loadType';
-import { boundsFromPoints } from '@/utils/fitBounds';
+import { boundsFromPoints, type ViewBox } from '@/utils/fitBounds';
 import type { DimensionRenderableNode } from '@/types/dimension';
 
 const props = withDefaults(
@@ -216,12 +216,15 @@ const centerContent = () => {
   if (grid.value) grid.value.refreshGrid(true);
 };
 
+/** Resolves `true` once the final view is shown; `false` when a newer fit took over. */
 const fitContent = async () => {
-  if (!panZoom.value) return;
+  if (!panZoom.value) return false;
 
-  await panZoom.value.fitContent();
+  const fitted = await panZoom.value.fitContent();
 
   if (grid.value) grid.value.refreshGrid(true);
+
+  return fitted;
 };
 
 /** Distributed load arrows are drawn 60 px long (see ElementLoad/UDL.vue). */
@@ -294,7 +297,13 @@ const markerDimTip = computed(() => dynamicMarker('dimTip'));
 
 const markerTextLabel = computed(() => dynamicMarker('textLabel'));
 
-defineExpose({ centerContent, fitContent });
+/** Show exactly this model-space box instead of fitting; diagram scales are refreshed first. */
+const setView = (box: ViewBox) => {
+  updateResultScales();
+  panZoom.value?.setViewBox(box);
+};
+
+defineExpose({ centerContent, fitContent, setView, update });
 </script>
 
 <template>
@@ -357,6 +366,7 @@ defineExpose({ centerContent, fitContent });
                   :scale="scale"
                   :convert-force-distance="props.convertForceDistance"
                   :font-size="props.fontSize"
+                  :number-format="props.numberFormat"
                 />
                 <SVGElementTemperatureLoad
                   v-else-if="loadType(eload) === 'temperature'"
@@ -366,6 +376,7 @@ defineExpose({ centerContent, fitContent });
                   :scale="scale"
                   :convert-force="props.convertForce"
                   :font-size="props.fontSize"
+                  :number-format="props.numberFormat"
                 />
                 <SVGElementConcentratedLoad
                   v-else-if="eload instanceof BeamConcentratedLoad"
@@ -386,6 +397,7 @@ defineExpose({ centerContent, fitContent });
                 :scale="scale"
                 :convert-force="props.convertForce"
                 :font-size="props.fontSize"
+                :number-format="props.numberFormat"
               />
               <SVGPrescribedDisplacement
                 v-for="(nload, index) in props.prescribedDisplacements"
@@ -395,6 +407,7 @@ defineExpose({ centerContent, fitContent });
                 :convert-length="props.convertLength"
                 :multiplier="defoScale * props.resultsScalePx"
                 :font-size="props.fontSize"
+                :number-format="props.numberFormat"
               />
             </g>
           </g>
@@ -420,6 +433,7 @@ defineExpose({ centerContent, fitContent });
               :convert-force="props.convertForce"
               :convert-moment="props.convertMoment"
               :font-size="props.fontSize"
+              :number-format="props.numberFormat"
             />
           </g>
 
@@ -445,6 +459,7 @@ defineExpose({ centerContent, fitContent });
               :convert-force="props.convertForce"
               :convert-moment="props.convertMoment"
               :font-size="props.fontSize"
+              :number-format="props.numberFormat"
             />
           </g>
 
@@ -462,6 +477,7 @@ defineExpose({ centerContent, fitContent });
                 :load-case="props.solver.loadCases[0]"
                 :multiplier="defoScale * props.resultsScalePx"
                 :font-size="props.fontSize"
+                :number-format="props.numberFormat"
               />
             </g>
           </g>

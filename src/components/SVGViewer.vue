@@ -394,6 +394,7 @@ watch(ctrl_v, (v) => {
 
 /** Leaves whatever mode the canvas is in - what Esc does, and what the mode banner button calls. */
 const cancelActiveMode = () => {
+  if (appStore.mouseMode === MouseMode.PICK_WINDOW) finishWindowPick(null);
   cancelDimensionDrag();
   cancelDimensionPointDrag();
   if ('activeElement' in document) (document.activeElement as HTMLElement).blur();
@@ -425,8 +426,42 @@ const activeAddMode = computed(() => {
 
   if (appStore.mouseMode === MouseMode.PASTE_CLIPBOARD) return { icon: 'mdi-content-paste', label: t('common.paste') };
 
+  if (appStore.mouseMode === MouseMode.PICK_WINDOW) {
+    return { icon: 'mdi-select-drag', label: t('exportImage.pickWindowHint') };
+  }
+
   return null;
 });
+
+/* ---- window pick: the export dialog asks for a rectangle of the drawing ---- */
+
+/** Where the pointer is in model units, unsnapped. */
+const screenToModel = (e: PointerEvent) => {
+  const matrix = viewport.value!.getScreenCTM() as DOMMatrix;
+  const point = svg.value!.createSVGPoint();
+
+  point.x = e.clientX;
+  point.y = e.clientY;
+
+  const p = point.matrixTransform(matrix.inverse());
+
+  return { x: p.x, y: p.y };
+};
+
+const windowDrag = ref<{ x0: number; y0: number; x1: number; y1: number } | null>(null);
+
+const windowRect = computed(() => {
+  const d = windowDrag.value;
+  if (!d) return null;
+
+  return { x: Math.min(d.x0, d.x1), y: Math.min(d.y0, d.y1), w: Math.abs(d.x1 - d.x0), h: Math.abs(d.y1 - d.y0) };
+});
+
+const finishWindowPick = (box: { x: number; y: number; w: number; h: number } | null) => {
+  windowDrag.value = null;
+  appStore.mouseMode = MouseMode.NONE;
+  viewerStore.finishWindowPick(box);
+};
 
 watch(escape, (v) => {
   if (v) {
@@ -1062,6 +1097,14 @@ const updatePointerPosition = (e: PointerEvent) => {
 const mouseMove = (e: PointerEvent) => {
   updatePointerPosition(e);
 
+  if (windowDrag.value) {
+    const p = screenToModel(e);
+
+    windowDrag.value = { ...windowDrag.value, x1: p.x, y1: p.y };
+
+    return;
+  }
+
   if (pendingDimensionId && !isDraggingDimension() && hasMoved(e)) {
     if (startDimensionDrag(pendingDimensionId)) {
       updateDimensionDistanceFromPointer();
@@ -1373,6 +1416,24 @@ const placeAtPointer = (e: PointerEvent) => {
 };
 
 const onMouseDown = (e: PointerEvent) => {
+  // Picking a window: the drag is the whole interaction, nothing is selected or placed.
+  if (appStore.mouseMode === MouseMode.PICK_WINDOW) {
+    if (e.button !== 0) return;
+
+    const p = screenToModel(e);
+
+    windowDrag.value = { x0: p.x, y0: p.y, x1: p.x, y1: p.y };
+
+    // Keeps the drag when the pointer leaves the drawing; refused for synthetic events.
+    try {
+      (e.currentTarget as Element).setPointerCapture(e.pointerId);
+    } catch {
+      /* not a real pointer */
+    }
+
+    return;
+  }
+
   //if (this.svgPanZoom == null) return;
   const skipClearingSelection = pointerDownOriginatesFromDimension;
   pointerDownOriginatesFromDimension = false;
@@ -1575,6 +1636,16 @@ const onPointerCancel = (e: PointerEvent) => {
 
 const onMouseUp = (e: PointerEvent) => {
   activePointers.delete(e.pointerId);
+
+  if (windowDrag.value) {
+    const box = windowRect.value;
+
+    // A click that never became a drag is not a window; keep waiting for one.
+    if (box && box.w > 0 && box.h > 0) finishWindowPick(box);
+    else windowDrag.value = null;
+
+    return;
+  }
 
   if (pendingTap) {
     pendingTap = false;
@@ -2460,6 +2531,17 @@ defineExpose({ centerContent, fitContent });
             </g>
           </g>
         </g>
+        <!-- The window being picked for an image export; on top of everything, in model units. -->
+        <rect
+          v-if="windowRect"
+          :x="windowRect.x"
+          :y="windowRect.y"
+          :width="windowRect.w"
+          :height="windowRect.h"
+          class="window-pick"
+          vector-effect="non-scaling-stroke"
+          pointer-events="none"
+        />
       </svg>
     </SvgPanZoom>
 
@@ -2601,6 +2683,13 @@ defineExpose({ centerContent, fitContent });
 <style lang="scss" scoped>
 .disablePointerEvents {
   pointer-events: none;
+}
+
+.window-pick {
+  fill: rgba(25, 118, 210, 0.12);
+  stroke: #1976d2;
+  stroke-width: 1.5px;
+  stroke-dasharray: 6 3;
 }
 
 .svg-viewer :deep(*) {

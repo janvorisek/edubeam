@@ -451,8 +451,10 @@
     "title": "Exportovat obrázek",
     "transparentBackground": "Průhledné pozadí",
     "download": "Stáhnout PNG",
+    "downloadSvg": "Stáhnout SVG",
     "copyToClipboard": "Kopírovat do schránky",
     "copied": "Obrázek zkopírován do schránky",
+    "exported": "Obrázek exportován",
     "failed": "Obrázek se nepodařilo vykreslit.",
     "previewAlt": "Náhled exportovaného obrázku",
     "instructions": "Obrázek se vykreslí přímo pro zvolenou velikost, takže čáry i popisky si zachovají skutečnou tloušťku. Stejná velikost vždy zarámuje konstrukci stejně – hodí se pro export M, N a V vedle sebe.",
@@ -461,7 +463,11 @@
     "lockAspect": "Zachovat poměr stran",
     "fitPreview": "Přizpůsobit",
     "actualSize": "Skutečná velikost",
-    "preview": "Náhled"
+    "preview": "Náhled",
+    "fitAll": "Vše",
+    "window": "Výřez…",
+    "pickWindowHint": "Tažením vyberte oblast výkresu k exportu",
+    "dragEdge": "Tažením rozšiřte nebo ořízněte tuto stranu"
   },
   "examples": {
     "title": "Příklady",

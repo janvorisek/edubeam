@@ -459,8 +459,10 @@
     "title": "Export image",
     "transparentBackground": "Transparent background",
     "download": "Download PNG",
+    "downloadSvg": "Download SVG",
     "copyToClipboard": "Copy to clipboard",
     "copied": "Image copied to clipboard",
+    "exported": "Image exported",
     "failed": "Could not render the image.",
     "previewAlt": "Preview of the exported image",
     "instructions": "The drawing is laid out fresh for the size you pick, so lines and labels keep their real thickness. The same size always frames the structure the same way — handy for exporting M, N and V side by side.",
@@ -469,7 +471,11 @@
     "lockAspect": "Keep aspect ratio",
     "fitPreview": "Fit",
     "actualSize": "Actual size",
-    "preview": "Preview"
+    "preview": "Preview",
+    "fitAll": "Fit all",
+    "window": "Window…",
+    "pickWindowHint": "Drag a rectangle over the drawing to export",
+    "dragEdge": "Drag to reveal or trim this side"
   },
   "examples": {
     "title": "Examples",

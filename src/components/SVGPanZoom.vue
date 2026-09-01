@@ -158,8 +158,12 @@ const touchFrame = frameQueue((touch: { x: number; y: number; distance: number; 
   const deltaY = Math.sign(touchPointer.value.ds - touch.distance) * 0.025;
   touchPointer.value.ds = touch.distance;
 
-  if (deltaY !== 0) zoom(touchPointer.value.x, touchPointer.value.y, deltaY);
-  else updateMatrix(true);
+  if (deltaY !== 0) {
+    zooming.value = true;
+    zoom(touchPointer.value.x, touchPointer.value.y, deltaY);
+  } else {
+    updateMatrix(true);
+  }
 });
 
 const onTouchStart = (event: TouchEvent): void => {
@@ -173,7 +177,6 @@ const onTouchStart = (event: TouchEvent): void => {
   }
 
   if (event.touches.length === 2) {
-    zooming.value = true;
     panning.value = true;
 
     touchPointer.value.ds = Math.hypot(
@@ -193,7 +196,9 @@ const onTouchEnd = (): void => {
   touchFrame.cancel();
   gestureRect = null;
 
-  zooming.value = false;
+  // Restoring the drawing costs more than hiding it, so a gesture that is followed by another
+  // does not pay for it twice; the wheel settles the same way.
+  debonceZoom();
   touchPointer.value.move = false;
   touchPointer.value.pinch = false;
   panning.value = false;

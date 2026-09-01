@@ -319,7 +319,8 @@
     "temperature": "Charge thermique"
   },
   "dimensioning": {
-    "add_dimension": "Ajouter une cote"
+    "add_dimension": "Ajouter une cote",
+    "add_along_element": "Coter l'élément {label}"
   },
   "warnings": {
     "noMaterialsDefined": "Aucun matériau défini.",

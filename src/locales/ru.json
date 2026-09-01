@@ -319,7 +319,8 @@
     "temperature": "Температурная нагрузка"
   },
   "dimensioning": {
-    "add_dimension": "Добавить размер"
+    "add_dimension": "Добавить размер",
+    "add_along_element": "Образмерить элемент {label}"
   },
   "warnings": {
     "noMaterialsDefined": "Материалы не определены.",

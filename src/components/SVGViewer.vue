@@ -768,11 +768,14 @@ const startLongPress = (e: PointerEvent) => {
   cancelLongPress();
 
   const { clientX, clientY } = e;
+  const element = elementAtEvent(e);
+
   longPressTimer = window.setTimeout(() => {
     longPressTimer = null;
     longPressFired = true;
     swallowNextClick();
 
+    ctxMenuElement.value = element;
     optionsCtxMenu.x = clientX;
     optionsCtxMenu.y = clientY;
     showCtxMenu.value = true;
@@ -855,7 +858,8 @@ const placeSelectionPanel = (e: MouseEvent) => {
 };
 
 const onNodeClick = (e: MouseEvent) => {
-  if (hasMoved(e) || longPressFired) return;
+  // A placing mode owns the canvas: a press there places, it does not select.
+  if (hasMoved(e) || longPressFired || activeAddMode.value) return;
 
   appStore.bottomBarTab = 'tab-nodes';
 
@@ -872,7 +876,8 @@ const onNodeClick = (e: MouseEvent) => {
 };
 
 const onElementClick = (e: MouseEvent, element: Beam2D) => {
-  if (hasMoved(e) || longPressFired) return;
+  // A placing mode owns the canvas: a press there places, it does not select.
+  if (hasMoved(e) || longPressFired || activeAddMode.value) return;
 
   appStore.bottomBarTab = 'tab-elements';
 
@@ -886,7 +891,8 @@ const onElementClick = (e: MouseEvent, element: Beam2D) => {
 };
 
 const onDimensionClick = (e: PointerEvent, dimensionId: string) => {
-  if (hasMoved(e) || longPressFired) return;
+  // A placing mode owns the canvas: a press there places, it does not select.
+  if (hasMoved(e) || longPressFired || activeAddMode.value) return;
 
   projectStore.clearSelection();
   projectStore.clearSelection2();
@@ -949,7 +955,8 @@ const onDimensionPointPointerUp = (e: PointerEvent, dimensionId: string) => {
 };
 
 const onElementLoadClick = (e: MouseEvent, index: number) => {
-  if (hasMoved(e) || longPressFired) return;
+  // A placing mode owns the canvas: a press there places, it does not select.
+  if (hasMoved(e) || longPressFired || activeAddMode.value) return;
 
   appStore.bottomBarTab = 'tab-loads';
 
@@ -963,7 +970,8 @@ const onElementLoadClick = (e: MouseEvent, index: number) => {
 };
 
 const onNodalLoadClick = (e: MouseEvent, index: number) => {
-  if (hasMoved(e) || longPressFired) return;
+  // A placing mode owns the canvas: a press there places, it does not select.
+  if (hasMoved(e) || longPressFired || activeAddMode.value) return;
 
   appStore.bottomBarTab = 'tab-loads';
 
@@ -977,7 +985,8 @@ const onNodalLoadClick = (e: MouseEvent, index: number) => {
 };
 
 const onPrescribedBCClick = (e: MouseEvent, index: number) => {
-  if (hasMoved(e) || longPressFired) return;
+  // A placing mode owns the canvas: a press there places, it does not select.
+  if (hasMoved(e) || longPressFired || activeAddMode.value) return;
 
   appStore.bottomBarTab = 'tab-loads';
 
@@ -1555,6 +1564,12 @@ const placeAtPointer = (e: PointerEvent) => {
 const onMouseDown = (e: PointerEvent) => {
   lastPointerType = e.pointerType;
 
+  // Identity, not a flag: a press that lands outside the canvas then leaves nothing armed here.
+  if (e === ctxMenuDismissEvent) {
+    ctxMenuDismissEvent = null;
+    return;
+  }
+
   // Picking a window: the drag is the whole interaction, nothing is selected or placed.
   if (appStore.mouseMode === MouseMode.PICK_WINDOW) {
     if (e.button !== 0) return;
@@ -1933,6 +1948,10 @@ const onMouseUp = (e: PointerEvent) => {
 };
 
 const showCtxMenu = ref(false);
+/** The element the menu was opened over, if any: what a dimension can be built from directly. */
+const ctxMenuElement = ref<Beam2D | null>(null);
+/** The very press that dismissed the menu: the canvas must not read it as a press of its own. */
+let ctxMenuDismissEvent: PointerEvent | null = null;
 const optionsCtxMenu = reactive({
   zIndex: 3000,
   minWidth: 230,
@@ -1940,13 +1959,65 @@ const optionsCtxMenu = reactive({
   y: 0,
 });
 
+/** The element under a pointer, from the handle it landed on. */
+const elementAtEvent = (e: Event) => {
+  const handle = e.target instanceof Element ? e.target.closest('[data-element-id]') : null;
+  const label = handle?.getAttribute('data-element-id');
+  if (label === null || label === undefined) return null;
+
+  return projectStore.beams.find((beam) => String(beam.label) === label) ?? null;
+};
+
 const openCtxMenu = (e: MouseEvent) => {
   if (hasMoved(e) || longPressFired) return;
 
+  ctxMenuElement.value = elementAtEvent(e);
   optionsCtxMenu.x = e.clientX;
   optionsCtxMenu.y = e.clientY;
 
   showCtxMenu.value = true;
+};
+
+/**
+ * The menu closes itself on a click outside, but the canvas suppresses the compatibility click a
+ * tap would fire (SVGPanZoom prevents the touch defaults), so on a touch screen nothing ever
+ * dismissed it. Watch presses instead, and swallow the one that closed the menu.
+ */
+const closeCtxMenuOnOutsidePress = (e: PointerEvent) => {
+  if (e.target instanceof Element && e.target.closest('.mx-context-menu')) return;
+
+  ctxMenuDismissEvent = e;
+  showCtxMenu.value = false;
+};
+
+watch(showCtxMenu, (open) => {
+  if (open) {
+    document.addEventListener('pointerdown', closeCtxMenuOnOutsidePress, true);
+    return;
+  }
+
+  document.removeEventListener('pointerdown', closeCtxMenuOnOutsidePress, true);
+  ctxMenuElement.value = null;
+});
+
+onUnmounted(() => document.removeEventListener('pointerdown', closeCtxMenuOnOutsidePress, true));
+
+/** Dimensions the element the menu was opened over, end node to end node. */
+const addDimensionAlongElement = () => {
+  const element = ctxMenuElement.value;
+  if (!element) return;
+
+  const nodes = element.nodes.map((label) => projectStore.solver.domain.nodes.get(String(label)));
+  if (!nodes[0] || !nodes[1]) return;
+
+  executeModelMutationWithUndo(() => {
+    projectStore.dimensions.push({
+      id: createDimensionId(),
+      distance: dimlineDist.value / (scale.value || 1),
+      distanceUnit: 'world',
+      points: [createDimensionPointFromNode(nodes[0]!), createDimensionPointFromNode(nodes[1]!)],
+    });
+  });
 };
 
 /** The drawing stays invisible until the first fit has landed, so it never jumps into place. */
@@ -2196,6 +2267,15 @@ defineExpose({ centerContent, fitContent });
         </template>
         <template #label>
           <span class="label">{{ $t('dimensioning.add_dimension') }}</span>
+        </template>
+      </context-menu-item>
+      <!-- Opened over an element: its two end nodes already say where the dimension goes. -->
+      <context-menu-item v-if="ctxMenuElement" @click="addDimensionAlongElement()">
+        <template #icon>
+          <v-icon size="x-small">mdi-arrow-expand-horizontal</v-icon>
+        </template>
+        <template #label>
+          <span class="label">{{ $t('dimensioning.add_along_element', { label: ctxMenuElement.label }) }}</span>
         </template>
       </context-menu-item>
       <context-menu-sperator />

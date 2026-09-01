@@ -33,6 +33,7 @@ import { executeModelMutationWithUndo, loadType, throttle } from '../utils';
 import { createDimensionId, ensureDimensionId } from '@/utils/id';
 import { boundsFromPoints } from '@/utils/fitBounds';
 import { placePopupNearAnchor, type AnchorRect } from '@/utils/popupPlacement';
+import { deviceHasHover } from '@/utils/pointer';
 import {
   Node,
   DofID,
@@ -756,6 +757,12 @@ const swallowNextClick = () => {
   window.addEventListener('click', swallow, { capture: true });
   window.setTimeout(() => window.removeEventListener('click', swallow, { capture: true }), 700);
 };
+
+/**
+ * Arms the next one finger drag to draw a selection box, the way a mouse drag does natively.
+ * Toggled from an on-screen button that only exists where there is no mouse to do it.
+ */
+const touchSelectArmed = ref(false);
 
 const startLongPress = (e: PointerEvent) => {
   cancelLongPress();
@@ -1602,7 +1609,12 @@ const onMouseDown = (e: PointerEvent) => {
     return;
   }
 
-  if (e.pointerType !== 'mouse' && e.button === 0 && appStore.mouseMode !== MouseMode.MOVING) {
+  if (
+    e.pointerType !== 'mouse' &&
+    e.button === 0 &&
+    appStore.mouseMode !== MouseMode.MOVING &&
+    !touchSelectArmed.value
+  ) {
     startLongPress(e);
   }
 
@@ -1616,7 +1628,7 @@ const onMouseDown = (e: PointerEvent) => {
     if (appStore.mouseMode === MouseMode.HOVER) {
       if (intersected.value.type === 'node') hideTooltip(false);
       appStore.mouseMode = MouseMode.MOVING;
-    } else if (e.pointerType === 'mouse' && appStore.mouseMode !== MouseMode.MOVING) {
+    } else if ((e.pointerType === 'mouse' || touchSelectArmed.value) && appStore.mouseMode !== MouseMode.MOVING) {
       appStore.mouseMode = MouseMode.SELECTING;
       appStore.mouse.sx = e.clientX;
       appStore.mouse.sy = e.clientY;
@@ -1909,6 +1921,9 @@ const onMouseUp = (e: PointerEvent) => {
     projectStore.selection2.elementLoads = selectedElementLoads;
     projectStore.selection2.prescribedBC = selectedPrescribedBC;
     projectStore.selection2.dimensions = selectedDimensions;
+
+    // One box per arming: the toggle hands the next drag back to panning.
+    touchSelectArmed.value = false;
   }
 
   appStore.mouseMode = MouseMode.NONE;
@@ -2064,6 +2079,17 @@ defineExpose({ centerContent, fitContent });
       ></v-btn>
     </div>
     <div id="viewerControls" class="text-black d-flex" style="position: absolute; z-index: 100; top: 24px; right: 24px">
+      <v-btn
+        v-if="!deviceHasHover"
+        icon="mdi:mdi-select-drag"
+        size="32"
+        density="comfortable"
+        class="mr-1"
+        rounded="lg"
+        title="Box select"
+        :color="touchSelectArmed ? 'primary' : 'default'"
+        @click="touchSelectArmed = !touchSelectArmed"
+      ></v-btn>
       <v-btn
         icon="mdi:mdi-image-filter-center-focus"
         size="32"
@@ -2278,7 +2304,7 @@ defineExpose({ centerContent, fitContent });
       :on-update="onUpdate"
       :padding="16"
       :mobile-padding="12"
-      :touch="appStore.mouseMode !== MouseMode.MOVING"
+      :touch="appStore.mouseMode !== MouseMode.MOVING && appStore.mouseMode !== MouseMode.SELECTING"
       :can-fit-content="projectStore.solver.domain.nodes.size >= 2"
       :model-bounds="modelBounds"
       fit-ignore="[data-fit-ignore]"

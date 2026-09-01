@@ -33,9 +33,13 @@ const computedBottomBarHeight = computed(() => {
   return appStore.bottomBarOpen ? appStore.bottomBarHeight : 36;
 });
 
-const mouseMove = (e: MouseEvent) => {
+// The last pointer position, not `movementY`: for touch pointers browsers report no movement.
+let dragLastY = 0;
+
+const mouseMove = (e: PointerEvent) => {
   if (drag.value) {
-    const val = appStore.bottomBarHeight - e.movementY;
+    const val = appStore.bottomBarHeight - (e.clientY - dragLastY);
+    dragLastY = e.clientY;
 
     document.getSelection().removeAllRanges();
 
@@ -46,9 +50,10 @@ const mouseMove = (e: MouseEvent) => {
   }
 };
 
-const onMouseDown = (e: MouseEvent) => {
+const onMouseDown = (e: PointerEvent) => {
   if (e.target instanceof HTMLElement && e.target.dataset.direction === 'vertical') {
     drag.value = true;
+    dragLastY = e.clientY;
   }
 };
 
@@ -57,15 +62,17 @@ const onMouseUp = () => {
 };
 
 onMounted(() => {
-  window.addEventListener('mousemove', mouseMove);
-  window.addEventListener('mouseup', onMouseUp);
-  window.addEventListener('mousedown', onMouseDown);
+  window.addEventListener('pointermove', mouseMove);
+  window.addEventListener('pointerup', onMouseUp);
+  window.addEventListener('pointercancel', onMouseUp);
+  window.addEventListener('pointerdown', onMouseDown);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('mousemove', mouseMove);
-  window.removeEventListener('mouseup', onMouseUp);
-  window.removeEventListener('mousedown', onMouseDown);
+  window.removeEventListener('pointermove', mouseMove);
+  window.removeEventListener('pointerup', onMouseUp);
+  window.removeEventListener('pointercancel', onMouseUp);
+  window.removeEventListener('pointerdown', onMouseDown);
 });
 </script>
 
@@ -82,6 +89,8 @@ onUnmounted(() => {
   width: 100%;
   display: flex;
   position: relative;
+  /* The drag is ours: without this a touch drag scrolls the page instead of resizing. */
+  touch-action: none;
 }
 
 .resizer[data-direction='vertical']::after {
@@ -94,5 +103,13 @@ onUnmounted(() => {
   display: flex;
   position: absolute;
   z-index: 100;
+}
+
+/* A 12 px strip is a mouse target; a finger needs more to grab. */
+@media (pointer: coarse) {
+  .resizer[data-direction='vertical']::after {
+    height: 24px;
+    margin-top: -12px;
+  }
 }
 </style>

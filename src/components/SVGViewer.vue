@@ -32,6 +32,7 @@ import { formatExpValueAsHTML } from '../SVGUtils';
 import { executeModelMutationWithUndo, loadType, throttle } from '../utils';
 import { createDimensionId, ensureDimensionId } from '@/utils/id';
 import { boundsFromPoints } from '@/utils/fitBounds';
+import { placePopupNearAnchor, type AnchorRect } from '@/utils/popupPlacement';
 import {
   Node,
   DofID,
@@ -482,7 +483,7 @@ const refreshTooltipContent = () => {
     const tooltipContent = tt.querySelector('.content') as HTMLElement | null;
     if (!tooltipContent) return;
 
-    tooltipContent.innerHTML = buildNodeTooltipContent(node as Node);
+    tooltipContent.innerHTML = renderDetails(buildNodeDetails(node as Node));
   }
 };
 
@@ -513,41 +514,47 @@ const escapeHtml = (value: unknown) =>
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
 
-const onElementHover = (e: MouseEvent, el: Beam2D, showTooltip = true) => {
-  if (appStore.mouseMode === MouseMode.MOVING) return;
+/**
+ * What is known about one entity: a heading naming it, and a body of rows. The hover tooltip shows
+ * both; the selection panel names its selection in its own header, so it shows the body.
+ */
+type EntityDetails = { title: string; body: string };
 
+const renderDetails = (details: EntityDetails) =>
+  `<strong>${details.title}</strong>${details.body ? `<br>${details.body}` : ''}`;
+
+/**
+ * The pointer kind behind the current gesture. The compatibility mouse events a tap fires carry no
+ * pointer type of their own, so the last one seen on the canvas answers for them.
+ */
+let lastPointerType = 'mouse';
+
+/**
+ * Touch and pen have no hover. Acting on the compatibility mouse events a tap fires would leave a
+ * tooltip under the finger with nothing left to dismiss it, and the item hover latched, so that
+ * the next drag would move it instead of panning. A tap opens the selection panel, which carries
+ * the same content, instead.
+ */
+const isMousePointer = (e: MouseEvent | PointerEvent) =>
+  ('pointerType' in e ? (e as PointerEvent).pointerType : lastPointerType) === 'mouse';
+
+const showEntityTooltip = (e: MouseEvent, details: EntityDetails) => {
   const tt = tooltip.value as HTMLElement;
   const tooltipContent = tt.querySelector('.content') as HTMLElement;
-
-  intersected.value.type = 'element';
-  intersected.value.index = el.label;
-
-  if (showTooltip) {
-    tt.style.top = e.offsetY + 'px';
-    tt.style.left = e.offsetX + 'px';
-    tooltipContent.innerHTML = `<strong>${t('common.element')} ${escapeHtml(el.label)}</strong><br>CS=${escapeHtml(el.cs)}, Mat=${escapeHtml(el.mat)}`;
-    tt.style.display = 'block';
-    document.body.style.cursor = 'pointer';
-  } else {
-    tt.style.display = 'none';
-    document.body.style.cursor = 'auto';
-  }
-
-  if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
-};
-
-const onElementLoadHover = (e: MouseEvent, el: BeamElementLoad) => {
-  if (appStore.mouseMode === MouseMode.MOVING) return;
-
-  const tt = tooltip.value as HTMLElement;
-  const tooltipContent = tt.querySelector('.content') as HTMLElement;
-
-  //intersected.value.type = "element";
-  //intersected.value.index = el.label;
 
   tt.style.top = e.offsetY + 'px';
   tt.style.left = e.offsetX + 'px';
+  tooltipContent.innerHTML = renderDetails(details);
+  tt.style.display = 'block';
+  document.body.style.cursor = 'pointer';
+};
 
+const buildElementDetails = (el: Beam2D): EntityDetails => ({
+  title: `${t('common.element')} ${escapeHtml(el.label)}`,
+  body: `CS=${escapeHtml(el.cs)}, Mat=${escapeHtml(el.mat)}`,
+});
+
+const buildElementLoadDetails = (el: BeamElementLoad): EntityDetails => {
   let lt = 'loadType.udl';
   const isDistributed = el instanceof BeamElementUniformEdgeLoad || el instanceof BeamElementTrapezoidalEdgeLoad;
   if (el instanceof BeamElementTrapezoidalEdgeLoad) lt = 'loadType.trapezoidal';
@@ -559,148 +566,164 @@ const onElementLoadHover = (e: MouseEvent, el: BeamElementLoad) => {
   let uu = isDistributed ? appStore.units.ForceDistance : appStore.units.Force;
   if (el instanceof BeamTemperatureLoad) uu = appStore.units.Temperature;
 
-  tooltipContent.innerHTML = `<strong>${t(lt)}</strong><br>`;
+  const rows: string[] = [];
 
   if (el instanceof BeamTemperatureLoad) {
     if (Math.abs(el.values[0]) > 1e-32) {
-      tooltipContent.innerHTML += `${t('loads.temperatureDeltaTs')} = ${appStore.convertTemperature(el.values[0])} ${uu}<br>`;
+      rows.push(`${t('loads.temperatureDeltaTs')} = ${appStore.convertTemperature(el.values[0])} ${uu}`);
     }
 
     if (Math.abs(el.values[1]) > 1e-32) {
-      tooltipContent.innerHTML += `${t('loads.temperatureDeltaTbt')} = ${appStore.convertTemperature(el.values[1])} ${uu}`;
+      rows.push(`${t('loads.temperatureDeltaTbt')} = ${appStore.convertTemperature(el.values[1])} ${uu}`);
     }
   } else if (el instanceof BeamElementTrapezoidalEdgeLoad) {
     if (Math.abs(el.startValues[0]) > 1e-32 || Math.abs(el.endValues[0]) > 1e-32) {
-      tooltipContent.innerHTML += `${ff}<sub>x</sub> = ${convertIntensity(el.startValues[0])} → ${convertIntensity(
-        el.endValues[0]
-      )} ${uu}<br>`;
+      rows.push(
+        `${ff}<sub>x</sub> = ${convertIntensity(el.startValues[0])} → ${convertIntensity(el.endValues[0])} ${uu}`
+      );
     }
 
     if (Math.abs(el.startValues[1]) > 1e-32 || Math.abs(el.endValues[1]) > 1e-32) {
-      tooltipContent.innerHTML += `${ff}<sub>z</sub> = ${convertIntensity(el.startValues[1])} → ${convertIntensity(
-        el.endValues[1]
-      )} ${uu}`;
+      rows.push(
+        `${ff}<sub>z</sub> = ${convertIntensity(el.startValues[1])} → ${convertIntensity(el.endValues[1])} ${uu}`
+      );
     }
   } else if (el instanceof BeamElementUniformEdgeLoad || el instanceof BeamConcentratedLoad) {
-    if (Math.abs(el.values[0]) > 1e-32) {
-      tooltipContent.innerHTML += `${ff}<sub>x</sub> = ${convertIntensity(el.values[0])} ${uu}<br>`;
-    }
+    if (Math.abs(el.values[0]) > 1e-32) rows.push(`${ff}<sub>x</sub> = ${convertIntensity(el.values[0])} ${uu}`);
 
-    if (Math.abs(el.values[1]) > 1e-32) {
-      tooltipContent.innerHTML += `${ff}<sub>z</sub> = ${convertIntensity(el.values[1])} ${uu}`;
-    }
+    if (Math.abs(el.values[1]) > 1e-32) rows.push(`${ff}<sub>z</sub> = ${convertIntensity(el.values[1])} ${uu}`);
   }
 
-  tt.style.display = 'block';
-  document.body.style.cursor = 'pointer';
-
-  if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
+  return { title: t(lt), body: rows.join('<br>') };
 };
 
-const onNodalLoadHover = (e: MouseEvent, el: NodalLoad) => {
-  if (appStore.mouseMode === MouseMode.MOVING) return;
+const buildNodalLoadDetails = (el: NodalLoad): EntityDetails => {
+  const rows: string[] = [];
 
-  const tt = tooltip.value as HTMLElement;
-  const tooltipContent = tt.querySelector('.content') as HTMLElement;
-
-  //intersected.value.type = "element";
-  //intersected.value.index = el.label;
-
-  tt.style.top = e.offsetY + 'px';
-  tt.style.left = e.offsetX + 'px';
-  tooltipContent.innerHTML = `<strong>${t('loads.nodalLoad')}</strong><br>`;
   if (Math.abs(el.values[0]) > 1e-32) {
-    tooltipContent.innerHTML += `F<sub>x</sub> = ${appStore.convertForce(el.values[0])} ${appStore.units.Force}<br>`;
+    rows.push(`F<sub>x</sub> = ${appStore.convertForce(el.values[0])} ${appStore.units.Force}`);
   }
 
   if (Math.abs(el.values[2]) > 1e-32) {
-    tooltipContent.innerHTML += `F<sub>z</sub> = ${appStore.convertForce(el.values[2])} ${appStore.units.Force}<br>`;
+    rows.push(`F<sub>z</sub> = ${appStore.convertForce(el.values[2])} ${appStore.units.Force}`);
   }
 
   if (Math.abs(el.values[4]) > 1e-32) {
-    tooltipContent.innerHTML += `M<sub>y</sub> = ${appStore.convertMoment(el.values[4])} ${appStore.units.Moment}`;
+    rows.push(`M<sub>y</sub> = ${appStore.convertMoment(el.values[4])} ${appStore.units.Moment}`);
   }
 
-  tt.style.display = 'block';
-  document.body.style.cursor = 'pointer';
-
-  if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
+  return { title: t('loads.nodalLoad'), body: rows.join('<br>') };
 };
 
-const onPrescribedBCHover = (e: MouseEvent, el: PrescribedDisplacement) => {
-  if (appStore.mouseMode === MouseMode.MOVING) return;
+const buildPrescribedBCDetails = (el: PrescribedDisplacement): EntityDetails => {
+  const rows: string[] = [];
 
-  const tt = tooltip.value as HTMLElement;
-  const tooltipContent = tt.querySelector('.content') as HTMLElement;
-
-  //intersected.value.type = "element";
-  //intersected.value.index = el.label;
-
-  tt.style.top = e.offsetY + 'px';
-  tt.style.left = e.offsetX + 'px';
-  tooltipContent.innerHTML = `<strong>${t('loads.prescribedDisplacement')}</strong><br>`;
   if (Math.abs(el.prescribedValues[0]) > 1e-32) {
-    tooltipContent.innerHTML += `D<sub>x</sub> = ${appStore.convertLength(el.prescribedValues[0])} ${appStore.units.Length}<br>`;
+    rows.push(`D<sub>x</sub> = ${appStore.convertLength(el.prescribedValues[0])} ${appStore.units.Length}`);
   }
 
   if (Math.abs(el.prescribedValues[2]) > 1e-32) {
-    tooltipContent.innerHTML += `D<sub>z</sub> = ${appStore.convertLength(el.prescribedValues[2])} ${appStore.units.Length}<br>`;
+    rows.push(`D<sub>z</sub> = ${appStore.convertLength(el.prescribedValues[2])} ${appStore.units.Length}`);
   }
 
   if (Math.abs(el.prescribedValues[4]) > 1e-32) {
-    tooltipContent.innerHTML += `R<sub>y</sub> = ${el.prescribedValues[4]} ${appStore.units.Angle}`;
+    rows.push(`R<sub>y</sub> = ${el.prescribedValues[4]} ${appStore.units.Angle}`);
   }
 
-  tt.style.display = 'block';
-  document.body.style.cursor = 'pointer';
-
-  if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
+  return { title: t('loads.prescribedDisplacement'), body: rows.join('<br>') };
 };
 
-const buildNodeTooltipContent = (node: Node) => {
-  let content = `<strong>${t('common.node')} ${escapeHtml(node.label)}</strong>`;
+const buildNodeDetails = (node: Node): EntityDetails => {
+  const rows: string[] = [];
 
   if (
     projectStore.solver.loadCases[0].solved &&
     projectStore.beams.some((element) => element.nodes.includes(node.label))
   ) {
-    content += '<br>';
-    content += `u<sub>x</sub> = ${formatExpValueAsHTML(
-      // @ts-expect-error It return value for single Dof
-      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]),
-      4
-    )} m`;
-    content += '<br>';
-    content += `u<sub>z</sub> = ${formatExpValueAsHTML(
-      // @ts-expect-error It return value for single Dof
-      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]),
-      4
-    )} m`;
-    content += '<br>';
-    content += `φ<sub>y</sub> = ${formatExpValueAsHTML(
-      // @ts-expect-error It return value for single Dof
-      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry]),
-      4
-    )} rad`;
+    rows.push(
+      `u<sub>x</sub> = ${formatExpValueAsHTML(
+        // @ts-expect-error It return value for single Dof
+        node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]),
+        4
+      )} m`
+    );
+
+    rows.push(
+      `u<sub>z</sub> = ${formatExpValueAsHTML(
+        // @ts-expect-error It return value for single Dof
+        node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]),
+        4
+      )} m`
+    );
+
+    rows.push(
+      `φ<sub>y</sub> = ${formatExpValueAsHTML(
+        // @ts-expect-error It return value for single Dof
+        node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry]),
+        4
+      )} rad`
+    );
   }
 
-  return content;
+  return { title: `${t('common.node')} ${escapeHtml(node.label)}`, body: rows.join('<br>') };
+};
+
+const onElementHover = (e: MouseEvent, el: Beam2D, showTooltip = true) => {
+  if (appStore.mouseMode === MouseMode.MOVING || !isMousePointer(e)) return;
+
+  intersected.value.type = 'element';
+  intersected.value.index = el.label;
+
+  if (showTooltip) showEntityTooltip(e, buildElementDetails(el));
+  else hideTooltip(false);
+
+  if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
+};
+
+const onElementLoadHover = (e: MouseEvent, el: BeamElementLoad) => {
+  if (appStore.mouseMode === MouseMode.MOVING || !isMousePointer(e)) return;
+
+  showEntityTooltip(e, buildElementLoadDetails(el));
+
+  if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
+};
+
+const onNodalLoadHover = (e: MouseEvent, el: NodalLoad) => {
+  if (appStore.mouseMode === MouseMode.MOVING || !isMousePointer(e)) return;
+
+  showEntityTooltip(e, buildNodalLoadDetails(el));
+
+  if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
+};
+
+const onPrescribedBCHover = (e: MouseEvent, el: PrescribedDisplacement) => {
+  if (appStore.mouseMode === MouseMode.MOVING || !isMousePointer(e)) return;
+
+  showEntityTooltip(e, buildPrescribedBCDetails(el));
+
+  if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
 };
 
 const onNodeHover = (e: MouseEvent, node: Node) => {
-  if (appStore.mouseMode === MouseMode.MOVING) return;
-
-  const tt = tooltip.value as HTMLElement;
-  const tooltipContent = tt.querySelector('.content') as HTMLElement;
+  if (appStore.mouseMode === MouseMode.MOVING || !isMousePointer(e)) return;
 
   intersected.value.type = 'node';
   intersected.value.index = node.label;
 
-  tt.style.top = e.offsetY + 'px';
-  tt.style.left = e.offsetX + 'px';
-  tooltipContent.innerHTML = buildNodeTooltipContent(node);
-  tt.style.display = 'block';
-  document.body.style.cursor = 'pointer';
+  showEntityTooltip(e, buildNodeDetails(node));
+
+  if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
+};
+
+/**
+ * A press latches the node for dragging, and for the add element mode to snap onto it. Unlike the
+ * hover above it answers every pointer kind, being the only such signal a finger gives.
+ */
+const onNodePress = (e: PointerEvent, node: Node) => {
+  if (appStore.mouseMode === MouseMode.MOVING) return;
+
+  intersected.value.type = 'node';
+  intersected.value.index = node.label;
 
   if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
 };
@@ -715,6 +738,71 @@ const hasMoved = (e: MouseEvent | PointerEvent) => {
 };
 
 const TTWIDTH = 210;
+/** Kept clear of the window edges, and of the item the panel belongs to. */
+const SELECTION_PANEL_MARGIN = 8;
+
+const selectionPanel = ref<HTMLElement | null>(null);
+/** Screen rectangle the open panel is kept clear of: what the pointer itself covers. */
+let selectionAnchor: AnchorRect | null = null;
+
+/** Room the pointer takes: a cursor tip, or the fingertip the panel opens just below. */
+const POINTER_RADIUS_PX = 4;
+const FINGER_RADIUS_PX = 8;
+
+/**
+ * Puts the panel below the item it describes, or above it where the bottom of the window is
+ * closer, so a finger never covers what it has just opened. Measured once the panel has rendered,
+ * since it is as tall as the selection has to say.
+ */
+const clampSelectionPanel = () => {
+  const panel = selectionPanel.value;
+  if (!panel) return;
+
+  // The panel is positioned absolutely, so its coordinates are those of its offset parent.
+  const origin = (panel.offsetParent as HTMLElement | null)?.getBoundingClientRect();
+  const originLeft = origin?.left ?? 0;
+  const originTop = origin?.top ?? 0;
+
+  const { left, top } = placePopupNearAnchor({
+    anchor: selectionAnchor,
+    width: panel.offsetWidth || TTWIDTH,
+    height: panel.offsetHeight,
+    viewport: { width: window.innerWidth, height: window.innerHeight },
+    margin: SELECTION_PANEL_MARGIN,
+  });
+
+  projectStore.selection.x = left - originLeft;
+  projectStore.selection.y = top - originTop;
+};
+
+/**
+ * Whether the open panel was opened by a finger. A mouse reads the same properties from the hover
+ * tooltip, so it is only the pointers that get no tooltip that need them in the panel.
+ */
+const selectionOpenedByTouch = ref(false);
+
+/**
+ * Opens the selection panel at the point that was clicked or tapped, rather than at the item: the
+ * handle of an element spans the whole beam, and its box would put the panel far from the pointer.
+ */
+const placeSelectionPanel = (e: MouseEvent) => {
+  selectionOpenedByTouch.value = lastPointerType !== 'mouse';
+
+  const radius = selectionOpenedByTouch.value ? FINGER_RADIUS_PX : POINTER_RADIUS_PX;
+  selectionAnchor = {
+    left: e.clientX - radius,
+    right: e.clientX + radius,
+    top: e.clientY - radius,
+    bottom: e.clientY + radius,
+  };
+
+  // A first guess, so the panel is not seen at the previous selection for a frame.
+  projectStore.selection.x = e.clientX - TTWIDTH / 2;
+  projectStore.selection.y = selectionAnchor.bottom;
+
+  nextTick(clampSelectionPanel);
+};
+
 const onNodeClick = (e: MouseEvent) => {
   if (hasMoved(e)) return;
 
@@ -723,22 +811,13 @@ const onNodeClick = (e: MouseEvent) => {
   const target = e.target as HTMLElement;
   const index = target.getAttribute('data-node-id') || '-1';
 
-  useProjectStore().selection.type = 'node';
-  useProjectStore().selection.label = index;
+  projectStore.selection.type = 'node';
+  projectStore.selection.label = index;
 
   projectStore.clearSelection2();
-  projectStore.selection2.nodes = [String(useProjectStore().selection.label)];
+  projectStore.selection2.nodes = [index];
 
-  //useProjectStore().selection.x = e.offsetX;
-  //useProjectStore().selection.y = e.offsetY;
-
-  let nx = target.getBoundingClientRect().left - TTWIDTH / 2;
-
-  if (nx < 0) nx = 24;
-  if (nx > window.innerWidth - TTWIDTH - 24) nx = window.innerWidth - TTWIDTH - 24;
-
-  useProjectStore().selection.x = nx;
-  useProjectStore().selection.y = target.getBoundingClientRect().top - 64;
+  placeSelectionPanel(e);
 };
 
 const onElementClick = (e: MouseEvent, element: Beam2D) => {
@@ -746,22 +825,13 @@ const onElementClick = (e: MouseEvent, element: Beam2D) => {
 
   appStore.bottomBarTab = 'tab-elements';
 
-  const target = e.target as HTMLElement;
-  // const index = target.getAttribute('data-element-id') || '-1';
-  const index = element.label;
-
-  let nx = target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 - TTWIDTH / 2;
-
-  if (nx < 0) nx = 24;
-  if (nx > window.innerWidth - TTWIDTH - 24) nx = window.innerWidth - TTWIDTH - 24;
-
-  useProjectStore().selection.type = 'element';
-  useProjectStore().selection.label = index;
-  useProjectStore().selection.x = nx;
-  useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
+  projectStore.selection.type = 'element';
+  projectStore.selection.label = element.label;
 
   projectStore.clearSelection2();
-  projectStore.selection2.elements = [String(useProjectStore().selection.label)];
+  projectStore.selection2.elements = [String(element.label)];
+
+  placeSelectionPanel(e);
 };
 
 const onDimensionClick = (e: PointerEvent, dimensionId: string) => {
@@ -771,24 +841,10 @@ const onDimensionClick = (e: PointerEvent, dimensionId: string) => {
   projectStore.clearSelection2();
   projectStore.selection2.dimensions = [dimensionId];
 
-  const targetElement = e.currentTarget instanceof Element ? e.currentTarget : null;
-  const bounds = targetElement?.getBoundingClientRect();
-
-  let nx = e.clientX - TTWIDTH / 2;
-  let ny = e.clientY - 64;
-
-  if (bounds) {
-    nx = bounds.left + bounds.width / 2 - TTWIDTH / 2;
-    ny = bounds.top + bounds.height / 2 - 64;
-  }
-
-  if (nx < 24) nx = 24;
-  if (nx > window.innerWidth - TTWIDTH - 24) nx = window.innerWidth - TTWIDTH - 24;
-
   projectStore.selection.type = 'dimension';
   projectStore.selection.label = dimensionId;
-  projectStore.selection.x = nx;
-  projectStore.selection.y = ny;
+
+  placeSelectionPanel(e);
 };
 
 const onDimensionPointerDown = (e: PointerEvent, dimensionId: string) => {
@@ -846,20 +902,13 @@ const onElementLoadClick = (e: MouseEvent, index: number) => {
 
   appStore.bottomBarTab = 'tab-loads';
 
-  const target = e.target as HTMLElement;
-
-  let nx = target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 - TTWIDTH / 2;
-
-  if (nx < 0) nx = 24;
-  if (nx > window.innerWidth - TTWIDTH - 24) nx = window.innerWidth - TTWIDTH - 24;
-
-  useProjectStore().selection.type = 'element-load';
-  useProjectStore().selection.label = index;
-  useProjectStore().selection.x = nx;
-  useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
+  projectStore.selection.type = 'element-load';
+  projectStore.selection.label = index;
 
   projectStore.clearSelection2();
   projectStore.selection2.elementLoads = [index];
+
+  placeSelectionPanel(e);
 };
 
 const onNodalLoadClick = (e: MouseEvent, index: number) => {
@@ -867,20 +916,13 @@ const onNodalLoadClick = (e: MouseEvent, index: number) => {
 
   appStore.bottomBarTab = 'tab-loads';
 
-  const target = e.target as HTMLElement;
-
-  let nx = target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 - TTWIDTH / 2;
-
-  if (nx < 0) nx = 24;
-  if (nx > window.innerWidth - TTWIDTH - 24) nx = window.innerWidth - TTWIDTH - 24;
-
-  useProjectStore().selection.type = 'nodal-load';
-  useProjectStore().selection.label = index;
-  useProjectStore().selection.x = nx;
-  useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
+  projectStore.selection.type = 'nodal-load';
+  projectStore.selection.label = index;
 
   projectStore.clearSelection2();
   projectStore.selection2.nodalLoads = [index];
+
+  placeSelectionPanel(e);
 };
 
 const onPrescribedBCClick = (e: MouseEvent, index: number) => {
@@ -888,21 +930,61 @@ const onPrescribedBCClick = (e: MouseEvent, index: number) => {
 
   appStore.bottomBarTab = 'tab-loads';
 
-  const target = e.target as HTMLElement;
-
-  let nx = target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 - TTWIDTH / 2;
-
-  if (nx < 0) nx = 24;
-  if (nx > window.innerWidth - TTWIDTH - 24) nx = window.innerWidth - TTWIDTH - 24;
-
-  useProjectStore().selection.type = 'prescribedbc-load';
-  useProjectStore().selection.label = index;
-  useProjectStore().selection.x = nx;
-  useProjectStore().selection.y = target.getBoundingClientRect().top + target.getBoundingClientRect().height / 2 - 64;
+  projectStore.selection.type = 'prescribedbc-load';
+  projectStore.selection.label = index;
 
   projectStore.clearSelection2();
   projectStore.selection2.prescribedBC = [index];
+
+  placeSelectionPanel(e);
 };
+
+/**
+ * What the panel says about the current selection, worded as the hover tooltip words it, so a tap
+ * reaches everything a mouse reads by hovering. The panel header already names a node and an
+ * element, hence the subtitle only where the kind of the thing carries information of its own.
+ */
+const resolveSelectionDetails = (): { subtitle: string | null; body: string } | null => {
+  const { type, label } = projectStore.selection;
+  if (type === null || label === null || !selectionOpenedByTouch.value) return null;
+
+  const loadCase = projectStore.solver.loadCases[0];
+
+  if (type === 'node') {
+    const node = projectStore.solver.domain.nodes.get(String(label));
+    return node ? { subtitle: null, body: buildNodeDetails(node as Node).body } : null;
+  }
+
+  if (type === 'element') {
+    const element = projectStore.solver.domain.elements.get(String(label));
+    return element ? { subtitle: null, body: buildElementDetails(element as Beam2D).body } : null;
+  }
+
+  const withKind = (details: EntityDetails) => ({ subtitle: details.title, body: details.body });
+
+  if (type === 'element-load') {
+    const load = loadCase.elementLoadList[Number(label)];
+    return load ? withKind(buildElementLoadDetails(load)) : null;
+  }
+
+  if (type === 'nodal-load') {
+    const load = loadCase.nodalLoadList[Number(label)];
+    return load ? withKind(buildNodalLoadDetails(load)) : null;
+  }
+
+  if (type === 'prescribedbc-load') {
+    const bc = loadCase.prescribedBC[Number(label)];
+    return bc ? withKind(buildPrescribedBCDetails(bc)) : null;
+  }
+
+  return null;
+};
+
+const selectionDetails = computed(() => {
+  const details = resolveSelectionDetails();
+
+  return details && (details.subtitle || details.body) ? details : null;
+});
 
 let drgNode: Node | null = null;
 let origX = 0;
@@ -1095,6 +1177,8 @@ const updatePointerPosition = (e: PointerEvent) => {
 };
 
 const mouseMove = (e: PointerEvent) => {
+  lastPointerType = e.pointerType;
+
   updatePointerPosition(e);
 
   if (windowDrag.value) {
@@ -1416,6 +1500,8 @@ const placeAtPointer = (e: PointerEvent) => {
 };
 
 const onMouseDown = (e: PointerEvent) => {
+  lastPointerType = e.pointerType;
+
   // Picking a window: the drag is the whole interaction, nothing is selected or placed.
   if (appStore.mouseMode === MouseMode.PICK_WINDOW) {
     if (e.button !== 0) return;
@@ -2396,7 +2482,7 @@ defineExpose({ centerContent, fitContent });
               :number-format="appStore.numberFormatter"
               @nodemousemove="onNodeHover($event, node)"
               @nodedefomousemove="onNodeHover($event, node)"
-              @nodepointerdown="onNodeHover($event, node)"
+              @nodepointerdown="onNodePress($event, node)"
               @mouseleave="hideTooltip"
               @nodepointerup="onNodeClick"
             />
@@ -2557,17 +2643,30 @@ defineExpose({ centerContent, fitContent });
 
     <div
       v-if="projectStore.selection.type !== null"
+      ref="selectionPanel"
       class="selection-tooltip elevation-1"
       :style="`position: absolute; left: ${projectStore.selection.x}px; top: ${projectStore.selection.y}px;`"
     >
-      <div class="d-flex justify-space-between">
-        <div class="font-weight-medium text-body-2 px-4 pt-2">
+      <!-- Aligned with the list rows below it, and no taller than the close button needs. -->
+      <div class="d-flex justify-space-between align-center pr-1 py-1">
+        <div class="font-weight-medium text-body-2 px-4">
           {{ $t('selection.' + projectStore.selection.type) }}
           <span v-if="['node', 'element'].includes(projectStore.selection.type)">{{
             projectStore.selection.label
           }}</span>
         </div>
-        <v-btn variant="text" icon="mdi-close" size="x-small" @click="projectStore.selection.type = null" />
+        <v-btn
+          variant="text"
+          icon="mdi-close"
+          size="x-small"
+          density="comfortable"
+          @click="projectStore.selection.type = null"
+        />
+      </div>
+      <!-- What a mouse reads from the hover tooltip, and the only way to it on a touch screen. -->
+      <div v-if="selectionDetails" class="selection-details text-body-2 px-4 pb-2 pt-1">
+        <div v-if="selectionDetails.subtitle" class="font-weight-medium">{{ selectionDetails.subtitle }}</div>
+        <div v-if="selectionDetails.body" v-html="selectionDetails.body"></div>
       </div>
       <div>
         <ContextMenuNode v-if="projectStore.selection.type === 'node'"></ContextMenuNode>
@@ -2692,6 +2791,12 @@ defineExpose({ centerContent, fitContent });
   stroke-dasharray: 6 3;
 }
 
+/* The read only properties sit above the actions the panel offers, divided from them. */
+.selection-details {
+  border-bottom: thin solid rgba(0, 0, 0, 0.12);
+  line-height: 1.5;
+}
+
 .svg-viewer :deep(*) {
   .element-load.load-1d {
     text {
@@ -2729,7 +2834,7 @@ defineExpose({ centerContent, fitContent });
       stroke-width: 1px;
 
       &.handle {
-        stroke-width: 12px;
+        stroke-width: 20px;
         stroke: transparent;
       }
     }

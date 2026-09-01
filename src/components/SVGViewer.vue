@@ -3200,4 +3200,28 @@ defineExpose({ centerContent, fitContent });
     filter: var(--filter-text-label);
   }
 }
+
+/* Fingers are blunter than cursors: widen the invisible hit strokes and the floating controls. */
+@media (pointer: coarse) {
+  .svg-viewer :deep(*) {
+    .element-load.load-1d polygon.handle,
+    .element-load.load-1d path.handle,
+    .element.element-1d polyline.handle,
+    .node polyline.handle,
+    .nodal-load polyline.handle {
+      stroke-width: 32px;
+    }
+
+    .nodal-load polyline.handle.moment {
+      stroke-width: 44px;
+    }
+  }
+
+  /* size="32" lands as an inline style, so only !important can grow it. */
+  #undoRedo .v-btn,
+  #viewerControls .v-btn {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
 </style>

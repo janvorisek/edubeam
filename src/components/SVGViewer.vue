@@ -728,6 +728,50 @@ const onNodePress = (e: PointerEvent, node: Node) => {
   if (appStore.mouseMode === MouseMode.NONE) appStore.mouseMode = MouseMode.HOVER;
 };
 
+/**
+ * A long press stands in for the right button: it opens the same canvas menu, which is otherwise
+ * unreachable on a touch screen. It only arms where nothing else owns the gesture: not in a
+ * placing mode, and not on a node or a dimension, whose press starts a drag.
+ */
+const LONG_PRESS_MS = 500;
+let longPressTimer: number | null = null;
+/** True from the moment the menu opened until the gesture's pointerup has been swallowed. */
+let longPressFired = false;
+
+const cancelLongPress = () => {
+  if (longPressTimer !== null) window.clearTimeout(longPressTimer);
+  longPressTimer = null;
+};
+
+/**
+ * After a long press some browsers still fire a compatibility click at the touch point, which now
+ * lies on the freshly opened menu and would activate or close it. Eat the first click, briefly.
+ */
+const swallowNextClick = () => {
+  const swallow = (ev: MouseEvent) => {
+    ev.stopPropagation();
+    ev.preventDefault();
+  };
+
+  window.addEventListener('click', swallow, { capture: true });
+  window.setTimeout(() => window.removeEventListener('click', swallow, { capture: true }), 700);
+};
+
+const startLongPress = (e: PointerEvent) => {
+  cancelLongPress();
+
+  const { clientX, clientY } = e;
+  longPressTimer = window.setTimeout(() => {
+    longPressTimer = null;
+    longPressFired = true;
+    swallowNextClick();
+
+    optionsCtxMenu.x = clientX;
+    optionsCtxMenu.y = clientY;
+    showCtxMenu.value = true;
+  }, LONG_PRESS_MS);
+};
+
 const hasMoved = (e: MouseEvent | PointerEvent) => {
   const dx = e.clientX - mouseStartX;
   const dy = e.clientY - mouseStartY;
@@ -804,7 +848,7 @@ const placeSelectionPanel = (e: MouseEvent) => {
 };
 
 const onNodeClick = (e: MouseEvent) => {
-  if (hasMoved(e)) return;
+  if (hasMoved(e) || longPressFired) return;
 
   appStore.bottomBarTab = 'tab-nodes';
 
@@ -821,7 +865,7 @@ const onNodeClick = (e: MouseEvent) => {
 };
 
 const onElementClick = (e: MouseEvent, element: Beam2D) => {
-  if (hasMoved(e)) return;
+  if (hasMoved(e) || longPressFired) return;
 
   appStore.bottomBarTab = 'tab-elements';
 
@@ -835,7 +879,7 @@ const onElementClick = (e: MouseEvent, element: Beam2D) => {
 };
 
 const onDimensionClick = (e: PointerEvent, dimensionId: string) => {
-  if (hasMoved(e)) return;
+  if (hasMoved(e) || longPressFired) return;
 
   projectStore.clearSelection();
   projectStore.clearSelection2();
@@ -898,7 +942,7 @@ const onDimensionPointPointerUp = (e: PointerEvent, dimensionId: string) => {
 };
 
 const onElementLoadClick = (e: MouseEvent, index: number) => {
-  if (hasMoved(e)) return;
+  if (hasMoved(e) || longPressFired) return;
 
   appStore.bottomBarTab = 'tab-loads';
 
@@ -912,7 +956,7 @@ const onElementLoadClick = (e: MouseEvent, index: number) => {
 };
 
 const onNodalLoadClick = (e: MouseEvent, index: number) => {
-  if (hasMoved(e)) return;
+  if (hasMoved(e) || longPressFired) return;
 
   appStore.bottomBarTab = 'tab-loads';
 
@@ -926,7 +970,7 @@ const onNodalLoadClick = (e: MouseEvent, index: number) => {
 };
 
 const onPrescribedBCClick = (e: MouseEvent, index: number) => {
-  if (hasMoved(e)) return;
+  if (hasMoved(e) || longPressFired) return;
 
   appStore.bottomBarTab = 'tab-loads';
 
@@ -1178,6 +1222,8 @@ const updatePointerPosition = (e: PointerEvent) => {
 
 const mouseMove = (e: PointerEvent) => {
   lastPointerType = e.pointerType;
+
+  if (longPressTimer !== null && hasMoved(e)) cancelLongPress();
 
   updatePointerPosition(e);
 
@@ -1540,6 +1586,7 @@ const onMouseDown = (e: PointerEvent) => {
   // it, and the tap the first finger had started is off.
   if (activePointers.size > 1) {
     pendingTap = false;
+    cancelLongPress();
     return;
   }
 
@@ -1553,6 +1600,10 @@ const onMouseDown = (e: PointerEvent) => {
   if (e.pointerType !== 'mouse' && e.button === 0 && activeAddMode.value) {
     pendingTap = true;
     return;
+  }
+
+  if (e.pointerType !== 'mouse' && e.button === 0 && appStore.mouseMode !== MouseMode.MOVING) {
+    startLongPress(e);
   }
 
   if (e.button === 0 /* && typeof e.button !== "undefined" */) {
@@ -1718,10 +1769,19 @@ const clientToSvgCoords = (ecoords: { x: number; y: number }, svgElement: SVGSVG
 const onPointerCancel = (e: PointerEvent) => {
   activePointers.delete(e.pointerId);
   pendingTap = false;
+  cancelLongPress();
+  longPressFired = false;
 };
 
 const onMouseUp = (e: PointerEvent) => {
   activePointers.delete(e.pointerId);
+  cancelLongPress();
+
+  // The press became the menu; its release is not a tap and must not select or place.
+  if (longPressFired) {
+    longPressFired = false;
+    return;
+  }
 
   if (windowDrag.value) {
     const box = windowRect.value;
@@ -1866,7 +1926,7 @@ const optionsCtxMenu = reactive({
 });
 
 const openCtxMenu = (e: MouseEvent) => {
-  if (hasMoved(e)) return;
+  if (hasMoved(e) || longPressFired) return;
 
   optionsCtxMenu.x = e.clientX;
   optionsCtxMenu.y = e.clientY;

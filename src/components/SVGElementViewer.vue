@@ -216,15 +216,15 @@ const centerContent = () => {
   if (grid.value) grid.value.refreshGrid(true);
 };
 
-/** Resolves `true` once the final view is shown; `false` when a newer fit took over. */
+/** Resolves with the fit once its final view is shown; `null` when a newer fit took over. */
 const fitContent = async () => {
-  if (!panZoom.value) return false;
+  if (!panZoom.value) return null;
 
-  const fitted = await panZoom.value.fitContent();
+  const result = await panZoom.value.fitContent();
 
   if (grid.value) grid.value.refreshGrid(true);
 
-  return fitted;
+  return result;
 };
 
 /** Distributed load arrows are drawn 60 px long (see ElementLoad/UDL.vue). */

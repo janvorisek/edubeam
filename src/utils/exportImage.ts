@@ -727,9 +727,26 @@ const findDrawing = (host: ParentNode) =>
 
 /** What the viewer component exposes; all optional so a foreign viewer degrades to a plain render. */
 interface ExportViewer {
-  fitContent?: () => Promise<boolean | undefined>;
+  fitContent?: () => Promise<unknown>;
   setView?: (box: ViewBox) => void;
   update?: () => void;
+}
+
+/** How far, in canvas pixels, the drawing runs past each edge of the canvas. */
+export interface Overflow {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+}
+
+export interface UpdateInfo {
+  /**
+   * Set when a fit could not honour the drawing: something runs past the canvas edge
+   * by this many pixels. Measured against the drawing the fit was asked to fit — with
+   * `fitWith`, that is the full drawing, whatever is currently shown.
+   */
+  overflow: Overflow | null;
 }
 
 /** White unless the caller asked for transparency; `undefined` is not a choice. */
@@ -762,9 +779,18 @@ export interface ExportRenderer {
   /**
    * Re-lay out for these props at this canvas size; resolves once the drawing is shown.
    * With a `window` the view is exactly that model-space box (grown to the canvas
-   * aspect); without one, everything drawn is fitted.
+   * aspect). Without one the drawing is fitted — to `fitWith` when given: the fit is
+   * measured with *those* props and the view it finds is then shown with `props`. That is
+   * how a fit can be made independent of what is toggled on: fit with every layer, show
+   * the chosen ones, and the frame is the same whichever they are.
    */
-  update(props: Record<string, unknown>, width: number, height: number, window?: ViewBox | null): Promise<void>;
+  update(
+    props: Record<string, unknown>,
+    width: number,
+    height: number,
+    window?: ViewBox | null,
+    fitWith?: Record<string, unknown> | null
+  ): Promise<UpdateInfo>;
   /** The model-space box the current layout shows — the fitted one, or the window as grown. */
   viewBox(): ViewBox | null;
   /** The current layout as a bitmap. */
@@ -864,7 +890,27 @@ export const createExportRenderer = (viewer: Component): ExportRenderer => {
 
   let width = 0;
   let height = 0;
-  let queue: Promise<void> = Promise.resolve();
+  let queue: Promise<unknown> = Promise.resolve();
+
+  /**
+   * Where the last fit landed, and where the next one starts.
+   *
+   * A fit is iterative and, when the decorations outweigh the canvas, it does not
+   * converge: it ends in one of two fallbacks, and which one depends on the view it
+   * started from. Left to itself the start drifts — the component's own watchers kick
+   * off fits of their own whenever its props change — and the frame jumps between the
+   * two. Starting every fit from the previous result, applied explicitly (which also
+   * supersedes those stray fits), makes the outcome a function of the drawing alone; a
+   * result within half a percent of the start is snapped back to it, so a fit that
+   * merely re-derives its own start cannot creep.
+   */
+  let seed: ViewBox | null = null;
+
+  const nearly = (a: ViewBox, b: ViewBox) => {
+    const tolerance = 0.005 * Math.max(a.w, b.w);
+
+    return [a.x - b.x, a.y - b.y, a.w - b.w, a.h - b.h].every((d) => Math.abs(d) <= tolerance);
+  };
 
   /**
    * Where the time goes, on the dev build only.
@@ -891,17 +937,46 @@ export const createExportRenderer = (viewer: Component): ExportRenderer => {
     await timed('scales', () => target.update?.());
 
     if (window && target.setView) {
-      // A window is not fitted, it is shown: one synchronous view change.
-      await timed('fit', () => target.setView?.(window));
-    } else {
-      // `false` means another fit superseded this one — the component's own resize
-      // observer, or its post-mount timer — and is still landing. Let it, then fit again;
-      // the one that reports `true` is the view actually on screen.
+      // A window is not fitted, it is shown: one synchronous view change. Shown twice, a
+      // frame apart: changing the props starts the component's own fit from its watchers,
+      // and although the view change cancels it, the second application makes sure the
+      // window is what is on screen whatever else may have landed in between.
       await timed('fit', async () => {
+        target.setView?.(window);
+        await nextFrame();
+        target.setView?.(window);
+      });
+    } else {
+      const fitOnce = async () => {
+        // `false` means another fit superseded this one — the component's own resize
+        // observer, or its post-mount timer — and is still landing. Let it, then fit
+        // again; the one that reports `true` is the view actually on screen.
         for (let attempt = 0; attempt < 6; attempt++) {
           timings.fitAttempts = attempt + 1;
-          if ((await target.fitContent()) !== false) break;
+          if ((await target.fitContent()) !== null) break;
           await nextFrame();
+        }
+
+        return viewBox();
+      };
+
+      await timed('fit', async () => {
+        // Fit from the seed; where it lands becomes the seed for next time. The first
+        // fit has no seed and starts wherever the component happens to be, so it is
+        // repeated from its own result until that stops moving — the frame a dialog
+        // opens with is then the same one every later toggle gets.
+        for (let round = 0; round < 3; round++) {
+          if (seed && target.setView) target.setView(seed);
+
+          const landed = await fitOnce();
+          if (!landed) break;
+
+          if (seed && nearly(landed, seed)) {
+            target.setView?.(seed);
+            break;
+          }
+
+          seed = landed;
         }
       });
     }
@@ -919,12 +994,11 @@ export const createExportRenderer = (viewer: Component): ExportRenderer => {
     props: Record<string, unknown>,
     nextWidth: number,
     nextHeight: number,
-    window: ViewBox | null = null
+    window: ViewBox | null = null,
+    fitWith: Record<string, unknown> | null = null
   ) => {
     const run = async () => {
       const started = performance.now();
-
-      state.props = props;
 
       if (nextWidth !== width || nextHeight !== height) {
         width = nextWidth;
@@ -935,17 +1009,60 @@ export const createExportRenderer = (viewer: Component): ExportRenderer => {
 
       if (!app) await timed('mount', mount);
 
-      await timed('render', () => nextTick());
-      await fit(window);
+      let mode = window ? 'window' : 'fit';
+      let overflow: Overflow | null = null;
+
+      if (!window && fitWith) {
+        // Fit the full drawing, then show the chosen layers in the view it found.
+        state.props = fitWith;
+        await timed('render', () => nextTick());
+        await fit(null);
+        overflow = measureOverflow();
+
+        const found = viewBox();
+        mode = found ? 'fit-all' : 'fit-all(no box)';
+
+        state.props = props;
+        await timed('render', () => nextTick());
+        await fit(found);
+      } else {
+        state.props = props;
+        await timed('render', () => nextTick());
+        await fit(window);
+        if (!window) overflow = measureOverflow();
+      }
 
       if (import.meta.env.DEV) {
-        console.debug(`[export] update ${Math.round(performance.now() - started)} ms`, { ...timings });
+        const box = viewBox();
+        const svg = findDrawing(shadow);
+        const viewBoxText = box ? [box.x, box.y, box.w, box.h].map((n) => Math.round(n * 1000) / 1000).join(' ') : null;
+
+        console.debug(
+          `[export] update ${Math.round(performance.now() - started)} ms ${mode} viewBox=[${viewBoxText}]`,
+          {
+            ...timings,
+            overflow,
+            viewBox: viewBoxText,
+            svgSize: svg
+              ? `${svg.getAttribute('width')}x${svg.getAttribute('height')} client ${svg.clientWidth}x${svg.clientHeight}`
+              : null,
+            aspect: box ? Math.round((box.w / box.h) * 1000) / 1000 : null,
+          }
+        );
       }
+
+      return { overflow } as UpdateInfo;
     };
 
-    queue = queue.then(run, run);
+    const result = queue.then(run, run);
 
-    return queue;
+    // The chain must survive a failed run, or every later update would fail with it.
+    queue = result.then(
+      () => undefined,
+      () => undefined
+    );
+
+    return result;
   };
 
   const drawing = () => {
@@ -953,6 +1070,40 @@ export const createExportRenderer = (viewer: Component): ExportRenderer => {
     if (!svg) throw new Error('The off-screen viewer did not render.');
 
     return svg;
+  };
+
+  /**
+   * What runs past the canvas, in canvas pixels, for the drawing currently laid out.
+   *
+   * Measured directly — the drawing's bounding box against the view — rather than read
+   * off the fit's own flags, because it is the plain truth about clipping: anything
+   * past an edge by more than a pixel will be cut off in the file.
+   */
+  const measureOverflow = (): Overflow | null => {
+    const svg = findDrawing(shadow);
+    const box = viewBox();
+    const content = svg?.querySelector<SVGGraphicsElement>(':scope > g');
+    if (!svg || !box || !content) return null;
+
+    let bounds: DOMRect;
+
+    try {
+      bounds = content.getBBox();
+    } catch {
+      return null;
+    }
+
+    const scale = svg.clientWidth / box.w;
+    const past = (px: number) => (px > 1 ? Math.ceil(px) : 0);
+
+    const overflow = {
+      left: past((box.x - bounds.x) * scale),
+      top: past((box.y - bounds.y) * scale),
+      right: past((bounds.x + bounds.width - box.x - box.w) * scale),
+      bottom: past((bounds.y + bounds.height - box.y - box.h) * scale),
+    };
+
+    return overflow.left || overflow.right || overflow.top || overflow.bottom ? overflow : null;
   };
 
   const viewBox = (): ViewBox | null => {

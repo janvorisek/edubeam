@@ -467,7 +467,14 @@
     "fitAll": "Vše",
     "window": "Výřez…",
     "pickWindowHint": "Tažením vyberte oblast výkresu k exportu",
-    "dragEdge": "Tažením rozšiřte nebo ořízněte tuto stranu"
+    "dragEdge": "Tažením rozšiřte nebo ořízněte tuto stranu",
+    "scale": "Měřítko",
+    "scaleCaption": "1 m modelu je {cm} cm na papíře (96 DPI). Kolečkem myši nad náhledem přiblížíte.",
+    "doesNotFit": "V této velikosti se vše nevejde: diagramy, zatížení a popisky přesahují okraj asi o {px} px. Zmenšete diagramy (nyní {diagrams} px) nebo zvětšete plátno.",
+    "shrinkDiagrams": "Zmenšit diagramy",
+    "enlargeCanvas": "Zvětšit plátno",
+    "diagramHeight": "Výška diagramů",
+    "shrinkNotEnough": "Menší diagramy zde nestačí – samotné zatížení a popisky potřebují více místa. Zvětšete plátno."
   },
   "examples": {
     "title": "Příklady",

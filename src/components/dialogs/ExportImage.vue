@@ -1,9 +1,16 @@
 <template>
   <v-dialog v-model="open" max-width="820" scrollable>
     <v-card class="pa-1" max-height="90vh">
-      <v-card-title>
-        <div class="d-flex">
+      <v-card-title class="py-2">
+        <div class="d-flex align-center">
           <div class="flex-grow-1">{{ $t('exportImage.title') }}</div>
+          <!-- The how-it-works note lives here rather than as a paragraph: the dialog is
+               tall already, and the note is read once. -->
+          <v-tooltip location="bottom" max-width="420" :text="$t('exportImage.instructions')">
+            <template #activator="{ props: tip }">
+              <v-icon v-bind="tip" size="18" icon="mdi-information-outline" class="text-medium-emphasis mr-1" />
+            </template>
+          </v-tooltip>
           <v-btn
             icon="mdi-close"
             size="small"
@@ -16,8 +23,6 @@
       </v-card-title>
 
       <v-card-text class="pt-0">
-        <p class="text-body-2 text-medium-emphasis mb-3">{{ $t('exportImage.instructions') }}</p>
-
         <!--
           What the picture shows, right above the picture. The same two groups as the
           viewer's quick settings, as chips: results first, each in the colour it is
@@ -55,9 +60,23 @@
           </v-chip-group>
         </div>
 
+        <!-- The fit could not honour every layer at this size: say so, and offer the two remedies. -->
+        <v-alert v-if="fitOverflow" type="warning" variant="tonal" density="compact" class="mb-2 fit-warning">
+          <div class="d-flex align-center flex-wrap ga-2">
+            <span class="text-body-2">{{ $t('exportImage.doesNotFit', { px: overflowPx, diagrams: diagramPx }) }}</span>
+            <v-spacer />
+            <v-btn size="small" variant="outlined" :loading="busy" @click="shrinkDiagrams">
+              {{ $t('exportImage.shrinkDiagrams') }}
+            </v-btn>
+            <v-btn size="small" variant="outlined" :loading="busy" @click="enlargeCanvas">
+              {{ $t('exportImage.enlargeCanvas') }}
+            </v-btn>
+          </div>
+        </v-alert>
+
         <!-- The badge sits outside the scrolling stage so it stays put at 1:1. -->
         <div class="stage-wrap">
-          <div class="stage">
+          <div ref="stage" class="stage">
             <div class="frame" :class="{ 'frame--checkered': transparent }" :style="frameStyle">
               <img
                 v-if="previewUrl"
@@ -68,6 +87,7 @@
                 :alt="$t('exportImage.previewAlt')"
                 draggable="false"
                 @pointerdown="startPan"
+                @wheel.prevent="onWheel"
                 @load="onPreviewLoaded"
                 @contextmenu.prevent
               />
@@ -98,7 +118,7 @@
           </div>
         </div>
 
-        <div class="d-flex flex-wrap align-center ga-2 mt-4 mb-3">
+        <div class="d-flex flex-wrap align-center ga-2 mt-2 mb-4">
           <v-chip
             v-for="option in ratioOptions"
             :key="option.label"
@@ -162,15 +182,44 @@
             @blur="commitHeight"
             @keyup.enter="commitHeight"
           />
+          <!-- Pixels per model unit, spoken as a drawing scale at the CSS pixel's 96 DPI. -->
+          <v-text-field
+            v-model="scaleText"
+            :label="$t('exportImage.scale')"
+            prefix="1 :"
+            type="number"
+            density="compact"
+            variant="outlined"
+            hide-details
+            @focus="scaleEditing = true"
+            @blur="commitScale"
+            @keyup.enter="commitScale"
+          />
         </div>
+        <div class="text-caption text-medium-emphasis mt-1">{{ scaleCaption }}</div>
 
-        <div class="d-flex align-center justify-space-between flex-wrap mt-2">
+        <div class="d-flex align-center justify-space-between flex-wrap">
           <v-switch
             v-model="transparent"
             :label="$t('exportImage.transparentBackground')"
             color="primary"
             density="compact"
             hide-details
+            class="switch"
+          />
+          <v-text-field
+            v-model="diagramText"
+            :label="$t('exportImage.diagramHeight')"
+            type="number"
+            :min="MIN_DIAGRAM_PX"
+            :max="MAX_DIAGRAM_PX"
+            density="compact"
+            variant="outlined"
+            hide-details
+            suffix="px"
+            class="diagram-height"
+            @blur="commitDiagram"
+            @keyup.enter="commitDiagram"
           />
         </div>
       </v-card-text>
@@ -187,7 +236,9 @@
           {{ $t('exportImage.copyToClipboard') }}
         </v-btn>
         <v-spacer />
-        <span class="text-caption text-medium-emphasis mr-2">{{ fileWidth }} × {{ fileHeight }} px</span>
+        <span class="text-caption text-medium-emphasis mr-2">
+          {{ fileWidth }} × {{ fileHeight }} px · {{ physicalSize }}
+        </span>
       </v-card-actions>
     </v-card>
 
@@ -215,6 +266,7 @@ import {
   copyBlobToClipboard,
   downloadBlob,
   createExportRenderer,
+  type Overflow,
 } from '@/utils/exportImage';
 
 const projectStore = useProjectStore();
@@ -257,6 +309,53 @@ const layers = reactive({
 
 /** An eigenvalue run has no loads or internal forces to draw; the viewer greys those out too. */
 const dynamic = computed(() => projectStore.model === 'EigenValueDynamicSolver');
+
+/**
+ * Height of the result diagrams in this export, in pixels.
+ *
+ * Starts as the editor's value and, like the layers, is a copy: diagrams are fixed
+ * pixel sizes, and on a small canvas the editor's height can be more than the canvas
+ * can hold — the one thing there is to reduce when the drawing does not fit.
+ */
+const diagramPx = ref(viewerStore.resultsScalePx_);
+
+/**
+ * Below 8 px a diagram is a smudge; above 400 it is bigger than most canvases. The
+ * editor's own slider stops at 120, but an export canvas can be far larger than a
+ * screen, so the ceiling is looser here.
+ */
+const MIN_DIAGRAM_PX = 8;
+const MAX_DIAGRAM_PX = 400;
+
+const clampDiagram = (value: number) =>
+  Math.min(MAX_DIAGRAM_PX, Math.max(MIN_DIAGRAM_PX, Math.round(Number.isFinite(value) ? value : MIN_DIAGRAM_PX)));
+
+// Same as the size fields: text while typing, interpreted and clamped on blur or Enter.
+const diagramText = ref(String(diagramPx.value));
+
+watch(diagramPx, (value) => (diagramText.value = String(value)));
+
+const commitDiagram = () => {
+  const entered = Number(diagramText.value);
+
+  if (!Number.isFinite(entered) || entered <= 0) return (diagramText.value = String(diagramPx.value));
+
+  diagramPx.value = clampDiagram(entered);
+  diagramText.value = String(diagramPx.value);
+};
+
+/**
+ * Set after every fit: how far the full drawing runs past the canvas, or `null` when it
+ * fits. The fit is measured with every layer on, so this warns before a layer that
+ * would not fit is even switched on.
+ */
+const fitOverflow = ref<Overflow | null>(null);
+
+const overflowPx = computed(() => {
+  const o = fitOverflow.value;
+
+  return o ? Math.max(o.left + o.right, o.top + o.bottom) : 0;
+});
 
 type LayerKey = keyof typeof layers;
 
@@ -319,8 +418,8 @@ const minSide = computed(() => minimumExportSide(EXPORT_MARGIN_PX));
 const STAGE_WIDTH = 660;
 const STAGE_HEIGHT = 250;
 
-/** Small enough to drop straight into a document, comfortably above the minimum. */
-const DEFAULT_SIZE = 256;
+/** Room for the diagrams and labels at their editor sizes, and still document-sized. */
+const DEFAULT_SIZE = 512;
 
 const width = ref(Math.max(DEFAULT_SIZE, minimumExportSide(EXPORT_MARGIN_PX)));
 const height = ref(width.value);
@@ -412,7 +511,7 @@ const viewerProps = computed(() => ({
   colors: viewerStore.colors,
   supportSize: viewerStore.supportSize,
   fontSize: viewerStore.fontSize,
-  resultsScalePx: viewerStore.resultsScalePx_,
+  resultsScalePx: diagramPx.value,
   resultLabelMode: viewerStore.resultLabelMode,
   convertForce: appStore.convertForce,
   // Distributed loads label themselves through this one, not `convertForce`; leaving it
@@ -424,10 +523,10 @@ const viewerProps = computed(() => ({
   numberFormat: appStore.numberFormatter,
   padding: EXPORT_MARGIN_PX,
   mobilePadding: EXPORT_MARGIN_PX,
-  // The editor reserves ~82 px on every side so the view does not jump when a diagram is
-  // toggled, which on a still image is just empty margin. An export has nothing to keep
-  // stable, so it fits everything actually drawn — labels, arrows and diagrams included,
-  // hence no `fitIgnore` — and keeps only a thin edge.
+  // Everything drawn is measured — labels, arrows and diagrams included, hence no
+  // `fitIgnore` and no reserve. The frame is kept stable across toggles differently:
+  // the fit is measured with every layer on (see `everything`), so there is nothing a
+  // reserve would need to guess at, and only a thin edge is kept.
   fitIgnore: '',
   fitReservePx: 0,
 }));
@@ -551,6 +650,9 @@ const edgeDragging = ref(false);
  */
 let pan: { startX: number; startY: number; box0: ViewBox; perUnit: number; zoom0: number } | null = null;
 
+const wheelZoom = ref<{ ox: number; oy: number; factor: number } | null>(null);
+const wheeling = ref(false);
+
 const dragFrame = ref<{ anchor: Edge; w: number; h: number } | null>(null);
 const panOffset = ref({ x: 0, y: 0 });
 
@@ -573,6 +675,11 @@ const imageStyle = computed(() => {
     style.transform = `translate(${panOffset.value.x}px, ${panOffset.value.y}px)`;
   }
 
+  if (wheelZoom.value) {
+    style.transformOrigin = `${wheelZoom.value.ox}px ${wheelZoom.value.oy}px`;
+    style.transform = `scale(${wheelZoom.value.factor})`;
+  }
+
   return style;
 });
 
@@ -580,6 +687,7 @@ const onPreviewLoaded = () => {
   // A fresh render is on screen; the stand-in geometry has done its job.
   if (!edgeDrag) dragFrame.value = null;
   if (!pan) panOffset.value = { x: 0, y: 0 };
+  if (!wheeling.value) wheelZoom.value = null;
 };
 
 const onEdgeDrag = (event: PointerEvent) => {
@@ -678,7 +786,50 @@ const endPan = () => {
   refreshPreview();
 };
 
+/**
+ * At actual size with the picture larger than the stage, a left drag scrolls the stage
+ * — the hand tool every image viewer has — rather than moving the window. Looking and
+ * changing are different gestures: the middle and right buttons still move the window,
+ * and once the picture fits there is nothing to scroll, so the left button moves it too.
+ */
+const stage = ref<HTMLElement | null>(null);
+
+let scrollDrag: { startX: number; startY: number; left: number; top: number } | null = null;
+
+const onScrollDrag = (event: PointerEvent) => {
+  if (!scrollDrag || !stage.value) return;
+
+  stage.value.scrollLeft = scrollDrag.left - (event.clientX - scrollDrag.startX);
+  stage.value.scrollTop = scrollDrag.top - (event.clientY - scrollDrag.startY);
+};
+
+const endScrollDrag = () => {
+  scrollDrag = null;
+  panning.value = false;
+  window.removeEventListener('pointermove', onScrollDrag);
+  window.removeEventListener('pointerup', endScrollDrag);
+};
+
+const startScrollDrag = (event: PointerEvent) => {
+  if (!stage.value) return;
+
+  event.preventDefault();
+  scrollDrag = {
+    startX: event.clientX,
+    startY: event.clientY,
+    left: stage.value.scrollLeft,
+    top: stage.value.scrollTop,
+  };
+  panning.value = true;
+  window.addEventListener('pointermove', onScrollDrag);
+  window.addEventListener('pointerup', endScrollDrag);
+};
+
+onBeforeUnmount(endScrollDrag);
+
 const startPan = (event: PointerEvent) => {
+  if (event.button === 0 && previewOverflows.value && !fitPreview.value) return startScrollDrag(event);
+
   const box0 = stageWindow.value ?? renderer.viewBox();
   if (!box0) return;
 
@@ -701,6 +852,123 @@ const startPan = (event: PointerEvent) => {
 };
 
 onBeforeUnmount(endPan);
+
+/**
+ * The drawing scale.
+ *
+ * Pixels per model unit is `width / window.w`, and a CSS pixel is 1/96 in — the
+ * convention SVG, Word and LaTeX all read the file with — so that number *is* a paper
+ * scale: at 1 : 200 a 10 m cantilever is 5 cm on the page. The field shows the scale of
+ * whatever the stage shows, fitted or windowed, and setting it resizes the window about
+ * its centre so the canvas maps to exactly that many model units. Model units are
+ * metres internally, whatever the display unit.
+ */
+const PX_PER_CM = 96 / 2.54;
+const PX_PER_METRE = PX_PER_CM * 100;
+
+/** The model-space box the stage currently shows, refreshed after every render. */
+const shownBox = ref<ViewBox | null>(null);
+
+const scaleDenominator = computed(() => (shownBox.value ? PX_PER_METRE / (width.value / shownBox.value.w) : null));
+
+const formatScale = (n: number) => String(n >= 100 ? Math.round(n) : Number(n.toPrecision(3)));
+
+const scaleText = ref('');
+const scaleEditing = ref(false);
+
+watch(scaleDenominator, (n) => {
+  if (!scaleEditing.value) scaleText.value = n ? formatScale(n) : '';
+});
+
+const scaleCaption = computed(() => {
+  const n = scaleDenominator.value;
+  if (!n) return '';
+
+  const cmPerMetre = 100 / n;
+  const cm = cmPerMetre >= 10 ? cmPerMetre.toFixed(0) : cmPerMetre >= 1 ? cmPerMetre.toFixed(1) : cmPerMetre.toFixed(2);
+
+  return t('exportImage.scaleCaption', { cm });
+});
+
+const physicalSize = computed(
+  () => `${(width.value / PX_PER_CM).toFixed(1)} × ${(height.value / PX_PER_CM).toFixed(1)} cm`
+);
+
+const applyScale = (n: number) => {
+  const box = stageWindow.value ?? renderer.viewBox();
+  if (!box) return;
+
+  const perMetre = PX_PER_METRE / n;
+  const w = width.value / perMetre;
+  const h = height.value / perMetre;
+
+  plotWindow.value = { x: box.x + (box.w - w) / 2, y: box.y + (box.h - h) / 2, w, h };
+  plotArea.value = 'window';
+};
+
+const commitScale = () => {
+  scaleEditing.value = false;
+
+  const n = Number(scaleText.value);
+
+  if (!Number.isFinite(n) || n <= 0) {
+    scaleText.value = scaleDenominator.value ? formatScale(scaleDenominator.value) : '';
+    return;
+  }
+
+  applyScale(n);
+};
+
+/**
+ * Wheel zoom on the preview, about the pointer.
+ *
+ * The window shrinks or grows around the point under the cursor, which is what changes
+ * the scale while the canvas stays put. As with dragging, nothing renders per event:
+ * the picture is scaled about the same point as a stand-in, and the real render runs
+ * once the wheel has been quiet for a moment.
+ */
+let wheelTimer: number | undefined;
+
+const WHEEL_STEP = 1.1;
+
+const onWheel = (event: WheelEvent) => {
+  const box0 = stageWindow.value ?? renderer.viewBox();
+  if (!box0 || !event.deltaY) return;
+
+  if (!windowActive.value) {
+    plotWindow.value = box0;
+    plotArea.value = 'window';
+  }
+
+  const image = event.currentTarget as HTMLElement;
+  const rect = image.getBoundingClientRect();
+  const fx = (event.clientX - rect.left) / rect.width;
+  const fy = (event.clientY - rect.top) / rect.height;
+  const factor = event.deltaY < 0 ? WHEEL_STEP : 1 / WHEEL_STEP;
+
+  const box = plotWindow.value ?? box0;
+  const w = box.w / factor;
+  const h = box.h / factor;
+
+  plotWindow.value = { x: box.x + fx * (box.w - w), y: box.y + fy * (box.h - h), w, h };
+
+  const previous = wheelZoom.value;
+
+  wheelZoom.value = {
+    ox: previous?.ox ?? event.clientX - rect.left,
+    oy: previous?.oy ?? event.clientY - rect.top,
+    factor: (previous?.factor ?? 1) * factor,
+  };
+
+  wheeling.value = true;
+  window.clearTimeout(wheelTimer);
+  wheelTimer = window.setTimeout(() => {
+    wheeling.value = false;
+    refreshPreview();
+  }, 150);
+};
+
+onBeforeUnmount(() => window.clearTimeout(wheelTimer));
 
 /**
  * Hands the drawing over to the user for a rectangle.
@@ -758,14 +1026,49 @@ let previewToken = 0;
 /** Mounted once for the dialog; every preview and export is a re-layout of it. */
 const renderer = createExportRenderer(SVGElementViewer);
 
-const layout = (window: ViewBox | null) => renderer.update(viewerProps.value, width.value, height.value, window);
+/**
+ * The same drawing with every layer on — what a fit is measured against.
+ *
+ * Fitting only what is shown makes the structure jump whenever a layer is toggled: a
+ * moment diagram switched on needs room, so the structure shrinks to make it. Fitting
+ * with everything on, and then showing only the chosen layers in that view, gives one
+ * frame for every combination — the M, N and V figures line up, and toggling a layer
+ * changes nothing but the layer. The room the hidden layers would have taken stays
+ * empty, which is the price of the frame not moving.
+ */
+const everything = computed(() => {
+  const loadCase = projectStore.solver.loadCases[0];
+  const results = !dynamic.value;
+
+  return {
+    ...viewerProps.value,
+    nodalLoads: loadCase.nodalLoadList,
+    elementLoads: loadCase.elementLoadList,
+    prescribedDisplacements: loadCase.prescribedBC,
+    showLoads: !dynamic.value,
+    showSupports: true,
+    showNodeLabels: true,
+    showElementLabels: true,
+    showDeformedShape: true,
+    showNormalForce: results,
+    showShearForce: results,
+    showMoments: results,
+    showReactions: true,
+  };
+});
+
+const layout = (window: ViewBox | null) =>
+  renderer.update(viewerProps.value, width.value, height.value, window, window ? null : everything.value);
 
 const refreshPreview = async () => {
   const token = ++previewToken;
 
   try {
-    await layout(stageWindow.value);
+    const info = await layout(stageWindow.value);
     if (token !== previewToken) return;
+
+    shownBox.value = renderer.viewBox();
+    fitOverflow.value = stageWindow.value ? null : info.overflow;
 
     // Rendered at the real export size, then shown smaller by CSS. Rasterizing at the
     // preview's size instead would misrepresent the file: the markers are sized against
@@ -789,13 +1092,13 @@ const refreshPreview = async () => {
 
 const schedulePreview = debounce(refreshPreview, 150);
 
-watch([width, height, transparent, fitPreview], schedulePreview, { immediate: true });
+watch([width, height, transparent, fitPreview, diagramPx], schedulePreview, { immediate: true });
 // A chip click is one discrete change, not a keystroke in a run of them: nothing to
 // coalesce, so it renders at once. Overlapping renders are settled by `previewToken`.
 // While the picture is being dragged the window changes on every pointer move and the
 // picture on screen stands in for the result (see `imageStyle`); the release renders.
 watch([layers, stageWindow], () => {
-  if (!edgeDragging.value && !panning.value) refreshPreview();
+  if (!edgeDragging.value && !panning.value && !wheeling.value) refreshPreview();
 });
 
 onBeforeUnmount(() => {
@@ -837,6 +1140,39 @@ const run = async (action: () => Promise<void>) => {
 
 // Saving leaves the dialog open: exporting M, N and V one after another is the common
 // case, and closing would throw away the size, layers and window each time.
+/**
+ * The two ways out when the drawing does not fit: make the diagrams smaller, or the
+ * canvas bigger. Both repeat until the fit reports no overflow, a few rounds at most.
+ */
+const shrinkDiagrams = () =>
+  run(async () => {
+    const before = diagramPx.value;
+
+    for (let round = 0; round < 6 && fitOverflow.value && diagramPx.value > MIN_DIAGRAM_PX; round++) {
+      diagramPx.value = clampDiagram(diagramPx.value * 0.75);
+      await refreshPreview();
+    }
+
+    // Diagrams were not what did not fit — loads, reactions and labels are fixed sizes
+    // too — so shrinking them bought nothing but a worse picture. Put them back and say so.
+    if (fitOverflow.value) {
+      diagramPx.value = before;
+      await refreshPreview();
+      notify('exportImage.shrinkNotEnough', 'error');
+    }
+  });
+
+const enlargeCanvas = () =>
+  run(async () => {
+    for (let round = 0; round < 3 && fitOverflow.value; round++) {
+      const o = fitOverflow.value;
+
+      width.value = clampExportSide(width.value + o.left + o.right + 8, minSide.value);
+      height.value = clampExportSide(height.value + o.top + o.bottom + 8, minSide.value);
+      await refreshPreview();
+    }
+  });
+
 const save = () =>
   run(async () => {
     downloadBlob(await render(), `edubeam-${fileWidth.value}x${fileHeight.value}.png`);
@@ -1029,9 +1365,22 @@ const copy = () =>
   opacity: 1;
 }
 
+/* Vuetify gives a compact switch generous vertical padding; the row above already spaces it. */
+.switch :deep(.v-selection-control) {
+  min-height: 32px;
+}
+
+.diagram-height {
+  flex: 0 0 150px;
+}
+
+.fit-warning :deep(.v-alert__content) {
+  width: 100%;
+}
+
 .sizes {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 1fr auto 1fr 1fr;
   align-items: center;
   gap: 8px;
 }

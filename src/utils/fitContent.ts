@@ -243,6 +243,17 @@ export const estimateExtents = (current: Measurement, previous: Measurement | nu
  * Resolves with the final view (already applied), or `null` when there is nothing to
  * fit, the viewport is empty, or the fit was cancelled.
  */
+/** Dev-only trace of how a fit ended; reading it off the console beats reasoning about it. */
+const trace = (result: FitContentResult | null, note: string) => {
+  if (import.meta.env?.DEV && typeof console !== 'undefined') {
+    console.debug(
+      `[fit] ${note} iterations=${result?.iterations ?? '-'} converged=${result?.converged ?? '-'} scale=${result ? result.scale.toFixed(3) : '-'}`
+    );
+  }
+
+  return result;
+};
+
 export const fitRenderedContent = async (
   host: FitContentHost,
   options: FitContentOptions
@@ -265,7 +276,10 @@ export const fitRenderedContent = async (
   const reserve = resolvePadding(options.reserve);
   const cancelled = () => host.isCancelled?.() === true;
 
+  // Checked before applying as well as after: a fit that was superseded while it was
+  // waiting must not land one more view on top of whatever superseded it.
   const show = async (fit: FitResult) => {
+    if (cancelled()) return false;
     await host.apply(fit);
     return !cancelled();
   };
@@ -293,7 +307,7 @@ export const fitRenderedContent = async (
       const fallback = fitBounds(modelBounds, { ...fitOptions, padding: options.padding });
       if (!fallback || !(await show(fallback))) return null;
 
-      return { ...fallback, converged: false, iterations: 1 };
+      return trace({ ...fallback, converged: false, iterations: 1 }, 'model-bounds fallback');
     }
 
     const current: Measurement = { bounds: rendered, scale: view.scale };
@@ -314,7 +328,7 @@ export const fitRenderedContent = async (
     if (check.inside && (!best || view.scale > best.fit.scale)) best = { fit: view, iterations };
 
     if (iterations >= maxIterations) {
-      if (check.inside) return { ...view, converged: check.filled, iterations };
+      if (check.inside) return trace({ ...view, converged: check.filled, iterations }, 'max iterations, inside');
       break;
     }
 
@@ -339,7 +353,8 @@ export const fitRenderedContent = async (
     // a zoom far from the answer fits the decorations as if they were the structure (a
     // 64x48 preview starts at zoom 1, where a 6 px marker is twice the beam). The secant
     // that follows separates them; only when it no longer moves the view is the fit done.
-    if (sameView(next, view)) return { ...view, converged: check.inside && check.filled, iterations };
+    if (sameView(next, view))
+      return trace({ ...view, converged: check.inside && check.filled, iterations }, 'fixed point');
 
     iterations++;
     view = next;
@@ -351,7 +366,7 @@ export const fitRenderedContent = async (
   // into the frame so that at least nothing is cut off.
   if (best && best.fit !== view) {
     if (!(await show(best.fit))) return null;
-    return { ...best.fit, converged: false, iterations };
+    return trace({ ...best.fit, converged: false, iterations }, 'best seen');
   }
 
   if (!best) {
@@ -364,5 +379,5 @@ export const fitRenderedContent = async (
     }
   }
 
-  return { ...view, converged: false, iterations };
+  return trace({ ...view, converged: false, iterations }, best ? 'last view' : 'safe shrink');
 };

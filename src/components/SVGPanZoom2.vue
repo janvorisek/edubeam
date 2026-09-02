@@ -2,6 +2,7 @@
 import type { Bounds } from '@/utils/fitBounds';
 import { centerSvgContent, fitSvgContent } from '@/utils/fitSvgContent';
 import type { ViewBox } from '@/utils/fitBounds';
+import type { FitContentResult } from '@/utils/fitContent';
 import { nextTick, onMounted, onBeforeUnmount, ref } from 'vue';
 
 const props = withDefaults(
@@ -217,18 +218,18 @@ const setViewBox = (box: ViewBox): void => {
  * diagrams - fills the viewport minus the padding. Resolves once the final view is
  * shown; `false` when there was nothing to fit or a newer fit took over.
  */
-const fitContent = async (): Promise<boolean> => {
+const fitContent = async (): Promise<FitContentResult | null> => {
   const svgEl = svgRef.value as SVGSVGElement | null;
 
-  if (!rootRef.value || !svgEl) return false;
+  if (!rootRef.value || !svgEl) return null;
 
   onWindowResize();
 
-  if (!svgEl.clientWidth || !svgEl.clientHeight) return false;
+  if (!svgEl.clientWidth || !svgEl.clientHeight) return null;
 
   if (!props.canFitContent) {
     centerContent();
-    return false;
+    return null;
   }
 
   const version = ++fitVersion;
@@ -236,7 +237,7 @@ const fitContent = async (): Promise<boolean> => {
   // Label widths change when the web font arrives; a fit measured before that lands
   // slightly off. Resolves immediately once loaded.
   if (typeof document !== 'undefined' && document.fonts?.ready) await document.fonts.ready;
-  if (version !== fitVersion || svgRef.value !== svgEl) return false;
+  if (version !== fitVersion || svgRef.value !== svgEl) return null;
 
   const result = await fitSvgContent(
     {
@@ -262,7 +263,7 @@ const fitContent = async (): Promise<boolean> => {
     autoFit.value = true;
   }
 
-  return result !== null;
+  return result;
 };
 
 let resizewatcher: ResizeObserver;

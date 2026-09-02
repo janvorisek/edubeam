@@ -475,7 +475,14 @@
     "fitAll": "Fit all",
     "window": "Window…",
     "pickWindowHint": "Drag a rectangle over the drawing to export",
-    "dragEdge": "Drag to reveal or trim this side"
+    "dragEdge": "Drag to reveal or trim this side",
+    "scale": "Scale",
+    "scaleCaption": "1 m of the model is {cm} cm on paper (96 DPI). Scroll over the preview to zoom.",
+    "doesNotFit": "Not everything fits at this size: the diagrams, loads and labels run about {px} px past the edge. Shrink the diagrams (now {diagrams} px) or enlarge the canvas.",
+    "shrinkDiagrams": "Shrink diagrams",
+    "enlargeCanvas": "Enlarge canvas",
+    "diagramHeight": "Diagram height",
+    "shrinkNotEnough": "Smaller diagrams are not enough here — the loads and labels alone need more room. Enlarge the canvas instead."
   },
   "examples": {
     "title": "Examples",

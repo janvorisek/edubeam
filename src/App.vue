@@ -86,6 +86,13 @@ onMounted(() => {
       undoRedoManager.redo();
     }
 
+    // Print: the browser's print of the page is meaningless here; the image export is
+    // what "print" means in this app.
+    if ((e.ctrlKey || e.metaKey) && e.code === 'KeyP') {
+      e.preventDefault();
+      openExportImage();
+    }
+
     // Save project
     if (e.ctrlKey && e.code === 'KeyS') {
       e.preventDefault();

@@ -1708,10 +1708,19 @@ const convertDistanceToWorld = (dim: DimensionEntry) => {
   dim.distanceUnit = 'world';
 };
 
-const normalizedDimensions = computed(() => {
-  projectStore.dimensions.forEach((dim) => convertDistanceToWorld(dim as DimensionEntry));
-  return projectStore.dimensions as DimensionEntry[];
-});
+/**
+ * A model saved before dimension distances were kept in world units brings them in pixels, and
+ * only the viewer knows the scale to convert them by. Migrated when the dimensions arrive rather
+ * than while the drawing is being rendered: a computed that writes to what it reads invalidates
+ * itself, and this ran over every dimension on every render for something that happens once.
+ */
+watch(
+  () => projectStore.dimensions,
+  (dimensions) => dimensions.forEach((dim) => convertDistanceToWorld(dim as DimensionEntry)),
+  { immediate: true }
+);
+
+const normalizedDimensions = computed(() => projectStore.dimensions as DimensionEntry[]);
 
 const getDimensionResolvedPoints = (dim: DimensionEntry): [DimensionPoint, DimensionPoint] | null =>
   resolveDimensionPoints(dim, projectStore.solver.domain.nodes);
@@ -1729,8 +1738,6 @@ const getDimensionRenderableNodes = (dim: DimensionEntry) => {
 const getDimensionSegment = (dim: DimensionEntry): { start: Point; end: Point } | null => {
   const points = getDimensionResolvedPoints(dim);
   if (!points) return null;
-
-  convertDistanceToWorld(dim);
 
   const dx = points[1].x - points[0].x;
   const dz = points[1].y - points[0].y;

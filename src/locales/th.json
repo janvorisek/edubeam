@@ -317,7 +317,8 @@
     "temperature": "แรงกระทำเนื่องจากอุณหภูมิ"
   },
   "dimensioning": {
-    "add_dimension": "เพิ่มมิติ"
+    "add_dimension": "เพิ่มมิติ",
+    "add_along_element": "ใส่ขนาดชิ้นส่วน {label}"
   },
   "warnings": {
     "noMaterialsDefined": "ไม่มีการกำหนดวัสดุ",

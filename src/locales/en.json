@@ -389,7 +389,8 @@
     "temperature": "Temperature load"
   },
   "dimensioning": {
-    "add_dimension": "Add dimension"
+    "add_dimension": "Add dimension",
+    "add_along_element": "Dimension element {label}"
   },
   "warnings": {
     "noMaterialsDefined": "No materials defined.",

@@ -223,10 +223,18 @@ export const useProjectStore = defineStore(
         }
       }
 
-      useProjectStore().defoScale = 1 / maxDefo;
-      useProjectStore().normalForceScale = 1 / maxNormalForce;
-      useProjectStore().bendingMomentScale = 1 / maxBendingMoment;
-      useProjectStore().shearForceScale = 1 / maxShearForce;
+      // Every diagram is scaled to its own largest value, which turns a quantity that is zero -
+      // no normal force in a beam, say - into a full height plot of floating point dust. Such a
+      // quantity gets no scale at all, so it is drawn flat on its axis.
+      const NEGLIGIBLE_RATIO = 1e-6;
+      const largestForce = Math.max(maxNormalForce, maxShearForce, maxBendingMoment);
+
+      const scaleFor = (value: number, reference: number) => (value > reference * NEGLIGIBLE_RATIO ? 1 / value : 0);
+
+      useProjectStore().defoScale = maxDefo > 1e-30 ? 1 / maxDefo : 0;
+      useProjectStore().normalForceScale = scaleFor(maxNormalForce, largestForce);
+      useProjectStore().bendingMomentScale = scaleFor(maxBendingMoment, largestForce);
+      useProjectStore().shearForceScale = scaleFor(maxShearForce, largestForce);
     };
 
     const solve = throttle(_solve, 50);

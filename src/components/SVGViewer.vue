@@ -27,6 +27,8 @@ import SVGNode from './svg/Node.vue';
 import SVGElement from './svg/Element.vue';
 import SVGElementTemperatureLoad from './svg/ElementTemperatureLoad.vue';
 import SVGDimensioning from './svg/Dimensioning.vue';
+import PlacingPreview from './PlacingPreview.vue';
+import { placingKey } from '@/types/placing';
 
 import { executeModelMutationWithUndo, loadType, throttle } from '../utils';
 import { createDimensionId, ensureDimensionId } from '@/utils/id';
@@ -170,6 +172,35 @@ const intersected = ref<{
   index: null,
   originalPosition: { x: 0, y: 0 },
 });
+
+/**
+ * What the placing preview draws, handed over as the refs themselves so that the drawing writes
+ * the pointer position without reading it. See PlacingPreview.vue.
+ */
+provide(placingKey, {
+  x: mouseXReal,
+  y: mouseYReal,
+  startNode,
+  snappedToNode: computed(() => intersected.value.type === 'node'),
+});
+
+const pasteLayer = ref<SVGGElement | null>(null);
+
+/**
+ * The clipboard preview is carried under the pointer by its own transform rather than a bound
+ * one: what it holds does not depend on the pointer, and binding it in the drawing rebuilt the
+ * whole scene on every report of the gesture.
+ */
+watch(
+  [mouseXReal, mouseYReal, startNode, deltaPaste, () => appStore.mouseMode],
+  ([x, y, start, delta]) => {
+    if (!pasteLayer.value || !start || !delta) return;
+
+    pasteLayer.value.setAttribute('transform', `translate(${x - start.x + delta.x}, ${y - start.y + delta.y})`);
+  },
+  // After the paste layer is in the document, so entering the mode places it before it is seen.
+  { flush: 'post', immediate: true }
+);
 
 const hoveredElement = computed(() => {
   if (intersected.value.type !== 'element' || intersected.value.index === null) return null;
@@ -2459,42 +2490,9 @@ defineExpose({ centerContent, fitContent });
           :scale="scale"
         />
         <g ref="viewport" :class="{ disablePointerEvents: isZooming || isPanning }">
-          <g
-            v-if="
-              appStore.mouseMode === MouseMode.ADD_NODE ||
-              appStore.mouseMode === MouseMode.ADD_ELEMENT ||
-              appStore.mouseMode === MouseMode.ADD_DIMLINE
-            "
-          >
-            <rect
-              :x="mouseXReal"
-              :y="mouseYReal"
-              :width="8 / scale"
-              :height="8 / scale"
-              :transform="`translate(${-8 / 2 / scale},${-8 / 2 / scale})`"
-              style="fill: #aaa"
-            />
-          </g>
-          <g v-if="appStore.mouseMode === MouseMode.ADD_ELEMENT && startNode !== null">
-            <line
-              :x1="startNode.x"
-              :y1="startNode.y"
-              :x2="mouseXReal"
-              :y2="mouseYReal"
-              :stroke-dasharray="intersected.type === 'node' ? `none` : `5 4`"
-              style="vector-effect: non-scaling-stroke; stroke-width: 2px; stroke: #aaa"
-            />
-          </g>
-          <g v-if="appStore.mouseMode === MouseMode.PASTE_CLIPBOARD">
-            <line
-              :x1="startNode.x"
-              :y1="startNode.y"
-              :x2="mouseXReal"
-              :y2="mouseYReal"
-              :stroke-dasharray="intersected.type === 'node' ? `none` : `5 4`"
-              style="vector-effect: non-scaling-stroke; stroke-width: 2px; stroke: #aaa"
-            />
-          </g>
+          <!-- Where the next node lands and the line back to the last one; its own component
+               so that following the pointer does not render the drawing again. -->
+          <PlacingPreview :scale="scale" />
           <g>
             <g v-if="!isZooming && useViewerStore().showLoads" data-fit-ignore="loads">
               <template v-for="(eload, index) in useProjectStore().solver.loadCases[0].elementLoadList">
@@ -2762,10 +2760,7 @@ defineExpose({ centerContent, fitContent });
             />
           </g>
           <!-- Paste preview -->
-          <g
-            v-if="appStore.mouseMode === MouseMode.PASTE_CLIPBOARD"
-            :transform="`translate(${mouseXReal - startNode.x + deltaPaste.x}, ${mouseYReal - startNode.y + deltaPaste.y})`"
-          >
+          <g v-if="appStore.mouseMode === MouseMode.PASTE_CLIPBOARD" ref="pasteLayer">
             <g>
               <SVGElement
                 v-for="(element, index) in useClipboardStore().selection.elements"

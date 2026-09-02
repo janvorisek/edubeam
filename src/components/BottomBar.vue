@@ -61,7 +61,7 @@
             <v-icon small>mdi-cursor-default-outline</v-icon> {{ $t('nodes.addNode') }}
           </v-btn>
         </div>
-        <v-data-table
+        <v-data-table-virtual
           ref="table-nodes"
           class="fixed-left-col"
           :headers="headers.nodes"
@@ -70,9 +70,6 @@
           density="compact"
           :height="props.height - 36 - 30"
           fixed-header
-          :items-per-page="-1"
-          disable-pagination
-          hide-default-footer
           mobile-breakpoint="0"
           item-key="label"
           sort-asc-icon="mdi-menu-up"
@@ -235,7 +232,7 @@
               <v-btn density="compact" variant="text" icon="mdi-close" @click="deleteNode(item.label)"></v-btn>
             </div>
           </template>
-        </v-data-table>
+        </v-data-table-virtual>
       </v-window-item>
 
       <v-window-item
@@ -268,7 +265,7 @@
           </v-btn>
         </div>
 
-        <v-data-table
+        <v-data-table-virtual
           :headers="headers.elements"
           class="fixed-left-col"
           :items="elements"
@@ -276,9 +273,6 @@
           density="compact"
           :height="props.height - 36 - 30"
           fixed-header
-          :items-per-page="-1"
-          disable-pagination
-          hide-default-footer
           mobile-breakpoint="0"
           item-key="label"
           sort-asc-icon="mdi-menu-up"
@@ -464,7 +458,7 @@
               <v-btn density="compact" variant="text" icon="mdi-close" @click="deleteElement(item.label)"></v-btn>
             </div>
           </template>
-        </v-data-table>
+        </v-data-table-virtual>
       </v-window-item>
 
       <v-window-item
@@ -494,15 +488,12 @@
             <v-icon small>mdi-plus</v-icon> {{ $t('loads.addElementLoad') }}
           </v-btn>
         </div>
-        <v-data-table
+        <v-data-table-virtual
           :headers="headers.loads"
           :items="loads"
           density="compact"
           :height="props.height - 36 - 30"
           fixed-header
-          :items-per-page="-1"
-          disable-pagination
-          hide-default-footer
           mobile-breakpoint="0"
           item-key="label"
           sort-asc-icon="mdi-menu-up"
@@ -971,7 +962,7 @@
               @click="deletePrescribedDisplacement(item.ref)"
             ></v-btn>
           </template>
-        </v-data-table>
+        </v-data-table-virtual>
       </v-window-item>
 
       <v-window-item
@@ -996,16 +987,13 @@
           </v-btn>
         </div>
 
-        <v-data-table
+        <v-data-table-virtual
           :headers="headers.materials"
           class="fixed-left-col"
           :items="materials"
           density="compact"
           :height="props.height - 36 - 30"
           fixed-header
-          :items-per-page="-1"
-          disable-pagination
-          hide-default-footer
           mobile-breakpoint="0"
           item-key="label"
           sort-asc-icon="mdi-menu-up"
@@ -1086,7 +1074,7 @@
           <template #item.actions="{ item }">
             <v-btn density="compact" variant="text" icon="mdi-close" @click="deleteMaterial(item.label)"></v-btn>
           </template>
-        </v-data-table>
+        </v-data-table-virtual>
       </v-window-item>
 
       <v-window-item
@@ -1127,16 +1115,13 @@
           </v-btn>
         </div>
 
-        <v-data-table
+        <v-data-table-virtual
           :headers="headers.crossSections"
           class="fixed-left-col"
           :items="crossSections"
           density="compact"
           :height="props.height - 36 - 30"
           fixed-header
-          :items-per-page="-1"
-          disable-pagination
-          hide-default-footer
           mobile-breakpoint="0"
           item-key="label"
           sort-asc-icon="mdi-menu-up"
@@ -1243,7 +1228,7 @@
             ></v-btn>
             <v-btn density="compact" variant="text" icon="mdi-close" @click="deleteCrossSection(item.label)"></v-btn>
           </template>
-        </v-data-table>
+        </v-data-table-virtual>
       </v-window-item>
       <v-window-item
         :value="'tab-results'"
@@ -1297,16 +1282,13 @@
         </div>
         <v-window v-model="layoutStore.bottomBarResultsTab" disabled>
           <v-window-item value="nodes" :transition="false" :reverse-transition="false">
-            <v-data-table
+            <v-data-table-virtual
               ref="table-results"
               :headers="headers.results"
               :items="nodes"
               density="compact"
               :height="props.height - 36 - 30"
               fixed-header
-              :items-per-page="-1"
-              disable-pagination
-              hide-default-footer
               mobile-breakpoint="0"
               item-key="label"
               sort-asc-icon="mdi-menu-up"
@@ -1391,19 +1373,16 @@
                   </div>
                 </div>
               </template>
-            </v-data-table>
+            </v-data-table-virtual>
           </v-window-item>
           <v-window-item value="elements" :transition="false" :reverse-transition="false">
-            <v-data-table
+            <v-data-table-virtual
               ref="table-results2"
               :headers="headers.results2"
               :items="useProjectStore().solver.loadCases[0].solved ? elements : []"
               density="compact"
               :height="props.height - 36 - 30"
               fixed-header
-              :items-per-page="-1"
-              disable-pagination
-              hide-default-footer
               mobile-breakpoint="0"
               item-key="label"
               sort-asc-icon="mdi-menu-up"
@@ -1467,7 +1446,7 @@
                   </div>
                 </div>
               </template>
-            </v-data-table>
+            </v-data-table-virtual>
           </v-window-item>
         </v-window>
       </v-window-item>

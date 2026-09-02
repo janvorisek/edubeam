@@ -1,6 +1,7 @@
 <template>
   <div id="bottomBar" style="border-top: 1px solid #ddd" :style="`min-height: ${props.height}px; overflow: hidden`">
-    <div class="d-flex justify-space-between bg-primary">
+    <!-- The strip is also the bar's resize handle; see Editor.vue for the drag it starts. -->
+    <div class="d-flex justify-space-between bg-primary" data-resize-handle="vertical">
       <v-tabs
         v-model="appStore.bottomBarTab"
         bg-color="primary"

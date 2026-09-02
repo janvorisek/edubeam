@@ -20,7 +20,12 @@
             <v-row no-gutters>
               <v-col cols="6" align-self="center">
                 <div class="d-flex justify-center">
-                  <Vector2DHelper v-if="loadType === 'force'" :fx="realFx" :fz="realFz" :my="realMy" />
+                  <Vector2DHelper
+                    :fx="loadType === 'force' ? realFx : realDx"
+                    :fz="loadType === 'force' ? realFz : realDz"
+                    :my="loadType === 'force' ? realMy : realRy"
+                    :type="loadType === 'force' ? 'force' : 'displacement'"
+                  />
                 </div>
               </v-col>
 

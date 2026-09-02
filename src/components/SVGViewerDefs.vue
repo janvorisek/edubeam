@@ -132,7 +132,7 @@ const props = withDefaults(
       :markerHeight="50 / scale"
       overflow="visible"
       markerUnits="userSpaceOnUse"
-      :marker-end="`url(#${id}-arrow`"
+      :marker-end="`url(#${id}-arrow)`"
     >
       <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" fill="none" :stroke="colors.loads" />
     </marker>
@@ -158,7 +158,7 @@ const props = withDefaults(
       :markerHeight="50 / scale"
       overflow="visible"
       markerUnits="userSpaceOnUse"
-      :marker-end="`url(#${id}-arrow`"
+      :marker-end="`url(#${id}-arrow)`"
     >
       <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" stroke-width="3" fill="none" :stroke="colors.loads" />
     </marker>
@@ -200,6 +200,32 @@ const props = withDefaults(
       :marker-end="`url(#${id}-arrow_selected)`"
     >
       <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" stroke-width="3" fill="none" stroke="blue" />
+    </marker>
+    <marker
+      :id="`${id}-rotation_ccw`"
+      viewBox="0 0 20 60"
+      refX="10"
+      refY="60"
+      :markerWidth="20 / scale"
+      :markerHeight="50 / scale"
+      overflow="visible"
+      markerUnits="userSpaceOnUse"
+      :marker-end="`url(#${id}-arrow)`"
+    >
+      <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" fill="none" stroke-dasharray="4,3" :stroke="colors.loads" />
+    </marker>
+    <marker
+      :id="`${id}-rotation_cw`"
+      viewBox="0 0 20 60"
+      refX="-20"
+      refY="45"
+      :markerWidth="20 / scale"
+      :markerHeight="50 / scale"
+      overflow="visible"
+      markerUnits="userSpaceOnUse"
+      :marker-end="`url(#${id}-arrow)`"
+    >
+      <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" fill="none" stroke-dasharray="4,3" :stroke="colors.loads" />
     </marker>
     <marker
       :id="`${id}-forceTip`"

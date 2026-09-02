@@ -1747,6 +1747,9 @@ const markerMomentCcw = computed(() => dynamicMarker('moment_ccw'));
 const markerMomentCcwHover = computed(() => dynamicMarker('moment_ccw_hover'));
 const markerMomentCcwSelected = computed(() => dynamicMarker('moment_ccw_selected'));
 
+const markerRotationCw = computed(() => dynamicMarker('rotation_cw'));
+const markerRotationCcw = computed(() => dynamicMarker('rotation_ccw'));
+
 const markerReaction = computed(() => dynamicMarker('reaction'));
 const markerMomentReactionCcw = computed(() => dynamicMarker('moment_reaction_ccw'));
 const markerMomentReactionCw = computed(() => dynamicMarker('moment_reaction_cw'));
@@ -2084,6 +2087,8 @@ defineExpose({ centerContent, fitContent });
           '--marker-moment-ccw': markerMomentCcw,
           '--marker-moment-ccw-hover': markerMomentCcwHover,
           '--marker-moment-ccw-selected': markerMomentCcwSelected,
+          '--marker-rotation-cw': markerRotationCw,
+          '--marker-rotation-ccw': markerRotationCcw,
           '--marker-reaction': markerReaction,
           '--marker-moment-reaction-ccw': markerMomentReactionCcw,
           '--marker-moment-reaction-cw': markerMomentReactionCw,
@@ -2806,6 +2811,14 @@ defineExpose({ centerContent, fitContent });
 
       &.decoration.moment.ccw {
         marker-end: var(--marker-moment-ccw);
+      }
+
+      &.decoration.rotation.cw {
+        marker-end: var(--marker-rotation-cw);
+      }
+
+      &.decoration.rotation.ccw {
+        marker-end: var(--marker-rotation-ccw);
       }
 
       &.handle {

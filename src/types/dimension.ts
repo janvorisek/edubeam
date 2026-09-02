@@ -48,6 +48,22 @@ export const resolveDimensionPoint = (
   return createDimensionPoint(point.x, point.y, point.sourceNodeLabel ?? null);
 };
 
+/**
+ * Both ends of a dimension, each resolved the same way. Returns null for a half built dimension,
+ * which the preview of one being drawn is.
+ */
+export const resolveDimensionPoints = (
+  dimension: Pick<DimensionLine, 'points'>,
+  nodeLookup: Pick<Map<string, Node>, 'get'>
+): [DimensionPoint, DimensionPoint] | null => {
+  if (!dimension.points[0] || !dimension.points[1]) return null;
+
+  return [
+    resolveDimensionPoint(dimension.points[0], nodeLookup),
+    resolveDimensionPoint(dimension.points[1], nodeLookup),
+  ];
+};
+
 export const createDimensionRenderableNode = (
   point: Pick<DimensionPoint, 'x' | 'y'>,
   label?: string | number | null

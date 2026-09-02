@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, type Ref } from 'vue';
 import { useProjectStore } from '@/store/project';
 import { ensureDimensionId } from '@/utils/id';
+import { resolveDimensionPoints } from '@/types/dimension';
 import { executeModelMutationWithUndo, parseFloat2 } from '@/utils';
 import { useI18n } from 'vue-i18n';
 
@@ -18,6 +19,18 @@ const selectedDimension = computed(() => {
   return projectStore.dimensions.find((dim) => ensureDimensionId(dim) === selectedDimensionId.value) ?? null;
 });
 
+/**
+ * The coordinates the fields show. A point that snaps to a node lives at that node, so the panel
+ * has to resolve it the way the drawing does: the x and y stored on the dimension are only the
+ * fallback for a point snapped to nothing, and go stale the moment the node is moved.
+ */
+const resolvedPoints = computed(() => {
+  const dim = selectedDimension.value;
+  if (!dim) return null;
+
+  return resolveDimensionPoints(dim, projectStore.solver.domain.nodes);
+});
+
 const x1 = ref('');
 const y1 = ref('');
 const x2 = ref('');
@@ -25,19 +38,32 @@ const y2 = ref('');
 
 let syncingFromDimension = false;
 
+/**
+ * Writes a field, unless what it already says means that same number. Editing a field feeds the
+ * point it writes straight back here, and "1." or "-0" would be rewritten as "1" and "0" under
+ * the typing hand.
+ */
+const setInput = (field: Ref<string>, value: number | undefined) => {
+  if (value !== undefined && field.value !== '' && parseFloat2(field.value) === value) return;
+
+  field.value = value?.toString() ?? '';
+};
+
 const syncInputsFromDimension = () => {
-  const dim = selectedDimension.value;
+  const points = resolvedPoints.value;
 
   syncingFromDimension = true;
-  x1.value = dim?.points[0]?.x?.toString() ?? '';
-  y1.value = dim?.points[0]?.y?.toString() ?? '';
-  x2.value = dim?.points[1]?.x?.toString() ?? '';
-  y2.value = dim?.points[1]?.y?.toString() ?? '';
+  setInput(x1, points?.[0].x);
+  setInput(y1, points?.[0].y);
+  setInput(x2, points?.[1].x);
+  setInput(y2, points?.[1].y);
   syncingFromDimension = false;
 };
 
+// Follows the points themselves, not just the choice of dimension: a node dragged while the panel
+// is open moves the end snapped to it, and the fields have to say so.
 watch(
-  selectedDimension,
+  resolvedPoints,
   () => {
     syncInputsFromDimension();
   },

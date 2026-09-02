@@ -27,20 +27,32 @@ const angle = computed(() => {
   return -(Math.atan2(props.nload.values[0], props.nload.values[2]) * 180) / Math.PI;
 });
 
-const nloadPts = computed(() => {
-  const size = Math.sqrt(
-    props.nload.values[0]! * props.nload.values[0]! + props.nload.values[2]! * props.nload.values[2]!
-  );
-  const sx = -props.nload.values[0]! / size;
-  const sz = -props.nload.values[2]! / size;
-
-  return `${target.value!.coords[0]},${target.value!.coords[2]} ${
-    target.value!.coords[0] + (sx * 30) / props.scale
-  },${target.value!.coords[2] + (sz * 30) / props.scale}`;
+/** Length of the force vector; zero for a load that is a pure moment. */
+const forceSize = computed(() => {
+  return Math.sqrt(props.nload.values[0]! * props.nload.values[0]! + props.nload.values[2]! * props.nload.values[2]!);
 });
 
-const targetCoords = computed(() => {
-  return `${target.value.coords[0]},${target.value.coords[2]} ${target.value.coords[0] + 1e-6},${target.value.coords[2]}`;
+/** Unit vector pointing back along the arrow, or the origin when there is no force to point along. */
+const forceDirection = computed(() => {
+  if (forceSize.value === 0) return { x: 0, z: 0 };
+
+  return { x: -props.nload.values[0]! / forceSize.value, z: -props.nload.values[2]! / forceSize.value };
+});
+
+/**
+ * The moment marker draws its arc at radius 20 inside a viewBox scaled by 50/60 to fit the marker
+ * box, so the arc lands here. The handle is a ring on top of it - a degenerate segment with butt
+ * caps paints a sliver that is all but impossible to hit.
+ */
+const momentHandleRadius = computed(() => (20 * (50 / 60)) / props.scale);
+
+const nloadPts = computed(() => {
+  // A pure moment has no arrow to grab; its own ring handle covers it instead.
+  if (forceSize.value === 0) return `${target.value.coords[0]},${target.value.coords[2]}`;
+
+  return `${target.value!.coords[0]},${target.value!.coords[2]} ${
+    target.value!.coords[0] + (forceDirection.value.x * 30) / props.scale
+  },${target.value!.coords[2] + (forceDirection.value.z * 30) / props.scale}`;
 });
 
 /**
@@ -64,13 +76,7 @@ const stackedTransform = computed(() => {
   const fullAngle = (360 + (angle.value % 360)) % 360;
   const count = angleMap.get(fullAngle) || 0;
 
-  const sx =
-    -props.nload.values[0]! /
-    Math.sqrt(props.nload.values[0]! * props.nload.values[0]! + props.nload.values[2]! * props.nload.values[2]!);
-
-  const sz =
-    -props.nload.values[2]! /
-    Math.sqrt(props.nload.values[0]! * props.nload.values[0]! + props.nload.values[2]! * props.nload.values[2]!);
+  const { x: sx, z: sz } = forceDirection.value;
 
   return `translate(${(sx * 30 * count) / props.scale} ${(sz * 30 * count) / props.scale})`;
 });
@@ -97,7 +103,17 @@ const stackedTransform = computed(() => {
     />
 
     <polyline :points="nloadPts" class="handle" />
-    <polyline :points="targetCoords" class="handle moment" />
+    <circle
+      v-if="nload.values[4] !== 0"
+      :cx="target.coords[0]"
+      :cy="target.coords[2]"
+      :r="momentHandleRadius"
+      fill="none"
+      stroke="transparent"
+      stroke-width="18"
+      pointer-events="stroke"
+      vector-effect="non-scaling-stroke"
+    />
 
     <text
       v-if="nload.values[4] !== 0"

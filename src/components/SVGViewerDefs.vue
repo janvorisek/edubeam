@@ -228,6 +228,70 @@ const props = withDefaults(
       <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" fill="none" stroke-dasharray="4,3" :stroke="colors.loads" />
     </marker>
     <marker
+      :id="`${id}-rotation_ccw_hover`"
+      viewBox="0 0 20 60"
+      refX="10"
+      refY="60"
+      :markerWidth="20 / scale"
+      :markerHeight="50 / scale"
+      overflow="visible"
+      markerUnits="userSpaceOnUse"
+      :marker-end="`url(#${id}-arrow)`"
+    >
+      <path
+        d="M -10 60 A 20 20, 135, 1, 0, 0 40"
+        stroke-width="3"
+        fill="none"
+        stroke-dasharray="4,3"
+        :stroke="colors.loads"
+      />
+    </marker>
+    <marker
+      :id="`${id}-rotation_cw_hover`"
+      viewBox="0 0 20 60"
+      refX="-20"
+      refY="45"
+      :markerWidth="20 / scale"
+      :markerHeight="50 / scale"
+      overflow="visible"
+      markerUnits="userSpaceOnUse"
+      :marker-end="`url(#${id}-arrow)`"
+    >
+      <path
+        d="M -10 60 A 20 20, 135, 1, 1, 0 40"
+        stroke-width="3"
+        fill="none"
+        stroke-dasharray="4,3"
+        :stroke="colors.loads"
+      />
+    </marker>
+    <marker
+      :id="`${id}-rotation_ccw_selected`"
+      viewBox="0 0 20 60"
+      refX="10"
+      refY="60"
+      :markerWidth="20 / scale"
+      :markerHeight="50 / scale"
+      overflow="visible"
+      markerUnits="userSpaceOnUse"
+      :marker-end="`url(#${id}-arrow_selected)`"
+    >
+      <path d="M -10 60 A 20 20, 135, 1, 0, 0 40" stroke-width="3" fill="none" stroke-dasharray="4,3" stroke="blue" />
+    </marker>
+    <marker
+      :id="`${id}-rotation_cw_selected`"
+      viewBox="0 0 20 60"
+      refX="-20"
+      refY="45"
+      :markerWidth="20 / scale"
+      :markerHeight="50 / scale"
+      overflow="visible"
+      markerUnits="userSpaceOnUse"
+      :marker-end="`url(#${id}-arrow_selected)`"
+    >
+      <path d="M -10 60 A 20 20, 135, 1, 1, 0 40" stroke-width="3" fill="none" stroke-dasharray="4,3" stroke="blue" />
+    </marker>
+    <marker
       :id="`${id}-forceTip`"
       viewBox="0 0 20 60"
       refX="60"
@@ -239,6 +303,32 @@ const props = withDefaults(
       orient="auto"
     >
       <polyline points="45,5 55,10 45,15" stroke-width="1" :fill="colors.loads" :stroke="colors.loads" />
+    </marker>
+    <marker
+      :id="`${id}-forceTip_hover`"
+      viewBox="0 0 20 60"
+      refX="60"
+      refY="10"
+      :markerWidth="20 / scale"
+      :markerHeight="50 / scale"
+      overflow="visible"
+      markerUnits="userSpaceOnUse"
+      orient="auto"
+    >
+      <polyline points="45,5 55,10 45,15" stroke-width="3" :fill="colors.loads" :stroke="colors.loads" />
+    </marker>
+    <marker
+      :id="`${id}-forceTip_selected`"
+      viewBox="0 0 20 60"
+      refX="60"
+      refY="10"
+      :markerWidth="20 / scale"
+      :markerHeight="50 / scale"
+      overflow="visible"
+      markerUnits="userSpaceOnUse"
+      orient="auto"
+    >
+      <polyline points="45,5 55,10 45,15" stroke-width="3" fill="blue" stroke="blue" />
     </marker>
     <marker
       :id="`${id}-force`"

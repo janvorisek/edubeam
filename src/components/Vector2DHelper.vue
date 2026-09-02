@@ -96,9 +96,9 @@ const vbox = computed(() => {
   if (hasRotational.value) {
     minX = Math.min(minX, -arcRadius.value);
     maxX = Math.max(maxX, arcRadius.value);
-    minY = Math.min(minY, -arcRadius.value);
-    // The rotation value sits in the gap below the arc.
-    maxY = Math.max(maxY, arcRadius.value + 14);
+    // The rotation value sits above the arc.
+    minY = Math.min(minY, -arcRadius.value - 16);
+    maxY = Math.max(maxY, arcRadius.value);
   }
 
   // Room for the value labels hanging off the geometry.
@@ -238,7 +238,7 @@ const strokeDash = computed(() => (isDisplacement.value ? '4 3' : undefined));
         vector-effect="non-scaling-stroke"
         :marker-end="`url(#${arrowheadId})`"
       />
-      <text x="0" :y="arcRadius + 12" fill="black" font-size="10" text-anchor="middle" alignment-baseline="middle">
+      <text x="0" :y="-arcRadius - 10" fill="black" font-size="10" text-anchor="middle" alignment-baseline="middle">
         {{ formatValue(Math.abs(loadNodeValueMyInUnits)) }}
       </text>
     </g>

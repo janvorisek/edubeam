@@ -69,7 +69,7 @@ import {
   createDimensionPoint,
   createDimensionPointFromNode,
   createDimensionRenderableNode,
-  resolveDimensionPoint,
+  resolveDimensionPoints,
   type DimensionLine,
   type DimensionPoint,
 } from '@/types/dimension';
@@ -1713,14 +1713,8 @@ const normalizedDimensions = computed(() => {
   return projectStore.dimensions as DimensionEntry[];
 });
 
-const getDimensionResolvedPoints = (dim: DimensionEntry): [DimensionPoint, DimensionPoint] | null => {
-  if (!dim.points[0] || !dim.points[1]) return null;
-
-  return [
-    resolveDimensionPoint(dim.points[0], projectStore.solver.domain.nodes),
-    resolveDimensionPoint(dim.points[1], projectStore.solver.domain.nodes),
-  ];
-};
+const getDimensionResolvedPoints = (dim: DimensionEntry): [DimensionPoint, DimensionPoint] | null =>
+  resolveDimensionPoints(dim, projectStore.solver.domain.nodes);
 
 const getDimensionRenderableNodes = (dim: DimensionEntry) => {
   const points = getDimensionResolvedPoints(dim);

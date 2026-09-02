@@ -28,7 +28,6 @@ import SVGElement from './svg/Element.vue';
 import SVGElementTemperatureLoad from './svg/ElementTemperatureLoad.vue';
 import SVGDimensioning from './svg/Dimensioning.vue';
 
-import { formatExpValueAsHTML } from '../SVGUtils';
 import { executeModelMutationWithUndo, loadType, throttle } from '../utils';
 import { createDimensionId, ensureDimensionId } from '@/utils/id';
 import { boundsFromPoints } from '@/utils/fitBounds';
@@ -665,22 +664,19 @@ const buildNodeTooltipContent = (node: Node) => {
     projectStore.beams.some((element) => element.nodes.includes(node.label))
   ) {
     content += '<br>';
-    content += `u<sub>x</sub> = ${formatExpValueAsHTML(
+    content += `u<sub>x</sub> = ${appStore.formatResultHTML(
       // @ts-expect-error It return value for single Dof
-      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]),
-      4
+      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx])
     )} m`;
     content += '<br>';
-    content += `u<sub>z</sub> = ${formatExpValueAsHTML(
+    content += `u<sub>z</sub> = ${appStore.formatResultHTML(
       // @ts-expect-error It return value for single Dof
-      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]),
-      4
+      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz])
     )} m`;
     content += '<br>';
-    content += `φ<sub>y</sub> = ${formatExpValueAsHTML(
+    content += `φ<sub>y</sub> = ${appStore.formatResultHTML(
       // @ts-expect-error It return value for single Dof
-      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry]),
-      4
+      node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry])
     )} rad`;
   }
 

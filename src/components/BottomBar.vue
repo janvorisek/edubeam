@@ -1368,13 +1368,12 @@
                       "
                       class="inline-edit fw pl-1"
                       v-html="
-                        formatExpValueAsHTML(
-                          appStore.convertLength(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dx])),
-                          4
+                        appStore.formatResultHTML(
+                          appStore.convertLength(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dx]))
                         )
                       "
                     />
-                    <div v-else class="inline-edit fw pl-1" v-html="formatExpValueAsHTML(0, 4)"></div>
+                    <div v-else class="inline-edit fw pl-1" v-html="appStore.formatResultHTML(0)"></div>
                     <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
                   </div>
                   <div class="inline-edit-group mr-2">
@@ -1386,13 +1385,12 @@
                       "
                       class="inline-edit fw pl-1"
                       v-html="
-                        formatExpValueAsHTML(
-                          appStore.convertLength(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dz])),
-                          4
+                        appStore.formatResultHTML(
+                          appStore.convertLength(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dz]))
                         )
                       "
                     />
-                    <div v-else class="inline-edit fw pl-1" v-html="formatExpValueAsHTML(0, 4)"></div>
+                    <div v-else class="inline-edit fw pl-1" v-html="appStore.formatResultHTML(0)"></div>
                     <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
                   </div>
                   <div class="inline-edit-group mr-2">
@@ -1404,10 +1402,10 @@
                       "
                       class="inline-edit fw pl-1"
                       v-html="
-                        formatExpValueAsHTML(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Ry]), 4)
+                        appStore.formatResultHTML(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Ry]))
                       "
                     />
-                    <div v-else class="inline-edit fw pl-1" v-html="formatExpValueAsHTML(0, 4)"></div>
+                    <div v-else class="inline-edit fw pl-1" v-html="appStore.formatResultHTML(0)"></div>
                     <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Angle)"></div>
                   </div>
                 </div>
@@ -1472,9 +1470,8 @@
                       v-if="projStore.solver.loadCases[0].solved"
                       class="inline-edit fw pl-1"
                       v-html="
-                        formatExpValueAsHTML(
-                          nameBeamForce(i) === 'M' ? appStore.convertMoment(f.value) : appStore.convertForce(f.value),
-                          4
+                        appStore.formatResultHTML(
+                          nameBeamForce(i) === 'M' ? appStore.convertMoment(f.value) : appStore.convertForce(f.value)
                         )
                       "
                     />
@@ -1547,7 +1544,7 @@ import {
   loadType,
 } from '../utils';
 import { DofID, Beam2D, PrescribedDisplacement } from 'ts-fem';
-import { formatExpValueAsHTML, formatMeasureAsHTML } from '../SVGUtils';
+import { formatMeasureAsHTML } from '../SVGUtils';
 import { buildResultsTsv, downloadResultsCsv, resultUnitsFromStore } from '../utils/exportResults';
 
 import HelpTip from './HelpTip.vue';

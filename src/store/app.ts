@@ -11,6 +11,7 @@ import { openModal } from 'jenesius-vue-modal';
 import SettingsModal from '../components/dialogs/Settings.vue';
 import Qty from 'js-quantities';
 import { isMobile, suggestLanguage } from '@/utils';
+import { formatResultAsHTML, formatResultAsText, type ResultNumberStyle } from '@/utils/numberDisplay';
 import { customForceConversion, customPressureConversion } from '@/utils/unitConversions';
 import { useProjectStore } from './project';
 
@@ -29,6 +30,13 @@ export const useAppStore = defineStore(
     const numberFormatter = ref(
       new Intl.NumberFormat(locale.value, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
     );
+    // Results span orders of magnitude, so their mantissa is written by significant digits and
+    // the exponent by the chosen style.
+    const numberStyle = ref<ResultNumberStyle>('scientific');
+    const resultFormatter = ref(new Intl.NumberFormat(locale.value, { maximumSignificantDigits: 5 }));
+
+    const formatResultHTML = (value: number) => formatResultAsHTML(value, numberStyle.value, resultFormatter.value);
+    const formatResultText = (value: number) => formatResultAsText(value, numberStyle.value, resultFormatter.value);
 
     // The converter cant handle moment units, so we store them separately and call the converter for length and force separately
     const momentUnits = ref({ force: 'kN', length: 'm' });
@@ -141,6 +149,7 @@ export const useAppStore = defineStore(
     watch(locale, (newLocale) => {
       setLocale(newLocale);
       numberFormatter.value = new Intl.NumberFormat(newLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      resultFormatter.value = new Intl.NumberFormat(newLocale, { maximumSignificantDigits: 5 });
     });
 
     const dialogs = reactive({
@@ -203,6 +212,10 @@ export const useAppStore = defineStore(
       bottomBarHeight,
       locale,
       numberFormatter,
+      numberStyle,
+      resultFormatter,
+      formatResultHTML,
+      formatResultText,
       units,
       momentUnits,
       dialogs,
@@ -245,6 +258,7 @@ export const useAppStore = defineStore(
         'onboardingFinished',
         'lastSeenChangelogVersion',
         'locale',
+        'numberStyle',
         'tab',
         'bottomBarHeight',
         'units.Length',

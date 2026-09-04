@@ -1928,8 +1928,8 @@ defineExpose({ centerContent, fitContent });
           density="compact"
           variant="plain"
           hide-details
-          style="width: 74px"
-          class="flex-grow-0"
+          style="width: 54px"
+          class="flex-grow-0 add-node-angle"
           @keydown="checkNumber($event)"
         />
       </div>
@@ -2627,6 +2627,21 @@ defineExpose({ centerContent, fitContent });
 </template>
 
 <style lang="scss" scoped>
+/*
+ * The plain variant reserves 8px above the text for a floating label this field does not use,
+ * which drops the angle below the Dx/Dz/Ry labels sitting next to it in the banner.
+ */
+.add-node-angle :deep(.v-field__input),
+.add-node-angle :deep(.v-text-field__prefix),
+.add-node-angle :deep(.v-text-field__suffix) {
+  padding-top: 0;
+}
+
+/* Keeps the number against its degree sign rather than adrift in the middle of the field. */
+.add-node-angle :deep(input) {
+  text-align: right;
+}
+
 .disablePointerEvents {
   pointer-events: none;
 }

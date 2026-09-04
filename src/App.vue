@@ -1,6 +1,14 @@
 <script lang="ts">
 import { container, openModal } from 'jenesius-vue-modal';
-import { deserializeModel, parseSerializedModel, download, exportJSON, importJSON } from './utils';
+import {
+  deserializeModel,
+  parseSerializedModel,
+  download,
+  exportJSON,
+  importJSON,
+  redoModelChange,
+  undoModelChange,
+} from './utils';
 import { provide, nextTick } from 'vue';
 import { undoRedoManager } from './CommandManager';
 import { useViewerStore } from './store/viewer';
@@ -77,13 +85,13 @@ onMounted(() => {
     // If CTRL+Z undo
     if (e.ctrlKey && !e.shiftKey && e.code === 'KeyZ') {
       e.preventDefault();
-      undoRedoManager.undo();
+      undoModelChange();
     }
 
     // If CTRL+SHIFT+Z redo
     if (e.ctrlKey && e.shiftKey && e.code === 'KeyZ') {
       e.preventDefault();
-      undoRedoManager.redo();
+      redoModelChange();
     }
 
     // Save project

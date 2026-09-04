@@ -41,12 +41,6 @@ export { formatScientificNumber, formatCompactNumber } from './formatScientificN
 
 type ProjectSnapshot = {
   model: string | null;
-  selection: {
-    label: number | string | null;
-    type: string | null;
-    x: number;
-    y: number;
-  };
   selection2: {
     nodes: string[];
     elements: string[];
@@ -64,12 +58,6 @@ const captureProjectSnapshot = (): ProjectSnapshot => {
 
   return {
     model: serializeModel(projectStore.solver, projectStore.dimensions),
-    selection: {
-      label: projectStore.selection.label,
-      type: projectStore.selection.type,
-      x: projectStore.selection.x,
-      y: projectStore.selection.y,
-    },
     selection2: {
       nodes: [...projectStore.selection2.nodes],
       elements: [...projectStore.selection2.elements],
@@ -101,11 +89,9 @@ const restoreProjectSnapshot = (snapshot: ProjectSnapshot) => {
     console.error('Could not restore project snapshot');
   }
 
-  projectStore.selection.label = snapshot.selection.label;
-  projectStore.selection.type = snapshot.selection.type;
-  projectStore.selection.x = snapshot.selection.x;
-  projectStore.selection.y = snapshot.selection.y;
-
+  // The floating selection panel is deliberately left alone: it is anchored to screen coordinates
+  // that mean nothing once the view has moved. `undoModelChange` closes it. What was highlighted
+  // does come back.
   projectStore.selection2.nodes = [...snapshot.selection2.nodes];
   projectStore.selection2.elements = [...snapshot.selection2.elements];
   projectStore.selection2.nodalLoads = [...snapshot.selection2.nodalLoads];
@@ -149,6 +135,20 @@ export const executeModelMutationWithUndo = (mutate: () => void) => {
   );
 
   undoRedoManager.executeCommand(setCommand);
+};
+
+/**
+ * Undo and redo, with the floating selection panel closed. Reopening it over a model the user has
+ * just reverted is not what the gesture asked for, and its screen anchor may be stale by then.
+ */
+export const undoModelChange = () => {
+  undoRedoManager.undo();
+  useProjectStore().clearSelection();
+};
+
+export const redoModelChange = () => {
+  undoRedoManager.redo();
+  useProjectStore().clearSelection();
 };
 
 export const capitalize = (s: string) => {

@@ -29,7 +29,7 @@ import SVGElementTemperatureLoad from './svg/ElementTemperatureLoad.vue';
 import SVGDimensioning from './svg/Dimensioning.vue';
 
 import { formatExpValueAsHTML } from '../SVGUtils';
-import { executeModelMutationWithUndo, loadType, throttle } from '../utils';
+import { executeModelMutationWithUndo, loadType, redoModelChange, throttle, undoModelChange } from '../utils';
 import { createDimensionId, ensureDimensionId } from '@/utils/id';
 import { boundsFromPoints } from '@/utils/fitBounds';
 import {
@@ -1834,7 +1834,7 @@ defineExpose({ centerContent, fitContent });
         class="mr-1"
         rounded="lg"
         title="Undo"
-        @click="undoRedoManager.undo()"
+        @click="undoModelChange()"
       ></v-btn>
       <v-btn
         icon="mdi:mdi-redo"
@@ -1843,7 +1843,7 @@ defineExpose({ centerContent, fitContent });
         class="mr-1"
         rounded="lg"
         title="Redo"
-        @click="undoRedoManager.redo()"
+        @click="redoModelChange()"
       ></v-btn>
     </div>
     <div id="viewerControls" class="text-black d-flex" style="position: absolute; z-index: 100; top: 24px; right: 24px">

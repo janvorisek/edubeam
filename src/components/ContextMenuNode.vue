@@ -3,7 +3,7 @@ import { openModal } from 'jenesius-vue-modal';
 import AddNodalLoadDialog from './dialogs/AddNodalLoad.vue';
 import { useProjectStore } from '@/store/project';
 import { deleteNode, executeModelMutationWithUndo, setUnsolved, toggleSet } from '@/utils';
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 const projectStore = useProjectStore();
 
@@ -26,9 +26,12 @@ const angle = computed(() => {
   return 90 - Math.atan2(node.value.lcs[0][0], node.value.lcs[0][2]) * (180 / Math.PI);
 });
 
-onMounted(() => {
-  lcs.value = node.value?.hasLcs() ? angle.value.toString() : '0';
-});
+/**
+ * Follow the model rather than only reading it once: an undo, or picking a different node, leaves
+ * the field showing an angle the node no longer has - and committing that would re-apply it.
+ * Typing moves `lcs` alone, so this never fights the user mid-edit.
+ */
+watch([node, angle], () => (lcs.value = angle.value.toString()), { immediate: true });
 
 const lcsChange = () => {
   const target = node.value;

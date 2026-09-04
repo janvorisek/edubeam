@@ -84,7 +84,23 @@ describe('ContextMenuNode', () => {
     expect(Math.atan2(rotated.lcs[0][2], rotated.lcs[0][0]) * (180 / Math.PI)).toBeCloseTo(30, 6);
 
     undoRedoManager.undo();
+    await wrapper.vm.$nextTick();
+
     expect(projectStore.solver.domain.nodes.get('1')!.hasLcs()).toBe(false);
+    // The field has to follow: left showing 30, the next commit would re-apply the undone angle.
+    expect((wrapper.find('input').element as HTMLInputElement).value).toBe('0');
+  });
+
+  it('shows the angle of whichever node the selection moves to', async () => {
+    const { projectStore, wrapper } = mountMenu('1');
+
+    const second = projectStore.solver.domain.createNode(2, [1, 0, 0], []);
+    second.updateLcs({ locx: [Math.cos(Math.PI / 4), 0, Math.sin(Math.PI / 4)], locy: [0, 1, 0] });
+
+    projectStore.selection.label = '2';
+    await wrapper.vm.$nextTick();
+
+    expect(Number((wrapper.find('input').element as HTMLInputElement).value)).toBeCloseTo(45, 6);
   });
 
   it('leaves the model alone when the node is gone by the time the field commits', async () => {

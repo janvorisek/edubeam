@@ -2,7 +2,7 @@
 import { openModal } from 'jenesius-vue-modal';
 import AddNodalLoadDialog from './dialogs/AddNodalLoad.vue';
 import { useProjectStore } from '@/store/project';
-import { deleteNode, executeModelMutationWithUndo, setUnsolved, toggleSet } from '@/utils';
+import { deleteNode, nodeLcsAngle, setNodeLcsAngle, toggleSet } from '@/utils';
 import { computed, ref, watch } from 'vue';
 
 const projectStore = useProjectStore();
@@ -20,11 +20,7 @@ const node = computed(() => {
   return projectStore.solver.domain.nodes.get(String(projectStore.selection.label));
 });
 
-const angle = computed(() => {
-  if (!node.value?.hasLcs()) return 0;
-
-  return 90 - Math.atan2(node.value.lcs[0][0], node.value.lcs[0][2]) * (180 / Math.PI);
-});
+const angle = computed(() => nodeLcsAngle(node.value));
 
 /**
  * Follow the model rather than only reading it once: an undo, or picking a different node, leaves
@@ -33,23 +29,7 @@ const angle = computed(() => {
  */
 watch([node, angle], () => (lcs.value = angle.value.toString()), { immediate: true });
 
-const lcsChange = () => {
-  const target = node.value;
-  if (!target) return;
-
-  executeModelMutationWithUndo(() => {
-    setUnsolved();
-
-    const ang = parseFloat(lcs.value) * (Math.PI / 180);
-
-    if (isNaN(ang) || Math.abs(ang) < 1e-8) {
-      target.lcs = undefined;
-      return;
-    }
-
-    target.updateLcs({ locx: [Math.cos(ang), 0, Math.sin(ang)], locy: [0, 1, 0] });
-  });
-};
+const lcsChange = () => setNodeLcsAngle(node.value, parseFloat(lcs.value));
 
 const removeNode = () => {
   if (projectStore.selection.type !== 'node' || projectStore.selection.label === null) return;

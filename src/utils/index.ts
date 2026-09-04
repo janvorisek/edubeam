@@ -22,6 +22,7 @@ import { ensureDimensionId, createDimensionId } from './id';
 import { deserializeModel, parseSerializedModel, serializeModel } from './serializeModel';
 import { deserializeShape, serializeShape } from './sectionProperties';
 import { createDimensionPoint, createDimensionPointFromNode, type DimensionPoint } from '@/types/dimension';
+import { applyNodeLcsAngle, nodeLcsAngle } from './nodalLcs';
 
 export type EntityWithLabel = { label: string & { [key: string]: unknown } };
 
@@ -38,6 +39,8 @@ export { loadType } from './loadType';
 export { loadXmlFile } from './loadXmlFile';
 
 export { formatScientificNumber, formatCompactNumber } from './formatScientificNumber';
+
+export { nodeLcsAngle, applyNodeLcsAngle } from './nodalLcs';
 
 type ProjectSnapshot = {
   model: string | null;
@@ -552,6 +555,26 @@ export const changeItem = (item: object, value: string, el?: HTMLInputElement, f
     setUnsolved();
     item[value] = formatter ? formatter(val) : val;
   });
+};
+
+/** Rotates a node's local system, recorded for undo - what every editable angle field commits. */
+export const setNodeLcsAngle = (node: Node | undefined, degrees: number) => {
+  if (!node) return;
+
+  executeModelMutationWithUndo(() => {
+    setUnsolved();
+    applyNodeLcsAngle(node, degrees);
+  });
+};
+
+/** The same, driven by an inline field: an unreadable entry puts the shown angle back. */
+export const changeNodeLcsAngle = (node: Node | undefined, el: HTMLInputElement) => {
+  if (el.value === '') el.value = '0';
+
+  const degrees = parseFloat(el.value.replace(/\s/g, '').replace(',', '.'));
+  if (!Number.isFinite(degrees)) return restoreRenderedValue(el, nodeLcsAngle(node));
+
+  setNodeLcsAngle(node, degrees);
 };
 
 export const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputElement) => {

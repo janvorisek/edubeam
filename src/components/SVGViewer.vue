@@ -29,7 +29,16 @@ import SVGElementTemperatureLoad from './svg/ElementTemperatureLoad.vue';
 import SVGDimensioning from './svg/Dimensioning.vue';
 
 import { formatExpValueAsHTML } from '../SVGUtils';
-import { executeModelMutationWithUndo, loadType, redoModelChange, throttle, undoModelChange } from '../utils';
+import {
+  applyNodeLcsAngle,
+  checkNumber,
+  executeModelMutationWithUndo,
+  loadType,
+  parseFloat2,
+  redoModelChange,
+  throttle,
+  undoModelChange,
+} from '../utils';
 import { createDimensionId, ensureDimensionId } from '@/utils/id';
 import { boundsFromPoints } from '@/utils/fitBounds';
 import {
@@ -60,7 +69,6 @@ import { formatMeasureAsHTML } from '../SVGUtils';
 import Selection from './Selection.vue';
 
 import { useLayoutStore } from '@/store/layout';
-import { undoRedoManager } from '../CommandManager';
 import { EventType, eventBus } from '../EventBus';
 import { BeamConcentratedLoad } from 'ts-fem';
 import { useClipboardStore } from '../store/clipboard';
@@ -405,6 +413,22 @@ const cancelActiveMode = () => {
 
 /** Supports given to every node placed by the add node mode; kept across placements. */
 const addNodeBcs = ref<DofID[]>([]);
+/** Local system angle given to every node placed by the add node mode, in degrees. */
+const addNodeAngle = ref('0');
+
+/** Places a node at the pointer with whatever the add node banner currently has set. */
+const placeNode = (label: number | string) => {
+  const node = projectStore.solver.domain.createNode(
+    label,
+    [mouseXReal.value, 0, mouseYReal.value],
+    [...addNodeBcs.value]
+  );
+
+  applyNodeLcsAngle(node, parseFloat2(addNodeAngle.value));
+
+  return node;
+};
+
 /** End hinges given to every element placed by the add element mode. */
 const addElementHinges = ref([false, false]);
 
@@ -1149,11 +1173,7 @@ const placeAtPointer = (e: PointerEvent) => {
               action: () => {
                 executeModelMutationWithUndo(() => {
                   projectStore.solver.loadCases[0].solved = false;
-                  projectStore.solver.domain.createNode(
-                    newNodeId,
-                    [mouseXReal.value, 0, mouseYReal.value],
-                    [...addNodeBcs.value]
-                  );
+                  placeNode(newNodeId);
 
                   const prevHinges = beam.hinges;
 
@@ -1217,11 +1237,7 @@ const placeAtPointer = (e: PointerEvent) => {
               action: () => {
                 executeModelMutationWithUndo(() => {
                   projectStore.solver.loadCases[0].solved = false;
-                  projectStore.solver.domain.createNode(
-                    newNodeId,
-                    [mouseXReal.value, 0, mouseYReal.value],
-                    [...addNodeBcs.value]
-                  );
+                  placeNode(newNodeId);
                 });
 
                 appStore.mouseMode = MouseMode.NONE;
@@ -1247,7 +1263,7 @@ const placeAtPointer = (e: PointerEvent) => {
 
     // No existing element was found, just add the node
     executeModelMutationWithUndo(() => {
-      projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value], [...addNodeBcs.value]);
+      placeNode(newNodeId);
     });
 
     return true;
@@ -1904,6 +1920,18 @@ defineExpose({ centerContent, fitContent });
         <v-checkbox-btn v-model="addNodeBcs" :value="DofID.Dx" density="compact" label="Dx" class="flex-grow-0" />
         <v-checkbox-btn v-model="addNodeBcs" :value="DofID.Dz" density="compact" label="Dz" class="flex-grow-0" />
         <v-checkbox-btn v-model="addNodeBcs" :value="DofID.Ry" density="compact" label="Ry" class="flex-grow-0" />
+        <v-text-field
+          v-model="addNodeAngle"
+          :title="$t('nodes.lcsAngle')"
+          prefix="&alpha;"
+          suffix="°"
+          density="compact"
+          variant="plain"
+          hide-details
+          style="width: 74px"
+          class="flex-grow-0"
+          @keydown="checkNumber($event)"
+        />
       </div>
 
       <div v-if="appStore.mouseMode === MouseMode.ADD_ELEMENT" class="d-flex align-center ga-3">

@@ -2,48 +2,51 @@
 import { openModal } from 'jenesius-vue-modal';
 import AddNodalLoadDialog from './dialogs/AddNodalLoad.vue';
 import { useProjectStore } from '@/store/project';
-import { deleteNode, setUnsolved, solve, toggleSet } from '@/utils';
+import { deleteNode, executeModelMutationWithUndo, setUnsolved, toggleSet } from '@/utils';
 import { computed, onMounted, ref } from 'vue';
-import { Node } from 'ts-fem';
 
 const projectStore = useProjectStore();
 
 const lcs = ref('0');
 
-onMounted(() => {
-  lcs.value = node.value.hasLcs() ? angle.value.toString() : '0';
+/**
+ * The selection can stop resolving while this menu is open - it is cleared, or the node it names
+ * is renamed or deleted - and the menu outlives that by a render. Everything here has to cope
+ * with there being no node.
+ */
+const node = computed(() => {
+  if (projectStore.selection.label === null) return undefined;
+
+  return projectStore.solver.domain.nodes.get(String(projectStore.selection.label));
 });
 
-const lcsChange = () => {
-  setUnsolved();
-
-  const ang = parseFloat(lcs.value) * (Math.PI / 180);
-
-  if (isNaN(ang) || Math.abs(ang) < 1e-8) {
-    node.value.lcs = undefined;
-    solve();
-    return;
-  }
-
-  const locx = [Math.cos(ang), 0, Math.sin(ang)];
-  const locy = [0, 1, 0];
-
-  node.value.updateLcs({ locx, locy });
-
-  solve();
-};
-
 const angle = computed(() => {
-  if (!node.value.hasLcs()) {
-    return 0;
-  }
+  if (!node.value?.hasLcs()) return 0;
 
   return 90 - Math.atan2(node.value.lcs[0][0], node.value.lcs[0][2]) * (180 / Math.PI);
 });
 
-const node = computed(() => {
-  return projectStore.solver.domain.nodes.get(projectStore.selection.label);
+onMounted(() => {
+  lcs.value = node.value?.hasLcs() ? angle.value.toString() : '0';
 });
+
+const lcsChange = () => {
+  const target = node.value;
+  if (!target) return;
+
+  executeModelMutationWithUndo(() => {
+    setUnsolved();
+
+    const ang = parseFloat(lcs.value) * (Math.PI / 180);
+
+    if (isNaN(ang) || Math.abs(ang) < 1e-8) {
+      target.lcs = undefined;
+      return;
+    }
+
+    target.updateLcs({ locx: [Math.cos(ang), 0, Math.sin(ang)], locy: [0, 1, 0] });
+  });
+};
 
 const removeNode = () => {
   if (projectStore.selection.type !== 'node' || projectStore.selection.label === null) return;
@@ -53,7 +56,7 @@ const removeNode = () => {
 </script>
 
 <template>
-  <v-list density="compact" class="py-0">
+  <v-list v-if="node" density="compact" class="py-0">
     <v-list-item
       link
       class="text-body-2"
@@ -120,7 +123,7 @@ const removeNode = () => {
       </v-menu>
     </v-list-item>
     <v-list-item
-      v-if="projectStore.solver.domain.nodes.get(projectStore.selection.label).bcs.size > 0"
+      v-if="node.bcs.size > 0"
       link
       class="text-body-2"
       @click="

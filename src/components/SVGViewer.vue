@@ -27,6 +27,8 @@ import SVGNode from './svg/Node.vue';
 import SVGElement from './svg/Element.vue';
 import SVGElementTemperatureLoad from './svg/ElementTemperatureLoad.vue';
 import SVGDimensioning from './svg/Dimensioning.vue';
+import HoveredElement from './HoveredElement.vue';
+import { intersectedKey } from '@/types/hover';
 
 import {
   applyNodeLcsAngle,
@@ -179,15 +181,23 @@ const intersected = ref<{
   originalPosition: { x: 0, y: 0 },
 });
 
-const hoveredElement = computed(() => {
-  if (intersected.value.type !== 'element' || intersected.value.index === null) return null;
-  return projectStore.beams.find((e) => e.label === intersected.value.index) || null;
-});
+// The highlight reads it; the drawing only writes it. See HoveredElement.vue.
+provide(intersectedKey, intersected);
 
-const hoveredNode = computed(() => {
-  if (intersected.value.type !== 'node' || intersected.value.index === null) return null;
-  return projectStore.nodes.find((n) => n.label === intersected.value.index) || null;
-});
+const geometryLayer = ref<SVGGElement | null>(null);
+const resultsLayer = ref<SVGGElement | null>(null);
+
+/**
+ * Hovering an element dims the rest of the drawing behind the highlighted copy. Set on the layers
+ * rather than bound in the template: reading the hover while rendering rebuilds every node,
+ * element and load each time the pointer moves onto or off something.
+ */
+watch(
+  () => intersected.value.type === 'element',
+  (dim) => {
+    for (const layer of [geometryLayer.value, resultsLayer.value]) layer?.classList.toggle('dimmed', dim);
+  }
+);
 
 /**
  * Writes the tooltip only when what it says has changed. A pointer reports many times per frame
@@ -2064,13 +2074,10 @@ const addDimensionAlongElement = () => {
 /** The drawing stays invisible until the first fit has landed, so it never jumps into place. */
 const isFitted = computed(() => panZoom.value?.fitted ?? false);
 
-const isZooming = computed(() => {
-  return panZoom.value?.zooming;
-});
+// Nothing is moving before the pan zoom is in the document, and these are read as booleans.
+const isZooming = computed(() => panZoom.value?.zooming ?? false);
 
-const isPanning = computed(() => {
-  return panZoom.value?.panning;
-});
+const isPanning = computed(() => panZoom.value?.panning ?? false);
 
 const dynamicMarker = (label: string) => {
   return `url(#${props.id}-${label})`;
@@ -2602,7 +2609,7 @@ defineExpose({ centerContent, fitContent });
               </template>
             </g>
           </g>
-          <g :style="`opacity: ${intersected?.type === 'element' ? 0.5 : 1} !important`">
+          <g ref="geometryLayer" class="elements-layer">
             <SVGElement
               v-for="(element, index) in projectStore.beams"
               :key="`element-geometry-${index}`"
@@ -2633,7 +2640,7 @@ defineExpose({ centerContent, fitContent });
             />
           </g>
 
-          <g :style="`opacity: ${intersected?.type === 'element' ? 0.5 : 1} !important`">
+          <g ref="resultsLayer" class="elements-layer">
             <SVGElement
               v-for="(element, index) in projectStore.beams"
               :key="`element-results-${index}`"
@@ -2759,61 +2766,8 @@ defineExpose({ centerContent, fitContent });
               :interactive="false"
             />
           </g>
-          <!-- Currently hovered -->
-          <g>
-            <SVGElement
-              v-if="hoveredElement"
-              :key="`element-geometry-${hoveredElement.label}`"
-              class="pointer-events-none"
-              :class="{ selected: projectStore.selection2.elements.includes(hoveredElement.label) }"
-              :show-geometry="true"
-              :show-results="false"
-              :element="hoveredElement"
-              :scale="scale"
-              :show-deformed-shape="!isZooming && viewerStore.showDeformedShape"
-              :show-normal-force="!isZooming && viewerStore.showNormalForce"
-              :show-shear-force="!isZooming && viewerStore.showShearForce"
-              :show-bending-moment="!isZooming && viewerStore.showBendingMoment"
-              :show-label="!isZooming && viewerStore.showElementLabels"
-              show-label-background
-              :load-case="projectStore.solver.loadCases[0]"
-              :deformed-shape-multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
-              :normal-force-multiplier="projectStore.normalForceScale * viewerStore.resultsScalePx_"
-              :shear-force-multiplier="projectStore.shearForceScale * viewerStore.resultsScalePx_"
-              :bending-moment-multiplier="projectStore.bendingMomentScale * viewerStore.resultsScalePx_"
-              :result-label-mode="resolvedResultLabelMode"
-              :convert-force="appStore.convertForce"
-              :convert-moment="appStore.convertMoment"
-              :font-size="viewerStore.fontSize"
-              :number-format="appStore.numberFormatter"
-            />
-            <SVGElement
-              v-if="hoveredElement"
-              :key="`element-results-${hoveredElement.label}`"
-              class="pointer-events-none"
-              :class="{ selected: projectStore.selection2.elements.includes(hoveredElement.label) }"
-              :show-geometry="false"
-              :show-results="true"
-              :element="hoveredElement"
-              :scale="scale"
-              :show-deformed-shape="!isZooming && viewerStore.showDeformedShape"
-              :show-normal-force="!isZooming && viewerStore.showNormalForce"
-              :show-shear-force="!isZooming && viewerStore.showShearForce"
-              :show-bending-moment="!isZooming && viewerStore.showBendingMoment"
-              :show-label="!isZooming && viewerStore.showElementLabels"
-              show-label-background
-              :load-case="projectStore.solver.loadCases[0]"
-              :deformed-shape-multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
-              :normal-force-multiplier="projectStore.normalForceScale * viewerStore.resultsScalePx_"
-              :shear-force-multiplier="projectStore.shearForceScale * viewerStore.resultsScalePx_"
-              :bending-moment-multiplier="projectStore.bendingMomentScale * viewerStore.resultsScalePx_"
-              :result-label-mode="resolvedResultLabelMode"
-              :convert-force="appStore.convertForce"
-              :convert-moment="appStore.convertMoment"
-              :font-size="viewerStore.fontSize"
-              :number-format="appStore.numberFormatter"
-            />
-          </g>
+          <!-- Currently hovered; drawn by its own component so the hover leaves the scene alone. -->
+          <HoveredElement :scale="scale" :is-zooming="isZooming" :result-label-mode="resolvedResultLabelMode" />
           <!-- Paste preview -->
           <g
             v-if="appStore.mouseMode === MouseMode.PASTE_CLIPBOARD"
@@ -3037,6 +2991,11 @@ defineExpose({ centerContent, fitContent });
 /* Keeps the number against its degree sign rather than adrift in the middle of the field. */
 .add-node-angle :deep(input) {
   text-align: right;
+}
+
+/* Toggled from the script when an element is hovered; see the watch on `intersected`. */
+.elements-layer.dimmed {
+  opacity: 0.5 !important;
 }
 
 .disablePointerEvents {

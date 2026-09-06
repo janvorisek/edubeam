@@ -193,6 +193,19 @@
                   />
                 </div>
               </div>
+              <div class="inline-edit-group ml-2">
+                <label :for="`lcs-${item.label}`" class="input-before" :title="$t('nodes.lcsAngle')">&alpha;</label>
+                <input
+                  :id="`lcs-${item.label}`"
+                  :value="float2String(nodeLcsAngle(item))"
+                  class="inline-edit"
+                  style="width: 44px"
+                  :title="$t('nodes.lcsAngle')"
+                  @keydown="checkNumber($event)"
+                  @change="changeNodeLcsAngle(item, $event.target as HTMLInputElement)"
+                />
+                <div class="input-after">&deg;</div>
+              </div>
             </div>
           </template>
           <template #item.loads="{ item }">
@@ -1527,6 +1540,7 @@ import {
   capitalize,
   changeItem,
   changeLabel,
+  changeNodeLcsAngle,
   changeSetArrayItem,
   checkNumber,
   deleteCrossSection,
@@ -1537,6 +1551,7 @@ import {
   deleteNode,
   deletePrescribedDisplacement,
   formatScientificNumber,
+  nodeLcsAngle,
   setUnsolved,
   solve,
   swapNodes,

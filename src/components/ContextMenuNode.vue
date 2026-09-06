@@ -2,48 +2,34 @@
 import { openModal } from 'jenesius-vue-modal';
 import AddNodalLoadDialog from './dialogs/AddNodalLoad.vue';
 import { useProjectStore } from '@/store/project';
-import { deleteNode, setUnsolved, solve, toggleSet } from '@/utils';
-import { computed, onMounted, ref } from 'vue';
-import { Node } from 'ts-fem';
+import { deleteNode, nodeLcsAngle, setNodeLcsAngle, toggleSet } from '@/utils';
+import { computed, ref, watch } from 'vue';
 
 const projectStore = useProjectStore();
 
 const lcs = ref('0');
 
-onMounted(() => {
-  lcs.value = node.value.hasLcs() ? angle.value.toString() : '0';
-});
-
-const lcsChange = () => {
-  setUnsolved();
-
-  const ang = parseFloat(lcs.value) * (Math.PI / 180);
-
-  if (isNaN(ang) || Math.abs(ang) < 1e-8) {
-    node.value.lcs = undefined;
-    solve();
-    return;
-  }
-
-  const locx = [Math.cos(ang), 0, Math.sin(ang)];
-  const locy = [0, 1, 0];
-
-  node.value.updateLcs({ locx, locy });
-
-  solve();
-};
-
-const angle = computed(() => {
-  if (!node.value.hasLcs()) {
-    return 0;
-  }
-
-  return 90 - Math.atan2(node.value.lcs[0][0], node.value.lcs[0][2]) * (180 / Math.PI);
-});
-
+/**
+ * The selection can stop resolving while this menu is open - it is cleared, or the node it names
+ * is renamed or deleted - and the menu outlives that by a render. Everything here has to cope
+ * with there being no node.
+ */
 const node = computed(() => {
-  return projectStore.solver.domain.nodes.get(projectStore.selection.label);
+  if (projectStore.selection.label === null) return undefined;
+
+  return projectStore.solver.domain.nodes.get(String(projectStore.selection.label));
 });
+
+const angle = computed(() => nodeLcsAngle(node.value));
+
+/**
+ * Follow the model rather than only reading it once: an undo, or picking a different node, leaves
+ * the field showing an angle the node no longer has - and committing that would re-apply it.
+ * Typing moves `lcs` alone, so this never fights the user mid-edit.
+ */
+watch([node, angle], () => (lcs.value = angle.value.toString()), { immediate: true });
+
+const lcsChange = () => setNodeLcsAngle(node.value, parseFloat(lcs.value));
 
 const removeNode = () => {
   if (projectStore.selection.type !== 'node' || projectStore.selection.label === null) return;
@@ -53,7 +39,7 @@ const removeNode = () => {
 </script>
 
 <template>
-  <v-list density="compact" class="py-0">
+  <v-list v-if="node" density="compact" class="py-0">
     <v-list-item
       link
       class="text-body-2"
@@ -120,7 +106,7 @@ const removeNode = () => {
       </v-menu>
     </v-list-item>
     <v-list-item
-      v-if="projectStore.solver.domain.nodes.get(projectStore.selection.label).bcs.size > 0"
+      v-if="node.bcs.size > 0"
       link
       class="text-body-2"
       @click="

@@ -117,7 +117,14 @@ import { Node } from 'ts-fem';
 import { closeModal } from 'jenesius-vue-modal';
 import { useAppStore } from '@/store/app';
 import SupportHelper from '../svg/SupportHelper.vue';
-import { checkNumber, changeRefNumValue, executeModelMutationWithUndo, numberRules, toggleSet } from '../../utils';
+import {
+  applyNodeLcsAngle,
+  checkNumber,
+  changeRefNumValue,
+  executeModelMutationWithUndo,
+  numberRules,
+  toggleSet,
+} from '../../utils';
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
@@ -156,16 +163,11 @@ const addNode = () => {
 
   const nx = appStore.convertInverseLength(changeRefNumValue(newNodeX.value.toString()));
   const nz = appStore.convertInverseLength(changeRefNumValue(newNodeZ.value.toString()));
-  const ang = parseFloat(nodalAngle.value) * (Math.PI / 180);
 
   executeModelMutationWithUndo(() => {
     const node = domain.createNode(nid, [nx, 0.0, nz], [...tmpNode.value.bcs.values()]);
 
-    if (!isNaN(ang) && Math.abs(ang) >= 1e-8) {
-      const locx = [Math.cos(ang), 0, Math.sin(ang)];
-      const locy = [0, 1, 0];
-      node.updateLcs({ locx, locy });
-    }
+    applyNodeLcsAngle(node, parseFloat(nodalAngle.value));
 
     domain.nodes = new Map(domain.nodes);
   });

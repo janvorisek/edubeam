@@ -29,7 +29,16 @@ import SVGElementTemperatureLoad from './svg/ElementTemperatureLoad.vue';
 import SVGDimensioning from './svg/Dimensioning.vue';
 
 import { formatExpValueAsHTML } from '../SVGUtils';
-import { executeModelMutationWithUndo, loadType, throttle } from '../utils';
+import {
+  applyNodeLcsAngle,
+  checkNumber,
+  executeModelMutationWithUndo,
+  loadType,
+  parseFloat2,
+  redoModelChange,
+  throttle,
+  undoModelChange,
+} from '../utils';
 import { createDimensionId, ensureDimensionId } from '@/utils/id';
 import { boundsFromPoints } from '@/utils/fitBounds';
 import {
@@ -60,7 +69,6 @@ import { formatMeasureAsHTML } from '../SVGUtils';
 import Selection from './Selection.vue';
 
 import { useLayoutStore } from '@/store/layout';
-import { undoRedoManager } from '../CommandManager';
 import { EventType, eventBus } from '../EventBus';
 import { BeamConcentratedLoad } from 'ts-fem';
 import { useClipboardStore } from '../store/clipboard';
@@ -406,6 +414,22 @@ const cancelActiveMode = () => {
 
 /** Supports given to every node placed by the add node mode; kept across placements. */
 const addNodeBcs = ref<DofID[]>([]);
+/** Local system angle given to every node placed by the add node mode, in degrees. */
+const addNodeAngle = ref('0');
+
+/** Places a node at the pointer with whatever the add node banner currently has set. */
+const placeNode = (label: number | string) => {
+  const node = projectStore.solver.domain.createNode(
+    label,
+    [mouseXReal.value, 0, mouseYReal.value],
+    [...addNodeBcs.value]
+  );
+
+  applyNodeLcsAngle(node, parseFloat2(addNodeAngle.value));
+
+  return node;
+};
+
 /** End hinges given to every element placed by the add element mode. */
 const addElementHinges = ref([false, false]);
 
@@ -1192,11 +1216,7 @@ const placeAtPointer = (e: PointerEvent) => {
               action: () => {
                 executeModelMutationWithUndo(() => {
                   projectStore.solver.loadCases[0].solved = false;
-                  projectStore.solver.domain.createNode(
-                    newNodeId,
-                    [mouseXReal.value, 0, mouseYReal.value],
-                    [...addNodeBcs.value]
-                  );
+                  placeNode(newNodeId);
 
                   const prevHinges = beam.hinges;
 
@@ -1260,11 +1280,7 @@ const placeAtPointer = (e: PointerEvent) => {
               action: () => {
                 executeModelMutationWithUndo(() => {
                   projectStore.solver.loadCases[0].solved = false;
-                  projectStore.solver.domain.createNode(
-                    newNodeId,
-                    [mouseXReal.value, 0, mouseYReal.value],
-                    [...addNodeBcs.value]
-                  );
+                  placeNode(newNodeId);
                 });
 
                 appStore.mouseMode = MouseMode.NONE;
@@ -1290,7 +1306,7 @@ const placeAtPointer = (e: PointerEvent) => {
 
     // No existing element was found, just add the node
     executeModelMutationWithUndo(() => {
-      projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value], [...addNodeBcs.value]);
+      placeNode(newNodeId);
     });
 
     return true;
@@ -1915,7 +1931,7 @@ defineExpose({ centerContent, fitContent });
         class="mr-1"
         rounded="lg"
         title="Undo"
-        @click="undoRedoManager.undo()"
+        @click="undoModelChange()"
       ></v-btn>
       <v-btn
         icon="mdi:mdi-redo"
@@ -1924,7 +1940,7 @@ defineExpose({ centerContent, fitContent });
         class="mr-1"
         rounded="lg"
         title="Redo"
-        @click="undoRedoManager.redo()"
+        @click="redoModelChange()"
       ></v-btn>
     </div>
     <div id="viewerControls" class="text-black d-flex" style="position: absolute; z-index: 100; top: 24px; right: 24px">
@@ -1985,6 +2001,18 @@ defineExpose({ centerContent, fitContent });
         <v-checkbox-btn v-model="addNodeBcs" :value="DofID.Dx" density="compact" label="Dx" class="flex-grow-0" />
         <v-checkbox-btn v-model="addNodeBcs" :value="DofID.Dz" density="compact" label="Dz" class="flex-grow-0" />
         <v-checkbox-btn v-model="addNodeBcs" :value="DofID.Ry" density="compact" label="Ry" class="flex-grow-0" />
+        <v-text-field
+          v-model="addNodeAngle"
+          :title="$t('nodes.lcsAngle')"
+          prefix="&alpha;"
+          suffix="°"
+          density="compact"
+          variant="plain"
+          hide-details
+          style="width: 54px"
+          class="flex-grow-0 add-node-angle"
+          @keydown="checkNumber($event)"
+        />
       </div>
 
       <div v-if="appStore.mouseMode === MouseMode.ADD_ELEMENT" class="d-flex align-center ga-3">
@@ -2706,6 +2734,21 @@ defineExpose({ centerContent, fitContent });
 </template>
 
 <style lang="scss" scoped>
+/*
+ * The plain variant reserves 8px above the text for a floating label this field does not use,
+ * which drops the angle below the Dx/Dz/Ry labels sitting next to it in the banner.
+ */
+.add-node-angle :deep(.v-field__input),
+.add-node-angle :deep(.v-text-field__prefix),
+.add-node-angle :deep(.v-text-field__suffix) {
+  padding-top: 0;
+}
+
+/* Keeps the number against its degree sign rather than adrift in the middle of the field. */
+.add-node-angle :deep(input) {
+  text-align: right;
+}
+
 .disablePointerEvents {
   pointer-events: none;
 }

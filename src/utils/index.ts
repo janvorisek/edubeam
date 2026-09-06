@@ -22,6 +22,7 @@ import { ensureDimensionId, createDimensionId } from './id';
 import { deserializeModel, parseSerializedModel, serializeModel } from './serializeModel';
 import { deserializeShape, serializeShape } from './sectionProperties';
 import { createDimensionPoint, createDimensionPointFromNode, type DimensionPoint } from '@/types/dimension';
+import { applyNodeLcsAngle, nodeLcsAngle } from './nodalLcs';
 
 export type EntityWithLabel = { label: string & { [key: string]: unknown } };
 
@@ -39,14 +40,10 @@ export { loadXmlFile } from './loadXmlFile';
 
 export { formatScientificNumber, formatCompactNumber } from './formatScientificNumber';
 
+export { nodeLcsAngle, applyNodeLcsAngle } from './nodalLcs';
+
 type ProjectSnapshot = {
   model: string | null;
-  selection: {
-    label: number | string | null;
-    type: string | null;
-    x: number;
-    y: number;
-  };
   selection2: {
     nodes: string[];
     elements: string[];
@@ -64,12 +61,6 @@ const captureProjectSnapshot = (): ProjectSnapshot => {
 
   return {
     model: serializeModel(projectStore.solver, projectStore.dimensions),
-    selection: {
-      label: projectStore.selection.label,
-      type: projectStore.selection.type,
-      x: projectStore.selection.x,
-      y: projectStore.selection.y,
-    },
     selection2: {
       nodes: [...projectStore.selection2.nodes],
       elements: [...projectStore.selection2.elements],
@@ -101,11 +92,9 @@ const restoreProjectSnapshot = (snapshot: ProjectSnapshot) => {
     console.error('Could not restore project snapshot');
   }
 
-  projectStore.selection.label = snapshot.selection.label;
-  projectStore.selection.type = snapshot.selection.type;
-  projectStore.selection.x = snapshot.selection.x;
-  projectStore.selection.y = snapshot.selection.y;
-
+  // The floating selection panel is deliberately left alone: it is anchored to screen coordinates
+  // that mean nothing once the view has moved. `undoModelChange` closes it. What was highlighted
+  // does come back.
   projectStore.selection2.nodes = [...snapshot.selection2.nodes];
   projectStore.selection2.elements = [...snapshot.selection2.elements];
   projectStore.selection2.nodalLoads = [...snapshot.selection2.nodalLoads];
@@ -149,6 +138,20 @@ export const executeModelMutationWithUndo = (mutate: () => void) => {
   );
 
   undoRedoManager.executeCommand(setCommand);
+};
+
+/**
+ * Undo and redo, with the floating selection panel closed. Reopening it over a model the user has
+ * just reverted is not what the gesture asked for, and its screen anchor may be stale by then.
+ */
+export const undoModelChange = () => {
+  undoRedoManager.undo();
+  useProjectStore().clearSelection();
+};
+
+export const redoModelChange = () => {
+  undoRedoManager.redo();
+  useProjectStore().clearSelection();
 };
 
 export const capitalize = (s: string) => {
@@ -552,6 +555,26 @@ export const changeItem = (item: object, value: string, el?: HTMLInputElement, f
     setUnsolved();
     item[value] = formatter ? formatter(val) : val;
   });
+};
+
+/** Rotates a node's local system, recorded for undo - what every editable angle field commits. */
+export const setNodeLcsAngle = (node: Node | undefined, degrees: number) => {
+  if (!node) return;
+
+  executeModelMutationWithUndo(() => {
+    setUnsolved();
+    applyNodeLcsAngle(node, degrees);
+  });
+};
+
+/** The same, driven by an inline field: an unreadable entry puts the shown angle back. */
+export const changeNodeLcsAngle = (node: Node | undefined, el: HTMLInputElement) => {
+  if (el.value === '') el.value = '0';
+
+  const degrees = parseFloat(el.value.replace(/\s/g, '').replace(',', '.'));
+  if (!Number.isFinite(degrees)) return restoreRenderedValue(el, nodeLcsAngle(node));
+
+  setNodeLcsAngle(node, degrees);
 };
 
 export const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputElement) => {

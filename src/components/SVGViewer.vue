@@ -188,12 +188,27 @@ const hoveredNode = computed(() => {
   return projectStore.nodes.find((n) => n.label === intersected.value.index) || null;
 });
 
+/**
+ * Writes the tooltip only when what it says has changed. A pointer reports many times per frame
+ * while it rests on the same element, and rebuilding the markup on every report throws away the
+ * nodes and parses them again for nothing.
+ */
+let shownTooltip = '';
+
+const writeTooltip = (content: HTMLElement, html: string) => {
+  if (html === shownTooltip) return;
+
+  shownTooltip = html;
+  content.innerHTML = html;
+};
+
 const hideTooltip = (clearHoverState = true) => {
   const tt = tooltip.value as HTMLElement | undefined;
   if (!tt) return;
 
   tt.style.display = 'none';
   document.body.style.cursor = 'auto';
+  shownTooltip = '';
 
   if (!clearHoverState) return;
 
@@ -314,7 +329,30 @@ const fitReserve = computed(() => Math.max(viewerStore.resultsScalePx_, LOAD_DEC
 
 const modelBounds = () => boundsFromPoints(projectStore.nodes.map((node) => [node.coords[0], node.coords[2]] as const));
 
+/**
+ * Screen to model, held for the frame it was measured in.
+ *
+ * Reading the matrix flushes the layout of the whole drawing, and a pointer reports many times
+ * per frame - moving over an element was paying for that on every report. Nothing can move the
+ * view within a frame, so the matrix is measured once and dropped at the end of it.
+ */
+let pointerMatrix: DOMMatrix | null = null;
+
+const invalidatePointerMatrix = () => {
+  pointerMatrix = null;
+};
+
+const screenToModelMatrix = (): DOMMatrix => {
+  if (!pointerMatrix) {
+    pointerMatrix = (viewport.value!.getScreenCTM() as DOMMatrix).inverse();
+    requestAnimationFrame(invalidatePointerMatrix);
+  }
+
+  return pointerMatrix;
+};
+
 const onUpdate = throttle((zooming: boolean) => {
+  invalidatePointerMatrix();
   if (zooming) hideTooltip();
   if (grid.value) grid.value.refreshGrid(zooming);
 }, 1000 / 10);
@@ -461,13 +499,12 @@ const activeAddMode = computed(() => {
 
 /** Where the pointer is in model units, unsnapped. */
 const screenToModel = (e: PointerEvent) => {
-  const matrix = viewport.value!.getScreenCTM() as DOMMatrix;
   const point = svg.value!.createSVGPoint();
 
   point.x = e.clientX;
   point.y = e.clientY;
 
-  const p = point.matrixTransform(matrix.inverse());
+  const p = point.matrixTransform(screenToModelMatrix());
 
   return { x: p.x, y: p.y };
 };
@@ -506,7 +543,7 @@ const refreshTooltipContent = () => {
     const tooltipContent = tt.querySelector('.content') as HTMLElement | null;
     if (!tooltipContent) return;
 
-    tooltipContent.innerHTML = buildNodeTooltipContent(node as Node);
+    writeTooltip(tooltipContent, buildNodeTooltipContent(node as Node));
   }
 };
 
@@ -549,7 +586,10 @@ const onElementHover = (e: MouseEvent, el: Beam2D, showTooltip = true) => {
   if (showTooltip) {
     tt.style.top = e.offsetY + 'px';
     tt.style.left = e.offsetX + 'px';
-    tooltipContent.innerHTML = `<strong>${t('common.element')} ${escapeHtml(el.label)}</strong><br>CS=${escapeHtml(el.cs)}, Mat=${escapeHtml(el.mat)}`;
+    writeTooltip(
+      tooltipContent,
+      `<strong>${t('common.element')} ${escapeHtml(el.label)}</strong><br>CS=${escapeHtml(el.cs)}, Mat=${escapeHtml(el.mat)}`
+    );
     tt.style.display = 'block';
     document.body.style.cursor = 'pointer';
   } else {
@@ -583,38 +623,37 @@ const onElementLoadHover = (e: MouseEvent, el: BeamElementLoad) => {
   let uu = isDistributed ? appStore.units.ForceDistance : appStore.units.Force;
   if (el instanceof BeamTemperatureLoad) uu = appStore.units.Temperature;
 
-  tooltipContent.innerHTML = `<strong>${t(lt)}</strong><br>`;
+  let html = `<strong>${t(lt)}</strong><br>`;
 
   if (el instanceof BeamTemperatureLoad) {
     if (Math.abs(el.values[0]) > 1e-32) {
-      tooltipContent.innerHTML += `${t('loads.temperatureDeltaTs')} = ${appStore.convertTemperature(el.values[0])} ${uu}<br>`;
+      html += `${t('loads.temperatureDeltaTs')} = ${appStore.convertTemperature(el.values[0])} ${uu}<br>`;
     }
 
     if (Math.abs(el.values[1]) > 1e-32) {
-      tooltipContent.innerHTML += `${t('loads.temperatureDeltaTbt')} = ${appStore.convertTemperature(el.values[1])} ${uu}`;
+      html += `${t('loads.temperatureDeltaTbt')} = ${appStore.convertTemperature(el.values[1])} ${uu}`;
     }
   } else if (el instanceof BeamElementTrapezoidalEdgeLoad) {
     if (Math.abs(el.startValues[0]) > 1e-32 || Math.abs(el.endValues[0]) > 1e-32) {
-      tooltipContent.innerHTML += `${ff}<sub>x</sub> = ${convertIntensity(el.startValues[0])} → ${convertIntensity(
+      html += `${ff}<sub>x</sub> = ${convertIntensity(el.startValues[0])} → ${convertIntensity(
         el.endValues[0]
       )} ${uu}<br>`;
     }
 
     if (Math.abs(el.startValues[1]) > 1e-32 || Math.abs(el.endValues[1]) > 1e-32) {
-      tooltipContent.innerHTML += `${ff}<sub>z</sub> = ${convertIntensity(el.startValues[1])} → ${convertIntensity(
-        el.endValues[1]
-      )} ${uu}`;
+      html += `${ff}<sub>z</sub> = ${convertIntensity(el.startValues[1])} → ${convertIntensity(el.endValues[1])} ${uu}`;
     }
   } else if (el instanceof BeamElementUniformEdgeLoad || el instanceof BeamConcentratedLoad) {
     if (Math.abs(el.values[0]) > 1e-32) {
-      tooltipContent.innerHTML += `${ff}<sub>x</sub> = ${convertIntensity(el.values[0])} ${uu}<br>`;
+      html += `${ff}<sub>x</sub> = ${convertIntensity(el.values[0])} ${uu}<br>`;
     }
 
     if (Math.abs(el.values[1]) > 1e-32) {
-      tooltipContent.innerHTML += `${ff}<sub>z</sub> = ${convertIntensity(el.values[1])} ${uu}`;
+      html += `${ff}<sub>z</sub> = ${convertIntensity(el.values[1])} ${uu}`;
     }
   }
 
+  writeTooltip(tooltipContent, html);
   tt.style.display = 'block';
   document.body.style.cursor = 'pointer';
 
@@ -632,19 +671,20 @@ const onNodalLoadHover = (e: MouseEvent, el: NodalLoad) => {
 
   tt.style.top = e.offsetY + 'px';
   tt.style.left = e.offsetX + 'px';
-  tooltipContent.innerHTML = `<strong>${t('loads.nodalLoad')}</strong><br>`;
+  let html = `<strong>${t('loads.nodalLoad')}</strong><br>`;
   if (Math.abs(el.values[0]) > 1e-32) {
-    tooltipContent.innerHTML += `F<sub>x</sub> = ${appStore.convertForce(el.values[0])} ${appStore.units.Force}<br>`;
+    html += `F<sub>x</sub> = ${appStore.convertForce(el.values[0])} ${appStore.units.Force}<br>`;
   }
 
   if (Math.abs(el.values[2]) > 1e-32) {
-    tooltipContent.innerHTML += `F<sub>z</sub> = ${appStore.convertForce(el.values[2])} ${appStore.units.Force}<br>`;
+    html += `F<sub>z</sub> = ${appStore.convertForce(el.values[2])} ${appStore.units.Force}<br>`;
   }
 
   if (Math.abs(el.values[4]) > 1e-32) {
-    tooltipContent.innerHTML += `M<sub>y</sub> = ${appStore.convertMoment(el.values[4])} ${appStore.units.Moment}`;
+    html += `M<sub>y</sub> = ${appStore.convertMoment(el.values[4])} ${appStore.units.Moment}`;
   }
 
+  writeTooltip(tooltipContent, html);
   tt.style.display = 'block';
   document.body.style.cursor = 'pointer';
 
@@ -662,19 +702,20 @@ const onPrescribedBCHover = (e: MouseEvent, el: PrescribedDisplacement) => {
 
   tt.style.top = e.offsetY + 'px';
   tt.style.left = e.offsetX + 'px';
-  tooltipContent.innerHTML = `<strong>${t('loads.prescribedDisplacement')}</strong><br>`;
+  let html = `<strong>${t('loads.prescribedDisplacement')}</strong><br>`;
   if (Math.abs(el.prescribedValues[0]) > 1e-32) {
-    tooltipContent.innerHTML += `D<sub>x</sub> = ${appStore.convertLength(el.prescribedValues[0])} ${appStore.units.Length}<br>`;
+    html += `D<sub>x</sub> = ${appStore.convertLength(el.prescribedValues[0])} ${appStore.units.Length}<br>`;
   }
 
   if (Math.abs(el.prescribedValues[2]) > 1e-32) {
-    tooltipContent.innerHTML += `D<sub>z</sub> = ${appStore.convertLength(el.prescribedValues[2])} ${appStore.units.Length}<br>`;
+    html += `D<sub>z</sub> = ${appStore.convertLength(el.prescribedValues[2])} ${appStore.units.Length}<br>`;
   }
 
   if (Math.abs(el.prescribedValues[4]) > 1e-32) {
-    tooltipContent.innerHTML += `R<sub>y</sub> = ${el.prescribedValues[4]} ${appStore.units.Angle}`;
+    html += `R<sub>y</sub> = ${el.prescribedValues[4]} ${appStore.units.Angle}`;
   }
 
+  writeTooltip(tooltipContent, html);
   tt.style.display = 'block';
   document.body.style.cursor = 'pointer';
 
@@ -722,7 +763,7 @@ const onNodeHover = (e: MouseEvent, node: Node) => {
 
   tt.style.top = e.offsetY + 'px';
   tt.style.left = e.offsetX + 'px';
-  tooltipContent.innerHTML = buildNodeTooltipContent(node);
+  writeTooltip(tooltipContent, buildNodeTooltipContent(node));
   tt.style.display = 'block';
   document.body.style.cursor = 'pointer';
 
@@ -1097,13 +1138,11 @@ const updatePointerPosition = (e: PointerEvent) => {
   appStore.mouse.x = e.clientX;
   appStore.mouse.y = e.clientY;
 
-  const matrix = viewport.value!.getScreenCTM() as DOMMatrix;
-
   const pointer = svg.value!.createSVGPoint();
   pointer.x = e.clientX;
   pointer.y = e.clientY;
 
-  const svgP1 = pointer.matrixTransform(matrix.inverse());
+  const svgP1 = pointer.matrixTransform(screenToModelMatrix());
 
   const mXReal = svgP1.x;
   const mYReal = svgP1.y;

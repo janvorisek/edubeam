@@ -19,9 +19,8 @@ const props = withDefaults(
   }
 );
 
-const target = computed(() => {
-  return props.nload.domain.nodes.get(props.nload.target)!;
-});
+/** Undefined when the load outlives its node; the drawing then leaves it out rather than throwing. */
+const target = computed(() => props.nload.domain.nodes.get(props.nload.target));
 
 const angle = computed(() => {
   return -(Math.atan2(props.nload.values[0], props.nload.values[2]) * 180) / Math.PI;
@@ -83,7 +82,7 @@ const stackedTransform = computed(() => {
 </script>
 
 <template>
-  <g class="nodal-load" :transform="stackedTransform">
+  <g v-if="target" class="nodal-load" :transform="stackedTransform">
     <polyline
       v-if="nload.values[0] !== 0 || nload.values[2] !== 0"
       points="0,0 0,0"

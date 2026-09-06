@@ -505,6 +505,7 @@
         <v-data-table-virtual
           :headers="headers.loads"
           :items="loads"
+          :row-props="loadRowProps"
           density="compact"
           :height="props.height - 36 - 30"
           fixed-header
@@ -1682,8 +1683,26 @@ const loads = computed(() => {
     }
   }
 
-  return display;
+  // Selected first, as the nodes and elements tables do: clicking a load in the drawing opens this
+  // tab, and the row it opened for should not be somewhere down a list of every load in the model.
+  return [...display.filter(isLoadSelected), ...display.filter((row) => !isLoadSelected(row))];
 });
+
+/** A load is selected by its position in the list it lives in, one list per kind. */
+const isLoadSelected = (row: { type: string; index: number }) => {
+  const selection = useProjectStore().selection2;
+
+  if (row.type === 'element') return selection.elementLoads.includes(row.index);
+  if (row.type === 'prescribed') return selection.prescribedBC.includes(row.index);
+
+  return selection.nodalLoads.includes(row.index);
+};
+
+function loadRowProps(item) {
+  if (isLoadSelected(item.item)) {
+    return { class: 'selected' };
+  }
+}
 
 /**
  * The pencil beside a load row, opening the dialog that already serves it.

@@ -955,6 +955,12 @@
 
           <template #item.actions="{ item }">
             <v-btn
+              density="compact"
+              variant="text"
+              icon="mdi-pencil"
+              @click="openLoadEditor(item.type, item.index)"
+            ></v-btn>
+            <v-btn
               v-if="item.type === 'element'"
               density="compact"
               variant="text"
@@ -1629,6 +1635,8 @@ const loads = computed(() => {
   const display: {
     target: number;
     type: string;
+    /** Position in the list the load lives in, which is what the edit dialogs take. */
+    index: number;
     loadCase: LoadCase;
     values: unknown;
     ref:
@@ -1640,30 +1648,33 @@ const loads = computed(() => {
   }[] = [];
 
   for (const item of items) {
-    for (const load of item.elementLoadList) {
+    for (const [index, load] of item.elementLoadList.entries()) {
       display.push({
         target: load.target,
         type: 'element',
+        index,
         loadCase: item,
         values: load.values,
         ref: load,
       });
     }
 
-    for (const load of item.prescribedBC) {
+    for (const [index, load] of item.prescribedBC.entries()) {
       display.push({
         target: load.target,
         type: 'prescribed',
+        index,
         loadCase: item,
         values: load.prescribedValues,
         ref: load,
       });
     }
 
-    for (const load of item.nodalLoadList) {
+    for (const [index, load] of item.nodalLoadList.entries()) {
       display.push({
         target: load.target,
         type: 'node',
+        index,
         loadCase: item,
         values: load.values,
         ref: load,
@@ -1673,6 +1684,21 @@ const loads = computed(() => {
 
   return display;
 });
+
+/**
+ * The pencil beside a load row, opening the dialog that already serves it.
+ *
+ * A nodal force and a prescribed displacement share one dialog, which tells them apart by `type`;
+ * an element load has its own. All three take the position of the load in its list, not the row.
+ */
+const openLoadEditor = (type: string, index: number) => {
+  if (type === 'element') {
+    openModal(EditElementLoad, { index });
+    return;
+  }
+
+  openModal(EditNodalLoad, { index, type: type === 'prescribed' ? 'displacement' : 'force' });
+};
 
 type ElementLoadValues = BeamElementUniformEdgeLoad | BeamConcentratedLoad | BeamTemperatureLoad;
 

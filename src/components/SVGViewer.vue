@@ -46,6 +46,7 @@ import {
   undoModelChange,
 } from '../utils';
 import { createDimensionId, ensureDimensionId } from '@/utils/id';
+import { selectionSubtitle } from '@/utils/selectionDetails';
 import { boundsFromPoints } from '@/utils/fitBounds';
 import { placePopupNearAnchor, type AnchorRect } from '@/utils/popupPlacement';
 import { deviceHasHover } from '@/utils/pointer';
@@ -1137,10 +1138,18 @@ const resolveSelectionDetails = (): { subtitle: string | null; body: string } | 
   return null;
 };
 
+/** What the selection panel is headed by. */
+const selectionTitle = computed(() =>
+  projectStore.selection.type ? t('selection.' + projectStore.selection.type) : ''
+);
+
 const selectionDetails = computed(() => {
   const details = resolveSelectionDetails();
+  if (!details) return null;
 
-  return details && (details.subtitle || details.body) ? details : null;
+  const subtitle = selectionSubtitle(selectionTitle.value, details.subtitle);
+
+  return subtitle || details.body ? { subtitle, body: details.body } : null;
 });
 
 let drgNode: Node | null = null;
@@ -2832,7 +2841,7 @@ defineExpose({ centerContent, fitContent });
       <!-- Aligned with the list rows below it, and no taller than the close button needs. -->
       <div class="d-flex justify-space-between align-center pr-1 py-1">
         <div class="font-weight-medium text-body-2 px-4">
-          {{ $t('selection.' + projectStore.selection.type) }}
+          {{ selectionTitle }}
           <span v-if="['node', 'element'].includes(projectStore.selection.type)">{{
             projectStore.selection.label
           }}</span>

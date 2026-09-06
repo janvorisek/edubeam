@@ -1818,6 +1818,14 @@ const markerMomentCcw = computed(() => dynamicMarker('moment_ccw'));
 const markerMomentCcwHover = computed(() => dynamicMarker('moment_ccw_hover'));
 const markerMomentCcwSelected = computed(() => dynamicMarker('moment_ccw_selected'));
 
+const markerRotationCw = computed(() => dynamicMarker('rotation_cw'));
+const markerRotationCcw = computed(() => dynamicMarker('rotation_ccw'));
+
+const markerRotationCwHover = computed(() => dynamicMarker('rotation_cw_hover'));
+const markerRotationCwSelected = computed(() => dynamicMarker('rotation_cw_selected'));
+const markerRotationCcwHover = computed(() => dynamicMarker('rotation_ccw_hover'));
+const markerRotationCcwSelected = computed(() => dynamicMarker('rotation_ccw_selected'));
+
 const markerReaction = computed(() => dynamicMarker('reaction'));
 const markerMomentReactionCcw = computed(() => dynamicMarker('moment_reaction_ccw'));
 const markerMomentReactionCw = computed(() => dynamicMarker('moment_reaction_cw'));
@@ -1828,6 +1836,8 @@ const markerHingeXY = computed(() => dynamicMarker('hinge-xy'));
 const markerHingeX = computed(() => dynamicMarker('hinge-x'));
 const markerHingeY = computed(() => dynamicMarker('hinge-y'));
 const markerForceTip = computed(() => dynamicMarker('forceTip'));
+const markerForceTipHover = computed(() => dynamicMarker('forceTip_hover'));
+const markerForceTipSelected = computed(() => dynamicMarker('forceTip_selected'));
 const markerDimTip = computed(() => dynamicMarker('dimTip'));
 
 const markerTextLabel = computed(() => dynamicMarker('textLabel'));
@@ -2155,6 +2165,12 @@ defineExpose({ centerContent, fitContent });
           '--marker-moment-ccw': markerMomentCcw,
           '--marker-moment-ccw-hover': markerMomentCcwHover,
           '--marker-moment-ccw-selected': markerMomentCcwSelected,
+          '--marker-rotation-cw': markerRotationCw,
+          '--marker-rotation-ccw': markerRotationCcw,
+          '--marker-rotation-cw-hover': markerRotationCwHover,
+          '--marker-rotation-cw-selected': markerRotationCwSelected,
+          '--marker-rotation-ccw-hover': markerRotationCcwHover,
+          '--marker-rotation-ccw-selected': markerRotationCcwSelected,
           '--marker-reaction': markerReaction,
           '--marker-moment-reaction-ccw': markerMomentReactionCcw,
           '--marker-moment-reaction-cw': markerMomentReactionCw,
@@ -2165,6 +2181,8 @@ defineExpose({ centerContent, fitContent });
           '--marker-hinge-x': markerHingeX,
           '--marker-hinge-y': markerHingeY,
           '--marker-force-tip': markerForceTip,
+          '--marker-force-tip-hover': markerForceTipHover,
+          '--marker-force-tip-selected': markerForceTipSelected,
           '--marker-dim-tip': markerDimTip,
           '--filter-text-label': markerTextLabel,
           '--colors-loads': viewerStore.colors.loads,
@@ -2277,42 +2295,6 @@ defineExpose({ centerContent, fitContent });
                   "
                 />
               </template>
-              <SVGNodalLoad
-                v-for="(nload, index) in useProjectStore().solver.loadCases[0].nodalLoadList"
-                :key="`nodal-load-${index}`"
-                :class="{ selected: projectStore.selection2.nodalLoads.includes(index) }"
-                :nload="nload"
-                :scale="scale"
-                :convert-force="appStore.convertForce"
-                :convert-moment="appStore.convertMoment"
-                :font-size="viewerStore.fontSize"
-                :number-format="appStore.numberFormatter"
-                @mousemove="onNodalLoadHover($event, nload)"
-                @mouseleave="hideTooltip"
-                @pointerup="onNodalLoadClick($event, index)"
-                @dblclick="
-                  openModal(EditNodalLoadDialog, { index });
-                  projectStore.clearSelection();
-                "
-              />
-              <SVGPrescribedDisplacement
-                v-for="(nload, index) in useProjectStore().solver.loadCases[0].prescribedBC"
-                :key="`prescribed-bc-${index}`"
-                :class="{ selected: projectStore.selection2.prescribedBC.includes(index) }"
-                :nload="nload"
-                :scale="scale"
-                :convert-length="appStore.convertLength"
-                :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
-                :font-size="viewerStore.fontSize"
-                :number-format="appStore.numberFormatter"
-                @mousemove="onPrescribedBCHover($event, nload)"
-                @mouseleave="hideTooltip"
-                @pointerup="onPrescribedBCClick($event, index)"
-                @dblclick="
-                  openModal(EditNodalLoadDialog, { index, type: 'displacement' });
-                  projectStore.clearSelection();
-                "
-              />
             </g>
           </g>
           <g :style="`opacity: ${intersected?.type === 'element' ? 0.5 : 1} !important`">
@@ -2377,6 +2359,49 @@ defineExpose({ centerContent, fitContent });
             />
           </g>
 
+          <!--
+            Nodal loads sit above the elements so their handles win the hit test: a moment arc or a
+            prescribed displacement drawn along a beam would otherwise be swallowed by the beam's own
+            handle. Nodes still come last, so they keep priority over the loads attached to them.
+          -->
+          <g v-if="!isZooming && useViewerStore().showLoads" data-fit-ignore="loads">
+            <SVGNodalLoad
+              v-for="(nload, index) in useProjectStore().solver.loadCases[0].nodalLoadList"
+              :key="`nodal-load-${index}`"
+              :class="{ selected: projectStore.selection2.nodalLoads.includes(index) }"
+              :nload="nload"
+              :scale="scale"
+              :convert-force="appStore.convertForce"
+              :convert-moment="appStore.convertMoment"
+              :font-size="viewerStore.fontSize"
+              :number-format="appStore.numberFormatter"
+              @mousemove="onNodalLoadHover($event, nload)"
+              @mouseleave="hideTooltip"
+              @pointerup="onNodalLoadClick($event, index)"
+              @dblclick="
+                openModal(EditNodalLoadDialog, { index });
+                projectStore.clearSelection();
+              "
+            />
+            <SVGPrescribedDisplacement
+              v-for="(nload, index) in useProjectStore().solver.loadCases[0].prescribedBC"
+              :key="`prescribed-bc-${index}`"
+              :class="{ selected: projectStore.selection2.prescribedBC.includes(index) }"
+              :nload="nload"
+              :scale="scale"
+              :convert-length="appStore.convertLength"
+              :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
+              :font-size="viewerStore.fontSize"
+              :number-format="appStore.numberFormatter"
+              @mousemove="onPrescribedBCHover($event, nload)"
+              @mouseleave="hideTooltip"
+              @pointerup="onPrescribedBCClick($event, index)"
+              @dblclick="
+                openModal(EditNodalLoadDialog, { index, type: 'displacement' });
+                projectStore.clearSelection();
+              "
+            />
+          </g>
           <g class="nodes">
             <SVGNode
               v-for="(node, index) in projectStore.nodes"
@@ -2897,6 +2922,14 @@ defineExpose({ centerContent, fitContent });
         marker-end: var(--marker-moment-ccw);
       }
 
+      &.decoration.rotation.cw {
+        marker-end: var(--marker-rotation-cw);
+      }
+
+      &.decoration.rotation.ccw {
+        marker-end: var(--marker-rotation-ccw);
+      }
+
       &.handle {
         stroke: transparent;
         stroke-width: 24px;
@@ -2925,6 +2958,20 @@ defineExpose({ centerContent, fitContent });
       marker-end: var(--marker-moment-ccw-hover);
     }
 
+    &:hover polyline.decoration.rotation.cw {
+      marker-end: var(--marker-rotation-cw-hover);
+    }
+
+    &:hover polyline.decoration.rotation.ccw {
+      marker-end: var(--marker-rotation-ccw-hover);
+    }
+
+    /* The prescribed translation is a real line, so it gets the highlight the arrow markers give. */
+    &:hover polyline.decoration.marker-forceTip {
+      marker-end: var(--marker-force-tip-hover);
+      stroke-width: 2px;
+    }
+
     &.selected polyline.decoration.force {
       marker-end: var(--marker-force-selected);
     }
@@ -2935,6 +2982,20 @@ defineExpose({ centerContent, fitContent });
 
     &.selected polyline.decoration.moment.ccw {
       marker-end: var(--marker-moment-ccw-selected);
+    }
+
+    &.selected polyline.decoration.rotation.cw {
+      marker-end: var(--marker-rotation-cw-selected);
+    }
+
+    &.selected polyline.decoration.rotation.ccw {
+      marker-end: var(--marker-rotation-ccw-selected);
+    }
+
+    &.selected polyline.decoration.marker-forceTip {
+      marker-end: var(--marker-force-tip-selected);
+      stroke: rgb(0, 55, 149);
+      stroke-width: 2px;
     }
 
     &.selected {

@@ -63,7 +63,9 @@
           </v-btn>
         </div>
         <v-data-table-virtual
-          ref="table-nodes"
+          v-if="appStore.bottomBarTab === 'tab-nodes'"
+          item-height="36"
+          :key="settledHeight"
           class="fixed-left-col"
           :headers="headers.nodes"
           :items="nodes"
@@ -280,6 +282,9 @@
         </div>
 
         <v-data-table-virtual
+          v-if="appStore.bottomBarTab === 'tab-elements'"
+          item-height="36"
+          :key="settledHeight"
           :headers="headers.elements"
           class="fixed-left-col"
           :items="elements"
@@ -503,8 +508,12 @@
           </v-btn>
         </div>
         <v-data-table-virtual
+          v-if="appStore.bottomBarTab === 'tab-loads'"
+          item-height="36"
+          :key="settledHeight"
           :headers="headers.loads"
           :items="loads"
+          :row-props="loadRowProps"
           density="compact"
           :height="props.height - 36 - 30"
           fixed-header
@@ -954,27 +963,35 @@
           </template>
 
           <template #item.actions="{ item }">
-            <v-btn
-              v-if="item.type === 'element'"
-              density="compact"
-              variant="text"
-              icon="mdi-close"
-              @click="deleteElementLoad(item.ref)"
-            ></v-btn>
-            <v-btn
-              v-if="item.type === 'node'"
-              density="compact"
-              variant="text"
-              icon="mdi-close"
-              @click="deleteNodalLoad(item.ref)"
-            ></v-btn>
-            <v-btn
-              v-if="item.type === 'prescribed'"
-              density="compact"
-              variant="text"
-              icon="mdi-close"
-              @click="deletePrescribedDisplacement(item.ref)"
-            ></v-btn>
+            <div class="d-flex">
+              <v-btn
+                density="compact"
+                variant="text"
+                icon="mdi-pencil"
+                @click="openLoadEditor(item.type, item.index)"
+              ></v-btn>
+              <v-btn
+                v-if="item.type === 'element'"
+                density="compact"
+                variant="text"
+                icon="mdi-close"
+                @click="deleteElementLoad(item.ref)"
+              ></v-btn>
+              <v-btn
+                v-if="item.type === 'node'"
+                density="compact"
+                variant="text"
+                icon="mdi-close"
+                @click="deleteNodalLoad(item.ref)"
+              ></v-btn>
+              <v-btn
+                v-if="item.type === 'prescribed'"
+                density="compact"
+                variant="text"
+                icon="mdi-close"
+                @click="deletePrescribedDisplacement(item.ref)"
+              ></v-btn>
+            </div>
           </template>
         </v-data-table-virtual>
       </v-window-item>
@@ -1002,6 +1019,9 @@
         </div>
 
         <v-data-table-virtual
+          v-if="appStore.bottomBarTab === 'tab-mats'"
+          item-height="36"
+          :key="settledHeight"
           :headers="headers.materials"
           class="fixed-left-col"
           :items="materials"
@@ -1135,6 +1155,9 @@
         </div>
 
         <v-data-table-virtual
+          v-if="appStore.bottomBarTab === 'tab-cs'"
+          item-height="36"
+          :key="settledHeight"
           :headers="headers.crossSections"
           class="fixed-left-col"
           :items="crossSections"
@@ -1302,7 +1325,9 @@
         <v-window v-model="layoutStore.bottomBarResultsTab" disabled>
           <v-window-item value="nodes" :transition="false" :reverse-transition="false">
             <v-data-table-virtual
-              ref="table-results"
+              v-if="appStore.bottomBarTab === 'tab-results'"
+              item-height="36"
+              :key="settledHeight"
               :headers="headers.results"
               :items="nodes"
               density="compact"
@@ -1394,7 +1419,9 @@
           </v-window-item>
           <v-window-item value="elements" :transition="false" :reverse-transition="false">
             <v-data-table-virtual
-              ref="table-results2"
+              v-if="appStore.bottomBarTab === 'tab-results'"
+              item-height="36"
+              :key="settledHeight"
               :headers="headers.results2"
               :items="useProjectStore().solver.loadCases[0].solved ? elements : []"
               density="compact"
@@ -1493,7 +1520,7 @@ import {
   NodalLoad,
 } from 'ts-fem';
 
-import { onMounted, computed, markRaw, nextTick, reactive, ref } from 'vue';
+import { onMounted, computed, markRaw, nextTick, reactive, ref, watch } from 'vue';
 import { useProjectStore } from '../store/project';
 import { useAppStore } from '../store/app';
 import { MouseMode } from '../mouse';
@@ -1557,6 +1584,17 @@ const { t } = useI18n();
 const appStore = useAppStore();
 const projStore = useProjectStore();
 const layoutStore = useLayoutStore();
+
+/**
+ * The virtual tables work their visible window out from a height they measure once and then learn
+ * about through a ResizeObserver. Dragging the bar taller does not reliably reach that path, so the
+ * table keeps showing the rows the short bar held. Remounting it on the settled height sidesteps
+ * the whole question: a fresh table measures the size it is actually given.
+ *
+ * Settled, not live: a drag reports continuously, and remounting per pixel would be absurd.
+ */
+const settledHeight = ref(0);
+let settleTimer: ReturnType<typeof setTimeout> | undefined;
 
 const props = defineProps({
   height: {
@@ -1629,6 +1667,8 @@ const loads = computed(() => {
   const display: {
     target: number;
     type: string;
+    /** Position in the list the load lives in, which is what the edit dialogs take. */
+    index: number;
     loadCase: LoadCase;
     values: unknown;
     ref:
@@ -1640,30 +1680,33 @@ const loads = computed(() => {
   }[] = [];
 
   for (const item of items) {
-    for (const load of item.elementLoadList) {
+    for (const [index, load] of item.elementLoadList.entries()) {
       display.push({
         target: load.target,
         type: 'element',
+        index,
         loadCase: item,
         values: load.values,
         ref: load,
       });
     }
 
-    for (const load of item.prescribedBC) {
+    for (const [index, load] of item.prescribedBC.entries()) {
       display.push({
         target: load.target,
         type: 'prescribed',
+        index,
         loadCase: item,
         values: load.prescribedValues,
         ref: load,
       });
     }
 
-    for (const load of item.nodalLoadList) {
+    for (const [index, load] of item.nodalLoadList.entries()) {
       display.push({
         target: load.target,
         type: 'node',
+        index,
         loadCase: item,
         values: load.values,
         ref: load,
@@ -1671,8 +1714,41 @@ const loads = computed(() => {
     }
   }
 
-  return display;
+  // Selected first, as the nodes and elements tables do: clicking a load in the drawing opens this
+  // tab, and the row it opened for should not be somewhere down a list of every load in the model.
+  return [...display.filter(isLoadSelected), ...display.filter((row) => !isLoadSelected(row))];
 });
+
+/** A load is selected by its position in the list it lives in, one list per kind. */
+const isLoadSelected = (row: { type: string; index: number }) => {
+  const selection = useProjectStore().selection2;
+
+  if (row.type === 'element') return selection.elementLoads.includes(row.index);
+  if (row.type === 'prescribed') return selection.prescribedBC.includes(row.index);
+
+  return selection.nodalLoads.includes(row.index);
+};
+
+function loadRowProps(item) {
+  if (isLoadSelected(item.item)) {
+    return { class: 'selected' };
+  }
+}
+
+/**
+ * The pencil beside a load row, opening the dialog that already serves it.
+ *
+ * A nodal force and a prescribed displacement share one dialog, which tells them apart by `type`;
+ * an element load has its own. All three take the position of the load in its list, not the row.
+ */
+const openLoadEditor = (type: string, index: number) => {
+  if (type === 'element') {
+    openModal(EditElementLoad, { index });
+    return;
+  }
+
+  openModal(EditNodalLoad, { index, type: type === 'prescribed' ? 'displacement' : 'force' });
+};
 
 type ElementLoadValues = BeamElementUniformEdgeLoad | BeamConcentratedLoad | BeamTemperatureLoad;
 
@@ -1890,6 +1966,15 @@ const tabs = reactive([
     icon: 'mdi-numeric',
   },
 ]);
+
+watch(
+  () => props.height,
+  (height) => {
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(() => (settledHeight.value = height), 150);
+  },
+  { immediate: true }
+);
 
 const exportFeedbackVisible = ref(false);
 const exportFeedbackType = ref<'success' | 'error'>('success');

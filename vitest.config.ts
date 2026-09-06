@@ -17,6 +17,8 @@ export default defineConfig({
   test: {
     environment: 'happy-dom',
     globals: true,
+    // Vuetify components import their own CSS, which Vite has to transform for a test that mounts one.
+    server: { deps: { inline: ['vuetify'] } },
   },
   resolve: {
     alias: {

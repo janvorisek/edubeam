@@ -62,7 +62,7 @@
             <v-icon small>mdi-cursor-default-outline</v-icon> {{ $t('nodes.addNode') }}
           </v-btn>
         </div>
-        <v-data-table
+        <v-data-table-virtual
           ref="table-nodes"
           class="fixed-left-col"
           :headers="headers.nodes"
@@ -71,9 +71,6 @@
           density="compact"
           :height="props.height - 36 - 30"
           fixed-header
-          :items-per-page="-1"
-          disable-pagination
-          hide-default-footer
           mobile-breakpoint="0"
           item-key="label"
           sort-asc-icon="mdi-menu-up"
@@ -249,7 +246,7 @@
               <v-btn density="compact" variant="text" icon="mdi-close" @click="deleteNode(item.label)"></v-btn>
             </div>
           </template>
-        </v-data-table>
+        </v-data-table-virtual>
       </v-window-item>
 
       <v-window-item
@@ -282,7 +279,7 @@
           </v-btn>
         </div>
 
-        <v-data-table
+        <v-data-table-virtual
           :headers="headers.elements"
           class="fixed-left-col"
           :items="elements"
@@ -290,9 +287,6 @@
           density="compact"
           :height="props.height - 36 - 30"
           fixed-header
-          :items-per-page="-1"
-          disable-pagination
-          hide-default-footer
           mobile-breakpoint="0"
           item-key="label"
           sort-asc-icon="mdi-menu-up"
@@ -331,24 +325,18 @@
           <template #item.type> Beam2D </template>
           <template #item.nodes="{ item }">
             <div class="d-flex">
-              <select
-                class="mini-select flex-shrink-0"
-                :value="item.nodes[0]"
+              <EntitySelect
+                :model-value="item.nodes[0]"
+                :items="nodes"
+                :exclude="item.nodes[1]"
+                :prefix="$t('common.node')"
                 style="width: 100px"
-                @change="
+                @update:model-value="
                   setUnsolved();
-                  item.nodes[0] = $event.target.value;
+                  item.nodes[0] = String($event);
                   solve();
                 "
-              >
-                <option
-                  v-for="node in nodes.filter((e) => e.label != item.nodes[1])"
-                  :key="node.label"
-                  :value="node.label"
-                >
-                  {{ `${$t('common.node')} ${node.label}` }}
-                </option>
-              </select>
+              />
               <a
                 v-tooltip.bottom="$t('elements.swapNodeOrder')"
                 href="#"
@@ -357,24 +345,18 @@
               >
                 <v-icon small>mdi-swap-horizontal</v-icon>
               </a>
-              <select
-                class="mini-select flex-shrink-0"
-                :value="item.nodes[1]"
+              <EntitySelect
+                :model-value="item.nodes[1]"
+                :items="nodes"
+                :exclude="item.nodes[0]"
+                :prefix="$t('common.node')"
                 style="width: 100px"
-                @change="
+                @update:model-value="
                   setUnsolved();
-                  item.nodes[1] = $event.target.value;
+                  item.nodes[1] = String($event);
                   solve();
                 "
-              >
-                <option
-                  v-for="node in nodes.filter((e) => e.label != item.nodes[0])"
-                  :key="node.label"
-                  :value="node.label"
-                >
-                  {{ `${$t('common.node')} ${node.label}` }}
-                </option>
-              </select>
+              />
             </div>
           </template>
           <template #item.material="{ item }">
@@ -490,7 +472,7 @@
               <v-btn density="compact" variant="text" icon="mdi-close" @click="deleteElement(item.label)"></v-btn>
             </div>
           </template>
-        </v-data-table>
+        </v-data-table-virtual>
       </v-window-item>
 
       <v-window-item
@@ -520,15 +502,12 @@
             <v-icon small>mdi-plus</v-icon> {{ $t('loads.addElementLoad') }}
           </v-btn>
         </div>
-        <v-data-table
+        <v-data-table-virtual
           :headers="headers.loads"
           :items="loads"
           density="compact"
           :height="props.height - 36 - 30"
           fixed-header
-          :items-per-page="-1"
-          disable-pagination
-          hide-default-footer
           mobile-breakpoint="0"
           item-key="label"
           sort-asc-icon="mdi-menu-up"
@@ -937,50 +916,41 @@
           </template>
 
           <template #item.target="{ item }">
-            <select
+            <EntitySelect
               v-if="item.type === 'node'"
               v-model="item.ref.target"
-              class="mini-select flex-shrink-0"
+              :items="nodes"
+              :prefix="$t('common.node')"
               style="width: 100%"
-              @change="
+              @update:model-value="
                 setUnsolved();
                 solve();
               "
-            >
-              <option v-for="node in nodes" :key="node.label" :value="node.label">
-                {{ `${$t('common.node')} ${node.label}` }}
-              </option>
-            </select>
+            />
 
-            <select
+            <EntitySelect
               v-else-if="item.type === 'prescribed'"
               v-model="item.ref.target"
-              class="mini-select flex-shrink-0"
+              :items="nodes.filter((n) => n.bcs.size > 0)"
+              :prefix="$t('common.node')"
               style="width: 100%"
-              @change="
+              @update:model-value="
                 setUnsolved();
                 solve();
               "
-            >
-              <option v-for="node in nodes.filter((n) => n.bcs.size > 0)" :key="node.label" :value="node.label">
-                {{ `${$t('common.node')} ${node.label}` }}
-              </option>
-            </select>
+            />
 
-            <select
+            <EntitySelect
               v-else-if="item.type === 'element'"
               v-model="item.ref.target"
-              class="mini-select flex-shrink-0"
+              :items="elements"
+              :prefix="$t('common.element')"
               style="width: 100%"
-              @change="
+              @update:model-value="
                 setUnsolved();
                 solve();
               "
-            >
-              <option v-for="node in elements" :key="node.label" :value="node.label">
-                {{ `${$t('common.element')} ${node.label}` }}
-              </option>
-            </select>
+            />
           </template>
 
           <template #item.actions="{ item }">
@@ -1006,7 +976,7 @@
               @click="deletePrescribedDisplacement(item.ref)"
             ></v-btn>
           </template>
-        </v-data-table>
+        </v-data-table-virtual>
       </v-window-item>
 
       <v-window-item
@@ -1031,16 +1001,13 @@
           </v-btn>
         </div>
 
-        <v-data-table
+        <v-data-table-virtual
           :headers="headers.materials"
           class="fixed-left-col"
           :items="materials"
           density="compact"
           :height="props.height - 36 - 30"
           fixed-header
-          :items-per-page="-1"
-          disable-pagination
-          hide-default-footer
           mobile-breakpoint="0"
           item-key="label"
           sort-asc-icon="mdi-menu-up"
@@ -1121,7 +1088,7 @@
           <template #item.actions="{ item }">
             <v-btn density="compact" variant="text" icon="mdi-close" @click="deleteMaterial(item.label)"></v-btn>
           </template>
-        </v-data-table>
+        </v-data-table-virtual>
       </v-window-item>
 
       <v-window-item
@@ -1162,16 +1129,13 @@
           </v-btn>
         </div>
 
-        <v-data-table
+        <v-data-table-virtual
           :headers="headers.crossSections"
           class="fixed-left-col"
           :items="crossSections"
           density="compact"
           :height="props.height - 36 - 30"
           fixed-header
-          :items-per-page="-1"
-          disable-pagination
-          hide-default-footer
           mobile-breakpoint="0"
           item-key="label"
           sort-asc-icon="mdi-menu-up"
@@ -1278,7 +1242,7 @@
             ></v-btn>
             <v-btn density="compact" variant="text" icon="mdi-close" @click="deleteCrossSection(item.label)"></v-btn>
           </template>
-        </v-data-table>
+        </v-data-table-virtual>
       </v-window-item>
       <v-window-item
         :value="'tab-results'"
@@ -1332,16 +1296,13 @@
         </div>
         <v-window v-model="layoutStore.bottomBarResultsTab" disabled>
           <v-window-item value="nodes" :transition="false" :reverse-transition="false">
-            <v-data-table
+            <v-data-table-virtual
               ref="table-results"
               :headers="headers.results"
               :items="nodes"
               density="compact"
               :height="props.height - 36 - 30"
               fixed-header
-              :items-per-page="-1"
-              disable-pagination
-              hide-default-footer
               mobile-breakpoint="0"
               item-key="label"
               sort-asc-icon="mdi-menu-up"
@@ -1426,19 +1387,16 @@
                   </div>
                 </div>
               </template>
-            </v-data-table>
+            </v-data-table-virtual>
           </v-window-item>
           <v-window-item value="elements" :transition="false" :reverse-transition="false">
-            <v-data-table
+            <v-data-table-virtual
               ref="table-results2"
               :headers="headers.results2"
               :items="useProjectStore().solver.loadCases[0].solved ? elements : []"
               density="compact"
               :height="props.height - 36 - 30"
               fixed-header
-              :items-per-page="-1"
-              disable-pagination
-              hide-default-footer
               mobile-breakpoint="0"
               item-key="label"
               sort-asc-icon="mdi-menu-up"
@@ -1502,7 +1460,7 @@
                   </div>
                 </div>
               </template>
-            </v-data-table>
+            </v-data-table-virtual>
           </v-window-item>
         </v-window>
       </v-window-item>
@@ -1582,6 +1540,7 @@ import MaterialLibraryDialog from './dialogs/MaterialLibrary.vue';
 import CrossSectionLibraryDialog from './dialogs/CrossSectionLibrary.vue';
 import PolygonSectionEditor from './dialogs/PolygonSectionEditor.vue';
 import SectionThumbnail from './SectionThumbnail.vue';
+import EntitySelect from './EntitySelect.vue';
 import '@/types/crossSection';
 import EditNode from './dialogs/EditNode.vue';
 

@@ -24,6 +24,17 @@
         </template>
       </v-select>
 
+      <h4 class="mb-1 mt-3">{{ $t('settings.number_format') }}</h4>
+
+      <div class="mb-1">{{ $t('settings.number_format_description') }}</div>
+
+      <v-select
+        v-model="appStore.numberStyle"
+        :items="numberStyleItems"
+        hide-details="auto"
+        :label="$t('settings.number_format')"
+      />
+
       <h4 class="mb-1 mt-3">{{ $t('settings.units.units') }}</h4>
 
       <div class="mb-1">{{ $t('settings.units_description') }}</div>
@@ -182,6 +193,7 @@ import Ukrainian from 'language-icons/icons/uk.svg';
 import Russian from 'language-icons/icons/ru.svg';
 import ThaiFlag from '../../assets/th-flag.svg';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const flags = {
   en: English,
@@ -200,6 +212,14 @@ const flags = {
 function getImageUrl(name) {
   return flags[name];
 }
+
+const { t } = useI18n();
+
+const numberStyleItems = computed(() => [
+  { title: t('settings.number_format_auto'), value: 'auto' },
+  { title: t('settings.number_format_scientific'), value: 'scientific' },
+  { title: t('settings.number_format_engineering'), value: 'engineering' },
+]);
 
 const momentUnitsProxy = computed({
   get: () => `${appStore.momentUnits.force}_${appStore.momentUnits.length}`,

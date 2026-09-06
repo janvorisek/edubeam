@@ -28,7 +28,6 @@ import SVGElement from './svg/Element.vue';
 import SVGElementTemperatureLoad from './svg/ElementTemperatureLoad.vue';
 import SVGDimensioning from './svg/Dimensioning.vue';
 
-import { formatExpValueAsHTML } from '../SVGUtils';
 import {
   applyNodeLcsAngle,
   checkNumber,
@@ -703,26 +702,23 @@ const buildNodeDetails = (node: Node): EntityDetails => {
     projectStore.beams.some((element) => element.nodes.includes(node.label))
   ) {
     rows.push(
-      `u<sub>x</sub> = ${formatExpValueAsHTML(
+      `u<sub>x</sub> = ${appStore.formatResultHTML(
         // @ts-expect-error It return value for single Dof
-        node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]),
-        4
+        node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx])
       )} m`
     );
 
     rows.push(
-      `u<sub>z</sub> = ${formatExpValueAsHTML(
+      `u<sub>z</sub> = ${appStore.formatResultHTML(
         // @ts-expect-error It return value for single Dof
-        node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]),
-        4
+        node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz])
       )} m`
     );
 
     rows.push(
-      `φ<sub>y</sub> = ${formatExpValueAsHTML(
+      `φ<sub>y</sub> = ${appStore.formatResultHTML(
         // @ts-expect-error It return value for single Dof
-        node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry]),
-        4
+        node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry])
       )} rad`
     );
   }

@@ -607,17 +607,23 @@ export const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputEl
       }
     }
 
-    for (const load of useProjectStore().solver.loadCases[0].nodalLoadList) {
-      if (load.target == prevId) {
-        load.target = item.label;
+    // Every list that names a node, and every case - a prescribed displacement left behind by a
+    // rename is a load pointing at a node that no longer exists, which the drawing cannot place.
+    for (const loadCase of useProjectStore().solver.loadCases) {
+      for (const load of loadCase.nodalLoadList) {
+        if (load.target == prevId) load.target = item.label;
+      }
+
+      for (const bc of loadCase.prescribedBC) {
+        if (bc.target == prevId) bc.target = item.label;
       }
     }
   }
 
   if (map === 'elements') {
-    for (const load of useProjectStore().solver.loadCases[0].elementLoadList) {
-      if (load.target == prevId) {
-        load.target = item.label;
+    for (const loadCase of useProjectStore().solver.loadCases) {
+      for (const load of loadCase.elementLoadList) {
+        if (load.target == prevId) load.target = item.label;
       }
     }
   }

@@ -18,9 +18,8 @@ const props = withDefaults(
   }
 );
 
-const target = computed(() => {
-  return props.nload.domain.nodes.get(props.nload.target)!;
-});
+/** Undefined when the load outlives its node; the drawing then leaves it out rather than throwing. */
+const target = computed(() => props.nload.domain.nodes.get(props.nload.target));
 
 const hasTranslation = computed(() => props.nload.prescribedValues[0] !== 0 || props.nload.prescribedValues[2] !== 0);
 
@@ -61,7 +60,7 @@ const rotationHandleRadius = computed(() => (20 * (50 / 60)) / props.scale);
 </script>
 
 <template>
-  <g class="nodal-load prescribed">
+  <g v-if="target" class="nodal-load prescribed">
     <polyline
       v-if="hasTranslation"
       :points="translationPoints"

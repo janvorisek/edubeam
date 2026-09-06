@@ -376,7 +376,8 @@
     "loadType": "Typ zatížení"
   },
   "dimensioning": {
-    "add_dimension": "Přidat kótu"
+    "add_dimension": "Přidat kótu",
+    "add_along_element": "Okótovat prvek {label}"
   },
   "warnings": {
     "noMaterialsDefined": "Není definovaný žádný materiál",

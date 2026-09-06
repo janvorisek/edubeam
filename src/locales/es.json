@@ -319,7 +319,8 @@
     "temperature": "Carga térmica"
   },
   "dimensioning": {
-    "add_dimension": "Añadir cota"
+    "add_dimension": "Añadir cota",
+    "add_along_element": "Acotar el elemento {label}"
   },
   "warnings": {
     "noMaterialsDefined": "No hay materiales definidos.",

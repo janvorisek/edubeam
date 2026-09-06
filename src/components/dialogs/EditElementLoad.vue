@@ -139,7 +139,7 @@
                     <v-checkbox
                       v-bind="props"
                       v-model="elementLCS"
-                      v-tooltip.left="$t('common.lcs')"
+                      v-tooltip="{ text: $t('common.lcs'), location: 'left', openOnClick: !deviceHasHover }"
                       :label="`LCS`"
                       hide-details="auto"
                       :disabled="loadType === 'trapezoidal'"
@@ -208,6 +208,7 @@ import {
   BeamTemperatureLoad,
 } from 'ts-fem';
 import ElementLoadPreview from '../ElementLoadPreview.vue';
+import { deviceHasHover } from '@/utils/pointer';
 import { formatMeasureAsHTML } from '@/SVGUtils';
 
 type EditableElementLoad =

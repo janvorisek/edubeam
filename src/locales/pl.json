@@ -319,7 +319,8 @@
     "temperature": "Obciążenie termiczne"
   },
   "dimensioning": {
-    "add_dimension": "Dodaj wymiar"
+    "add_dimension": "Dodaj wymiar",
+    "add_along_element": "Wymiaruj element {label}"
   },
   "warnings": {
     "noMaterialsDefined": "Nie zdefiniowano materiałów.",

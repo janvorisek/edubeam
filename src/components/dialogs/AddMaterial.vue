@@ -20,6 +20,7 @@
                   required
                   autofocus
                   :rounded="0"
+                  inputmode="decimal"
                   @keydown="checkNumber($event)"
                 ></v-text-field>
               </v-col>
@@ -33,6 +34,7 @@
                   :rules="positiveNumberRules"
                   required
                   :rounded="0"
+                  inputmode="decimal"
                   @keydown="checkNumber($event)"
                 ></v-text-field>
               </v-col>
@@ -46,6 +48,7 @@
                   :rules="numberRules"
                   required
                   :rounded="0"
+                  inputmode="decimal"
                   @keydown="checkNumber($event)"
                 ></v-text-field>
               </v-col>
@@ -59,6 +62,7 @@
                   :rules="numberRules"
                   required
                   :rounded="0"
+                  inputmode="decimal"
                   @keydown="checkNumber($event)"
                 ></v-text-field>
               </v-col>

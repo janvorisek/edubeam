@@ -27,6 +27,9 @@ import SVGNode from './svg/Node.vue';
 import SVGElement from './svg/Element.vue';
 import SVGElementTemperatureLoad from './svg/ElementTemperatureLoad.vue';
 import SVGDimensioning from './svg/Dimensioning.vue';
+import SelectionBox from './SelectionBox.vue';
+import WindowPickRect from './WindowPickRect.vue';
+import { windowDragKey, windowPickBox, type WindowDrag } from '@/types/windowPick';
 import HoveredElement from './HoveredElement.vue';
 import { intersectedKey } from '@/types/hover';
 
@@ -520,14 +523,10 @@ const screenToModel = (e: PointerEvent) => {
   return { x: p.x, y: p.y };
 };
 
-const windowDrag = ref<{ x0: number; y0: number; x1: number; y1: number } | null>(null);
+const windowDrag = ref<WindowDrag>(null);
 
-const windowRect = computed(() => {
-  const d = windowDrag.value;
-  if (!d) return null;
-
-  return { x: Math.min(d.x0, d.x1), y: Math.min(d.y0, d.y1), w: Math.abs(d.x1 - d.x0), h: Math.abs(d.y1 - d.y0) };
-});
+// The overlay reads it; the drawing only writes it. See WindowPickRect.vue.
+provide(windowDragKey, windowDrag);
 
 const finishWindowPick = (box: { x: number; y: number; w: number; h: number } | null) => {
   windowDrag.value = null;
@@ -1862,7 +1861,7 @@ const onMouseUp = (e: PointerEvent) => {
   }
 
   if (windowDrag.value) {
-    const box = windowRect.value;
+    const box = windowPickBox(windowDrag.value);
 
     // A click that never became a drag is not a window; keep waiting for one.
     if (box && box.w > 0 && box.h > 0) finishWindowPick(box);
@@ -2816,28 +2815,11 @@ defineExpose({ centerContent, fitContent });
           </g>
         </g>
         <!-- The window being picked for an image export; on top of everything, in model units. -->
-        <rect
-          v-if="windowRect"
-          :x="windowRect.x"
-          :y="windowRect.y"
-          :width="windowRect.w"
-          :height="windowRect.h"
-          class="window-pick"
-          vector-effect="non-scaling-stroke"
-          pointer-events="none"
-        />
+        <WindowPickRect />
       </svg>
     </SvgPanZoom>
 
-    <div
-      v-if="appStore.mouseMode === MouseMode.SELECTING"
-      class="selecting"
-      :style="`left: ${Math.min(appStore.mouse.x, appStore.mouse.sx)}px; top: ${
-        Math.min(appStore.mouse.y, appStore.mouse.sy) - (useAppStore().inViewerMode ? 0 : 84)
-      }px; width: ${Math.abs(appStore.mouse.x - appStore.mouse.sx)}px; height: ${Math.abs(
-        appStore.mouse.y - appStore.mouse.sy
-      )}px;`"
-    ></div>
+    <SelectionBox />
 
     <div
       v-if="projectStore.selection.type !== null"
@@ -3000,13 +2982,6 @@ defineExpose({ centerContent, fitContent });
 
 .disablePointerEvents {
   pointer-events: none;
-}
-
-.window-pick {
-  fill: rgba(25, 118, 210, 0.12);
-  stroke: #1976d2;
-  stroke-width: 1.5px;
-  stroke-dasharray: 6 3;
 }
 
 /* The read only properties sit above the actions the panel offers, divided from them. */

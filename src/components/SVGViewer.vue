@@ -862,6 +862,16 @@ const swallowNextClick = () => {
  */
 const touchSelectArmed = ref(false);
 
+/** The canvas menu, at a point on screen. Shared by the long press and by a box drawn by finger. */
+const openCanvasMenu = (clientX: number, clientY: number, element: Beam2D | null = null) => {
+  swallowNextClick();
+
+  ctxMenuElement.value = element;
+  optionsCtxMenu.x = clientX;
+  optionsCtxMenu.y = clientY;
+  showCtxMenu.value = true;
+};
+
 const startLongPress = (e: PointerEvent) => {
   cancelLongPress();
 
@@ -871,12 +881,7 @@ const startLongPress = (e: PointerEvent) => {
   longPressTimer = window.setTimeout(() => {
     longPressTimer = null;
     longPressFired = true;
-    swallowNextClick();
-
-    ctxMenuElement.value = element;
-    optionsCtxMenu.x = clientX;
-    optionsCtxMenu.y = clientY;
-    showCtxMenu.value = true;
+    openCanvasMenu(clientX, clientY, element);
   }, LONG_PRESS_MS);
 };
 
@@ -2026,6 +2031,15 @@ const onMouseUp = (e: PointerEvent) => {
       appStore.rightDrawerOpen = false;
     }*/
 
+    const selectedByBox =
+      selectedNodes.length +
+      selectedElements.length +
+      selectedNodalLoads.length +
+      selectedElementLoads.length +
+      selectedPrescribedBC.length +
+      selectedDimensions.length;
+    const wasMouse = e.pointerType === 'mouse';
+
     projectStore.clearSelection2();
     projectStore.selection2.elements = selectedElements;
     projectStore.selection2.nodes = selectedNodes;
@@ -2033,6 +2047,17 @@ const onMouseUp = (e: PointerEvent) => {
     projectStore.selection2.elementLoads = selectedElementLoads;
     projectStore.selection2.prescribedBC = selectedPrescribedBC;
     projectStore.selection2.dimensions = selectedDimensions;
+
+    /*
+     * A box drawn by finger opens the menu on release.
+     *
+     * The toggle only ever selected: a long press on what it selected is read as a press on the
+     * canvas and takes the selection away again, so Copy, Paste and Delete could not be reached at
+     * all. Offering them where the finger lifts is what makes a multiple selection worth having,
+     * and it costs no extra gesture. A box that caught nothing opens nothing.
+     */
+
+    if (!wasMouse && selectedByBox > 0) openCanvasMenu(e.clientX, e.clientY);
 
     // One box per arming: the toggle hands the next drag back to panning.
     touchSelectArmed.value = false;

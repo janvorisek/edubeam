@@ -130,7 +130,9 @@ const onMouseWheel = (event: WheelEvent): void => {
 };
 
 // A single finger pans, unless it starts on a node (the viewer switches mouseMode to drag it
-// instead). In the placing modes it still pans: the viewer places on a tap, not on a drag.
+// instead) or the clipboard is waiting to be placed. Pasting is the one placing mode with something
+// to aim: the preview has to be carried to where it goes, and with no hover a tap alone would place
+// it blind. The other placing modes place on a tap, so they still pan.
 /**
  * A finger reports far more often than the screen paints, and every report moves the view: it
  * writes the viewBox and changes the zoom, which every element in the drawing is sized from. The
@@ -170,7 +172,8 @@ const onTouchStart = (event: TouchEvent): void => {
   if (!props.touch) return;
 
   if (event.touches.length === 1) {
-    touchPointer.value.move = appStore.mouseMode !== MouseMode.MOVING;
+    touchPointer.value.move =
+      appStore.mouseMode !== MouseMode.MOVING && appStore.mouseMode !== MouseMode.PASTE_CLIPBOARD;
     touchPointer.value.x = event.touches[0].clientX;
     touchPointer.value.y = event.touches[0].clientY;
     touchPointer.value.pinch = false;

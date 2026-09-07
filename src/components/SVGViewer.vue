@@ -1925,8 +1925,12 @@ const onMouseUp = (e: PointerEvent) => {
   if (pendingTap) {
     pendingTap = false;
 
-    // Only a single finger that stayed put places anything
-    if (activePointers.size === 0 && !hasMoved(e)) {
+    // One finger, and no second one that would have made this a pinch. Pasting is placed wherever
+    // the finger ends, since carrying the preview there is how it is aimed; the other modes place
+    // only if it stayed put, so a pan or a drag still places nothing.
+    const carried = appStore.mouseMode === MouseMode.PASTE_CLIPBOARD;
+
+    if (activePointers.size === 0 && (carried || !hasMoved(e))) {
       updatePointerPosition(e);
       placeAtPointer(e);
     }

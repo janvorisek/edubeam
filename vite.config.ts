@@ -31,9 +31,17 @@ export default defineConfig({
       strictMessage: false,
     }),
     VitePWA({
-      mode: 'development',
-      //registerType: "autoUpdate",
-      injectRegister: 'script',
+      /*
+       * The update prompt owns the registration.
+       *
+       * `injectRegister: 'script'` used to emit registerSW.js and register the worker from
+       * index.html, while ReloadPrompt registered it a second time through workbox-window. The
+       * update button then messaged a registration that was not the one holding the waiting
+       * worker, so SKIP_WAITING never arrived, `controllerchange` never fired, and the spinner
+       * ran forever - a hard reload was the only way out. One registration, and it is the one the
+       * prompt can talk to.
+       */
+      injectRegister: null,
       workbox: {
         // The app bundle is a single chunk slightly over workbox's 2 MiB default; without
         // this it would be dropped from the precache and the app would stop working offline.
@@ -45,6 +53,22 @@ export default defineConfig({
         description:
           'Explore 2D structural analysis directly in your web browser – tailored for students and educators alike. Solve beam and truss structures.',
         theme_color: '#111133',
+        background_color: '#111133',
+        // Installed, it opens in its own window with no address bar - the drawing needs the height.
+        display: 'standalone',
+        start_url: '/',
+        scope: '/',
+        /*
+         * Without these a browser will not treat the app as installable: it offers a plain
+         * shortcut instead, which opens in a tab and keeps the address bar whatever the manifest
+         * asks for. The maskable one is padded to the safe zone so Android can crop it to
+         * whatever shape the launcher uses without eating the mark.
+         */
+        icons: [
+          { src: 'pwa-192.png', sizes: '192x192', type: 'image/png' },
+          { src: 'pwa-512.png', sizes: '512x512', type: 'image/png' },
+          { src: 'pwa-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+        ],
       },
     }),
     sentryVitePlugin({

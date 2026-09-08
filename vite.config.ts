@@ -17,7 +17,21 @@ const commitDate = execSync('git log -1 --format=%cI').toString().trimEnd();
 const commitHash = execSync('git rev-parse HEAD').toString().trimEnd();
 
 // https://vitejs.dev/config/
+/*
+ * Where the app is served from.
+ *
+ * The release has a domain to itself, so everything can be absolute from the root. A copy under a
+ * path - a university server, a preview build - has to say so, or every absolute URL points at the
+ * root of that host instead of at the app: the assets, the manifest, the service worker and the
+ * scope it registers with. An installed copy then opens the host's root rather than the app, and
+ * the worker never finds the one it is meant to replace.
+ *
+ *   VITE_BASE=/edubeam/ npm run build
+ */
+const base = process.env.VITE_BASE ?? '/';
+
 export default defineConfig({
+  base,
   plugins: [
     vue({
       template: { transformAssetUrls },
@@ -56,8 +70,9 @@ export default defineConfig({
         background_color: '#111133',
         // Installed, it opens in its own window with no address bar - the drawing needs the height.
         display: 'standalone',
-        start_url: '/',
-        scope: '/',
+        // Both follow the base: an installed app opens where the app actually is.
+        start_url: base,
+        scope: base,
         /*
          * Without these a browser will not treat the app as installable: it offers a plain
          * shortcut instead, which opens in a tab and keeps the address bar whatever the manifest

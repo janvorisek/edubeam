@@ -4,7 +4,7 @@ import { useRegisterSW } from 'virtual:pwa-register/vue';
 
 const updating = ref(false);
 
-const { offlineReady, needRefresh, updateServiceWorker } = useRegisterSW({
+const { offlineReady, needRefresh } = useRegisterSW({
   immediate: true,
   onRegisteredSW(swUrl, r) {
     console.log(`Service Worker at: ${swUrl}`);
@@ -22,28 +22,63 @@ async function close() {
 }
 
 /**
- * How long to wait for the new worker to take over before reloading anyway.
- *
- * `updateServiceWorker(true)` asks the waiting worker to skip waiting and reloads once it takes
- * control. If that never happens the dialog is persistent while updating, so the spinner is a dead
- * end - the page has to be reloaded by hand. Reloading ourselves is no worse than the update the
- * button promised, and it ends the wait.
+ * How long to wait for the new worker to take control before giving up on it.
  */
 const TAKEOVER_TIMEOUT_MS = 8000;
+
+/**
+ * Tells the waiting worker to take over, against the registration itself.
+ *
+ * `updateServiceWorker(true)` only messages a worker that workbox-window put into waiting. One
+ * that arrived any other way is "external" to it and the message goes nowhere - which is the
+ * position every client is in until it has loaded an index.html without the register script that
+ * used to be injected into it. Asking the registration directly works either way.
+ *
+ * Returns whether there was anything to hand over to.
+ */
+async function skipWaiting() {
+  const registration = await navigator.serviceWorker?.getRegistration();
+
+  if (!registration?.waiting) return false;
+
+  registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+
+  return true;
+}
 
 async function update() {
   if (updating.value) return;
   updating.value = true;
 
-  const fallback = window.setTimeout(() => window.location.reload(), TAKEOVER_TIMEOUT_MS);
+  // The new worker taking control is what the reload has to wait for. Reloading before that just
+  // loads the old app again, and leaves the same worker waiting - so this dialog comes straight
+  // back, which is the loop this replaced.
+  navigator.serviceWorker?.addEventListener('controllerchange', () => window.location.reload(), { once: true });
 
   try {
-    await updateServiceWorker(true);
+    if (!(await skipWaiting())) {
+      // Nothing is waiting, so the prompt is stale; a plain reload is the whole update.
+      window.location.reload();
+      return;
+    }
   } catch (err) {
-    window.clearTimeout(fallback);
     console.error('Error updating service worker:', err);
     updating.value = false;
+    return;
   }
+
+  /*
+   * If it still has not taken control, the worker is stuck and no amount of reloading will move
+   * it. Dropping the registration ends it for good: the page comes back uncontrolled and
+   * registers the new worker from scratch. One unregister is better than a dialog that returns
+   * on every load.
+   */
+  window.setTimeout(async () => {
+    const registration = await navigator.serviceWorker?.getRegistration();
+
+    await registration?.unregister();
+    window.location.reload();
+  }, TAKEOVER_TIMEOUT_MS);
 }
 </script>
 

@@ -13,9 +13,6 @@ import { registerPlugins } from '@/plugins';
 // Sentry
 import * as Sentry from '@sentry/vue';
 
-// Service Worker
-import { registerSW } from 'virtual:pwa-register';
-
 import './assets/main.scss';
 
 const app = createApp(App);

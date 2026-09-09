@@ -111,6 +111,18 @@ export default defineConfig({
   },
 
   build: {
-    sourcemap: true,
+    /*
+     * Generated for Sentry, but not pointed at from the bundle.
+     *
+     * The maps are uploaded during the build and then deleted, so nothing serves them - while every
+     * chunk still ended with a `sourceMappingURL` comment naming one. A browser with developer
+     * tools open asks for it, the SPA fallback answers a missing file with index.html, and the tool
+     * reports a source map that begins with "<" and is not JSON.
+     *
+     * "hidden" writes the maps for the upload and leaves the comment out, which is what the two
+     * halves of that want: Sentry can still name a line of the source, and no one else goes looking
+     * for a file that was never meant to be public.
+     */
+    sourcemap: 'hidden',
   },
 });

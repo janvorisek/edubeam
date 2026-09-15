@@ -1,53 +1,4 @@
 <template>
-  <!--
-    Pasting by pointing needs a steady hand and a view that already shows where the copy should go.
-    On a touch screen it needs both at once: moving the view to see the place ends the paste, so
-    anything further away than the screen has to be reached by typing instead.
-  -->
-  <v-dialog v-model="useAppStore().dialogs.pasteAtOffset" class="no-overlay" max-width="420">
-    <v-card>
-      <v-card-title>{{ $t('dialogs.pasteAtOffset.title') }}</v-card-title>
-
-      <v-card-text>
-        <div class="text-caption text-medium-emphasis mb-3">{{ $t('dialogs.pasteAtOffset.hint') }}</div>
-        <v-form @submit.prevent="pasteAtOffset()">
-          <v-container>
-            <v-row no-gutters>
-              <v-col cols="6" md="6">
-                <v-text-field
-                  v-model.number="pasteOffsetX"
-                  type="number"
-                  :label="`\u0394x [${useAppStore().units.Length}]`"
-                  hide-details="auto"
-                  autofocus
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <v-col cols="6" md="6">
-                <v-text-field
-                  v-model.number="pasteOffsetZ"
-                  type="number"
-                  :label="`\u0394z [${useAppStore().units.Length}]`"
-                  hide-details="auto"
-                  required
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-form>
-      </v-card-text>
-
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="green darken-1" @click="pasteAtOffset()">{{ $t('common.paste') }}</v-btn>
-        <v-btn color="red darken-1" @click="useAppStore().dialogs.pasteAtOffset = false">
-          {{ $t('dialogs.common.cancel') }}
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
-
   <v-dialog v-model="useAppStore().dialogs.addNode" class="no-overlay" max-width="420">
     <v-card>
       <v-card-title> {{ $t('dialogs.addNode.addNewNode') }} </v-card-title>
@@ -348,22 +299,6 @@ import { useProjectStore } from '../store/project';
 import { useAppStore } from '../store/app';
 import { DofID } from 'ts-fem';
 import { setUnsolved } from '../utils/index';
-import { useClipboardStore } from '../store/clipboard';
-
-/**
- * How far the copy is put from the original, in the length unit on show. Kept between openings, so
- * a row of the same bay is a matter of pressing the button again.
- */
-const pasteOffsetX = ref(0.0);
-const pasteOffsetZ = ref(0.0);
-
-const pasteAtOffset = () => {
-  const appStore = useAppStore();
-  const metres = (value: number) => (Number.isFinite(value) ? appStore.convertInverseLength(value) : 0);
-
-  useClipboardStore().paste({ x: metres(pasteOffsetX.value), z: metres(pasteOffsetZ.value) });
-  appStore.dialogs.pasteAtOffset = false;
-};
 
 const newNodeX = ref(0.0);
 const newNodeZ = ref(0.0);

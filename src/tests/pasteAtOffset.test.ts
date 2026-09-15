@@ -3,7 +3,8 @@ import { createPinia, setActivePinia } from 'pinia';
 import { DofID } from 'ts-fem';
 import { useProjectStore } from '@/store/project';
 import { useClipboardStore } from '@/store/clipboard';
-import { useAppStore } from '@/store/app';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 /**
  * Pasting by pointing needs the place to be on screen already. On a touch screen it needs more than
@@ -80,12 +81,17 @@ describe('pasting at an offset', () => {
     expect(coordinatesOf(store)).toHaveLength(2);
   });
 
-  it('has a dialog of its own to be opened from', () => {
-    // the pointer mode cannot survive a pan, so this way in does not go through it
-    expect(useAppStore().dialogs.pasteAtOffset).toBe(false);
+  it('is offered by the banner of the paste mode, not by a dialog of its own', () => {
+    const viewer = readFileSync(join(process.cwd(), 'src/components/SVGViewer.vue'), 'utf-8');
+    const banner = viewer.slice(viewer.indexOf('id="addModeBanner"'), viewer.indexOf('<context-menu'));
 
-    useAppStore().dialogs.pasteAtOffset = true;
-
-    expect(useAppStore().dialogs.pasteAtOffset).toBe(true);
+    /*
+     * Pressing paste is what a reader does first; offering the offset there means the two ways of
+     * placing a copy - pointing at it and saying how far - stand together rather than one of them
+     * being behind a second entry that does the same thing.
+     */
+    expect(banner).toContain('MouseMode.PASTE_CLIPBOARD');
+    expect(banner).toContain('pasteOffsetX');
+    expect(banner).toContain('pasteOffsetZ');
   });
 });

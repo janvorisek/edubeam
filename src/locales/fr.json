@@ -46,8 +46,7 @@
     "reverse_orientation": "Inverser la cote",
     "undo": "Annuler",
     "redo": "Rétablir",
-    "ok": "OK",
-    "pasteAtOffset": "Coller avec décalage…"
+    "ok": "OK"
   },
   "nodes": {
     "addNode": "Ajouter un nœud",
@@ -347,10 +346,6 @@
       "outOfPlaneNote": "La section n'est pas symétrique par rapport au plan du portique. Un calcul 2D n'est exact que si la barre est maintenue contre le déplacement latéral (hors de l'écran) et la torsion sur toute sa longueur, par exemple par une dalle ou des contreventements rapprochés ; des appuis aux nœuds ne suffisent pas. Une barre libre se tord aussi, car les charges n'agissent pas au centre de cisaillement, et cette torsion n'est pas prise en compte dans les déformations.",
       "outOfPlaneRestrained": "Maintenue latéralement et en torsion sur toute sa longueur : {inertia}",
       "outOfPlaneFree": "Libre de se déplacer latéralement (torsion toujours non prise en compte) : {inertia}"
-    },
-    "pasteAtOffset": {
-      "title": "Coller avec décalage",
-      "hint": "À quelle distance de l’endroit copié."
     }
   },
   "tooltip": {

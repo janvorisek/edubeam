@@ -660,6 +660,24 @@ watch(
   }
 );
 
+/**
+ * How far the copy goes from where it was taken, in the length unit on show.
+ *
+ * Pasting by pointing needs the place to be on screen already, and on a touch screen moving the
+ * view to bring it into sight ends the paste. The offset is kept between pastes, so a second bay of
+ * the same frame is a matter of pressing the button again.
+ */
+const pasteOffsetX = ref(0);
+const pasteOffsetZ = ref(0);
+
+const pasteAtOffset = () => {
+  const metres = (value: number) => (Number.isFinite(value) ? appStore.convertInverseLength(value) : 0);
+
+  useClipboardStore().paste({ x: metres(pasteOffsetX.value), z: metres(pasteOffsetZ.value) });
+  appStore.mouseMode = MouseMode.NONE;
+  startNode.value = null;
+};
+
 const paste = () => {
   if (!useClipboardStore().isAnythingInClipboard()) return;
 
@@ -2501,6 +2519,40 @@ defineExpose({ centerContent, fitContent });
         />
       </div>
 
+      <!--
+        Point at the place, or say how far from where it was copied. The second is the only way when
+        the place is off screen, since moving the view to find it ends the paste.
+      -->
+      <div v-if="appStore.mouseMode === MouseMode.PASTE_CLIPBOARD" class="d-flex align-center ga-2">
+        <v-text-field
+          v-model.number="pasteOffsetX"
+          type="number"
+          density="compact"
+          variant="plain"
+          hide-details
+          prefix="&Delta;x"
+          :suffix="appStore.units.Length"
+          style="width: 108px"
+          class="flex-grow-0"
+          @keydown.enter="pasteAtOffset"
+        />
+        <v-text-field
+          v-model.number="pasteOffsetZ"
+          type="number"
+          density="compact"
+          variant="plain"
+          hide-details
+          prefix="&Delta;z"
+          :suffix="appStore.units.Length"
+          style="width: 108px"
+          class="flex-grow-0"
+          @keydown.enter="pasteAtOffset"
+        />
+        <v-btn size="small" variant="tonal" density="comfortable" @click="pasteAtOffset">
+          {{ $t('common.paste') }}
+        </v-btn>
+      </div>
+
       <div v-if="appStore.mouseMode === MouseMode.ADD_ELEMENT" class="d-flex align-center ga-3">
         <v-checkbox-btn
           v-model="addElementHinges[0]"
@@ -2588,21 +2640,6 @@ defineExpose({ centerContent, fitContent });
         <template #label>
           <span class="label">{{ $t('common.paste') }}</span>
           <span class="ml-auto text-right" style="font-size: 10px">Ctrl + V</span>
-        </template>
-      </context-menu-item>
-      <!--
-        Pasting by pointing needs the place to be on screen already, and on a touch screen moving
-        the view to bring it into sight ends the paste. Typing the offset reaches anywhere.
-      -->
-      <context-menu-item
-        :disabled="!useClipboardStore().isAnythingInClipboard()"
-        @click="appStore.dialogs.pasteAtOffset = true"
-      >
-        <template #icon>
-          <v-icon size="x-small">mdi-arrow-top-right-bottom-left</v-icon>
-        </template>
-        <template #label>
-          <span class="label">{{ $t('common.pasteAtOffset') }}</span>
         </template>
       </context-menu-item>
       <context-menu-item

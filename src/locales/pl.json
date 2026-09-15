@@ -46,8 +46,7 @@
     "reverse_orientation": "Odwróć wymiar",
     "undo": "Cofnij",
     "redo": "Ponów",
-    "ok": "OK",
-    "pasteAtOffset": "Wklej z przesunięciem…"
+    "ok": "OK"
   },
   "nodes": {
     "addNode": "Dodaj węzeł",
@@ -347,10 +346,6 @@
       "outOfPlaneNote": "Przekrój nie jest symetryczny względem płaszczyzny ramy. Analiza 2D jest dokładna tylko wtedy, gdy pręt jest na całej długości zabezpieczony przed przemieszczeniem bocznym (poza ekran) i skręceniem, np. przez płytę lub gęsto rozmieszczone stężenia; same podpory w węzłach nie wystarczą. Swobodny pręt dodatkowo się skręca, ponieważ obciążenia nie działają w środku ścinania, a to skręcenie nie jest uwzględnione w przemieszczeniach.",
       "outOfPlaneRestrained": "Stężony bocznie i przeciw skręceniu na całej długości: {inertia}",
       "outOfPlaneFree": "Swobodny w kierunku bocznym (skręcenie nadal nieuwzględnione): {inertia}"
-    },
-    "pasteAtOffset": {
-      "title": "Wklej z przesunięciem",
-      "hint": "Jak daleko od miejsca skopiowania."
     }
   },
   "tooltip": {

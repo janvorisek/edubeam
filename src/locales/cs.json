@@ -41,8 +41,7 @@
     "reverse_orientation": "Převrátit kótu",
     "undo": "Zpět",
     "redo": "Znovu",
-    "ok": "OK",
-    "pasteAtOffset": "Vložit s posunem…"
+    "ok": "OK"
   },
   "tabs": {
     "nodes": "Uzly",
@@ -347,10 +346,6 @@
       "outOfPlaneNote": "Průřez není symetrický k rovině rámu. 2D výpočet je přesný jen tehdy, je-li prut po celé délce zajištěn proti vybočení do strany (z obrazovky) a proti zkroucení, například deskou nebo hustě rozmístěným ztužením; samotné podpory v uzlech nestačí. Volný prut se navíc kroutí, protože zatížení nepůsobí ve středu smyku, a toto zkroucení není v deformacích zahrnuto.",
       "outOfPlaneRestrained": "Zajištěn do strany a proti zkroucení po celé délce: {inertia}",
       "outOfPlaneFree": "Volně vychýlitelný do strany (zkroucení stále není zahrnuto): {inertia}"
-    },
-    "pasteAtOffset": {
-      "title": "Vložit s posunem",
-      "hint": "O kolik dál, než odkud bylo zkopírováno."
     }
   },
   "tooltip": {

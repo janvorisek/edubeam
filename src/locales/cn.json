@@ -46,8 +46,7 @@
     "reverse_orientation": "翻转标注",
     "undo": "撤销",
     "redo": "重做",
-    "ok": "确定",
-    "pasteAtOffset": "偏移粘贴…"
+    "ok": "确定"
   },
   "nodes": {
     "addNode": "添加节点",
@@ -347,10 +346,6 @@
       "outOfPlaneNote": "该截面关于框架平面不对称。只有当构件沿全长受到侧向（垂直于屏幕）变形和扭转约束时，例如由楼板或间距较小的支撑约束，二维分析才是精确的；仅靠节点处的支座是不够的。自由构件还会发生扭转，因为荷载未作用于剪切中心，而这部分扭转未计入变形结果。",
       "outOfPlaneRestrained": "沿全长侧向及扭转约束：{inertia}",
       "outOfPlaneFree": "侧向自由变形（仍未计入扭转）：{inertia}"
-    },
-    "pasteAtOffset": {
-      "title": "偏移粘贴",
-      "hint": "相对复制位置的距离。"
     }
   },
   "tooltip": {

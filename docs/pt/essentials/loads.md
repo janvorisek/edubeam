@@ -71,7 +71,7 @@ O diagrama de cortante salta `Fz` no ponto de aplicação e o diagrama de moment
 
 | Campo | Significado |
 | --- | --- |
-| **ΔT<sub>s</sub>** – variação axial de temperatura | variação uniforme em toda a seção → alongamento $\alpha\,\Delta T_s\,L$ |
+| **ΔT<sub>c</sub>** – variação axial de temperatura | variação uniforme em toda a seção → alongamento $\alpha\,\Delta T_c\,L$ |
 | **ΔT<sub>b</sub> − ΔT<sub>t</sub>** – fibra inferior menos superior | diferença de temperatura ao longo da altura → curvatura $\alpha\,(\Delta T_b - \Delta T_t)/h$ |
 
 As cargas térmicas usam o **α** do material e a **altura h** da seção. Um `ΔTb − ΔTt` positivo (fibra inferior mais quente) faz o elemento curvar para cima. Em uma estrutura isostática a temperatura só produz deslocamentos; é a restrição (extremidades engastadas, continuidade, barras redundantes) que a transforma em esforços.

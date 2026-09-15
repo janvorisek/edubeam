@@ -72,9 +72,10 @@
     "editLoad": "Edytuj obciążenie",
     "loadPositionOnBeam": "Pozycja obciążenia od węzła początkowego",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Zmiana temperatury dolnych minus górnych włókien",
-    "temperatureBending": "ΔT<sub>s</sub> ... Osiowa zmiana temperatury",
+    "temperatureBending": "ΔT<sub>c</sub> ... Osiowa zmiana temperatury",
     "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
-    "temperatureDeltaTs": "ΔT<sub>s</sub>",
+    "temperatureDeltaTs": "ΔT<sub>c</sub>",
+    "temperatureDeltaTsNoHTML": "ΔTc",
     "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
   },
   "tabs": {

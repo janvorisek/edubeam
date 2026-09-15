@@ -45,7 +45,13 @@ const elementLabel = computed(() => {
         (n1.coords[2] + n2.coords[2]) / 2
       })`"
     >
-      <template v-if="eload.values[0] !== 0">ΔTc={{ numberFormat.format(eload.values[0]) }}</template>
+      <!--
+        The same name the dialog and the bottom bar give it. It was written out here as a different
+        letter, so one load answered to two names depending on where it was read.
+      -->
+      <template v-if="eload.values[0] !== 0"
+        >{{ $t ? $t('loads.temperatureDeltaTsNoHTML') : 'ΔTs' }}={{ numberFormat.format(eload.values[0]) }}</template
+      >
       <template v-if="eload.values[1] !== 0 || eload.values[2] !== 0">
         {{ $t ? $t('loads.temperatureDeltaTbtNoHTML') : 'ΔTb-ΔTt' }}={{
           numberFormat.format(eload.values[1] - eload.values[2])

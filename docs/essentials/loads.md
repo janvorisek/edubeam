@@ -71,7 +71,7 @@ The shear diagram jumps by `Fz` and the moment diagram gets a kink at the load p
 
 | Field | Meaning |
 | --- | --- |
-| **ΔT<sub>s</sub>** – axial temperature change | uniform change over the whole section → elongation $\alpha\,\Delta T_s\,L$ |
+| **ΔT<sub>c</sub>** – axial temperature change | uniform change over the whole section → elongation $\alpha\,\Delta T_c\,L$ |
 | **ΔT<sub>b</sub> − ΔT<sub>t</sub>** – bottom minus top fibre | temperature difference across the depth → curvature $\alpha\,(\Delta T_b - \Delta T_t)/h$ |
 
 Temperature loads use the material's **α** and the section **height h**. A positive `ΔTb − ΔTt` (bottom warmer) makes the element hog (bend upward). In a statically determinate structure temperature causes only displacements; restraint (fixed ends, continuity, redundant members) turns it into internal forces.

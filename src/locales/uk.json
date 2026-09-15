@@ -72,9 +72,10 @@
     "editLoad": "Редагувати навантаження",
     "loadPositionOnBeam": "Положення навантаження від початкового вузла",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Зміна температури нижніх мінус верхніх волокон",
-    "temperatureBending": "ΔT<sub>s</sub> ... Осьова зміна температури",
+    "temperatureBending": "ΔT<sub>c</sub> ... Осьова зміна температури",
     "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
-    "temperatureDeltaTs": "ΔT<sub>s</sub>",
+    "temperatureDeltaTs": "ΔT<sub>c</sub>",
+    "temperatureDeltaTsNoHTML": "ΔTc",
     "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
   },
   "tabs": {

@@ -71,7 +71,7 @@ El diagrama de cortantes salta `Fz` en el punto de aplicación y el de flectores
 
 | Campo | Significado |
 | --- | --- |
-| **ΔT<sub>s</sub>** – cambio térmico axial | variación uniforme en toda la sección → alargamiento $\alpha\,\Delta T_s\,L$ |
+| **ΔT<sub>c</sub>** – cambio térmico axial | variación uniforme en toda la sección → alargamiento $\alpha\,\Delta T_c\,L$ |
 | **ΔT<sub>b</sub> − ΔT<sub>t</sub>** – fibra inferior menos superior | diferencia de temperatura en el canto → curvatura $\alpha\,(\Delta T_b - \Delta T_t)/h$ |
 
 Las cargas térmicas usan el **α** del material y la **altura h** de la sección. Un `ΔTb − ΔTt` positivo (fibra inferior más caliente) hace que el elemento se curve hacia arriba. En una estructura isostática la temperatura solo produce desplazamientos; la coacción (extremos empotrados, continuidad, barras redundantes) la convierte en esfuerzos.

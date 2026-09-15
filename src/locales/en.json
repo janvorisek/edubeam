@@ -46,7 +46,8 @@
     "reverse_orientation": "Flip dimension",
     "undo": "Undo",
     "redo": "Redo",
-    "ok": "OK"
+    "ok": "OK",
+    "pasteAtOffset": "Paste with offset…"
   },
   "nodes": {
     "addNode": "Add node",
@@ -346,6 +347,10 @@
       "outOfPlaneNote": "This section is not symmetric about the frame plane. A 2D analysis is exact only if the member is held against sideways deflection (out of the screen) and twisting along its whole length, for example by a slab or closely spaced bracing; supports at the nodes alone are not enough. A free member also twists because the loads act off its shear centre, and that twist is not included in the deflections.",
       "outOfPlaneRestrained": "Held sideways and against twisting along its length: {inertia}",
       "outOfPlaneFree": "Free to deflect sideways (twisting still not included): {inertia}"
+    },
+    "pasteAtOffset": {
+      "title": "Paste with offset",
+      "hint": "How far from where it was copied."
     }
   },
   "tooltip": {

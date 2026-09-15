@@ -46,7 +46,8 @@
     "reverse_orientation": "Inverter cota",
     "undo": "Desfazer",
     "redo": "Refazer",
-    "ok": "OK"
+    "ok": "OK",
+    "pasteAtOffset": "Colar com deslocamento…"
   },
   "nodes": {
     "addNode": "Adicionar nó",
@@ -346,6 +347,10 @@
       "outOfPlaneNote": "A seção não é simétrica em relação ao plano do pórtico. Uma análise 2D só é exata se a barra estiver contida contra deslocamento lateral (para fora da tela) e torção em todo o comprimento, por exemplo por uma laje ou por contraventamentos pouco espaçados; apoios nos nós não bastam. Uma barra livre também sofre torção porque as cargas não atuam no seu centro de cisalhamento, e essa torção não está incluída nos deslocamentos.",
       "outOfPlaneRestrained": "Contida lateralmente e à torção em todo o comprimento: {inertia}",
       "outOfPlaneFree": "Livre para se deslocar lateralmente (torção ainda não incluída): {inertia}"
+    },
+    "pasteAtOffset": {
+      "title": "Colar com deslocamento",
+      "hint": "A que distância de onde foi copiado."
     }
   },
   "tooltip": {

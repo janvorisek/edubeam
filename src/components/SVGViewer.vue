@@ -2590,6 +2590,21 @@ defineExpose({ centerContent, fitContent });
           <span class="ml-auto text-right" style="font-size: 10px">Ctrl + V</span>
         </template>
       </context-menu-item>
+      <!--
+        Pasting by pointing needs the place to be on screen already, and on a touch screen moving
+        the view to bring it into sight ends the paste. Typing the offset reaches anywhere.
+      -->
+      <context-menu-item
+        :disabled="!useClipboardStore().isAnythingInClipboard()"
+        @click="appStore.dialogs.pasteAtOffset = true"
+      >
+        <template #icon>
+          <v-icon size="x-small">mdi-arrow-top-right-bottom-left</v-icon>
+        </template>
+        <template #label>
+          <span class="label">{{ $t('common.pasteAtOffset') }}</span>
+        </template>
+      </context-menu-item>
       <context-menu-item
         :label="$t('common.delete')"
         :disabled="!projectStore.isAnythingSelected2()"

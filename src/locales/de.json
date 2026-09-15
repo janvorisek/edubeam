@@ -46,7 +46,8 @@
     "reverse_orientation": "Bemaßung umkehren",
     "undo": "Rückgängig",
     "redo": "Wiederholen",
-    "ok": "OK"
+    "ok": "OK",
+    "pasteAtOffset": "Mit Versatz einfügen…"
   },
   "nodes": {
     "addNode": "Knoten hinzufügen",
@@ -346,6 +347,10 @@
       "outOfPlaneNote": "Der Querschnitt ist nicht symmetrisch zur Rahmenebene. Eine 2D-Berechnung ist nur dann exakt, wenn der Stab über seine ganze Länge gegen seitliches Ausweichen (aus dem Bildschirm) und Verdrehen gehalten ist, z. B. durch eine Platte oder eng liegende Aussteifungen; Lager in den Knoten allein genügen nicht. Ein freier Stab verdreht sich zusätzlich, weil die Lasten nicht im Schubmittelpunkt angreifen, und diese Verdrehung ist in den Verformungen nicht enthalten.",
       "outOfPlaneRestrained": "Über die Länge seitlich und gegen Verdrehen gehalten: {inertia}",
       "outOfPlaneFree": "Seitlich frei verformbar (Verdrehung weiterhin nicht berücksichtigt): {inertia}"
+    },
+    "pasteAtOffset": {
+      "title": "Mit Versatz einfügen",
+      "hint": "Wie weit von der kopierten Stelle entfernt."
     }
   },
   "tooltip": {

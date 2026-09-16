@@ -49,7 +49,7 @@ import { createDimensionId, ensureDimensionId } from '@/utils/id';
 import { selectionSubtitle } from '@/utils/selectionDetails';
 import { boundsFromPoints } from '@/utils/fitBounds';
 import { placePopupNearAnchor, type AnchorRect } from '@/utils/popupPlacement';
-import { deviceHasHover } from '@/utils/pointer';
+import { deviceCanTouch, deviceHasHover } from '@/utils/pointer';
 import {
   Node,
   DofID,
@@ -2283,8 +2283,14 @@ defineExpose({ centerContent, fitContent });
       ></v-btn>
     </div>
     <div id="viewerControls" class="text-black d-flex" style="position: absolute; z-index: 100; top: 24px; right: 24px">
+      <!--
+        Shown wherever a finger can reach the screen, not only where nothing else can. A laptop with
+        a touch screen has hover and had this hidden from it - and it is the device that needs it
+        most, since there a drag of the mouse already selects a window and a drag of the finger
+        cannot.
+      -->
       <v-btn
-        v-if="!deviceHasHover"
+        v-if="deviceCanTouch"
         icon="mdi:mdi-select-drag"
         size="32"
         density="comfortable"

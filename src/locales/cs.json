@@ -141,7 +141,9 @@
     "temperatureAxial": "ΔT<sub>d</sub>-ΔT<sub>h</sub> ... Rozdíl oteplení dolních a horních vláken",
     "temperatureBending": "ΔT<sub>s</sub> ... Oteplení střednice",
     "temperatureDeltaTbt": "ΔT<sub>d</sub>-ΔT<sub>h</sub>",
-    "temperatureDeltaTbtNoHTML": "ΔTd-ΔTh"
+    "temperatureDeltaTbtNoHTML": "ΔTd-ΔTh",
+    "temperatureDeltaTs": "ΔT<sub>s</sub>",
+    "temperatureDeltaTsNoHTML": "ΔTs"
   },
   "material": {
     "alphaT": "α_T",

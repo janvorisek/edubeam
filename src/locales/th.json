@@ -71,9 +71,10 @@
     "editLoad": "แก้ไขแรงกระทำ",
     "loadPositionOnBeam": "ตำแหน่งโหลดจากโหนดเริ่มต้น",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... การเปลี่ยนแปลงอุณหภูมิของเส้นใยล่างลบเส้นใยบน",
-    "temperatureBending": "ΔT<sub>s</sub> ... การเปลี่ยนแปลงอุณหภูมิตามแนวแกน",
+    "temperatureBending": "ΔT<sub>c</sub> ... การเปลี่ยนแปลงอุณหภูมิตามแนวแกน",
     "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
-    "temperatureDeltaTs": "ΔT<sub>s</sub>",
+    "temperatureDeltaTs": "ΔT<sub>c</sub>",
+    "temperatureDeltaTsNoHTML": "ΔTc",
     "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
   },
   "tabs": {

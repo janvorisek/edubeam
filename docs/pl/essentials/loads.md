@@ -71,7 +71,7 @@ Wykres sił poprzecznych ma skok o `Fz`, a wykres momentów załamanie w miejscu
 
 | Pole | Znaczenie |
 | --- | --- |
-| **ΔT<sub>s</sub>** – osiowa zmiana temperatury | równomierna zmiana w całym przekroju → wydłużenie $\alpha\,\Delta T_s\,L$ |
+| **ΔT<sub>c</sub>** – osiowa zmiana temperatury | równomierna zmiana w całym przekroju → wydłużenie $\alpha\,\Delta T_c\,L$ |
 | **ΔT<sub>b</sub> − ΔT<sub>t</sub>** – dolne minus górne włókna | różnica temperatury na wysokości przekroju → krzywizna $\alpha\,(\Delta T_b - \Delta T_t)/h$ |
 
 Obciążenia termiczne używają **α** materiału i **wysokości h** przekroju. Dodatnie `ΔTb − ΔTt` (dół cieplejszy) wygina element ku górze. W układzie statycznie wyznaczalnym temperatura wywołuje wyłącznie przemieszczenia; więzy (utwierdzone końce, ciągłość, pręty nadliczbowe) zamieniają je w siły przekrojowe.

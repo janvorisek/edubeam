@@ -252,7 +252,8 @@
     },
     "changelog": {
       "title": "What's New?",
-      "description": "New features, improvements, and sneak peeks of what we’re working on."
+      "description": "New features, improvements, and sneak peeks of what we’re working on.",
+      "contributors": "Contributors to this release: {names}"
     },
     "polygonSection": {
       "title": "New polygonal cross section",

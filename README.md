@@ -111,6 +111,7 @@ worker it is meant to replace. The trailing slash matters.
 | `npm run build`                     | Produce the production bundle                    |
 | `npm run test` / `npm run test:run` | Execute unit tests via Vitest                    |
 | `npm run lint`                      | Run ESLint with auto-fix                         |
+| `npm run contributors`              | List who has committed since the last release    |
 | `npm run docs:dev`                  | Launch the VitePress docs locally                |
 | `npm run docs:build`                | Build the static documentation site              |
 

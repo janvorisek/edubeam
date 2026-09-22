@@ -238,7 +238,8 @@
     },
     "changelog": {
       "title": "更新内容",
-      "description": "新功能、改进以及我们正在开发内容的预览。"
+      "description": "新功能、改进以及我们正在开发内容的预览。",
+      "contributors": "参与此版本的贡献者：{names}"
     }
   },
   "tooltip": {

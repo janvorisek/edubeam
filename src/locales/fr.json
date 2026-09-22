@@ -238,7 +238,8 @@
     },
     "changelog": {
       "title": "Quoi de neuf ?",
-      "description": "Nouvelles fonctionnalités, améliorations et aperçu de ce que nous préparons."
+      "description": "Nouvelles fonctionnalités, améliorations et aperçu de ce que nous préparons.",
+      "contributors": "Ont contribué à cette version : {names}"
     }
   },
   "tooltip": {

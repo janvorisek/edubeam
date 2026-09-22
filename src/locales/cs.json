@@ -250,7 +250,8 @@
     },
     "changelog": {
       "title": "Co je nového?",
-      "description": "Novinky, vylepšení a ukázky toho, co chystáme dál."
+      "description": "Novinky, vylepšení a ukázky toho, co chystáme dál.",
+      "contributors": "Na této verzi se podíleli: {names}"
     },
     "polygonSection": {
       "title": "Nový polygonální průřez",

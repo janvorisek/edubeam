@@ -238,7 +238,8 @@
     },
     "changelog": {
       "title": "Was gibt's Neues?",
-      "description": "Neue Funktionen, Verbesserungen und Einblicke in das, woran wir gerade arbeiten."
+      "description": "Neue Funktionen, Verbesserungen und Einblicke in das, woran wir gerade arbeiten.",
+      "contributors": "Mitwirkende an dieser Version: {names}"
     }
   },
   "tooltip": {

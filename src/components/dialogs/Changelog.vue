@@ -46,6 +46,39 @@
                 <li v-for="(item, index) in release.highlights" :key="`${release.version}-${index}`">{{ item }}</li>
               </ul>
 
+              <i18n-t
+                v-if="release.contributors?.length"
+                keypath="dialogs.changelog.contributors"
+                tag="p"
+                scope="global"
+                class="changelog-contributors text-body-2 text-medium-emphasis"
+              >
+                <template #names>
+                  <template v-for="(part, index) in contributorParts(release.contributors)" :key="index">
+                    <component
+                      :is="part.person.url ? 'a' : 'span'"
+                      v-if="part.person"
+                      class="changelog-contributor"
+                      :href="part.person.url"
+                      :target="part.person.url ? '_blank' : undefined"
+                      :rel="part.person.url ? 'noopener noreferrer' : undefined"
+                      :title="contributorTitle(part.person)"
+                    >
+                      <img
+                        v-if="part.person.url"
+                        class="changelog-avatar"
+                        :src="`${part.person.url}.png?size=48`"
+                        :alt="''"
+                        loading="lazy"
+                        @error="hideAvatar"
+                      />
+                      <span>{{ part.person.name }}</span>
+                    </component>
+                    <template v-else>{{ part.literal }}</template>
+                  </template>
+                </template>
+              </i18n-t>
+
               <div v-if="release.media?.length" class="changelog-media-grid">
                 <figure
                   v-for="media in release.media"
@@ -128,6 +161,13 @@ type MediaEntry = {
   type?: 'image' | 'video';
 };
 
+type ContributorEntry = {
+  name: string;
+  /** A GitHub profile, which also supplies the avatar. Absent when no handle is known. */
+  url?: string;
+  commits?: number;
+};
+
 type ReleaseEntry = {
   version: string;
   title: string;
@@ -135,6 +175,11 @@ type ReleaseEntry = {
   highlights: string[];
   tag?: string;
   media?: MediaEntry[];
+  /**
+   * Written by scripts/contributors.mjs. Names and links do not translate, so they are read from
+   * the base file whatever the language, and a locale never has to repeat them.
+   */
+  contributors?: ContributorEntry[];
 };
 
 type UpcomingEntry = {
@@ -183,6 +228,38 @@ const cloneMedia = (entry: MediaEntry): MediaEntry => ({
   size: entry.size,
 });
 
+type ContributorPart = { person: ContributorEntry; literal?: undefined } | { person?: undefined; literal: string };
+
+/**
+ * A list of people, joined the way the reader's language joins lists.
+ *
+ * Intl.ListFormat knows that English wants 'a, b and c' and Czech 'a, b a c', so no locale has to
+ * translate a separator - the message only has to say where the list goes. formatToParts keeps the
+ * people as elements, so each one can still be a link instead of being flattened into a string.
+ */
+const contributorParts = (people: ContributorEntry[]): ContributorPart[] => {
+  const names = people.map((person) => person.name);
+  let next = 0;
+
+  try {
+    const formatter = new Intl.ListFormat(locale.value, { style: 'long', type: 'conjunction' });
+    return formatter
+      .formatToParts(names)
+      .map((part) => (part.type === 'element' ? { person: people[next++] } : { literal: part.value }));
+  } catch {
+    // An unknown locale tag is not worth losing the credit over.
+    return people.flatMap((person, index) => (index ? [{ literal: ', ' }, { person }] : [{ person }]));
+  }
+};
+
+const contributorTitle = (person: ContributorEntry) =>
+  person.commits ? `${person.name} - ${person.commits} commits` : person.name;
+
+/** An avatar is a nicety; offline, or with GitHub blocked, the name alone carries the credit. */
+const hideAvatar = (event: Event) => {
+  (event.target as HTMLElement).style.display = 'none';
+};
+
 const cloneRelease = (entry: ReleaseEntry): ReleaseEntry => ({
   version: entry.version,
   title: entry.title,
@@ -190,6 +267,7 @@ const cloneRelease = (entry: ReleaseEntry): ReleaseEntry => ({
   highlights: [...entry.highlights],
   tag: entry.tag,
   media: entry.media ? entry.media.map(cloneMedia) : undefined,
+  contributors: entry.contributors ? entry.contributors.map((person) => ({ ...person })) : undefined,
 });
 
 const cloneUpcoming = (entry: UpcomingEntry): UpcomingEntry => ({
@@ -237,6 +315,8 @@ const mergeChangelog = (base: ChangelogData, localized: ChangelogData | null): C
       tag: override.tag ?? baseEntry.tag,
       media:
         override.media && override.media.length ? override.media.map(cloneMedia) : baseEntry.media?.map(cloneMedia),
+      // Deliberately not overridable: one list of people, shared by every language.
+      contributors: baseEntry.contributors?.map((person) => ({ ...person })),
     };
   });
 
@@ -473,6 +553,35 @@ onBeforeUnmount(() => {
 
 .changelog-items li {
   margin-bottom: 6px;
+}
+
+.changelog-contributors {
+  margin: 12px 0 0;
+}
+
+.changelog-contributor {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: inherit;
+  text-decoration: none;
+  vertical-align: middle;
+}
+
+a.changelog-contributor span {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+a.changelog-contributor:hover {
+  color: rgb(var(--v-theme-primary));
+}
+
+.changelog-avatar {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(var(--v-theme-on-surface), 0.08);
 }
 
 .changelog-upcoming {

@@ -238,7 +238,8 @@
     },
     "changelog": {
       "title": "O que há de novo?",
-      "description": "Novos recursos, melhorias e prévias do que estamos desenvolvendo."
+      "description": "Novos recursos, melhorias e prévias do que estamos desenvolvendo.",
+      "contributors": "Contribuíram para esta versão: {names}"
     }
   },
   "tooltip": {

@@ -233,6 +233,9 @@
     },
     "editNode": {
       "editNode": "แก้ไขโหนด"
+    },
+    "changelog": {
+      "contributors": "ผู้มีส่วนร่วมในเวอร์ชันนี้: {names}"
     }
   },
   "tooltip": {

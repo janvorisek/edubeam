@@ -238,7 +238,8 @@
     },
     "changelog": {
       "title": "Co nowego?",
-      "description": "Nowe funkcje, usprawnienia i zapowiedzi tego, nad czym pracujemy."
+      "description": "Nowe funkcje, usprawnienia i zapowiedzi tego, nad czym pracujemy.",
+      "contributors": "Nad tą wersją pracowali: {names}"
     }
   },
   "tooltip": {

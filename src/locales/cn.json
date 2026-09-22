@@ -72,9 +72,10 @@
     "editLoad": "编辑荷载",
     "loadPositionOnBeam": "距起始节点的荷载位置",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... 下缘与上缘纤维温差",
-    "temperatureBending": "ΔT<sub>s</sub> ... 轴向温度变化",
+    "temperatureBending": "ΔT<sub>c</sub> ... 轴向温度变化",
     "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
-    "temperatureDeltaTs": "ΔT<sub>s</sub>",
+    "temperatureDeltaTs": "ΔT<sub>c</sub>",
+    "temperatureDeltaTsNoHTML": "ΔTc",
     "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
   },
   "tabs": {
@@ -101,6 +102,11 @@
     "results_scale": "结果缩放",
     "grid_snap_step": "网格吸附步长",
     "snap_to_grid": "吸附到网格",
+    "number_format": "数字格式",
+    "number_format_description": "结果数值的书写方式；小数分隔符跟随语言。",
+    "number_format_auto": "自动",
+    "number_format_scientific": "科学计数 (1.5 · 10⁴)",
+    "number_format_engineering": "工程计数 (15 · 10³)",
     "language": "语言",
     "language_and_locale": "语言与区域",
     "show_normal_force": "显示轴力",
@@ -232,7 +238,8 @@
     },
     "changelog": {
       "title": "更新内容",
-      "description": "新功能、改进以及我们正在开发内容的预览。"
+      "description": "新功能、改进以及我们正在开发内容的预览。",
+      "contributors": "参与此版本的贡献者：{names}"
     }
   },
   "tooltip": {
@@ -319,7 +326,8 @@
     "temperature": "温度荷载"
   },
   "dimensioning": {
-    "add_dimension": "添加标注"
+    "add_dimension": "添加标注",
+    "add_along_element": "标注单元 {label}"
   },
   "warnings": {
     "noMaterialsDefined": "尚未定义材料。",

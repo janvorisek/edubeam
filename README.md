@@ -59,9 +59,9 @@ Under the hood Edubeam combines a Timoshenko beam formulation, axial truss eleme
 ## Launch & try it
 
 1. **Open the live app** – [https://run.edubeam.app](https://run.edubeam.app)
-2. **Load an example** – use the *Examples* sidebar or jump straight to the [gallery](https://run.edubeam.app/?panel=examples).
+2. **Load an example** – use the _Examples_ sidebar or jump straight to the [gallery](https://run.edubeam.app/?panel=examples).
 3. **Inspect the guides** – the [Introduction](https://edubeam.app/guide/introduction) and [User Interface](https://edubeam.app/guide/user-interface) pages mirror the workflow inside the app.
-4. **Share your work** – use *Share model* to generate a link or download a JSON snapshot for grading and archives.
+4. **Share your work** – use _Share model_ to generate a link or download a JSON snapshot for grading and archives.
 
 Edubeam is optimized for desktops/laptops but also runs on tablets with mouse or pencil input.
 
@@ -89,16 +89,31 @@ npm run build
 
 Assets are emitted to `dist/` and can be deployed to any static host. The main branch is continuously deployed to [run.edubeam.app](https://run.edubeam.app).
 
+### Serving from a subdirectory
+
+The build assumes the app has a host to itself. To serve it from a path, say
+`https://example.org/edubeam/`, say so at build time:
+
+```bash
+VITE_BASE=/edubeam/ npm run build
+```
+
+Without it every absolute URL points at the root of the host rather than at the app: the assets,
+the manifest, the service worker and the scope it registers with. The app may still load, but an
+installed copy opens the host's root instead of the app, and the update prompt cannot find the
+worker it is meant to replace. The trailing slash matters.
+
 ## Available scripts
 
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Start the application in development mode (Vite) |
-| `npm run build` | Produce the production bundle |
-| `npm run test` / `npm run test:run` | Execute unit tests via Vitest |
-| `npm run lint` | Run ESLint with auto-fix |
-| `npm run docs:dev` | Launch the VitePress docs locally |
-| `npm run docs:build` | Build the static documentation site |
+| Command                             | Description                                      |
+| ----------------------------------- | ------------------------------------------------ |
+| `npm run dev`                       | Start the application in development mode (Vite) |
+| `npm run build`                     | Produce the production bundle                    |
+| `npm run test` / `npm run test:run` | Execute unit tests via Vitest                    |
+| `npm run lint`                      | Run ESLint with auto-fix                         |
+| `npm run contributors`              | List who has committed since the last release    |
+| `npm run docs:dev`                  | Launch the VitePress docs locally                |
+| `npm run docs:build`                | Build the static documentation site              |
 
 ## Documentation & localization
 

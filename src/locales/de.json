@@ -72,9 +72,10 @@
     "editLoad": "Last bearbeiten",
     "loadPositionOnBeam": "Lastposition vom Anfangsknoten",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Temperaturänderung untere minus obere Faser",
-    "temperatureBending": "ΔT<sub>s</sub> ... Axiale Temperaturänderung",
+    "temperatureBending": "ΔT<sub>c</sub> ... Axiale Temperaturänderung",
     "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
-    "temperatureDeltaTs": "ΔT<sub>s</sub>",
+    "temperatureDeltaTs": "ΔT<sub>c</sub>",
+    "temperatureDeltaTsNoHTML": "ΔTc",
     "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
   },
   "tabs": {
@@ -101,6 +102,11 @@
     "results_scale": "Ergebnisskalierung",
     "grid_snap_step": "Raster-Schrittweite",
     "snap_to_grid": "Am Raster ausrichten",
+    "number_format": "Zahlenformat",
+    "number_format_description": "Wie Ergebniswerte geschrieben werden; das Dezimaltrennzeichen folgt der Sprache.",
+    "number_format_auto": "Automatisch",
+    "number_format_scientific": "Wissenschaftlich (1,5 · 10⁴)",
+    "number_format_engineering": "Technisch (15 · 10³)",
     "language": "Sprache",
     "language_and_locale": "Sprache & Region",
     "show_normal_force": "Normalkraft anzeigen",
@@ -232,7 +238,8 @@
     },
     "changelog": {
       "title": "Was gibt's Neues?",
-      "description": "Neue Funktionen, Verbesserungen und Einblicke in das, woran wir gerade arbeiten."
+      "description": "Neue Funktionen, Verbesserungen und Einblicke in das, woran wir gerade arbeiten.",
+      "contributors": "Mitwirkende an dieser Version: {names}"
     }
   },
   "tooltip": {
@@ -319,7 +326,8 @@
     "temperature": "Temperaturlast"
   },
   "dimensioning": {
-    "add_dimension": "Bemaßung hinzufügen"
+    "add_dimension": "Bemaßung hinzufügen",
+    "add_along_element": "Element {label} bemaßen"
   },
   "warnings": {
     "noMaterialsDefined": "Keine Materialien definiert.",

@@ -71,7 +71,7 @@ Die Querkraftlinie springt an der Laststelle um `Fz`, die Momentenlinie bekommt 
 
 | Feld | Bedeutung |
 | --- | --- |
-| **ΔT<sub>s</sub>** – axiale Temperaturänderung | gleichmäßige Erwärmung des gesamten Querschnitts → Verlängerung $\alpha\,\Delta T_s\,L$ |
+| **ΔT<sub>c</sub>** – axiale Temperaturänderung | gleichmäßige Erwärmung des gesamten Querschnitts → Verlängerung $\alpha\,\Delta T_c\,L$ |
 | **ΔT<sub>b</sub> − ΔT<sub>t</sub>** – untere minus obere Faser | Temperaturunterschied über die Höhe → Krümmung $\alpha\,(\Delta T_b - \Delta T_t)/h$ |
 
 Temperaturlasten verwenden **α** des Materials und die **Querschnittshöhe h**. Ein positives `ΔTb − ΔTt` (untere Faser wärmer) lässt das Element nach oben ausbauchen. In einem statisch bestimmten Tragwerk erzeugt Temperatur nur Verformungen; erst Zwängung (eingespannte Enden, Durchlaufwirkung, überzählige Stäbe) macht daraus Schnittgrößen.

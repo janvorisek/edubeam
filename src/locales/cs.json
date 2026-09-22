@@ -65,6 +65,11 @@
     "results_scale": "Měřítko výsledků",
     "snap_to_grid": "Přichytávat k mřížce",
     "grid_snap_step": "Krok příchytu k mřížce",
+    "number_format": "Formát čísel",
+    "number_format_description": "Jak se zapisují hodnoty výsledků; desetinný oddělovač se řídí jazykem.",
+    "number_format_auto": "Automatický",
+    "number_format_scientific": "Vědecký (1,5 · 10⁴)",
+    "number_format_engineering": "Inženýrský (15 · 10³)",
     "language": "Jazyk",
     "show_bending_moment": "Kreslit ohybový moment",
     "show_deformed_shape": "Kreslit deformovaný tvar",
@@ -136,7 +141,9 @@
     "temperatureAxial": "ΔT<sub>d</sub>-ΔT<sub>h</sub> ... Rozdíl oteplení dolních a horních vláken",
     "temperatureBending": "ΔT<sub>s</sub> ... Oteplení střednice",
     "temperatureDeltaTbt": "ΔT<sub>d</sub>-ΔT<sub>h</sub>",
-    "temperatureDeltaTbtNoHTML": "ΔTd-ΔTh"
+    "temperatureDeltaTbtNoHTML": "ΔTd-ΔTh",
+    "temperatureDeltaTs": "ΔT<sub>s</sub>",
+    "temperatureDeltaTsNoHTML": "ΔTs"
   },
   "material": {
     "alphaT": "α_T",
@@ -243,7 +250,8 @@
     },
     "changelog": {
       "title": "Co je nového?",
-      "description": "Novinky, vylepšení a ukázky toho, co chystáme dál."
+      "description": "Novinky, vylepšení a ukázky toho, co chystáme dál.",
+      "contributors": "Na této verzi se podíleli: {names}"
     },
     "polygonSection": {
       "title": "Nový polygonální průřez",
@@ -376,7 +384,8 @@
     "loadType": "Typ zatížení"
   },
   "dimensioning": {
-    "add_dimension": "Přidat kótu"
+    "add_dimension": "Přidat kótu",
+    "add_along_element": "Okótovat prvek {label}"
   },
   "warnings": {
     "noMaterialsDefined": "Není definovaný žádný materiál",
@@ -451,8 +460,10 @@
     "title": "Exportovat obrázek",
     "transparentBackground": "Průhledné pozadí",
     "download": "Stáhnout PNG",
+    "downloadSvg": "Stáhnout SVG",
     "copyToClipboard": "Kopírovat do schránky",
     "copied": "Obrázek zkopírován do schránky",
+    "exported": "Obrázek exportován",
     "failed": "Obrázek se nepodařilo vykreslit.",
     "previewAlt": "Náhled exportovaného obrázku",
     "instructions": "Obrázek se vykreslí přímo pro zvolenou velikost, takže čáry i popisky si zachovají skutečnou tloušťku. Stejná velikost vždy zarámuje konstrukci stejně – hodí se pro export M, N a V vedle sebe.",
@@ -461,7 +472,18 @@
     "lockAspect": "Zachovat poměr stran",
     "fitPreview": "Přizpůsobit",
     "actualSize": "Skutečná velikost",
-    "preview": "Náhled"
+    "preview": "Náhled",
+    "fitAll": "Vše",
+    "window": "Výřez…",
+    "pickWindowHint": "Tažením vyberte oblast výkresu k exportu",
+    "dragEdge": "Tažením rozšiřte nebo ořízněte tuto stranu",
+    "scale": "Měřítko",
+    "scaleCaption": "1 m modelu je {cm} cm na papíře (96 DPI). Kolečkem myši nad náhledem přiblížíte.",
+    "doesNotFit": "V této velikosti se vše nevejde: diagramy, zatížení a popisky přesahují okraj asi o {px} px. Zmenšete diagramy (nyní {diagrams} px) nebo zvětšete plátno.",
+    "shrinkDiagrams": "Zmenšit diagramy",
+    "enlargeCanvas": "Zvětšit plátno",
+    "diagramHeight": "Výška diagramů",
+    "shrinkNotEnough": "Menší diagramy zde nestačí – samotné zatížení a popisky potřebují více místa. Zvětšete plátno."
   },
   "examples": {
     "title": "Příklady",

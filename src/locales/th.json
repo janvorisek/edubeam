@@ -71,9 +71,10 @@
     "editLoad": "แก้ไขแรงกระทำ",
     "loadPositionOnBeam": "ตำแหน่งโหลดจากโหนดเริ่มต้น",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... การเปลี่ยนแปลงอุณหภูมิของเส้นใยล่างลบเส้นใยบน",
-    "temperatureBending": "ΔT<sub>s</sub> ... การเปลี่ยนแปลงอุณหภูมิตามแนวแกน",
+    "temperatureBending": "ΔT<sub>c</sub> ... การเปลี่ยนแปลงอุณหภูมิตามแนวแกน",
     "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
-    "temperatureDeltaTs": "ΔT<sub>s</sub>",
+    "temperatureDeltaTs": "ΔT<sub>c</sub>",
+    "temperatureDeltaTsNoHTML": "ΔTc",
     "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
   },
   "tabs": {
@@ -100,6 +101,11 @@
     "results_scale": "ขนาดผลลัพธ์",
     "grid_snap_step": "ระยะจับตาข่าย",
     "snap_to_grid": "จับติดตาข่าย",
+    "number_format": "รูปแบบตัวเลข",
+    "number_format_description": "วิธีเขียนค่าผลลัพธ์ ตัวคั่นทศนิยมเป็นไปตามภาษา",
+    "number_format_auto": "อัตโนมัติ",
+    "number_format_scientific": "วิทยาศาสตร์ (1.5 · 10⁴)",
+    "number_format_engineering": "วิศวกรรม (15 · 10³)",
     "language": "ภาษา",
     "language_and_locale": "ภาษาและภูมิภาค",
     "show_normal_force": "แสดงแรงปกติ",
@@ -227,6 +233,9 @@
     },
     "editNode": {
       "editNode": "แก้ไขโหนด"
+    },
+    "changelog": {
+      "contributors": "ผู้มีส่วนร่วมในเวอร์ชันนี้: {names}"
     }
   },
   "tooltip": {
@@ -312,7 +321,8 @@
     "temperature": "แรงกระทำเนื่องจากอุณหภูมิ"
   },
   "dimensioning": {
-    "add_dimension": "เพิ่มมิติ"
+    "add_dimension": "เพิ่มมิติ",
+    "add_along_element": "ใส่ขนาดชิ้นส่วน {label}"
   },
   "warnings": {
     "noMaterialsDefined": "ไม่มีการกำหนดวัสดุ",

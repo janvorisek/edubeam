@@ -72,9 +72,10 @@
     "editLoad": "Editar carga",
     "loadPositionOnBeam": "Posición de carga desde el nodo inicial",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Cambio de temperatura de las fibras inferiores menos superiores",
-    "temperatureBending": "ΔT<sub>s</sub> ... Cambio térmico axial",
+    "temperatureBending": "ΔT<sub>c</sub> ... Cambio térmico axial",
     "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
-    "temperatureDeltaTs": "ΔT<sub>s</sub>",
+    "temperatureDeltaTs": "ΔT<sub>c</sub>",
+    "temperatureDeltaTsNoHTML": "ΔTc",
     "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
   },
   "tabs": {
@@ -101,6 +102,11 @@
     "results_scale": "Escala de resultados",
     "grid_snap_step": "Paso de ajuste a la cuadrícula",
     "snap_to_grid": "Ajustar a la cuadrícula",
+    "number_format": "Formato numérico",
+    "number_format_description": "Cómo se escriben los resultados; el separador decimal sigue el idioma.",
+    "number_format_auto": "Automático",
+    "number_format_scientific": "Científico (1,5 · 10⁴)",
+    "number_format_engineering": "Ingeniería (15 · 10³)",
     "language": "Idioma",
     "language_and_locale": "Idioma y configuración regional",
     "show_normal_force": "Mostrar fuerza normal",
@@ -232,7 +238,8 @@
     },
     "changelog": {
       "title": "¿Qué hay de nuevo?",
-      "description": "Nuevas funciones, mejoras y un vistazo a lo que estamos preparando."
+      "description": "Nuevas funciones, mejoras y un vistazo a lo que estamos preparando.",
+      "contributors": "Han contribuido a esta versión: {names}"
     }
   },
   "tooltip": {
@@ -319,7 +326,8 @@
     "temperature": "Carga térmica"
   },
   "dimensioning": {
-    "add_dimension": "Añadir cota"
+    "add_dimension": "Añadir cota",
+    "add_along_element": "Acotar el elemento {label}"
   },
   "warnings": {
     "noMaterialsDefined": "No hay materiales definidos.",

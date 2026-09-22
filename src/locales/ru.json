@@ -72,9 +72,10 @@
     "editLoad": "Редактировать нагрузку",
     "loadPositionOnBeam": "Положение нагрузки от начального узла",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Изменение температуры нижних минус верхних волокон",
-    "temperatureBending": "ΔT<sub>s</sub> ... Осевое изменение температуры",
+    "temperatureBending": "ΔT<sub>c</sub> ... Осевое изменение температуры",
     "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
-    "temperatureDeltaTs": "ΔT<sub>s</sub>",
+    "temperatureDeltaTs": "ΔT<sub>c</sub>",
+    "temperatureDeltaTsNoHTML": "ΔTc",
     "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
   },
   "tabs": {
@@ -101,6 +102,11 @@
     "results_scale": "Масштаб результатов",
     "grid_snap_step": "Шаг привязки к сетке",
     "snap_to_grid": "Привязка к сетке",
+    "number_format": "Формат чисел",
+    "number_format_description": "Как записываются результаты; десятичный разделитель зависит от языка.",
+    "number_format_auto": "Автоматический",
+    "number_format_scientific": "Научный (1,5 · 10⁴)",
+    "number_format_engineering": "Инженерный (15 · 10³)",
     "language": "Язык",
     "language_and_locale": "Язык и локаль",
     "show_normal_force": "Показать продольную силу",
@@ -232,7 +238,8 @@
     },
     "changelog": {
       "title": "Что нового?",
-      "description": "Новые возможности, улучшения и анонсы того, над чем мы работаем."
+      "description": "Новые возможности, улучшения и анонсы того, над чем мы работаем.",
+      "contributors": "Над этой версией работали: {names}"
     }
   },
   "tooltip": {
@@ -319,7 +326,8 @@
     "temperature": "Температурная нагрузка"
   },
   "dimensioning": {
-    "add_dimension": "Добавить размер"
+    "add_dimension": "Добавить размер",
+    "add_along_element": "Образмерить элемент {label}"
   },
   "warnings": {
     "noMaterialsDefined": "Материалы не определены.",

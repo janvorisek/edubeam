@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { Bounds } from '@/utils/fitBounds';
 import { centerSvgContent, fitSvgContent } from '@/utils/fitSvgContent';
+import type { ViewBox } from '@/utils/fitBounds';
+import type { FitContentResult } from '@/utils/fitContent';
 import { nextTick, onMounted, onBeforeUnmount, ref } from 'vue';
 
 const props = withDefaults(
@@ -172,22 +174,62 @@ const centerContent = (): void => {
 let fitVersion = 0;
 
 /**
+ * Show exactly this box of the model — an AutoCAD "window" rather than a fit.
+ *
+ * The box is grown, centred, to the viewport's aspect ratio first: an `<svg>` letterboxes
+ * a viewBox of a different shape, and then what is visible would be more than what was
+ * asked for. Growing it here keeps `viewBox` the literal truth about the view. Counts as
+ * fitted so the drawing is revealed, and cancels any fit still in flight.
+ */
+const setViewBox = (box: ViewBox): void => {
+  const svgEl = svgRef.value as SVGSVGElement | null;
+  if (!svgEl || !box.w || !box.h) return;
+
+  fitVersion++;
+  onWindowResize();
+
+  const width = svgEl.clientWidth;
+  const height = svgEl.clientHeight;
+  if (!width || !height) return;
+
+  const aspect = width / height;
+  let { x, y, w, h } = box;
+
+  if (w / h > aspect) {
+    const grown = w / aspect;
+    y -= (grown - h) / 2;
+    h = grown;
+  } else {
+    const grown = h * aspect;
+    x -= (grown - w) / 2;
+    w = grown;
+  }
+
+  viewBox = { x, y, w, h };
+  scale.value = width / w;
+  fitted.value = true;
+  autoFit.value = false;
+
+  updateMatrix(true);
+};
+
+/**
  * Zoom and pan so that everything drawn - geometry, labels, loads and result
  * diagrams - fills the viewport minus the padding. Resolves once the final view is
  * shown; `false` when there was nothing to fit or a newer fit took over.
  */
-const fitContent = async (): Promise<boolean> => {
+const fitContent = async (): Promise<FitContentResult | null> => {
   const svgEl = svgRef.value as SVGSVGElement | null;
 
-  if (!rootRef.value || !svgEl) return false;
+  if (!rootRef.value || !svgEl) return null;
 
   onWindowResize();
 
-  if (!svgEl.clientWidth || !svgEl.clientHeight) return false;
+  if (!svgEl.clientWidth || !svgEl.clientHeight) return null;
 
   if (!props.canFitContent) {
     centerContent();
-    return false;
+    return null;
   }
 
   const version = ++fitVersion;
@@ -195,7 +237,7 @@ const fitContent = async (): Promise<boolean> => {
   // Label widths change when the web font arrives; a fit measured before that lands
   // slightly off. Resolves immediately once loaded.
   if (typeof document !== 'undefined' && document.fonts?.ready) await document.fonts.ready;
-  if (version !== fitVersion || svgRef.value !== svgEl) return false;
+  if (version !== fitVersion || svgRef.value !== svgEl) return null;
 
   const result = await fitSvgContent(
     {
@@ -221,7 +263,7 @@ const fitContent = async (): Promise<boolean> => {
     autoFit.value = true;
   }
 
-  return result !== null;
+  return result;
 };
 
 let resizewatcher: ResizeObserver;
@@ -257,7 +299,7 @@ const onMouseUp = () => {
 const rootRef = ref<HTMLElement | null>(null);
 const svgRef = ref<SVGElement | null>(null);
 
-defineExpose({ scale, fitted, centerContent, fitContent, updateMatrix, onWindowResize, zoom });
+defineExpose({ scale, fitted, centerContent, fitContent, setViewBox, updateMatrix, onWindowResize, zoom });
 </script>
 
 <template>

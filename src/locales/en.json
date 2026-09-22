@@ -72,9 +72,10 @@
     "editLoad": "Edit load",
     "loadPositionOnBeam": "Load position from start node",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Temperature change of bottom minus top fibers",
-    "temperatureBending": "ΔT<sub>s</sub> ... Axial temperature change",
+    "temperatureBending": "ΔT<sub>c</sub> ... Axial temperature change",
     "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
-    "temperatureDeltaTs": "ΔT<sub>s</sub>",
+    "temperatureDeltaTs": "ΔT<sub>c</sub>",
+    "temperatureDeltaTsNoHTML": "ΔTc",
     "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
   },
   "tabs": {
@@ -108,6 +109,11 @@
     "results_scale": "Results scale",
     "grid_snap_step": "Grid snap step",
     "snap_to_grid": "Snap to grid",
+    "number_format": "Number format",
+    "number_format_description": "How result values are written; the decimal separator follows the language.",
+    "number_format_auto": "Automatic",
+    "number_format_scientific": "Scientific (1.5 · 10⁴)",
+    "number_format_engineering": "Engineering (15 · 10³)",
     "language": "Language",
     "language_and_locale": "Language & Locale",
     "show_normal_force": "Show normal force",
@@ -246,7 +252,8 @@
     },
     "changelog": {
       "title": "What's New?",
-      "description": "New features, improvements, and sneak peeks of what we’re working on."
+      "description": "New features, improvements, and sneak peeks of what we’re working on.",
+      "contributors": "Contributors to this release: {names}"
     },
     "polygonSection": {
       "title": "New polygonal cross section",
@@ -384,7 +391,8 @@
     "temperature": "Temperature load"
   },
   "dimensioning": {
-    "add_dimension": "Add dimension"
+    "add_dimension": "Add dimension",
+    "add_along_element": "Dimension element {label}"
   },
   "warnings": {
     "noMaterialsDefined": "No materials defined.",
@@ -459,8 +467,10 @@
     "title": "Export image",
     "transparentBackground": "Transparent background",
     "download": "Download PNG",
+    "downloadSvg": "Download SVG",
     "copyToClipboard": "Copy to clipboard",
     "copied": "Image copied to clipboard",
+    "exported": "Image exported",
     "failed": "Could not render the image.",
     "previewAlt": "Preview of the exported image",
     "instructions": "The drawing is laid out fresh for the size you pick, so lines and labels keep their real thickness. The same size always frames the structure the same way — handy for exporting M, N and V side by side.",
@@ -469,7 +479,18 @@
     "lockAspect": "Keep aspect ratio",
     "fitPreview": "Fit",
     "actualSize": "Actual size",
-    "preview": "Preview"
+    "preview": "Preview",
+    "fitAll": "Fit all",
+    "window": "Window…",
+    "pickWindowHint": "Drag a rectangle over the drawing to export",
+    "dragEdge": "Drag to reveal or trim this side",
+    "scale": "Scale",
+    "scaleCaption": "1 m of the model is {cm} cm on paper (96 DPI). Scroll over the preview to zoom.",
+    "doesNotFit": "Not everything fits at this size: the diagrams, loads and labels run about {px} px past the edge. Shrink the diagrams (now {diagrams} px) or enlarge the canvas.",
+    "shrinkDiagrams": "Shrink diagrams",
+    "enlargeCanvas": "Enlarge canvas",
+    "diagramHeight": "Diagram height",
+    "shrinkNotEnough": "Smaller diagrams are not enough here — the loads and labels alone need more room. Enlarge the canvas instead."
   },
   "examples": {
     "title": "Examples",

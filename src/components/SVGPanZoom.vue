@@ -4,6 +4,7 @@ import { centerSvgContent, fitSvgContent } from '@/utils/fitSvgContent';
 import { nextTick, onMounted, onUnmounted, ref } from 'vue';
 import { useAppStore } from '@/store/app';
 import { debounce } from '@/utils';
+import { frameQueue } from '@/utils/frameQueue';
 import { useResizeObserver } from '@vueuse/core';
 import { MouseMode } from '@/mouse';
 
@@ -129,19 +130,56 @@ const onMouseWheel = (event: WheelEvent): void => {
 };
 
 // A single finger pans, unless it starts on a node (the viewer switches mouseMode to drag it
-// instead). In the placing modes it still pans: the viewer places on a tap, not on a drag.
+// instead) or the clipboard is waiting to be placed. Pasting is the one placing mode with something
+// to aim: the preview has to be carried to where it goes, and with no hover a tap alone would place
+// it blind. The other placing modes place on a tap, so they still pan.
+/**
+ * A finger reports far more often than the screen paints, and every report moves the view: it
+ * writes the viewBox and changes the zoom, which every element in the drawing is sized from. The
+ * position is remembered here and applied once per frame instead, which is as often as it can be
+ * seen. The root box is read once per gesture, since reading it forces a layout and it cannot
+ * move while a finger is down.
+ */
+let gestureRect: DOMRect | null = null;
+
+const touchFrame = frameQueue((touch: { x: number; y: number; distance: number; pinch: boolean }) => {
+  autoFit.value = false;
+  panning.value = true;
+
+  viewBox.x -= (touch.x - touchPointer.value.x) / scale.value;
+  viewBox.y -= (touch.y - touchPointer.value.y) / scale.value;
+
+  touchPointer.value.x = touch.x;
+  touchPointer.value.y = touch.y;
+
+  if (!touch.pinch) {
+    updateMatrix();
+    return;
+  }
+
+  const deltaY = Math.sign(touchPointer.value.ds - touch.distance) * 0.025;
+  touchPointer.value.ds = touch.distance;
+
+  if (deltaY !== 0) {
+    zooming.value = true;
+    zoom(touchPointer.value.x, touchPointer.value.y, deltaY);
+  } else {
+    updateMatrix(true);
+  }
+});
+
 const onTouchStart = (event: TouchEvent): void => {
   if (!props.touch) return;
 
   if (event.touches.length === 1) {
-    touchPointer.value.move = appStore.mouseMode !== MouseMode.MOVING;
+    touchPointer.value.move =
+      appStore.mouseMode !== MouseMode.MOVING && appStore.mouseMode !== MouseMode.PASTE_CLIPBOARD;
     touchPointer.value.x = event.touches[0].clientX;
     touchPointer.value.y = event.touches[0].clientY;
     touchPointer.value.pinch = false;
   }
 
   if (event.touches.length === 2) {
-    zooming.value = true;
     panning.value = true;
 
     touchPointer.value.ds = Math.hypot(
@@ -149,17 +187,21 @@ const onTouchStart = (event: TouchEvent): void => {
       event.touches[0].pageY - event.touches[1].pageY
     );
 
-    const rootEl = rootRef.value as unknown as HTMLElement;
-    const rect = rootEl.getBoundingClientRect();
-    touchPointer.value.x = (event.touches[0].clientX + event.touches[1].clientX) / 2 - rect.left;
-    touchPointer.value.y = (event.touches[0].clientY + event.touches[1].clientY) / 2 - rect.top;
+    gestureRect = (rootRef.value as unknown as HTMLElement).getBoundingClientRect();
+    touchPointer.value.x = (event.touches[0].clientX + event.touches[1].clientX) / 2 - gestureRect.left;
+    touchPointer.value.y = (event.touches[0].clientY + event.touches[1].clientY) / 2 - gestureRect.top;
 
     touchPointer.value.pinch = true;
   }
 };
 
 const onTouchEnd = (): void => {
-  zooming.value = false;
+  touchFrame.cancel();
+  gestureRect = null;
+
+  // Restoring the drawing costs more than hiding it, so a gesture that is followed by another
+  // does not pay for it twice; the wheel settles the same way.
+  debonceZoom();
   touchPointer.value.move = false;
   touchPointer.value.pinch = false;
   panning.value = false;
@@ -169,43 +211,26 @@ const onTouchMove = (event: TouchEvent): void => {
   if (!props.touch) return;
 
   if (event.touches.length === 1 && touchPointer.value.move) {
-    panning.value = true;
-    autoFit.value = false;
-
-    viewBox.x -= (event.touches[0].clientX - touchPointer.value.x) / scale.value;
-    viewBox.y -= (event.touches[0].clientY - touchPointer.value.y) / scale.value;
-    updateMatrix();
-
-    touchPointer.value.x = event.touches[0].clientX;
-    touchPointer.value.y = event.touches[0].clientY;
+    touchFrame.schedule({
+      x: event.touches[0].clientX,
+      y: event.touches[0].clientY,
+      distance: 0,
+      pinch: false,
+    });
   }
 
   if (event.touches.length === 2 && touchPointer.value.pinch) {
-    const rootEl = rootRef.value as unknown as HTMLElement;
-    const rect = rootEl.getBoundingClientRect();
-    const midX = (event.touches[0].clientX + event.touches[1].clientX) / 2 - rect.left;
-    const midY = (event.touches[0].clientY + event.touches[1].clientY) / 2 - rect.top;
+    const rect = gestureRect ?? (rootRef.value as unknown as HTMLElement).getBoundingClientRect();
 
-    // Two-finger drag pans the canvas
-    viewBox.x -= (midX - touchPointer.value.x) / scale.value;
-    viewBox.y -= (midY - touchPointer.value.y) / scale.value;
-
-    // Pinch distance change zooms the canvas
-    const distance = Math.hypot(
-      event.touches[0].pageX - event.touches[1].pageX,
-      event.touches[0].pageY - event.touches[1].pageY
-    );
-    const deltaY = Math.sign(touchPointer.value.ds - distance) * 0.025;
-
-    if (deltaY !== 0) {
-      zoom(midX, midY, deltaY);
-    } else {
-      updateMatrix(true);
-    }
-
-    touchPointer.value.ds = distance;
-    touchPointer.value.x = midX;
-    touchPointer.value.y = midY;
+    touchFrame.schedule({
+      x: (event.touches[0].clientX + event.touches[1].clientX) / 2 - rect.left,
+      y: (event.touches[0].clientY + event.touches[1].clientY) / 2 - rect.top,
+      distance: Math.hypot(
+        event.touches[0].pageX - event.touches[1].pageX,
+        event.touches[0].pageY - event.touches[1].pageY
+      ),
+      pinch: true,
+    });
   }
 };
 
@@ -340,6 +365,7 @@ const onMouseUp = () => {
 };
 
 onUnmounted(() => {
+  touchFrame.cancel();
   window.removeEventListener('pointerup', onGlobalPointerUp);
   window.removeEventListener('pointercancel', onGlobalPointerUp);
   window.removeEventListener('blur', onGlobalPointerUp);

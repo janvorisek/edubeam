@@ -1,6 +1,33 @@
 {
   "releases": [
     {
+      "version": "1.2.0",
+      "title": "Touch, Speed & Vector Export",
+      "date": "September 22, 2026",
+      "highlights": [
+        "The editor now works with a finger: tap to place, press and hold for the menu, drag to pan, pinch to zoom.",
+        "A tap opens node, element and load properties, and buttons and tooltips grow under a finger.",
+        "Export the drawing as SVG - sharp at any size in Word, LaTeX or Inkscape.",
+        "New number format in Settings: scientific, engineering or automatic, with the decimal separator of your language.",
+        "Large models draw, select and scroll much faster.",
+        "Edit loads straight from the loads table, and set support angles, prescribed rotations and end hinges.",
+        "Fixes to unit conversions in loads, the settings dialog on a phone, and the update prompt."
+      ],
+      "tag": "Latest",
+      "contributors": [
+        {
+          "name": "kelidas",
+          "commits": 52,
+          "url": "https://github.com/kelidas"
+        },
+        {
+          "name": "Jan Vorisek",
+          "commits": 6,
+          "url": "https://github.com/janvorisek"
+        }
+      ]
+    },
+    {
       "version": "1.1.1",
       "title": "Solver Errors, Examples & Export",
       "date": "August 31, 2026",
@@ -11,7 +38,6 @@
         "Export both result tables as CSV or copy them, in the units shown.",
         "Help icons across the app link to the documentation in your language."
       ],
-      "tag": "Latest",
       "media": [
         {
           "src": "/changelog/media/examples-gallery.png",

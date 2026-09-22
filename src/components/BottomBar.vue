@@ -1,6 +1,7 @@
 <template>
   <div id="bottomBar" style="border-top: 1px solid #ddd" :style="`min-height: ${props.height}px; overflow: hidden`">
-    <div class="d-flex justify-space-between bg-primary">
+    <!-- The strip is also the bar's resize handle; see Editor.vue for the drag it starts. -->
+    <div class="d-flex justify-space-between bg-primary" data-resize-handle="vertical">
       <v-tabs
         v-model="appStore.bottomBarTab"
         bg-color="primary"
@@ -40,7 +41,7 @@
       >
         <div class="border-b border-t">
           <v-btn
-            v-tooltip.bottom="$t('common.addUsingDialog')"
+            v-tooltip="{ text: $t('common.addUsingDialog'), location: 'bottom', openOnClick: !deviceHasHover }"
             size="small"
             variant="flat"
             color="secondary"
@@ -50,7 +51,7 @@
             <v-icon small>mdi-plus</v-icon> {{ $t('nodes.addNode') }}
           </v-btn>
           <v-btn
-            v-tooltip.bottom="$t('common.addUsingMouse')"
+            v-tooltip="{ text: $t('common.addUsingMouse'), location: 'bottom', openOnClick: !deviceHasHover }"
             size="small"
             variant="flat"
             :color="appStore.mouseMode === MouseMode.ADD_NODE ? 'primary' : 'secondary'"
@@ -61,8 +62,10 @@
             <v-icon small>mdi-cursor-default-outline</v-icon> {{ $t('nodes.addNode') }}
           </v-btn>
         </div>
-        <v-data-table
-          ref="table-nodes"
+        <v-data-table-virtual
+          v-if="appStore.bottomBarTab === 'tab-nodes'"
+          item-height="36"
+          :key="settledHeight"
           class="fixed-left-col"
           :headers="headers.nodes"
           :items="nodes"
@@ -70,9 +73,6 @@
           density="compact"
           :height="props.height - 36 - 30"
           fixed-header
-          :items-per-page="-1"
-          disable-pagination
-          hide-default-footer
           mobile-breakpoint="0"
           item-key="label"
           sort-asc-icon="mdi-menu-up"
@@ -193,6 +193,19 @@
                   />
                 </div>
               </div>
+              <div class="inline-edit-group ml-2">
+                <label :for="`lcs-${item.label}`" class="input-before" :title="$t('nodes.lcsAngle')">&alpha;</label>
+                <input
+                  :id="`lcs-${item.label}`"
+                  :value="float2String(nodeLcsAngle(item))"
+                  class="inline-edit"
+                  style="width: 44px"
+                  :title="$t('nodes.lcsAngle')"
+                  @keydown="checkNumber($event)"
+                  @change="changeNodeLcsAngle(item, $event.target as HTMLInputElement)"
+                />
+                <div class="input-after">&deg;</div>
+              </div>
             </div>
           </template>
           <template #item.loads="{ item }">
@@ -235,7 +248,7 @@
               <v-btn density="compact" variant="text" icon="mdi-close" @click="deleteNode(item.label)"></v-btn>
             </div>
           </template>
-        </v-data-table>
+        </v-data-table-virtual>
       </v-window-item>
 
       <v-window-item
@@ -246,7 +259,7 @@
       >
         <div class="border-b border-t">
           <v-btn
-            v-tooltip.bottom="$t('common.addUsingDialog')"
+            v-tooltip="{ text: $t('common.addUsingDialog'), location: 'bottom', openOnClick: !deviceHasHover }"
             size="small"
             variant="flat"
             color="secondary"
@@ -256,7 +269,7 @@
             <v-icon small>mdi-plus</v-icon> {{ $t('elements.addElement') }}
           </v-btn>
           <v-btn
-            v-tooltip.bottom="$t('common.addUsingMouse')"
+            v-tooltip="{ text: $t('common.addUsingMouse'), location: 'bottom', openOnClick: !deviceHasHover }"
             size="small"
             variant="flat"
             :color="appStore.mouseMode === MouseMode.ADD_ELEMENT ? 'primary' : 'secondary'"
@@ -268,7 +281,10 @@
           </v-btn>
         </div>
 
-        <v-data-table
+        <v-data-table-virtual
+          v-if="appStore.bottomBarTab === 'tab-elements'"
+          item-height="36"
+          :key="settledHeight"
           :headers="headers.elements"
           class="fixed-left-col"
           :items="elements"
@@ -276,9 +292,6 @@
           density="compact"
           :height="props.height - 36 - 30"
           fixed-header
-          :items-per-page="-1"
-          disable-pagination
-          hide-default-footer
           mobile-breakpoint="0"
           item-key="label"
           sort-asc-icon="mdi-menu-up"
@@ -317,50 +330,38 @@
           <template #item.type> Beam2D </template>
           <template #item.nodes="{ item }">
             <div class="d-flex">
-              <select
-                class="mini-select flex-shrink-0"
-                :value="item.nodes[0]"
+              <EntitySelect
+                :model-value="item.nodes[0]"
+                :items="nodes"
+                :exclude="item.nodes[1]"
+                :prefix="$t('common.node')"
                 style="width: 100px"
-                @change="
+                @update:model-value="
                   setUnsolved();
-                  item.nodes[0] = $event.target.value;
+                  item.nodes[0] = String($event);
                   solve();
                 "
-              >
-                <option
-                  v-for="node in nodes.filter((e) => e.label != item.nodes[1])"
-                  :key="node.label"
-                  :value="node.label"
-                >
-                  {{ `${$t('common.node')} ${node.label}` }}
-                </option>
-              </select>
+              />
               <a
-                v-tooltip.bottom="$t('elements.swapNodeOrder')"
+                v-tooltip="{ text: $t('elements.swapNodeOrder'), location: 'bottom', openOnClick: !deviceHasHover }"
                 href="#"
                 class="text-decoration-none text-primary"
                 @click.stop="swapNodes(item)"
               >
                 <v-icon small>mdi-swap-horizontal</v-icon>
               </a>
-              <select
-                class="mini-select flex-shrink-0"
-                :value="item.nodes[1]"
+              <EntitySelect
+                :model-value="item.nodes[1]"
+                :items="nodes"
+                :exclude="item.nodes[0]"
+                :prefix="$t('common.node')"
                 style="width: 100px"
-                @change="
+                @update:model-value="
                   setUnsolved();
-                  item.nodes[1] = $event.target.value;
+                  item.nodes[1] = String($event);
                   solve();
                 "
-              >
-                <option
-                  v-for="node in nodes.filter((e) => e.label != item.nodes[0])"
-                  :key="node.label"
-                  :value="node.label"
-                >
-                  {{ `${$t('common.node')} ${node.label}` }}
-                </option>
-              </select>
+              />
             </div>
           </template>
           <template #item.material="{ item }">
@@ -476,7 +477,7 @@
               <v-btn density="compact" variant="text" icon="mdi-close" @click="deleteElement(item.label)"></v-btn>
             </div>
           </template>
-        </v-data-table>
+        </v-data-table-virtual>
       </v-window-item>
 
       <v-window-item
@@ -506,15 +507,16 @@
             <v-icon small>mdi-plus</v-icon> {{ $t('loads.addElementLoad') }}
           </v-btn>
         </div>
-        <v-data-table
+        <v-data-table-virtual
+          v-if="appStore.bottomBarTab === 'tab-loads'"
+          item-height="36"
+          :key="settledHeight"
           :headers="headers.loads"
           :items="loads"
+          :row-props="loadRowProps"
           density="compact"
           :height="props.height - 36 - 30"
           fixed-header
-          :items-per-page="-1"
-          disable-pagination
-          hide-default-footer
           mobile-breakpoint="0"
           item-key="label"
           sort-asc-icon="mdi-menu-up"
@@ -627,11 +629,7 @@
             </div>
 
             <div v-if="item.type === 'prescribed'" class="d-flex">
-              <div
-                class="inline-edit-group load mr-2"
-                :class="{ disabled: !isDofSupported(item.target, DofID.Dx) }"
-                style="width: 128px"
-              >
+              <div class="inline-edit-group load mr-2" :class="{ disabled: !isDofSupported(item.target, DofID.Dx) }">
                 <label class="input-before">D<sub>x</sub></label>
                 <input
                   :value="appStore.convertLength(item.ref.prescribedValues[0])"
@@ -650,11 +648,7 @@
                 />
                 <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
               </div>
-              <div
-                class="inline-edit-group load mr-2"
-                :class="{ disabled: !isDofSupported(item.target, DofID.Dz) }"
-                style="width: 128px"
-              >
+              <div class="inline-edit-group load mr-2" :class="{ disabled: !isDofSupported(item.target, DofID.Dz) }">
                 <span class="input-before">D<sub>z</sub></span>
                 <input
                   :value="appStore.convertLength(item.ref.prescribedValues[2])"
@@ -673,11 +667,7 @@
                 />
                 <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
               </div>
-              <div
-                class="inline-edit-group load"
-                :class="{ disabled: !isDofSupported(item.target, DofID.Ry) }"
-                style="width: 128px"
-              >
+              <div class="inline-edit-group load" :class="{ disabled: !isDofSupported(item.target, DofID.Ry) }">
                 <span class="input-before">R<sub>y</sub></span>
                 <input
                   :value="item.ref.prescribedValues[4]"
@@ -905,7 +895,7 @@
               <!-- TODO: Trapezoidal load cant render non LCS -->
               <div
                 v-if="item.ref instanceof BeamElementUniformEdgeLoad || item.ref instanceof BeamConcentratedLoad"
-                v-tooltip.bottom="$t('common.lcs')"
+                v-tooltip="{ text: $t('common.lcs'), location: 'bottom', openOnClick: !deviceHasHover }"
                 class="inline-edit-group"
               >
                 <span class="input-before">LCS</span>
@@ -923,76 +913,75 @@
           </template>
 
           <template #item.target="{ item }">
-            <select
+            <EntitySelect
               v-if="item.type === 'node'"
               v-model="item.ref.target"
-              class="mini-select flex-shrink-0"
+              :items="nodes"
+              :prefix="$t('common.node')"
               style="width: 100%"
-              @change="
+              @update:model-value="
                 setUnsolved();
                 solve();
               "
-            >
-              <option v-for="node in nodes" :key="node.label" :value="node.label">
-                {{ `${$t('common.node')} ${node.label}` }}
-              </option>
-            </select>
+            />
 
-            <select
+            <EntitySelect
               v-else-if="item.type === 'prescribed'"
               v-model="item.ref.target"
-              class="mini-select flex-shrink-0"
+              :items="nodes.filter((n) => n.bcs.size > 0)"
+              :prefix="$t('common.node')"
               style="width: 100%"
-              @change="
+              @update:model-value="
                 setUnsolved();
                 solve();
               "
-            >
-              <option v-for="node in nodes.filter((n) => n.bcs.size > 0)" :key="node.label" :value="node.label">
-                {{ `${$t('common.node')} ${node.label}` }}
-              </option>
-            </select>
+            />
 
-            <select
+            <EntitySelect
               v-else-if="item.type === 'element'"
               v-model="item.ref.target"
-              class="mini-select flex-shrink-0"
+              :items="elements"
+              :prefix="$t('common.element')"
               style="width: 100%"
-              @change="
+              @update:model-value="
                 setUnsolved();
                 solve();
               "
-            >
-              <option v-for="node in elements" :key="node.label" :value="node.label">
-                {{ `${$t('common.element')} ${node.label}` }}
-              </option>
-            </select>
+            />
           </template>
 
           <template #item.actions="{ item }">
-            <v-btn
-              v-if="item.type === 'element'"
-              density="compact"
-              variant="text"
-              icon="mdi-close"
-              @click="deleteElementLoad(item.ref)"
-            ></v-btn>
-            <v-btn
-              v-if="item.type === 'node'"
-              density="compact"
-              variant="text"
-              icon="mdi-close"
-              @click="deleteNodalLoad(item.ref)"
-            ></v-btn>
-            <v-btn
-              v-if="item.type === 'prescribed'"
-              density="compact"
-              variant="text"
-              icon="mdi-close"
-              @click="deletePrescribedDisplacement(item.ref)"
-            ></v-btn>
+            <div class="d-flex">
+              <v-btn
+                density="compact"
+                variant="text"
+                icon="mdi-pencil"
+                @click="openLoadEditor(item.type, item.index)"
+              ></v-btn>
+              <v-btn
+                v-if="item.type === 'element'"
+                density="compact"
+                variant="text"
+                icon="mdi-close"
+                @click="deleteElementLoad(item.ref)"
+              ></v-btn>
+              <v-btn
+                v-if="item.type === 'node'"
+                density="compact"
+                variant="text"
+                icon="mdi-close"
+                @click="deleteNodalLoad(item.ref)"
+              ></v-btn>
+              <v-btn
+                v-if="item.type === 'prescribed'"
+                density="compact"
+                variant="text"
+                icon="mdi-close"
+                @click="deletePrescribedDisplacement(item.ref)"
+              ></v-btn>
+            </div>
           </template>
-        </v-data-table>
+        </v-data-table-virtual>
       </v-window-item>
 
       <v-window-item
@@ -1017,16 +1006,16 @@
           </v-btn>
         </div>
 
-        <v-data-table
+        <v-data-table-virtual
+          v-if="appStore.bottomBarTab === 'tab-mats'"
+          item-height="36"
+          :key="settledHeight"
           :headers="headers.materials"
           class="fixed-left-col"
           :items="materials"
           density="compact"
           :height="props.height - 36 - 30"
           fixed-header
-          :items-per-page="-1"
-          disable-pagination
-          hide-default-footer
           mobile-breakpoint="0"
           item-key="label"
           sort-asc-icon="mdi-menu-up"
@@ -1048,9 +1037,14 @@
                         class="font-weight-regular"
                         v-html="`[${formatMeasureAsHTML(appStore.units[column.units])}]`"
                       ></span>
-                      <v-tooltip v-if="column.tooltip" activator="parent" location="top" :max-width="320">{{
-                        $t(column.tooltip)
-                      }}</v-tooltip>
+                      <v-tooltip
+                        v-if="column.tooltip"
+                        activator="parent"
+                        location="top"
+                        :max-width="320"
+                        :open-on-click="!deviceHasHover"
+                        >{{ $t(column.tooltip) }}</v-tooltip
+                      >
                     </div>
                     <HelpTip v-if="column.help" :topic="column.help" location="top" />
                     <v-icon
@@ -1107,7 +1101,7 @@
           <template #item.actions="{ item }">
             <v-btn density="compact" variant="text" icon="mdi-close" @click="deleteMaterial(item.label)"></v-btn>
           </template>
-        </v-data-table>
+        </v-data-table-virtual>
       </v-window-item>
 
       <v-window-item
@@ -1148,16 +1142,16 @@
           </v-btn>
         </div>
 
-        <v-data-table
+        <v-data-table-virtual
+          v-if="appStore.bottomBarTab === 'tab-cs'"
+          item-height="36"
+          :key="settledHeight"
           :headers="headers.crossSections"
           class="fixed-left-col"
           :items="crossSections"
           density="compact"
           :height="props.height - 36 - 30"
           fixed-header
-          :items-per-page="-1"
-          disable-pagination
-          hide-default-footer
           mobile-breakpoint="0"
           item-key="label"
           sort-asc-icon="mdi-menu-up"
@@ -1264,7 +1258,7 @@
             ></v-btn>
             <v-btn density="compact" variant="text" icon="mdi-close" @click="deleteCrossSection(item.label)"></v-btn>
           </template>
-        </v-data-table>
+        </v-data-table-virtual>
       </v-window-item>
       <v-window-item
         :value="'tab-results'"
@@ -1293,7 +1287,7 @@
             <v-icon small>mdi-vector-line</v-icon> {{ $t('results.element_results') }}
           </v-btn>
           <v-btn
-            v-tooltip.bottom="$t('results.exportHint')"
+            v-tooltip="{ text: $t('results.exportHint'), location: 'bottom', openOnClick: !deviceHasHover }"
             size="small"
             variant="flat"
             color="secondary"
@@ -1318,16 +1312,15 @@
         </div>
         <v-window v-model="layoutStore.bottomBarResultsTab" disabled>
           <v-window-item value="nodes" :transition="false" :reverse-transition="false">
-            <v-data-table
-              ref="table-results"
+            <v-data-table-virtual
+              v-if="appStore.bottomBarTab === 'tab-results'"
+              item-height="36"
+              :key="settledHeight"
               :headers="headers.results"
               :items="nodes"
               density="compact"
               :height="props.height - 36 - 30"
               fixed-header
-              :items-per-page="-1"
-              disable-pagination
-              hide-default-footer
               mobile-breakpoint="0"
               item-key="label"
               sort-asc-icon="mdi-menu-up"
@@ -1368,13 +1361,12 @@
                       "
                       class="inline-edit fw pl-1"
                       v-html="
-                        formatExpValueAsHTML(
-                          appStore.convertLength(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dx])),
-                          4
+                        appStore.formatResultHTML(
+                          appStore.convertLength(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dx]))
                         )
                       "
                     />
-                    <div v-else class="inline-edit fw pl-1" v-html="formatExpValueAsHTML(0, 4)"></div>
+                    <div v-else class="inline-edit fw pl-1" v-html="appStore.formatResultHTML(0)"></div>
                     <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
                   </div>
                   <div class="inline-edit-group mr-2">
@@ -1386,13 +1378,12 @@
                       "
                       class="inline-edit fw pl-1"
                       v-html="
-                        formatExpValueAsHTML(
-                          appStore.convertLength(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dz])),
-                          4
+                        appStore.formatResultHTML(
+                          appStore.convertLength(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dz]))
                         )
                       "
                     />
-                    <div v-else class="inline-edit fw pl-1" v-html="formatExpValueAsHTML(0, 4)"></div>
+                    <div v-else class="inline-edit fw pl-1" v-html="appStore.formatResultHTML(0)"></div>
                     <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
                   </div>
                   <div class="inline-edit-group mr-2">
@@ -1404,27 +1395,26 @@
                       "
                       class="inline-edit fw pl-1"
                       v-html="
-                        formatExpValueAsHTML(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Ry]), 4)
+                        appStore.formatResultHTML(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Ry]))
                       "
                     />
-                    <div v-else class="inline-edit fw pl-1" v-html="formatExpValueAsHTML(0, 4)"></div>
+                    <div v-else class="inline-edit fw pl-1" v-html="appStore.formatResultHTML(0)"></div>
                     <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Angle)"></div>
                   </div>
                 </div>
               </template>
-            </v-data-table>
+            </v-data-table-virtual>
           </v-window-item>
           <v-window-item value="elements" :transition="false" :reverse-transition="false">
-            <v-data-table
-              ref="table-results2"
+            <v-data-table-virtual
+              v-if="appStore.bottomBarTab === 'tab-results'"
+              item-height="36"
+              :key="settledHeight"
               :headers="headers.results2"
               :items="useProjectStore().solver.loadCases[0].solved ? elements : []"
               density="compact"
               :height="props.height - 36 - 30"
               fixed-header
-              :items-per-page="-1"
-              disable-pagination
-              hide-default-footer
               mobile-breakpoint="0"
               item-key="label"
               sort-asc-icon="mdi-menu-up"
@@ -1472,9 +1462,8 @@
                       v-if="projStore.solver.loadCases[0].solved"
                       class="inline-edit fw pl-1"
                       v-html="
-                        formatExpValueAsHTML(
-                          nameBeamForce(i) === 'M' ? appStore.convertMoment(f.value) : appStore.convertForce(f.value),
-                          4
+                        appStore.formatResultHTML(
+                          nameBeamForce(i) === 'M' ? appStore.convertMoment(f.value) : appStore.convertForce(f.value)
                         )
                       "
                     />
@@ -1488,7 +1477,7 @@
                   </div>
                 </div>
               </template>
-            </v-data-table>
+            </v-data-table-virtual>
           </v-window-item>
         </v-window>
       </v-window-item>
@@ -1519,7 +1508,7 @@ import {
   NodalLoad,
 } from 'ts-fem';
 
-import { onMounted, computed, markRaw, nextTick, reactive, ref } from 'vue';
+import { onMounted, computed, markRaw, nextTick, reactive, ref, watch } from 'vue';
 import { useProjectStore } from '../store/project';
 import { useAppStore } from '../store/app';
 import { MouseMode } from '../mouse';
@@ -1527,6 +1516,7 @@ import {
   capitalize,
   changeItem,
   changeLabel,
+  changeNodeLcsAngle,
   changeSetArrayItem,
   checkNumber,
   deleteCrossSection,
@@ -1537,6 +1527,7 @@ import {
   deleteNode,
   deletePrescribedDisplacement,
   formatScientificNumber,
+  nodeLcsAngle,
   setUnsolved,
   solve,
   swapNodes,
@@ -1547,7 +1538,7 @@ import {
   loadType,
 } from '../utils';
 import { DofID, Beam2D, PrescribedDisplacement } from 'ts-fem';
-import { formatExpValueAsHTML, formatMeasureAsHTML } from '../SVGUtils';
+import { formatMeasureAsHTML } from '../SVGUtils';
 import { buildResultsTsv, downloadResultsCsv, resultUnitsFromStore } from '../utils/exportResults';
 
 import HelpTip from './HelpTip.vue';
@@ -1560,12 +1551,14 @@ import EditNodalLoad from './dialogs/EditNodalLoad.vue';
 import EditElementLoad from './dialogs/EditElementLoad.vue';
 import AddElementDialog from './dialogs/AddElement.vue';
 import AddNodeDialog from './dialogs/AddNode.vue';
+import { deviceHasHover } from '@/utils/pointer';
 import AddMaterialDialog from './dialogs/AddMaterial.vue';
 import AddCrossSectionDialog from './dialogs/AddCrossSection.vue';
 import MaterialLibraryDialog from './dialogs/MaterialLibrary.vue';
 import CrossSectionLibraryDialog from './dialogs/CrossSectionLibrary.vue';
 import PolygonSectionEditor from './dialogs/PolygonSectionEditor.vue';
 import SectionThumbnail from './SectionThumbnail.vue';
+import EntitySelect from './EntitySelect.vue';
 import '@/types/crossSection';
 import EditNode from './dialogs/EditNode.vue';
 
@@ -1579,6 +1572,17 @@ const { t } = useI18n();
 const appStore = useAppStore();
 const projStore = useProjectStore();
 const layoutStore = useLayoutStore();
+
+/**
+ * The virtual tables work their visible window out from a height they measure once and then learn
+ * about through a ResizeObserver. Dragging the bar taller does not reliably reach that path, so the
+ * table keeps showing the rows the short bar held. Remounting it on the settled height sidesteps
+ * the whole question: a fresh table measures the size it is actually given.
+ *
+ * Settled, not live: a drag reports continuously, and remounting per pixel would be absurd.
+ */
+const settledHeight = ref(0);
+let settleTimer: ReturnType<typeof setTimeout> | undefined;
 
 const props = defineProps({
   height: {
@@ -1651,6 +1655,8 @@ const loads = computed(() => {
   const display: {
     target: number;
     type: string;
+    /** Position in the list the load lives in, which is what the edit dialogs take. */
+    index: number;
     loadCase: LoadCase;
     values: unknown;
     ref:
@@ -1662,30 +1668,33 @@ const loads = computed(() => {
   }[] = [];
 
   for (const item of items) {
-    for (const load of item.elementLoadList) {
+    for (const [index, load] of item.elementLoadList.entries()) {
       display.push({
         target: load.target,
         type: 'element',
+        index,
         loadCase: item,
         values: load.values,
         ref: load,
       });
     }
 
-    for (const load of item.prescribedBC) {
+    for (const [index, load] of item.prescribedBC.entries()) {
       display.push({
         target: load.target,
         type: 'prescribed',
+        index,
         loadCase: item,
         values: load.prescribedValues,
         ref: load,
       });
     }
 
-    for (const load of item.nodalLoadList) {
+    for (const [index, load] of item.nodalLoadList.entries()) {
       display.push({
         target: load.target,
         type: 'node',
+        index,
         loadCase: item,
         values: load.values,
         ref: load,
@@ -1693,8 +1702,41 @@ const loads = computed(() => {
     }
   }
 
-  return display;
+  // Selected first, as the nodes and elements tables do: clicking a load in the drawing opens this
+  // tab, and the row it opened for should not be somewhere down a list of every load in the model.
+  return [...display.filter(isLoadSelected), ...display.filter((row) => !isLoadSelected(row))];
 });
+
+/** A load is selected by its position in the list it lives in, one list per kind. */
+const isLoadSelected = (row: { type: string; index: number }) => {
+  const selection = useProjectStore().selection2;
+
+  if (row.type === 'element') return selection.elementLoads.includes(row.index);
+  if (row.type === 'prescribed') return selection.prescribedBC.includes(row.index);
+
+  return selection.nodalLoads.includes(row.index);
+};
+
+function loadRowProps(item) {
+  if (isLoadSelected(item.item)) {
+    return { class: 'selected' };
+  }
+}
+
+/**
+ * The pencil beside a load row, opening the dialog that already serves it.
+ *
+ * A nodal force and a prescribed displacement share one dialog, which tells them apart by `type`;
+ * an element load has its own. All three take the position of the load in its list, not the row.
+ */
+const openLoadEditor = (type: string, index: number) => {
+  if (type === 'element') {
+    openModal(EditElementLoad, { index });
+    return;
+  }
+
+  openModal(EditNodalLoad, { index, type: type === 'prescribed' ? 'displacement' : 'force' });
+};
 
 type ElementLoadValues = BeamElementUniformEdgeLoad | BeamConcentratedLoad | BeamTemperatureLoad;
 
@@ -1912,6 +1954,15 @@ const tabs = reactive([
     icon: 'mdi-numeric',
   },
 ]);
+
+watch(
+  () => props.height,
+  (height) => {
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(() => (settledHeight.value = height), 150);
+  },
+  { immediate: true }
+);
 
 const exportFeedbackVisible = ref(false);
 const exportFeedbackType = ref<'success' | 'error'>('success');

@@ -29,7 +29,7 @@ import SVGElement from './svg/Element.vue';
 import SVGElementTemperatureLoad from './svg/ElementTemperatureLoad.vue';
 import SVGDimensioning from './svg/Dimensioning.vue';
 import { loadType } from '../utils/loadType';
-import { boundsFromPoints } from '@/utils/fitBounds';
+import { boundsFromPoints, type ViewBox } from '@/utils/fitBounds';
 import type { DimensionRenderableNode } from '@/types/dimension';
 
 const props = withDefaults(
@@ -216,12 +216,15 @@ const centerContent = () => {
   if (grid.value) grid.value.refreshGrid(true);
 };
 
+/** Resolves with the fit once its final view is shown; `null` when a newer fit took over. */
 const fitContent = async () => {
-  if (!panZoom.value) return;
+  if (!panZoom.value) return null;
 
-  await panZoom.value.fitContent();
+  const result = await panZoom.value.fitContent();
 
   if (grid.value) grid.value.refreshGrid(true);
+
+  return result;
 };
 
 /** Distributed load arrows are drawn 60 px long (see ElementLoad/UDL.vue). */
@@ -280,6 +283,14 @@ const markerMomentCcw = computed(() => dynamicMarker('moment_ccw'));
 const markerMomentCcwHover = computed(() => dynamicMarker('moment_ccw_hover'));
 const markerMomentCcwSelected = computed(() => dynamicMarker('moment_ccw_selected'));
 
+const markerRotationCw = computed(() => dynamicMarker('rotation_cw'));
+const markerRotationCcw = computed(() => dynamicMarker('rotation_ccw'));
+
+const markerRotationCwHover = computed(() => dynamicMarker('rotation_cw_hover'));
+const markerRotationCwSelected = computed(() => dynamicMarker('rotation_cw_selected'));
+const markerRotationCcwHover = computed(() => dynamicMarker('rotation_ccw_hover'));
+const markerRotationCcwSelected = computed(() => dynamicMarker('rotation_ccw_selected'));
+
 const markerReaction = computed(() => dynamicMarker('reaction'));
 const markerMomentReactionCcw = computed(() => dynamicMarker('moment_reaction_ccw'));
 const markerMomentReactionCw = computed(() => dynamicMarker('moment_reaction_cw'));
@@ -290,11 +301,19 @@ const markerHingeXY = computed(() => dynamicMarker('hinge-xy'));
 const markerHingeX = computed(() => dynamicMarker('hinge-x'));
 const markerHingeY = computed(() => dynamicMarker('hinge-y'));
 const markerForceTip = computed(() => dynamicMarker('forceTip'));
+const markerForceTipHover = computed(() => dynamicMarker('forceTip_hover'));
+const markerForceTipSelected = computed(() => dynamicMarker('forceTip_selected'));
 const markerDimTip = computed(() => dynamicMarker('dimTip'));
 
 const markerTextLabel = computed(() => dynamicMarker('textLabel'));
 
-defineExpose({ centerContent, fitContent });
+/** Show exactly this model-space box instead of fitting; diagram scales are refreshed first. */
+const setView = (box: ViewBox) => {
+  updateResultScales();
+  panZoom.value?.setViewBox(box);
+};
+
+defineExpose({ centerContent, fitContent, setView, update });
 </script>
 
 <template>
@@ -329,6 +348,12 @@ defineExpose({ centerContent, fitContent });
           '--marker-moment-ccw': markerMomentCcw,
           '--marker-moment-ccw-hover': markerMomentCcwHover,
           '--marker-moment-ccw-selected': markerMomentCcwSelected,
+          '--marker-rotation-cw': markerRotationCw,
+          '--marker-rotation-ccw': markerRotationCcw,
+          '--marker-rotation-cw-hover': markerRotationCwHover,
+          '--marker-rotation-cw-selected': markerRotationCwSelected,
+          '--marker-rotation-ccw-hover': markerRotationCcwHover,
+          '--marker-rotation-ccw-selected': markerRotationCcwSelected,
           '--marker-reaction': markerReaction,
           '--marker-moment-reaction-ccw': markerMomentReactionCcw,
           '--marker-moment-reaction-cw': markerMomentReactionCw,
@@ -339,6 +364,8 @@ defineExpose({ centerContent, fitContent });
           '--marker-hinge-x': markerHingeX,
           '--marker-hinge-y': markerHingeY,
           '--marker-force-tip': markerForceTip,
+          '--marker-force-tip-hover': markerForceTipHover,
+          '--marker-force-tip-selected': markerForceTipSelected,
           '--marker-dim-tip': markerDimTip,
           '--filter-text-label': markerTextLabel,
           '--colors-loads': props.colors.loads,
@@ -357,6 +384,7 @@ defineExpose({ centerContent, fitContent });
                   :scale="scale"
                   :convert-force-distance="props.convertForceDistance"
                   :font-size="props.fontSize"
+                  :number-format="props.numberFormat"
                 />
                 <SVGElementTemperatureLoad
                   v-else-if="loadType(eload) === 'temperature'"
@@ -366,6 +394,7 @@ defineExpose({ centerContent, fitContent });
                   :scale="scale"
                   :convert-force="props.convertForce"
                   :font-size="props.fontSize"
+                  :number-format="props.numberFormat"
                 />
                 <SVGElementConcentratedLoad
                   v-else-if="eload instanceof BeamConcentratedLoad"
@@ -379,23 +408,6 @@ defineExpose({ centerContent, fitContent });
                   :number-format="props.numberFormat"
                 />
               </template>
-              <SVGNodalLoad
-                v-for="(nload, index) in props.nodalLoads"
-                :key="`nodal-load-${index}`"
-                :nload="nload"
-                :scale="scale"
-                :convert-force="props.convertForce"
-                :font-size="props.fontSize"
-              />
-              <SVGPrescribedDisplacement
-                v-for="(nload, index) in props.prescribedDisplacements"
-                :key="`nodal-load-${index}`"
-                :nload="nload"
-                :scale="scale"
-                :convert-length="props.convertLength"
-                :multiplier="defoScale * props.resultsScalePx"
-                :font-size="props.fontSize"
-              />
             </g>
           </g>
           <g>
@@ -420,6 +432,7 @@ defineExpose({ centerContent, fitContent });
               :convert-force="props.convertForce"
               :convert-moment="props.convertMoment"
               :font-size="props.fontSize"
+              :number-format="props.numberFormat"
             />
           </g>
 
@@ -445,9 +458,32 @@ defineExpose({ centerContent, fitContent });
               :convert-force="props.convertForce"
               :convert-moment="props.convertMoment"
               :font-size="props.fontSize"
+              :number-format="props.numberFormat"
             />
           </g>
 
+          <!-- Painted above the elements, matching the drawing, so a load is never hidden by a beam. -->
+          <g v-if="props.showLoads" data-fit-ignore="loads">
+            <SVGNodalLoad
+              v-for="(nload, index) in props.nodalLoads"
+              :key="`nodal-load-${index}`"
+              :nload="nload"
+              :scale="scale"
+              :convert-force="props.convertForce"
+              :font-size="props.fontSize"
+              :number-format="props.numberFormat"
+            />
+            <SVGPrescribedDisplacement
+              v-for="(nload, index) in props.prescribedDisplacements"
+              :key="`nodal-load-${index}`"
+              :nload="nload"
+              :scale="scale"
+              :convert-length="props.convertLength"
+              :multiplier="defoScale * props.resultsScalePx"
+              :font-size="props.fontSize"
+              :number-format="props.numberFormat"
+            />
+          </g>
           <g class="nodes">
             <g v-for="(node, index) in props.nodes" :key="`node-${index}`">
               <SVGNode
@@ -462,6 +498,7 @@ defineExpose({ centerContent, fitContent });
                 :load-case="props.solver.loadCases[0]"
                 :multiplier="defoScale * props.resultsScalePx"
                 :font-size="props.fontSize"
+                :number-format="props.numberFormat"
               />
             </g>
           </g>
@@ -671,6 +708,14 @@ defineExpose({ centerContent, fitContent });
       &.decoration.moment.ccw {
         marker-end: var(--marker-moment-ccw);
       }
+
+      &.decoration.rotation.cw {
+        marker-end: var(--marker-rotation-cw);
+      }
+
+      &.decoration.rotation.ccw {
+        marker-end: var(--marker-rotation-ccw);
+      }
       &.handle {
         stroke: transparent;
         stroke-width: 24px;
@@ -698,6 +743,20 @@ defineExpose({ centerContent, fitContent });
       marker-end: var(--marker-moment-ccw-hover);
     }
 
+    &:hover polyline.decoration.rotation.cw {
+      marker-end: var(--marker-rotation-cw-hover);
+    }
+
+    &:hover polyline.decoration.rotation.ccw {
+      marker-end: var(--marker-rotation-ccw-hover);
+    }
+
+    /* The prescribed translation is a real line, so it gets the highlight the arrow markers give. */
+    &:hover polyline.decoration.marker-forceTip {
+      marker-end: var(--marker-force-tip-hover);
+      stroke-width: 2px;
+    }
+
     &.selected polyline.decoration.force {
       marker-end: var(--marker-force-selected);
     }
@@ -708,6 +767,20 @@ defineExpose({ centerContent, fitContent });
 
     &.selected polyline.decoration.moment.ccw {
       marker-end: var(--marker-moment-ccw-selected);
+    }
+
+    &.selected polyline.decoration.rotation.cw {
+      marker-end: var(--marker-rotation-cw-selected);
+    }
+
+    &.selected polyline.decoration.rotation.ccw {
+      marker-end: var(--marker-rotation-ccw-selected);
+    }
+
+    &.selected polyline.decoration.marker-forceTip {
+      marker-end: var(--marker-force-tip-selected);
+      stroke: rgb(0, 55, 149);
+      stroke-width: 2px;
     }
     &.selected {
       text {

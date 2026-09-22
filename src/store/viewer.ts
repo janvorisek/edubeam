@@ -1,6 +1,7 @@
 // Utilities
 import { defineStore } from 'pinia';
 import { reactive, ref } from 'vue';
+import type { ViewBox } from '@/utils/fitBounds';
 
 export const useViewerStore = defineStore(
   'viewer',
@@ -73,7 +74,31 @@ export const useViewerStore = defineStore(
       settingsOpen.value = true;
     };
 
+    /**
+     * The export dialog asking the drawing for a window.
+     *
+     * The dialog steps aside, the viewer switches to `MouseMode.PICK_WINDOW`, and the
+     * rectangle the user drags is handed back through here — `null` when they cancel.
+     * A plain resolver rather than state, because nothing needs to render it.
+     */
+    let windowPickResolver: ((box: ViewBox | null) => void) | null = null;
+
+    const pickWindow = () =>
+      new Promise<ViewBox | null>((resolve) => {
+        windowPickResolver?.(null);
+        windowPickResolver = resolve;
+      });
+
+    const finishWindowPick = (box: ViewBox | null) => {
+      const resolve = windowPickResolver;
+
+      windowPickResolver = null;
+      resolve?.(box);
+    };
+
     return {
+      pickWindow,
+      finishWindowPick,
       resultLabelMode,
       colors,
       showNodeLabels,

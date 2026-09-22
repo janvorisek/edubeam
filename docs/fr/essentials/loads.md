@@ -71,7 +71,7 @@ Le diagramme d’effort tranchant présente un saut de `Fz` au point d’applica
 
 | Champ | Signification |
 | --- | --- |
-| **ΔT<sub>s</sub>** – variation uniforme de température | variation uniforme sur toute la section → allongement $\alpha\,\Delta T_s\,L$ |
+| **ΔT<sub>c</sub>** – variation uniforme de température | variation uniforme sur toute la section → allongement $\alpha\,\Delta T_c\,L$ |
 | **ΔT<sub>b</sub> − ΔT<sub>t</sub>** – fibre inférieure moins supérieure | écart de température sur la hauteur → courbure $\alpha\,(\Delta T_b - \Delta T_t)/h$ |
 
 Les charges thermiques utilisent le **α** du matériau et la **hauteur h** de la section. Un `ΔTb − ΔTt` positif (fibre inférieure plus chaude) fait bomber l’élément vers le haut. Dans une structure isostatique, la température ne produit que des déplacements ; ce sont les blocages (extrémités encastrées, continuité, barres surabondantes) qui la transforment en sollicitations.

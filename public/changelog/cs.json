@@ -1,6 +1,21 @@
 {
   "releases": [
     {
+      "version": "1.2.0",
+      "title": "Ovládání prstem, rychlost a export do SVG",
+      "date": "22. září 2026",
+      "highlights": [
+        "Editor se dá ovládat prstem: klepnutím umístíte uzel nebo prvek, podržením otevřete menu, tažením posunete plátno a dvěma prsty přibližujete.",
+        "Klepnutím otevřete vlastnosti uzlu, prvku i zatížení; tlačítka a popisky se pod prstem zvětší.",
+        "Výkres lze exportovat do SVG - ostrý v libovolné velikosti ve Wordu, LaTeXu i Inkscapu.",
+        "Nový formát čísel v nastavení: vědecký, inženýrský nebo automatický, s desetinným oddělovačem podle jazyka.",
+        "Velké modely se kreslí, vybírají a posouvají mnohem rychleji.",
+        "Zatížení upravíte přímo v tabulce zatížení; přibylo zadání úhlu podpory, předepsaného pootočení a koncových kloubů.",
+        "Opravy: převody jednotek u zatížení, rolování nastavení na telefonu a dokončení aktualizace."
+      ],
+      "tag": "Nejnovější"
+    },
+    {
       "version": "1.1.1",
       "title": "Chyby řešiče, příklady a export",
       "date": "31. srpna 2026",

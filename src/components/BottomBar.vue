@@ -629,11 +629,7 @@
             </div>
 
             <div v-if="item.type === 'prescribed'" class="d-flex">
-              <div
-                class="inline-edit-group load mr-2"
-                :class="{ disabled: !isDofSupported(item.target, DofID.Dx) }"
-                style="width: 128px"
-              >
+              <div class="inline-edit-group load mr-2" :class="{ disabled: !isDofSupported(item.target, DofID.Dx) }">
                 <label class="input-before">D<sub>x</sub></label>
                 <input
                   :value="appStore.convertLength(item.ref.prescribedValues[0])"
@@ -652,11 +648,7 @@
                 />
                 <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
               </div>
-              <div
-                class="inline-edit-group load mr-2"
-                :class="{ disabled: !isDofSupported(item.target, DofID.Dz) }"
-                style="width: 128px"
-              >
+              <div class="inline-edit-group load mr-2" :class="{ disabled: !isDofSupported(item.target, DofID.Dz) }">
                 <span class="input-before">D<sub>z</sub></span>
                 <input
                   :value="appStore.convertLength(item.ref.prescribedValues[2])"
@@ -675,11 +667,7 @@
                 />
                 <div class="input-after" v-html="formatMeasureAsHTML(appStore.units.Length)"></div>
               </div>
-              <div
-                class="inline-edit-group load"
-                :class="{ disabled: !isDofSupported(item.target, DofID.Ry) }"
-                style="width: 128px"
-              >
+              <div class="inline-edit-group load" :class="{ disabled: !isDofSupported(item.target, DofID.Ry) }">
                 <span class="input-before">R<sub>y</sub></span>
                 <input
                   :value="item.ref.prescribedValues[4]"

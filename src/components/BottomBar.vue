@@ -365,8 +365,12 @@
             </div>
           </template>
           <template #item.material="{ item }">
+            <!--
+              Not `.number`: the domain keys its materials and cross sections by the label as text,
+              so a label read back as a number finds nothing and the element is left with neither.
+            -->
             <select
-              v-model.number="item.mat"
+              v-model="item.mat"
               class="mini-select flex-shrink-0"
               style="width: 100%"
               @change="
@@ -378,15 +382,14 @@
                 {{ node.label }}
               </option>
             </select>
-            <!--<input
-              v-model.number="item.mat"
-              type="number"
-              class="inline-edit"
-            />-->
           </template>
           <template #item.cs="{ item }">
+            <!--
+              Not `.number`: the domain keys its materials and cross sections by the label as text,
+              so a label read back as a number finds nothing and the element is left with neither.
+            -->
             <select
-              v-model.number="item.cs"
+              v-model="item.cs"
               class="mini-select flex-shrink-0"
               style="width: 100%"
               @change="
@@ -431,11 +434,6 @@
               <option :value="false">consistent</option>
               <option :value="true">lumped</option>
             </select>
-            <!--<input
-              v-model.number="item.mat"
-              type="number"
-              class="inline-edit"
-            />-->
           </template>
           <template #item.loads="{ item }">
             <div class="d-flex align-center">

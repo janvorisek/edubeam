@@ -870,6 +870,7 @@
                 <span class="input-before">d</span>
                 <input
                   :value="appStore.convertLength(item.ref.values[3])"
+                  :title="loadPositionRange(item.ref)"
                   class="inline-edit"
                   style="width: 60px"
                   @keydown="checkNumber($event)"
@@ -1591,6 +1592,15 @@ const appStore = useAppStore();
  * box is rewritten to say where it went - the dialogs refuse such a value and print why, but an
  * inline box has nowhere to put a reason.
  */
+/** What the distance box will take, for its native tooltip: the beam this load is on, end to end. */
+const loadPositionRange = (load: BeamConcentratedLoad) => {
+  const beam = useProjectStore().solver.domain.elements.get(load.target) as Beam2D | undefined;
+  const length = beam ? appStore.convertLength(beam.computeGeo().l) : 0;
+
+  // written the way the box itself writes the number, not the way results are written
+  return `0 - ${Math.round(length * 1e3) / 1e3} ${appStore.units.Length}`;
+};
+
 const setLoadPosition = (load: BeamConcentratedLoad, el: HTMLInputElement) => {
   const beam = useProjectStore().solver.domain.elements.get(load.target) as Beam2D | undefined;
   const length = beam ? beam.computeGeo().l : 0;

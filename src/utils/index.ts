@@ -532,6 +532,18 @@ const restoreRenderedValue = (el: HTMLInputElement, modelValue: unknown) => {
   el.value = String(rendered ?? modelValue ?? '');
 };
 
+/**
+ * Where a concentrated load or deformation may sit on its beam: from one node to the other, and
+ * never past either.
+ *
+ * The solver splits the beam at that distance to work out what the load does, so a distance outside
+ * it leaves a segment of negative length - which comes back as nonsense rather than as an error.
+ * A number too large to hold still means "far past the end", so it lands on the end like any other;
+ * only what cannot be read as a number at all leaves the load where it was.
+ */
+export const positionAlongBeam = (distance: number, length: number, current: number): number =>
+  Math.min(Math.max(Number.isNaN(distance) ? current : distance, 0), Math.max(length, 0));
+
 export const changeSetArrayItem = (
   item: unknown,
   set: string,

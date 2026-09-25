@@ -873,15 +873,7 @@
                   class="inline-edit"
                   style="width: 60px"
                   @keydown="checkNumber($event)"
-                  @change="
-                    changeSetArrayItem(
-                      item.ref,
-                      'values',
-                      3,
-                      $event.target as HTMLInputElement,
-                      appStore.convertInverseLength
-                    )
-                  "
+                  @change="setLoadPosition(item.ref, $event.target as HTMLInputElement)"
                 />
                 <div
                   v-if="item.ref instanceof BeamElementUniformEdgeLoad"
@@ -1552,6 +1544,8 @@ import {
   toggleSet,
   nameBeamForce,
   loadType,
+  executeModelMutationWithUndo,
+  positionAlongBeam,
 } from '../utils';
 import { DofID, Beam2D, PrescribedDisplacement } from 'ts-fem';
 import { formatMeasureAsHTML } from '../SVGUtils';
@@ -1588,6 +1582,32 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const appStore = useAppStore();
+
+/**
+ * Where along its beam a concentrated load sits.
+ *
+ * There is no such place as past the end: the solver splits the beam at that distance, and a split
+ * outside it leaves a segment of negative length. Typed past either end it goes to that end, and the
+ * box is rewritten to say where it went - the dialogs refuse such a value and print why, but an
+ * inline box has nowhere to put a reason.
+ */
+const setLoadPosition = (load: BeamConcentratedLoad, el: HTMLInputElement) => {
+  const beam = useProjectStore().solver.domain.elements.get(load.target) as Beam2D | undefined;
+  const length = beam ? beam.computeGeo().l : 0;
+  // parseFloat2 reads anything it cannot understand as zero, which would send the load to the
+  // start of the beam; read it the way the other inline boxes do, so nonsense leaves it alone
+  const text = el.value.replace(/\s/g, '').replace(',', '.');
+  const typed = text === '' ? 0 : parseFloat(text);
+  const placed = positionAlongBeam(appStore.convertInverseLength(typed), length, load.values[3]);
+
+  executeModelMutationWithUndo(() => {
+    setUnsolved();
+    load.values[3] = placed;
+  });
+
+  el.value = String(appStore.convertLength(placed));
+};
+
 const projStore = useProjectStore();
 const layoutStore = useLayoutStore();
 

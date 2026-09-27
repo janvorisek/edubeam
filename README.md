@@ -67,9 +67,9 @@ Edubeam is optimized for desktops/laptops but also runs on tablets with mouse or
 
 ### Need 3D?
 
-Edubeam stays focused on 2D. For 3D frames, slabs and shells, have a look at [Elementarium](https://studio.elementarium.app/?utm_source=edubeam&utm_medium=link&utm_campaign=readme).
+Edubeam stays focused on 2D. For 3D frames, slabs and shells, have a look at [Elementarium](https://elementarium.app/?utm_source=edubeam&utm_medium=link&utm_campaign=readme).
 
-<a href="https://studio.elementarium.app/?utm_source=edubeam&utm_medium=banner&utm_campaign=leaderboard&utm_content=readme">
+<a href="https://elementarium.app/?utm_source=edubeam&utm_medium=banner&utm_campaign=leaderboard&utm_content=readme">
   <img src="docs/public/elementarium/leaderboard@2x.png" alt="Elementarium: take your frames into 3D. Slabs, shells and steel checks in your browser." width="728">
 </a>
 

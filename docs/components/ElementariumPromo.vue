@@ -6,7 +6,7 @@ const props = withDefaults(defineProps<{ placement?: string }>(), { placement: '
 
 const { lang } = useData();
 
-const href = `https://studio.elementarium.app/?utm_source=edubeam&utm_medium=banner&utm_campaign=leaderboard&utm_content=${props.placement}`;
+const href = `https://elementarium.app/?utm_source=edubeam&utm_medium=banner&utm_campaign=leaderboard&utm_content=${props.placement}`;
 const alt = 'Elementarium: take your frames into 3D. Slabs, shells and steel checks in your browser.';
 </script>
 

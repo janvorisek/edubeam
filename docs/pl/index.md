@@ -41,3 +41,5 @@ features:
 - **Inżynierowie i hobbyści**, którzy chcą szybko sprawdzić płaski układ bez uruchamiania dużego pakietu obliczeniowego.
 
 Jeśli potrafisz przeciągnąć myszą, poradzisz sobie z <Edubeam />. 🙂
+
+<ElementariumPromo />

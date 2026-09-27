@@ -41,3 +41,5 @@ features:
 - **Ingenieure und Tüftler**, die eine schnelle Plausibilitätsprüfung ebener Tragwerke ohne „großes“ Programm wollen.
 
 Wer eine Maus ziehen kann, kann auch <Edubeam /> bedienen. 🙂
+
+<ElementariumPromo />

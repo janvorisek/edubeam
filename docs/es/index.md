@@ -41,3 +41,5 @@ features:
 - **Ingenieros y aficionados** que quieren una comprobación rápida de una estructura plana sin un programa «grande».
 
 Si sabes arrastrar un ratón, sabes usar <Edubeam />. 🙂
+
+<ElementariumPromo />

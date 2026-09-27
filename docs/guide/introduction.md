@@ -59,6 +59,8 @@ Knowing the limits up front saves time:
 
 If a missing feature matters to you, [open an issue](https://github.com/janvorisek/edubeam/issues).
 
+<ElementariumPromo placement="introduction" />
+
 ## Who is it for?
 
 - **Students** learning structural mechanics who want instant feedback on hand calculations. See [Checking results by hand](/guide/verification).

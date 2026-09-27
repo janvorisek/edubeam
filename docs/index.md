@@ -42,3 +42,5 @@ features:
 - **Engineers and hobbyists** who want a fast 2D sanity check without a desktop package.
 
 If you can drag a mouse, you can use <Edubeam />. 🙂
+
+<ElementariumPromo />

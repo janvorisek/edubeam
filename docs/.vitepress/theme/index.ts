@@ -12,6 +12,7 @@ import WelcomeStructure from '../../components/WelcomeStructure.vue';
 import ExamplesGallery from '../../components/ExamplesGallery.vue';
 import FeatureStructures from '../../components/FeatureStructures.vue';
 import LoadShowcase from '../../components/LoadShowcase.vue';
+import ElementariumPromo from '../../components/ElementariumPromo.vue';
 
 import './style.css';
 
@@ -29,5 +30,6 @@ export default {
     app.component('ExamplesGallery', ExamplesGallery);
     app.component('FeatureStructures', FeatureStructures);
     app.component('LoadShowcase', LoadShowcase);
+    app.component('ElementariumPromo', ElementariumPromo);
   },
 } satisfies Theme;

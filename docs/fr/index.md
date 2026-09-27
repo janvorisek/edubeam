@@ -41,3 +41,5 @@ features:
 - **Ingénieurs et passionnés** qui veulent une vérification rapide d’une structure plane sans « gros » logiciel.
 
 Si vous savez faire glisser une souris, vous savez utiliser <Edubeam />. 🙂
+
+<ElementariumPromo />

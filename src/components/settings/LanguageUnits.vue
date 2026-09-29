@@ -202,6 +202,7 @@ import Chinese from 'language-icons/icons/zh.svg';
 import Polish from 'language-icons/icons/pl.svg';
 import Ukrainian from 'language-icons/icons/uk.svg';
 import Russian from 'language-icons/icons/ru.svg';
+import Turkish from 'language-icons/icons/tr.svg';
 import ThaiFlag from '../../assets/th-flag.svg';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -218,6 +219,7 @@ const flags = {
   pl: Polish,
   uk: Ukrainian,
   ru: Russian,
+  tr: Turkish,
 };
 
 function getImageUrl(name) {

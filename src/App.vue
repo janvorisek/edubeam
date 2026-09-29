@@ -93,9 +93,21 @@ const steps = computed(() => [
   },
 ]);
 
-/** Also offered in the menu, for anyone who skipped it. The display options are one of its stops. */
-const startTour = () => {
+/**
+ * Also offered in the menu, for anyone who skipped it. The display options are one of its stops.
+ *
+ * Every step but the first is about the drawing, and the tour can be started from any tab - the
+ * menu is always there. Started from Settings, say, a step about the drawing would have nothing to
+ * attach to: the pane it is about is hidden, so everything in it measures zero. Switching to it
+ * once, before the first step, is simpler than asking each step that needs it to switch for itself.
+ */
+const startTour = async () => {
+  const drawing = appStore.tabs.findIndex((tab) => tab.props.id === 'viewer');
+
+  if (drawing >= 0) appStore.tab = drawing;
+
   viewerStore.settingsOpen = true;
+  await nextTick();
   useVOnboarding(onboardingWrapper).start();
 };
 
@@ -337,6 +349,12 @@ const app_commit = APP_COMMIT;
       :steps="steps"
       :options="{
         popper: {
+          /*
+           * Laid out against the window, not the document. Absolutely positioned, a bubble that
+           * lands low can make the page taller than the window, and the page then scrolls to show
+           * it - the app slides up and a strip of blank appears under it.
+           */
+          strategy: 'fixed',
           modifiers: [
             {
               name: 'offset',

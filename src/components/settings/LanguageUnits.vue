@@ -40,12 +40,7 @@
 
         <div class="mb-1">{{ $t('settings.axisConvention_description') }}</div>
 
-        <v-select
-          v-model="appStore.axisConvention"
-          :items="axisConventionItems"
-          hide-details="auto"
-          :label="$t('settings.axisConvention')"
-        />
+        <AxisConventionPicker v-model="appStore.axisConvention" class="mt-2" />
       </v-col>
 
       <v-col cols="12" md="6">
@@ -193,6 +188,7 @@
 import { useAppStore } from '@/store/app';
 import { availableLocales } from '../../plugins/i18n';
 import { formatMeasureAsHTML } from '../../SVGUtils';
+import AxisConventionPicker from './AxisConventionPicker.vue';
 
 const appStore = useAppStore();
 
@@ -234,11 +230,6 @@ const numberStyleItems = computed(() => [
   { title: t('settings.number_format_auto'), value: 'auto' },
   { title: t('settings.number_format_scientific'), value: 'scientific' },
   { title: t('settings.number_format_engineering'), value: 'engineering' },
-]);
-
-const axisConventionItems = computed(() => [
-  { title: t('settings.axisConvention_zDown'), value: 'z-down' },
-  { title: t('settings.axisConvention_yUp'), value: 'y-up' },
 ]);
 
 const momentUnitsProxy = computed({

@@ -170,9 +170,7 @@ const results = computed(() => {
   const nseg = truss ? 1 : 16;
   const scaleBy = props.deformedShapeMultiplier / props.scale;
   const n1 = props.element.domain.nodes.get(props.element.nodes[0]) as Node;
-  let def = null;
-
-  def = props.element.computeGlobalDefl(props.loadCase, nseg);
+  const def = props.element.computeGlobalDefl(props.loadCase, nseg);
 
   const geo = props.element.computeGeo();
   const cos = geo.dx / geo.l;

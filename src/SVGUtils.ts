@@ -66,10 +66,9 @@ export function formatResults(el: Beam2D, scale: number, defoScale: number = 1, 
   const nseg = 20;
   const scaleBy = (resultsScalePx * defoScale) / scale;
   const n1 = el.domain.getNode(el.nodes[0]);
-  let def = null;
 
   //if (useProjectStore().model === "LinearStaticSolver") {
-  def = el.computeGlobalDefl(el.domain.solver.loadCases[0], nseg);
+  const def = el.computeGlobalDefl(el.domain.solver.loadCases[0], nseg);
   // } else {
   //   nseg = 10;
   //   def = el.computeGlobalEigenMode(el.domain.solver.loadCases[0], useProjectStore().nthEigenVector - 1, nseg);

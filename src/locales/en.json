@@ -159,6 +159,10 @@
     "viewer_preview": "Viewer preview",
     "language_description": "Select your preferred language for the interface.",
     "units_description": "Choose your preferred measurement units.",
+    "axisConvention": "Coordinate system",
+    "axisConvention_description": "Which way the vertical axis points in inputs and results. The model and saved files are not affected.",
+    "axisConvention_zDown": "x right, z down",
+    "axisConvention_yUp": "x right, y up",
     "reset_settings": "Reset settings",
     "sizes": {
       "sizes": "Sizes",
@@ -213,7 +217,7 @@
     "addNode": {
       "addNewNode": "Add new node",
       "coordinate_x": "X-coordinate",
-      "coordinate_z": "Z-coordinate",
+      "coordinate_z": "{v}-coordinate",
       "addNode": "Add node"
     },
     "common": {
@@ -435,8 +439,8 @@
       "unstable": "Structure is unstable: {dofs} moves practically without resistance. Add a support or an element, remove an end hinge, or check the cross section stiffness.",
       "unstableDof": {
         "dx": "node {node} horizontally (Dx)",
-        "dz": "node {node} vertically (Dz)",
-        "ry": "node {node} in rotation (Ry)",
+        "dz": "node {node} vertically (D{v})",
+        "ry": "node {node} in rotation (R{r})",
         "other": "node {node} in DOF {dof}"
       },
       "unstableMore": "{list} and {count} more",
@@ -476,7 +480,7 @@
     },
     "supports": {
       "title": "Supports",
-      "body": "Tick a degree of freedom to restrain it: Dx and Dz block translation, Ry blocks rotation. A structure needs at least three independent restraints."
+      "body": "Tick a degree of freedom to restrain it: Dx and D{v} block translation, R{r} blocks rotation. A structure needs at least three independent restraints."
     },
     "elements": {
       "title": "Elements",
@@ -484,7 +488,8 @@
     },
     "loads": {
       "title": "Loads",
-      "body": "Loads act on nodes or along elements. Positive values follow the global axes, with z pointing down."
+      "body": "Loads act on nodes or along elements. Positive values follow the global axes, with z pointing down.",
+      "bodyYUp": "Loads act on nodes or along elements. Positive values follow the global axes, with y pointing up."
     },
     "nodalLoads": {
       "title": "Nodal loads",
@@ -508,7 +513,8 @@
     },
     "signConvention": {
       "title": "Sign convention",
-      "body": "Global z points down, so a positive Fz or fz pulls downwards and My is positive counter-clockwise. Loads switched to the local system follow the element instead."
+      "body": "Global z points down, so a positive Fz or fz pulls downwards and My is positive counter-clockwise. Loads switched to the local system follow the element instead.",
+      "bodyYUp": "Global y points up, so a positive Fy or fy pushes upwards and Mz is positive counter-clockwise. Loads switched to the local system follow the element instead."
     },
     "results": {
       "title": "Results",
@@ -516,7 +522,7 @@
     },
     "diagrams": {
       "title": "Result overlays",
-      "body": "These switches draw the normal force, shear force, bending moment, deformed shape and reactions over the model. N is positive in tension, My positive when sagging."
+      "body": "These switches draw the normal force, shear force, bending moment, deformed shape and reactions over the model. N is positive in tension, M{r} positive when sagging."
     },
     "endForces": {
       "title": "End forces",

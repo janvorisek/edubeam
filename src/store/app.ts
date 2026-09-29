@@ -13,6 +13,7 @@ import Qty from 'js-quantities';
 import { isMobile, suggestLanguage } from '@/utils';
 import { formatResultAsHTML, formatResultAsText, type ResultNumberStyle } from '@/utils/numberDisplay';
 import { customForceConversion, customPressureConversion } from '@/utils/unitConversions';
+import { angle, axisConvention, axisLetters, vertical } from '@/utils/axisConvention';
 import { useProjectStore } from './project';
 
 export const useAppStore = defineStore(
@@ -143,6 +144,19 @@ export const useAppStore = defineStore(
     const convertTemperature = (value: number) => _convertTemperature(value);
     const convertInverseTemperature = (value: number) => _convertInverseTemperature(value);
 
+    // Vertical components and angles pass through `vertical` and `angle` on their way to and
+    // from the screen, after unit conversion; `axes` holds the letters to label them with.
+    const axes = computed(() => axisLetters(axisConvention.value));
+
+    watch(axisConvention, () => {
+      if (useAppStore().bottomBarOpen) {
+        useAppStore().bottomBarOpen = false;
+        nextTick(() => {
+          useAppStore().bottomBarOpen = true;
+        });
+      }
+    });
+
     const onboardingFinished = ref(false);
     const lastSeenChangelogVersion = ref('');
 
@@ -248,6 +262,11 @@ export const useAppStore = defineStore(
       convertTemperature,
       convertInverseTemperature,
 
+      axisConvention,
+      axes,
+      vertical,
+      angle,
+
       lastSeenChangelogVersion,
     };
   },
@@ -271,6 +290,7 @@ export const useAppStore = defineStore(
         'units.ThermalExpansion',
         'units.Angle',
         'momentUnits',
+        'axisConvention',
       ],
       debug: true,
     },

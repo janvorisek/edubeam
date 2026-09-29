@@ -46,6 +46,20 @@ O **x** local vai do nó inicial ao nó final; o **z** local é perpendicular a 
 
 Há uma reação para cada GL restringido, informada no sistema de coordenadas do nó (girado pelo ângulo do SCL nodal, se definido). As setas de reação na visualização apontam na direção em que o apoio empurra a estrutura.
 
+## Eixo y para cima {#y-up-axes}
+
+**Configurações → Sistema de coordenadas → x para a direita, y para cima** passa tudo o que você digita e lê para o sistema dos livros-texto: **x** para a direita, **y** para cima e **z** em direção ao observador. O modelo, os arquivos salvos e o desenho não mudam; só mudam os números e os nomes:
+
+| Grandeza | z para baixo (padrão) | y para cima |
+| --- | --- | --- |
+| Coordenada vertical | `Z` | `Y`, sinal oposto |
+| Cargas, deslocamentos, reações e esforços de extremidade verticais | `Fz`, `fz`, `Dz`, `Z12`… | `Fy`, `fy`, `Dy`, `Y12`…, sinal oposto |
+| Rotações e momentos | `Ry`, `My` | `Rz`, `Mz`, mesmo sinal (positivo no sentido anti-horário) |
+| Ângulo do apoio α | medido no sentido horário | medido no sentido anti-horário, sinal oposto |
+| Esforços internos N, V, M | | inalterados, diagramas desenhados da mesma forma |
+
+Assim, uma carga gravitacional é um `fy` **negativo**, e o topo de um pilar de 3 m tem `Y = 3`.
+
 ## Unidades
 
 O solver trabalha internamente em SI (m, N, Pa, rad, K). As unidades de exibição afetam apenas o que você digita e lê; alterá-las nunca muda o modelo.

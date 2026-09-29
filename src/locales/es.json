@@ -159,6 +159,10 @@
     "viewer_preview": "Vista previa",
     "language_description": "Seleccione su idioma preferido para la interfaz.",
     "units_description": "Elija sus unidades de medida preferidas.",
+    "axisConvention": "Sistema de coordenadas",
+    "axisConvention_description": "Hacia dónde apunta el eje vertical en los datos y los resultados. El modelo y los archivos guardados no cambian.",
+    "axisConvention_zDown": "x a la derecha, z hacia abajo",
+    "axisConvention_yUp": "x a la derecha, y hacia arriba",
     "reset_settings": "Restablecer configuración",
     "sizes": {
       "sizes": "Tamaños",
@@ -213,7 +217,7 @@
     "addNode": {
       "addNewNode": "Añadir nuevo nodo",
       "coordinate_x": "Coordenada X",
-      "coordinate_z": "Coordenada Z",
+      "coordinate_z": "Coordenada {v}",
       "addNode": "Añadir nodo"
     },
     "common": {
@@ -435,8 +439,8 @@
       "unstable": "La estructura es inestable; se mueve prácticamente sin resistencia: {dofs}. Añada un apoyo o un elemento, elimine una rótula de extremo o compruebe la rigidez de la sección transversal.",
       "unstableDof": {
         "dx": "nodo {node} en horizontal (Dx)",
-        "dz": "nodo {node} en vertical (Dz)",
-        "ry": "nodo {node} en giro (Ry)",
+        "dz": "nodo {node} en vertical (D{v})",
+        "ry": "nodo {node} en giro (R{r})",
         "other": "nodo {node} en el grado de libertad {dof}"
       },
       "unstableMore": "{list} y {count} más",
@@ -476,7 +480,7 @@
     },
     "supports": {
       "title": "Apoyos",
-      "body": "Marca un grado de libertad para restringirlo: Dx y Dz bloquean la traslación y Ry el giro. La estructura necesita al menos tres restricciones independientes."
+      "body": "Marca un grado de libertad para restringirlo: Dx y D{v} bloquean la traslación y R{r} el giro. La estructura necesita al menos tres restricciones independientes."
     },
     "elements": {
       "title": "Elementos",
@@ -484,7 +488,8 @@
     },
     "loads": {
       "title": "Cargas",
-      "body": "Las cargas actúan en los nodos o a lo largo de los elementos. Los valores positivos siguen los ejes globales, con z hacia abajo."
+      "body": "Las cargas actúan en los nodos o a lo largo de los elementos. Los valores positivos siguen los ejes globales, con z hacia abajo.",
+      "bodyYUp": "Las cargas actúan en los nodos o a lo largo de los elementos. Los valores positivos siguen los ejes globales, con y hacia arriba."
     },
     "nodalLoads": {
       "title": "Cargas nodales",
@@ -508,7 +513,8 @@
     },
     "signConvention": {
       "title": "Convención de signos",
-      "body": "El eje global z apunta hacia abajo, así que un Fz o fz positivo actúa hacia abajo y My es positivo en sentido antihorario. Las cargas en ejes locales siguen al elemento."
+      "body": "El eje global z apunta hacia abajo, así que un Fz o fz positivo actúa hacia abajo y My es positivo en sentido antihorario. Las cargas en ejes locales siguen al elemento.",
+      "bodyYUp": "El eje global y apunta hacia arriba, así que un Fy o fy positivo actúa hacia arriba y Mz es positivo en sentido antihorario. Las cargas en ejes locales siguen al elemento."
     },
     "results": {
       "title": "Resultados",
@@ -516,7 +522,7 @@
     },
     "diagrams": {
       "title": "Diagramas de resultados",
-      "body": "Estos interruptores dibujan el axil, el cortante, el momento flector, la deformada y las reacciones sobre el modelo. N es positivo a tracción y My con tracción en la fibra inferior."
+      "body": "Estos interruptores dibujan el axil, el cortante, el momento flector, la deformada y las reacciones sobre el modelo. N es positivo a tracción y M{r} con tracción en la fibra inferior."
     },
     "endForces": {
       "title": "Fuerzas en extremos",

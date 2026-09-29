@@ -159,6 +159,10 @@
     "viewer_preview": "Vorschau",
     "language_description": "Wählen Sie Ihre bevorzugte Sprache für die Benutzeroberfläche.",
     "units_description": "Wählen Sie Ihre bevorzugten Maßeinheiten.",
+    "axisConvention": "Koordinatensystem",
+    "axisConvention_description": "In welche Richtung die vertikale Achse bei Eingaben und Ergebnissen zeigt. Modell und gespeicherte Dateien bleiben unverändert.",
+    "axisConvention_zDown": "x nach rechts, z nach unten",
+    "axisConvention_yUp": "x nach rechts, y nach oben",
     "reset_settings": "Einstellungen zurücksetzen",
     "sizes": {
       "sizes": "Größen",
@@ -213,7 +217,7 @@
     "addNode": {
       "addNewNode": "Neuen Knoten hinzufügen",
       "coordinate_x": "X-Koordinate",
-      "coordinate_z": "Z-Koordinate",
+      "coordinate_z": "{v}-Koordinate",
       "addNode": "Knoten hinzufügen"
     },
     "common": {
@@ -435,8 +439,8 @@
       "unstable": "Die Struktur ist instabil. Praktisch ohne Widerstand beweglich: {dofs}. Fügen Sie ein Lager oder ein Element hinzu, entfernen Sie ein Endgelenk oder prüfen Sie die Steifigkeit des Querschnitts.",
       "unstableDof": {
         "dx": "Knoten {node} horizontal (Dx)",
-        "dz": "Knoten {node} vertikal (Dz)",
-        "ry": "Knoten {node} in Verdrehung (Ry)",
+        "dz": "Knoten {node} vertikal (D{v})",
+        "ry": "Knoten {node} in Verdrehung (R{r})",
         "other": "Knoten {node} im Freiheitsgrad {dof}"
       },
       "unstableMore": "{list} und {count} weitere",
@@ -476,7 +480,7 @@
     },
     "supports": {
       "title": "Lager",
-      "body": "Ein angehakter Freiheitsgrad wird festgehalten: Dx und Dz sperren die Verschiebung, Ry die Verdrehung. Eine Struktur braucht mindestens drei unabhängige Bindungen."
+      "body": "Ein angehakter Freiheitsgrad wird festgehalten: Dx und D{v} sperren die Verschiebung, R{r} die Verdrehung. Eine Struktur braucht mindestens drei unabhängige Bindungen."
     },
     "elements": {
       "title": "Elemente",
@@ -484,7 +488,8 @@
     },
     "loads": {
       "title": "Lasten",
-      "body": "Lasten wirken in Knoten oder entlang der Elemente. Positive Werte folgen den globalen Achsen, wobei z nach unten zeigt."
+      "body": "Lasten wirken in Knoten oder entlang der Elemente. Positive Werte folgen den globalen Achsen, wobei z nach unten zeigt.",
+      "bodyYUp": "Lasten wirken in Knoten oder entlang der Elemente. Positive Werte folgen den globalen Achsen, wobei y nach oben zeigt."
     },
     "nodalLoads": {
       "title": "Knotenlasten",
@@ -508,7 +513,8 @@
     },
     "signConvention": {
       "title": "Vorzeichenkonvention",
-      "body": "Die globale z-Achse zeigt nach unten, ein positives Fz oder fz wirkt also nach unten; My ist gegen den Uhrzeigersinn positiv. Lasten im lokalen System folgen dem Element."
+      "body": "Die globale z-Achse zeigt nach unten, ein positives Fz oder fz wirkt also nach unten; My ist gegen den Uhrzeigersinn positiv. Lasten im lokalen System folgen dem Element.",
+      "bodyYUp": "Die globale y-Achse zeigt nach oben, ein positives Fy oder fy wirkt also nach oben; Mz ist gegen den Uhrzeigersinn positiv. Lasten im lokalen System folgen dem Element."
     },
     "results": {
       "title": "Ergebnisse",
@@ -516,7 +522,7 @@
     },
     "diagrams": {
       "title": "Ergebnisdarstellung",
-      "body": "Diese Schalter zeichnen Normalkraft, Querkraft, Biegemoment, verformte Figur und Auflagerkräfte über dem Modell. N ist im Zug positiv, My bei Zug an der Unterseite."
+      "body": "Diese Schalter zeichnen Normalkraft, Querkraft, Biegemoment, verformte Figur und Auflagerkräfte über dem Modell. N ist im Zug positiv, M{r} bei Zug an der Unterseite."
     },
     "endForces": {
       "title": "Endkräfte",

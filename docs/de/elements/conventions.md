@@ -46,6 +46,20 @@ Lokal **x** verläuft vom Anfangs- zum Endknoten; lokal **z** steht senkrecht da
 
 Für jeden gehaltenen Freiheitsgrad gibt es eine Reaktion; sie wird im Koordinatensystem des Knotens angegeben (gedreht um den LKS-Winkel des Knotens, falls gesetzt). Die Reaktionspfeile in der Ansicht zeigen in die Richtung, in der das Lager auf das Tragwerk wirkt.
 
+## Y-Achse nach oben {#y-up-axes}
+
+**Einstellungen → Koordinatensystem → x nach rechts, y nach oben** stellt alles, was Sie eingeben und ablesen, auf das Lehrbuchsystem um: **x** nach rechts, **y** nach oben und **z** zum Betrachter. Modell, gespeicherte Dateien und Zeichnung bleiben gleich; nur Zahlen und Bezeichnungen ändern sich:
+
+| Größe | z nach unten (Standard) | y nach oben |
+| --- | --- | --- |
+| Vertikale Koordinate | `Z` | `Y`, umgekehrtes Vorzeichen |
+| Vertikale Lasten, Verschiebungen, Auflagerkräfte, Stabendkräfte | `Fz`, `fz`, `Dz`, `Z12`… | `Fy`, `fy`, `Dy`, `Y12`…, umgekehrtes Vorzeichen |
+| Verdrehungen und Momente | `Ry`, `My` | `Rz`, `Mz`, gleiches Vorzeichen (gegen den Uhrzeigersinn positiv) |
+| Auflagerwinkel α | im Uhrzeigersinn gemessen | gegen den Uhrzeigersinn gemessen, umgekehrtes Vorzeichen |
+| Schnittgrößen N, V, M | | unverändert, Verläufe werden gleich gezeichnet |
+
+Eine Eigengewichtslast ist also ein **negatives** `fy`, und der Kopf einer 3 m hohen Stütze hat `Y = 3`.
+
 ## Einheiten
 
 Der Solver arbeitet intern in SI (m, N, Pa, rad, K). Die Anzeigeeinheiten beeinflussen nur, was Sie eingeben und ablesen; ihr Wechsel verändert das Modell nie.

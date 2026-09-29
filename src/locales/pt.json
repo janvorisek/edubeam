@@ -159,6 +159,10 @@
     "viewer_preview": "Pré-visualização",
     "language_description": "Selecione o idioma preferido da interface.",
     "units_description": "Escolha suas unidades de medida preferidas.",
+    "axisConvention": "Sistema de coordenadas",
+    "axisConvention_description": "Para onde aponta o eixo vertical nas entradas e nos resultados. O modelo e os arquivos salvos não mudam.",
+    "axisConvention_zDown": "x para a direita, z para baixo",
+    "axisConvention_yUp": "x para a direita, y para cima",
     "reset_settings": "Redefinir configurações",
     "sizes": {
       "sizes": "Tamanhos",
@@ -213,7 +217,7 @@
     "addNode": {
       "addNewNode": "Adicionar novo nó",
       "coordinate_x": "Coordenada X",
-      "coordinate_z": "Coordenada Z",
+      "coordinate_z": "Coordenada {v}",
       "addNode": "Adicionar nó"
     },
     "common": {
@@ -435,8 +439,8 @@
       "unstable": "A estrutura é instável. Movimentos praticamente sem resistência: {dofs}. Adicione um apoio ou um elemento, remova uma rótula de extremidade ou verifique a rigidez da seção.",
       "unstableDof": {
         "dx": "nó {node} na horizontal (Dx)",
-        "dz": "nó {node} na vertical (Dz)",
-        "ry": "nó {node} em rotação (Ry)",
+        "dz": "nó {node} na vertical (D{v})",
+        "ry": "nó {node} em rotação (R{r})",
         "other": "nó {node} no GL {dof}"
       },
       "unstableMore": "{list} e mais {count}",
@@ -476,7 +480,7 @@
     },
     "supports": {
       "title": "Apoios",
-      "body": "Marque um grau de liberdade para restringi-lo: Dx e Dz travam a translação e Ry a rotação. A estrutura precisa de pelo menos três restrições independentes."
+      "body": "Marque um grau de liberdade para restringi-lo: Dx e D{v} travam a translação e R{r} a rotação. A estrutura precisa de pelo menos três restrições independentes."
     },
     "elements": {
       "title": "Elementos",
@@ -484,7 +488,8 @@
     },
     "loads": {
       "title": "Cargas",
-      "body": "As cargas atuam nos nós ou ao longo dos elementos. Valores positivos seguem os eixos globais, com z apontando para baixo."
+      "body": "As cargas atuam nos nós ou ao longo dos elementos. Valores positivos seguem os eixos globais, com z apontando para baixo.",
+      "bodyYUp": "As cargas atuam nos nós ou ao longo dos elementos. Valores positivos seguem os eixos globais, com y apontando para cima."
     },
     "nodalLoads": {
       "title": "Cargas nodais",
@@ -508,7 +513,8 @@
     },
     "signConvention": {
       "title": "Convenção de sinais",
-      "body": "O eixo global z aponta para baixo, então um Fz ou fz positivo age para baixo e My é positivo no sentido anti-horário. Cargas no sistema local acompanham o elemento."
+      "body": "O eixo global z aponta para baixo, então um Fz ou fz positivo age para baixo e My é positivo no sentido anti-horário. Cargas no sistema local acompanham o elemento.",
+      "bodyYUp": "O eixo global y aponta para cima, então um Fy ou fy positivo age para cima e Mz é positivo no sentido anti-horário. Cargas no sistema local acompanham o elemento."
     },
     "results": {
       "title": "Resultados",
@@ -516,7 +522,7 @@
     },
     "diagrams": {
       "title": "Diagramas de resultados",
-      "body": "Estes botões desenham o esforço normal, o cortante, o momento fletor, a deformada e as reações sobre o modelo. N é positivo à tração e My com tração na fibra inferior."
+      "body": "Estes botões desenham o esforço normal, o cortante, o momento fletor, a deformada e as reações sobre o modelo. N é positivo à tração e M{r} com tração na fibra inferior."
     },
     "endForces": {
       "title": "Esforços de extremidade",

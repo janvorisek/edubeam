@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { vertical } from '@/utils/axisConvention';
 import { NodalLoad } from 'ts-fem';
 import { computed } from 'vue';
 
@@ -153,7 +154,7 @@ const stackedTransform = computed(() => {
       }}
       <template v-if="nload.values[0] !== 0 && nload.values[2] !== 0">
         ({{ numberFormat.format(convertForce(nload.values[0])) }};
-        {{ numberFormat.format(convertForce(nload.values[2])) }})
+        {{ numberFormat.format(vertical(convertForce(nload.values[2]))) }})
       </template>
     </text>
   </g>

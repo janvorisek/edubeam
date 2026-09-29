@@ -48,7 +48,7 @@
                   <v-col cols="12">
                     <v-text-field
                       v-model="loadNodeValueFz"
-                      :label="`${mainLabel}z`"
+                      :label="`${mainLabel}${appStore.axes.v}`"
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="mainUnits"
@@ -60,7 +60,7 @@
                   <v-col cols="12">
                     <v-text-field
                       v-model="loadNodeValueMy"
-                      :label="`${momentLabel}y`"
+                      :label="`${momentLabel}${appStore.axes.r}`"
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="`${momentUnits}`"
@@ -130,10 +130,10 @@ const realFx = computed(() => {
 
 const realFz = computed(() => {
   if (loadType.value === 'force') {
-    return appStore.convertInverseForce(parseFloat2(loadNodeValueFz.value));
+    return appStore.vertical(appStore.convertInverseForce(parseFloat2(loadNodeValueFz.value)));
   }
 
-  return appStore.convertInverseLength(parseFloat2(loadNodeValueFz.value));
+  return appStore.vertical(appStore.convertInverseLength(parseFloat2(loadNodeValueFz.value)));
 });
 
 const realMy = computed(() => {
@@ -159,12 +159,12 @@ onMounted(() => {
   if (props.type === 'displacement') {
     const load = useProjectStore().solver.loadCases[0].prescribedBC[props.index];
     loadNodeValueFx.value = appStore.convertLength(load.prescribedValues[DofID.Dx]).toString();
-    loadNodeValueFz.value = appStore.convertLength(load.prescribedValues[DofID.Dz]).toString();
+    loadNodeValueFz.value = appStore.vertical(appStore.convertLength(load.prescribedValues[DofID.Dz])).toString();
     loadNodeValueMy.value = load.prescribedValues[DofID.Ry].toString();
   } else {
     const load = useProjectStore().solver.loadCases[0].nodalLoadList[props.index];
     loadNodeValueFx.value = appStore.convertForce(load.values[DofID.Dx]).toString();
-    loadNodeValueFz.value = appStore.convertForce(load.values[DofID.Dz]).toString();
+    loadNodeValueFz.value = appStore.vertical(appStore.convertForce(load.values[DofID.Dz])).toString();
     loadNodeValueMy.value = appStore.convertMoment(load.values[DofID.Ry]).toString();
   }
 });

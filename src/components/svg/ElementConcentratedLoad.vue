@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { vertical } from '@/utils/axisConvention';
 import { BeamConcentratedLoad } from 'ts-fem';
 import { computed } from 'vue';
 
@@ -131,7 +132,7 @@ const momentLabelPosition = computed(() => {
       }}
       <template v-if="eload.values[0] !== 0 && eload.values[1] !== 0">
         ({{ numberFormat.format(convertForce(eload.values[0])) }};
-        {{ numberFormat.format(convertForce(eload.values[1])) }})
+        {{ numberFormat.format(vertical(convertForce(eload.values[1]))) }})
       </template>
     </text>
   </g>

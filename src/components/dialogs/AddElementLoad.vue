@@ -50,7 +50,7 @@
                   <v-col cols="12" md="12">
                     <v-text-field
                       v-model="loadNodeValueFz"
-                      :label="`${unitAndLabel.l}z`"
+                      :label="`${unitAndLabel.l}${appStore.axes.v}`"
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="unitAndLabel.u"
@@ -61,7 +61,7 @@
                   <v-col v-if="loadType === 'concentrated'" cols="12" md="12">
                     <v-text-field
                       v-model="loadNodeValueMy"
-                      :label="`My`"
+                      :label="`M${appStore.axes.r}`"
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="unitAndLabel.r"
@@ -123,7 +123,7 @@
                           @keydown="checkNumber($event)"
                         >
                           <template #label>
-                            <span>f<sub>1</sub>z</span>
+                            <span>f<sub>1</sub>{{ appStore.axes.v }}</span>
                           </template>
                         </v-text-field>
                       </v-col>
@@ -136,7 +136,7 @@
                           @keydown="checkNumber($event)"
                         >
                           <template #label>
-                            <span>f<sub>2</sub>z</span>
+                            <span>f<sub>2</sub>{{ appStore.axes.v }}</span>
                           </template>
                         </v-text-field>
                       </v-col>
@@ -278,12 +278,16 @@ const inverseIntensity = computed(() =>
 );
 
 const realFx = computed(() => inverseIntensity.value(parseFloat2(loadNodeValueFx.value)));
-const realFz = computed(() => inverseIntensity.value(parseFloat2(loadNodeValueFz.value)));
+const realFz = computed(() => appStore.vertical(inverseIntensity.value(parseFloat2(loadNodeValueFz.value))));
 const realMy = computed(() => appStore.convertInverseMoment(parseFloat2(loadNodeValueMy.value)));
 const realTrapStartFx = computed(() => appStore.convertInverseForceDistance(parseFloat2(loadTrapezoidStartFx.value)));
-const realTrapStartFz = computed(() => appStore.convertInverseForceDistance(parseFloat2(loadTrapezoidStartFz.value)));
+const realTrapStartFz = computed(() =>
+  appStore.vertical(appStore.convertInverseForceDistance(parseFloat2(loadTrapezoidStartFz.value)))
+);
 const realTrapEndFx = computed(() => appStore.convertInverseForceDistance(parseFloat2(loadTrapezoidEndFx.value)));
-const realTrapEndFz = computed(() => appStore.convertInverseForceDistance(parseFloat2(loadTrapezoidEndFz.value)));
+const realTrapEndFz = computed(() =>
+  appStore.vertical(appStore.convertInverseForceDistance(parseFloat2(loadTrapezoidEndFz.value)))
+);
 const realDist = computed(() => appStore.convertInverseLength(parseFloat2(elementLoadPos.value)));
 const realTc = computed(() => appStore.convertInverseTemperature(parseFloat2(loadNodeValueTc.value)));
 const realTbt = computed(() => appStore.convertInverseTemperature(parseFloat2(loadNodeValueTbt.value)));

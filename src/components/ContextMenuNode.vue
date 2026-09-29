@@ -2,10 +2,12 @@
 import { openModal } from 'jenesius-vue-modal';
 import AddNodalLoadDialog from './dialogs/AddNodalLoad.vue';
 import { useProjectStore } from '@/store/project';
+import { useAppStore } from '@/store/app';
 import { deleteNode, nodeLcsAngle, setNodeLcsAngle, toggleSet } from '@/utils';
 import { computed, ref, watch } from 'vue';
 
 const projectStore = useProjectStore();
+const appStore = useAppStore();
 
 const lcs = ref('0');
 
@@ -20,7 +22,7 @@ const node = computed(() => {
   return projectStore.solver.domain.nodes.get(String(projectStore.selection.label));
 });
 
-const angle = computed(() => nodeLcsAngle(node.value));
+const angle = computed(() => appStore.angle(nodeLcsAngle(node.value)));
 
 /**
  * Follow the model rather than only reading it once: an undo, or picking a different node, leaves
@@ -29,7 +31,7 @@ const angle = computed(() => nodeLcsAngle(node.value));
  */
 watch([node, angle], () => (lcs.value = angle.value.toString()), { immediate: true });
 
-const lcsChange = () => setNodeLcsAngle(node.value, parseFloat(lcs.value));
+const lcsChange = () => setNodeLcsAngle(node.value, appStore.angle(parseFloat(lcs.value)));
 
 const removeNode = () => {
   if (projectStore.selection.type !== 'node' || projectStore.selection.label === null) return;
@@ -73,7 +75,7 @@ const removeNode = () => {
             <v-col>
               <v-checkbox
                 density="compact"
-                label="Dz"
+                :label="`D${appStore.axes.v}`"
                 hide-details="auto"
                 :model-value="node.bcs.has(2)"
                 @click="toggleSet(node, 'bcs', 2)"
@@ -82,7 +84,7 @@ const removeNode = () => {
             <v-col>
               <v-checkbox
                 density="compact"
-                label="Ry"
+                :label="`R${appStore.axes.r}`"
                 hide-details="auto"
                 :model-value="node.bcs.has(4)"
                 @click="toggleSet(node, 'bcs', 4)"

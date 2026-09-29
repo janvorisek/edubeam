@@ -159,6 +159,10 @@
     "viewer_preview": "Aperçu",
     "language_description": "Choisissez votre langue d'interface préférée.",
     "units_description": "Choisissez vos unités de mesure préférées.",
+    "axisConvention": "Système de coordonnées",
+    "axisConvention_description": "Sens de l'axe vertical dans les saisies et les résultats. Le modèle et les fichiers enregistrés ne changent pas.",
+    "axisConvention_zDown": "x vers la droite, z vers le bas",
+    "axisConvention_yUp": "x vers la droite, y vers le haut",
     "reset_settings": "Réinitialiser les paramètres",
     "sizes": {
       "sizes": "Tailles",
@@ -213,7 +217,7 @@
     "addNode": {
       "addNewNode": "Ajouter un nouveau nœud",
       "coordinate_x": "Coordonnée X",
-      "coordinate_z": "Coordonnée Z",
+      "coordinate_z": "Coordonnée {v}",
       "addNode": "Ajouter un nœud"
     },
     "common": {
@@ -435,8 +439,8 @@
       "unstable": "La structure est instable. Déplacement pratiquement sans résistance : {dofs}. Ajoutez un appui ou un élément, supprimez une rotule d'extrémité ou vérifiez la rigidité de la section.",
       "unstableDof": {
         "dx": "nœud {node} horizontalement (Dx)",
-        "dz": "nœud {node} verticalement (Dz)",
-        "ry": "nœud {node} en rotation (Ry)",
+        "dz": "nœud {node} verticalement (D{v})",
+        "ry": "nœud {node} en rotation (R{r})",
         "other": "nœud {node} selon le DDL {dof}"
       },
       "unstableMore": "{list} et {count} de plus",
@@ -476,7 +480,7 @@
     },
     "supports": {
       "title": "Appuis",
-      "body": "Cochez un degré de liberté pour le bloquer : Dx et Dz bloquent la translation, Ry la rotation. Une structure exige au moins trois blocages indépendants."
+      "body": "Cochez un degré de liberté pour le bloquer : Dx et D{v} bloquent la translation, R{r} la rotation. Une structure exige au moins trois blocages indépendants."
     },
     "elements": {
       "title": "Éléments",
@@ -484,7 +488,8 @@
     },
     "loads": {
       "title": "Charges",
-      "body": "Les charges agissent sur les nœuds ou le long des éléments. Les valeurs positives suivent les axes globaux, z étant dirigé vers le bas."
+      "body": "Les charges agissent sur les nœuds ou le long des éléments. Les valeurs positives suivent les axes globaux, z étant dirigé vers le bas.",
+      "bodyYUp": "Les charges agissent sur les nœuds ou le long des éléments. Les valeurs positives suivent les axes globaux, y étant dirigé vers le haut."
     },
     "nodalLoads": {
       "title": "Charges nodales",
@@ -508,7 +513,8 @@
     },
     "signConvention": {
       "title": "Convention de signes",
-      "body": "L'axe global z pointe vers le bas : un Fz ou fz positif agit vers le bas et My est positif dans le sens antihoraire. Les charges en repère local suivent l'élément."
+      "body": "L'axe global z pointe vers le bas : un Fz ou fz positif agit vers le bas et My est positif dans le sens antihoraire. Les charges en repère local suivent l'élément.",
+      "bodyYUp": "L'axe global y pointe vers le haut : un Fy ou fy positif agit vers le haut et Mz est positif dans le sens antihoraire. Les charges en repère local suivent l'élément."
     },
     "results": {
       "title": "Résultats",
@@ -516,7 +522,7 @@
     },
     "diagrams": {
       "title": "Tracés des résultats",
-      "body": "Ces cases tracent l'effort normal, l'effort tranchant, le moment fléchissant, la déformée et les réactions sur le modèle. N est positif en traction, My lorsque la fibre inférieure est tendue."
+      "body": "Ces cases tracent l'effort normal, l'effort tranchant, le moment fléchissant, la déformée et les réactions sur le modèle. N est positif en traction, M{r} lorsque la fibre inférieure est tendue."
     },
     "endForces": {
       "title": "Efforts aux extrémités",

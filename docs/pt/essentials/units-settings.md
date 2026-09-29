@@ -24,6 +24,8 @@ Cargas distribuídas usam *força / comprimento* nas unidades escolhidas (kN/m p
 Escolha ft (ou in), in², in⁴, lbf e psi conforme a necessidade — não há um único interruptor «imperial»; cada grandeza é definida separadamente.
 :::
 
+**Sistema de coordenadas** — *x para a direita, z para baixo* (padrão) ou *x para a direita, y para cima*. A opção y para cima inverte o sinal dos valores verticais e dos ângulos de apoio e renomeia os eixos em todas as entradas, tabelas, dicas e exportações; o modelo e os arquivos salvos não mudam. Veja [Eixo y para cima](/pt/elements/conventions#y-up-axes).
+
 ## Configurações de visualização
 
 Uma **Pré-visualização** no topo mostra um modelo pequeno que reage a cada alteração abaixo.

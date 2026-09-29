@@ -23,6 +23,7 @@ import { deserializeModel, parseSerializedModel, serializeModel } from './serial
 import { deserializeShape, serializeShape } from './sectionProperties';
 import { createDimensionPoint, createDimensionPointFromNode, type DimensionPoint } from '@/types/dimension';
 import { applyNodeLcsAngle, nodeLcsAngle } from './nodalLcs';
+import { angle, axisLetters } from './axisConvention';
 
 export type EntityWithLabel = { label: string & { [key: string]: unknown } };
 
@@ -571,14 +572,17 @@ export const setNodeLcsAngle = (node: Node | undefined, degrees: number) => {
   });
 };
 
-/** The same, driven by an inline field: an unreadable entry puts the shown angle back. */
+/**
+ * The same, driven by an inline field showing the angle in the chosen axis convention: an
+ * unreadable entry puts the shown angle back.
+ */
 export const changeNodeLcsAngle = (node: Node | undefined, el: HTMLInputElement) => {
   if (el.value === '') el.value = '0';
 
   const degrees = parseFloat(el.value.replace(/\s/g, '').replace(',', '.'));
-  if (!Number.isFinite(degrees)) return restoreRenderedValue(el, nodeLcsAngle(node));
+  if (!Number.isFinite(degrees)) return restoreRenderedValue(el, angle(nodeLcsAngle(node)));
 
-  setNodeLcsAngle(node, degrees);
+  setNodeLcsAngle(node, angle(degrees));
 };
 
 export const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputElement) => {
@@ -870,10 +874,10 @@ export const deletePrescribedDisplacement = (load: unknown, _id?: number, trackH
 
 export const nameBeamForce = (dof: number) => {
   if (dof === 0) return 'X';
-  if (dof === 1) return 'Z';
+  if (dof === 1) return axisLetters().v.toUpperCase();
   if (dof === 2) return 'M';
   if (dof === 3) return 'X';
-  if (dof === 4) return 'Z';
+  if (dof === 4) return axisLetters().v.toUpperCase();
   if (dof === 5) return 'M';
   return '';
 };

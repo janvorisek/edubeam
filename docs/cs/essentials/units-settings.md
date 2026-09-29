@@ -24,6 +24,8 @@ Spojitá zatížení používají *sílu / délku* ve zvolených jednotkách (v�
 Zvolte ft (nebo in), in², in⁴, lbf a psi podle potřeby – jediný „imperiální“ přepínač neexistuje, každá veličina se nastavuje zvlášť.
 :::
 
+**Souřadnicový systém** – *x doprava, z dolů* (výchozí) nebo *x doprava, y nahoru*. Volba y nahoru obrací znaménko svislých hodnot a úhlů podpor a přejmenuje osy ve všech vstupech, tabulkách, popiscích i exportu; model ani uložené soubory se nemění. Viz [Osa y nahoru](/cs/elements/conventions#y-up-axes).
+
 ## Nastavení zobrazení
 
 **Náhled zobrazení** nahoře ukazuje malý model, který reaguje na každou změnu níže.

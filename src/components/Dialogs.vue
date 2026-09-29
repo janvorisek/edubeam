@@ -20,7 +20,7 @@
               <v-col cols="6" md="6">
                 <v-text-field
                   v-model.number="newNodeZ"
-                  :label="$t('dialogs.addNode.coordinate_z')"
+                  :label="$t('dialogs.addNode.coordinate_z', { v: useAppStore().axes.v.toUpperCase() })"
                   hide-details="auto"
                   required
                 ></v-text-field>

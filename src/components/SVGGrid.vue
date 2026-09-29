@@ -22,11 +22,17 @@
       </g>
       <g v-for="(item, i) in yGridTexts" :key="`y${i}`" :transform="`translate(${item.x} ${item.y + gridTY})`">
         <text text-anchor="middle" alignment-baseline="middle" :transform="`rotate(${item.angle})`">
-          {{ (Number(item.value) + trueOffsetY).toFixed(2) }}
+          {{ vertical(Number(item.value) + trueOffsetY).toFixed(2) }}
         </text>
       </g>
     </g>
-    <g v-if="!props.viewMode" class="cs" :transform="`translate(${csLeft} ${csTop})`">
+    <g v-if="!props.viewMode && axisConvention === 'y-up'" class="cs" :transform="`translate(${csLeft} ${csTop})`">
+      <text fill="red" text-anchor="middle" alignment-baseline="middle" x="40" y="-10"> x </text>
+      <text fill="green" text-anchor="middle" alignment-baseline="middle" x="10" y="-40"> y </text>
+      <line y1="0" x1="0" y2="-40" x2="0" stroke-width="3" stroke="green" stroke-linecap="round" />
+      <line y1="0" x1="0" y2="0" x2="40" stroke-width="3" stroke="red" stroke-linecap="round" />
+    </g>
+    <g v-else-if="!props.viewMode" class="cs" :transform="`translate(${csLeft} ${csTop})`">
       <text fill="red" text-anchor="middle" alignment-baseline="middle" x="40" y="-30"> x </text>
       <text fill="green" text-anchor="middle" alignment-baseline="middle" x="10" y="0"> z </text>
       <line y1="-40" x1="0" y2="0" x2="0" stroke-width="3" stroke="green" stroke-linecap="round" />
@@ -37,6 +43,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { axisConvention, vertical } from '@/utils/axisConvention';
 
 const props = withDefaults(
   defineProps<{

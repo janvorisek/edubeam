@@ -7,6 +7,7 @@
  */
 import { Beam2D, DofID, type LinearStaticSolver, type Node } from 'ts-fem';
 import type { Matrix } from 'mathjs';
+import { axisLetters, vertical } from './axisConvention';
 
 /**
  * Display units to render results in.
@@ -70,18 +71,20 @@ const sortByLabel = <T extends { label: string }>(items: T[]) =>
 
 export const buildNodeResultRows = (solver: LinearStaticSolver, units: ResultUnits) => {
   const loadCase = solver.loadCases[0];
+  // Headers and vertical components follow the axis convention on screen, like the units do.
+  const { v, r } = axisLetters();
 
   const rows: (string | number | null)[][] = [
     [
       'Node',
       `x [${units.lengthLabel}]`,
-      `z [${units.lengthLabel}]`,
+      `${v} [${units.lengthLabel}]`,
       `Dx [${units.lengthLabel}]`,
-      `Dz [${units.lengthLabel}]`,
-      `Ry [${units.angleLabel}]`,
+      `D${v} [${units.lengthLabel}]`,
+      `R${r} [${units.angleLabel}]`,
       `Rx [${units.forceLabel}]`,
-      `Rz [${units.forceLabel}]`,
-      `My [${units.momentLabel}]`,
+      `R${v} [${units.forceLabel}]`,
+      `M${r} [${units.momentLabel}]`,
     ],
   ];
 
@@ -91,6 +94,7 @@ export const buildNodeResultRows = (solver: LinearStaticSolver, units: ResultUni
       const value = readReaction(node, loadCase, dof);
 
       if (value === null) return null;
+      if (dof === DofID.Dz) return vertical(units.force(value));
 
       return dof === DofID.Ry ? units.moment(value) : units.force(value);
     };
@@ -98,9 +102,9 @@ export const buildNodeResultRows = (solver: LinearStaticSolver, units: ResultUni
     rows.push([
       node.label,
       units.length(node.coords[0]),
-      units.length(node.coords[2]),
+      vertical(units.length(node.coords[2])),
       displacement(DofID.Dx),
-      displacement(DofID.Dz),
+      vertical(displacement(DofID.Dz)),
       // Rotations are an angle, not a length, so they bypass the length conversion.
       node.getUnknowns(loadCase, [DofID.Ry]) as unknown as number,
       ...REACTION_DOFS.map(reaction),
@@ -131,8 +135,13 @@ export const buildElementResultRows = (solver: LinearStaticSolver, units: Result
     if (!(element instanceof Beam2D)) continue;
 
     const endForces = element.computeEndForces(loadCase).toArray() as number[];
-    // computeEndForces returns [N, V, M] at the start node followed by [N, V, M] at the end.
-    const converted = endForces.map((value, i) => (i % 3 === 2 ? units.moment(value) : units.force(value)));
+    // computeEndForces returns [N, V, M] at the start node followed by [N, V, M] at the end, with V
+    // along the local vertical axis.
+    const converted = endForces.map((value, i) => {
+      if (i % 3 === 2) return units.moment(value);
+
+      return i % 3 === 1 ? vertical(units.force(value)) : units.force(value);
+    });
 
     rows.push([element.label, element.nodes[0], element.nodes[1], ...converted]);
   }

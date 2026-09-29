@@ -24,6 +24,8 @@ Las cargas distribuidas usan *fuerza / longitud* en las unidades elegidas (kN/m 
 Elige ft (o in), in², in⁴, lbf y psi según necesites: no hay un único interruptor «imperial», cada magnitud se ajusta por separado.
 :::
 
+**Sistema de coordenadas**: *x a la derecha, z hacia abajo* (predeterminado) o *x a la derecha, y hacia arriba*. La opción y hacia arriba invierte el signo de los valores verticales y de los ángulos de apoyo y renombra los ejes en todas las entradas, tablas, descripciones y exportaciones; el modelo y los archivos guardados no cambian. Consulta [Eje y hacia arriba](/es/elements/conventions#y-up-axes).
+
 ## Ajustes del visor
 
 Una **Vista previa** en la parte superior muestra un modelo pequeño que reacciona a cada cambio.

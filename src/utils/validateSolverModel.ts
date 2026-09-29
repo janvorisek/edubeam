@@ -1,5 +1,6 @@
 import { DofID, type LinearStaticSolver, type Node } from 'ts-fem';
 import { i18n } from '@/plugins/i18n';
+import { axisLetters } from './axisConvention';
 
 export type SolveIssueLevel = 'error' | 'warning';
 
@@ -16,8 +17,9 @@ export interface SolveDiagnostics {
 
 const toLabel = (value: unknown) => String(value ?? '?');
 
+// Every message may name a direction, so each gets the letters of the axis convention on screen.
 const t = (key: string, params: Record<string, unknown> = {}) =>
-  i18n.global.t(`solveDiagnostics.issues.${key}`, params);
+  i18n.global.t(`solveDiagnostics.issues.${key}`, { ...axisLetters(), ...params });
 
 /**
  * Builds an issue whose message is translated when it is read, not when the model is solved,

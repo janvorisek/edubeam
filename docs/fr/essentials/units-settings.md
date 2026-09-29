@@ -24,6 +24,8 @@ Les charges réparties sont en *force / longueur* dans les unités choisies (kN/
 Choisissez ft (ou in), in², in⁴, lbf et psi selon les besoins : il n’y a pas d’interrupteur « impérial » unique, chaque grandeur se règle séparément.
 :::
 
+**Système de coordonnées** — *x vers la droite, z vers le bas* (par défaut) ou *x vers la droite, y vers le haut*. L'option y vers le haut inverse le signe des valeurs verticales et des angles d'appui et renomme les axes dans toutes les saisies, tableaux, info-bulles et exports ; le modèle et les fichiers enregistrés ne changent pas. Voir [Axe y vers le haut](/fr/elements/conventions#y-up-axes).
+
 ## Paramètres d’affichage
 
 Un **Aperçu** en haut montre un petit modèle qui réagit à chaque changement.

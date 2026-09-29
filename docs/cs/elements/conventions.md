@@ -46,6 +46,20 @@ Lokální **x** vede od počátečního ke koncovému uzlu; lokální **z** je k
 
 Reakce existuje pro každý odebraný stupeň volnosti a uvádí se v souřadném systému uzlu (pootočeném o úhel LSS uzlu, je-li zadán). Šipky reakcí v zobrazení míří ve směru, kterým podpora působí na konstrukci.
 
+## Osa y nahoru {#y-up-axes}
+
+**Nastavení → Souřadnicový systém → x doprava, y nahoru** přepne vše, co zadáváte a čtete, do učebnicového systému: **x** doprava, **y** nahoru a **z** k pozorovateli. Model, uložené soubory i kresba zůstávají stejné; mění se jen čísla a názvy:
+
+| Veličina | z dolů (výchozí) | y nahoru |
+| --- | --- | --- |
+| Svislá souřadnice | `Z` | `Y`, opačné znaménko |
+| Svislá zatížení, posuny, reakce, koncové síly | `Fz`, `fz`, `Dz`, `Z12`… | `Fy`, `fy`, `Dy`, `Y12`…, opačné znaménko |
+| Pootočení a momenty | `Ry`, `My` | `Rz`, `Mz`, stejné znaménko (kladné proti směru hodinových ručiček) |
+| Úhel podpory α | měřen po směru hodinových ručiček | měřen proti směru hodinových ručiček, opačné znaménko |
+| Vnitřní síly N, V, M | | beze změny, průběhy se kreslí stejně |
+
+Tíhové zatížení je tedy **záporné** `fy` a vrchol 3 m vysokého sloupu má `Y = 3`.
+
 ## Jednotky
 
 Řešič pracuje interně v SI (m, N, Pa, rad, K). Zobrazované jednotky ovlivňují jen to, co zadáváte a čtete; jejich změna model nikdy nezmění.

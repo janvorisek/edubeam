@@ -24,6 +24,8 @@ Streckenlasten verwenden *Kraft / Länge* in den gewählten Einheiten (Standard 
 Wählen Sie nach Bedarf ft (oder in), in², in⁴, lbf und psi – es gibt keinen einzelnen „Imperial“-Schalter, jede Größe wird einzeln eingestellt.
 :::
 
+**Koordinatensystem** – *x nach rechts, z nach unten* (Standard) oder *x nach rechts, y nach oben*. Die Option y nach oben kehrt das Vorzeichen vertikaler Werte und Auflagerwinkel um und benennt die Achsen in allen Eingaben, Tabellen, Tooltips und Exporten um; Modell und gespeicherte Dateien ändern sich nicht. Siehe [Y-Achse nach oben](/de/elements/conventions#y-up-axes).
+
 ## Anzeigeeinstellungen
 
 Eine **Vorschau** oben zeigt ein kleines Modell, das auf jede Änderung darunter reagiert.

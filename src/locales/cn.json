@@ -159,6 +159,10 @@
     "viewer_preview": "视图预览",
     "language_description": "选择界面显示语言。",
     "units_description": "选择常用计量单位。",
+    "axisConvention": "坐标系",
+    "axisConvention_description": "输入和结果中竖轴的指向。模型和已保存的文件不受影响。",
+    "axisConvention_zDown": "x 向右，z 向下",
+    "axisConvention_yUp": "x 向右，y 向上",
     "reset_settings": "重置设置",
     "sizes": {
       "sizes": "尺寸",
@@ -213,7 +217,7 @@
     "addNode": {
       "addNewNode": "添加新节点",
       "coordinate_x": "X 坐标",
-      "coordinate_z": "Z 坐标",
+      "coordinate_z": "{v} 坐标",
       "addNode": "添加节点"
     },
     "common": {
@@ -435,8 +439,8 @@
       "unstable": "结构不稳定：以下自由度几乎没有抵抗即可运动：{dofs}。请添加支座或单元、取消端部铰接，或检查截面刚度。",
       "unstableDof": {
         "dx": "节点 {node} 水平方向 (Dx)",
-        "dz": "节点 {node} 竖向 (Dz)",
-        "ry": "节点 {node} 转角 (Ry)",
+        "dz": "节点 {node} 竖向 (D{v})",
+        "ry": "节点 {node} 转角 (R{r})",
         "other": "节点 {node} 自由度 {dof}"
       },
       "unstableMore": "{list} 以及另外 {count} 个",
@@ -476,7 +480,7 @@
     },
     "supports": {
       "title": "支座",
-      "body": "勾选自由度即可约束它：Dx 与 Dz 约束平动，Ry 约束转动。结构至少需要三个独立约束。"
+      "body": "勾选自由度即可约束它：Dx 与 D{v} 约束平动，R{r} 约束转动。结构至少需要三个独立约束。"
     },
     "elements": {
       "title": "单元",
@@ -484,7 +488,8 @@
     },
     "loads": {
       "title": "荷载",
-      "body": "荷载作用在节点上或沿单元分布。正值遵循整体坐标轴，其中 z 轴向下。"
+      "body": "荷载作用在节点上或沿单元分布。正值遵循整体坐标轴，其中 z 轴向下。",
+      "bodyYUp": "荷载作用在节点上或沿单元分布。正值遵循整体坐标轴，其中 y 轴向上。"
     },
     "nodalLoads": {
       "title": "节点荷载",
@@ -508,7 +513,8 @@
     },
     "signConvention": {
       "title": "符号规定",
-      "body": "整体坐标 z 轴向下，因此正的 Fz 或 fz 向下作用，My 以逆时针为正。切换到局部坐标的荷载则跟随单元。"
+      "body": "整体坐标 z 轴向下，因此正的 Fz 或 fz 向下作用，My 以逆时针为正。切换到局部坐标的荷载则跟随单元。",
+      "bodyYUp": "整体坐标 y 轴向上，因此正的 Fy 或 fy 向上作用，Mz 以逆时针为正。切换到局部坐标的荷载则跟随单元。"
     },
     "results": {
       "title": "结果",
@@ -516,7 +522,7 @@
     },
     "diagrams": {
       "title": "结果图形",
-      "body": "这些开关在模型上绘制轴力、剪力、弯矩、变形图和反力。N 受拉为正，My 以下缘受拉为正。"
+      "body": "这些开关在模型上绘制轴力、剪力、弯矩、变形图和反力。N 受拉为正，M{r} 以下缘受拉为正。"
     },
     "endForces": {
       "title": "单元端力",

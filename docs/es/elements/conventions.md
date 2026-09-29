@@ -46,6 +46,20 @@ El **x** local va del nodo inicial al nodo final; el **z** local es perpendicula
 
 Hay una reacción por cada grado de libertad restringido y se da en el sistema de coordenadas del nodo (girado el ángulo del SCL nodal si se ha definido). Las flechas de reacción en el visor apuntan en la dirección en que el apoyo empuja a la estructura.
 
+## Eje y hacia arriba {#y-up-axes}
+
+**Ajustes → Sistema de coordenadas → x a la derecha, y hacia arriba** pasa todo lo que escribes y lees al sistema de los libros de texto: **x** a la derecha, **y** hacia arriba y **z** hacia el observador. El modelo, los archivos guardados y el dibujo no cambian; solo cambian los números y los nombres:
+
+| Magnitud | z hacia abajo (predeterminado) | y hacia arriba |
+| --- | --- | --- |
+| Coordenada vertical | `Z` | `Y`, signo opuesto |
+| Cargas, desplazamientos, reacciones y fuerzas de extremo verticales | `Fz`, `fz`, `Dz`, `Z12`… | `Fy`, `fy`, `Dy`, `Y12`…, signo opuesto |
+| Giros y momentos | `Ry`, `My` | `Rz`, `Mz`, mismo signo (positivo antihorario) |
+| Ángulo del apoyo α | medido en sentido horario | medido en sentido antihorario, signo opuesto |
+| Esfuerzos N, V, M | | sin cambios, los diagramas se dibujan igual |
+
+Así, una carga gravitatoria es un `fy` **negativo**, y la cabeza de un pilar de 3 m tiene `Y = 3`.
+
 ## Unidades
 
 El solver trabaja internamente en SI (m, N, Pa, rad, K). Las unidades de visualización solo afectan a lo que escribes y lees; cambiarlas nunca modifica el modelo.

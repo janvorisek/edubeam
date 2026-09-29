@@ -24,6 +24,8 @@ Obciążenia liniowe używają *siła / długość* w wybranych jednostkach (dom
 Wybierz ft (lub in), in², in⁴, lbf lub odpowiedniki kip oraz psi/ksi według potrzeb — nie ma jednego przełącznika „imperialne”, każdą wielkość ustawia się niezależnie.
 :::
 
+**Układ współrzędnych** – *x w prawo, z w dół* (domyślnie) lub *x w prawo, y w górę*. Opcja y w górę odwraca znak wartości pionowych i kątów podpór oraz zmienia nazwy osi we wszystkich polach, tabelach, podpowiedziach i eksporcie; model i zapisane pliki się nie zmieniają. Zobacz [Oś y w górę](/pl/elements/conventions#y-up-axes).
+
 ## Ustawienia widoku
 
 **Podgląd widoku** u góry pokazuje mały model, który reaguje na każdą zmianę poniżej.

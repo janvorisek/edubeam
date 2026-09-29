@@ -249,6 +249,7 @@
 </template>
 
 <script setup lang="ts">
+import { axisLetters } from '@/utils/axisConvention';
 import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue';
 import { closeModal } from 'jenesius-vue-modal';
 import { useI18n } from 'vue-i18n';
@@ -373,8 +374,18 @@ const resultChips = computed<{ key: LayerKey; label: string; color: string; resu
     results: false,
   },
   { key: 'showNormalForce', label: 'N&nbsp;(x)', color: viewerStore.colors.normalForce, results: true },
-  { key: 'showShearForce', label: 'V<sub>z</sub>&nbsp;(x)', color: viewerStore.colors.shearForce, results: true },
-  { key: 'showBendingMoment', label: 'M<sub>y</sub>&nbsp;(x)', color: viewerStore.colors.bendingMoment, results: true },
+  {
+    key: 'showShearForce',
+    label: `V<sub>${axisLetters().v}</sub>&nbsp;(x)`,
+    color: viewerStore.colors.shearForce,
+    results: true,
+  },
+  {
+    key: 'showBendingMoment',
+    label: `M<sub>${axisLetters().r}</sub>&nbsp;(x)`,
+    color: viewerStore.colors.bendingMoment,
+    results: true,
+  },
   { key: 'showReactions', label: t('sideSettings.showReactions'), color: viewerStore.colors.reactions, results: false },
 ]);
 

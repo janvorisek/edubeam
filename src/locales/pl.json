@@ -159,6 +159,10 @@
     "viewer_preview": "Podgląd widoku",
     "language_description": "Wybierz preferowany język interfejsu.",
     "units_description": "Wybierz preferowane jednostki miary.",
+    "axisConvention": "Układ współrzędnych",
+    "axisConvention_description": "W którą stronę skierowana jest oś pionowa przy wprowadzaniu danych i w wynikach. Model i zapisane pliki się nie zmieniają.",
+    "axisConvention_zDown": "x w prawo, z w dół",
+    "axisConvention_yUp": "x w prawo, y w górę",
     "reset_settings": "Przywróć ustawienia",
     "sizes": {
       "sizes": "Rozmiary",
@@ -213,7 +217,7 @@
     "addNode": {
       "addNewNode": "Dodaj nowy węzeł",
       "coordinate_x": "Współrzędna X",
-      "coordinate_z": "Współrzędna Z",
+      "coordinate_z": "Współrzędna {v}",
       "addNode": "Dodaj węzeł"
     },
     "common": {
@@ -435,8 +439,8 @@
       "unstable": "Konstrukcja jest niestateczna – praktycznie bez oporu przemieszcza się: {dofs}. Dodaj podporę lub element, usuń przegub końcowy albo sprawdź sztywność przekroju.",
       "unstableDof": {
         "dx": "węzeł {node} poziomo (Dx)",
-        "dz": "węzeł {node} pionowo (Dz)",
-        "ry": "węzeł {node} obrotowo (Ry)",
+        "dz": "węzeł {node} pionowo (D{v})",
+        "ry": "węzeł {node} obrotowo (R{r})",
         "other": "węzeł {node} w stopniu swobody {dof}"
       },
       "unstableMore": "{list} i jeszcze {count}",
@@ -476,7 +480,7 @@
     },
     "supports": {
       "title": "Podpory",
-      "body": "Zaznaczenie stopnia swobody odbiera go: Dx i Dz blokują przesuw, Ry obrót. Konstrukcja potrzebuje co najmniej trzech niezależnych więzów."
+      "body": "Zaznaczenie stopnia swobody odbiera go: Dx i D{v} blokują przesuw, R{r} obrót. Konstrukcja potrzebuje co najmniej trzech niezależnych więzów."
     },
     "elements": {
       "title": "Elementy",
@@ -484,7 +488,8 @@
     },
     "loads": {
       "title": "Obciążenia",
-      "body": "Obciążenia działają w węzłach lub wzdłuż elementów. Wartości dodatnie są zgodne z osiami globalnymi, przy czym oś z skierowana jest w dół."
+      "body": "Obciążenia działają w węzłach lub wzdłuż elementów. Wartości dodatnie są zgodne z osiami globalnymi, przy czym oś z skierowana jest w dół.",
+      "bodyYUp": "Obciążenia działają w węzłach lub wzdłuż elementów. Wartości dodatnie są zgodne z osiami globalnymi, przy czym oś y skierowana jest w górę."
     },
     "nodalLoads": {
       "title": "Obciążenia węzłowe",
@@ -508,7 +513,8 @@
     },
     "signConvention": {
       "title": "Konwencja znaków",
-      "body": "Globalna oś z skierowana jest w dół, więc dodatnie Fz lub fz działa w dół, a My jest dodatni przeciwnie do ruchu wskazówek zegara. Obciążenia w układzie lokalnym podążają za elementem."
+      "body": "Globalna oś z skierowana jest w dół, więc dodatnie Fz lub fz działa w dół, a My jest dodatni przeciwnie do ruchu wskazówek zegara. Obciążenia w układzie lokalnym podążają za elementem.",
+      "bodyYUp": "Globalna oś y skierowana jest w górę, więc dodatnie Fy lub fy działa w górę, a Mz jest dodatni przeciwnie do ruchu wskazówek zegara. Obciążenia w układzie lokalnym podążają za elementem."
     },
     "results": {
       "title": "Wyniki",
@@ -516,7 +522,7 @@
     },
     "diagrams": {
       "title": "Wykresy wyników",
-      "body": "Te przełączniki rysują siłę normalną, tnącą, moment zginający, postać odkształconą i reakcje na modelu. N jest dodatnia przy rozciąganiu, My przy rozciąganiu włókien dolnych."
+      "body": "Te przełączniki rysują siłę normalną, tnącą, moment zginający, postać odkształconą i reakcje na modelu. N jest dodatnia przy rozciąganiu, M{r} przy rozciąganiu włókien dolnych."
     },
     "endForces": {
       "title": "Siły końcowe",

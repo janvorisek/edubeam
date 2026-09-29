@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { vertical } from '@/utils/axisConvention';
 import { formatScientificNumber } from '@/utils/index';
 import { PrescribedDisplacement } from 'ts-fem';
 import { computed } from 'vue';
@@ -103,7 +104,7 @@ const rotationHandleRadius = computed(() => (20 * (50 / 60)) / props.scale);
       {{ formatScientificNumber(convertLength(translationMagnitude), 2) }}
       <template v-if="hasBothTranslationComponents">
         ({{ formatScientificNumber(convertLength(nload.prescribedValues[0]), 2) }};
-        {{ formatScientificNumber(convertLength(nload.prescribedValues[2]), 2) }})
+        {{ formatScientificNumber(vertical(convertLength(nload.prescribedValues[2])), 2) }})
       </template>
     </text>
 

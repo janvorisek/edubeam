@@ -24,6 +24,8 @@ Line loads use *force / length* of the selected units (kN/m by default). Angles 
 Pick ft (or in), in², in⁴, lbf or kip-equivalents and psi/ksi as needed—there is no single "imperial" switch, each quantity is set independently.
 :::
 
+**Coordinate system** — *x right, z down* (default) or *x right, y up*. The y-up option flips the sign of vertical values and support angles and renames the axes in every input, table, tooltip and export; the model and saved files do not change. See [Y-up axes](/elements/conventions#y-up-axes).
+
 ## Viewer settings
 
 A **Viewer preview** at the top shows a small model that reacts to every change below.

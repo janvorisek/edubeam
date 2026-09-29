@@ -113,6 +113,10 @@
     "viewer_preview": "Náhled zobrazení",
     "language_description": "Vyberte preferovaný jazyk uživatelského prostředí.",
     "units_description": "Vyberte si vámi preferované měrné jednotky.",
+    "axisConvention": "Souřadnicový systém",
+    "axisConvention_description": "Kterým směrem míří svislá osa při zadávání a ve výsledcích. Model ani uložené soubory se nemění.",
+    "axisConvention_zDown": "x doprava, z dolů",
+    "axisConvention_yUp": "x doprava, y nahoru",
     "reset_settings": "Obnovit výchozí nastavení",
     "sizes": {
       "sizes": "Velikost",
@@ -213,7 +217,7 @@
     "addNode": {
       "addNewNode": "Přidat nový uzel",
       "coordinate_x": "Souřadnice X",
-      "coordinate_z": "Souřadnice Z",
+      "coordinate_z": "Souřadnice {v}",
       "addNode": "Přidat uzel"
     },
     "common": {
@@ -435,8 +439,8 @@
       "unstable": "Konstrukce je nestabilní – tyto pohyby nemají prakticky žádný odpor: {dofs}. Přidejte podporu nebo prvek, odstraňte koncový kloub nebo zkontrolujte tuhost průřezu.",
       "unstableDof": {
         "dx": "vodorovný posun uzlu {node} (Dx)",
-        "dz": "svislý posun uzlu {node} (Dz)",
-        "ry": "pootočení uzlu {node} (Ry)",
+        "dz": "svislý posun uzlu {node} (D{v})",
+        "ry": "pootočení uzlu {node} (R{r})",
         "other": "stupeň volnosti {dof} uzlu {node}"
       },
       "unstableMore": "{list} a další ({count})",
@@ -476,7 +480,7 @@
     },
     "supports": {
       "title": "Podpory",
-      "body": "Zaškrtnutím stupně volnosti jej podepřete: Dx a Dz brání posunu, Ry pootočení. Konstrukce potřebuje alespoň tři nezávislé vazby."
+      "body": "Zaškrtnutím stupně volnosti jej podepřete: Dx a D{v} brání posunu, R{r} pootočení. Konstrukce potřebuje alespoň tři nezávislé vazby."
     },
     "elements": {
       "title": "Prvky",
@@ -484,7 +488,8 @@
     },
     "loads": {
       "title": "Zatížení",
-      "body": "Zatížení působí v uzlech nebo po délce prvku. Kladné hodnoty odpovídají globálním osám, osa z míří dolů."
+      "body": "Zatížení působí v uzlech nebo po délce prvku. Kladné hodnoty odpovídají globálním osám, osa z míří dolů.",
+      "bodyYUp": "Zatížení působí v uzlech nebo po délce prvku. Kladné hodnoty odpovídají globálním osám, osa y míří nahoru."
     },
     "nodalLoads": {
       "title": "Uzlová zatížení",
@@ -508,7 +513,8 @@
     },
     "signConvention": {
       "title": "Znaménková konvence",
-      "body": "Globální osa z míří dolů, kladné Fz nebo fz tedy působí dolů a My je kladný proti směru hodinových ručiček. Zatížení v lokálním systému sleduje prvek."
+      "body": "Globální osa z míří dolů, kladné Fz nebo fz tedy působí dolů a My je kladný proti směru hodinových ručiček. Zatížení v lokálním systému sleduje prvek.",
+      "bodyYUp": "Globální osa y míří nahoru, kladné Fy nebo fy tedy působí nahoru a Mz je kladný proti směru hodinových ručiček. Zatížení v lokálním systému sleduje prvek."
     },
     "results": {
       "title": "Výsledky",
@@ -516,7 +522,7 @@
     },
     "diagrams": {
       "title": "Vykreslení výsledků",
-      "body": "Přepínače vykreslují normálovou a posouvající sílu, ohybový moment, deformovaný tvar a reakce. N je kladná v tahu, My kladný při ohybu dolů."
+      "body": "Přepínače vykreslují normálovou a posouvající sílu, ohybový moment, deformovaný tvar a reakce. N je kladná v tahu, M{r} kladný při ohybu dolů."
     },
     "endForces": {
       "title": "Koncové síly",

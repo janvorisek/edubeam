@@ -46,6 +46,20 @@ Local **x** runs from the initial node to the end node; local **z** is perpendic
 
 A reaction exists for every restrained DOF and is reported in the node's coordinate system (rotated by the nodal LCS angle if one is set). Reaction arrows in the viewer point in the direction the support pushes on the structure.
 
+## Y-up axes {#y-up-axes}
+
+**Settings → Coordinate system → x right, y up** switches everything you type and read to the textbook system: **x** to the right, **y** up and **z** toward the viewer. The model, saved files and drawings stay the same; only numbers and names change:
+
+| Quantity | z down (default) | y up |
+| --- | --- | --- |
+| Vertical coordinate | `Z` | `Y`, opposite sign |
+| Vertical loads, displacements, reactions, end forces | `Fz`, `fz`, `Dz`, `Z12`… | `Fy`, `fy`, `Dy`, `Y12`…, opposite sign |
+| Rotations and moments | `Ry`, `My` | `Rz`, `Mz`, same sign (counter-clockwise positive) |
+| Support angle α | measured clockwise | measured counter-clockwise, opposite sign |
+| Internal forces N, V, M | | unchanged, diagrams drawn the same way |
+
+So a gravity load is a **negative** `fy`, and the top of a 3 m column has `Y = 3`.
+
 ## Units
 
 The solver works in SI internally (m, N, Pa, rad, K). The display units only affect what you type and read; changing them never changes the model.

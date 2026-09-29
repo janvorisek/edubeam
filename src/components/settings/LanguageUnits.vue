@@ -170,6 +170,17 @@
           </v-select
         ></v-col>
       </v-row>
+
+      <h4 class="mb-1 mt-3">{{ $t('settings.axisConvention') }}</h4>
+
+      <div class="mb-1">{{ $t('settings.axisConvention_description') }}</div>
+
+      <v-select
+        v-model="appStore.axisConvention"
+        :items="axisConventionItems"
+        hide-details="auto"
+        :label="$t('settings.axisConvention')"
+      />
     </div>
   </div>
 </template>
@@ -219,6 +230,11 @@ const numberStyleItems = computed(() => [
   { title: t('settings.number_format_auto'), value: 'auto' },
   { title: t('settings.number_format_scientific'), value: 'scientific' },
   { title: t('settings.number_format_engineering'), value: 'engineering' },
+]);
+
+const axisConventionItems = computed(() => [
+  { title: t('settings.axisConvention_zDown'), value: 'z-down' },
+  { title: t('settings.axisConvention_yUp'), value: 'y-up' },
 ]);
 
 const momentUnitsProxy = computed({

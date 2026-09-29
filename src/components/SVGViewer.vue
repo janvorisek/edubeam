@@ -509,7 +509,7 @@ const placeNode = (label: number | string) => {
     [...addNodeBcs.value]
   );
 
-  applyNodeLcsAngle(node, parseFloat2(addNodeAngle.value));
+  applyNodeLcsAngle(node, appStore.angle(parseFloat2(addNodeAngle.value)));
 
   return node;
 };
@@ -687,13 +687,15 @@ const buildElementLoadDetails = (el: BeamElementLoad): EntityDetails => {
 
     if (Math.abs(el.startValues[1]) > 1e-32 || Math.abs(el.endValues[1]) > 1e-32) {
       rows.push(
-        `${ff}<sub>z</sub> = ${convertIntensity(el.startValues[1])} → ${convertIntensity(el.endValues[1])} ${uu}`
+        `${ff}<sub>${appStore.axes.v}</sub> = ${appStore.vertical(convertIntensity(el.startValues[1]))} → ` +
+          `${appStore.vertical(convertIntensity(el.endValues[1]))} ${uu}`
       );
     }
   } else if (el instanceof BeamElementUniformEdgeLoad || el instanceof BeamConcentratedLoad) {
     if (Math.abs(el.values[0]) > 1e-32) rows.push(`${ff}<sub>x</sub> = ${convertIntensity(el.values[0])} ${uu}`);
 
-    if (Math.abs(el.values[1]) > 1e-32) rows.push(`${ff}<sub>z</sub> = ${convertIntensity(el.values[1])} ${uu}`);
+    if (Math.abs(el.values[1]) > 1e-32)
+      rows.push(`${ff}<sub>${appStore.axes.v}</sub> = ${appStore.vertical(convertIntensity(el.values[1]))} ${uu}`);
   }
 
   return { title: t(lt), body: rows.join('<br>') };
@@ -707,11 +709,13 @@ const buildNodalLoadDetails = (el: NodalLoad): EntityDetails => {
   }
 
   if (Math.abs(el.values[2]) > 1e-32) {
-    rows.push(`F<sub>z</sub> = ${appStore.convertForce(el.values[2])} ${appStore.units.Force}`);
+    rows.push(
+      `F<sub>${appStore.axes.v}</sub> = ${appStore.vertical(appStore.convertForce(el.values[2]))} ${appStore.units.Force}`
+    );
   }
 
   if (Math.abs(el.values[4]) > 1e-32) {
-    rows.push(`M<sub>y</sub> = ${appStore.convertMoment(el.values[4])} ${appStore.units.Moment}`);
+    rows.push(`M<sub>${appStore.axes.r}</sub> = ${appStore.convertMoment(el.values[4])} ${appStore.units.Moment}`);
   }
 
   return { title: t('loads.nodalLoad'), body: rows.join('<br>') };
@@ -725,11 +729,14 @@ const buildPrescribedBCDetails = (el: PrescribedDisplacement): EntityDetails => 
   }
 
   if (Math.abs(el.prescribedValues[2]) > 1e-32) {
-    rows.push(`D<sub>z</sub> = ${appStore.convertLength(el.prescribedValues[2])} ${appStore.units.Length}`);
+    rows.push(
+      `D<sub>${appStore.axes.v}</sub> = ${appStore.vertical(appStore.convertLength(el.prescribedValues[2]))} ` +
+        appStore.units.Length
+    );
   }
 
   if (Math.abs(el.prescribedValues[4]) > 1e-32) {
-    rows.push(`R<sub>y</sub> = ${el.prescribedValues[4]} ${appStore.units.Angle}`);
+    rows.push(`R<sub>${appStore.axes.r}</sub> = ${el.prescribedValues[4]} ${appStore.units.Angle}`);
   }
 
   return { title: t('loads.prescribedDisplacement'), body: rows.join('<br>') };
@@ -750,14 +757,14 @@ const buildNodeDetails = (node: Node): EntityDetails => {
     );
 
     rows.push(
-      `u<sub>z</sub> = ${appStore.formatResultHTML(
+      `u<sub>${appStore.axes.v}</sub> = ${appStore.formatResultHTML(
         // @ts-expect-error It return value for single Dof
-        node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz])
+        appStore.vertical(node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]))
       )} m`
     );
 
     rows.push(
-      `φ<sub>y</sub> = ${appStore.formatResultHTML(
+      `φ<sub>${appStore.axes.r}</sub> = ${appStore.formatResultHTML(
         // @ts-expect-error It return value for single Dof
         node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry])
       )} rad`
@@ -2355,8 +2362,20 @@ defineExpose({ centerContent, fitContent });
       <!-- What the next placement gets; the mode stays open, so the options live with it -->
       <div v-if="appStore.mouseMode === MouseMode.ADD_NODE" class="d-flex align-center ga-3">
         <v-checkbox-btn v-model="addNodeBcs" :value="DofID.Dx" density="compact" label="Dx" class="flex-grow-0" />
-        <v-checkbox-btn v-model="addNodeBcs" :value="DofID.Dz" density="compact" label="Dz" class="flex-grow-0" />
-        <v-checkbox-btn v-model="addNodeBcs" :value="DofID.Ry" density="compact" label="Ry" class="flex-grow-0" />
+        <v-checkbox-btn
+          v-model="addNodeBcs"
+          :value="DofID.Dz"
+          density="compact"
+          :label="`D${appStore.axes.v}`"
+          class="flex-grow-0"
+        />
+        <v-checkbox-btn
+          v-model="addNodeBcs"
+          :value="DofID.Ry"
+          density="compact"
+          :label="`R${appStore.axes.r}`"
+          class="flex-grow-0"
+        />
         <v-text-field
           v-model="addNodeAngle"
           :title="$t('nodes.lcsAngle')"
@@ -2937,23 +2956,29 @@ defineExpose({ centerContent, fitContent });
           </v-checkbox>
           <v-checkbox
             v-model="useViewerStore().showShearForce"
-            label="Vz (x)"
+            :label="`V${appStore.axes.v} (x)`"
             hide-details
             density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
             :disabled="useProjectStore().model === 'EigenValueDynamicSolver'"
           >
-            <template #label>V<sub>z</sub>&nbsp;(x)</template>
+            <template #label
+              >V<sub>{{ appStore.axes.v }}</sub
+              >&nbsp;(x)</template
+            >
           </v-checkbox>
           <v-checkbox
             v-model="useViewerStore().showBendingMoment"
-            label="My (x)"
+            :label="`M${appStore.axes.r} (x)`"
             hide-details
             density="compact"
             class="inline-checkbox mr-2 flex-shrink-0 text-no-wrap"
             :disabled="useProjectStore().model === 'EigenValueDynamicSolver'"
           >
-            <template #label>M<sub>y</sub>&nbsp;(x)</template>
+            <template #label
+              >M<sub>{{ appStore.axes.r }}</sub
+              >&nbsp;(x)</template
+            >
           </v-checkbox>
           <v-checkbox
             v-model="useViewerStore().showReactions"

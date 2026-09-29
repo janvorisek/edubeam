@@ -18,9 +18,8 @@ export interface ExampleViewerFlags {
 }
 
 export interface ExampleDefinition {
+  /** Also names its title and blurb, under `examples.items.<id>` in the locales. */
   id: string;
-  title: string;
-  blurb: string;
   viewer: ExampleViewerFlags;
   /** Populates an empty solver that already carries the shared material and section. */
   build: (solver: LinearStaticSolver) => void;
@@ -59,8 +58,6 @@ const DEFAULT_OVERLAYS: ExampleViewerFlags = {
 export const examples: ExampleDefinition[] = [
   {
     id: 'welcome',
-    title: 'Indeterminate beam',
-    blurb: 'Statically indeterminate 3 m fixed–roller beam under 10 kN/m UDL.',
     viewer: { ...DEFAULT_OVERLAYS, showShearForce: true },
     build: (solver) => {
       const domain = solver.domain;
@@ -72,8 +69,6 @@ export const examples: ExampleDefinition[] = [
   },
   {
     id: 'cantilever',
-    title: 'Cantilever',
-    blurb: '4 m cantilever resisting an 18 kN downward nodal load, highlighting curvature and tip deflection.',
     viewer: { ...DEFAULT_OVERLAYS },
     build: (solver) => {
       const domain = solver.domain;
@@ -85,8 +80,6 @@ export const examples: ExampleDefinition[] = [
   },
   {
     id: 'pratt',
-    title: 'Pratt truss',
-    blurb: 'Simple Pratt truss with 8 kN joint loads showing axial force distribution and displacements.',
     // Axial force labels crowd the small preview cards, so the truss leads with its deflected shape.
     viewer: { ...DEFAULT_OVERLAYS, showMoments: false },
     build: (solver) => {
@@ -128,8 +121,6 @@ export const examples: ExampleDefinition[] = [
   },
   {
     id: 'continuous',
-    title: 'Three-span continuous beam',
-    blurb: '5+6+5 m spans with UDL + point + UDL to compare curvature and support rotations.',
     viewer: { ...DEFAULT_OVERLAYS, showShearForce: true },
     build: (solver) => {
       const domain = solver.domain;
@@ -149,8 +140,6 @@ export const examples: ExampleDefinition[] = [
   },
   {
     id: 'portal',
-    title: 'Portal frame load case',
-    blurb: '8 m beam on 6 m columns under roof UDL and lateral + vertical knee loads for sway and bending checks.',
     viewer: { ...DEFAULT_OVERLAYS },
     build: (solver) => {
       const domain = solver.domain;
@@ -169,8 +158,6 @@ export const examples: ExampleDefinition[] = [
   },
   {
     id: 'temperature',
-    title: 'Temperature load',
-    blurb: 'Simply supported 8 m beam with uniform and non-uniform temperature load.',
     viewer: { ...DEFAULT_OVERLAYS },
     build: (solver) => {
       const domain = solver.domain;

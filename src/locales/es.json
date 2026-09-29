@@ -43,7 +43,10 @@
     "paste": "Pegar",
     "addNew": "Añadir",
     "whatisnew": "¿Qué hay de nuevo?",
-    "reverse_orientation": "Invertir cota"
+    "reverse_orientation": "Invertir cota",
+    "undo": "Deshacer",
+    "redo": "Rehacer",
+    "ok": "Aceptar"
   },
   "nodes": {
     "addNode": "Añadir nodo",
@@ -57,7 +60,9 @@
     "swapNodeOrder": "Intercambiar nodos",
     "hingeStart": "Rótula al inicio",
     "hingeEnd": "Rótula al final",
-    "hinge": "Rótula"
+    "hinge": "Rótula",
+    "from": "Desde",
+    "to": "Hasta"
   },
   "loads": {
     "addNodalLoad": "Añadir carga nodal",
@@ -90,7 +95,14 @@
     "area": "Área",
     "h": "Altura",
     "iy": "Iy",
-    "k": "Coeficiente de cortante"
+    "k": "Coeficiente de cortante",
+    "iz": "Iz",
+    "b": "Anchura",
+    "centroid": "Centro de gravedad",
+    "alpha": "Ángulo de los ejes principales",
+    "radiusOfGyration": "Radio de giro",
+    "polygonal": "Forma poligonal",
+    "derivedFromShape": "Derivado de la forma poligonal – edite la forma para cambiarlo"
   },
   "material": {
     "e": "E",
@@ -130,7 +142,8 @@
       "mouse": "Ratón",
       "pan_button": "Desplazar con",
       "wheel": "Rueda del ratón",
-      "right_button": "Botón derecho"
+      "right_button": "Botón derecho",
+      "all": "Rueda o botón derecho del ratón"
     },
     "colors": {
       "colors": "Colores"
@@ -154,7 +167,8 @@
     "font_size": "Tamaño de fuente",
     "result_label_orientation": "Orientación de las etiquetas de resultados",
     "result_label_orientation_axis": "Perpendicular al diagrama",
-    "result_label_orientation_horizontal": "Siempre horizontales"
+    "result_label_orientation_horizontal": "Siempre horizontales",
+    "result_labels": "Etiquetas de resultados"
   },
   "sideSettings": {
     "showDeformedShape": "Forma deformada",
@@ -165,6 +179,14 @@
     "more_settings": "Más ajustes",
     "showReactions": "Reacciones"
   },
+  "viewer": {
+    "toggleGrid": "Mostrar/ocultar cuadrícula (G)",
+    "toggleSnap": "Activar/desactivar ajuste a la cuadrícula (S)",
+    "boxSelect": "Selección por rectángulo",
+    "centerContent": "Centrar contenido",
+    "fitContent": "Ajustar contenido a la pantalla",
+    "holdCtrl": "Mantenga Ctrl para añadir con el ratón"
+  },
   "dofs": {
     "bcs": "Grados de libertad restringidos"
   },
@@ -172,7 +194,11 @@
     "results": "Resultados",
     "nodal_results": "Resultados nodales",
     "element_results": "Resultados de elementos",
-    "end_forces": "Fuerzas en extremos (en sistema de coordenadas local)"
+    "end_forces": "Fuerzas en extremos (en sistema de coordenadas local)",
+    "exportCsv": "Exportar CSV",
+    "exportHint": "Descarga ambas tablas de resultados en las unidades mostradas, listas para una hoja de cálculo.",
+    "copied": "Resultados copiados al portapapeles",
+    "copyFailed": "No se pudieron copiar los resultados al portapapeles."
   },
   "materials": {
     "addMaterial": "Añadir material",
@@ -180,7 +206,8 @@
     "section_library": "Biblioteca de secciones"
   },
   "crossSections": {
-    "addCrossSection": "Añadir sección"
+    "addCrossSection": "Añadir sección",
+    "addPolygonal": "Sección poligonal"
   },
   "dialogs": {
     "addNode": {
@@ -219,7 +246,8 @@
     },
     "addCrossSection": {
       "addNewCrossSection": "Añadir nueva sección",
-      "addCrossSection": "Añadir sección"
+      "addCrossSection": "Añadir sección",
+      "orDefinePolygon": "O definir una forma poligonal"
     },
     "editNodalLoad": {
       "editNodalLoad": "Editar carga nodal"
@@ -239,7 +267,55 @@
     "changelog": {
       "title": "¿Qué hay de nuevo?",
       "description": "Nuevas funciones, mejoras y un vistazo a lo que estamos preparando.",
-      "contributors": "Han contribuido a esta versión: {names}"
+      "contributors": "Han contribuido a esta versión: {names}",
+      "comingSoon": "Próximamente"
+    },
+    "polygonSection": {
+      "title": "Nueva sección transversal poligonal",
+      "editTitle": "Editar sección transversal poligonal",
+      "preset": "Plantilla",
+      "apply": "Aplicar",
+      "snapStep": "Paso de ajuste",
+      "centerAtCentroid": "Centrar en el centro de gravedad",
+      "hint": "Arrastre los vértices para moverlos, haga clic en el punto medio de un lado para insertar un vértice y haga doble clic en un vértice para eliminarlo.",
+      "outline": "Contorno",
+      "hole": "Hueco",
+      "addHole": "Añadir hueco",
+      "addVertex": "Añadir vértice",
+      "removeContour": "Eliminar hueco",
+      "properties": "Propiedades de la sección",
+      "invalidShape": "La forma debe ser un polígono simple con área positiva: sin lados que se crucen, y los huecos deben quedar dentro del contorno.",
+      "labelInUse": "Etiqueta ya en uso",
+      "save": "Guardar",
+      "editShape": "Editar forma poligonal",
+      "presets": {
+        "rectangle": "Rectángulo",
+        "iSection": "Sección en I",
+        "tSection": "Sección en T",
+        "lSection": "Sección en L",
+        "channel": "Perfil en U",
+        "box": "Rectangular hueca",
+        "circle": "Círculo",
+        "pipe": "Circular hueca"
+      },
+      "params": {
+        "b": "Anchura b",
+        "h": "Altura h",
+        "tw": "Alma tw",
+        "tf": "Ala tf",
+        "t": "Espesor t",
+        "d": "Diámetro d",
+        "n": "Segmentos"
+      },
+      "vertices": "Vértices",
+      "legendOutline": "Contorno",
+      "legendHole": "Hueco",
+      "legendPrincipal": "Ejes principales y elipse de inercia",
+      "legendCentroid": "Centro de gravedad",
+      "shape": "Forma",
+      "noShape": "Sin forma poligonal",
+      "centroidal": "baricéntrico",
+      "centroidalNote": "Todos los momentos de segundo orden se calculan respecto a ejes que pasan por el centro de gravedad; I₁, I₂ son los valores principales y α es el ángulo del eje y al eje 1."
     }
   },
   "tooltip": {
@@ -316,7 +392,57 @@
   },
   "validators": {
     "enterValue": "Introduzca un valor",
-    "invalidNumber": "Número no válido"
+    "invalidNumber": "Número no válido",
+    "positiveNumber": "Introduzca un número mayor que cero",
+    "sameNodes": "Un elemento debe unir dos nodos distintos",
+    "materialInUse": "El material lo usan los elementos {elements}. Reasígnelos antes de eliminarlo.",
+    "crossSectionInUse": "La sección transversal la usan los elementos {elements}. Reasígnelos antes de eliminarla."
+  },
+  "solveDiagnostics": {
+    "summaryErrors": "Errores en el modelo: {errors}",
+    "summaryWarnings": "Advertencias en el modelo: {warnings}",
+    "summaryBoth": "Errores en el modelo: {errors}; advertencias: {warnings}",
+    "showDetails": "Mostrar detalles",
+    "blockedTitle": "No se puede resolver el modelo",
+    "blockedDescription": "Corrija los errores indicados antes de resolver el modelo.",
+    "warningsTitle": "Advertencias del modelo",
+    "warningsDescription": "El modelo se ha resuelto, pero se han detectado las siguientes advertencias.",
+    "errors": "Errores",
+    "warnings": "Advertencias",
+    "issues": {
+      "elementNodeCount": "El elemento {element} debe hacer referencia a exactamente 2 nodos.",
+      "elementSameNode": "El elemento {element} hace referencia al mismo nodo en ambos extremos.",
+      "elementMissingNode": "El elemento {element} hace referencia al nodo inexistente {node}.",
+      "elementMissingMaterial": "El elemento {element} hace referencia al material inexistente {material}.",
+      "elementMissingCrossSection": "El elemento {element} hace referencia a la sección transversal inexistente {crossSection}.",
+      "nodalLoadMissingNode": "La carga nodal #{index} hace referencia al nodo inexistente {node}.",
+      "nodalLoadInvalid": "La carga nodal #{index} contiene valores no válidos.",
+      "prescribedMissingNode": "El desplazamiento impuesto #{index} hace referencia al nodo inexistente {node}.",
+      "prescribedInvalid": "El desplazamiento impuesto #{index} contiene valores no válidos.",
+      "elementLoadMissingElement": "La carga de elemento #{index} hace referencia al elemento inexistente {element}.",
+      "supportedNodeNotConnected": "El nodo {node} tiene apoyo, pero ningún elemento llega a él, así que el apoyo no transmite nada.",
+      "nodeNotConnected": "El nodo {node} no está conectado a ningún elemento y el solver lo ignora.",
+      "insufficientSupports": "El modelo necesita al menos 3 grados de libertad restringidos para ser estable en un análisis 2D.",
+      "partUnsupported": "Una parte independiente de la estructura (nodos {nodes}) tiene menos de 3 grados de libertad restringidos y puede moverse libremente.",
+      "mechanism": "La estructura tiene suficientes apoyos, pero no la sujetan: todavía puede {motion}. Si todos los apoyos son paralelos o sus líneas de acción se cortan en un punto, la estructura queda libre para moverse.",
+      "partMechanism": "Una parte independiente de la estructura (nodos {nodes}) tiene suficientes apoyos, pero no la sujetan: todavía puede {motion}. Si todos los apoyos son paralelos o sus líneas de acción se cortan en un punto, la estructura queda libre para moverse.",
+      "motion": {
+        "horizontal": "desplazarse horizontalmente",
+        "vertical": "moverse verticalmente",
+        "rotation": "girar libremente",
+        "mixed": "moverse como sólido rígido"
+      },
+      "unstable": "La estructura es inestable; se mueve prácticamente sin resistencia: {dofs}. Añada un apoyo o un elemento, elimine una rótula de extremo o compruebe la rigidez de la sección transversal.",
+      "unstableDof": {
+        "dx": "nodo {node} en horizontal (Dx)",
+        "dz": "nodo {node} en vertical (Dz)",
+        "ry": "nodo {node} en giro (Ry)",
+        "other": "nodo {node} en el grado de libertad {dof}"
+      },
+      "unstableMore": "{list} y {count} más",
+      "singularMatrix": "La estructura es un mecanismo: la matriz de rigidez es singular. Compruebe que cada parte esté sujeta por al menos 3 restricciones y que las rótulas de extremo no dejen una barra libre para girar.",
+      "solverFailed": "El solver falló por una incoherencia interna del modelo. Revise las referencias y las cargas del modelo."
+    }
   },
   "loadType": {
     "loadType": "Tipo de carga",
@@ -331,7 +457,14 @@
   },
   "warnings": {
     "noMaterialsDefined": "No hay materiales definidos.",
-    "noCrossSectionsDefined": "No hay secciones definidas."
+    "noCrossSectionsDefined": "No hay secciones definidas.",
+    "importFailed": "No se pudo importar el archivo. Compruebe el formato del archivo.",
+    "prescribedDisplacementExists": "Ya existe un desplazamiento impuesto en este nodo. Elimínelo primero.",
+    "addMaterialFirst": "Añada primero un material.",
+    "addCrossSectionFirst": "Añada primero una sección transversal.",
+    "selectMaterialAndCrossSection": "Seleccione un material y una sección transversal.",
+    "labelInUse": "La etiqueta {label} ya está en uso.",
+    "noMaterialOrCrossSection": "El elemento no tiene material o sección transversal."
   },
   "help": {
     "aria": "Mostrar ayuda",
@@ -396,6 +529,66 @@
     "sharing": {
       "title": "Guardar y compartir",
       "body": "Guarda el modelo como archivo, copia un enlace que contiene toda la estructura o incrusta un visor de solo lectura en tu propia página."
+    }
+  },
+  "exportImage": {
+    "title": "Exportar imagen",
+    "transparentBackground": "Fondo transparente",
+    "download": "Descargar PNG",
+    "downloadSvg": "Descargar SVG",
+    "copyToClipboard": "Copiar al portapapeles",
+    "copied": "Imagen copiada al portapapeles",
+    "exported": "Imagen exportada",
+    "failed": "No se pudo generar la imagen.",
+    "previewAlt": "Vista previa de la imagen exportada",
+    "instructions": "El dibujo se compone de nuevo para el tamaño elegido, de modo que las líneas y etiquetas conservan su grosor real. Un mismo tamaño encuadra siempre la estructura de la misma forma, lo que resulta útil para exportar M, N y V uno junto a otro.",
+    "width": "Anchura",
+    "height": "Altura",
+    "lockAspect": "Mantener proporción",
+    "fitPreview": "Ajustar",
+    "actualSize": "Tamaño real",
+    "preview": "Vista previa",
+    "fitAll": "Ajustar todo",
+    "window": "Ventana…",
+    "pickWindowHint": "Arrastre un rectángulo sobre el dibujo para exportarlo",
+    "dragEdge": "Arrastre para ampliar o recortar este lado",
+    "scale": "Escala",
+    "scaleCaption": "1 m del modelo equivale a {cm} cm en papel (96 DPI). Use la rueda sobre la vista previa para hacer zoom.",
+    "doesNotFit": "No cabe todo en este tamaño: los diagramas, cargas y etiquetas sobresalen unos {px} px del borde. Reduzca los diagramas (ahora {diagrams} px) o amplíe el lienzo.",
+    "shrinkDiagrams": "Reducir diagramas",
+    "enlargeCanvas": "Ampliar lienzo",
+    "diagramHeight": "Altura del diagrama",
+    "shrinkNotEnough": "Reducir los diagramas no basta aquí: las cargas y etiquetas por sí solas necesitan más espacio. Amplíe el lienzo."
+  },
+  "examples": {
+    "title": "Ejemplos",
+    "instructions": "Abra un modelo ya preparado para explorarlo. Sustituye al actual, y Ctrl+Z recupera el suyo.",
+    "moreInDocs": "Más ejemplos y ejercicios",
+    "items": {
+      "welcome": {
+        "title": "Viga hiperestática",
+        "blurb": "Viga hiperestática de 3 m, empotrada y con apoyo móvil, bajo carga uniforme de 10 kN/m."
+      },
+      "cantilever": {
+        "title": "Voladizo",
+        "blurb": "Voladizo de 4 m con una carga nodal de 18 kN hacia abajo, que muestra la curvatura y la flecha en el extremo."
+      },
+      "pratt": {
+        "title": "Celosía Pratt",
+        "blurb": "Celosía Pratt sencilla con cargas de 8 kN en los nudos que muestra la distribución de axiles y los desplazamientos."
+      },
+      "continuous": {
+        "title": "Viga continua de tres vanos",
+        "blurb": "Vanos de 5+6+5 m con carga uniforme + puntual + uniforme para comparar la curvatura y los giros en los apoyos."
+      },
+      "portal": {
+        "title": "Pórtico con caso de carga",
+        "blurb": "Viga de 8 m sobre pilares de 6 m bajo carga uniforme de cubierta y cargas lateral + vertical en los nudos para comprobar el desplome y la flexión."
+      },
+      "temperature": {
+        "title": "Carga térmica",
+        "blurb": "Viga biapoyada de 8 m con carga térmica uniforme y no uniforme."
+      }
     }
   }
 }

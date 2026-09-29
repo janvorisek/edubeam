@@ -43,7 +43,10 @@
     "paste": "Wklej",
     "addNew": "Dodaj nowy",
     "whatisnew": "Co nowego?",
-    "reverse_orientation": "Odwróć wymiar"
+    "reverse_orientation": "Odwróć wymiar",
+    "undo": "Cofnij",
+    "redo": "Ponów",
+    "ok": "OK"
   },
   "nodes": {
     "addNode": "Dodaj węzeł",
@@ -57,7 +60,9 @@
     "swapNodeOrder": "Zamień kolejność węzłów",
     "hingeStart": "Przegub na początku",
     "hingeEnd": "Przegub na końcu",
-    "hinge": "Przegub"
+    "hinge": "Przegub",
+    "from": "Od",
+    "to": "Do"
   },
   "loads": {
     "addNodalLoad": "Dodaj obciążenie węzłowe",
@@ -90,7 +95,14 @@
     "area": "Pole",
     "h": "Wysokość",
     "iy": "Iy",
-    "k": "Współczynnik ścinania"
+    "k": "Współczynnik ścinania",
+    "iz": "Iz",
+    "b": "Szerokość",
+    "centroid": "Środek ciężkości",
+    "alpha": "Kąt osi głównych",
+    "radiusOfGyration": "Promień bezwładności",
+    "polygonal": "Kształt wielokątny",
+    "derivedFromShape": "Wyznaczone z kształtu wielokątnego – aby zmienić, edytuj kształt"
   },
   "material": {
     "e": "E",
@@ -130,7 +142,8 @@
       "mouse": "Mysz",
       "pan_button": "Przesuwanie widoku przez",
       "wheel": "Kółko myszy",
-      "right_button": "Prawy przycisk"
+      "right_button": "Prawy przycisk",
+      "all": "Kółko myszy lub prawy przycisk"
     },
     "colors": {
       "colors": "Kolory"
@@ -154,7 +167,8 @@
     "font_size": "Rozmiar czcionki",
     "result_label_orientation": "Orientacja etykiet wyników",
     "result_label_orientation_axis": "Prostopadle do wykresu",
-    "result_label_orientation_horizontal": "Zawsze poziomo"
+    "result_label_orientation_horizontal": "Zawsze poziomo",
+    "result_labels": "Etykiety wyników"
   },
   "sideSettings": {
     "showDeformedShape": "Kształt odkształcony",
@@ -165,6 +179,14 @@
     "more_settings": "Więcej ustawień",
     "showReactions": "Reakcje"
   },
+  "viewer": {
+    "toggleGrid": "Przełącz siatkę (G)",
+    "toggleSnap": "Przełącz przyciąganie do siatki (S)",
+    "boxSelect": "Zaznaczanie prostokątem",
+    "centerContent": "Wyśrodkuj widok",
+    "fitContent": "Dopasuj do ekranu",
+    "holdCtrl": "Przytrzymaj Ctrl, aby dodawać myszą"
+  },
   "dofs": {
     "bcs": "Podparte stopnie swobody"
   },
@@ -172,7 +194,11 @@
     "results": "Wyniki",
     "nodal_results": "Wyniki węzłowe",
     "element_results": "Wyniki elementów",
-    "end_forces": "Siły końcowe (w lokalnym układzie współrzędnych)"
+    "end_forces": "Siły końcowe (w lokalnym układzie współrzędnych)",
+    "exportCsv": "Eksportuj CSV",
+    "exportHint": "Pobierz obie tabele wyników w wyświetlanych jednostkach, gotowe do arkusza kalkulacyjnego.",
+    "copied": "Wyniki skopiowane do schowka",
+    "copyFailed": "Nie udało się skopiować wyników do schowka."
   },
   "materials": {
     "addMaterial": "Dodaj materiał",
@@ -180,7 +206,8 @@
     "section_library": "Biblioteka przekrojów"
   },
   "crossSections": {
-    "addCrossSection": "Dodaj przekrój"
+    "addCrossSection": "Dodaj przekrój",
+    "addPolygonal": "Przekrój wielokątny"
   },
   "dialogs": {
     "addNode": {
@@ -219,7 +246,8 @@
     },
     "addCrossSection": {
       "addNewCrossSection": "Dodaj nowy przekrój",
-      "addCrossSection": "Dodaj przekrój"
+      "addCrossSection": "Dodaj przekrój",
+      "orDefinePolygon": "Lub zdefiniuj kształt wielokątny"
     },
     "editNodalLoad": {
       "editNodalLoad": "Edytuj obciążenie węzłowe"
@@ -239,7 +267,55 @@
     "changelog": {
       "title": "Co nowego?",
       "description": "Nowe funkcje, usprawnienia i zapowiedzi tego, nad czym pracujemy.",
-      "contributors": "Nad tą wersją pracowali: {names}"
+      "contributors": "Nad tą wersją pracowali: {names}",
+      "comingSoon": "Wkrótce"
+    },
+    "polygonSection": {
+      "title": "Nowy przekrój wielokątny",
+      "editTitle": "Edytuj przekrój wielokątny",
+      "preset": "Szablon",
+      "apply": "Zastosuj",
+      "snapStep": "Krok przyciągania",
+      "centerAtCentroid": "Wyśrodkuj w środku ciężkości",
+      "hint": "Przeciągnij wierzchołek, aby go przesunąć, kliknij środek krawędzi, aby wstawić wierzchołek, kliknij dwukrotnie wierzchołek, aby go usunąć.",
+      "outline": "Obrys",
+      "hole": "Otwór",
+      "addHole": "Dodaj otwór",
+      "addVertex": "Dodaj wierzchołek",
+      "removeContour": "Usuń otwór",
+      "properties": "Charakterystyki przekroju",
+      "invalidShape": "Kształt musi być wielokątem prostym o dodatnim polu: krawędzie nie mogą się przecinać, a otwory muszą leżeć wewnątrz obrysu.",
+      "labelInUse": "Etykieta jest już używana",
+      "save": "Zapisz",
+      "editShape": "Edytuj kształt wielokątny",
+      "presets": {
+        "rectangle": "Prostokąt",
+        "iSection": "Dwuteownik",
+        "tSection": "Teownik",
+        "lSection": "Kątownik",
+        "channel": "Ceownik (U)",
+        "box": "Rura prostokątna",
+        "circle": "Koło",
+        "pipe": "Rura okrągła"
+      },
+      "params": {
+        "b": "Szerokość b",
+        "h": "Wysokość h",
+        "tw": "Środnik tw",
+        "tf": "Półka tf",
+        "t": "Grubość t",
+        "d": "Średnica d",
+        "n": "Liczba segmentów"
+      },
+      "vertices": "Wierzchołki",
+      "legendOutline": "Obrys",
+      "legendHole": "Otwór",
+      "legendPrincipal": "Osie główne i elipsa bezwładności",
+      "legendCentroid": "Środek ciężkości",
+      "shape": "Kształt",
+      "noShape": "Brak kształtu wielokątnego",
+      "centroidal": "centralny",
+      "centroidalNote": "Wszystkie momenty bezwładności liczone są względem osi przechodzących przez środek ciężkości; I₁, I₂ to wartości główne, a α to kąt od osi y do osi 1."
     }
   },
   "tooltip": {
@@ -316,7 +392,57 @@
   },
   "validators": {
     "enterValue": "Wprowadź wartość",
-    "invalidNumber": "Nieprawidłowa liczba"
+    "invalidNumber": "Nieprawidłowa liczba",
+    "positiveNumber": "Wprowadź liczbę większą od zera",
+    "sameNodes": "Element musi łączyć dwa różne węzły",
+    "materialInUse": "Materiał jest używany przez elementy: {elements}. Przed usunięciem przypisz im inny materiał.",
+    "crossSectionInUse": "Przekrój jest używany przez elementy: {elements}. Przed usunięciem przypisz im inny przekrój."
+  },
+  "solveDiagnostics": {
+    "summaryErrors": "Błędy w modelu: {errors}",
+    "summaryWarnings": "Ostrzeżenia w modelu: {warnings}",
+    "summaryBoth": "Błędy w modelu: {errors}, ostrzeżenia: {warnings}",
+    "showDetails": "Pokaż szczegóły",
+    "blockedTitle": "Nie można rozwiązać modelu",
+    "blockedDescription": "Przed rozwiązaniem modelu popraw wymienione błędy.",
+    "warningsTitle": "Ostrzeżenia modelu",
+    "warningsDescription": "Model został rozwiązany, ale wykryto następujące ostrzeżenia.",
+    "errors": "Błędy",
+    "warnings": "Ostrzeżenia",
+    "issues": {
+      "elementNodeCount": "Element {element} musi odwoływać się do dokładnie 2 węzłów.",
+      "elementSameNode": "Element {element} ma ten sam węzeł na obu końcach.",
+      "elementMissingNode": "Element {element} odwołuje się do nieistniejącego węzła {node}.",
+      "elementMissingMaterial": "Element {element} odwołuje się do nieistniejącego materiału {material}.",
+      "elementMissingCrossSection": "Element {element} odwołuje się do nieistniejącego przekroju {crossSection}.",
+      "nodalLoadMissingNode": "Obciążenie węzłowe #{index} odwołuje się do nieistniejącego węzła {node}.",
+      "nodalLoadInvalid": "Obciążenie węzłowe #{index} zawiera nieprawidłowe wartości.",
+      "prescribedMissingNode": "Zadane przemieszczenie #{index} odwołuje się do nieistniejącego węzła {node}.",
+      "prescribedInvalid": "Zadane przemieszczenie #{index} zawiera nieprawidłowe wartości.",
+      "elementLoadMissingElement": "Obciążenie elementu #{index} odwołuje się do nieistniejącego elementu {element}.",
+      "supportedNodeNotConnected": "Węzeł {node} jest podparty, ale nie łączy się z nim żaden element, więc podpora niczego nie przenosi.",
+      "nodeNotConnected": "Węzeł {node} nie jest połączony z żadnym elementem i jest pomijany w obliczeniach.",
+      "insufficientSupports": "Aby model był stateczny w analizie 2D, potrzebuje co najmniej 3 podpartych stopni swobody.",
+      "partUnsupported": "Oddzielna część konstrukcji (węzły {nodes}) ma mniej niż 3 podparte stopnie swobody i może się swobodnie przemieszczać.",
+      "mechanism": "Konstrukcja ma wystarczającą liczbę podpór, ale nie utrzymują jej one: nadal może {motion}. Podpory, które są wszystkie równoległe lub których kierunki działania przecinają się w jednym punkcie, pozwalają konstrukcji się przemieszczać.",
+      "partMechanism": "Oddzielna część konstrukcji (węzły {nodes}) ma wystarczającą liczbę podpór, ale nie utrzymują jej one: nadal może {motion}. Podpory, które są wszystkie równoległe lub których kierunki działania przecinają się w jednym punkcie, pozwalają konstrukcji się przemieszczać.",
+      "motion": {
+        "horizontal": "przesuwać się poziomo",
+        "vertical": "przemieszczać się pionowo",
+        "rotation": "swobodnie się obracać",
+        "mixed": "przemieszczać się jak ciało sztywne"
+      },
+      "unstable": "Konstrukcja jest niestateczna – praktycznie bez oporu przemieszcza się: {dofs}. Dodaj podporę lub element, usuń przegub końcowy albo sprawdź sztywność przekroju.",
+      "unstableDof": {
+        "dx": "węzeł {node} poziomo (Dx)",
+        "dz": "węzeł {node} pionowo (Dz)",
+        "ry": "węzeł {node} obrotowo (Ry)",
+        "other": "węzeł {node} w stopniu swobody {dof}"
+      },
+      "unstableMore": "{list} i jeszcze {count}",
+      "singularMatrix": "Konstrukcja jest mechanizmem: macierz sztywności jest osobliwa. Sprawdź, czy każda część jest utrzymywana przez co najmniej 3 więzy i czy przeguby końcowe nie pozostawiają pręta swobodnie obracającego się.",
+      "solverFailed": "Obliczenia nie powiodły się z powodu wewnętrznej niespójności modelu. Sprawdź odwołania w modelu i obciążenia."
+    }
   },
   "loadType": {
     "loadType": "Typ obciążenia",
@@ -331,7 +457,14 @@
   },
   "warnings": {
     "noMaterialsDefined": "Nie zdefiniowano materiałów.",
-    "noCrossSectionsDefined": "Nie zdefiniowano przekrojów."
+    "noCrossSectionsDefined": "Nie zdefiniowano przekrojów.",
+    "importFailed": "Nie udało się zaimportować pliku. Sprawdź format pliku.",
+    "prescribedDisplacementExists": "Dla tego węzła istnieje już zadane przemieszczenie. Najpierw je usuń.",
+    "addMaterialFirst": "Najpierw dodaj materiał.",
+    "addCrossSectionFirst": "Najpierw dodaj przekrój.",
+    "selectMaterialAndCrossSection": "Wybierz materiał i przekrój.",
+    "labelInUse": "Etykieta {label} jest już używana.",
+    "noMaterialOrCrossSection": "Element nie ma określonego materiału lub przekroju."
   },
   "help": {
     "aria": "Pokaż pomoc",
@@ -396,6 +529,66 @@
     "sharing": {
       "title": "Zapis i udostępnianie",
       "body": "Zapisz model do pliku, skopiuj link zawierający całą konstrukcję albo osadź podgląd tylko do odczytu na własnej stronie."
+    }
+  },
+  "exportImage": {
+    "title": "Eksportuj obraz",
+    "transparentBackground": "Przezroczyste tło",
+    "download": "Pobierz PNG",
+    "downloadSvg": "Pobierz SVG",
+    "copyToClipboard": "Kopiuj do schowka",
+    "copied": "Obraz skopiowany do schowka",
+    "exported": "Obraz wyeksportowany",
+    "failed": "Nie udało się wygenerować obrazu.",
+    "previewAlt": "Podgląd eksportowanego obrazu",
+    "instructions": "Rysunek jest układany od nowa dla wybranego rozmiaru, więc linie i etykiety zachowują rzeczywistą grubość. Ten sam rozmiar zawsze kadruje konstrukcję tak samo – przydatne przy eksporcie wykresów M, N i V obok siebie.",
+    "width": "Szerokość",
+    "height": "Wysokość",
+    "lockAspect": "Zachowaj proporcje",
+    "fitPreview": "Dopasuj",
+    "actualSize": "Rzeczywisty rozmiar",
+    "preview": "Podgląd",
+    "fitAll": "Pokaż wszystko",
+    "window": "Okno…",
+    "pickWindowHint": "Zaznacz prostokątem fragment rysunku do eksportu",
+    "dragEdge": "Przeciągnij, aby odsłonić lub przyciąć tę stronę",
+    "scale": "Skala",
+    "scaleCaption": "1 m modelu to {cm} cm na papierze (96 DPI). Przewiń nad podglądem, aby powiększyć.",
+    "doesNotFit": "Przy tym rozmiarze nie wszystko się mieści: wykresy, obciążenia i etykiety wychodzą ok. {px} px poza krawędź. Zmniejsz wykresy (obecnie {diagrams} px) lub powiększ obszar rysunku.",
+    "shrinkDiagrams": "Zmniejsz wykresy",
+    "enlargeCanvas": "Powiększ obszar",
+    "diagramHeight": "Wysokość wykresów",
+    "shrinkNotEnough": "Mniejsze wykresy tu nie wystarczą – same obciążenia i etykiety potrzebują więcej miejsca. Powiększ zamiast tego obszar rysunku."
+  },
+  "examples": {
+    "title": "Przykłady",
+    "instructions": "Otwórz gotowy model do przeanalizowania. Zastąpi on bieżący, a Ctrl+Z przywróci Twój.",
+    "moreInDocs": "Więcej przykładów i ćwiczeń",
+    "items": {
+      "welcome": {
+        "title": "Belka statycznie niewyznaczalna",
+        "blurb": "Statycznie niewyznaczalna belka o rozpiętości 3 m, utwierdzona i podparta przegubowo przesuwnie, pod obciążeniem równomiernym 10 kN/m."
+      },
+      "cantilever": {
+        "title": "Wspornik",
+        "blurb": "Wspornik o długości 4 m obciążony siłą węzłową 18 kN skierowaną w dół – krzywizna i ugięcie końca."
+      },
+      "pratt": {
+        "title": "Kratownica Pratta",
+        "blurb": "Prosta kratownica Pratta z obciążeniami węzłowymi 8 kN – rozkład sił osiowych i przemieszczenia."
+      },
+      "continuous": {
+        "title": "Belka ciągła trzyprzęsłowa",
+        "blurb": "Przęsła 5+6+5 m z obciążeniem równomiernym, skupionym i równomiernym – porównanie krzywizny i obrotów nad podporami."
+      },
+      "portal": {
+        "title": "Rama portalowa – przypadek obciążenia",
+        "blurb": "Rygiel 8 m na słupach 6 m pod równomiernym obciążeniem dachu oraz poziomymi i pionowymi siłami w narożach – analiza przechyłu i zginania."
+      },
+      "temperature": {
+        "title": "Obciążenie termiczne",
+        "blurb": "Belka swobodnie podparta o rozpiętości 8 m z równomiernym i nierównomiernym obciążeniem termicznym."
+      }
     }
   }
 }

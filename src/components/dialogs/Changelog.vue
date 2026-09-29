@@ -121,7 +121,7 @@
           </div>
 
           <section v-if="upcoming.length" class="changelog-upcoming">
-            <div class="text-overline text-medium-emphasis">Coming soon</div>
+            <div class="text-overline text-medium-emphasis">{{ $t('dialogs.changelog.comingSoon') }}</div>
             <div v-for="feature in upcoming" :key="feature.title" class="upcoming-card">
               <div class="font-weight-medium">{{ feature.title }}</div>
               <div class="text-body-2 text-medium-emphasis">{{ feature.detail }}</div>

@@ -158,7 +158,7 @@ onMounted(() => {
 const addElement = () => {
   // check if material and cross section are selected
   if (newElementMat.value === '' || newElementCS.value === '') {
-    return alert('Please select a material and cross section');
+    return alert(i18n.global.t('warnings.selectMaterialAndCrossSection'));
   }
 
   if (String(newElementFrom.value) === String(newElementTo.value)) {

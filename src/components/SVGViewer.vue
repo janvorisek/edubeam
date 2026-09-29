@@ -328,14 +328,14 @@ const solveDiagnosticsSummary = computed(() => {
   const warnings = projectStore.solveDiagnostics.warnings.length;
 
   if (errors > 0 && warnings > 0) {
-    return `Model has ${errors} error(s) and ${warnings} warning(s).`;
+    return t('solveDiagnostics.summaryBoth', { errors, warnings });
   }
 
   if (errors > 0) {
-    return `Model has ${errors} error(s).`;
+    return t('solveDiagnostics.summaryErrors', { errors });
   }
 
-  return `Model has ${warnings} warning(s).`;
+  return t('solveDiagnostics.summaryWarnings', { warnings });
 });
 
 const openSolveDiagnostics = () => {
@@ -2211,7 +2211,7 @@ defineExpose({ centerContent, fitContent });
       <div class="d-flex align-center ga-1">
         <v-chip density="compact" class="d-flex pa-0 overflow-hidden">
           <!-- Grid toggle -->
-          <v-tooltip text="Toggle grid (G)" location="top" :open-on-click="!deviceHasHover">
+          <v-tooltip :text="$t('viewer.toggleGrid')" location="top" :open-on-click="!deviceHasHover">
             <template #activator="{ props: tooltipProps }">
               <v-btn
                 v-bind="tooltipProps"
@@ -2227,7 +2227,7 @@ defineExpose({ centerContent, fitContent });
             </template>
           </v-tooltip>
           <!-- Snap to grid -->
-          <v-tooltip text="Toggle snap to grid (S)" location="top" :open-on-click="!deviceHasHover">
+          <v-tooltip :text="$t('viewer.toggleSnap')" location="top" :open-on-click="!deviceHasHover">
             <template #activator="{ props: tooltipProps }">
               <v-btn
                 v-bind="tooltipProps"
@@ -2269,7 +2269,7 @@ defineExpose({ centerContent, fitContent });
         density="comfortable"
         class="mr-1"
         rounded="lg"
-        title="Undo"
+        :title="$t('common.undo')"
         @click="undoModelChange()"
       ></v-btn>
       <v-btn
@@ -2278,7 +2278,7 @@ defineExpose({ centerContent, fitContent });
         density="comfortable"
         class="mr-1"
         rounded="lg"
-        title="Redo"
+        :title="$t('common.redo')"
         @click="redoModelChange()"
       ></v-btn>
     </div>
@@ -2296,7 +2296,7 @@ defineExpose({ centerContent, fitContent });
         density="comfortable"
         class="mr-1"
         rounded="lg"
-        title="Box select"
+        :title="$t('viewer.boxSelect')"
         :color="touchSelectArmed ? 'primary' : 'default'"
         @click="touchSelectArmed = !touchSelectArmed"
       ></v-btn>
@@ -2306,7 +2306,7 @@ defineExpose({ centerContent, fitContent });
         density="comfortable"
         class="mr-1"
         rounded="lg"
-        title="Center content"
+        :title="$t('viewer.centerContent')"
         @click="centerContent"
       ></v-btn>
       <v-btn
@@ -2315,7 +2315,7 @@ defineExpose({ centerContent, fitContent });
         density="comfortable"
         class="mr-1"
         rounded="lg"
-        title="Fit content to screen"
+        :title="$t('viewer.fitContent')"
         @click="fitContent"
       >
       </v-btn>
@@ -2324,7 +2324,7 @@ defineExpose({ centerContent, fitContent });
         size="32"
         density="comfortable"
         rounded="lg"
-        title="Settings"
+        :title="$t('common.settings')"
         :color="viewerStore.settingsOpen ? 'primary' : 'default'"
         @click="viewerStore.settingsOpen = !viewerStore.settingsOpen"
       ></v-btn>
@@ -2397,7 +2397,7 @@ defineExpose({ centerContent, fitContent });
         </template>
         <template #label>
           <span class="label">{{ $t('nodes.addNode') }}</span>
-          <span class="ml-auto text-right" style="font-size: 10px">Hold Ctrl to add using mouse</span>
+          <span class="ml-auto text-right" style="font-size: 10px">{{ $t('viewer.holdCtrl') }}</span>
         </template>
       </context-menu-item>
       <context-menu-item
@@ -2409,7 +2409,7 @@ defineExpose({ centerContent, fitContent });
         </template>
         <template #label>
           <span class="label">{{ $t('elements.addElement') }}</span>
-          <span class="ml-auto text-right" style="font-size: 10px">Hold Ctrl to add using mouse</span>
+          <span class="ml-auto text-right" style="font-size: 10px">{{ $t('viewer.holdCtrl') }}</span>
         </template>
       </context-menu-item>
       <context-menu-item @click="appStore.mouseMode = MouseMode.ADD_DIMLINE">
@@ -2489,7 +2489,9 @@ defineExpose({ centerContent, fitContent });
           <template #text>
             <div class="d-flex align-center">
               {{ solveDiagnosticsSummary }}
-              <v-btn variant="text" density="compact" size="small" @click="openSolveDiagnostics">Show details</v-btn>
+              <v-btn variant="text" density="compact" size="small" @click="openSolveDiagnostics">{{
+                $t('solveDiagnostics.showDetails')
+              }}</v-btn>
             </div>
           </template>
         </v-alert>

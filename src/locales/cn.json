@@ -43,7 +43,10 @@
     "paste": "粘贴",
     "addNew": "新增",
     "whatisnew": "更新内容",
-    "reverse_orientation": "翻转标注"
+    "reverse_orientation": "翻转标注",
+    "undo": "撤销",
+    "redo": "重做",
+    "ok": "确定"
   },
   "nodes": {
     "addNode": "添加节点",
@@ -57,7 +60,9 @@
     "swapNodeOrder": "交换节点顺序",
     "hingeStart": "起点铰接",
     "hingeEnd": "终点铰接",
-    "hinge": "铰接"
+    "hinge": "铰接",
+    "from": "起点",
+    "to": "终点"
   },
   "loads": {
     "addNodalLoad": "添加节点荷载",
@@ -90,7 +95,14 @@
     "area": "面积",
     "h": "高度",
     "iy": "Iy",
-    "k": "剪切系数"
+    "k": "剪切系数",
+    "iz": "Iz",
+    "b": "宽度",
+    "centroid": "形心",
+    "alpha": "主轴角",
+    "radiusOfGyration": "回转半径",
+    "polygonal": "多边形截面",
+    "derivedFromShape": "由多边形形状计算得出——修改形状即可更改"
   },
   "material": {
     "e": "E",
@@ -130,7 +142,8 @@
       "mouse": "鼠标",
       "pan_button": "平移方式",
       "wheel": "滚轮",
-      "right_button": "右键"
+      "right_button": "右键",
+      "all": "滚轮或右键"
     },
     "colors": {
       "colors": "颜色"
@@ -154,7 +167,8 @@
     "font_size": "字号",
     "result_label_orientation": "结果标签方向",
     "result_label_orientation_axis": "垂直于图表",
-    "result_label_orientation_horizontal": "始终水平"
+    "result_label_orientation_horizontal": "始终水平",
+    "result_labels": "结果标签"
   },
   "sideSettings": {
     "showDeformedShape": "变形图",
@@ -165,6 +179,14 @@
     "more_settings": "更多设置",
     "showReactions": "支反力"
   },
+  "viewer": {
+    "toggleGrid": "切换网格 (G)",
+    "toggleSnap": "切换网格吸附 (S)",
+    "boxSelect": "框选",
+    "centerContent": "内容居中",
+    "fitContent": "适配屏幕",
+    "holdCtrl": "按住 Ctrl 可用鼠标添加"
+  },
   "dofs": {
     "bcs": "受约束自由度"
   },
@@ -172,7 +194,11 @@
     "results": "结果",
     "nodal_results": "节点结果",
     "element_results": "单元结果",
-    "end_forces": "单元端力（局部坐标系）"
+    "end_forces": "单元端力（局部坐标系）",
+    "exportCsv": "导出 CSV",
+    "exportHint": "按当前显示的单位下载两个结果表格，可直接用于电子表格。",
+    "copied": "结果已复制到剪贴板",
+    "copyFailed": "无法将结果复制到剪贴板。"
   },
   "materials": {
     "addMaterial": "添加材料",
@@ -180,7 +206,8 @@
     "section_library": "截面库"
   },
   "crossSections": {
-    "addCrossSection": "添加截面"
+    "addCrossSection": "添加截面",
+    "addPolygonal": "多边形截面"
   },
   "dialogs": {
     "addNode": {
@@ -219,7 +246,8 @@
     },
     "addCrossSection": {
       "addNewCrossSection": "添加新截面",
-      "addCrossSection": "添加截面"
+      "addCrossSection": "添加截面",
+      "orDefinePolygon": "或定义多边形形状"
     },
     "editNodalLoad": {
       "editNodalLoad": "编辑节点荷载"
@@ -239,7 +267,55 @@
     "changelog": {
       "title": "更新内容",
       "description": "新功能、改进以及我们正在开发内容的预览。",
-      "contributors": "参与此版本的贡献者：{names}"
+      "contributors": "参与此版本的贡献者：{names}",
+      "comingSoon": "即将推出"
+    },
+    "polygonSection": {
+      "title": "新建多边形截面",
+      "editTitle": "编辑多边形截面",
+      "preset": "预设",
+      "apply": "应用",
+      "snapStep": "吸附步长",
+      "centerAtCentroid": "以形心居中",
+      "hint": "拖动顶点可移动它，点击边的中点可插入顶点，双击顶点可删除它。",
+      "outline": "外轮廓",
+      "hole": "孔洞",
+      "addHole": "添加孔洞",
+      "addVertex": "添加顶点",
+      "removeContour": "删除孔洞",
+      "properties": "截面特性",
+      "invalidShape": "形状必须是面积为正的简单多边形：边不得相交，孔洞必须位于外轮廓内部。",
+      "labelInUse": "标签已被使用",
+      "save": "保存",
+      "editShape": "编辑多边形形状",
+      "presets": {
+        "rectangle": "矩形",
+        "iSection": "工字形",
+        "tSection": "T 形",
+        "lSection": "L 形（角钢）",
+        "channel": "槽形 (U)",
+        "box": "矩形空心",
+        "circle": "圆形",
+        "pipe": "圆形空心"
+      },
+      "params": {
+        "b": "宽度 b",
+        "h": "高度 h",
+        "tw": "腹板 tw",
+        "tf": "翼缘 tf",
+        "t": "厚度 t",
+        "d": "直径 d",
+        "n": "分段数"
+      },
+      "vertices": "顶点",
+      "legendOutline": "外轮廓",
+      "legendHole": "孔洞",
+      "legendPrincipal": "主轴与惯性椭圆",
+      "legendCentroid": "形心",
+      "shape": "形状",
+      "noShape": "无多边形形状",
+      "centroidal": "形心轴",
+      "centroidalNote": "所有截面二次矩均对通过形心的轴计算；I₁、I₂ 为主惯性矩，α 为 y 轴到轴 1 的夹角。"
     }
   },
   "tooltip": {
@@ -316,7 +392,57 @@
   },
   "validators": {
     "enterValue": "请输入数值",
-    "invalidNumber": "无效数字"
+    "invalidNumber": "无效数字",
+    "positiveNumber": "请输入大于零的数",
+    "sameNodes": "单元必须连接两个不同的节点",
+    "materialInUse": "该材料正被单元 {elements} 使用。删除前请先为这些单元重新指定材料。",
+    "crossSectionInUse": "该截面正被单元 {elements} 使用。删除前请先为这些单元重新指定截面。"
+  },
+  "solveDiagnostics": {
+    "summaryErrors": "模型有 {errors} 个错误。",
+    "summaryWarnings": "模型有 {warnings} 个警告。",
+    "summaryBoth": "模型有 {errors} 个错误和 {warnings} 个警告。",
+    "showDetails": "显示详情",
+    "blockedTitle": "无法求解模型",
+    "blockedDescription": "求解模型前请先修正下列错误。",
+    "warningsTitle": "模型警告",
+    "warningsDescription": "模型已求解，但检测到以下警告。",
+    "errors": "错误",
+    "warnings": "警告",
+    "issues": {
+      "elementNodeCount": "单元 {element} 必须恰好引用 2 个节点。",
+      "elementSameNode": "单元 {element} 的两端引用了同一个节点。",
+      "elementMissingNode": "单元 {element} 引用了不存在的节点 {node}。",
+      "elementMissingMaterial": "单元 {element} 引用了不存在的材料 {material}。",
+      "elementMissingCrossSection": "单元 {element} 引用了不存在的截面 {crossSection}。",
+      "nodalLoadMissingNode": "节点荷载 #{index} 引用了不存在的节点 {node}。",
+      "nodalLoadInvalid": "节点荷载 #{index} 包含无效数值。",
+      "prescribedMissingNode": "位移约束 #{index} 引用了不存在的节点 {node}。",
+      "prescribedInvalid": "位移约束 #{index} 包含无效数值。",
+      "elementLoadMissingElement": "单元荷载 #{index} 引用了不存在的单元 {element}。",
+      "supportedNodeNotConnected": "节点 {node} 设有支座，但没有单元与之相连，因此该支座不承受任何力。",
+      "nodeNotConnected": "节点 {node} 未与任何单元相连，求解器将忽略该节点。",
+      "insufficientSupports": "在二维分析中，模型至少需要 3 个受约束自由度才能保持稳定。",
+      "partUnsupported": "结构中一个独立部分（节点 {nodes}）的受约束自由度少于 3 个，可以自由运动。",
+      "mechanism": "结构的支座数量足够，但无法将其固定：结构仍可{motion}。若所有支座相互平行，或其作用线交于一点，结构仍可自由运动。",
+      "partMechanism": "结构中一个独立部分（节点 {nodes}）的支座数量足够，但无法将其固定：该部分仍可{motion}。若所有支座相互平行，或其作用线交于一点，结构仍可自由运动。",
+      "motion": {
+        "horizontal": "水平滑动",
+        "vertical": "竖向移动",
+        "rotation": "自由转动",
+        "mixed": "作刚体运动"
+      },
+      "unstable": "结构不稳定：以下自由度几乎没有抵抗即可运动：{dofs}。请添加支座或单元、取消端部铰接，或检查截面刚度。",
+      "unstableDof": {
+        "dx": "节点 {node} 水平方向 (Dx)",
+        "dz": "节点 {node} 竖向 (Dz)",
+        "ry": "节点 {node} 转角 (Ry)",
+        "other": "节点 {node} 自由度 {dof}"
+      },
+      "unstableMore": "{list} 以及另外 {count} 个",
+      "singularMatrix": "结构为机构：刚度矩阵奇异。请检查每个部分是否至少有 3 个约束，以及端部铰接是否导致某根杆件可以自由转动。",
+      "solverFailed": "由于模型内部不一致，求解失败。请检查模型中的引用和荷载。"
+    }
   },
   "loadType": {
     "loadType": "荷载类型",
@@ -331,7 +457,14 @@
   },
   "warnings": {
     "noMaterialsDefined": "尚未定义材料。",
-    "noCrossSectionsDefined": "尚未定义截面。"
+    "noCrossSectionsDefined": "尚未定义截面。",
+    "importFailed": "无法导入该文件。请检查文件格式。",
+    "prescribedDisplacementExists": "该节点已存在位移约束。请先将其删除。",
+    "addMaterialFirst": "请先添加材料。",
+    "addCrossSectionFirst": "请先添加截面。",
+    "selectMaterialAndCrossSection": "请选择材料和截面。",
+    "labelInUse": "标签 {label} 已被使用。",
+    "noMaterialOrCrossSection": "单元未指定材料或截面。"
   },
   "help": {
     "aria": "显示帮助",
@@ -396,6 +529,66 @@
     "sharing": {
       "title": "保存与分享",
       "body": "可将模型保存为文件、复制包含整个结构的链接，或在自己的网页中嵌入只读视图。"
+    }
+  },
+  "exportImage": {
+    "title": "导出图像",
+    "transparentBackground": "透明背景",
+    "download": "下载 PNG",
+    "downloadSvg": "下载 SVG",
+    "copyToClipboard": "复制到剪贴板",
+    "copied": "图像已复制到剪贴板",
+    "exported": "图像已导出",
+    "failed": "无法渲染图像。",
+    "previewAlt": "导出图像预览",
+    "instructions": "图形会按所选尺寸重新排版，因此线条和标签保持实际粗细。相同尺寸下结构的取景始终一致——便于并排导出 M、N 和 V 图。",
+    "width": "宽度",
+    "height": "高度",
+    "lockAspect": "保持宽高比",
+    "fitPreview": "适配",
+    "actualSize": "实际大小",
+    "preview": "预览",
+    "fitAll": "全部适配",
+    "window": "窗口…",
+    "pickWindowHint": "在图形上拖出一个矩形作为导出范围",
+    "dragEdge": "拖动以扩展或裁剪此边",
+    "scale": "比例",
+    "scaleCaption": "模型中的 1 m 在纸上为 {cm} cm (96 DPI)。在预览上滚动滚轮可缩放。",
+    "doesNotFit": "在此尺寸下无法完整容纳：内力图、荷载和标签超出边缘约 {px} px。请缩小内力图（当前 {diagrams} px）或放大画布。",
+    "shrinkDiagrams": "缩小内力图",
+    "enlargeCanvas": "放大画布",
+    "diagramHeight": "内力图高度",
+    "shrinkNotEnough": "仅缩小内力图还不够——荷载和标签本身就需要更多空间。请改为放大画布。"
+  },
+  "examples": {
+    "title": "示例",
+    "instructions": "打开一个现成的模型进行探索。它会替换当前模型，按 Ctrl+Z 可恢复你的模型。",
+    "moreInDocs": "更多示例与练习",
+    "items": {
+      "welcome": {
+        "title": "超静定梁",
+        "blurb": "3 m 一端固定、一端滚动支座的超静定梁，承受 10 kN/m 均布荷载。"
+      },
+      "cantilever": {
+        "title": "悬臂梁",
+        "blurb": "4 m 悬臂梁承受 18 kN 向下的节点荷载，突出显示曲率和自由端挠度。"
+      },
+      "pratt": {
+        "title": "普拉特桁架",
+        "blurb": "承受 8 kN 节点荷载的简单普拉特桁架，展示轴力分布和位移。"
+      },
+      "continuous": {
+        "title": "三跨连续梁",
+        "blurb": "5+6+5 m 跨度，分别承受均布荷载、集中荷载和均布荷载，用于比较曲率和支座转角。"
+      },
+      "portal": {
+        "title": "门式刚架荷载工况",
+        "blurb": "6 m 柱上的 8 m 横梁，承受屋面均布荷载以及梁柱节点处的水平和竖向荷载，用于侧移和弯曲验算。"
+      },
+      "temperature": {
+        "title": "温度荷载",
+        "blurb": "8 m 简支梁承受均匀和非均匀温度荷载。"
+      }
     }
   }
 }

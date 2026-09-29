@@ -1,4 +1,5 @@
 import { DofID, type LinearStaticSolver, type Node } from 'ts-fem';
+import { i18n } from '@/plugins/i18n';
 
 export type SolveIssueLevel = 'error' | 'warning';
 
@@ -14,6 +15,21 @@ export interface SolveDiagnostics {
 }
 
 const toLabel = (value: unknown) => String(value ?? '?');
+
+const t = (key: string, params: Record<string, unknown> = {}) =>
+  i18n.global.t(`solveDiagnostics.issues.${key}`, params);
+
+/**
+ * Builds an issue whose message is translated when it is read, not when the model is solved,
+ * so switching the language relabels the diagnostics already on screen.
+ */
+export const solveIssue = (level: SolveIssueLevel, code: string, message: () => string): SolveIssue => ({
+  level,
+  code,
+  get message() {
+    return message();
+  },
+});
 
 const isFiniteNumber = (value: unknown) => typeof value === 'number' && Number.isFinite(value);
 
@@ -33,40 +49,36 @@ export const validateSolverModel = (solver: LinearStaticSolver): SolveDiagnostic
       : [];
 
     if (elementNodes.length !== 2) {
-      diagnostics.errors.push({
-        level: 'error',
-        code: 'ELEMENT_INVALID_NODE_COUNT',
-        message: `Element ${elementLabel} must reference exactly 2 nodes.`,
-      });
+      diagnostics.errors.push(
+        solveIssue('error', 'ELEMENT_INVALID_NODE_COUNT', () => t('elementNodeCount', { element: elementLabel }))
+      );
       continue;
     }
 
     if (elementNodes[0] === elementNodes[1]) {
-      diagnostics.warnings.push({
-        level: 'warning',
-        code: 'ELEMENT_DUPLICATE_NODE_REFERENCE',
-        message: `Element ${elementLabel} references the same node at both ends.`,
-      });
+      diagnostics.warnings.push(
+        solveIssue('warning', 'ELEMENT_DUPLICATE_NODE_REFERENCE', () => t('elementSameNode', { element: elementLabel }))
+      );
     }
 
     for (const nodeLabel of elementNodes) {
       const normalizedNodeLabel = toLabel(nodeLabel);
       if (!domain.nodes.has(normalizedNodeLabel)) {
-        diagnostics.errors.push({
-          level: 'error',
-          code: 'ELEMENT_MISSING_NODE',
-          message: `Element ${elementLabel} references missing node ${normalizedNodeLabel}.`,
-        });
+        diagnostics.errors.push(
+          solveIssue('error', 'ELEMENT_MISSING_NODE', () =>
+            t('elementMissingNode', { element: elementLabel, node: normalizedNodeLabel })
+          )
+        );
       }
     }
 
     const materialLabel = (element as { mat?: unknown }).mat;
     if (materialLabel !== undefined && materialLabel !== null && !domain.materials.has(toLabel(materialLabel))) {
-      diagnostics.errors.push({
-        level: 'error',
-        code: 'ELEMENT_MISSING_MATERIAL',
-        message: `Element ${elementLabel} references missing material ${toLabel(materialLabel)}.`,
-      });
+      diagnostics.errors.push(
+        solveIssue('error', 'ELEMENT_MISSING_MATERIAL', () =>
+          t('elementMissingMaterial', { element: elementLabel, material: toLabel(materialLabel) })
+        )
+      );
     }
 
     const crossSectionLabel = (element as { cs?: unknown }).cs;
@@ -75,11 +87,11 @@ export const validateSolverModel = (solver: LinearStaticSolver): SolveDiagnostic
       crossSectionLabel !== null &&
       !domain.crossSections.has(toLabel(crossSectionLabel))
     ) {
-      diagnostics.errors.push({
-        level: 'error',
-        code: 'ELEMENT_MISSING_CROSS_SECTION',
-        message: `Element ${elementLabel} references missing cross section ${toLabel(crossSectionLabel)}.`,
-      });
+      diagnostics.errors.push(
+        solveIssue('error', 'ELEMENT_MISSING_CROSS_SECTION', () =>
+          t('elementMissingCrossSection', { element: elementLabel, crossSection: toLabel(crossSectionLabel) })
+        )
+      );
     }
   }
 
@@ -87,20 +99,18 @@ export const validateSolverModel = (solver: LinearStaticSolver): SolveDiagnostic
     const load = loadCase.nodalLoadList[i];
 
     if (!domain.nodes.has(load.target)) {
-      diagnostics.errors.push({
-        level: 'error',
-        code: 'NODAL_LOAD_MISSING_TARGET',
-        message: `Nodal load #${i + 1} references missing node ${toLabel(load.target)}.`,
-      });
+      diagnostics.errors.push(
+        solveIssue('error', 'NODAL_LOAD_MISSING_TARGET', () =>
+          t('nodalLoadMissingNode', { index: i + 1, node: toLabel(load.target) })
+        )
+      );
     }
 
     const values = Object.values(load.values);
     if (values.some((value) => !isFiniteNumber(value))) {
-      diagnostics.warnings.push({
-        level: 'warning',
-        code: 'NODAL_LOAD_NON_FINITE_VALUES',
-        message: `Nodal load #${i + 1} contains invalid values.`,
-      });
+      diagnostics.warnings.push(
+        solveIssue('warning', 'NODAL_LOAD_NON_FINITE_VALUES', () => t('nodalLoadInvalid', { index: i + 1 }))
+      );
     }
   }
 
@@ -108,19 +118,19 @@ export const validateSolverModel = (solver: LinearStaticSolver): SolveDiagnostic
     const prescribed = loadCase.prescribedBC[i];
 
     if (!domain.nodes.has(prescribed.target)) {
-      diagnostics.errors.push({
-        level: 'error',
-        code: 'PRESCRIBED_DISPLACEMENT_MISSING_TARGET',
-        message: `Prescribed displacement #${i + 1} references missing node ${toLabel(prescribed.target)}.`,
-      });
+      diagnostics.errors.push(
+        solveIssue('error', 'PRESCRIBED_DISPLACEMENT_MISSING_TARGET', () =>
+          t('prescribedMissingNode', { index: i + 1, node: toLabel(prescribed.target) })
+        )
+      );
     }
 
     if (Object.values(prescribed.prescribedValues).some((value) => !isFiniteNumber(value))) {
-      diagnostics.warnings.push({
-        level: 'warning',
-        code: 'PRESCRIBED_DISPLACEMENT_NON_FINITE_VALUES',
-        message: `Prescribed displacement #${i + 1} contains invalid values.`,
-      });
+      diagnostics.warnings.push(
+        solveIssue('warning', 'PRESCRIBED_DISPLACEMENT_NON_FINITE_VALUES', () =>
+          t('prescribedInvalid', { index: i + 1 })
+        )
+      );
     }
   }
 
@@ -128,11 +138,11 @@ export const validateSolverModel = (solver: LinearStaticSolver): SolveDiagnostic
     const load = loadCase.elementLoadList[i];
 
     if (!domain.elements.has(load.target)) {
-      diagnostics.errors.push({
-        level: 'error',
-        code: 'ELEMENT_LOAD_MISSING_TARGET',
-        message: `Element load #${i + 1} references missing element ${toLabel(load.target)}.`,
-      });
+      diagnostics.errors.push(
+        solveIssue('error', 'ELEMENT_LOAD_MISSING_TARGET', () =>
+          t('elementLoadMissingElement', { index: i + 1, element: toLabel(load.target) })
+        )
+      );
     }
   }
 
@@ -337,13 +347,6 @@ const findFreeRigidBodyMode = (solver: LinearStaticSolver, nodeLabels: string[])
   return free[0] === 0 ? 'horizontal' : free[0] === 1 ? 'vertical' : 'rotation';
 };
 
-const MODE_DESCRIPTIONS: Record<RigidBodyMode, string> = {
-  horizontal: 'slide horizontally',
-  vertical: 'move vertically',
-  rotation: 'rotate freely',
-  mixed: 'move as a rigid body',
-};
-
 const appendStabilityIssues = (solver: LinearStaticSolver, diagnostics: SolveDiagnostics) => {
   const { parts, orphans } = findConnectedParts(solver);
 
@@ -351,27 +354,24 @@ const appendStabilityIssues = (solver: LinearStaticSolver, diagnostics: SolveDia
     const node = solver.domain.nodes.get(label);
     const isSupported = node ? PLANAR_DOFS.some((dof) => node.bcs.has(dof)) : false;
 
-    diagnostics.warnings.push({
-      level: 'warning',
-      code: isSupported ? 'SUPPORTED_NODE_NOT_CONNECTED' : 'NODE_NOT_CONNECTED',
-      message: isSupported
-        ? `Node ${label} is supported but no element connects to it, so the support carries nothing.`
-        : `Node ${label} is not connected to any element and is ignored by the solver.`,
-    });
+    diagnostics.warnings.push(
+      solveIssue('warning', isSupported ? 'SUPPORTED_NODE_NOT_CONNECTED' : 'NODE_NOT_CONNECTED', () =>
+        t(isSupported ? 'supportedNodeNotConnected' : 'nodeNotConnected', { node: label })
+      )
+    );
   }
 
   for (const part of parts) {
     // Too few restraints to begin with reads better as its own message than as a
     // rigid body mode, and it is the mistake a beginner makes first.
     if (countRestraints(solver, part) < RIGID_BODY_DOFS) {
-      diagnostics.errors.push({
-        level: 'error',
-        code: parts.length > 1 ? 'UNSUPPORTED_STRUCTURE_PART' : 'INSUFFICIENT_SUPPORTS',
-        message:
-          parts.length > 1
-            ? `A separate part of the structure (nodes ${formatNodeList(part)}) has fewer than 3 restrained DOFs and can move freely.`
-            : 'Model needs at least 3 constrained DOFs to be stable in 2D analysis.',
-      });
+      diagnostics.errors.push(
+        parts.length > 1
+          ? solveIssue('error', 'UNSUPPORTED_STRUCTURE_PART', () =>
+              t('partUnsupported', { nodes: formatNodeList(part) })
+            )
+          : solveIssue('error', 'INSUFFICIENT_SUPPORTS', () => t('insufficientSupports'))
+      );
       continue;
     }
 
@@ -379,23 +379,24 @@ const appendStabilityIssues = (solver: LinearStaticSolver, diagnostics: SolveDia
 
     if (!mode) continue;
 
-    const where = parts.length > 1 ? `A separate part of the structure (nodes ${formatNodeList(part)})` : 'Structure';
-
-    diagnostics.errors.push({
-      level: 'error',
-      code: 'RIGID_BODY_MECHANISM',
-      message: `${where} has enough supports but they do not hold it: it can still ${MODE_DESCRIPTIONS[mode]}. Supports that are all parallel, or whose lines of action meet in one point, leave the structure free to move.`,
-    });
+    diagnostics.errors.push(
+      solveIssue('error', 'RIGID_BODY_MECHANISM', () => {
+        const motion = t(`motion.${mode}`);
+        return parts.length > 1
+          ? t('partMechanism', { nodes: formatNodeList(part), motion })
+          : t('mechanism', { motion });
+      })
+    );
   }
 };
 
 /** Displacements above this are not a soft structure any more, they are a mechanism. */
 export const MECHANISM_DISPLACEMENT_LIMIT = 1e6;
 
-const DOF_NAMES: Partial<Record<DofID, string>> = {
-  [DofID.Dx]: 'horizontally (Dx)',
-  [DofID.Dz]: 'vertically (Dz)',
-  [DofID.Ry]: 'in rotation (Ry)',
+const DOF_KEYS: Partial<Record<DofID, string>> = {
+  [DofID.Dx]: 'dx',
+  [DofID.Dz]: 'dz',
+  [DofID.Ry]: 'ry',
 };
 
 /**
@@ -425,17 +426,15 @@ export const findMechanismIssues = (solver: LinearStaticSolver, limit = MECHANIS
 
   if (runaway.length === 0) return [];
 
-  const described = runaway
-    .slice(0, 4)
-    .map(({ node, dof }) => `node ${node} ${DOF_NAMES[dof] ?? `in DOF ${dof}`}`)
-    .join(', ');
-  const remainder = runaway.length > 4 ? ` and ${runaway.length - 4} more` : '';
-
   return [
-    {
-      level: 'error',
-      code: 'UNSTABLE_STRUCTURE',
-      message: `Structure is unstable: ${described}${remainder} moves practically without resistance. Add a support or an element, remove an end hinge, or check the cross section stiffness.`,
-    },
+    solveIssue('error', 'UNSTABLE_STRUCTURE', () => {
+      const list = runaway
+        .slice(0, 4)
+        .map(({ node, dof }) => t(`unstableDof.${DOF_KEYS[dof] ?? 'other'}`, { node, dof }))
+        .join(', ');
+      const dofs = runaway.length > 4 ? t('unstableMore', { list, count: runaway.length - 4 }) : list;
+
+      return t('unstable', { dofs });
+    }),
   ];
 };

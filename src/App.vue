@@ -311,7 +311,7 @@ function onDrop(e) {
         importJSON(json);
         solve();
       } catch (e) {
-        alert('Could not import the file. Please check the file format.');
+        alert(t('warnings.importFailed'));
       }
     };
     reader.readAsText(file);
@@ -335,7 +335,7 @@ function openFile(e) {
       importJSON(json);
       solve();
     } catch (e) {
-      alert('Could not import the file. Please check the file format.');
+      alert(t('warnings.importFailed'));
     }
 
     appStore.tab = 0;

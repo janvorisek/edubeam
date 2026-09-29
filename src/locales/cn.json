@@ -126,6 +126,9 @@
     "grid_snap_step": "网格吸附步长",
     "snap_to_grid": "吸附到网格",
     "show_crosshair": "显示十字准线",
+    "model_checks": "模型检查",
+    "show_mechanisms": "显示不稳定结构可能的运动",
+    "animate_mechanisms": "以动画显示运动",
     "number_format": "数字格式",
     "number_format_description": "结果数值的书写方式；小数分隔符跟随语言。",
     "number_format_auto": "自动",
@@ -428,6 +431,9 @@
       }
     }
   },
+  "emptyModel": {
+    "message": "模型为空。绘制一根梁开始吧。"
+  },
   "welcome": {
     "title": "欢迎使用 <span class=\"edubeam\">edubeam</span>！ 🚀",
     "description": "建模梁、框架和桁架，绘制的同时即可看到内力。您想如何开始？",
@@ -477,13 +483,21 @@
     "summaryErrors": "模型有 {errors} 个错误。",
     "summaryWarnings": "模型有 {warnings} 个警告。",
     "summaryBoth": "模型有 {errors} 个错误和 {warnings} 个警告。",
+    "summaryIncomplete": "结构中有 {count} 个部分需要支座。",
+    "incompleteChip": "需要支座",
+    "hideMotion": "隐藏运动",
+    "showMotion": "显示运动",
+    "dismissWarnings": "隐藏这些警告",
     "showDetails": "显示详情",
     "blockedTitle": "无法求解模型",
     "blockedDescription": "求解模型前请先修正下列错误。",
     "warningsTitle": "模型警告",
     "warningsDescription": "模型已求解，但检测到以下警告。",
+    "incompleteTitle": "尚不能求解",
+    "incompleteDescription": "结构被固定后即会显示结果。画布上的虚线轮廓显示结构仍可如何运动。",
     "errors": "错误",
     "warnings": "警告",
+    "incomplete": "尚需完成",
     "issues": {
       "elementNodeCount": "单元 {element} 必须恰好引用 2 个节点。",
       "elementSameNode": "单元 {element} 的两端引用了同一个节点。",
@@ -498,9 +512,13 @@
       "supportedNodeNotConnected": "节点 {node} 设有支座，但没有单元与之相连，因此该支座不承受任何力。",
       "nodeNotConnected": "节点 {node} 未与任何单元相连，求解器将忽略该节点。",
       "insufficientSupports": "在二维分析中，模型至少需要 3 个受约束自由度才能保持稳定。",
+      "needsSupports": "结构需要支座才能求解。",
       "partUnsupported": "结构中一个独立部分（节点 {nodes}）的受约束自由度少于 3 个，可以自由运动。",
+      "partNeedsSupports": "包含节点 {nodes} 的部分需要支座。",
       "mechanism": "结构的支座数量足够，但无法将其固定：结构仍可{motion}。若所有支座相互平行，或其作用线交于一点，结构仍可自由运动。",
+      "mechanismShort": "支座无法固定结构：结构仍可{motion}。",
       "partMechanism": "结构中一个独立部分（节点 {nodes}）的支座数量足够，但无法将其固定：该部分仍可{motion}。若所有支座相互平行，或其作用线交于一点，结构仍可自由运动。",
+      "partMechanismShort": "包含节点 {nodes} 的部分未被固定：仍可{motion}。",
       "motion": {
         "horizontal": "水平滑动",
         "vertical": "竖向移动",

@@ -13,7 +13,9 @@ const stepOf = (
   settingsOpen = false
 ) => {
   solver.codeNumberGenerated = false;
-  const errors = validateSolverModel(solver).errors.length;
+  // Like the store: an unfinished model is not solved either.
+  const diagnostics = validateSolverModel(solver);
+  const errors = diagnostics.errors.length + diagnostics.incomplete.length;
   if (errors === 0 && solver.domain.elements.size > 0) solver.solve();
   else solver.loadCases[0].solved = false;
 

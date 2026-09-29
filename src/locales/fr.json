@@ -126,6 +126,9 @@
     "grid_snap_step": "Pas de magnétisme de la grille",
     "snap_to_grid": "Magnétisme à la grille",
     "show_crosshair": "Afficher le réticule",
+    "model_checks": "Vérification du modèle",
+    "show_mechanisms": "Montrer comment une structure instable peut bouger",
+    "animate_mechanisms": "Animer le mouvement",
     "number_format": "Format des nombres",
     "number_format_description": "Comment les résultats sont écrits ; le séparateur décimal suit la langue.",
     "number_format_auto": "Automatique",
@@ -428,6 +431,9 @@
       }
     }
   },
+  "emptyModel": {
+    "message": "Le modèle est vide. Dessinez une poutre pour commencer."
+  },
   "welcome": {
     "title": "Bienvenue dans <span class=\"edubeam\">edubeam</span> ! 🚀",
     "description": "Modélisez poutres, portiques et treillis et voyez leurs efforts internes pendant que vous dessinez. Comment voulez-vous commencer ?",
@@ -477,13 +483,21 @@
     "summaryErrors": "Erreurs dans le modèle : {errors}",
     "summaryWarnings": "Avertissements dans le modèle : {warnings}",
     "summaryBoth": "Erreurs dans le modèle : {errors} ; avertissements : {warnings}",
+    "summaryIncomplete": "{count} parties de la structure ont besoin d'appuis.",
+    "incompleteChip": "Appuis manquants",
+    "hideMotion": "Masquer le mouvement",
+    "showMotion": "Afficher le mouvement",
+    "dismissWarnings": "Masquer ces avertissements",
     "showDetails": "Afficher les détails",
     "blockedTitle": "Impossible de résoudre le modèle",
     "blockedDescription": "Corrigez les erreurs listées avant de résoudre le modèle.",
     "warningsTitle": "Avertissements du modèle",
     "warningsDescription": "Le modèle a été résolu, mais les avertissements suivants ont été détectés.",
+    "incompleteTitle": "Pas encore prêt pour le calcul",
+    "incompleteDescription": "Les résultats apparaissent dès que la structure est maintenue. Le contour en pointillés montre comment elle peut encore bouger.",
     "errors": "Erreurs",
     "warnings": "Avertissements",
+    "incomplete": "Reste à faire",
     "issues": {
       "elementNodeCount": "L'élément {element} doit référencer exactement 2 nœuds.",
       "elementSameNode": "L'élément {element} référence le même nœud à ses deux extrémités.",
@@ -498,9 +512,13 @@
       "supportedNodeNotConnected": "Le nœud {node} possède un appui mais aucun élément n'y est relié : l'appui ne reprend donc rien.",
       "nodeNotConnected": "Le nœud {node} n'est relié à aucun élément et est ignoré par le solveur.",
       "insufficientSupports": "Le modèle doit comporter au moins 3 DDL bloqués pour être stable en analyse 2D.",
+      "needsSupports": "La structure a besoin d'appuis pour pouvoir être calculée.",
       "partUnsupported": "Une partie séparée de la structure (nœuds {nodes}) a moins de 3 DDL bloqués et peut se déplacer librement.",
+      "partNeedsSupports": "La partie avec les nœuds {nodes} a besoin d'appuis.",
       "mechanism": "La structure a suffisamment d'appuis, mais ils ne la maintiennent pas : elle peut encore {motion}. Des appuis tous parallèles, ou dont les lignes d'action concourent en un même point, laissent la structure libre de se déplacer.",
+      "mechanismShort": "Les appuis ne maintiennent pas la structure : elle peut encore {motion}.",
       "partMechanism": "Une partie séparée de la structure (nœuds {nodes}) a suffisamment d'appuis, mais ils ne la maintiennent pas : elle peut encore {motion}. Des appuis tous parallèles, ou dont les lignes d'action concourent en un même point, laissent la structure libre de se déplacer.",
+      "partMechanismShort": "La partie avec les nœuds {nodes} n'est pas maintenue : elle peut encore {motion}.",
       "motion": {
         "horizontal": "glisser horizontalement",
         "vertical": "se déplacer verticalement",

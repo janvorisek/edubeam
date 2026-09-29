@@ -4,7 +4,7 @@
 
 Results appear only when the model can be solved. Check, in this order:
 
-1. **Is there a red alert in the viewer?** *No materials defined* / *No cross sections defined* → add one. *Model has N error(s)* → click **Show details** and fix each item (see the table below).
+1. **Is there an alert in the viewer?** *No materials defined* / *No cross sections defined* → add one. A blue *Needs supports* chip means the model is simply unfinished: add supports. Point at the chip (or add a load) to see, as a dashed outline, how the structure can still move. A red alert names the problem, or reads *Model has N error(s)* when there are several → click **Show details** and fix each item (see the table below); the nodes involved are circled on the canvas.
 2. **Enough supports?** The solver needs at least three restrained DOFs *and* no mechanism. A beam on two rollers (Dz + Dz) has only two and slides away; a frame with all pins and no bracing may be a mechanism even with many supports. Add a `Dx` somewhere, or an `Ry` at one support.
 3. **Are the elements connected?** Two nodes at the same coordinates are still two separate nodes. Delete the stray one and reconnect, or place nodes on elements with **Connect to structure**.
 4. **Hinged everywhere?** A node whose every element is hinged and that has no `Ry` support has an undefined rotation. Untick one hinge or restrain `Ry` at that node.
@@ -16,7 +16,8 @@ Messages from **Show details** (the *Cannot solve model* dialog):
 
 | Message | Meaning / fix |
 | --- | --- |
-| *Model needs at least 3 constrained DOFs to be stable in 2D analysis.* | Add supports until at least three DOFs are restrained in total. |
+| *Model needs at least 3 constrained DOFs to be stable in 2D analysis.* | Listed under *Still needed*, not as an error. Add supports until at least three DOFs are restrained in total. |
+| *Structure has enough supports but they do not hold it: it can still …* | The supports are all parallel, or their lines of action meet in one point. The dashed outline shows the motion; change the direction of one support. |
 | *Element X references missing node / material / cross section Y.* | The referenced entity was deleted (usually via a hand-edited JSON file). Reassign it in the *Elements* table. |
 | *Element X must reference exactly 2 nodes.* | Corrupt element in an imported file; delete and recreate it. |
 | *Nodal load / Prescribed displacement #n references missing node Y.* | Delete the load or re-target it. |

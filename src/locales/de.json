@@ -126,6 +126,9 @@
     "grid_snap_step": "Raster-Schrittweite",
     "snap_to_grid": "Am Raster ausrichten",
     "show_crosshair": "Fadenkreuz anzeigen",
+    "model_checks": "Modellprüfung",
+    "show_mechanisms": "Zeigen, wie sich eine instabile Struktur bewegen kann",
+    "animate_mechanisms": "Bewegung animieren",
     "number_format": "Zahlenformat",
     "number_format_description": "Wie Ergebniswerte geschrieben werden; das Dezimaltrennzeichen folgt der Sprache.",
     "number_format_auto": "Automatisch",
@@ -428,6 +431,9 @@
       }
     }
   },
+  "emptyModel": {
+    "message": "Das Modell ist leer. Zeichnen Sie einen Balken, um zu beginnen."
+  },
   "welcome": {
     "title": "Willkommen bei <span class=\"edubeam\">edubeam</span>! 🚀",
     "description": "Modellieren Sie Balken, Rahmen und Fachwerke und sehen Sie die Schnittgrößen schon beim Zeichnen. Wie möchten Sie beginnen?",
@@ -477,13 +483,21 @@
     "summaryErrors": "Fehler im Modell: {errors}",
     "summaryWarnings": "Warnungen im Modell: {warnings}",
     "summaryBoth": "Fehler im Modell: {errors}, Warnungen: {warnings}",
+    "summaryIncomplete": "{count} Teile der Struktur brauchen Lager.",
+    "incompleteChip": "Lager fehlen",
+    "hideMotion": "Bewegung ausblenden",
+    "showMotion": "Bewegung anzeigen",
+    "dismissWarnings": "Diese Warnungen ausblenden",
     "showDetails": "Details anzeigen",
     "blockedTitle": "Modell kann nicht berechnet werden",
     "blockedDescription": "Beheben Sie die aufgeführten Fehler, bevor Sie das Modell berechnen.",
     "warningsTitle": "Warnungen zum Modell",
     "warningsDescription": "Das Modell wurde berechnet, es wurden jedoch folgende Warnungen festgestellt.",
+    "incompleteTitle": "Noch nicht berechenbar",
+    "incompleteDescription": "Ergebnisse erscheinen, sobald die Struktur gehalten wird. Die gestrichelte Kontur zeigt, wie sie sich noch bewegen kann.",
     "errors": "Fehler",
     "warnings": "Warnungen",
+    "incomplete": "Noch erforderlich",
     "issues": {
       "elementNodeCount": "Element {element} muss genau 2 Knoten referenzieren.",
       "elementSameNode": "Element {element} referenziert an beiden Enden denselben Knoten.",
@@ -498,9 +512,13 @@
       "supportedNodeNotConnected": "Knoten {node} ist gelagert, aber mit keinem Element verbunden, daher trägt das Lager nichts.",
       "nodeNotConnected": "Knoten {node} ist mit keinem Element verbunden und wird bei der Berechnung ignoriert.",
       "insufficientSupports": "Für die Stabilität in der ebenen Berechnung braucht das Modell mindestens 3 gelagerte Freiheitsgrade.",
+      "needsSupports": "Die Struktur braucht Lager, bevor sie berechnet werden kann.",
       "partUnsupported": "Ein separater Teil der Struktur (Knoten {nodes}) hat weniger als 3 gelagerte Freiheitsgrade und kann sich frei bewegen.",
+      "partNeedsSupports": "Der Teil mit den Knoten {nodes} braucht Lager.",
       "mechanism": "Die Struktur hat genügend Lager, die sie aber nicht festhalten: Sie kann sich noch {motion}. Lager, die alle parallel sind oder deren Wirkungslinien sich in einem Punkt schneiden, lassen die Struktur beweglich.",
+      "mechanismShort": "Die Lager halten die Struktur nicht: Sie kann sich noch {motion}.",
       "partMechanism": "Ein separater Teil der Struktur (Knoten {nodes}) hat genügend Lager, die ihn aber nicht festhalten: Er kann sich noch {motion}. Lager, die alle parallel sind oder deren Wirkungslinien sich in einem Punkt schneiden, lassen die Struktur beweglich.",
+      "partMechanismShort": "Der Teil mit den Knoten {nodes} wird nicht gehalten: Er kann sich noch {motion}.",
       "motion": {
         "horizontal": "horizontal verschieben",
         "vertical": "vertikal verschieben",

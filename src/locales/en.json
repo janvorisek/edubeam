@@ -126,6 +126,9 @@
     "grid_snap_step": "Grid snap step",
     "snap_to_grid": "Snap to grid",
     "show_crosshair": "Show crosshair",
+    "model_checks": "Model checks",
+    "show_mechanisms": "Show how an unstable structure can move",
+    "animate_mechanisms": "Animate the movement",
     "number_format": "Number format",
     "number_format_description": "How result values are written; the decimal separator follows the language.",
     "number_format_auto": "Automatic",
@@ -428,6 +431,9 @@
       }
     }
   },
+  "emptyModel": {
+    "message": "The model is empty. Draw a beam to get started."
+  },
   "welcome": {
     "title": "Welcome to <span class=\"edubeam\">edubeam</span>! 🚀",
     "description": "Model beams, frames and trusses and see their internal forces as you draw. How would you like to start?",
@@ -477,13 +483,21 @@
     "summaryErrors": "Model has {errors} error(s).",
     "summaryWarnings": "Model has {warnings} warning(s).",
     "summaryBoth": "Model has {errors} error(s) and {warnings} warning(s).",
+    "summaryIncomplete": "{count} parts of the structure need supports.",
+    "incompleteChip": "Needs supports",
+    "hideMotion": "Hide the movement",
+    "showMotion": "Show the movement",
+    "dismissWarnings": "Hide these warnings",
     "showDetails": "Show details",
     "blockedTitle": "Cannot solve model",
     "blockedDescription": "Fix the listed errors before solving the model.",
     "warningsTitle": "Model warnings",
     "warningsDescription": "The model was solved, but the following warnings were detected.",
+    "incompleteTitle": "Not ready to solve yet",
+    "incompleteDescription": "Results appear once the structure is held in place. The dashed outline on the canvas shows how it can still move.",
     "errors": "Errors",
     "warnings": "Warnings",
+    "incomplete": "Still needed",
     "issues": {
       "elementNodeCount": "Element {element} must reference exactly 2 nodes.",
       "elementSameNode": "Element {element} references the same node at both ends.",
@@ -498,9 +512,13 @@
       "supportedNodeNotConnected": "Node {node} is supported but no element connects to it, so the support carries nothing.",
       "nodeNotConnected": "Node {node} is not connected to any element and is ignored by the solver.",
       "insufficientSupports": "Model needs at least 3 constrained DOFs to be stable in 2D analysis.",
+      "needsSupports": "The structure needs supports before it can be solved.",
       "partUnsupported": "A separate part of the structure (nodes {nodes}) has fewer than 3 restrained DOFs and can move freely.",
+      "partNeedsSupports": "The part with nodes {nodes} needs supports.",
       "mechanism": "Structure has enough supports but they do not hold it: it can still {motion}. Supports that are all parallel, or whose lines of action meet in one point, leave the structure free to move.",
+      "mechanismShort": "The supports do not hold the structure: it can still {motion}.",
       "partMechanism": "A separate part of the structure (nodes {nodes}) has enough supports but they do not hold it: it can still {motion}. Supports that are all parallel, or whose lines of action meet in one point, leave the structure free to move.",
+      "partMechanismShort": "The part with nodes {nodes} is not held: it can still {motion}.",
       "motion": {
         "horizontal": "slide horizontally",
         "vertical": "move vertically",

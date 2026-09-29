@@ -34,6 +34,10 @@ export const useViewerStore = defineStore(
     const snapToGrid = ref(true);
     const gridStep = ref(0.1);
     const showCrosshair = ref(true);
+    /** Outline how a structure that is not held can still move. */
+    const showMechanisms = ref(true);
+    /** Swing that outline; off, it is drawn standing still. */
+    const animateMechanisms = ref(true);
     const resultsScalePx_ = ref(48);
     const supportSize = ref(1);
 
@@ -68,6 +72,8 @@ export const useViewerStore = defineStore(
       snapToGrid.value = true;
       gridStep.value = 0.1;
       showCrosshair.value = true;
+      showMechanisms.value = true;
+      animateMechanisms.value = true;
       resultsScalePx_.value = 48;
       supportSize.value = 1;
 
@@ -117,6 +123,8 @@ export const useViewerStore = defineStore(
       snapToGrid,
       gridStep,
       showCrosshair,
+      showMechanisms,
+      animateMechanisms,
       resultsScalePx_: resultsScalePx_,
 
       fontSize,

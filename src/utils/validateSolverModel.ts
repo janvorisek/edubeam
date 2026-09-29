@@ -2,18 +2,39 @@ import { DofID, type LinearStaticSolver, type Node } from 'ts-fem';
 import { i18n } from '@/plugins/i18n';
 import { axisLetters } from './axisConvention';
 
-export type SolveIssueLevel = 'error' | 'warning';
+/**
+ * `incomplete` is what every model goes through while it is being drawn - a beam not
+ * supported yet. It blocks the solve like an error, but it is the next step, not a mistake,
+ * and is shown as one.
+ */
+export type SolveIssueLevel = 'error' | 'incomplete' | 'warning';
+
+/**
+ * How a part of the structure can move without resistance: for each node, the direction
+ * it travels in, scaled so the node that moves the most moves by 1. Drawn on the canvas,
+ * it shows the mechanism instead of describing it.
+ */
+export type FreeMotion = Map<string, [number, number]>;
 
 export interface SolveIssue {
   level: SolveIssueLevel;
   code: string;
   message: string;
+  /** Nodes the issue is about, highlighted on the canvas. */
+  nodes?: string[];
+  /** The motion the structure is free to make, when the issue is a mechanism. */
+  motion?: FreeMotion;
+  /** One line that can stand in for the message when it is the only issue. */
+  summary?: string;
 }
 
 export interface SolveDiagnostics {
   errors: SolveIssue[];
+  incomplete: SolveIssue[];
   warnings: SolveIssue[];
 }
+
+export const emptyDiagnostics = (): SolveDiagnostics => ({ errors: [], incomplete: [], warnings: [] });
 
 const toLabel = (value: unknown) => String(value ?? '?');
 
@@ -25,21 +46,32 @@ const t = (key: string, params: Record<string, unknown> = {}) =>
  * Builds an issue whose message is translated when it is read, not when the model is solved,
  * so switching the language relabels the diagnostics already on screen.
  */
-export const solveIssue = (level: SolveIssueLevel, code: string, message: () => string): SolveIssue => ({
-  level,
-  code,
-  get message() {
-    return message();
-  },
-});
+export const solveIssue = (
+  level: SolveIssueLevel,
+  code: string,
+  message: () => string,
+  { summary, ...where }: Pick<SolveIssue, 'nodes' | 'motion'> & { summary?: () => string } = {}
+): SolveIssue => {
+  const issue: SolveIssue = {
+    level,
+    code,
+    get message() {
+      return message();
+    },
+    ...where,
+  };
+
+  if (summary) {
+    Object.defineProperty(issue, 'summary', { get: summary, enumerable: true });
+  }
+
+  return issue;
+};
 
 const isFiniteNumber = (value: unknown) => typeof value === 'number' && Number.isFinite(value);
 
 export const validateSolverModel = (solver: LinearStaticSolver): SolveDiagnostics => {
-  const diagnostics: SolveDiagnostics = {
-    errors: [],
-    warnings: [],
-  };
+  const diagnostics = emptyDiagnostics();
 
   const domain = solver.domain;
   const loadCase = solver.loadCases[0];
@@ -242,6 +274,21 @@ const countRestraints = (solver: LinearStaticSolver, nodeLabels: string[]) => {
 /** How a part can still move once its supports are taken into account. */
 type RigidBodyMode = 'horizontal' | 'vertical' | 'rotation' | 'mixed';
 
+interface FreeRigidBodyMode {
+  mode: RigidBodyMode;
+  motion: FreeMotion;
+}
+
+/** Scales a motion so its largest nodal displacement is 1; null when nothing visibly moves. */
+const normalizeMotion = (motion: FreeMotion): FreeMotion | null => {
+  let largest = 0;
+  for (const [u, w] of motion.values()) largest = Math.max(largest, Math.hypot(u, w));
+
+  if (!Number.isFinite(largest) || largest < 1e-12) return null;
+
+  return new Map([...motion].map(([label, [u, w]]) => [label, [u / largest, w / largest]]));
+};
+
 /**
  * The global direction a restrained DOF resists, honouring a skewed nodal system.
  *
@@ -265,7 +312,7 @@ const restraintDirection = (node: Node, dof: DofID): [number, number] => {
  * displacements, because a rigid body mode that carries no load simply does not show
  * up in them. Row reducing the 3-column constraint matrix decides it exactly.
  */
-const findFreeRigidBodyMode = (solver: LinearStaticSolver, nodeLabels: string[]): RigidBodyMode | null => {
+const findFreeRigidBodyMode = (solver: LinearStaticSolver, nodeLabels: string[]): FreeRigidBodyMode | null => {
   const rows: number[][] = [];
 
   // Reference point and length scale keep the rotation column comparable to the
@@ -344,10 +391,43 @@ const findFreeRigidBodyMode = (solver: LinearStaticSolver, nodeLabels: string[])
 
   const free = [0, 1, 2].filter((column) => !pivots.includes(column));
 
-  if (free.length > 1) return 'mixed';
+  // One solution of the constraint equations: the first free unknown set to 1, any other
+  // free one to 0, and the pivot unknowns back substituted. When several motions are free
+  // this picks a translation before a rotation, the simpler one to see.
+  const mode = [0, 0, 0];
+  mode[free[0]] = 1;
 
-  return free[0] === 0 ? 'horizontal' : free[0] === 1 ? 'vertical' : 'rotation';
+  for (let i = pivots.length - 1; i >= 0; i--) {
+    const column = pivots[i];
+    let sum = 0;
+    for (let c = column + 1; c < 3; c++) sum += rows[i][c] * mode[c];
+    mode[column] = -sum / rows[i][column];
+  }
+
+  const [ux, uz, phi] = mode;
+  const motion: FreeMotion = new Map();
+
+  for (const label of nodeLabels) {
+    const node = solver.domain.nodes.get(label);
+    if (!node) continue;
+
+    const x = (node.coords[0] - originX) / scale;
+    const z = (node.coords[2] - originZ) / scale;
+    motion.set(label, [ux - phi * z, uz + phi * x]);
+  }
+
+  return {
+    mode: free.length > 1 ? 'mixed' : free[0] === 0 ? 'horizontal' : free[0] === 1 ? 'vertical' : 'rotation',
+    motion: normalizeMotion(motion) ?? motion,
+  };
 };
+
+/** Nodes of a part that carry a support, the ones to look at when the part is not held. */
+const supportedNodes = (solver: LinearStaticSolver, nodeLabels: string[]) =>
+  nodeLabels.filter((label) => {
+    const node = solver.domain.nodes.get(label);
+    return node ? PLANAR_DOFS.some((dof) => node.bcs.has(dof)) : false;
+  });
 
 const appendStabilityIssues = (solver: LinearStaticSolver, diagnostics: SolveDiagnostics) => {
   const { parts, orphans } = findConnectedParts(solver);
@@ -357,37 +437,67 @@ const appendStabilityIssues = (solver: LinearStaticSolver, diagnostics: SolveDia
     const isSupported = node ? PLANAR_DOFS.some((dof) => node.bcs.has(dof)) : false;
 
     diagnostics.warnings.push(
-      solveIssue('warning', isSupported ? 'SUPPORTED_NODE_NOT_CONNECTED' : 'NODE_NOT_CONNECTED', () =>
-        t(isSupported ? 'supportedNodeNotConnected' : 'nodeNotConnected', { node: label })
+      solveIssue(
+        'warning',
+        isSupported ? 'SUPPORTED_NODE_NOT_CONNECTED' : 'NODE_NOT_CONNECTED',
+        () => t(isSupported ? 'supportedNodeNotConnected' : 'nodeNotConnected', { node: label }),
+        { nodes: [label] }
       )
     );
   }
 
   for (const part of parts) {
-    // Too few restraints to begin with reads better as its own message than as a
-    // rigid body mode, and it is the mistake a beginner makes first.
+    const free = findFreeRigidBodyMode(solver, part);
+    if (!free) continue;
+
+    // The supports that fail to hold the part are what needs fixing; a part with none
+    // at all is pointed out as a whole.
+    const supported = supportedNodes(solver, part);
+    const where = { nodes: supported.length > 0 ? supported : part, motion: free.motion };
+
+    // Too few restraints means the supports are simply not all there yet, which is where
+    // every drawing passes through. Only once there are enough of them does a free motion
+    // say the student placed them wrong.
     if (countRestraints(solver, part) < RIGID_BODY_DOFS) {
-      diagnostics.errors.push(
+      diagnostics.incomplete.push(
         parts.length > 1
-          ? solveIssue('error', 'UNSUPPORTED_STRUCTURE_PART', () =>
-              t('partUnsupported', { nodes: formatNodeList(part) })
+          ? solveIssue(
+              'incomplete',
+              'UNSUPPORTED_STRUCTURE_PART',
+              () => t('partUnsupported', { nodes: formatNodeList(part) }),
+              {
+                ...where,
+                summary: () => t('partNeedsSupports', { nodes: formatNodeList(part) }),
+              }
             )
-          : solveIssue('error', 'INSUFFICIENT_SUPPORTS', () => t('insufficientSupports'))
+          : solveIssue('incomplete', 'INSUFFICIENT_SUPPORTS', () => t('insufficientSupports'), {
+              ...where,
+              summary: () => t('needsSupports'),
+            })
       );
       continue;
     }
 
-    const mode = findFreeRigidBodyMode(solver, part);
-
-    if (!mode) continue;
-
     diagnostics.errors.push(
-      solveIssue('error', 'RIGID_BODY_MECHANISM', () => {
-        const motion = t(`motion.${mode}`);
-        return parts.length > 1
-          ? t('partMechanism', { nodes: formatNodeList(part), motion })
-          : t('mechanism', { motion });
-      })
+      solveIssue(
+        'error',
+        'RIGID_BODY_MECHANISM',
+        () => {
+          const motion = t(`motion.${free.mode}`);
+          return parts.length > 1
+            ? t('partMechanism', { nodes: formatNodeList(part), motion })
+            : t('mechanism', { motion });
+        },
+        {
+          ...where,
+          summary: () => {
+            const motion = t(`motion.${free.mode}`);
+            return parts.length > 1
+              ? t('partMechanismShort', { nodes: formatNodeList(part), motion })
+              : t('mechanismShort', { motion });
+          },
+        }
+      )
     );
   }
 };
@@ -414,8 +524,11 @@ export const findMechanismIssues = (solver: LinearStaticSolver, limit = MECHANIS
 
   const r = loadCase.r.toArray() as number[];
   const runaway: { node: string; dof: DofID }[] = [];
+  const displaced: FreeMotion = new Map();
 
   for (const [label, codeNumbers] of solver.nodeCodeNumbers) {
+    const translation: [number, number] = [0, 0];
+
     for (const dof of PLANAR_DOFS) {
       const equation = codeNumbers[dof];
       // Equations from neq upwards belong to restrained DOFs and hold prescribed values.
@@ -423,20 +536,36 @@ export const findMechanismIssues = (solver: LinearStaticSolver, limit = MECHANIS
 
       const value = r[equation];
       if (!Number.isFinite(value) || Math.abs(value) > limit) runaway.push({ node: toLabel(label), dof });
+
+      if (dof === DofID.Dx) translation[0] = value;
+      if (dof === DofID.Dz) translation[1] = value;
     }
+
+    displaced.set(toLabel(label), translation);
   }
 
   if (runaway.length === 0) return [];
 
-  return [
-    solveIssue('error', 'UNSTABLE_STRUCTURE', () => {
-      const list = runaway
-        .slice(0, 4)
-        .map(({ node, dof }) => t(`unstableDof.${DOF_KEYS[dof] ?? 'other'}`, { node, dof }))
-        .join(', ');
-      const dofs = runaway.length > 4 ? t('unstableMore', { list, count: runaway.length - 4 }) : list;
+  // The runaway solution is dominated by the mechanism, so its shape is the free motion.
+  // Only worth drawing when the nodes themselves run away; a node that merely spins in
+  // place (Ry) is shown by its highlight.
+  const translationRunsAway = [...displaced.values()].some(([u, w]) => Math.hypot(u, w) > limit);
+  const motion = translationRunsAway ? normalizeMotion(displaced) : null;
 
-      return t('unstable', { dofs });
-    }),
+  return [
+    solveIssue(
+      'error',
+      'UNSTABLE_STRUCTURE',
+      () => {
+        const list = runaway
+          .slice(0, 4)
+          .map(({ node, dof }) => t(`unstableDof.${DOF_KEYS[dof] ?? 'other'}`, { node, dof }))
+          .join(', ');
+        const dofs = runaway.length > 4 ? t('unstableMore', { list, count: runaway.length - 4 }) : list;
+
+        return t('unstable', { dofs });
+      },
+      { nodes: [...new Set(runaway.map(({ node }) => node))], ...(motion ? { motion } : {}) }
+    ),
   ];
 };

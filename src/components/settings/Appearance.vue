@@ -86,6 +86,25 @@
         <v-btn value="axis">{{ $t('settings.result_label_orientation_axis') }}</v-btn>
         <v-btn value="horizontal">{{ $t('settings.result_label_orientation_horizontal') }}</v-btn>
       </v-btn-toggle>
+
+      <div class="vs-heading">{{ $t('settings.model_checks') }}</div>
+      <div class="vs-group">
+        <div class="vs-row">
+          <span>{{ $t('settings.show_mechanisms') }}</span>
+          <v-switch v-model="viewerStore.showMechanisms" color="primary" density="compact" hide-details inset />
+        </div>
+        <div class="vs-row">
+          <span>{{ $t('settings.animate_mechanisms') }}</span>
+          <v-switch
+            v-model="viewerStore.animateMechanisms"
+            :disabled="!viewerStore.showMechanisms"
+            color="primary"
+            density="compact"
+            hide-details
+            inset
+          />
+        </div>
+      </div>
     </v-col>
 
     <v-col cols="12" md="6">

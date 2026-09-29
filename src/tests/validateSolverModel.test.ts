@@ -17,6 +17,10 @@ const buildBeam = (bcs: DofID[]) => {
 };
 
 describe('validateSolverModel stability checks', () => {
+  it('finds nothing wrong with an empty model', () => {
+    expect(validateSolverModel(new LinearStaticSolver())).toEqual({ errors: [], incomplete: [], warnings: [] });
+  });
+
   it('accepts a properly restrained cantilever', () => {
     const diagnostics = validateSolverModel(buildBeam([DofID.Dx, DofID.Dz, DofID.Ry]));
 
@@ -24,10 +28,13 @@ describe('validateSolverModel stability checks', () => {
     expect(diagnostics.warnings).toEqual([]);
   });
 
-  it('reports a globally under-restrained model', () => {
+  it('treats a model without enough supports as unfinished, not wrong', () => {
     const diagnostics = validateSolverModel(buildBeam([DofID.Dz]));
 
-    expect(codes(diagnostics.errors)).toContain('INSUFFICIENT_SUPPORTS');
+    expect(diagnostics.errors).toEqual([]);
+    expect(codes(diagnostics.incomplete)).toEqual(['INSUFFICIENT_SUPPORTS']);
+    expect(diagnostics.incomplete[0].level).toBe('incomplete');
+    expect(diagnostics.incomplete[0].summary).toBe('The structure needs supports before it can be solved.');
   });
 
   it('reports a disconnected part that carries no supports of its own', () => {
@@ -39,10 +46,11 @@ describe('validateSolverModel stability checks', () => {
     d.createBeam2D('B2', ['3', '4'], 'm', 'cs');
 
     const diagnostics = validateSolverModel(ls);
-    const issue = diagnostics.errors.find((e) => e.code === 'UNSUPPORTED_STRUCTURE_PART');
+    const issue = diagnostics.incomplete.find((e) => e.code === 'UNSUPPORTED_STRUCTURE_PART');
 
     expect(issue).toBeDefined();
     expect(issue?.message).toContain('3, 4');
+    expect(issue?.summary).toContain('3, 4');
   });
 
   it('warns about a support that no element connects to', () => {
@@ -103,6 +111,8 @@ describe('rigid body stability', () => {
 
     expect(issue).toBeDefined();
     expect(issue?.message).toContain('slide horizontally');
+    // Enough supports that still do not hold: that is a mistake, and the banner says which.
+    expect(issue?.summary).toBe('The supports do not hold the structure: it can still slide horizontally.');
   });
 
   it('catches restraints whose lines of action meet in one point', () => {
@@ -113,6 +123,42 @@ describe('rigid body stability', () => {
 
     expect(issue).toBeDefined();
     expect(issue?.message).toContain('rotate freely');
+  });
+
+  it('points at the supports and carries the slide it cannot stop', () => {
+    const ls = buildFrame({ '1': [DofID.Dz], '2': [DofID.Dz], '4': [DofID.Dz] });
+    const issue = validateSolverModel(ls).errors.find((e) => e.code === 'RIGID_BODY_MECHANISM');
+
+    expect(issue?.nodes?.sort()).toEqual(['1', '2', '4']);
+    // Every node slides the same way, horizontally.
+    for (const label of ['1', '2', '3', '4']) {
+      const [u, w] = issue!.motion!.get(label)!;
+      expect(Math.abs(u)).toBeCloseTo(1);
+      expect(w).toBeCloseTo(0);
+    }
+  });
+
+  it('carries a rotation about the point the restraints meet in', () => {
+    const ls = buildFrame({ '1': [DofID.Dx, DofID.Dz], '4': [DofID.Dx] });
+    const motion = validateSolverModel(ls).errors.find((e) => e.code === 'RIGID_BODY_MECHANISM')!.motion!;
+
+    // Node 1 is the pivot and stays put; node 3, the farthest from it, moves the most.
+    expect(Math.hypot(...motion.get('1')!)).toBeCloseTo(0);
+    expect(Math.hypot(...motion.get('3')!)).toBeCloseTo(1);
+    // Node 4 sits level with the pivot, so it can only move vertically.
+    expect(motion.get('4')![0]).toBeCloseTo(0);
+  });
+
+  it('points at the whole part when it has no supports at all', () => {
+    const ls = buildBeam([DofID.Dx, DofID.Dz, DofID.Ry]);
+    ls.domain.createNode('3', [0, 0, -5], []);
+    ls.domain.createNode('4', [3, 0, -5], []);
+    ls.domain.createBeam2D('B2', ['3', '4'], 'm', 'cs');
+
+    const issue = validateSolverModel(ls).incomplete.find((e) => e.code === 'UNSUPPORTED_STRUCTURE_PART');
+
+    expect(issue?.nodes?.sort()).toEqual(['3', '4']);
+    expect(issue?.motion).toBeDefined();
   });
 
   it('accepts a fixed support on its own', () => {
@@ -160,6 +206,10 @@ describe('findMechanismIssues', () => {
     expect(issues[0].message).toContain('node 2 vertically (Dz)');
     // Restrained DOFs hold prescribed values and must never be reported as runaway.
     expect(issues[0].message).not.toContain('node 1');
+    expect(issues[0].nodes).toEqual(['2']);
+    // The runaway tip moves along the load (-z), the clamped end does not move.
+    expect(issues[0].motion?.get('2')).toEqual([expect.closeTo(0), expect.closeTo(-1)]);
+    expect(issues[0].motion?.get('1')).toEqual([0, 0]);
   });
 
   it('leaves a singular system to the solver, which rejects it outright', () => {

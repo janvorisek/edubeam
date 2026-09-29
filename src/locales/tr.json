@@ -126,6 +126,9 @@
     "grid_snap_step": "Izgara adımı",
     "snap_to_grid": "Izgaraya yasla",
     "show_crosshair": "Artı imlecini göster",
+    "model_checks": "Model denetimi",
+    "show_mechanisms": "Kararsız yapının nasıl hareket edebileceğini göster",
+    "animate_mechanisms": "Hareketi canlandır",
     "number_format": "Sayı biçimi",
     "number_format_description": "Sonuç değerlerinin nasıl yazılacağı; ondalık ayırıcı dile göre belirlenir.",
     "number_format_auto": "Otomatik",
@@ -428,6 +431,9 @@
       }
     }
   },
+  "emptyModel": {
+    "message": "Model boş. Başlamak için bir kiriş çizin."
+  },
   "welcome": {
     "title": "<span class=\"edubeam\">edubeam</span>'e hoş geldiniz! 🚀",
     "description": "Kiriş, çerçeve ve kafes sistemleri modelleyin, iç kuvvetleri çizerken görün. Nasıl başlamak istersiniz?",
@@ -477,13 +483,21 @@
     "summaryErrors": "Modelde {errors} hata var.",
     "summaryWarnings": "Modelde {warnings} uyarı var.",
     "summaryBoth": "Modelde {errors} hata ve {warnings} uyarı var.",
+    "summaryIncomplete": "Yapının {count} parçasının mesnete ihtiyacı var.",
+    "incompleteChip": "Mesnet gerekli",
+    "hideMotion": "Hareketi gizle",
+    "showMotion": "Hareketi göster",
+    "dismissWarnings": "Bu uyarıları gizle",
     "showDetails": "Ayrıntıları göster",
     "blockedTitle": "Model çözülemiyor",
     "blockedDescription": "Modeli çözmeden önce listelenen hataları giderin.",
     "warningsTitle": "Model uyarıları",
     "warningsDescription": "Model çözüldü, ancak aşağıdaki uyarılar tespit edildi.",
+    "incompleteTitle": "Henüz çözülemiyor",
+    "incompleteDescription": "Yapı sabitlendiğinde sonuçlar görünür. Kesikli çizgi, yapının hâlâ nasıl hareket edebildiğini gösterir.",
     "errors": "Hatalar",
     "warnings": "Uyarılar",
+    "incomplete": "Eksik olanlar",
     "issues": {
       "elementNodeCount": "{element} elemanı tam olarak 2 düğüme bağlanmalıdır.",
       "elementSameNode": "{element} elemanının iki ucu da aynı düğüme bağlı.",
@@ -498,9 +512,13 @@
       "supportedNodeNotConnected": "{node} düğümü mesnetli, ancak hiçbir elemana bağlı değil; bu nedenle mesnet hiçbir yük taşımıyor.",
       "nodeNotConnected": "{node} düğümü hiçbir elemana bağlı değil ve çözümde dikkate alınmıyor.",
       "insufficientSupports": "Düzlem analizde modelin stabil olması için en az 3 serbestlik derecesinin tutulu olması gerekir.",
+      "needsSupports": "Yapının çözülebilmesi için mesnet gerekiyor.",
       "partUnsupported": "Yapının ayrık bir parçasında (düğümler {nodes}) 3'ten az tutulu serbestlik derecesi var ve bu parça serbestçe hareket edebiliyor.",
+      "partNeedsSupports": "{nodes} düğümlü parçanın mesnete ihtiyacı var.",
       "mechanism": "Yapıda yeterli sayıda mesnet var, ancak bu mesnetler yapıyı tutmuyor: yapı hâlâ {motion}. Mesnet doğrultularının tümü paralelse veya tek bir noktada kesişiyorsa sistem labildir.",
+      "mechanismShort": "Mesnetler yapıyı tutmuyor: yapı hâlâ {motion}.",
       "partMechanism": "Yapının ayrık bir parçasında (düğümler {nodes}) yeterli sayıda mesnet var, ancak bu mesnetler parçayı tutmuyor: parça hâlâ {motion}. Mesnet doğrultularının tümü paralelse veya tek bir noktada kesişiyorsa sistem labildir.",
+      "partMechanismShort": "{nodes} düğümlü parça tutulmuyor: hâlâ {motion}.",
       "motion": {
         "horizontal": "yatay doğrultuda kayabiliyor",
         "vertical": "düşey doğrultuda hareket edebiliyor",

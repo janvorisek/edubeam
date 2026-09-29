@@ -68,6 +68,9 @@
     "results_scale": "Měřítko výsledků",
     "snap_to_grid": "Přichytávat k mřížce",
     "show_crosshair": "Zobrazit zaměřovací kříž",
+    "model_checks": "Kontrola modelu",
+    "show_mechanisms": "Zobrazit, jak se nestabilní konstrukce může pohybovat",
+    "animate_mechanisms": "Animovat pohyb",
     "grid_snap_step": "Krok příchytu k mřížce",
     "number_format": "Formát čísel",
     "number_format_description": "Jak se zapisují hodnoty výsledků; desetinný oddělovač se řídí jazykem.",
@@ -428,6 +431,9 @@
       }
     }
   },
+  "emptyModel": {
+    "message": "Model je prázdný. Začněte nakreslením nosníku."
+  },
   "welcome": {
     "title": "Vítejte v <span class=\"edubeam\">edubeamu</span>! 🚀",
     "description": "Modelujte nosníky, rámy a příhradové konstrukce a sledujte vnitřní síly už při kreslení. Jak chcete začít?",
@@ -477,13 +483,21 @@
     "summaryErrors": "Chyby v modelu: {errors}",
     "summaryWarnings": "Varování v modelu: {warnings}",
     "summaryBoth": "Chyby v modelu: {errors}, varování: {warnings}",
+    "summaryIncomplete": "Podpory chybí u částí konstrukce: {count}.",
+    "incompleteChip": "Chybí podpory",
+    "hideMotion": "Skrýt pohyb",
+    "showMotion": "Zobrazit pohyb",
+    "dismissWarnings": "Skrýt tato upozornění",
     "showDetails": "Zobrazit podrobnosti",
     "blockedTitle": "Model nelze vypočítat",
     "blockedDescription": "Před výpočtem opravte uvedené chyby.",
     "warningsTitle": "Varování k modelu",
     "warningsDescription": "Model byl vypočten, ale byla zjištěna následující varování.",
+    "incompleteTitle": "Model zatím nelze vypočítat",
+    "incompleteDescription": "Výsledky se zobrazí, jakmile bude konstrukce podepřena. Čárkovaný obrys na plátně ukazuje, jak se ještě může pohybovat.",
     "errors": "Chyby",
     "warnings": "Varování",
+    "incomplete": "Zbývá doplnit",
     "issues": {
       "elementNodeCount": "Prvek {element} musí odkazovat právě na 2 uzly.",
       "elementSameNode": "Prvek {element} má na obou koncích stejný uzel.",
@@ -498,9 +512,13 @@
       "supportedNodeNotConnected": "Uzel {node} je podepřen, ale nepřipojuje se k němu žádný prvek, takže podpora nic nepřenáší.",
       "nodeNotConnected": "Uzel {node} není připojen k žádnému prvku a výpočet jej ignoruje.",
       "insufficientSupports": "Aby byl model při 2D výpočtu stabilní, musí mít alespoň 3 podepřené stupně volnosti.",
+      "needsSupports": "Konstrukce potřebuje podpory, jinak ji nelze vypočítat.",
       "partUnsupported": "Samostatná část konstrukce (uzly {nodes}) má méně než 3 podepřené stupně volnosti a může se volně pohybovat.",
+      "partNeedsSupports": "Část s uzly {nodes} potřebuje podpory.",
       "mechanism": "Konstrukce má dostatek podpor, ale ty ji nezajišťují: stále se může {motion}. Jsou-li všechny vazby rovnoběžné nebo se jejich nositelky protínají v jednom bodě, konstrukce se může volně pohybovat.",
+      "mechanismShort": "Podpory konstrukci nezajišťují: stále se může {motion}.",
       "partMechanism": "Samostatná část konstrukce (uzly {nodes}) má dostatek podpor, ale ty ji nezajišťují: stále se může {motion}. Jsou-li všechny vazby rovnoběžné nebo se jejich nositelky protínají v jednom bodě, konstrukce se může volně pohybovat.",
+      "partMechanismShort": "Část s uzly {nodes} není zajištěna: stále se může {motion}.",
       "motion": {
         "horizontal": "posouvat vodorovně",
         "vertical": "posouvat svisle",

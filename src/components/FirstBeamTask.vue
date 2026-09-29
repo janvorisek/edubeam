@@ -56,7 +56,7 @@ const step = computed(() =>
     firstBeamState(
       projectStore.solver,
       appStore.mouseMode,
-      projectStore.solveDiagnostics.errors.length,
+      projectStore.solveDiagnostics.errors.length + projectStore.solveDiagnostics.incomplete.length,
       viewerStore.settingsOpen,
       seen
     )

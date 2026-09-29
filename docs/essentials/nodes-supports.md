@@ -70,7 +70,7 @@ Set **Nodal LCS angle** (degrees, −180…180) in the node popover or the *Edit
 
 ### Stability
 
-The solver needs at least **three restrained DOFs** in total and a mechanism-free structure. Missing or insufficient supports produce the error *Model needs at least 3 constrained DOFs…* or simply no results. See [Troubleshooting](/reference/troubleshooting).
+The solver needs at least **three restrained DOFs** in total and a mechanism-free structure. Until there are enough supports the viewer shows a *Needs supports* chip; pointing at it draws a dashed outline of how the structure can still move; supports that are enough in number but all parallel, or meeting in one point, are reported as an error. See [Troubleshooting](/reference/troubleshooting).
 
 ## Nodal loads and settlements
 

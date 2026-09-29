@@ -285,6 +285,8 @@ const clearMesh = (clearMaterials = false, clearCrossSects = false) => {
   }
 
   undoRedoManager.clearHistory();
+  // Otherwise the diagnostics of the model just cleared stay on screen.
+  solve();
 };
 
 const shareMesh = () => {

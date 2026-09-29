@@ -8,6 +8,7 @@ import { useProjectStore } from '../store/project';
 import { ref, onMounted, computed, nextTick, watch, reactive, onUnmounted, provide } from 'vue';
 import { useViewerStore } from '../store/viewer';
 import { useAppStore } from '@/store/app';
+import { startFirstBeam } from '@/utils/startFirstBeam';
 
 import AddElementDialog from './dialogs/AddElement.vue';
 import AddNodeDialog from './dialogs/AddNode.vue';
@@ -25,6 +26,7 @@ import SVGElementConcentratedLoad from './svg/ElementConcentratedLoad.vue';
 import SVGNodalLoad from './svg/NodalLoad.vue';
 import SVGPrescribedDisplacement from './svg/PrescribedDisplacement.vue';
 import SVGNode from './svg/Node.vue';
+import SVGSolveIssues from './svg/SolveIssues.vue';
 import SVGElement from './svg/Element.vue';
 import SVGElementTemperatureLoad from './svg/ElementTemperatureLoad.vue';
 import SVGDimensioning from './svg/Dimensioning.vue';
@@ -320,34 +322,82 @@ const solve = () => {
   });
 };
 
-const hasSolveDiagnosticsIssues = computed(
-  () => projectStore.solveDiagnostics.errors.length > 0 || projectStore.solveDiagnostics.warnings.length > 0
+const isModelEmpty = computed(
+  () => projectStore.nodes.length === 0 && !appStore.firstBeamActive && !appStore.inViewerMode
 );
 
-const hasBlockingSolveIssues = computed(() => projectStore.solveDiagnostics.errors.length > 0);
+/**
+ * What the diagnostics banner says, if anything. A model still being drawn gets the next step
+ * in neutral colours, not an error: a beam without supports is unfinished, not wrong. The
+ * first beam task asks for the supports itself, so there the banner stays out of its way.
+ */
+const solveBanner = computed(() => {
+  const { errors, incomplete, warnings } = projectStore.solveDiagnostics;
 
-const solveDiagnosticsSummary = computed(() => {
-  const errors = projectStore.solveDiagnostics.errors.length;
-  const warnings = projectStore.solveDiagnostics.warnings.length;
+  if (errors.length > 0) {
+    // A single issue says what it is; a count only helps once there are several.
+    const text =
+      errors.length === 1 && warnings.length === 0 && errors[0].summary
+        ? errors[0].summary
+        : warnings.length > 0
+          ? t('solveDiagnostics.summaryBoth', { errors: errors.length, warnings: warnings.length })
+          : t('solveDiagnostics.summaryErrors', { errors: errors.length });
 
-  if (errors > 0 && warnings > 0) {
-    return t('solveDiagnostics.summaryBoth', { errors, warnings });
+    // The exclamation mark the other viewer alerts use; `$error` is a cross that reads as "close".
+    return { type: 'error' as const, icon: '$warning', text };
   }
 
-  if (errors > 0) {
-    return t('solveDiagnostics.summaryErrors', { errors });
+  if (incomplete.length > 0 && !appStore.firstBeamActive) {
+    // Only a chip: this is where every model passes through, so it should not shout.
+    const text =
+      incomplete.length === 1
+        ? (incomplete[0].summary ?? incomplete[0].message)
+        : t('solveDiagnostics.summaryIncomplete', { count: incomplete.length });
+
+    return { type: 'incomplete' as const, icon: 'mdi-information-outline', text };
   }
 
-  return t('solveDiagnostics.summaryWarnings', { warnings });
+  // Warnings do not stop the solve, and some are on purpose - a spare node kept for later -
+  // so they can be closed. Only the ones closed stay away.
+  const visibleWarnings = projectStore.visibleWarnings;
+
+  if (visibleWarnings.length > 0) {
+    return {
+      type: 'warning' as const,
+      icon: '$warning',
+      text:
+        visibleWarnings.length === 1
+          ? visibleWarnings[0].message
+          : t('solveDiagnostics.summaryWarnings', { warnings: visibleWarnings.length }),
+    };
+  }
+
+  return null;
+});
+
+/** Whether the canvas has a motion to show, and so the banner an outline to hide. */
+const hasFreeMotion = computed(() => projectStore.solveDiagnostics.errors.some((issue) => issue.motion));
+
+const motionToggleLabel = computed(() =>
+  t(viewerStore.showMechanisms ? 'solveDiagnostics.hideMotion' : 'solveDiagnostics.showMotion')
+);
+
+/** While the pointer is on the message, the canvas keeps showing the motion it describes. */
+const holdFreeMotion = ref(false);
+
+/**
+ * An unfinished model shows how it can move only once it is loaded. Loads usually come after
+ * the supports, so loading a structure that is still not held means results are expected, and
+ * the motion explains why there are none. Before that the student is simply still drawing.
+ */
+const modelHasLoads = computed(() => {
+  const loadCase = projectStore.solver.loadCases[0];
+
+  return loadCase.nodalLoadList.length + loadCase.elementLoadList.length + loadCase.prescribedBC.length > 0;
 });
 
 const openSolveDiagnostics = () => {
-  if (!hasSolveDiagnosticsIssues.value) return;
-
-  openModal(SolveDiagnosticsDialog, {
-    diagnostics: projectStore.solveDiagnostics,
-    blocked: hasBlockingSolveIssues.value,
-  });
+  openModal(SolveDiagnosticsDialog, { diagnostics: projectStore.solveDiagnostics });
 };
 
 const centerContent = () => {
@@ -2509,18 +2559,58 @@ defineExpose({ centerContent, fitContent });
 
     <div class="text-body-2 warning ga-1 d-flex flex-column pr-6">
       <div style="width: fit-content">
+        <!-- An empty canvas is where every model starts, not a mistake. -->
+        <v-alert v-if="isModelEmpty" icon="mdi-vector-polyline-plus" density="compact" type="info">
+          <template #text>
+            <div class="d-flex align-center">
+              {{ $t('emptyModel.message') }}
+              <v-btn variant="text" density="compact" size="small" @click="startFirstBeam">{{
+                $t('welcome.drawFirstBeam')
+              }}</v-btn>
+            </div>
+          </template>
+        </v-alert>
+        <v-chip
+          v-else-if="solveBanner?.type === 'incomplete'"
+          color="info"
+          variant="flat"
+          size="small"
+          :prepend-icon="solveBanner.icon"
+          :title="solveBanner.text"
+          @click="openSolveDiagnostics"
+          @mouseenter="holdFreeMotion = true"
+          @mouseleave="holdFreeMotion = false"
+        >
+          {{ $t('solveDiagnostics.incompleteChip') }}
+        </v-chip>
         <v-alert
-          v-if="hasSolveDiagnosticsIssues"
-          icon="$warning"
+          v-else-if="solveBanner"
+          :model-value="true"
+          :icon="solveBanner.icon"
           density="compact"
-          :type="hasBlockingSolveIssues ? 'error' : 'warning'"
+          :type="solveBanner.type"
+          :closable="solveBanner.type === 'warning'"
+          :close-label="$t('solveDiagnostics.dismissWarnings')"
+          @click:close="projectStore.dismissWarnings()"
+          @mouseenter="holdFreeMotion = true"
+          @mouseleave="holdFreeMotion = false"
         >
           <template #text>
             <div class="d-flex align-center">
-              {{ solveDiagnosticsSummary }}
+              {{ solveBanner.text }}
               <v-btn variant="text" density="compact" size="small" @click="openSolveDiagnostics">{{
                 $t('solveDiagnostics.showDetails')
               }}</v-btn>
+              <v-btn
+                v-if="hasFreeMotion"
+                variant="text"
+                density="compact"
+                size="small"
+                :icon="viewerStore.showMechanisms ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                :title="motionToggleLabel"
+                :aria-label="motionToggleLabel"
+                @click="viewerStore.showMechanisms = !viewerStore.showMechanisms"
+              />
             </div>
           </template>
         </v-alert>
@@ -2825,6 +2915,7 @@ defineExpose({ centerContent, fitContent });
               @nodepointerup="onNodeClick"
             />
           </g>
+          <SVGSolveIssues v-if="!isZooming" :scale="scale" :show-incomplete="modelHasLoads" :hold="holdFreeMotion" />
           <g>
             <SVGDimensioning
               v-for="dim in normalizedDimensions"

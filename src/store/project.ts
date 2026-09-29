@@ -14,6 +14,7 @@ import {
 import { ensureDimensionId } from '@/utils/id';
 import type { DimensionLine } from '@/types/dimension';
 import {
+  emptyDiagnostics,
   findMechanismIssues,
   solveIssue,
   validateSolverModel,
@@ -115,10 +116,25 @@ export const useProjectStore = defineStore(
       return [...solver.value.domain.crossSections.values()];
     });
 
-    const solveDiagnostics = ref<SolveDiagnostics>({
-      errors: [],
-      warnings: [],
-    });
+    const solveDiagnostics = ref<SolveDiagnostics>(emptyDiagnostics());
+
+    /**
+     * Kinds of warning the user closed, for this session. Closing says "I know about unconnected
+     * nodes", not "about node 5": adding nodes one at a time would otherwise bring the same
+     * warning straight back. A different kind still shows, and errors cannot be dismissed at all,
+     * they are why there are no results.
+     */
+    const dismissedWarnings = ref<string[]>([]);
+
+    const visibleWarnings = computed(() =>
+      solveDiagnostics.value.warnings.filter((issue) => !dismissedWarnings.value.includes(issue.code))
+    );
+
+    const dismissWarnings = () => {
+      dismissedWarnings.value = [
+        ...new Set([...dismissedWarnings.value, ...solveDiagnostics.value.warnings.map((issue) => issue.code)]),
+      ];
+    };
 
     const beams = computed(() => {
       const vals = solver.value.domain.elements.values();
@@ -133,7 +149,7 @@ export const useProjectStore = defineStore(
       const diagnostics = validateSolverModel(solver.value);
       solveDiagnostics.value = diagnostics;
 
-      if (diagnostics.errors.length > 0) {
+      if (diagnostics.errors.length > 0 || diagnostics.incomplete.length > 0) {
         solver.value.loadCases[0].solved = false;
         return;
       }
@@ -141,10 +157,7 @@ export const useProjectStore = defineStore(
       if (solver.value.domain.elements.size === 0 || solver.value.domain.nodes.size === 0) return;
 
       const failWith = (...issues: SolveIssue[]) => {
-        solveDiagnostics.value = {
-          errors: [...diagnostics.errors, ...issues],
-          warnings: diagnostics.warnings,
-        };
+        solveDiagnostics.value = { ...diagnostics, errors: [...diagnostics.errors, ...issues] };
         solver.value.loadCases[0].solved = false;
       };
 
@@ -350,6 +363,8 @@ export const useProjectStore = defineStore(
       crossSections,
       dimensions,
       solveDiagnostics,
+      visibleWarnings,
+      dismissWarnings,
     };
   },
   {

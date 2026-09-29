@@ -126,6 +126,9 @@
     "grid_snap_step": "Krok przyciągania do siatki",
     "snap_to_grid": "Przyciągaj do siatki",
     "show_crosshair": "Pokaż celownik",
+    "model_checks": "Sprawdzanie modelu",
+    "show_mechanisms": "Pokazuj, jak może się poruszać niestabilna konstrukcja",
+    "animate_mechanisms": "Animuj ruch",
     "number_format": "Format liczb",
     "number_format_description": "Jak zapisywane są wyniki; separator dziesiętny zależy od języka.",
     "number_format_auto": "Automatyczny",
@@ -428,6 +431,9 @@
       }
     }
   },
+  "emptyModel": {
+    "message": "Model jest pusty. Narysuj belkę, aby zacząć."
+  },
   "welcome": {
     "title": "Witamy w <span class=\"edubeam\">edubeam</span>! 🚀",
     "description": "Modeluj belki, ramy i kratownice i obserwuj siły wewnętrzne już podczas rysowania. Jak chcesz zacząć?",
@@ -477,13 +483,21 @@
     "summaryErrors": "Błędy w modelu: {errors}",
     "summaryWarnings": "Ostrzeżenia w modelu: {warnings}",
     "summaryBoth": "Błędy w modelu: {errors}, ostrzeżenia: {warnings}",
+    "summaryIncomplete": "Części konstrukcji bez podpór: {count}.",
+    "incompleteChip": "Brak podpór",
+    "hideMotion": "Ukryj ruch",
+    "showMotion": "Pokaż ruch",
+    "dismissWarnings": "Ukryj te ostrzeżenia",
     "showDetails": "Pokaż szczegóły",
     "blockedTitle": "Nie można rozwiązać modelu",
     "blockedDescription": "Przed rozwiązaniem modelu popraw wymienione błędy.",
     "warningsTitle": "Ostrzeżenia modelu",
     "warningsDescription": "Model został rozwiązany, ale wykryto następujące ostrzeżenia.",
+    "incompleteTitle": "Model nie jest jeszcze gotowy do obliczeń",
+    "incompleteDescription": "Wyniki pojawią się, gdy konstrukcja zostanie podparta. Przerywany zarys pokazuje, jak może się jeszcze poruszać.",
     "errors": "Błędy",
     "warnings": "Ostrzeżenia",
+    "incomplete": "Do uzupełnienia",
     "issues": {
       "elementNodeCount": "Element {element} musi odwoływać się do dokładnie 2 węzłów.",
       "elementSameNode": "Element {element} ma ten sam węzeł na obu końcach.",
@@ -498,9 +512,13 @@
       "supportedNodeNotConnected": "Węzeł {node} jest podparty, ale nie łączy się z nim żaden element, więc podpora niczego nie przenosi.",
       "nodeNotConnected": "Węzeł {node} nie jest połączony z żadnym elementem i jest pomijany w obliczeniach.",
       "insufficientSupports": "Aby model był stateczny w analizie 2D, potrzebuje co najmniej 3 podpartych stopni swobody.",
+      "needsSupports": "Konstrukcja potrzebuje podpór, aby można ją było obliczyć.",
       "partUnsupported": "Oddzielna część konstrukcji (węzły {nodes}) ma mniej niż 3 podparte stopnie swobody i może się swobodnie przemieszczać.",
+      "partNeedsSupports": "Część z węzłami {nodes} potrzebuje podpór.",
       "mechanism": "Konstrukcja ma wystarczającą liczbę podpór, ale nie utrzymują jej one: nadal może {motion}. Podpory, które są wszystkie równoległe lub których kierunki działania przecinają się w jednym punkcie, pozwalają konstrukcji się przemieszczać.",
+      "mechanismShort": "Podpory nie utrzymują konstrukcji: nadal może {motion}.",
       "partMechanism": "Oddzielna część konstrukcji (węzły {nodes}) ma wystarczającą liczbę podpór, ale nie utrzymują jej one: nadal może {motion}. Podpory, które są wszystkie równoległe lub których kierunki działania przecinają się w jednym punkcie, pozwalają konstrukcji się przemieszczać.",
+      "partMechanismShort": "Część z węzłami {nodes} nie jest utrzymana: nadal może {motion}.",
       "motion": {
         "horizontal": "przesuwać się poziomo",
         "vertical": "przemieszczać się pionowo",

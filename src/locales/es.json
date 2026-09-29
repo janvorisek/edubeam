@@ -126,6 +126,9 @@
     "grid_snap_step": "Paso de ajuste a la cuadrícula",
     "snap_to_grid": "Ajustar a la cuadrícula",
     "show_crosshair": "Mostrar cruceta",
+    "model_checks": "Comprobación del modelo",
+    "show_mechanisms": "Mostrar cómo puede moverse una estructura inestable",
+    "animate_mechanisms": "Animar el movimiento",
     "number_format": "Formato numérico",
     "number_format_description": "Cómo se escriben los resultados; el separador decimal sigue el idioma.",
     "number_format_auto": "Automático",
@@ -428,6 +431,9 @@
       }
     }
   },
+  "emptyModel": {
+    "message": "El modelo está vacío. Dibuja una viga para empezar."
+  },
   "welcome": {
     "title": "¡Bienvenido a <span class=\"edubeam\">edubeam</span>! 🚀",
     "description": "Modela vigas, pórticos y celosías y ve sus esfuerzos internos mientras dibujas. ¿Cómo quieres empezar?",
@@ -477,13 +483,21 @@
     "summaryErrors": "Errores en el modelo: {errors}",
     "summaryWarnings": "Advertencias en el modelo: {warnings}",
     "summaryBoth": "Errores en el modelo: {errors}; advertencias: {warnings}",
+    "summaryIncomplete": "{count} partes de la estructura necesitan apoyos.",
+    "incompleteChip": "Faltan apoyos",
+    "hideMotion": "Ocultar el movimiento",
+    "showMotion": "Mostrar el movimiento",
+    "dismissWarnings": "Ocultar estas advertencias",
     "showDetails": "Mostrar detalles",
     "blockedTitle": "No se puede resolver el modelo",
     "blockedDescription": "Corrija los errores indicados antes de resolver el modelo.",
     "warningsTitle": "Advertencias del modelo",
     "warningsDescription": "El modelo se ha resuelto, pero se han detectado las siguientes advertencias.",
+    "incompleteTitle": "Aún no se puede resolver",
+    "incompleteDescription": "Los resultados aparecen cuando la estructura queda sujeta. El contorno discontinuo muestra cómo puede moverse todavía.",
     "errors": "Errores",
     "warnings": "Advertencias",
+    "incomplete": "Falta por completar",
     "issues": {
       "elementNodeCount": "El elemento {element} debe hacer referencia a exactamente 2 nodos.",
       "elementSameNode": "El elemento {element} hace referencia al mismo nodo en ambos extremos.",
@@ -498,9 +512,13 @@
       "supportedNodeNotConnected": "El nodo {node} tiene apoyo, pero ningún elemento llega a él, así que el apoyo no transmite nada.",
       "nodeNotConnected": "El nodo {node} no está conectado a ningún elemento y el solver lo ignora.",
       "insufficientSupports": "El modelo necesita al menos 3 grados de libertad restringidos para ser estable en un análisis 2D.",
+      "needsSupports": "La estructura necesita apoyos para poder resolverse.",
       "partUnsupported": "Una parte independiente de la estructura (nodos {nodes}) tiene menos de 3 grados de libertad restringidos y puede moverse libremente.",
+      "partNeedsSupports": "La parte con los nudos {nodes} necesita apoyos.",
       "mechanism": "La estructura tiene suficientes apoyos, pero no la sujetan: todavía puede {motion}. Si todos los apoyos son paralelos o sus líneas de acción se cortan en un punto, la estructura queda libre para moverse.",
+      "mechanismShort": "Los apoyos no sujetan la estructura: todavía puede {motion}.",
       "partMechanism": "Una parte independiente de la estructura (nodos {nodes}) tiene suficientes apoyos, pero no la sujetan: todavía puede {motion}. Si todos los apoyos son paralelos o sus líneas de acción se cortan en un punto, la estructura queda libre para moverse.",
+      "partMechanismShort": "La parte con los nudos {nodes} no está sujeta: todavía puede {motion}.",
       "motion": {
         "horizontal": "desplazarse horizontalmente",
         "vertical": "moverse verticalmente",

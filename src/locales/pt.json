@@ -126,6 +126,9 @@
     "grid_snap_step": "Passo do encaixe na grade",
     "snap_to_grid": "Encaixar na grade",
     "show_crosshair": "Mostrar mira",
+    "model_checks": "Verificação do modelo",
+    "show_mechanisms": "Mostrar como uma estrutura instável pode se mover",
+    "animate_mechanisms": "Animar o movimento",
     "number_format": "Formato numérico",
     "number_format_description": "Como os resultados são escritos; o separador decimal segue o idioma.",
     "number_format_auto": "Automático",
@@ -428,6 +431,9 @@
       }
     }
   },
+  "emptyModel": {
+    "message": "O modelo está vazio. Desenhe uma viga para começar."
+  },
   "welcome": {
     "title": "Bem-vindo ao <span class=\"edubeam\">edubeam</span>! 🚀",
     "description": "Modele vigas, pórticos e treliças e veja os esforços internos enquanto desenha. Como você quer começar?",
@@ -477,13 +483,21 @@
     "summaryErrors": "Erros no modelo: {errors}",
     "summaryWarnings": "Avisos no modelo: {warnings}",
     "summaryBoth": "Erros no modelo: {errors}, avisos: {warnings}",
+    "summaryIncomplete": "{count} partes da estrutura precisam de apoios.",
+    "incompleteChip": "Faltam apoios",
+    "hideMotion": "Ocultar o movimento",
+    "showMotion": "Mostrar o movimento",
+    "dismissWarnings": "Ocultar estes avisos",
     "showDetails": "Mostrar detalhes",
     "blockedTitle": "Não é possível resolver o modelo",
     "blockedDescription": "Corrija os erros listados antes de resolver o modelo.",
     "warningsTitle": "Avisos do modelo",
     "warningsDescription": "O modelo foi resolvido, mas foram detectados os seguintes avisos.",
+    "incompleteTitle": "Ainda não é possível resolver",
+    "incompleteDescription": "Os resultados aparecem assim que a estrutura estiver fixada. O contorno tracejado mostra como ela ainda pode se mover.",
     "errors": "Erros",
     "warnings": "Avisos",
+    "incomplete": "Ainda falta",
     "issues": {
       "elementNodeCount": "O elemento {element} deve referenciar exatamente 2 nós.",
       "elementSameNode": "O elemento {element} referencia o mesmo nó nas duas extremidades.",
@@ -498,9 +512,13 @@
       "supportedNodeNotConnected": "O nó {node} tem apoio, mas nenhum elemento está ligado a ele, então o apoio não transmite nada.",
       "nodeNotConnected": "O nó {node} não está ligado a nenhum elemento e é ignorado pelo solver.",
       "insufficientSupports": "O modelo precisa de pelo menos 3 GLs restringidos para ser estável na análise 2D.",
+      "needsSupports": "A estrutura precisa de apoios para poder ser resolvida.",
       "partUnsupported": "Uma parte separada da estrutura (nós {nodes}) tem menos de 3 GLs restringidos e pode se mover livremente.",
+      "partNeedsSupports": "A parte com os nós {nodes} precisa de apoios.",
       "mechanism": "A estrutura tem apoios suficientes, mas eles não a fixam: ela ainda pode {motion}. Apoios todos paralelos, ou cujas linhas de ação se encontram num único ponto, deixam a estrutura livre para se mover.",
+      "mechanismShort": "Os apoios não fixam a estrutura: ela ainda pode {motion}.",
       "partMechanism": "Uma parte separada da estrutura (nós {nodes}) tem apoios suficientes, mas eles não a fixam: ela ainda pode {motion}. Apoios todos paralelos, ou cujas linhas de ação se encontram num único ponto, deixam a estrutura livre para se mover.",
+      "partMechanismShort": "A parte com os nós {nodes} não está fixada: ela ainda pode {motion}.",
       "motion": {
         "horizontal": "deslizar horizontalmente",
         "vertical": "se mover verticalmente",

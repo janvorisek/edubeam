@@ -235,14 +235,7 @@ export const cloneShape = (shape: SectionShape): SectionShape => ({
 // ---------------------------------------------------------------------------
 
 export type SectionPresetId =
-  | 'rectangle'
-  | 'iSection'
-  | 'tSection'
-  | 'lSection'
-  | 'channel'
-  | 'box'
-  | 'circle'
-  | 'pipe';
+  'rectangle' | 'iSection' | 'tSection' | 'lSection' | 'channel' | 'box' | 'circle' | 'pipe';
 
 export type SectionPresetParam = 'b' | 'h' | 'tw' | 'tf' | 't' | 'd' | 'n';
 

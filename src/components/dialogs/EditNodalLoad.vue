@@ -90,9 +90,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, reactive, computed } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { useProjectStore } from '../../store/project';
-import { DofID, NodalLoad } from 'ts-fem';
+import { DofID } from 'ts-fem';
 import { closeModal } from 'jenesius-vue-modal';
 import { useAppStore } from '@/store/app';
 import { checkNumber, parseFloat2 } from '@/utils';

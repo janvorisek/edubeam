@@ -12,7 +12,6 @@ const appStore = useAppStore();
 
 const props = withDefaults(
   defineProps<{
-    onUpdate: (zooming: boolean) => void;
     /** Screen pixels kept free on every side of the fitted content. */
     padding?: number;
     mobilePadding?: number;
@@ -31,7 +30,6 @@ const props = withDefaults(
     touch?: boolean;
   }>(),
   {
-    onUpdate: () => {},
     padding: 0,
     mobilePadding: 0,
     canFitContent: true,
@@ -42,6 +40,10 @@ const props = withDefaults(
     touch: true,
   }
 );
+
+const emit = defineEmits<{
+  update: [zooming: boolean];
+}>();
 
 let viewBox = { x: 0, y: 0, w: 1, h: 1 };
 const scale = ref(1);
@@ -91,7 +93,7 @@ const onWindowResize = (): void => {
 const updateMatrix = (zooming = false): void => {
   const svgEl = svgRef.value as SVGElement;
   svgEl.setAttribute('viewBox', `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
-  props.onUpdate(zooming);
+  emit('update', zooming);
 };
 
 const zoom = (mx: number, my: number, deltaY: number): void => {

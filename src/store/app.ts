@@ -59,7 +59,7 @@ export const useAppStore = defineStore(
     });
 
     // TODO: We really don't need to solve anything, but this triggers most of the reactivity we need
-    watch(units, (newUnits) => {
+    watch(units, () => {
       useProjectStore().solve();
     });
 
@@ -227,8 +227,6 @@ export const useAppStore = defineStore(
       axisConvention.value = 'z-down';
       panButton.value = -1;
     };
-
-    const test = ref(20);
 
     return {
       inViewerMode,

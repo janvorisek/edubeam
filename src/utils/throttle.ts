@@ -1,11 +1,8 @@
-export const throttle = (fn: Function, wait = 300) => {
+export const throttle = <A extends unknown[]>(fn: (...args: A) => void, wait = 300) => {
   let inThrottle: boolean, lastFn: ReturnType<typeof setTimeout>, lastTime: number;
-  return function (this: any) {
-    const context = this,
-      // eslint-disable-next-line prefer-rest-params
-      args = arguments;
+  return (...args: A) => {
     if (!inThrottle) {
-      fn.apply(context, args);
+      fn(...args);
       lastTime = Date.now();
       inThrottle = true;
     } else {
@@ -13,7 +10,7 @@ export const throttle = (fn: Function, wait = 300) => {
       lastFn = setTimeout(
         () => {
           if (Date.now() - lastTime >= wait) {
-            fn.apply(context, args);
+            fn(...args);
             lastTime = Date.now();
           }
         },

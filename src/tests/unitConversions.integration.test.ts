@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { customForceConversion, customPressureConversion } from '../utils/unitConversions';
 
 describe('Unit Conversion Functions (Direct Testing)', () => {

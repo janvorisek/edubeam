@@ -1,17 +1,4 @@
-import {
-  Beam2D,
-  BeamConcentratedLoad,
-  BeamElementUniformEdgeLoad,
-  BeamElementTrapezoidalEdgeLoad,
-  BeamTemperatureLoad,
-  DofID,
-  LinearStaticSolver,
-  Load,
-  NodalLoad,
-  Node,
-  PrescribedDisplacement,
-} from 'ts-fem';
-import { Ref } from 'vue';
+import { Beam2D, BeamElementTrapezoidalEdgeLoad, NodalLoad, Node } from 'ts-fem';
 import { availableLocales, i18n } from '../plugins/i18n';
 import { useProjectStore } from '../store/project';
 import { Command, IKeyValue, undoRedoManager } from '../CommandManager';
@@ -639,7 +626,7 @@ export const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputEl
   useProjectStore().solver.domain[map].set(item.label, item);
 
   if (map === 'nodes') {
-    for (const [key, element] of useProjectStore().solver.domain.elements) {
+    for (const element of useProjectStore().solver.domain.elements.values()) {
       const idtomodify = element.nodes.findIndex((nid) => nid == prevId);
       if (idtomodify > -1) {
         element.nodes[idtomodify] = item.label;
@@ -668,7 +655,7 @@ export const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputEl
   }
 
   if (map === 'materials') {
-    for (const [key, element] of useProjectStore().solver.domain.elements) {
+    for (const element of useProjectStore().solver.domain.elements.values()) {
       if (element.mat == prevId) {
         element.mat = item.label;
       }
@@ -676,7 +663,7 @@ export const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputEl
   }
 
   if (map === 'crossSections') {
-    for (const [key, element] of useProjectStore().solver.domain.elements) {
+    for (const element of useProjectStore().solver.domain.elements.values()) {
       if (element.cs == prevId) {
         element.cs = item.label;
       }

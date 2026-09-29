@@ -2706,7 +2706,6 @@ defineExpose({ centerContent, fitContent });
 
     <SvgPanZoom
       ref="panZoom"
-      :on-update="onUpdate"
       :padding="16"
       :mobile-padding="12"
       :touch="appStore.mouseMode !== MouseMode.MOVING && appStore.mouseMode !== MouseMode.SELECTING"
@@ -2716,6 +2715,7 @@ defineExpose({ centerContent, fitContent });
       :fit-reserve="fitReserve"
       center-after-fit
       style="overflow: visible; z-index: 50; min-height: 0"
+      @update="onUpdate"
     >
       <svg
         ref="svg"

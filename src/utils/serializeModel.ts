@@ -1,5 +1,4 @@
 import {
-  Node,
   LinearStaticSolver,
   Beam2D,
   BeamElementUniformEdgeLoad,

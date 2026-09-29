@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="open" max-width="440">
     <v-card>
-      <v-card-title v-html="$t('welcome.title')"></v-card-title>
+      <v-card-title><span v-html="$t('welcome.title')"></span></v-card-title>
 
       <v-card-text class="pb-2">
         <p class="mb-4">{{ $t('welcome.description') }}</p>

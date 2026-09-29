@@ -1,8 +1,6 @@
 import { defineStore } from 'pinia';
 import { Component, Raw, Ref, markRaw, ref } from 'vue';
 
-import SVGElementViewer from '@/components/SVGElementViewer.vue';
-
 export const useLayoutStore = defineStore(
   'layout',
   () => {

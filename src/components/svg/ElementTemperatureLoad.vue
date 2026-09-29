@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { Node, Beam2D, BeamTemperatureLoad } from 'ts-fem';
-import { getCurrentInstance } from 'vue';
 import { computed } from 'vue';
 
 const props = withDefaults(

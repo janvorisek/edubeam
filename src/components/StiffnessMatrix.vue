@@ -47,8 +47,8 @@ const elementHasMaterialAndCS = computed(() => {
   <div class="fill-height" style="overflow: auto">
     <v-table v-if="elementHasMaterialAndCS" class="border-t text-right" density="compact">
       <tbody>
-        <tr v-for="i in size">
-          <td v-for="j in size" :class="{ 'bg-grey-lighten-3 font-weight-medium': i === j }" class="px-1">
+        <tr v-for="i in size" :key="i">
+          <td v-for="j in size" :key="j" :class="{ 'bg-grey-lighten-3 font-weight-medium': i === j }" class="px-1">
             {{
               projStore.solver.domain.elements
                 .get(props.label as number)

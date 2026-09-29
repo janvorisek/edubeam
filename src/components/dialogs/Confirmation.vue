@@ -3,12 +3,13 @@
     <v-card>
       <v-card-title> {{ title }}</v-card-title>
 
-      <v-card-text v-html="message"></v-card-text>
+      <v-card-text><div v-html="message"></div></v-card-text>
 
       <template v-if="props.checkboxes">
         <v-card-text>
           <v-checkbox
             v-for="cb in props.checkboxes"
+            :key="cb.label"
             v-model="cb.value"
             density="compact"
             :label="cb.label"

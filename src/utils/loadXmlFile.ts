@@ -316,9 +316,6 @@ export const loadXmlFile = () => {
   // Parse load cases
   if (jObj.session.domain.loadCases) {
     for (const loadCase of jObj.session.domain.loadCases.LoadCase) {
-      const label = loadCase['@_label'];
-      const domain = loadCase['@_domain'];
-
       if (loadCase.NodalLoad) {
         for (const load of loadCase.NodalLoad) {
           const target = load['@_where'];

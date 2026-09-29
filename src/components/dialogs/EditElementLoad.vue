@@ -212,10 +212,7 @@ import { deviceHasHover } from '@/utils/pointer';
 import { formatMeasureAsHTML } from '@/SVGUtils';
 
 type EditableElementLoad =
-  | BeamElementUniformEdgeLoad
-  | BeamElementTrapezoidalEdgeLoad
-  | BeamConcentratedLoad
-  | BeamTemperatureLoad;
+  BeamElementUniformEdgeLoad | BeamElementTrapezoidalEdgeLoad | BeamConcentratedLoad | BeamTemperatureLoad;
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();

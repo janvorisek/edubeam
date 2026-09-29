@@ -66,8 +66,8 @@
         </div>
         <v-data-table-virtual
           v-if="appStore.bottomBarTab === 'tab-nodes'"
-          item-height="36"
           :key="settledHeight"
+          item-height="36"
           class="fixed-left-col"
           :headers="headers.nodes"
           :items="nodes"
@@ -289,8 +289,8 @@
 
         <v-data-table-virtual
           v-if="appStore.bottomBarTab === 'tab-elements'"
-          item-height="36"
           :key="settledHeight"
+          item-height="36"
           :headers="headers.elements"
           class="fixed-left-col"
           :items="elements"
@@ -513,8 +513,8 @@
         </div>
         <v-data-table-virtual
           v-if="appStore.bottomBarTab === 'tab-loads'"
-          item-height="36"
           :key="settledHeight"
+          item-height="36"
           :headers="headers.loads"
           :items="loads"
           :row-props="loadRowProps"
@@ -1010,8 +1010,8 @@
 
         <v-data-table-virtual
           v-if="appStore.bottomBarTab === 'tab-mats'"
-          item-height="36"
           :key="settledHeight"
+          item-height="36"
           :headers="headers.materials"
           class="fixed-left-col"
           :items="materials"
@@ -1146,8 +1146,8 @@
 
         <v-data-table-virtual
           v-if="appStore.bottomBarTab === 'tab-cs'"
-          item-height="36"
           :key="settledHeight"
+          item-height="36"
           :headers="headers.crossSections"
           class="fixed-left-col"
           :items="crossSections"
@@ -1316,8 +1316,8 @@
           <v-window-item value="nodes" :transition="false" :reverse-transition="false">
             <v-data-table-virtual
               v-if="appStore.bottomBarTab === 'tab-results'"
-              item-height="36"
               :key="settledHeight"
+              item-height="36"
               :headers="headers.results"
               :items="nodes"
               density="compact"
@@ -1416,8 +1416,8 @@
           <v-window-item value="elements" :transition="false" :reverse-transition="false">
             <v-data-table-virtual
               v-if="appStore.bottomBarTab === 'tab-results'"
-              item-height="36"
               :key="settledHeight"
+              item-height="36"
               :headers="headers.results2"
               :items="useProjectStore().solver.loadCases[0].solved ? elements : []"
               density="compact"
@@ -1510,8 +1510,6 @@ import {
   Element,
   Material,
   CrossSection,
-  Solver,
-  Domain,
   LoadCase,
   BeamElementUniformEdgeLoad,
   BeamElementTrapezoidalEdgeLoad,
@@ -1520,7 +1518,7 @@ import {
   NodalLoad,
 } from 'ts-fem';
 
-import { onMounted, computed, markRaw, nextTick, reactive, ref, watch } from 'vue';
+import { onMounted, computed, reactive, ref, watch } from 'vue';
 import { useProjectStore } from '../store/project';
 import { useAppStore } from '../store/app';
 import { MouseMode } from '../mouse';

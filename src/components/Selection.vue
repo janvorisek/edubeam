@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
 import { useProjectStore } from '../store/project';
 import SectionThumbnail from './SectionThumbnail.vue';
 import '@/types/crossSection';
-import { watch } from 'vue';
 
 const projectStore = useProjectStore();
 </script>

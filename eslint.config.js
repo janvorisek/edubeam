@@ -48,9 +48,17 @@ export default [
       'vue/attribute-hyphenation': 'off',
       'vue/no-v-html': 'off',
       'vue/v-on-event-hyphenation': 'off',
+      // Vuetify data tables use dotted slot names like #item.label
+      'vue/valid-v-slot': ['error', { allowModifiers: true }],
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/no-require-imports': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
+  {
+    files: ['**/*.test.ts'],
+    rules: {
+      'vue/one-component-per-file': 'off',
     },
   },
   {

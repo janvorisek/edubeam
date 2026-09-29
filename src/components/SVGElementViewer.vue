@@ -7,7 +7,6 @@ import { ref, onMounted, computed, watch, provide } from 'vue';
 import { throttle } from '../utils/throttle';
 import {
   Node,
-  DofID,
   Beam2D,
   Element,
   NodalLoad,
@@ -18,7 +17,7 @@ import {
   BeamConcentratedLoad,
   PrescribedDisplacement,
 } from 'ts-fem';
-import { Matrix, max, min } from 'mathjs';
+import { max, min } from 'mathjs';
 
 import SVGElementLoad from './svg/ElementLoad.vue';
 import SVGElementConcentratedLoad from './svg/ElementConcentratedLoad.vue';
@@ -48,8 +47,8 @@ const props = withDefaults(
     showShearForce?: boolean;
     showMoments?: boolean;
     showReactions?: boolean;
-    elements: Element[];
-    nodes: Node[];
+    elements?: Element[];
+    nodes?: Node[];
     nodalLoads?: NodalLoad[];
     elementLoads?: BeamElementLoad[];
     prescribedDisplacements?: PrescribedDisplacement[];
@@ -327,7 +326,6 @@ defineExpose({ centerContent, fitContent, setView, update });
 
     <SvgPanZoom
       ref="panZoom"
-      :on-update="onUpdate"
       :padding="props.padding"
       :mobile-padding="props.mobilePadding"
       :zoom-enabled="props.zoomEnabled"
@@ -335,6 +333,7 @@ defineExpose({ centerContent, fitContent, setView, update });
       :fit-ignore="props.fitIgnore"
       :fit-reserve="fitReserve"
       style="overflow: visible; z-index: 50; min-height: 0"
+      @update="onUpdate"
     >
       <svg
         ref="svg"

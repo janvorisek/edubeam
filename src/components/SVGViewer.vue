@@ -2252,7 +2252,7 @@ defineExpose({ centerContent, fitContent });
         </v-chip>
       </div>
       <v-chip-group>
-        <v-chip class="justify-end" density="compact" @click="appStore.openSettings()">
+        <v-chip class="justify-end" density="compact" @click="appStore.openSettings('lang')">
           <div class="d-flex ga-1">
             <span v-html="formatMeasureAsHTML(appStore.units.Length)"></span>
             <span v-html="formatMeasureAsHTML(appStore.units.Area)"></span>
@@ -3025,7 +3025,7 @@ defineExpose({ centerContent, fitContent });
       </div>
       <div class="text-right text-sm-body-2 d-flex align-center justify-end">
         <HelpTip topic="diagrams" location="bottom end" />
-        <button class="text-decoration-underline bg-white" @click="appStore.openSettings()">
+        <button class="text-decoration-underline bg-white" @click="appStore.openSettings('appearance')">
           {{ $t('sideSettings.more_settings') }}
         </button>
       </div>

@@ -16,6 +16,8 @@ import { customForceConversion, customPressureConversion } from '@/utils/unitCon
 import { angle, axisConvention, axisLetters, vertical } from '@/utils/axisConvention';
 import { useProjectStore } from './project';
 
+export type SettingsTab = 'lang' | 'appearance' | 'controls';
+
 export const useAppStore = defineStore(
   'app',
   () => {
@@ -198,8 +200,8 @@ export const useAppStore = defineStore(
 
     const openedTab = computed(() => tabs.value[tab.value] || null);
 
-    const openSettings = () => {
-      openModal(SettingsModal);
+    const openSettings = (tab: SettingsTab = 'lang') => {
+      openModal(SettingsModal, { tab });
       /*const si = tabs.value.findIndex((t) => t.title === "tabView.settings");
 
       // If settings already open, switch to it
@@ -213,6 +215,16 @@ export const useAppStore = defineStore(
     };
 
     const panButton = ref(-1);
+
+    // Everything the settings dialog edits except the language, which is a person's choice rather
+    // than a preference to fall back from.
+    const resetSettings = () => {
+      numberStyle.value = 'scientific';
+      Object.assign(units, { Length: 'm', Area: 'm2', AreaM2: 'm4', Mass: 'kg', Force: 'kN', Pressure: 'MPa' });
+      momentUnits.value = { force: 'kN', length: 'm' };
+      axisConvention.value = 'z-down';
+      panButton.value = -1;
+    };
 
     const test = ref(20);
 
@@ -241,6 +253,7 @@ export const useAppStore = defineStore(
       mouseMode,
       mouse,
       openSettings,
+      resetSettings,
 
       panButton,
 

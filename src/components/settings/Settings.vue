@@ -86,12 +86,9 @@
 </template>
 
 <script setup lang="ts">
-import { useAppStore } from '@/store/app';
-import { useProjectStore } from '@/store/project';
+import { useAppStore, type SettingsTab } from '@/store/app';
 import { useViewerStore } from '@/store/viewer';
-import { availableLocales } from '../../plugins/i18n';
-import { onMounted, ref } from 'vue';
-import { formatMeasureAsHTML } from '../../SVGUtils';
+import { ref } from 'vue';
 
 import LanguageUnits from '@/components/settings/LanguageUnits.vue';
 import Appearance from '@/components/settings/Appearance.vue';
@@ -103,16 +100,15 @@ import Confirmation from '../dialogs/Confirmation.vue';
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
+const props = defineProps<{ tab?: SettingsTab }>();
+
 const appStore = useAppStore();
-const projectStore = useProjectStore();
 const viewerStore = useViewerStore();
 
-const unitSystem = ref('si');
-
-const tab = ref('lang');
+const tab = ref<SettingsTab>(props.tab ?? 'lang');
 
 const resetSettings = () => {
-  // appStore.reset();
+  appStore.resetSettings();
   viewerStore.reset();
 };
 </script>
@@ -187,13 +183,13 @@ const resetSettings = () => {
 /*
  * Stacked, the sidebar and the options no longer get a viewport each: on a phone the nav alone can
  * eat the whole dialog and squeeze the options pane to nothing, with its overflow hidden. So let
- * the content flow at its natural height and leave the scrolling to the dialog card itself, which
- * Vuetify already gives `overflow-y: auto`.
+ * the content flow at its natural height and scroll it as a whole. In the dialog, whose card has no
+ * set height here, the layout grows and the card scrolls it (Vuetify gives it `overflow-y: auto`);
+ * in the Settings tab the layout is held to the tab's height and scrolls itself.
  */
 @media (max-width: 1100px) {
   .settings-layout {
-    height: auto;
-    overflow: visible;
+    overflow-y: auto;
   }
 
   .settings-shell {

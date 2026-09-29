@@ -1,6 +1,6 @@
 <template>
-  <div class="d-flex">
-    <div class="v-col-6">
+  <v-row>
+    <v-col cols="12" md="6">
       <h3 class="mb-2">{{ $t('settings.viewer_preview') }}</h3>
 
       <div style="height: 288px; pointer-events: none">
@@ -78,9 +78,9 @@
           />
         </v-col>
       </v-row>
-    </div>
+    </v-col>
 
-    <div class="v-col-6">
+    <v-col cols="12" md="6">
       <h3 class="mb-2">{{ $t('settings.sizes.sizes') }}</h3>
 
       <v-row>
@@ -278,8 +278,8 @@
           ></v-color-picker>
         </v-menu>
       </div>
-    </div>
-  </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts" setup>

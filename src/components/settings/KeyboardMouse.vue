@@ -1,5 +1,5 @@
 <template>
-  <div style="display: grid; grid-template-columns: clamp(200px, 365px, 50%) clamp(200px, 365px, 50%)">
+  <div style="max-width: 420px">
     <div>
       <h3 class="mb-2">{{ $t('settings.mouse.mouse') }}</h3>
 

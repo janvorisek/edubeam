@@ -114,6 +114,7 @@
     "results_scale": "Ergebnisskalierung",
     "grid_snap_step": "Raster-Schrittweite",
     "snap_to_grid": "Am Raster ausrichten",
+    "show_crosshair": "Fadenkreuz anzeigen",
     "number_format": "Zahlenformat",
     "number_format_description": "Wie Ergebniswerte geschrieben werden; das Dezimaltrennzeichen folgt der Sprache.",
     "number_format_auto": "Automatisch",

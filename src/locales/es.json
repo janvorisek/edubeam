@@ -114,6 +114,7 @@
     "results_scale": "Escala de resultados",
     "grid_snap_step": "Paso de ajuste a la cuadrícula",
     "snap_to_grid": "Ajustar a la cuadrícula",
+    "show_crosshair": "Mostrar cruceta",
     "number_format": "Formato numérico",
     "number_format_description": "Cómo se escriben los resultados; el separador decimal sigue el idioma.",
     "number_format_auto": "Automático",

@@ -114,6 +114,7 @@
     "results_scale": "Масштаб результатів",
     "grid_snap_step": "Крок прив'язки до сітки",
     "snap_to_grid": "Прив'язка до сітки",
+    "show_crosshair": "Показувати перехрестя",
     "number_format": "Формат чисел",
     "number_format_description": "Як записуються результати; десятковий роздільник залежить від мови.",
     "number_format_auto": "Автоматичний",

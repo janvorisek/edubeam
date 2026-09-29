@@ -67,6 +67,7 @@
   "settings": {
     "results_scale": "Měřítko výsledků",
     "snap_to_grid": "Přichytávat k mřížce",
+    "show_crosshair": "Zobrazit zaměřovací kříž",
     "grid_snap_step": "Krok příchytu k mřížce",
     "number_format": "Formát čísel",
     "number_format_description": "Jak se zapisují hodnoty výsledků; desetinný oddělovač se řídí jazykem.",

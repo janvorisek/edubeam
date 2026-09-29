@@ -2,6 +2,7 @@
 import { closeModal, openModal } from 'jenesius-vue-modal';
 import SvgPanZoom from './SVGPanZoom.vue';
 import SvgGrid from './SVGGrid.vue';
+import Crosshair from './Crosshair.vue';
 import SvgViewerDefs from './SVGViewerDefs.vue';
 import { useProjectStore } from '../store/project';
 import { ref, onMounted, computed, nextTick, watch, reactive, onUnmounted, provide } from 'vue';
@@ -122,6 +123,7 @@ const resolvedResultLabelMode = computed(() => props.resultLabelMode ?? viewerSt
 
 const panZoom = ref<InstanceType<typeof SvgPanZoom> | null>(null);
 const grid = ref<InstanceType<typeof SvgGrid> | null>(null);
+const crosshair = ref<InstanceType<typeof Crosshair> | null>(null);
 
 const svg = ref<SVGSVGElement>();
 const viewport = ref<SVGGElement>();
@@ -401,6 +403,10 @@ const onUpdate = throttle((zooming: boolean) => {
   invalidatePointerMatrix();
   if (zooming) hideTooltip();
   if (grid.value) grid.value.refreshGrid(zooming);
+
+  // The view moved under a resting mouse, so the model point beneath it changed without a report.
+  if (lastPointerType === 'mouse') updatePointerPosition({ clientX: appStore.mouse.x, clientY: appStore.mouse.y });
+  crosshair.value?.refresh();
 }, 1000 / 10);
 
 const toggleGridVisibility = () => {
@@ -1329,7 +1335,7 @@ const cancelDimensionPointDrag = () => {
  * between a pointerdown and the pointerup that follows it, and a touch lands on a child element
  * far more often than a mouse does, which put placed nodes anywhere but under the finger.
  */
-const updatePointerPosition = (e: PointerEvent) => {
+const updatePointerPosition = (e: Pick<PointerEvent, 'clientX' | 'clientY'>) => {
   appStore.mouse.x = e.clientX;
   appStore.mouse.y = e.clientY;
 
@@ -2550,6 +2556,14 @@ defineExpose({ centerContent, fitContent });
         :view-mode="appStore.inViewerMode"
       />
     </svg>
+
+    <Crosshair
+      v-if="!appStore.inViewerMode"
+      ref="crosshair"
+      :target="svg"
+      :viewport="viewport"
+      :rulers="viewerStore.showGrid"
+    />
 
     <SvgPanZoom
       ref="panZoom"

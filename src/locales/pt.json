@@ -114,6 +114,7 @@
     "results_scale": "Escala de resultados",
     "grid_snap_step": "Passo do encaixe na grade",
     "snap_to_grid": "Encaixar na grade",
+    "show_crosshair": "Mostrar mira",
     "number_format": "Formato numérico",
     "number_format_description": "Como os resultados são escritos; o separador decimal segue o idioma.",
     "number_format_auto": "Automático",

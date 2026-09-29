@@ -114,6 +114,7 @@
     "results_scale": "Масштаб результатов",
     "grid_snap_step": "Шаг привязки к сетке",
     "snap_to_grid": "Привязка к сетке",
+    "show_crosshair": "Показывать перекрестие",
     "number_format": "Формат чисел",
     "number_format_description": "Как записываются результаты; десятичный разделитель зависит от языка.",
     "number_format_auto": "Автоматический",

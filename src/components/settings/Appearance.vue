@@ -14,6 +14,10 @@
           <v-switch v-model="viewerStore.snapToGrid" color="primary" density="compact" hide-details inset />
         </div>
         <div class="vs-row">
+          <span>{{ $t('settings.show_crosshair') }}</span>
+          <v-switch v-model="viewerStore.showCrosshair" color="primary" density="compact" hide-details inset />
+        </div>
+        <div class="vs-row">
           <span>{{ $t('settings.grid_snap_step') }}</span>
           <v-text-field
             v-model="gridStepInput"

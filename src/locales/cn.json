@@ -114,6 +114,7 @@
     "results_scale": "结果缩放",
     "grid_snap_step": "网格吸附步长",
     "snap_to_grid": "吸附到网格",
+    "show_crosshair": "显示十字准线",
     "number_format": "数字格式",
     "number_format_description": "结果数值的书写方式；小数分隔符跟随语言。",
     "number_format_auto": "自动",

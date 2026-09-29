@@ -114,6 +114,7 @@
     "results_scale": "Results scale",
     "grid_snap_step": "Grid snap step",
     "snap_to_grid": "Snap to grid",
+    "show_crosshair": "Show crosshair",
     "number_format": "Number format",
     "number_format_description": "How result values are written; the decimal separator follows the language.",
     "number_format_auto": "Automatic",

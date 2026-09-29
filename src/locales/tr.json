@@ -114,6 +114,7 @@
     "results_scale": "Sonuç ölçeği",
     "grid_snap_step": "Izgara adımı",
     "snap_to_grid": "Izgaraya yasla",
+    "show_crosshair": "Artı imlecini göster",
     "number_format": "Sayı biçimi",
     "number_format_description": "Sonuç değerlerinin nasıl yazılacağı; ondalık ayırıcı dile göre belirlenir.",
     "number_format_auto": "Otomatik",

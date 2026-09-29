@@ -480,14 +480,14 @@
     "crossSectionInUse": "Cross-section is used by element(s) {elements}. Reassign them before deleting it."
   },
   "solveDiagnostics": {
-    "summaryErrors": "Model has {errors} error(s).",
-    "summaryWarnings": "Model has {warnings} warning(s).",
-    "summaryBoth": "Model has {errors} error(s) and {warnings} warning(s).",
+    "summaryErrors": "Errors in the model: {errors}",
+    "summaryWarnings": "Warnings in the model: {warnings}",
     "summaryIncomplete": "{count} parts of the structure need supports.",
     "incompleteChip": "Needs supports",
     "hideMotion": "Hide the movement",
     "showMotion": "Show the movement",
     "dismissWarnings": "Hide these warnings",
+    "collapseErrors": "Make this message smaller",
     "showDetails": "Show details",
     "blockedTitle": "Cannot solve model",
     "blockedDescription": "Fix the listed errors before solving the model.",
@@ -519,6 +519,8 @@
       "mechanismShort": "The supports do not hold the structure: it can still {motion}.",
       "partMechanism": "A separate part of the structure (nodes {nodes}) has enough supports but they do not hold it: it can still {motion}. Supports that are all parallel, or whose lines of action meet in one point, leave the structure free to move.",
       "partMechanismShort": "The part with nodes {nodes} is not held: it can still {motion}.",
+      "hingeMechanism": "The supports hold the structure, but it is still a mechanism: its members can turn about the hinges at node {nodes}. Remove a hinge, or add a member or a support that stops the motion.",
+      "hingeMechanismShort": "The hinges at node {nodes} let the structure move.",
       "motion": {
         "horizontal": "slide horizontally",
         "vertical": "move vertically",
@@ -526,6 +528,7 @@
         "mixed": "move as a rigid body"
       },
       "unstable": "Structure is unstable: {dofs} moves practically without resistance. Add a support or an element, remove an end hinge, or check the cross section stiffness.",
+      "unstableShort": "The structure is unstable: it moves almost without resistance.",
       "unstableDof": {
         "dx": "node {node} horizontally (Dx)",
         "dz": "node {node} vertically (D{v})",
@@ -534,6 +537,7 @@
       },
       "unstableMore": "{list} and {count} more",
       "singularMatrix": "Structure is a mechanism: the stiffness matrix is singular. Check that every part is held by at least 3 restraints and that end hinges do not leave a member free to rotate.",
+      "singularMatrixShort": "The structure is a mechanism: it can move without resistance.",
       "solverFailed": "Solver failed due to an internal model inconsistency. Please review model references and loads."
     }
   },

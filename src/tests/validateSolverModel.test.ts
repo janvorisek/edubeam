@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { LinearStaticSolver, DofID } from 'ts-fem';
 import { findMechanismIssues, validateSolverModel } from '@/utils/validateSolverModel';
+import { buildExampleSolver, examples } from '@/utils/examples';
 
 const codes = (issues: { code: string }[]) => issues.map((issue) => issue.code);
 
@@ -225,5 +226,106 @@ describe('findMechanismIssues', () => {
 
     // The store turns this exact message into a SINGULAR_STIFFNESS_MATRIX diagnostic.
     expect(() => ls.solve()).toThrowError(/singular/i);
+  });
+});
+
+describe('hinge mechanisms', () => {
+  /** The default portal frame with the given supports and end hinges per element. */
+  const buildHingedFrame = (bcs: Record<string, DofID[]>, hinges: Record<string, [boolean, boolean]>) => {
+    const ls = new LinearStaticSolver();
+    const d = ls.domain;
+    d.createCrossSection(1, { a: 1, iy: 8.356e-5, iz: 1.0, dyz: 999991.0, h: 1, k: 1e32, j: 99999.0 });
+    d.createMaterial(1, { e: 210000e6, g: 210000e6 / (2 * 1.2), alpha: 12e-6, d: 4000 });
+    d.createNode('1', [0, 0, 0], bcs['1'] ?? []);
+    d.createNode('2', [0, 0, -3], bcs['2'] ?? []);
+    d.createNode('3', [3, 0, -3], bcs['3'] ?? []);
+    d.createNode('4', [3, 0, 0], bcs['4'] ?? []);
+    d.createBeam2D('1', ['1', '2'], 1, 1, hinges['1'] ?? [false, false]);
+    d.createBeam2D('2', ['2', '3'], 1, 1, hinges['2'] ?? [false, false]);
+    d.createBeam2D('3', ['3', '4'], 1, 1, hinges['3'] ?? [false, false]);
+    ls.loadCases[0].createNodalLoad('2', [10000, 0, 0, 0, 0, 0]);
+    return ls;
+  };
+
+  it('catches a frame that sways about its hinges although the supports are fine', () => {
+    // A roller and a pin hold the frame as a rigid body, but hinges at the top of both
+    // columns let it sway: the solver only says "singular", this says where.
+    const ls = buildHingedFrame(
+      { '1': [DofID.Dz], '4': [DofID.Dx, DofID.Dz] },
+      { '1': [false, true], '3': [true, false] }
+    );
+    const issue = validateSolverModel(ls).errors.find((e) => e.code === 'HINGE_MECHANISM');
+
+    expect(issue).toBeDefined();
+    // Two independent motions - column 1 swinging on its roller, the rest swaying - and both
+    // hinges take part, so both are pointed at.
+    expect(issue?.nodes?.sort()).toEqual(['2', '3']);
+    expect(issue?.summary).toMatch(/^The hinges at node/);
+    expect(Math.max(...[...issue!.motion!.values()].map(([u, w]) => Math.hypot(u, w)))).toBeCloseTo(1);
+  });
+
+  it('catches four pinned bars moving as a linkage', () => {
+    const ls = buildHingedFrame({ '1': [DofID.Dx, DofID.Dz], '4': [DofID.Dx, DofID.Dz] }, { '2': [true, true] });
+    const issue = validateSolverModel(ls).errors.find((e) => e.code === 'HINGE_MECHANISM');
+
+    expect(issue?.nodes?.sort()).toEqual(['2', '3']);
+    // The beam sways sideways: both of its ends move horizontally by the same amount.
+    const [u2] = issue!.motion!.get('2')!;
+    const [u3] = issue!.motion!.get('3')!;
+    expect(Math.abs(u2)).toBeGreaterThan(0.5);
+    expect(u3).toBeCloseTo(u2);
+  });
+
+  it('accepts a three-hinged frame', () => {
+    const ls = buildHingedFrame({ '1': [DofID.Dx, DofID.Dz], '4': [DofID.Dx, DofID.Dz] }, { '2': [true, false] });
+
+    expect(validateSolverModel(ls).errors).toEqual([]);
+    ls.solve();
+    expect(findMechanismIssues(ls)).toEqual([]);
+  });
+
+  it('accepts a hinge the rest of the frame holds', () => {
+    // A fixed column carries the rest of the frame through a hinge; a roller steadies the far end.
+    const ls = buildHingedFrame({ '1': [DofID.Dx, DofID.Dz, DofID.Ry], '4': [DofID.Dz] }, { '1': [false, true] });
+
+    expect(validateSolverModel(ls).errors).toEqual([]);
+    ls.solve();
+    expect(findMechanismIssues(ls)).toEqual([]);
+  });
+
+  it('lets a node spin where every element is hinged, as a pin-jointed truss does', () => {
+    const ls = new LinearStaticSolver();
+    const d = ls.domain;
+    d.createMaterial('m', { d: 7850, e: 210e9, g: 80e9, alpha: 12e-6 });
+    d.createCrossSection('cs', { a: 0.01, iy: 8e-5, h: 0.2, k: 1e32 });
+    d.createNode('1', [0, 0, 0], [DofID.Dx, DofID.Dz]);
+    d.createNode('2', [4, 0, 0], [DofID.Dz]);
+    d.createNode('3', [2, 0, -2], []);
+    d.createBeam2D('a', ['1', '2'], 'm', 'cs', [true, true]);
+    d.createBeam2D('b', ['2', '3'], 'm', 'cs', [true, true]);
+    d.createBeam2D('c', ['3', '1'], 'm', 'cs', [true, true]);
+    ls.loadCases[0].createNodalLoad('3', [0, 0, 1000, 0, 0, 0]);
+
+    expect(validateSolverModel(ls).errors).toEqual([]);
+    ls.solve();
+    expect(findMechanismIssues(ls)).toEqual([]);
+  });
+
+  it('catches a pin-jointed square without a diagonal', () => {
+    const ls = buildHingedFrame(
+      { '1': [DofID.Dx, DofID.Dz], '4': [DofID.Dz] },
+      { '1': [true, true], '2': [true, true], '3': [true, true] }
+    );
+
+    expect(codes(validateSolverModel(ls).errors)).toEqual(['HINGE_MECHANISM']);
+  });
+
+  it('finds nothing wrong with any of the examples', () => {
+    for (const example of examples) {
+      expect({ example: example.id, errors: codes(validateSolverModel(buildExampleSolver(example)).errors) }).toEqual({
+        example: example.id,
+        errors: [],
+      });
+    }
   });
 });

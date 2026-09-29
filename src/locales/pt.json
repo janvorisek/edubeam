@@ -482,12 +482,12 @@
   "solveDiagnostics": {
     "summaryErrors": "Erros no modelo: {errors}",
     "summaryWarnings": "Avisos no modelo: {warnings}",
-    "summaryBoth": "Erros no modelo: {errors}, avisos: {warnings}",
     "summaryIncomplete": "{count} partes da estrutura precisam de apoios.",
     "incompleteChip": "Faltam apoios",
     "hideMotion": "Ocultar o movimento",
     "showMotion": "Mostrar o movimento",
     "dismissWarnings": "Ocultar estes avisos",
+    "collapseErrors": "Reduzir esta mensagem",
     "showDetails": "Mostrar detalhes",
     "blockedTitle": "Não é possível resolver o modelo",
     "blockedDescription": "Corrija os erros listados antes de resolver o modelo.",
@@ -519,6 +519,8 @@
       "mechanismShort": "Os apoios não fixam a estrutura: ela ainda pode {motion}.",
       "partMechanism": "Uma parte separada da estrutura (nós {nodes}) tem apoios suficientes, mas eles não a fixam: ela ainda pode {motion}. Apoios todos paralelos, ou cujas linhas de ação se encontram num único ponto, deixam a estrutura livre para se mover.",
       "partMechanismShort": "A parte com os nós {nodes} não está fixada: ela ainda pode {motion}.",
+      "hingeMechanism": "Os apoios fixam a estrutura, mas ela ainda é um mecanismo: suas barras podem girar em torno das articulações do nó {nodes}. Remova uma articulação ou adicione uma barra ou um apoio que impeça o movimento.",
+      "hingeMechanismShort": "As articulações do nó {nodes} deixam a estrutura se mover.",
       "motion": {
         "horizontal": "deslizar horizontalmente",
         "vertical": "se mover verticalmente",
@@ -526,6 +528,7 @@
         "mixed": "se mover como corpo rígido"
       },
       "unstable": "A estrutura é instável. Movimentos praticamente sem resistência: {dofs}. Adicione um apoio ou um elemento, remova uma rótula de extremidade ou verifique a rigidez da seção.",
+      "unstableShort": "A estrutura é instável: move-se quase sem resistência.",
       "unstableDof": {
         "dx": "nó {node} na horizontal (Dx)",
         "dz": "nó {node} na vertical (D{v})",
@@ -534,6 +537,7 @@
       },
       "unstableMore": "{list} e mais {count}",
       "singularMatrix": "A estrutura é um mecanismo: a matriz de rigidez é singular. Verifique se cada parte está fixada por pelo menos 3 restrições e se as rótulas de extremidade não deixam uma barra livre para girar.",
+      "singularMatrixShort": "A estrutura é um mecanismo: pode se mover sem resistência.",
       "solverFailed": "O solver falhou devido a uma inconsistência interna do modelo. Revise as referências e as cargas do modelo."
     }
   },

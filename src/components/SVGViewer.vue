@@ -327,21 +327,19 @@ const isModelEmpty = computed(
 );
 
 /**
- * What the diagnostics banner says, if anything. A model still being drawn gets the next step
- * in neutral colours, not an error: a beam without supports is unfinished, not wrong. The
- * first beam task asks for the supports itself, so there the banner stays out of its way.
+ * Why there are no results, if anything. A model still being drawn gets the next step in
+ * neutral colours, not an error: a beam without supports is unfinished, not wrong. The first
+ * beam task asks for the supports itself, so there the chip stays out of its way.
  */
 const solveBanner = computed(() => {
-  const { errors, incomplete, warnings } = projectStore.solveDiagnostics;
+  const { errors, incomplete } = projectStore.solveDiagnostics;
 
   if (errors.length > 0) {
-    // A single issue says what it is; a count only helps once there are several.
+    // A single error says what it is; a count only helps once there are several.
     const text =
-      errors.length === 1 && warnings.length === 0 && errors[0].summary
-        ? errors[0].summary
-        : warnings.length > 0
-          ? t('solveDiagnostics.summaryBoth', { errors: errors.length, warnings: warnings.length })
-          : t('solveDiagnostics.summaryErrors', { errors: errors.length });
+      errors.length === 1
+        ? (errors[0].summary ?? errors[0].message)
+        : t('solveDiagnostics.summaryErrors', { errors: errors.length });
 
     // The exclamation mark the other viewer alerts use; `$error` is a cross that reads as "close".
     return { type: 'error' as const, icon: '$warning', text };
@@ -357,22 +355,35 @@ const solveBanner = computed(() => {
     return { type: 'incomplete' as const, icon: 'mdi-information-outline', text };
   }
 
-  // Warnings do not stop the solve, and some are on purpose - a spare node kept for later -
-  // so they can be closed. Only the ones closed stay away.
-  const visibleWarnings = projectStore.visibleWarnings;
-
-  if (visibleWarnings.length > 0) {
-    return {
-      type: 'warning' as const,
-      icon: '$warning',
-      text:
-        visibleWarnings.length === 1
-          ? visibleWarnings[0].message
-          : t('solveDiagnostics.summaryWarnings', { warnings: visibleWarnings.length }),
-    };
-  }
-
   return null;
+});
+
+/** The errors on screen, by what they are and where, so a re-solve of the same model matches. */
+const errorsKey = computed(() =>
+  projectStore.solveDiagnostics.errors
+    .map((issue) => `${issue.code}|${[...(issue.nodes ?? [])].sort().join(',')}`)
+    .join(';')
+);
+
+/**
+ * The errors whose banner was closed. Closing only folds it into a chip: an error is why there
+ * are no results, so it never goes away entirely, but on a small screen the banner has to make
+ * room. A different error unfolds it again; any other edit leaves it folded.
+ */
+const collapsedErrorsKey = ref<string | null>(null);
+const errorsCollapsed = computed(() => collapsedErrorsKey.value === errorsKey.value);
+
+/**
+ * Warnings get a banner of their own. They do not stop the solve, and some are on purpose - a
+ * spare node kept for later - so they can be closed, also while an error is shown.
+ */
+const warningBanner = computed(() => {
+  const warnings = projectStore.visibleWarnings;
+  if (warnings.length === 0) return null;
+
+  return warnings.length === 1
+    ? warnings[0].message
+    : t('solveDiagnostics.summaryWarnings', { warnings: warnings.length });
 });
 
 /** Whether the canvas has a motion to show, and so the banner an outline to hide. */
@@ -2562,7 +2573,7 @@ defineExpose({ centerContent, fitContent });
         <!-- An empty canvas is where every model starts, not a mistake. -->
         <v-alert v-if="isModelEmpty" icon="mdi-vector-polyline-plus" density="compact" type="info">
           <template #text>
-            <div class="d-flex align-center">
+            <div class="d-flex align-center flex-wrap">
               {{ $t('emptyModel.message') }}
               <v-btn variant="text" density="compact" size="small" @click="startFirstBeam">{{
                 $t('welcome.drawFirstBeam')
@@ -2583,20 +2594,33 @@ defineExpose({ centerContent, fitContent });
         >
           {{ $t('solveDiagnostics.incompleteChip') }}
         </v-chip>
+        <v-chip
+          v-else-if="solveBanner && errorsCollapsed"
+          color="error"
+          variant="flat"
+          size="small"
+          :prepend-icon="solveBanner.icon"
+          :title="solveBanner.text"
+          @click="collapsedErrorsKey = null"
+          @mouseenter="holdFreeMotion = true"
+          @mouseleave="holdFreeMotion = false"
+        >
+          {{ $t('solveDiagnostics.blockedTitle') }}
+        </v-chip>
         <v-alert
           v-else-if="solveBanner"
           :model-value="true"
           :icon="solveBanner.icon"
           density="compact"
           :type="solveBanner.type"
-          :closable="solveBanner.type === 'warning'"
-          :close-label="$t('solveDiagnostics.dismissWarnings')"
-          @click:close="projectStore.dismissWarnings()"
+          closable
+          :close-label="$t('solveDiagnostics.collapseErrors')"
+          @click:close="collapsedErrorsKey = errorsKey"
           @mouseenter="holdFreeMotion = true"
           @mouseleave="holdFreeMotion = false"
         >
           <template #text>
-            <div class="d-flex align-center">
+            <div class="d-flex align-center flex-wrap">
               {{ solveBanner.text }}
               <v-btn variant="text" density="compact" size="small" @click="openSolveDiagnostics">{{
                 $t('solveDiagnostics.showDetails')
@@ -2616,9 +2640,30 @@ defineExpose({ centerContent, fitContent });
         </v-alert>
       </div>
       <div style="width: fit-content">
+        <v-alert
+          v-if="warningBanner"
+          :model-value="true"
+          icon="$warning"
+          density="compact"
+          type="warning"
+          closable
+          :close-label="$t('solveDiagnostics.dismissWarnings')"
+          @click:close="projectStore.dismissWarnings()"
+        >
+          <template #text>
+            <div class="d-flex align-center flex-wrap">
+              {{ warningBanner }}
+              <v-btn variant="text" density="compact" size="small" @click="openSolveDiagnostics">{{
+                $t('solveDiagnostics.showDetails')
+              }}</v-btn>
+            </div>
+          </template>
+        </v-alert>
+      </div>
+      <div style="width: fit-content">
         <v-alert v-if="projectStore.materials.length === 0" icon="$warning" density="compact" type="error">
           <template #text>
-            <div class="d-flex align-center">
+            <div class="d-flex align-center flex-wrap">
               {{ $t('warnings.noMaterialsDefined') }}
               <v-btn variant="text" density="compact" size="small" @click="openModal(AddMaterialDialog)">{{
                 $t('common.addNew')
@@ -2630,7 +2675,7 @@ defineExpose({ centerContent, fitContent });
       <div style="width: fit-content">
         <v-alert v-if="projectStore.crossSections.length === 0" icon="$warning" density="compact" type="error">
           <template #text>
-            <div class="d-flex align-center">
+            <div class="d-flex align-center flex-wrap">
               {{ $t('warnings.noCrossSectionsDefined') }}
               <v-btn variant="text" density="compact" size="small" @click="openModal(AddCrossSectionDialog)">
                 {{ $t('common.addNew') }}
@@ -3043,7 +3088,7 @@ defineExpose({ centerContent, fitContent });
       </div>
     </div>
 
-    <div v-if="viewerStore.settingsOpen" class="" style="position: absolute; right: 24px; top: 64px; z-index: 600">
+    <div v-if="viewerStore.settingsOpen" class="display-options">
       <div id="viewerSettings" class="d-flex flex-sm-column pa-1 overflow-y-auto ga-2 align-end justify-end">
         <div
           color="grey-lighten-5"
@@ -3137,7 +3182,7 @@ defineExpose({ centerContent, fitContent });
           />
         </div>
       </div>
-      <div class="text-right text-sm-body-2 d-flex align-center justify-end">
+      <div class="text-right text-sm-body-2 d-flex align-center justify-end display-options-links">
         <HelpTip topic="diagrams" location="bottom end" />
         <button class="text-decoration-underline bg-white" @click="appStore.openSettings('appearance')">
           {{ $t('sideSettings.more_settings') }}
@@ -3148,6 +3193,24 @@ defineExpose({ centerContent, fitContent });
 </template>
 
 <style lang="scss" scoped>
+/*
+ * The display options float over the top of the viewer, where the model's messages sit too.
+ * Only the panels themselves take the pointer; the gaps around them, which on a phone fall
+ * right across the messages, let taps through to what is underneath.
+ */
+.display-options {
+  position: absolute;
+  right: 24px;
+  top: 64px;
+  z-index: 600;
+  pointer-events: none;
+}
+
+.display-options #viewerSettings > *,
+.display-options-links > * {
+  pointer-events: auto;
+}
+
 /*
  * The plain variant reserves 8px above the text for a floating label this field does not use,
  * which drops the angle below the Dx/Dz/Ry labels sitting next to it in the banner.

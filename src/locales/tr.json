@@ -482,12 +482,12 @@
   "solveDiagnostics": {
     "summaryErrors": "Modelde {errors} hata var.",
     "summaryWarnings": "Modelde {warnings} uyarı var.",
-    "summaryBoth": "Modelde {errors} hata ve {warnings} uyarı var.",
     "summaryIncomplete": "Yapının {count} parçasının mesnete ihtiyacı var.",
     "incompleteChip": "Mesnet gerekli",
     "hideMotion": "Hareketi gizle",
     "showMotion": "Hareketi göster",
     "dismissWarnings": "Bu uyarıları gizle",
+    "collapseErrors": "Bu mesajı küçült",
     "showDetails": "Ayrıntıları göster",
     "blockedTitle": "Model çözülemiyor",
     "blockedDescription": "Modeli çözmeden önce listelenen hataları giderin.",
@@ -519,6 +519,8 @@
       "mechanismShort": "Mesnetler yapıyı tutmuyor: yapı hâlâ {motion}.",
       "partMechanism": "Yapının ayrık bir parçasında (düğümler {nodes}) yeterli sayıda mesnet var, ancak bu mesnetler parçayı tutmuyor: parça hâlâ {motion}. Mesnet doğrultularının tümü paralelse veya tek bir noktada kesişiyorsa sistem labildir.",
       "partMechanismShort": "{nodes} düğümlü parça tutulmuyor: hâlâ {motion}.",
+      "hingeMechanism": "Mesnetler yapıyı tutuyor, ancak yapı yine de bir mekanizma: çubukları {nodes} düğümündeki mafsallar etrafında dönebiliyor. Bir mafsalı kaldırın ya da hareketi durduracak bir çubuk veya mesnet ekleyin.",
+      "hingeMechanismShort": "{nodes} düğümündeki mafsallar yapının hareket etmesine izin veriyor.",
       "motion": {
         "horizontal": "yatay doğrultuda kayabiliyor",
         "vertical": "düşey doğrultuda hareket edebiliyor",
@@ -526,6 +528,7 @@
         "mixed": "rijit cisim olarak hareket edebiliyor"
       },
       "unstable": "Yapı labil: {dofs} pratikte hiçbir dirençle karşılaşmıyor. Bir mesnet veya eleman ekleyin, bir uç mafsalını kaldırın ya da kesit rijitliğini kontrol edin.",
+      "unstableShort": "Yapı kararsız: neredeyse hiç direnç göstermeden hareket ediyor.",
       "unstableDof": {
         "dx": "{node} düğümünün yatay yer değiştirmesi (Dx)",
         "dz": "{node} düğümünün düşey yer değiştirmesi (D{v})",
@@ -534,6 +537,7 @@
       },
       "unstableMore": "{list} ve {count} tane daha",
       "singularMatrix": "Yapı bir mekanizma: rijitlik matrisi tekil. Her parçanın en az 3 bağla tutulduğunu ve uç mafsallarının hiçbir çubuğu serbestçe dönebilir bırakmadığını kontrol edin.",
+      "singularMatrixShort": "Yapı bir mekanizma: dirençsiz hareket edebiliyor.",
       "solverFailed": "Modeldeki bir iç tutarsızlık nedeniyle çözüm başarısız oldu. Lütfen modeldeki bağlantıları ve yükleri gözden geçirin."
     }
   },

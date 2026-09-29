@@ -482,12 +482,12 @@
   "solveDiagnostics": {
     "summaryErrors": "Fehler im Modell: {errors}",
     "summaryWarnings": "Warnungen im Modell: {warnings}",
-    "summaryBoth": "Fehler im Modell: {errors}, Warnungen: {warnings}",
     "summaryIncomplete": "{count} Teile der Struktur brauchen Lager.",
     "incompleteChip": "Lager fehlen",
     "hideMotion": "Bewegung ausblenden",
     "showMotion": "Bewegung anzeigen",
     "dismissWarnings": "Diese Warnungen ausblenden",
+    "collapseErrors": "Diese Meldung verkleinern",
     "showDetails": "Details anzeigen",
     "blockedTitle": "Modell kann nicht berechnet werden",
     "blockedDescription": "Beheben Sie die aufgeführten Fehler, bevor Sie das Modell berechnen.",
@@ -519,6 +519,8 @@
       "mechanismShort": "Die Lager halten die Struktur nicht: Sie kann sich noch {motion}.",
       "partMechanism": "Ein separater Teil der Struktur (Knoten {nodes}) hat genügend Lager, die ihn aber nicht festhalten: Er kann sich noch {motion}. Lager, die alle parallel sind oder deren Wirkungslinien sich in einem Punkt schneiden, lassen die Struktur beweglich.",
       "partMechanismShort": "Der Teil mit den Knoten {nodes} wird nicht gehalten: Er kann sich noch {motion}.",
+      "hingeMechanism": "Die Lager halten die Struktur, sie ist aber trotzdem ein Mechanismus: Ihre Stäbe können sich um die Gelenke am Knoten {nodes} drehen. Entfernen Sie ein Gelenk oder fügen Sie einen Stab oder ein Lager hinzu, das die Bewegung verhindert.",
+      "hingeMechanismShort": "Die Gelenke am Knoten {nodes} lassen die Struktur sich bewegen.",
       "motion": {
         "horizontal": "horizontal verschieben",
         "vertical": "vertikal verschieben",
@@ -526,6 +528,7 @@
         "mixed": "als starrer Körper bewegen"
       },
       "unstable": "Die Struktur ist instabil. Praktisch ohne Widerstand beweglich: {dofs}. Fügen Sie ein Lager oder ein Element hinzu, entfernen Sie ein Endgelenk oder prüfen Sie die Steifigkeit des Querschnitts.",
+      "unstableShort": "Die Struktur ist instabil: Sie bewegt sich fast ohne Widerstand.",
       "unstableDof": {
         "dx": "Knoten {node} horizontal (Dx)",
         "dz": "Knoten {node} vertikal (D{v})",
@@ -534,6 +537,7 @@
       },
       "unstableMore": "{list} und {count} weitere",
       "singularMatrix": "Die Struktur ist kinematisch: Die Steifigkeitsmatrix ist singulär. Prüfen Sie, ob jeder Teil durch mindestens 3 Bindungen gehalten wird und ob Endgelenke keinen Stab frei drehbar lassen.",
+      "singularMatrixShort": "Die Struktur ist ein Mechanismus: Sie kann sich ohne Widerstand bewegen.",
       "solverFailed": "Die Berechnung ist wegen einer internen Inkonsistenz des Modells fehlgeschlagen. Bitte überprüfen Sie die Referenzen und Lasten im Modell."
     }
   },

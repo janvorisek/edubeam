@@ -482,12 +482,12 @@
   "solveDiagnostics": {
     "summaryErrors": "模型有 {errors} 个错误。",
     "summaryWarnings": "模型有 {warnings} 个警告。",
-    "summaryBoth": "模型有 {errors} 个错误和 {warnings} 个警告。",
     "summaryIncomplete": "结构中有 {count} 个部分需要支座。",
     "incompleteChip": "需要支座",
     "hideMotion": "隐藏运动",
     "showMotion": "显示运动",
     "dismissWarnings": "隐藏这些警告",
+    "collapseErrors": "缩小此消息",
     "showDetails": "显示详情",
     "blockedTitle": "无法求解模型",
     "blockedDescription": "求解模型前请先修正下列错误。",
@@ -519,6 +519,8 @@
       "mechanismShort": "支座无法固定结构：结构仍可{motion}。",
       "partMechanism": "结构中一个独立部分（节点 {nodes}）的支座数量足够，但无法将其固定：该部分仍可{motion}。若所有支座相互平行，或其作用线交于一点，结构仍可自由运动。",
       "partMechanismShort": "包含节点 {nodes} 的部分未被固定：仍可{motion}。",
+      "hingeMechanism": "支座能够固定结构，但它仍是机构：杆件可绕节点 {nodes} 处的铰转动。请去掉一个铰，或添加能阻止运动的杆件或支座。",
+      "hingeMechanismShort": "节点 {nodes} 处的铰使结构可以运动。",
       "motion": {
         "horizontal": "水平滑动",
         "vertical": "竖向移动",
@@ -526,6 +528,7 @@
         "mixed": "作刚体运动"
       },
       "unstable": "结构不稳定：以下自由度几乎没有抵抗即可运动：{dofs}。请添加支座或单元、取消端部铰接，或检查截面刚度。",
+      "unstableShort": "结构不稳定：几乎可以无阻力地运动。",
       "unstableDof": {
         "dx": "节点 {node} 水平方向 (Dx)",
         "dz": "节点 {node} 竖向 (D{v})",
@@ -534,6 +537,7 @@
       },
       "unstableMore": "{list} 以及另外 {count} 个",
       "singularMatrix": "结构为机构：刚度矩阵奇异。请检查每个部分是否至少有 3 个约束，以及端部铰接是否导致某根杆件可以自由转动。",
+      "singularMatrixShort": "结构是机构：可以无阻力地运动。",
       "solverFailed": "由于模型内部不一致，求解失败。请检查模型中的引用和荷载。"
     }
   },

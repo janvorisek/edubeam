@@ -482,12 +482,12 @@
   "solveDiagnostics": {
     "summaryErrors": "Błędy w modelu: {errors}",
     "summaryWarnings": "Ostrzeżenia w modelu: {warnings}",
-    "summaryBoth": "Błędy w modelu: {errors}, ostrzeżenia: {warnings}",
     "summaryIncomplete": "Części konstrukcji bez podpór: {count}.",
     "incompleteChip": "Brak podpór",
     "hideMotion": "Ukryj ruch",
     "showMotion": "Pokaż ruch",
     "dismissWarnings": "Ukryj te ostrzeżenia",
+    "collapseErrors": "Zmniejsz ten komunikat",
     "showDetails": "Pokaż szczegóły",
     "blockedTitle": "Nie można rozwiązać modelu",
     "blockedDescription": "Przed rozwiązaniem modelu popraw wymienione błędy.",
@@ -519,6 +519,8 @@
       "mechanismShort": "Podpory nie utrzymują konstrukcji: nadal może {motion}.",
       "partMechanism": "Oddzielna część konstrukcji (węzły {nodes}) ma wystarczającą liczbę podpór, ale nie utrzymują jej one: nadal może {motion}. Podpory, które są wszystkie równoległe lub których kierunki działania przecinają się w jednym punkcie, pozwalają konstrukcji się przemieszczać.",
       "partMechanismShort": "Część z węzłami {nodes} nie jest utrzymana: nadal może {motion}.",
+      "hingeMechanism": "Podpory utrzymują konstrukcję, ale nadal jest ona mechanizmem: jej pręty mogą się obracać wokół przegubów w węźle {nodes}. Usuń przegub lub dodaj pręt albo podporę, która zatrzyma ruch.",
+      "hingeMechanismShort": "Przeguby w węźle {nodes} pozwalają konstrukcji się poruszać.",
       "motion": {
         "horizontal": "przesuwać się poziomo",
         "vertical": "przemieszczać się pionowo",
@@ -526,6 +528,7 @@
         "mixed": "przemieszczać się jak ciało sztywne"
       },
       "unstable": "Konstrukcja jest niestateczna – praktycznie bez oporu przemieszcza się: {dofs}. Dodaj podporę lub element, usuń przegub końcowy albo sprawdź sztywność przekroju.",
+      "unstableShort": "Konstrukcja jest niestabilna: porusza się niemal bez oporu.",
       "unstableDof": {
         "dx": "węzeł {node} poziomo (Dx)",
         "dz": "węzeł {node} pionowo (D{v})",
@@ -534,6 +537,7 @@
       },
       "unstableMore": "{list} i jeszcze {count}",
       "singularMatrix": "Konstrukcja jest mechanizmem: macierz sztywności jest osobliwa. Sprawdź, czy każda część jest utrzymywana przez co najmniej 3 więzy i czy przeguby końcowe nie pozostawiają pręta swobodnie obracającego się.",
+      "singularMatrixShort": "Konstrukcja jest mechanizmem: może się poruszać bez oporu.",
       "solverFailed": "Obliczenia nie powiodły się z powodu wewnętrznej niespójności modelu. Sprawdź odwołania w modelu i obciążenia."
     }
   },

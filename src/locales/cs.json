@@ -482,12 +482,12 @@
   "solveDiagnostics": {
     "summaryErrors": "Chyby v modelu: {errors}",
     "summaryWarnings": "Varování v modelu: {warnings}",
-    "summaryBoth": "Chyby v modelu: {errors}, varování: {warnings}",
     "summaryIncomplete": "Podpory chybí u částí konstrukce: {count}.",
     "incompleteChip": "Chybí podpory",
     "hideMotion": "Skrýt pohyb",
     "showMotion": "Zobrazit pohyb",
     "dismissWarnings": "Skrýt tato upozornění",
+    "collapseErrors": "Zmenšit tuto zprávu",
     "showDetails": "Zobrazit podrobnosti",
     "blockedTitle": "Model nelze vypočítat",
     "blockedDescription": "Před výpočtem opravte uvedené chyby.",
@@ -519,6 +519,8 @@
       "mechanismShort": "Podpory konstrukci nezajišťují: stále se může {motion}.",
       "partMechanism": "Samostatná část konstrukce (uzly {nodes}) má dostatek podpor, ale ty ji nezajišťují: stále se může {motion}. Jsou-li všechny vazby rovnoběžné nebo se jejich nositelky protínají v jednom bodě, konstrukce se může volně pohybovat.",
       "partMechanismShort": "Část s uzly {nodes} není zajištěna: stále se může {motion}.",
+      "hingeMechanism": "Podpory konstrukci drží, ale přesto je to mechanismus: její pruty se mohou otáčet kolem kloubů v uzlu {nodes}. Odstraňte kloub nebo přidejte prut či podporu, která pohybu zabrání.",
+      "hingeMechanismShort": "Klouby v uzlu {nodes} umožňují konstrukci pohyb.",
       "motion": {
         "horizontal": "posouvat vodorovně",
         "vertical": "posouvat svisle",
@@ -526,6 +528,7 @@
         "mixed": "pohybovat jako tuhý celek"
       },
       "unstable": "Konstrukce je nestabilní – tyto pohyby nemají prakticky žádný odpor: {dofs}. Přidejte podporu nebo prvek, odstraňte koncový kloub nebo zkontrolujte tuhost průřezu.",
+      "unstableShort": "Konstrukce je nestabilní: pohybuje se téměř bez odporu.",
       "unstableDof": {
         "dx": "vodorovný posun uzlu {node} (Dx)",
         "dz": "svislý posun uzlu {node} (D{v})",
@@ -534,6 +537,7 @@
       },
       "unstableMore": "{list} a další ({count})",
       "singularMatrix": "Konstrukce je mechanismus: matice tuhosti je singulární. Zkontrolujte, zda je každá část zajištěna alespoň 3 vazbami a zda koncové klouby nenechávají některý prut volně otočný.",
+      "singularMatrixShort": "Konstrukce je mechanismus: může se pohybovat bez odporu.",
       "solverFailed": "Výpočet selhal kvůli vnitřní nekonzistenci modelu. Zkontrolujte prosím odkazy v modelu a zatížení."
     }
   },

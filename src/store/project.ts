@@ -169,8 +169,11 @@ export const useProjectStore = defineStore(
 
         failWith(
           isSingular
-            ? solveIssue('error', 'SINGULAR_STIFFNESS_MATRIX', () =>
-                i18n.global.t('solveDiagnostics.issues.singularMatrix')
+            ? solveIssue(
+                'error',
+                'SINGULAR_STIFFNESS_MATRIX',
+                () => i18n.global.t('solveDiagnostics.issues.singularMatrix'),
+                { summary: () => i18n.global.t('solveDiagnostics.issues.singularMatrixShort') }
               )
             : solveIssue('error', 'SOLVER_RUNTIME_EXCEPTION', () =>
                 i18n.global.t('solveDiagnostics.issues.solverFailed')

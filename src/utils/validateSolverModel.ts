@@ -429,6 +429,221 @@ const supportedNodes = (solver: LinearStaticSolver, nodeLabels: string[]) =>
     return node ? PLANAR_DOFS.some((dof) => node.bcs.has(dof)) : false;
   });
 
+/** A motion that deforms no element, and the hinges it turns about. */
+interface KinematicMechanism {
+  motion: FreeMotion;
+  hinges: string[];
+}
+
+/**
+ * Finds every way a part can move without any of its elements deforming.
+ *
+ * Each element gives one equation for its axial stretch and one for each end that is not
+ * hinged: that end has to turn with the member's chord. Each support gives one more. A
+ * displacement that satisfies all of them is a mechanism, whatever the stiffnesses are, so
+ * this catches what the rigid body check cannot: hinges that let members turn against each
+ * other while the supports themselves are fine. It is decided on geometry and hinges alone,
+ * which keeps it independent of units and of a shear coefficient that may be 1e32.
+ */
+const findKinematicMechanism = (solver: LinearStaticSolver, nodeLabels: string[]): KinematicMechanism | null => {
+  const domain = solver.domain;
+  const index = new Map(nodeLabels.map((label, i) => [label, i]));
+  const u = (i: number) => 3 * i;
+  const w = (i: number) => 3 * i + 1;
+  const phi = (i: number) => 3 * i + 2;
+
+  // Same normalisation as the rigid body check, so one tolerance works at any model size.
+  const coords = nodeLabels.map((label) => domain.nodes.get(label)!.coords);
+  const originX = coords.reduce((sum, c) => sum + c[0], 0) / coords.length;
+  const originZ = coords.reduce((sum, c) => sum + c[2], 0) / coords.length;
+  const span = Math.max(...coords.map((c) => Math.max(Math.abs(c[0] - originX), Math.abs(c[2] - originZ))));
+  const scale = span > 1e-9 ? span : 1;
+  const x = (i: number) => (coords[i][0] - originX) / scale;
+  const z = (i: number) => (coords[i][2] - originZ) / scale;
+
+  const columns = 3 * nodeLabels.length;
+  const rows: number[][] = [];
+  const row = (entries: [number, number][]) => {
+    const r = new Array(columns).fill(0);
+    for (const [column, value] of entries) r[column] += value;
+    rows.push(r);
+  };
+
+  /** Whether some element end at the node turns with the node, so its rotation is held by it. */
+  const heldRotation = new Array(nodeLabels.length).fill(false);
+  const members: { a: number; b: number; hinged: [boolean, boolean] }[] = [];
+
+  for (const element of domain.elements.values()) {
+    const ends = (element.nodes ?? []).map((label) => index.get(toLabel(label)));
+    if (ends.length !== 2 || ends[0] === undefined || ends[1] === undefined || ends[0] === ends[1]) continue;
+
+    const [a, b] = ends as [number, number];
+    const hinged = ((element as { hinges?: [boolean, boolean] }).hinges ?? [false, false]) as [boolean, boolean];
+    const dx = x(b) - x(a);
+    const dz = z(b) - z(a);
+    const l2 = dx * dx + dz * dz;
+    if (l2 < 1e-18) continue;
+
+    const l = Math.sqrt(l2);
+    members.push({ a, b, hinged });
+
+    // No stretch along the member.
+    row([
+      [u(a), -dx / l],
+      [w(a), -dz / l],
+      [u(b), dx / l],
+      [w(b), dz / l],
+    ]);
+
+    // A rigid end turns with the chord, whose rotation is (Δw·Δx − Δu·Δz) / L².
+    hinged.forEach((isHinged, end) => {
+      if (isHinged) return;
+
+      const node = end === 0 ? a : b;
+      heldRotation[node] = true;
+      row([
+        [phi(node), 1],
+        [w(b), -dx / l2],
+        [w(a), dx / l2],
+        [u(b), dz / l2],
+        [u(a), -dz / l2],
+      ]);
+    });
+  }
+
+  nodeLabels.forEach((label, i) => {
+    const node = domain.nodes.get(label)!;
+
+    if (node.bcs.has(DofID.Ry)) {
+      heldRotation[i] = true;
+      row([[phi(i), 1]]);
+    }
+
+    for (const dof of [DofID.Dx, DofID.Dz]) {
+      if (!node.bcs.has(dof)) continue;
+
+      const [ex, ez] = restraintDirection(node, dof);
+      row([
+        [u(i), ex],
+        [w(i), ez],
+      ]);
+    }
+  });
+
+  // A node where every element end is hinged has a rotation nothing touches. That is fine -
+  // it is how a pin-jointed truss is drawn, and the solver leaves an unloaded rotation at 0 -
+  // but it would fill the search with nodes spinning in place, so it is left out.
+  const active = [...Array(columns).keys()].filter((c) => c % 3 !== 2 || heldRotation[Math.floor(c / 3)]);
+
+  // Row reduce over the remaining columns; any column without a pivot is a free motion.
+  // Eliminating only below each pivot and back substituting afterwards keeps this a fraction
+  // of what the solve itself costs, even for a few hundred nodes.
+  const matrix = rows.map((r) => Float64Array.from(active, (c) => r[c]));
+  const TOLERANCE = 1e-9;
+  const pivotColumns: number[] = [];
+  let pivotRow = 0;
+
+  for (let column = 0; column < active.length && pivotRow < matrix.length; column++) {
+    let best = pivotRow;
+    for (let i = pivotRow + 1; i < matrix.length; i++) {
+      if (Math.abs(matrix[i][column]) > Math.abs(matrix[best][column])) best = i;
+    }
+    if (Math.abs(matrix[best][column]) < TOLERANCE) continue;
+
+    [matrix[pivotRow], matrix[best]] = [matrix[best], matrix[pivotRow]];
+    const pivot = matrix[pivotRow];
+
+    for (let i = pivotRow + 1; i < matrix.length; i++) {
+      const factor = matrix[i][column] / pivot[column];
+      if (factor === 0) continue;
+      for (let c = column; c < active.length; c++) matrix[i][c] -= factor * pivot[c];
+    }
+
+    pivotColumns.push(column);
+    pivotRow++;
+  }
+
+  const freeColumns = active.map((_, column) => column).filter((column) => !pivotColumns.includes(column));
+  if (freeColumns.length === 0) return null;
+
+  /** One motion from the null space: a free unknown set to 1, the others to 0, the pivots back substituted. */
+  const basisMotion = (free: number) => {
+    const reduced = new Float64Array(active.length);
+    reduced[free] = 1;
+    for (let r = pivotColumns.length - 1; r >= 0; r--) {
+      const column = pivotColumns[r];
+      let sum = 0;
+      for (let c = column + 1; c < active.length; c++) sum += matrix[r][c] * reduced[c];
+      reduced[column] = -sum / matrix[r][column];
+    }
+
+    const mode = new Array(columns).fill(0);
+    active.forEach((column, k) => (mode[column] = reduced[k]));
+    return mode;
+  };
+
+  const chordRotation = (mode: number[], { a, b }: { a: number; b: number }) => {
+    const dx = x(b) - x(a);
+    const dz = z(b) - z(a);
+    return ((mode[w(b)] - mode[w(a)]) * dx - (mode[u(b)] - mode[u(a)]) * dz) / (dx * dx + dz * dz);
+  };
+
+  const hingeNodes = new Set<number>();
+  for (const member of members) {
+    member.hinged.forEach((isHinged, end) => {
+      if (isHinged) hingeNodes.add(end === 0 ? member.a : member.b);
+    });
+  }
+
+  /** Hinges a motion turns about: nodes where the members meeting there rotate by different amounts. */
+  const turningHinges = (mode: number[]) => {
+    const largest = Math.max(...mode.map(Math.abs));
+
+    return [...hingeNodes].filter((node) => {
+      const rotations = members
+        .filter((member) => member.a === node || member.b === node)
+        .map((member) => chordRotation(mode, member));
+      // A node that turns with a rigid end or a rotational support counts as one more member.
+      if (heldRotation[node]) rotations.push(mode[phi(node)]);
+
+      return Math.max(...rotations) - Math.min(...rotations) > 1e-6 * largest;
+    });
+  };
+
+  // A structure can have several independent ways to move - one column swinging on its own
+  // while the rest sways. Every one of them is found, their hinges all pointed at, and the
+  // outline shows them together, weighted apart so they cannot cancel out.
+  const modes = freeColumns.map(basisMotion);
+  const hinges = new Set(modes.flatMap(turningHinges));
+  const combined = new Array(columns).fill(0);
+
+  modes.forEach((mode, k) => {
+    const size = Math.max(...nodeLabels.map((_, i) => Math.hypot(mode[u(i)], mode[w(i)]))) || 1;
+    const weight = 1 / (k + 1);
+    mode.forEach((value, c) => (combined[c] += (weight * value) / size));
+  });
+
+  const motion: FreeMotion = new Map(nodeLabels.map((label, i) => [label, [combined[u(i)], combined[w(i)]]]));
+
+  return { motion: normalizeMotion(motion) ?? motion, hinges: [...hinges].map((node) => nodeLabels[node]) };
+};
+
+const appendKinematicIssues = (solver: LinearStaticSolver, part: string[], diagnostics: SolveDiagnostics) => {
+  const mechanism = findKinematicMechanism(solver, part);
+  if (!mechanism) return;
+
+  // Without hinges to point at, the supports are what let it move.
+  const nodes = mechanism.hinges.length > 0 ? mechanism.hinges : supportedNodes(solver, part);
+
+  diagnostics.errors.push(
+    solveIssue('error', 'HINGE_MECHANISM', () => t('hingeMechanism', { nodes: formatNodeList(nodes) }), {
+      nodes,
+      motion: mechanism.motion,
+      summary: () => t('hingeMechanismShort', { nodes: formatNodeList(nodes) }),
+    })
+  );
+};
+
 const appendStabilityIssues = (solver: LinearStaticSolver, diagnostics: SolveDiagnostics) => {
   const { parts, orphans } = findConnectedParts(solver);
 
@@ -448,7 +663,12 @@ const appendStabilityIssues = (solver: LinearStaticSolver, diagnostics: SolveDia
 
   for (const part of parts) {
     const free = findFreeRigidBodyMode(solver, part);
-    if (!free) continue;
+
+    // Held as a rigid body; what is left is whether the hinges hold it too.
+    if (!free) {
+      appendKinematicIssues(solver, part, diagnostics);
+      continue;
+    }
 
     // The supports that fail to hold the part are what needs fixing; a part with none
     // at all is pointed out as a whole.
@@ -565,7 +785,11 @@ export const findMechanismIssues = (solver: LinearStaticSolver, limit = MECHANIS
 
         return t('unstable', { dofs });
       },
-      { nodes: [...new Set(runaway.map(({ node }) => node))], ...(motion ? { motion } : {}) }
+      {
+        nodes: [...new Set(runaway.map(({ node }) => node))],
+        ...(motion ? { motion } : {}),
+        summary: () => t('unstableShort'),
+      }
     ),
   ];
 };

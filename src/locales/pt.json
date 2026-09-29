@@ -447,7 +447,7 @@
   },
   "confirmation": {
     "clearMesh": {
-      "message": "Tem certeza de que deseja limpar a estrutura? Esta ação não pode ser desfeita.",
+      "message": "Tem certeza de que deseja limpar a estrutura? Ctrl+Z a recupera, e ela fica em Estruturas recentes.",
       "title": "Limpar estrutura?",
       "materials": "Excluir materiais",
       "crossSections": "Excluir seções"
@@ -688,6 +688,24 @@
         "title": "Carga térmica",
         "blurb": "Viga biapoiada de 8 m com carga térmica uniforme e não uniforme."
       }
+    }
+  },
+  "recentStructures": {
+    "title": "Estruturas recentes",
+    "instructions": "As últimas {count} estruturas limpas ou substituídas ficam guardadas neste navegador. Restaurar uma substitui a estrutura atual, e Ctrl+Z a recupera.",
+    "empty": "Ainda não há nada. Quando você limpar uma estrutura ou abrir outra por cima, ela ficará guardada aqui.",
+    "restore": "Restaurar",
+    "remove": "Remover",
+    "counts": "Nós: {nodes} · Elementos: {elements}",
+    "linkNotice": "Estrutura compartilhada aberta. A anterior está em Estruturas recentes.",
+    "show": "Mostrar",
+    "reasons": {
+      "clear": "Limpa",
+      "link": "Substituída por um link compartilhado",
+      "file": "Substituída por um arquivo aberto",
+      "example": "Substituída por um exemplo",
+      "firstBeam": "Substituída pela tarefa “primeira viga”",
+      "restore": "Substituída por uma estrutura restaurada"
     }
   }
 }

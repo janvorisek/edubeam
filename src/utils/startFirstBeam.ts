@@ -1,7 +1,7 @@
 import { useAppStore } from '@/store/app';
 import { useProjectStore } from '@/store/project';
 import { useViewerStore } from '@/store/viewer';
-import { executeModelMutationWithUndo } from '@/utils';
+import { replaceModel } from '@/utils';
 import { clearForFirstBeam } from './firstBeam';
 
 /**
@@ -11,8 +11,8 @@ import { clearForFirstBeam } from './firstBeam';
 export const startFirstBeam = () => {
   const projectStore = useProjectStore();
 
-  // Undoable, so whatever model was here comes back with Ctrl+Z.
-  executeModelMutationWithUndo(() => {
+  // Undoable, so whatever model was here comes back with Ctrl+Z or from the recent structures.
+  replaceModel('firstBeam', () => {
     clearForFirstBeam(projectStore.solver);
     projectStore.dimensions = [];
   });

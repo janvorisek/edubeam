@@ -447,7 +447,7 @@
   },
   "confirmation": {
     "clearMesh": {
-      "message": "Are you sure you want to clear the mesh? This action cannot be undone.",
+      "message": "Are you sure you want to clear the mesh? Ctrl+Z brings it back, and it stays in Recent structures.",
       "title": "Clear mesh?",
       "materials": "Delete materials",
       "crossSections": "Delete cross sections"
@@ -688,6 +688,24 @@
         "title": "Temperature load",
         "blurb": "Simply supported 8 m beam with uniform and non-uniform temperature load."
       }
+    }
+  },
+  "recentStructures": {
+    "title": "Recent structures",
+    "instructions": "The last {count} structures that were cleared or replaced are kept in this browser. Restoring one replaces the current structure, and Ctrl+Z brings that back.",
+    "empty": "Nothing here yet. When you clear a structure or open another one over it, it is kept here.",
+    "restore": "Restore",
+    "remove": "Remove",
+    "counts": "Nodes: {nodes} · Elements: {elements}",
+    "linkNotice": "Opened a shared structure. Your previous one is kept in Recent structures.",
+    "show": "Show",
+    "reasons": {
+      "clear": "Cleared",
+      "link": "Replaced by a shared link",
+      "file": "Replaced by an opened file",
+      "example": "Replaced by an example",
+      "firstBeam": "Replaced by the first-beam task",
+      "restore": "Replaced by a restored structure"
     }
   }
 }

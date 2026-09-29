@@ -447,7 +447,7 @@
   },
   "confirmation": {
     "clearMesh": {
-      "message": "Czy na pewno chcesz wyczyścić model? Tej operacji nie można cofnąć.",
+      "message": "Czy na pewno chcesz wyczyścić model? Ctrl+Z go przywróci, a model pozostanie w Ostatnich modelach.",
       "title": "Wyczyścić model?",
       "materials": "Usuń materiały",
       "crossSections": "Usuń przekroje"
@@ -688,6 +688,24 @@
         "title": "Obciążenie termiczne",
         "blurb": "Belka swobodnie podparta o rozpiętości 8 m z równomiernym i nierównomiernym obciążeniem termicznym."
       }
+    }
+  },
+  "recentStructures": {
+    "title": "Ostatnie modele",
+    "instructions": "Ostatnie {count} wyczyszczonych lub zastąpionych modeli jest przechowywanych w tej przeglądarce. Przywrócenie zastępuje bieżący model, a Ctrl+Z go przywraca.",
+    "empty": "Na razie nic tu nie ma. Gdy wyczyścisz model lub otworzysz na nim inny, zostanie on zachowany tutaj.",
+    "restore": "Przywróć",
+    "remove": "Usuń",
+    "counts": "Węzły: {nodes} · Elementy: {elements}",
+    "linkNotice": "Otwarto udostępniony model. Poprzedni znajdziesz w Ostatnich modelach.",
+    "show": "Pokaż",
+    "reasons": {
+      "clear": "Wyczyszczony",
+      "link": "Zastąpiony udostępnionym linkiem",
+      "file": "Zastąpiony otwartym plikiem",
+      "example": "Zastąpiony przykładem",
+      "firstBeam": "Zastąpiony zadaniem „pierwsza belka”",
+      "restore": "Zastąpiony przywróconym modelem"
     }
   }
 }

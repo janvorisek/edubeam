@@ -448,7 +448,7 @@
   "confirmation": {
     "clearMesh": {
       "title": "Smazat konstrukci?",
-      "message": "Jste si jisti, že chcete smazat konstrukci? Tuto akci nelze vrátit zpět.",
+      "message": "Opravdu chcete smazat konstrukci? Ctrl+Z ji vrátí a zůstane také v Nedávných konstrukcích.",
       "materials": "Smazat materiály",
       "crossSections": "Smazat průřezy"
     },
@@ -688,6 +688,24 @@
         "title": "Teplotní zatížení",
         "blurb": "Prostě uložený nosník délky 8 m s rovnoměrnou a nerovnoměrnou změnou teploty."
       }
+    }
+  },
+  "recentStructures": {
+    "title": "Nedávné konstrukce",
+    "instructions": "V tomto prohlížeči se uchovává posledních {count} konstrukcí, které byly smazány nebo nahrazeny. Obnovení nahradí aktuální konstrukci a Ctrl+Z ji vrátí zpět.",
+    "empty": "Zatím tu nic není. Když konstrukci smažete nebo přes ni otevřete jinou, uloží se sem.",
+    "restore": "Obnovit",
+    "remove": "Odebrat",
+    "counts": "Uzly: {nodes} · Prvky: {elements}",
+    "linkNotice": "Otevřena sdílená konstrukce. Předchozí najdete v Nedávných konstrukcích.",
+    "show": "Zobrazit",
+    "reasons": {
+      "clear": "Smazáno",
+      "link": "Nahrazeno sdíleným odkazem",
+      "file": "Nahrazeno otevřeným souborem",
+      "example": "Nahrazeno příkladem",
+      "firstBeam": "Nahrazeno úlohou „první nosník“",
+      "restore": "Nahrazeno obnovenou konstrukcí"
     }
   }
 }

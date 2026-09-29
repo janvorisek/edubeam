@@ -447,7 +447,7 @@
   },
   "confirmation": {
     "clearMesh": {
-      "message": "Möchten Sie das Modell wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "message": "Möchten Sie das Modell wirklich löschen? Mit Ctrl+Z erhalten Sie es zurück, und es bleibt unter „Zuletzt verwendete Modelle“.",
       "title": "Modell löschen?",
       "materials": "Materialien löschen",
       "crossSections": "Querschnitte löschen"
@@ -688,6 +688,24 @@
         "title": "Temperaturlast",
         "blurb": "Einfeldträger mit 8 m Spannweite unter gleichmäßiger und ungleichmäßiger Temperaturlast."
       }
+    }
+  },
+  "recentStructures": {
+    "title": "Zuletzt verwendete Modelle",
+    "instructions": "Die letzten {count} gelöschten oder ersetzten Modelle werden in diesem Browser aufbewahrt. Beim Wiederherstellen wird das aktuelle Modell ersetzt; mit Ctrl+Z erhalten Sie es zurück.",
+    "empty": "Noch nichts vorhanden. Wenn Sie ein Modell löschen oder ein anderes darüber öffnen, wird es hier aufbewahrt.",
+    "restore": "Wiederherstellen",
+    "remove": "Entfernen",
+    "counts": "Knoten: {nodes} · Elemente: {elements}",
+    "linkNotice": "Geteiltes Modell geöffnet. Ihr vorheriges finden Sie unter „Zuletzt verwendete Modelle“.",
+    "show": "Anzeigen",
+    "reasons": {
+      "clear": "Gelöscht",
+      "link": "Durch geteilten Link ersetzt",
+      "file": "Durch geöffnete Datei ersetzt",
+      "example": "Durch ein Beispiel ersetzt",
+      "firstBeam": "Durch die Aufgabe „Erster Balken“ ersetzt",
+      "restore": "Durch wiederhergestelltes Modell ersetzt"
     }
   }
 }

@@ -447,7 +447,7 @@
   },
   "confirmation": {
     "clearMesh": {
-      "message": "Voulez-vous vraiment effacer la structure ? Cette action est irréversible.",
+      "message": "Voulez-vous vraiment effacer la structure ? Ctrl+Z la rétablit, et elle reste dans Structures récentes.",
       "title": "Effacer la structure ?",
       "materials": "Supprimer les matériaux",
       "crossSections": "Supprimer les sections"
@@ -688,6 +688,24 @@
         "title": "Charge thermique",
         "blurb": "Poutre sur appuis simples de 8 m soumise à une charge thermique uniforme et non uniforme."
       }
+    }
+  },
+  "recentStructures": {
+    "title": "Structures récentes",
+    "instructions": "Les {count} dernières structures effacées ou remplacées sont conservées dans ce navigateur. En restaurer une remplace la structure actuelle, et Ctrl+Z la rétablit.",
+    "empty": "Rien pour l’instant. Lorsque vous effacez une structure ou en ouvrez une autre par-dessus, elle est conservée ici.",
+    "restore": "Restaurer",
+    "remove": "Retirer",
+    "counts": "Nœuds : {nodes} · Éléments : {elements}",
+    "linkNotice": "Structure partagée ouverte. La précédente est conservée dans Structures récentes.",
+    "show": "Afficher",
+    "reasons": {
+      "clear": "Effacée",
+      "link": "Remplacée par un lien partagé",
+      "file": "Remplacée par un fichier ouvert",
+      "example": "Remplacée par un exemple",
+      "firstBeam": "Remplacée par la tâche « première poutre »",
+      "restore": "Remplacée par une structure restaurée"
     }
   }
 }

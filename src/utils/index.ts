@@ -16,6 +16,7 @@ import { availableLocales, i18n } from '../plugins/i18n';
 import { useProjectStore } from '../store/project';
 import { Command, IKeyValue, undoRedoManager } from '../CommandManager';
 import { useViewerStore } from '../store/viewer';
+import { useRecentStructuresStore, type RecentStructureReason } from '../store/recentStructures';
 
 import { loadType } from './loadType';
 import { ensureDimensionId, createDimensionId } from './id';
@@ -76,18 +77,7 @@ const captureProjectSnapshot = (): ProjectSnapshot => {
 const restoreProjectSnapshot = (snapshot: ProjectSnapshot) => {
   const projectStore = useProjectStore();
 
-  for (const loadCase of projectStore.solver.loadCases) {
-    loadCase.solved = false;
-    loadCase.prescribedBC = [];
-    loadCase.nodalLoadList = [];
-    loadCase.elementLoadList = [];
-  }
-
-  projectStore.solver.domain.elements.clear();
-  projectStore.solver.domain.nodes.clear();
-  projectStore.solver.domain.materials.clear();
-  projectStore.solver.domain.crossSections.clear();
-  projectStore.dimensions = [];
+  resetModel();
 
   if (snapshot.model && !deserializeModel(snapshot.model, projectStore.solver, projectStore.dimensions)) {
     console.error('Could not restore project snapshot');
@@ -139,6 +129,51 @@ export const executeModelMutationWithUndo = (mutate: () => void) => {
   );
 
   undoRedoManager.executeCommand(setCommand);
+};
+
+/**
+ * Empties the model. Materials and cross sections stay unless asked for, as the clear dialog
+ * offers keeping them.
+ */
+export const resetModel = ({ materials = true, crossSections = true } = {}) => {
+  const projectStore = useProjectStore();
+
+  for (const loadCase of projectStore.solver.loadCases) {
+    loadCase.solved = false;
+    loadCase.prescribedBC = [];
+    loadCase.nodalLoadList = [];
+    loadCase.elementLoadList = [];
+  }
+
+  projectStore.solver.domain.elements.clear();
+  projectStore.solver.domain.nodes.clear();
+  if (materials) projectStore.solver.domain.materials.clear();
+  if (crossSections) projectStore.solver.domain.crossSections.clear();
+  projectStore.dimensions = [];
+};
+
+/**
+ * Replaces the whole model - clearing it, or loading a link, a file or an example over it - as
+ * one undoable step, with the model it replaces saved to the recent structures so it survives a
+ * reload too. If `replace` throws, the previous model is put back before the error is rethrown,
+ * so a broken import never leaves a half-cleared model behind.
+ *
+ * Returns whether the previous model was saved; an empty or untouched starter model is not.
+ */
+export const replaceModel = (reason: RecentStructureReason, replace: () => void): boolean => {
+  const before = captureProjectSnapshot();
+
+  try {
+    executeModelMutationWithUndo(replace);
+  } catch (e) {
+    if (before.model !== null) restoreProjectSnapshot(before);
+    throw e;
+  }
+
+  const after = serializeModel(useProjectStore().solver, useProjectStore().dimensions);
+  if (after === before.model) return false;
+
+  return useRecentStructuresStore().remember(before.model, reason);
 };
 
 /**

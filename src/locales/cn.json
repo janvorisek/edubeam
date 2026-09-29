@@ -447,7 +447,7 @@
   },
   "confirmation": {
     "clearMesh": {
-      "message": "确定要清空结构吗？此操作不可撤销。",
+      "message": "确定要清空结构吗？按 Ctrl+Z 可以恢复，它也会保存在“最近的结构”中。",
       "title": "清空结构？",
       "materials": "删除材料",
       "crossSections": "删除截面"
@@ -688,6 +688,24 @@
         "title": "温度荷载",
         "blurb": "8 m 简支梁承受均匀和非均匀温度荷载。"
       }
+    }
+  },
+  "recentStructures": {
+    "title": "最近的结构",
+    "instructions": "最近 {count} 个被清空或替换的结构会保存在此浏览器中。恢复其中一个会替换当前结构，按 Ctrl+Z 可以撤回。",
+    "empty": "这里还没有内容。清空结构或在其上打开其他结构时，原结构会保存在这里。",
+    "restore": "恢复",
+    "remove": "移除",
+    "counts": "节点：{nodes} · 单元：{elements}",
+    "linkNotice": "已打开共享的结构。之前的结构保存在“最近的结构”中。",
+    "show": "查看",
+    "reasons": {
+      "clear": "已清空",
+      "link": "被共享链接替换",
+      "file": "被打开的文件替换",
+      "example": "被示例替换",
+      "firstBeam": "被“第一根梁”任务替换",
+      "restore": "被恢复的结构替换"
     }
   }
 }

@@ -8,14 +8,14 @@ import {
   importJSON,
   redoModelChange,
   undoModelChange,
+  replaceModel,
+  resetModel,
 } from './utils';
 import { nextTick } from 'vue';
-import { undoRedoManager } from './CommandManager';
 import { useViewerStore } from './store/viewer';
 import Confirmation from './components/dialogs/Confirmation.vue';
 import ReloadPrompt from './components/ReloadPrompt.vue';
-import { createDimensionId } from './utils/id';
-import { createDimensionPointFromNode } from './types/dimension';
+import { buildStarterModel } from './utils/starterModel';
 
 export default {
   name: 'App',
@@ -25,12 +25,12 @@ export default {
 
 <script setup lang="ts">
 import { computed, onMounted, provide, ref } from 'vue';
-import { DofID } from 'ts-fem';
 import { setLocale, availableLocales } from './plugins/i18n';
 
 import Welcome from '@/components/dialogs/Welcome.vue';
 import Share from '@/components/dialogs/Share.vue';
 import Examples from '@/components/dialogs/Examples.vue';
+import RecentStructures from '@/components/dialogs/RecentStructures.vue';
 import ExportImage from '@/components/dialogs/ExportImage.vue';
 import Changelog from '@/components/dialogs/Changelog.vue';
 import Editor from '@/views/Editor.vue';
@@ -182,8 +182,12 @@ onMounted(() => {
     // Validate the shared model before touching the current one, so a broken link
     // cannot wipe the project persisted in localStorage.
     if (parseSerializedModel(name) !== null) {
-      clearMesh(true, true);
-      deserializeModel(name, solver, useProjectStore().dimensions);
+      const saved = replaceModel('link', () => {
+        resetModel();
+        deserializeModel(name, solver, useProjectStore().dimensions);
+      });
+      // Opening a link used to overwrite whatever was here without a word.
+      if (saved && !appStore.inViewerMode) previousModelSaved.value = true;
     } else {
       console.warn('Ignoring invalid ?model= parameter');
     }
@@ -206,56 +210,7 @@ onMounted(() => {
 
   if (domain.nodes.size > 0) return solve();
 
-  domain.createNode(1, [0, 0, 0], [DofID.Dx, DofID.Ry, DofID.Dz]);
-  domain.createNode(2, [0, 0, -3], []);
-  domain.createNode(3, [3, 0, -3], []);
-  domain.createNode(4, [3, 0, 0], [DofID.Dx, DofID.Dz]);
-
-  domain.nodes = new Map(domain.nodes);
-
-  domain.createBeam2D(1, [1, 2], 1, 1, [false, true]);
-  domain.createBeam2D(2, [2, 3], 1, 1);
-  domain.createBeam2D(3, [4, 3], 1, 1);
-
-  domain.elements = new Map(domain.elements);
-
-  domain.createCrossSection(1, {
-    a: 1,
-    iy: 8.356e-5,
-    iz: 1.0,
-    dyz: 999991.0,
-    h: 1,
-    k: 1e32,
-    j: 99999.0,
-  });
-
-  domain.createMaterial(1, {
-    e: 210000e6,
-    g: 210000e6 / (2 * (1 + 0.2)),
-    alpha: 12.0e-6,
-    d: 4000 /*kg/m3!!!*/,
-  });
-
-  //solver.loadCases[0].createNodalLoad(3, { [DofID.Dx]: 10000, [DofID.Dz]: 0, [DofID.Ry]: 10000 });
-  //solver.loadCases[0].createNodalLoad(3, { [DofID.Dx]: 0, [DofID.Dz]: 20 });
-
-  solver.loadCases[0].createBeamElementTrapezoidalEdgeLoad(2, [0, 10000], [0, 30000], true);
-  //solver.loadCases[0].createBeamElementUniformEdgeLoad(2, [0, 10000], true);
-  //solver.loadCases[0].createPrescribedDisplacement("a", { [DofID.Dx]: 0.3, [DofID.Dz]: 0.2, [DofID.Ry]: 0.01 });
-
-  domain.materials = new Map(domain.materials);
-  domain.crossSections = new Map(domain.crossSections);
-
-  solver.domain = domain;
-
-  useProjectStore().dimensions.push({
-    id: createDimensionId(),
-    points: [
-      createDimensionPointFromNode(domain.nodes.get('1')!),
-      createDimensionPointFromNode(domain.nodes.get('4')!),
-    ],
-    distance: 1,
-  });
+  buildStarterModel(solver, useProjectStore().dimensions);
 
   requestAnimationFrame(solve);
 });
@@ -268,25 +223,27 @@ const solve = () => {
 };
 
 const clearMesh = (clearMaterials = false, clearCrossSects = false) => {
-  useProjectStore().solver.loadCases[0].solved = false;
-  useProjectStore().solver.loadCases[0].prescribedBC = [];
-  useProjectStore().solver.loadCases[0].nodalLoadList = [];
-  useProjectStore().solver.loadCases[0].elementLoadList = [];
-  useProjectStore().solver.domain.elements.clear();
-  useProjectStore().solver.domain.nodes.clear();
-  useProjectStore().dimensions = [];
-
-  if (clearMaterials) {
-    useProjectStore().solver.domain.materials.clear();
-  }
-
-  if (clearCrossSects) {
-    useProjectStore().solver.domain.crossSections.clear();
-  }
-
-  undoRedoManager.clearHistory();
+  // Undoable, and the cleared model is kept in the recent structures.
+  replaceModel('clear', () => resetModel({ materials: clearMaterials, crossSections: clearCrossSects }));
+  useProjectStore().clearSelection();
   // Otherwise the diagnostics of the model just cleared stay on screen.
   solve();
+};
+
+/** Loads a project file over the current model; alerts and keeps the model if it is not one. */
+const loadProjectFile = (text: string) => {
+  try {
+    const json = JSON.parse(text);
+    if (typeof json !== 'object' || json === null || typeof json.domain !== 'object') throw new Error('Not a project');
+    replaceModel('file', () => {
+      resetModel();
+      importJSON(json);
+    });
+    useProjectStore().clearSelection();
+    solve();
+  } catch (e) {
+    alert(t('warnings.importFailed'));
+  }
 };
 
 const shareMesh = () => {
@@ -296,6 +253,14 @@ const shareMesh = () => {
 const openExamples = () => {
   openModal(Examples);
 };
+
+const openRecentStructures = () => {
+  previousModelSaved.value = false;
+  openModal(RecentStructures);
+};
+
+/** Set when a shared link replaced a model worth keeping, so the user learns where it went. */
+const previousModelSaved = ref(false);
 
 const openExportImage = () => {
   openModal(ExportImage);
@@ -334,17 +299,7 @@ function onDrop(e) {
     const file = e.dataTransfer.files[i];
     const reader = new FileReader();
     reader.onload = function (e) {
-      const text = e.target.result.toString();
-      try {
-        const json = JSON.parse(text);
-        if (typeof json !== 'object' || json === null || typeof json.domain !== 'object')
-          throw new Error('Not a project');
-        clearMesh(true, true);
-        importJSON(json);
-        solve();
-      } catch (e) {
-        alert(t('warnings.importFailed'));
-      }
+      loadProjectFile(e.target.result.toString());
     };
     reader.readAsText(file);
   }
@@ -357,18 +312,7 @@ function openFile(e) {
   const file = e.target.files[0];
   const reader = new FileReader();
   reader.onload = function (e) {
-    const text = e.target.result.toString();
-
-    try {
-      const json = JSON.parse(text);
-      if (typeof json !== 'object' || json === null || typeof json.domain !== 'object')
-        throw new Error('Not a project');
-      clearMesh(true, true);
-      importJSON(json);
-      solve();
-    } catch (e) {
-      alert(t('warnings.importFailed'));
-    }
+    loadProjectFile(e.target.result.toString());
 
     appStore.tab = 0;
     appStore.drawerOpen = false;
@@ -501,6 +445,12 @@ const app_commit = APP_COMMIT;
           @click="saveProject"
         ></v-list-item>
         <v-list-item
+          prepend-icon="mdi-backup-restore"
+          :title="$t('recentStructures.title')"
+          value="recentStructures"
+          @click="openRecentStructures"
+        ></v-list-item>
+        <v-list-item
           prepend-icon="mdi-image-outline"
           :title="$t('exportImage.title')"
           value="exportImage"
@@ -589,6 +539,14 @@ const app_commit = APP_COMMIT;
       <div>edubeam v{{ app_version }} {{ $t("footer.released") }} {{ app_released }}</div>
     </div> -->
     <ReloadPrompt />
+    <v-snackbar v-model="previousModelSaved" :timeout="10000" location="bottom">
+      {{ $t('recentStructures.linkNotice') }}
+      <template #actions>
+        <v-btn variant="text" color="primary" @click="openRecentStructures">
+          {{ $t('recentStructures.show') }}
+        </v-btn>
+      </template>
+    </v-snackbar>
     <input ref="file" type="file" style="display: none" @change="openFile" />
   </v-app>
 </template>

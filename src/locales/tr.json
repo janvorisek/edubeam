@@ -447,7 +447,7 @@
   },
   "confirmation": {
     "clearMesh": {
-      "message": "Modeli temizlemek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+      "message": "Modeli temizlemek istediğinizden emin misiniz? Ctrl+Z geri getirir ve model Son modeller listesinde kalır.",
       "title": "Model temizlensin mi?",
       "materials": "Malzemeleri sil",
       "crossSections": "Kesitleri sil"
@@ -688,6 +688,24 @@
         "title": "Sıcaklık yüklemesi",
         "blurb": "Düzgün ve düzgün olmayan sıcaklık değişimi etkisindeki 8 m'lik basit mesnetli kiriş."
       }
+    }
+  },
+  "recentStructures": {
+    "title": "Son modeller",
+    "instructions": "Temizlenen veya değiştirilen son {count} model bu tarayıcıda saklanır. Birini geri yüklemek mevcut modelin yerini alır; Ctrl+Z onu geri getirir.",
+    "empty": "Henüz bir şey yok. Bir modeli temizlediğinizde veya üzerine başka birini açtığınızda burada saklanır.",
+    "restore": "Geri yükle",
+    "remove": "Kaldır",
+    "counts": "Düğümler: {nodes} · Elemanlar: {elements}",
+    "linkNotice": "Paylaşılan bir model açıldı. Öncekini Son modeller listesinde bulabilirsiniz.",
+    "show": "Göster",
+    "reasons": {
+      "clear": "Temizlendi",
+      "link": "Paylaşılan bağlantıyla değiştirildi",
+      "file": "Açılan dosyayla değiştirildi",
+      "example": "Bir örnekle değiştirildi",
+      "firstBeam": "“İlk kiriş” göreviyle değiştirildi",
+      "restore": "Geri yüklenen modelle değiştirildi"
     }
   }
 }

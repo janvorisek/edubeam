@@ -9,7 +9,7 @@ import {
   redoModelChange,
   undoModelChange,
 } from './utils';
-import { provide, nextTick } from 'vue';
+import { nextTick } from 'vue';
 import { undoRedoManager } from './CommandManager';
 import { useViewerStore } from './store/viewer';
 import Confirmation from './components/dialogs/Confirmation.vue';
@@ -24,7 +24,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue';
+import { computed, onMounted, provide, ref } from 'vue';
 import { DofID } from 'ts-fem';
 import { setLocale, availableLocales } from './plugins/i18n';
 
@@ -37,8 +37,9 @@ import Editor from '@/views/Editor.vue';
 import Dialogs from '@/components/Dialogs.vue';
 import { useProjectStore } from './store/project';
 import { useAppStore } from './store/app';
+import { startFirstBeam } from './utils/startFirstBeam';
 
-import { VOnboardingWrapper, VOnboardingStep } from 'v-onboarding';
+import { VOnboardingWrapper, VOnboardingStep, useVOnboarding } from 'v-onboarding';
 import 'v-onboarding/dist/style.css';
 
 import { useI18n } from 'vue-i18n';
@@ -47,12 +48,20 @@ const { t } = useI18n();
 
 const viewerStore = useViewerStore();
 
+const file = ref(null);
+
 const onboardingWrapper = ref(null);
 provide('onboardingWrapper', onboardingWrapper);
 
-const file = ref(null);
-
 const steps = computed(() => [
+  {
+    attachTo: { element: '#appMenu' },
+    content: { title: t('tour.menu.title'), description: t('tour.menu.description') },
+  },
+  {
+    attachTo: { element: '#undoRedo' },
+    content: { title: t('tour.undoRedo.title'), description: t('tour.undoRedo.description') },
+  },
   {
     attachTo: { element: '#viewerControls' },
     content: {
@@ -68,13 +77,30 @@ const steps = computed(() => [
     },
   },
   {
+    attachTo: { element: '#gridAndUnits' },
+    content: { title: t('tour.gridUnits.title'), description: t('tour.gridUnits.description') },
+  },
+  {
     attachTo: { element: '#bottomBar' },
     content: {
       title: t('tour.bottomBar.title'),
       description: t('tour.bottomBar.description'),
     },
   },
+  {
+    attachTo: { element: '#bottomBarHelp' },
+    content: { title: t('tour.help.title'), description: t('tour.help.description') },
+  },
 ]);
+
+/** Also offered in the menu, for anyone who skipped it. The display options are one of its stops. */
+const startTour = () => {
+  viewerStore.settingsOpen = true;
+  useVOnboarding(onboardingWrapper).start();
+};
+
+// The step slot's own `exit` only emits an event; this is what takes the tour down.
+const endTour = () => useVOnboarding(onboardingWrapper).finish();
 
 onMounted(() => {
   document.addEventListener('keydown', function (e) {
@@ -138,6 +164,10 @@ onMounted(() => {
   const inViewerMode = params.get('viewer');
   // Documented entry point: run.edubeam.app/?panel=examples opens the gallery straight away.
   const panel = params.get('panel');
+
+  // Someone who has not been through the welcome dialog yet is new here: this version is what
+  // they start with, not news, so the changelog waits for the next release.
+  if (!appStore.onboardingFinished && currentAppVersion) appStore.lastSeenChangelogVersion = currentAppVersion;
 
   if (inViewerMode) {
     appStore.inViewerMode = true;
@@ -374,38 +404,39 @@ const app_commit = APP_COMMIT;
         },
       }"
     >
-      <template #default="{ previous, next, step, exit, isFirst, isLast, index }">
+      <template #default="{ previous, next, step, isFirst, isLast, index }">
         <VOnboardingStep>
-          <div class="bg-white shadow rounded-lg" style="max-width: 400px">
-            <div class="px-4 py-5 sm:p-6">
-              <div class="sm:flex sm:items-center sm:justify-between">
-                <div v-if="step.content">
-                  <h3 v-if="step.content.title" class="text-lg font-medium leading-6 text-gray-900">
-                    {{ step.content.title }}
-                  </h3>
-                  <div v-if="step.content.description" class="mt-2 max-w-xl text-sm text-gray-500">
-                    <p>{{ step.content.description }}</p>
-                  </div>
-                </div>
-                <div class="mt-5 space-x-4 sm:mt-0 sm:ml-6 sm:flex sm:flex-shrink-0 sm:items-center relative">
-                  <template v-if="!isFirst">
-                    <v-btn type="button" flat color="grey-lighten-3" @click="previous">
-                      {{ $t('tour.previousButton') }}
-                    </v-btn>
-                  </template>
-                  <v-btn type="button" color="primary" flat class="ml-1" @click="next">
-                    {{ isLast ? $t('tour.finishButton') : $t('tour.nextButton') }}
-                  </v-btn>
-                </div>
-              </div>
+          <v-card v-if="step.content" max-width="400" elevation="6" class="pa-4">
+            <div class="d-flex align-start">
+              <h3 class="text-h6 flex-grow-1">{{ step.content.title }}</h3>
+              <v-btn
+                icon="mdi-close"
+                variant="text"
+                size="small"
+                density="comfortable"
+                class="mt-n1 mr-n2"
+                :aria-label="$t('tour.close')"
+                @click="endTour"
+              />
             </div>
-          </div>
+            <p class="mt-2 text-body-2">{{ step.content.description }}</p>
+            <div class="d-flex align-center ga-2 mt-4">
+              <span class="text-caption text-medium-emphasis">{{ index + 1 }} / {{ steps.length }}</span>
+              <v-spacer />
+              <v-btn v-if="!isFirst" flat color="grey-lighten-3" @click="previous">
+                {{ $t('tour.previousButton') }}
+              </v-btn>
+              <v-btn color="primary" flat @click="next">
+                {{ isLast ? $t('tour.finishButton') : $t('tour.nextButton') }}
+              </v-btn>
+            </div>
+          </v-card>
         </VOnboardingStep>
       </template>
     </VOnboardingWrapper>
 
     <v-app-bar v-if="!appStore.inViewerMode" clipped-lefs clipped-right app color="primary" density="compact">
-      <v-app-bar-nav-icon @click="appStore.drawerOpen = !appStore.drawerOpen"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon id="appMenu" @click="appStore.drawerOpen = !appStore.drawerOpen"></v-app-bar-nav-icon>
 
       <div class="app-title ml-3 d-flex align-center" style="user-select: none">edubeam</div>
 
@@ -453,7 +484,8 @@ const app_commit = APP_COMMIT;
 
       <v-divider></v-divider>
 
-      <v-list density="compact" nav>
+      <!-- Every item opens something else or acts on the model, so the menu gets out of the way -->
+      <v-list density="compact" nav @click="appStore.drawerOpen = false">
         <v-list-item
           prepend-icon="mdi-folder-open-outline"
           :title="$t('common.openProject')"
@@ -484,6 +516,18 @@ const app_commit = APP_COMMIT;
           :title="$t('examples.title')"
           value="examples"
           @click="openExamples"
+        ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-vector-polyline-plus"
+          :title="$t('welcome.drawFirstBeam')"
+          value="firstBeam"
+          @click="startFirstBeam"
+        ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-map-marker-path"
+          :title="$t('welcome.showAround')"
+          value="tour"
+          @click="startTour"
         ></v-list-item>
         <v-list-item
           prepend-icon="mdi-delete-empty"

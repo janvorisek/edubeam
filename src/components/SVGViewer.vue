@@ -34,6 +34,7 @@ import { windowDragKey, windowPickBox, type WindowDrag } from '@/types/windowPic
 import HoveredElement from './HoveredElement.vue';
 import { intersectedKey } from '@/types/hover';
 import PlacingPreview from './PlacingPreview.vue';
+import FirstBeamTask from './FirstBeamTask.vue';
 import { placingKey } from '@/types/placing';
 
 import {
@@ -2218,6 +2219,7 @@ defineExpose({ centerContent, fitContent });
     <!-- <div style="position: absolute; top: 0; left: 0; background: red; z-index: 101">{{ intersected }}</div> -->
     <div
       v-if="!appStore.inViewerMode"
+      id="gridAndUnits"
       class="text-body-2 d-flex ga-1 line-height-1"
       style="position: absolute; z-index: 100; bottom: 16px; right: 16px"
     >
@@ -2323,6 +2325,7 @@ defineExpose({ centerContent, fitContent });
         @click="centerContent"
       ></v-btn>
       <v-btn
+        id="fitContentButton"
         icon="mdi:mdi-fit-to-screen-outline"
         size="32"
         density="comfortable"
@@ -2333,6 +2336,7 @@ defineExpose({ centerContent, fitContent });
       >
       </v-btn>
       <v-btn
+        id="viewerSettingsToggle"
         icon="mdi:mdi-cog"
         size="32"
         density="comfortable"
@@ -2902,6 +2906,11 @@ defineExpose({ centerContent, fitContent });
     </SvgPanZoom>
 
     <SelectionBox />
+
+    <FirstBeamTask
+      v-if="appStore.firstBeamActive && !appStore.inViewerMode"
+      @drawn="if (appStore.mouseMode === MouseMode.ADD_ELEMENT) cancelActiveMode();"
+    />
 
     <div
       v-if="projectStore.selection.type !== null"

@@ -358,8 +358,14 @@
     "copyFailed": "No se pudo copiar automáticamente. Use los atajos de teclado."
   },
   "tour": {
-    "startTour": "Iniciar recorrido",
-    "skipTour": "Omitir por ahora",
+    "menu": {
+      "title": "Menú",
+      "description": "Abre, guarda y comparte tus proyectos, exporta una imagen, carga un ejemplo o vuelve a iniciar este recorrido o la tarea de la primera viga."
+    },
+    "undoRedo": {
+      "title": "Deshacer y rehacer",
+      "description": "Avanza y retrocede por tus cambios. Ctrl+Z y Ctrl+Mayús+Z hacen lo mismo."
+    },
     "viewerControls": {
       "title": "Botones del visor",
       "description": "Los controles del visor permiten centrar o ajustar la estructura a la pantalla y seleccionar qué se muestra."
@@ -368,17 +374,70 @@
       "title": "Personalizar opciones de visualización",
       "description": "Elija qué visualizar: fuerza normal, fuerza cortante, momento flector, forma deformada o todo a la vez."
     },
+    "gridUnits": {
+      "title": "Rejilla, ajuste y unidades",
+      "description": "G muestra la rejilla y S ajusta los nuevos nudos a ella. Haz clic en las unidades para cambiarlas, el idioma o el sistema de coordenadas."
+    },
     "bottomBar": {
       "title": "Añadir, eliminar y modificar entidades",
       "description": "El centro principal donde puede transformar fácilmente cada aspecto de su estructura. Desde nodos y elementos hasta cargas, materiales y secciones, es el lugar ideal para cambios rápidos y completos."
     },
+    "help": {
+      "title": "Ayuda",
+      "description": "El ? explica la pestaña abierta. El ? junto al encabezado de una columna explica esa columna."
+    },
     "previousButton": "Anterior",
     "nextButton": "Siguiente",
-    "finishButton": "Finalizar"
+    "finishButton": "Finalizar",
+    "close": "Cerrar recorrido"
+  },
+  "firstBeam": {
+    "title": "Tu primera viga",
+    "step": "Paso {n} de {total}",
+    "close": "Cerrar la guía",
+    "finish": "Listo",
+    "next": "Siguiente",
+    "steps": {
+      "tool": {
+        "title": "Elige la herramienta",
+        "body": "En la pestaña {elementsTab} de abajo, pulsa el botón {addElement} con el icono del cursor."
+      },
+      "draw": {
+        "title": "Dibuja la viga",
+        "body": "Haz clic donde empieza la viga y luego donde termina. Los extremos se ajustan a la cuadrícula."
+      },
+      "supports": {
+        "title": "Apóyala",
+        "body": "Haz clic en el extremo izquierdo, abre {defineSupports} y marca Dx y D{v} para un apoyo articulado. Luego haz clic en el extremo derecho y marca D{v} para un apoyo deslizante."
+      },
+      "load": {
+        "title": "Cárgala",
+        "body": "Haz clic en la viga, elige {addLoad}, introduce un valor en f{v} y confirma."
+      },
+      "display": {
+        "title": "Elige qué se muestra",
+        "body": "El engranaje de arriba a la derecha abre las opciones de visualización: esfuerzos internos, deformada, reacciones y más. Ábrelo ahora."
+      },
+      "fit": {
+        "title": "Ajústalo a la pantalla",
+        "body": "Los botones de arriba a la derecha ajustan el modelo a la pantalla o lo centran. Pulsa ahora ajustar a la pantalla, y úsalo siempre que el dibujo se salga de la vista."
+      },
+      "results": {
+        "title": "Lee los resultados",
+        "body": "El momento flector y la deformada están dibujados sobre la viga y se actualizan al editar. Todos los nudos, elementos y cargas aparecen también en las tablas de abajo, donde puedes escribir valores exactos. {undo} recupera el modelo que tenías antes."
+      }
+    }
   },
   "welcome": {
     "title": "¡Bienvenido a <span class=\"edubeam\">edubeam</span>! 🚀",
-    "description": "Para ayudarle a empezar, hemos preparado un breve recorrido inicial que le guiará por las funciones de nuestro programa."
+    "description": "Modela vigas, pórticos y celosías y ve sus esfuerzos internos mientras dibujas. ¿Cómo quieres empezar?",
+    "showAround": "Hacer un recorrido",
+    "showAroundHint": "Un vistazo rápido al visor, las opciones de visualización y la barra inferior.",
+    "drawFirstBeam": "Dibuja tu primera viga",
+    "drawFirstBeamHint": "Una guía breve: dibuja una viga, apóyala y cárgala.",
+    "openExample": "Abrir un ejemplo",
+    "openExampleHint": "Empieza con un modelo ya hecho y modifícalo.",
+    "skip": "Omitir por ahora"
   },
   "confirmation": {
     "clearMesh": {

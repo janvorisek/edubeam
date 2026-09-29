@@ -358,8 +358,14 @@
     "copyFailed": "Nie udało się skopiować automatycznie. Użyj skrótów klawiaturowych."
   },
   "tour": {
-    "startTour": "Rozpocznij samouczek",
-    "skipTour": "Pomiń na razie",
+    "menu": {
+      "title": "Menu",
+      "description": "Otwieraj, zapisuj i udostępniaj projekty, eksportuj obraz, wczytaj przykład albo uruchom ponownie ten przewodnik lub zadanie z pierwszą belką."
+    },
+    "undoRedo": {
+      "title": "Cofnij i ponów",
+      "description": "Przechodź wstecz i naprzód przez swoje zmiany. Ctrl+Z i Ctrl+Shift+Z robią to samo."
+    },
     "viewerControls": {
       "title": "Przyciski widoku",
       "description": "Przyciski widoku służą do wyśrodkowania lub dopasowania konstrukcji do ekranu oraz wyboru wyświetlanych danych."
@@ -368,17 +374,70 @@
       "title": "Dostosuj opcje wyświetlania",
       "description": "Wybierz, co wyświetlać — siłę normalną, siłę tnącą, moment zginający, kształt odkształcony lub wszystko naraz."
     },
+    "gridUnits": {
+      "title": "Siatka, przyciąganie i jednostki",
+      "description": "G pokazuje siatkę, a S przyciąga do niej nowe węzły. Kliknij jednostki, aby zmienić je, język lub układ współrzędnych."
+    },
     "bottomBar": {
       "title": "Dodawaj, usuwaj i modyfikuj obiekty",
       "description": "Centralne miejsce, w którym możesz łatwo modyfikować każdy aspekt konstrukcji — od węzłów i elementów po obciążenia, materiały i przekroje."
     },
+    "help": {
+      "title": "Pomoc",
+      "description": "? objaśnia otwartą kartę. ? przy nagłówku kolumny objaśnia tę kolumnę."
+    },
     "previousButton": "Wstecz",
     "nextButton": "Dalej",
-    "finishButton": "Zakończ"
+    "finishButton": "Zakończ",
+    "close": "Zamknij przewodnik"
+  },
+  "firstBeam": {
+    "title": "Twoja pierwsza belka",
+    "step": "Krok {n} z {total}",
+    "close": "Zamknij przewodnik",
+    "finish": "Gotowe",
+    "next": "Dalej",
+    "steps": {
+      "tool": {
+        "title": "Wybierz narzędzie",
+        "body": "Na karcie {elementsTab} na dole naciśnij przycisk {addElement} z ikoną kursora."
+      },
+      "draw": {
+        "title": "Narysuj belkę",
+        "body": "Kliknij, gdzie belka się zaczyna, a potem gdzie się kończy. Końce przyciągają się do siatki."
+      },
+      "supports": {
+        "title": "Podeprzyj ją",
+        "body": "Kliknij lewy koniec, otwórz {defineSupports} i zaznacz Dx oraz D{v} dla podpory przegubowej nieprzesuwnej. Potem kliknij prawy koniec i zaznacz D{v} dla podpory przesuwnej."
+      },
+      "load": {
+        "title": "Obciąż ją",
+        "body": "Kliknij belkę, wybierz {addLoad}, wpisz wartość w polu f{v} i zatwierdź."
+      },
+      "display": {
+        "title": "Wybierz, co widać",
+        "body": "Koło zębate w prawym górnym rogu otwiera opcje wyświetlania: siły wewnętrzne, deformację, reakcje i więcej. Otwórz je teraz."
+      },
+      "fit": {
+        "title": "Dopasuj do ekranu",
+        "body": "Przyciski w prawym górnym rogu dopasowują model do ekranu lub go wyśrodkowują. Naciśnij teraz dopasowanie do ekranu i używaj go zawsze, gdy rysunek ucieknie z widoku."
+      },
+      "results": {
+        "title": "Odczytaj wyniki",
+        "body": "Moment zginający i deformacja są narysowane na belce i zmieniają się przy każdej edycji. Wszystkie węzły, elementy i obciążenia są też w tabelach na dole, gdzie możesz wpisać dokładne wartości. {undo} przywraca poprzedni model."
+      }
+    }
   },
   "welcome": {
     "title": "Witamy w <span class=\"edubeam\">edubeam</span>! 🚀",
-    "description": "Aby ułatwić start, przygotowaliśmy krótki samouczek wprowadzający, który pokaże najważniejsze funkcje programu."
+    "description": "Modeluj belki, ramy i kratownice i obserwuj siły wewnętrzne już podczas rysowania. Jak chcesz zacząć?",
+    "showAround": "Oprowadź mnie",
+    "showAroundHint": "Krótki przegląd widoku, opcji wyświetlania i dolnego panelu.",
+    "drawFirstBeam": "Narysuj pierwszą belkę",
+    "drawFirstBeamHint": "Krótki przewodnik: narysuj belkę, podeprzyj ją i obciąż.",
+    "openExample": "Otwórz przykład",
+    "openExampleHint": "Zacznij od gotowego modelu i zmień go.",
+    "skip": "Pomiń na razie"
   },
   "confirmation": {
     "clearMesh": {

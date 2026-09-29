@@ -358,8 +358,14 @@
     "copyFailed": "Nepodařilo se automaticky zkopírovat. Použijte prosím klávesové zkratky."
   },
   "tour": {
-    "skipTour": "Přeskočit",
-    "startTour": "Začít prohlídku",
+    "menu": {
+      "title": "Menu",
+      "description": "Otevřete, uložte a sdílejte projekty, exportujte obrázek, načtěte příklad nebo znovu spusťte tuto prohlídku či úlohu s prvním nosníkem."
+    },
+    "undoRedo": {
+      "title": "Zpět a znovu",
+      "description": "Procházejte své změny dozadu i dopředu. Totéž dělá Ctrl+Z a Ctrl+Shift+Z."
+    },
     "viewerControls": {
       "title": "Tlačítka zobrazení",
       "description": "Ovládací prvky zobrazení slouží k vycentrování nebo přizpůsobení konstrukce obrazovce a k výběru toho, co se má zobrazovat."
@@ -368,17 +374,70 @@
       "title": "Přizpůsobit možnosti zobrazení",
       "description": "Vyberte, co se má zobrazit - normálová síla, posouvající síla, ohybový moment, deformovaný tvar, nebo vše dohromady."
     },
+    "gridUnits": {
+      "title": "Mřížka, přichytávání a jednotky",
+      "description": "G zobrazí mřížku a S k ní přichytí nové uzly. Kliknutím na jednotky změníte jednotky, jazyk nebo souřadnicový systém."
+    },
     "bottomBar": {
       "title": "Přidávání, odebírání a úprava entit",
       "description": " Ústředí edubeamu, kde lze jednodušše měnit každý aspekt vaší konstrukce. Od uzlů po prvky, zatížení, materiály a průřezy - je to místo, kde můžete provádět rychlé a komplexní změny."
     },
+    "help": {
+      "title": "Nápověda",
+      "description": "? vysvětlí otevřenou záložku. ? u záhlaví sloupce vysvětlí daný sloupec."
+    },
     "previousButton": "Předchozí",
     "nextButton": "Další",
-    "finishButton": "Dokončit prohlídku"
+    "finishButton": "Dokončit prohlídku",
+    "close": "Zavřít prohlídku"
+  },
+  "firstBeam": {
+    "title": "Váš první nosník",
+    "step": "Krok {n} z {total}",
+    "close": "Zavřít průvodce",
+    "finish": "Hotovo",
+    "next": "Další",
+    "steps": {
+      "tool": {
+        "title": "Vyberte nástroj",
+        "body": "Na kartě {elementsTab} dole stiskněte tlačítko {addElement} s ikonou kurzoru."
+      },
+      "draw": {
+        "title": "Nakreslete nosník",
+        "body": "Klikněte, kde nosník začíná, a pak kde končí. Konce se přichytí k mřížce."
+      },
+      "supports": {
+        "title": "Podepřete ho",
+        "body": "Klikněte na levý konec, otevřete {defineSupports} a zaškrtněte Dx a D{v} pro kloubovou podporu. Pak klikněte na pravý konec a zaškrtněte D{v} pro posuvnou podporu."
+      },
+      "load": {
+        "title": "Zatěžte ho",
+        "body": "Klikněte na nosník, zvolte {addLoad}, zadejte hodnotu do f{v} a potvrďte."
+      },
+      "display": {
+        "title": "Vyberte, co se zobrazí",
+        "body": "Ozubené kolo vpravo nahoře otevírá možnosti zobrazení: vnitřní síly, deformovaný tvar, reakce a další. Otevřete ho teď."
+      },
+      "fit": {
+        "title": "Přizpůsobte zobrazení",
+        "body": "Tlačítka vpravo nahoře přizpůsobí model obrazovce nebo ho vycentrují. Stiskněte teď přizpůsobení obrazovce a použijte ho vždy, když vám výkres uteče ze zobrazení."
+      },
+      "results": {
+        "title": "Prohlédněte si výsledky",
+        "body": "Ohybový moment a deformovaný tvar jsou vykreslené na nosníku a mění se při každé úpravě. Všechny uzly, prvky a zatížení najdete také v tabulkách dole, kde můžete zadat přesné hodnoty. {undo} vrátí model, který jste měli předtím."
+      }
+    }
   },
   "welcome": {
     "title": "Vítejte v <span class=\"edubeam\">edubeamu</span>! 🚀",
-    "description": "Abychom vám usnadnili začátek, připravili jsme pro vás rychlou úvodní prohlídku, která vás seznámí s vlastnostmi a funkcemi našeho programu."
+    "description": "Modelujte nosníky, rámy a příhradové konstrukce a sledujte vnitřní síly už při kreslení. Jak chcete začít?",
+    "showAround": "Provést aplikací",
+    "showAroundHint": "Krátká prohlídka prohlížeče, možností zobrazení a spodního panelu.",
+    "drawFirstBeam": "Nakreslit první nosník",
+    "drawFirstBeamHint": "Krátký průvodce: nakreslíte nosník, podepřete ho a zatížíte.",
+    "openExample": "Otevřít příklad",
+    "openExampleHint": "Začněte hotovým modelem a upravte ho.",
+    "skip": "Přeskočit"
   },
   "confirmation": {
     "clearMesh": {

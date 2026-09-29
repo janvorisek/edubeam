@@ -358,8 +358,14 @@
     "copyFailed": "无法自动复制，请使用键盘快捷键。"
   },
   "tour": {
-    "startTour": "开始导览",
-    "skipTour": "暂时跳过",
+    "menu": {
+      "title": "菜单",
+      "description": "打开、保存和分享项目，导出图片，加载示例，或重新开始本导览或“第一根梁”任务。"
+    },
+    "undoRedo": {
+      "title": "撤销和重做",
+      "description": "在修改记录中前后移动。Ctrl+Z 和 Ctrl+Shift+Z 功能相同。"
+    },
     "viewerControls": {
       "title": "视图按钮",
       "description": "使用视图控制可将结构居中或适配屏幕，并选择需要显示的内容。"
@@ -368,17 +374,70 @@
       "title": "自定义显示选项",
       "description": "可选择显示轴力、剪力、弯矩、变形图，或同时显示全部。"
     },
+    "gridUnits": {
+      "title": "网格、捕捉和单位",
+      "description": "G 显示网格，S 将新节点捕捉到网格上。点击单位可更改单位、语言或坐标系。"
+    },
     "bottomBar": {
       "title": "添加、删除与修改对象",
       "description": "底部栏是编辑结构的核心区域，可快速管理节点、单元、荷载、材料和截面。"
     },
+    "help": {
+      "title": "帮助",
+      "description": "? 解释当前打开的选项卡。列标题旁的 ? 解释该列。"
+    },
     "previousButton": "上一步",
     "nextButton": "下一步",
-    "finishButton": "完成"
+    "finishButton": "完成",
+    "close": "关闭导览"
+  },
+  "firstBeam": {
+    "title": "您的第一根梁",
+    "step": "第 {n} 步，共 {total} 步",
+    "close": "关闭引导",
+    "finish": "完成",
+    "next": "下一步",
+    "steps": {
+      "tool": {
+        "title": "选择工具",
+        "body": "在下方的“{elementsTab}”选项卡中，点击带光标图标的“{addElement}”按钮。"
+      },
+      "draw": {
+        "title": "绘制梁",
+        "body": "点击梁的起点，再点击终点。端点会吸附到网格上。"
+      },
+      "supports": {
+        "title": "添加支座",
+        "body": "点击左端，打开“{defineSupports}”，勾选 Dx 和 D{v} 设为固定铰支座。然后点击右端，勾选 D{v} 设为滑动铰支座。"
+      },
+      "load": {
+        "title": "施加荷载",
+        "body": "点击梁，选择“{addLoad}”，在 f{v} 中输入数值并确认。"
+      },
+      "display": {
+        "title": "选择显示内容",
+        "body": "右上角的齿轮用于打开显示选项：内力、变形图、支座反力等。现在打开它。"
+      },
+      "fit": {
+        "title": "适应屏幕",
+        "body": "右上角的按钮可让模型适应屏幕或居中显示。现在点击“适应屏幕”，以后图形移出视野时也可随时使用。"
+      },
+      "results": {
+        "title": "查看结果",
+        "body": "弯矩图和变形图已绘制在梁上，并会随每次编辑更新。所有节点、单元和荷载也列在下方的表格中，可在其中输入精确数值。“{undo}”可恢复之前的模型。"
+      }
+    }
   },
   "welcome": {
     "title": "欢迎使用 <span class=\"edubeam\">edubeam</span>！ 🚀",
-    "description": "为了帮助你快速上手，我们准备了一个简短的入门导览，带你了解本程序的主要功能。"
+    "description": "建模梁、框架和桁架，绘制的同时即可看到内力。您想如何开始？",
+    "showAround": "带我看看",
+    "showAroundHint": "快速了解视图、显示选项和底部面板。",
+    "drawFirstBeam": "绘制第一根梁",
+    "drawFirstBeamHint": "简短引导：绘制一根梁，添加支座并施加荷载。",
+    "openExample": "打开示例",
+    "openExampleHint": "从现成的模型开始并进行修改。",
+    "skip": "暂时跳过"
   },
   "confirmation": {
     "clearMesh": {

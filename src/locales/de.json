@@ -358,8 +358,14 @@
     "copyFailed": "Automatisches Kopieren war nicht möglich. Bitte verwenden Sie Ihre Tastenkürzel."
   },
   "tour": {
-    "startTour": "Tour starten",
-    "skipTour": "Vorerst überspringen",
+    "menu": {
+      "title": "Menü",
+      "description": "Projekte öffnen, speichern und teilen, ein Bild exportieren, ein Beispiel laden oder diesen Rundgang bzw. die Aufgabe zum ersten Träger erneut starten."
+    },
+    "undoRedo": {
+      "title": "Rückgängig und Wiederholen",
+      "description": "Gehen Sie in Ihren Änderungen zurück und vor. Strg+Z und Strg+Umschalt+Z tun dasselbe."
+    },
     "viewerControls": {
       "title": "Viewer-Schaltflächen",
       "description": "Mit den Viewer-Steuerelementen können Sie die Struktur zentrieren, an den Bildschirm anpassen und auswählen, was angezeigt wird."
@@ -368,17 +374,70 @@
       "title": "Anzeigeoptionen anpassen",
       "description": "Wählen Sie, was angezeigt werden soll – Normalkraft, Querkraft, Biegemoment, verformte Form oder alles zusammen."
     },
+    "gridUnits": {
+      "title": "Raster, Fangen und Einheiten",
+      "description": "G zeigt das Raster, S fängt neue Knoten daran. Klicken Sie auf die Einheiten, um sie, die Sprache oder das Koordinatensystem zu ändern."
+    },
     "bottomBar": {
       "title": "Entitäten hinzufügen, entfernen und bearbeiten",
       "description": "Der zentrale Bereich, in dem Sie jeden Aspekt Ihrer Struktur bearbeiten können – von Knoten und Elementen bis zu Lasten, Materialien und Querschnitten."
     },
+    "help": {
+      "title": "Hilfe",
+      "description": "Das ? erklärt den geöffneten Reiter. Das ? neben einer Spaltenüberschrift erklärt diese Spalte."
+    },
     "previousButton": "Zurück",
     "nextButton": "Weiter",
-    "finishButton": "Fertig"
+    "finishButton": "Fertig",
+    "close": "Rundgang schließen"
+  },
+  "firstBeam": {
+    "title": "Ihr erster Balken",
+    "step": "Schritt {n} von {total}",
+    "close": "Anleitung schließen",
+    "finish": "Fertig",
+    "next": "Weiter",
+    "steps": {
+      "tool": {
+        "title": "Werkzeug wählen",
+        "body": "Drücken Sie unten im Reiter {elementsTab} die Schaltfläche {addElement} mit dem Mauszeiger-Symbol."
+      },
+      "draw": {
+        "title": "Balken zeichnen",
+        "body": "Klicken Sie auf den Anfang des Balkens und dann auf sein Ende. Die Enden rasten am Raster ein."
+      },
+      "supports": {
+        "title": "Balken lagern",
+        "body": "Klicken Sie auf das linke Ende, öffnen Sie {defineSupports} und aktivieren Sie Dx und D{v} für ein Festlager. Klicken Sie dann auf das rechte Ende und aktivieren Sie D{v} für ein Loslager."
+      },
+      "load": {
+        "title": "Balken belasten",
+        "body": "Klicken Sie auf den Balken, wählen Sie {addLoad}, geben Sie einen Wert bei f{v} ein und bestätigen Sie."
+      },
+      "display": {
+        "title": "Anzeige wählen",
+        "body": "Das Zahnrad oben rechts öffnet die Anzeigeoptionen: Schnittgrößen, Verformungsfigur, Auflagerreaktionen und mehr. Öffnen Sie es jetzt."
+      },
+      "fit": {
+        "title": "An den Bildschirm anpassen",
+        "body": "Die Schaltflächen oben rechts passen das Modell an den Bildschirm an oder zentrieren es. Drücken Sie jetzt auf Anpassen – und immer dann, wenn die Zeichnung aus dem Blick gerät."
+      },
+      "results": {
+        "title": "Ergebnisse ablesen",
+        "body": "Biegemoment und Verformungsfigur sind am Balken gezeichnet und ändern sich bei jeder Bearbeitung. Alle Knoten, Elemente und Lasten stehen auch in den Tabellen unten, wo Sie genaue Werte eingeben können. {undo} holt Ihr vorheriges Modell zurück."
+      }
+    }
   },
   "welcome": {
     "title": "Willkommen bei <span class=\"edubeam\">edubeam</span>! 🚀",
-    "description": "Damit Sie schnell starten können, haben wir eine kurze Einführungstour vorbereitet, die Sie durch die wichtigsten Funktionen unseres Programms führt."
+    "description": "Modellieren Sie Balken, Rahmen und Fachwerke und sehen Sie die Schnittgrößen schon beim Zeichnen. Wie möchten Sie beginnen?",
+    "showAround": "Rundgang starten",
+    "showAroundHint": "Ein kurzer Blick auf die Ansicht, die Anzeigeoptionen und die untere Leiste.",
+    "drawFirstBeam": "Ersten Balken zeichnen",
+    "drawFirstBeamHint": "Eine kurze Anleitung: Balken zeichnen, lagern und belasten.",
+    "openExample": "Beispiel öffnen",
+    "openExampleHint": "Mit einem fertigen Modell beginnen und es anpassen.",
+    "skip": "Vorerst überspringen"
   },
   "confirmation": {
     "clearMesh": {

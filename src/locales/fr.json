@@ -358,8 +358,14 @@
     "copyFailed": "Impossible de copier automatiquement. Veuillez utiliser vos raccourcis clavier."
   },
   "tour": {
-    "startTour": "Commencer la visite",
-    "skipTour": "Passer pour l'instant",
+    "menu": {
+      "title": "Menu",
+      "description": "Ouvrez, enregistrez et partagez vos projets, exportez une image, chargez un exemple, ou relancez cette visite ou l'exercice de la première poutre."
+    },
+    "undoRedo": {
+      "title": "Annuler et rétablir",
+      "description": "Revenez en arrière ou en avant dans vos modifications. Ctrl+Z et Ctrl+Maj+Z font de même."
+    },
     "viewerControls": {
       "title": "Boutons de visualisation",
       "description": "Les commandes d'affichage servent à centrer la structure, à l'ajuster à l'écran et à choisir les éléments à afficher."
@@ -368,17 +374,70 @@
       "title": "Personnaliser l'affichage",
       "description": "Choisissez ce qu'il faut afficher : effort normal, effort tranchant, moment fléchissant, déformée, ou tout à la fois."
     },
+    "gridUnits": {
+      "title": "Grille, accrochage et unités",
+      "description": "G affiche la grille et S y accroche les nouveaux nœuds. Cliquez sur les unités pour les changer, ainsi que la langue ou le repère."
+    },
     "bottomBar": {
       "title": "Ajouter, supprimer et modifier des entités",
       "description": "Le centre de contrôle où chaque aspect de votre structure peut être modifié facilement. Des nœuds aux éléments, charges, matériaux et sections : tout y est pour des modifications rapides et complètes."
     },
+    "help": {
+      "title": "Aide",
+      "description": "Le ? explique l'onglet ouvert. Le ? à côté d'un en-tête de colonne explique cette colonne."
+    },
     "previousButton": "Précédent",
     "nextButton": "Suivant",
-    "finishButton": "Terminer"
+    "finishButton": "Terminer",
+    "close": "Fermer la visite"
+  },
+  "firstBeam": {
+    "title": "Votre première poutre",
+    "step": "Étape {n} sur {total}",
+    "close": "Fermer le guide",
+    "finish": "Terminé",
+    "next": "Suivant",
+    "steps": {
+      "tool": {
+        "title": "Choisissez l'outil",
+        "body": "Dans l'onglet {elementsTab} en bas, appuyez sur le bouton {addElement} avec l'icône du curseur."
+      },
+      "draw": {
+        "title": "Dessinez la poutre",
+        "body": "Cliquez là où la poutre commence, puis là où elle finit. Les extrémités s'accrochent à la grille."
+      },
+      "supports": {
+        "title": "Ajoutez les appuis",
+        "body": "Cliquez sur l'extrémité gauche, ouvrez {defineSupports} et cochez Dx et D{v} pour un appui articulé. Cliquez ensuite sur l'extrémité droite et cochez D{v} pour un appui simple."
+      },
+      "load": {
+        "title": "Chargez-la",
+        "body": "Cliquez sur la poutre, choisissez {addLoad}, saisissez une valeur dans f{v} et validez."
+      },
+      "display": {
+        "title": "Choisissez l'affichage",
+        "body": "La roue dentée en haut à droite ouvre les options d'affichage : efforts internes, déformée, réactions et plus. Ouvrez-la maintenant."
+      },
+      "fit": {
+        "title": "Ajustez à l'écran",
+        "body": "Les boutons en haut à droite ajustent le modèle à l'écran ou le centrent. Appuyez maintenant sur ajuster à l'écran, et à chaque fois que le dessin sort de la vue."
+      },
+      "results": {
+        "title": "Lisez les résultats",
+        "body": "Le moment fléchissant et la déformée sont tracés sur la poutre et se mettent à jour à chaque modification. Tous les nœuds, éléments et charges figurent aussi dans les tableaux en bas, où vous pouvez saisir des valeurs exactes. {undo} rétablit votre modèle précédent."
+      }
+    }
   },
   "welcome": {
     "title": "Bienvenue dans <span class=\"edubeam\">edubeam</span> ! 🚀",
-    "description": "Pour vous aider à démarrer, nous avons préparé une courte visite guidée qui présente les principales fonctionnalités du programme."
+    "description": "Modélisez poutres, portiques et treillis et voyez leurs efforts internes pendant que vous dessinez. Comment voulez-vous commencer ?",
+    "showAround": "Faire le tour",
+    "showAroundHint": "Un aperçu rapide de la vue, des options d'affichage et de la barre du bas.",
+    "drawFirstBeam": "Dessiner votre première poutre",
+    "drawFirstBeamHint": "Un court guide : dessinez une poutre, ajoutez des appuis et chargez-la.",
+    "openExample": "Ouvrir un exemple",
+    "openExampleHint": "Partez d'un modèle prêt à l'emploi et modifiez-le.",
+    "skip": "Passer pour l'instant"
   },
   "confirmation": {
     "clearMesh": {

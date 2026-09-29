@@ -22,7 +22,9 @@
         </v-tab>
       </v-tabs>
       <div class="bg-primary d-flex align-center">
-        <HelpTip :topic="activeHelpTopic" location="top left" size="small" density="comfortable" align="center" />
+        <span id="bottomBarHelp" class="d-flex">
+          <HelpTip :topic="activeHelpTopic" location="top left" size="small" density="comfortable" align="center" />
+        </span>
         <v-btn
           color="primary"
           density="compact"
@@ -272,6 +274,7 @@
             <v-icon small>mdi-plus</v-icon> {{ $t('elements.addElement') }}
           </v-btn>
           <v-btn
+            id="addElementUsingMouse"
             v-tooltip="{ text: $t('common.addUsingMouse'), location: 'bottom', openOnClick: !deviceHasHover }"
             size="small"
             variant="flat"

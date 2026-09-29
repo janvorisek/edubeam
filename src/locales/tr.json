@@ -358,8 +358,14 @@
     "copyFailed": "Otomatik kopyalanamadı. Lütfen klavye kısayollarını kullanın."
   },
   "tour": {
-    "startTour": "Turu başlat",
-    "skipTour": "Şimdilik geç",
+    "menu": {
+      "title": "Menü",
+      "description": "Projelerinizi açın, kaydedin ve paylaşın, görüntü dışa aktarın, örnek yükleyin ya da bu turu veya ilk kiriş görevini yeniden başlatın."
+    },
+    "undoRedo": {
+      "title": "Geri al ve yinele",
+      "description": "Değişiklikleriniz arasında geri ve ileri gidin. Ctrl+Z ve Ctrl+Shift+Z aynı işi yapar."
+    },
     "viewerControls": {
       "title": "Görüntüleyici düğmeleri",
       "description": "Bu düğmelerle yapıyı ortalayabilir, ekrana sığdırabilir ve nelerin gösterileceğini seçebilirsiniz."
@@ -368,17 +374,70 @@
       "title": "Görünüm seçeneklerini özelleştirin",
       "description": "Normal kuvvet, kesme kuvveti, eğilme momenti, deforme şekil ya da hepsi birden – neyin gösterileceğini siz seçin."
     },
+    "gridUnits": {
+      "title": "Izgara, yakalama ve birimler",
+      "description": "G ızgarayı gösterir, S yeni düğümleri ızgaraya yakalar. Birimleri, dili veya koordinat sistemini değiştirmek için birimlere tıklayın."
+    },
     "bottomBar": {
       "title": "Ekleyin, silin ve düzenleyin",
       "description": "Yapınızın her parçasını değiştirebileceğiniz merkez burası. Düğümlerden elemanlara, yüklerden malzeme ve kesitlere kadar tüm değişiklikleri hızlıca buradan yapabilirsiniz."
     },
+    "help": {
+      "title": "Yardım",
+      "description": "? açık olan sekmeyi açıklar. Sütun başlığının yanındaki ? o sütunu açıklar."
+    },
     "previousButton": "Önceki",
     "nextButton": "Sonraki",
-    "finishButton": "Bitir"
+    "finishButton": "Bitir",
+    "close": "Turu kapat"
+  },
+  "firstBeam": {
+    "title": "İlk kirişiniz",
+    "step": "Adım {n} / {total}",
+    "close": "Rehberi kapat",
+    "finish": "Bitti",
+    "next": "İleri",
+    "steps": {
+      "tool": {
+        "title": "Aracı seçin",
+        "body": "Aşağıdaki {elementsTab} sekmesinde imleç simgeli {addElement} düğmesine basın."
+      },
+      "draw": {
+        "title": "Kirişi çizin",
+        "body": "Kirişin başladığı yere, sonra bittiği yere tıklayın. Uçlar ızgaraya yapışır."
+      },
+      "supports": {
+        "title": "Mesnetleyin",
+        "body": "Sol uca tıklayın, {defineSupports} menüsünü açın ve sabit mesnet için Dx ile D{v} seçeneklerini işaretleyin. Ardından sağ uca tıklayın ve kayıcı mesnet için D{v} seçeneğini işaretleyin."
+      },
+      "load": {
+        "title": "Yükleyin",
+        "body": "Kirişe tıklayın, {addLoad} seçeneğini seçin, f{v} alanına bir değer girin ve onaylayın."
+      },
+      "display": {
+        "title": "Neyin gösterileceğini seçin",
+        "body": "Sağ üstteki dişli görüntüleme seçeneklerini açar: iç kuvvetler, deforme şekil, mesnet tepkileri ve daha fazlası. Şimdi açın."
+      },
+      "fit": {
+        "title": "Ekrana sığdırın",
+        "body": "Sağ üstteki düğmeler modeli ekrana sığdırır veya ortalar. Şimdi ekrana sığdır düğmesine basın; çizim görünümden kaydığında yine kullanın."
+      },
+      "results": {
+        "title": "Sonuçları okuyun",
+        "body": "Eğilme momenti ve deforme şekil kirişin üzerinde çizilidir ve her düzenlemede güncellenir. Tüm düğümler, elemanlar ve yükler aşağıdaki tablolarda da listelenir; orada tam değerler girebilirsiniz. {undo} önceki modelinizi geri getirir."
+      }
+    }
   },
   "welcome": {
     "title": "<span class=\"edubeam\">edubeam</span>'e hoş geldiniz! 🚀",
-    "description": "Başlamanızı kolaylaştırmak için programın özelliklerini ve işlevlerini tanıtan kısa bir tur hazırladık."
+    "description": "Kiriş, çerçeve ve kafes sistemleri modelleyin, iç kuvvetleri çizerken görün. Nasıl başlamak istersiniz?",
+    "showAround": "Beni gezdir",
+    "showAroundHint": "Görüntüleyiciye, görünüm seçeneklerine ve alt çubuğa kısa bir bakış.",
+    "drawFirstBeam": "İlk kirişinizi çizin",
+    "drawFirstBeamHint": "Kısa bir rehber: bir kiriş çizin, mesnetleyin ve yükleyin.",
+    "openExample": "Bir örnek açın",
+    "openExampleHint": "Hazır bir modelle başlayıp onu değiştirin.",
+    "skip": "Şimdilik geç"
   },
   "confirmation": {
     "clearMesh": {

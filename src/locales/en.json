@@ -358,8 +358,14 @@
     "copyFailed": "Could not copy automatically. Please use your keyboard shortcuts."
   },
   "tour": {
-    "startTour": "Start the Tour",
-    "skipTour": "Skip for Now",
+    "menu": {
+      "title": "Menu",
+      "description": "Open, save and share your projects, export an image, load an example, or start this tour or the first-beam task again."
+    },
+    "undoRedo": {
+      "title": "Undo and redo",
+      "description": "Step back and forward through your changes. Ctrl+Z and Ctrl+Shift+Z do the same."
+    },
     "viewerControls": {
       "title": "Viewer buttons",
       "description": "The viewer controls are the way to center or fit the structure to screen, and to select what to display."
@@ -368,17 +374,70 @@
       "title": "Customize Display Options",
       "description": "Choose what to display – be it normal force, shear force, bending moment, deformed shape, or everything together."
     },
+    "gridUnits": {
+      "title": "Grid, snapping and units",
+      "description": "G shows the grid and S snaps new nodes to it. Click the units to change them, the language or the coordinate system."
+    },
     "bottomBar": {
       "title": "Add, remove & modify entities",
       "description": "The central hub where every aspect of your structure can be effortlessly transformed. From nodes to elements, loads, materials, and cross-sections, it's the go-to place for swift and comprehensive changes."
     },
+    "help": {
+      "title": "Help",
+      "description": "The ? explains the tab you have open. The ? next to a column heading explains that column."
+    },
     "previousButton": "Previous",
     "nextButton": "Next",
-    "finishButton": "Finish"
+    "finishButton": "Finish",
+    "close": "Close tour"
+  },
+  "firstBeam": {
+    "title": "Your first beam",
+    "step": "Step {n} of {total}",
+    "close": "Close the guide",
+    "finish": "Done",
+    "next": "Next",
+    "steps": {
+      "tool": {
+        "title": "Pick the drawing tool",
+        "body": "In the {elementsTab} tab below, press the {addElement} button with the cursor icon."
+      },
+      "draw": {
+        "title": "Draw the beam",
+        "body": "Click where the beam starts, then where it ends. The ends snap to the grid."
+      },
+      "supports": {
+        "title": "Support it",
+        "body": "Click the left end, open {defineSupports} and tick Dx and D{v} for a pinned support. Then click the right end and tick D{v} for a roller."
+      },
+      "load": {
+        "title": "Load it",
+        "body": "Click the beam, choose {addLoad}, enter a value in f{v} and confirm."
+      },
+      "display": {
+        "title": "Choose what's shown",
+        "body": "The cog at the top right opens the display options: internal forces, deformed shape, reactions and more. Open it now."
+      },
+      "fit": {
+        "title": "Fit it to the screen",
+        "body": "The buttons at the top right fit the model to the screen or center it. Press fit to screen now, and again whenever the drawing drifts out of view."
+      },
+      "results": {
+        "title": "Read the results",
+        "body": "The bending moment and deformed shape are drawn on the beam and update as you edit. Every node, element and load is also listed in the tables below, where you can type exact values. {undo} brings back the model you had before."
+      }
+    }
   },
   "welcome": {
     "title": "Welcome to <span class=\"edubeam\">edubeam</span>! 🚀",
-    "description": "To help you get started, we've prepared a quick onboarding tour that will guide you through the features and functionalities of our program."
+    "description": "Model beams, frames and trusses and see their internal forces as you draw. How would you like to start?",
+    "showAround": "Show me around",
+    "showAroundHint": "A quick look at the viewer, the display options and the bottom bar.",
+    "drawFirstBeam": "Draw your first beam",
+    "drawFirstBeamHint": "A short guided task: draw a beam, support it and load it.",
+    "openExample": "Open an example",
+    "openExampleHint": "Start from a ready-made model and change it.",
+    "skip": "Skip for now"
   },
   "confirmation": {
     "clearMesh": {

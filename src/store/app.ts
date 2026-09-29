@@ -160,6 +160,8 @@ export const useAppStore = defineStore(
     });
 
     const onboardingFinished = ref(false);
+    /** The "draw your first beam" task is running; see utils/firstBeam.ts. */
+    const firstBeamActive = ref(false);
     const lastSeenChangelogVersion = ref('');
 
     watch(locale, (newLocale) => {
@@ -232,6 +234,7 @@ export const useAppStore = defineStore(
       inViewerMode,
 
       onboardingFinished,
+      firstBeamActive,
       drawerOpen,
       rightDrawerOpen,
       bottomBarOpen,

@@ -1,16 +1,103 @@
 <template>
-  <v-row>
+  <v-row class="viewer-settings">
     <v-col cols="12" md="6">
-      <h3 class="mb-2">{{ $t('settings.viewer_preview') }}</h3>
+      <h3 class="mb-3">{{ $t('settings.viewer_settings') }}</h3>
 
-      <div style="height: 288px; pointer-events: none">
+      <div class="vs-heading">{{ $t('settings.grid') }}</div>
+      <div class="vs-group">
+        <div class="vs-row">
+          <span>{{ $t('settings.show_grid') }}</span>
+          <v-switch v-model="viewerStore.showGrid" color="primary" density="compact" hide-details inset />
+        </div>
+        <div class="vs-row">
+          <span>{{ $t('settings.snap_to_grid') }}</span>
+          <v-switch v-model="viewerStore.snapToGrid" color="primary" density="compact" hide-details inset />
+        </div>
+        <div class="vs-row">
+          <span>{{ $t('settings.grid_snap_step') }}</span>
+          <v-text-field
+            v-model="gridStepInput"
+            class="vs-grid-step"
+            :rules="positiveNumberRules"
+            :aria-label="$t('settings.grid_snap_step')"
+            density="compact"
+            variant="outlined"
+            hide-details="auto"
+            inputmode="decimal"
+            suffix="m"
+            @keydown="checkNumber($event)"
+            @change="commitGridStep"
+            @blur="commitGridStep"
+          />
+        </div>
+      </div>
+
+      <div class="vs-heading">{{ $t('settings.sizes.sizes') }}</div>
+      <div class="vs-group">
+        <div class="vs-row">
+          <span>{{ $t('settings.results_scale') }}</span>
+          <SettingStepper
+            v-model="viewerStore.resultsScalePx_"
+            :label="$t('settings.results_scale')"
+            :min="8"
+            :max="120"
+            :step="8"
+            :format="(v) => `${v} px`"
+          />
+        </div>
+        <div class="vs-row">
+          <span>{{ $t('settings.sizes.supportSize') }}</span>
+          <SettingStepper
+            v-model="viewerStore.supportSize"
+            :label="$t('settings.sizes.supportSize')"
+            :min="0.5"
+            :max="1.5"
+            :step="0.1"
+            :format="(v) => `${Math.round(v * 100)} %`"
+          />
+        </div>
+        <div class="vs-row">
+          <span>{{ $t('settings.font_size') }}</span>
+          <SettingStepper
+            v-model="viewerStore.fontSize"
+            :label="$t('settings.font_size')"
+            :min="10"
+            :max="20"
+            :step="1"
+            :format="(v) => `${v} px`"
+          />
+        </div>
+      </div>
+
+      <div class="vs-heading">{{ $t('settings.result_label_orientation') }}</div>
+      <v-btn-toggle
+        v-model="viewerStore.resultLabelMode"
+        class="vs-toggle"
+        color="primary"
+        density="comfortable"
+        variant="outlined"
+        divided
+        mandatory
+      >
+        <v-btn value="axis">{{ $t('settings.result_label_orientation_axis') }}</v-btn>
+        <v-btn value="horizontal">{{ $t('settings.result_label_orientation_horizontal') }}</v-btn>
+      </v-btn-toggle>
+    </v-col>
+
+    <v-col cols="12" md="6">
+      <div class="vs-heading mt-md-12">{{ $t('settings.viewer_preview') }}</div>
+      <div class="vs-preview">
         <SVGElementViewer
           v-if="_created"
           id="settings-appearance"
-          class="overflow-hidden pa-1"
+          class="overflow-hidden"
           :solver="solver"
-          :nodes="[domain.getNode('a'), domain.getNode('b'), domain.getNode('c'), domain.getNode('d')]"
-          :elements="[domain.getElement(1), domain.getElement(2), domain.getElement(3)]"
+          :nodes="[domain.getNode('a'), domain.getNode('b')]"
+          :elements="[domain.getElement(1)]"
+          :convert-force="toKilo"
+          :convert-force-distance="toKilo"
+          :convert-moment="toKilo"
+          :number-format="appStore.numberFormatter"
           :nodal-loads="solver.loadCases[0].nodalLoadList"
           :element-loads="solver.loadCases[0].elementLoadList"
           :show-deformed-shape="showQuantity === 'deformedShape'"
@@ -18,10 +105,10 @@
           :show-loads="true"
           :show-supports="true"
           :show-moments="showQuantity === 'bendingMoment'"
-          :show-normal-force="showQuantity === 'normalForce'"
           :show-shear-force="showQuantity === 'shearForce'"
-          :padding="4"
-          :mobile-padding="4"
+          :padding="PREVIEW_PADDING"
+          :mobile-padding="PREVIEW_PADDING"
+          :fit-reserve-px="previewReserve"
           :results-scale-px="viewerStore.resultsScalePx_"
           :colors="viewerStore.colors"
           :support-size="viewerStore.supportSize"
@@ -30,252 +117,22 @@
         />
       </div>
 
-      <h3 class="mb-0">{{ $t('settings.grid') }}</h3>
+      <v-chip-group v-model="showQuantity" class="vs-quantities" column mandatory selected-class="text-primary">
+        <v-chip v-for="q in previewQuantities" :key="q" :value="q" size="small" variant="outlined">
+          {{ $t(`common.${q}`) }}
+        </v-chip>
+      </v-chip-group>
 
-      <v-row no-gutters>
-        <v-col>
-          <v-checkbox
-            v-model="viewerStore.showGrid"
-            class="mt-0"
-            :label="$t('settings.show_grid')"
-            hide-details="auto"
-            density="compact"
-          />
-        </v-col>
-        <v-col>
-          <v-checkbox
-            v-model="viewerStore.snapToGrid"
-            class="mt-0"
-            :label="$t('settings.snap_to_grid')"
-            hide-details="auto"
-            density="compact"
-          />
-        </v-col>
-      </v-row>
-
-      <v-text-field
-        v-model="gridStepInput"
-        :label="$t('settings.grid_snap_step')"
-        :rules="positiveNumberRules"
-        hide-details="auto"
-        inputmode="decimal"
-        suffix="m"
-        @keydown="checkNumber($event)"
-        @change="commitGridStep"
-        @blur="commitGridStep"
-      />
-
-      <h3 class="mt-3 mb-2">{{ $t('settings.result_labels') }}</h3>
-      <v-row>
-        <v-col>
-          <v-select
-            v-model="viewerStore.resultLabelMode"
-            :items="resultLabelModeItems"
-            item-title="title"
-            item-value="value"
-            :label="$t('settings.result_label_orientation')"
-            hide-details="auto"
-          />
-        </v-col>
-      </v-row>
-    </v-col>
-
-    <v-col cols="12" md="6">
-      <h3 class="mb-2">{{ $t('settings.sizes.sizes') }}</h3>
-
-      <v-row>
-        <v-col>
-          <h4 class="mb-1">{{ $t('settings.results_scale') }}</h4>
-          <v-slider v-model="viewerStore.resultsScalePx_" step="1" max="120" thumb-label></v-slider>
-        </v-col>
-        <v-col>
-          <h4 class="mb-1">{{ $t('settings.sizes.supportSize') }}</h4>
-          <v-slider v-model="viewerStore.supportSize" step="0.1" max="1.5" min="0.5" thumb-label></v-slider>
-        </v-col>
-      </v-row>
-
-      <v-row>
-        <v-col>
-          <h4 class="mb-1">{{ $t('settings.font_size') }}</h4>
-          <v-slider v-model="viewerStore.fontSize" step="1" min="10" max="20" thumb-label></v-slider>
-        </v-col>
-      </v-row>
-
-      <h3 class="mb-2">{{ $t('settings.colors.colors') }}</h3>
-
-      <div style="display: grid; grid-template-columns: 1fr 1fr">
-        <v-menu :close-on-content-click="false" offset-y location="left">
+      <div class="vs-heading">{{ $t('settings.colors.colors') }}</div>
+      <div class="vs-colors">
+        <v-menu v-for="c in colorKeys" :key="c.key" :close-on-content-click="false" location="start">
           <template #activator="{ props }">
-            <v-text-field
-              v-bind="props"
-              v-model="viewerStore.colors.nodes"
-              hide-details="auto"
-              :label="$t('common.nodes')"
-            >
-              <template #prepend-inner>
-                <div
-                  :style="`width: 24px; height: 24px; border-radius: 100%; background: ${viewerStore.colors.nodes};`"
-                ></div>
-              </template>
-            </v-text-field>
+            <button v-bind="props" type="button" class="vs-swatch" @click="c.preview && (showQuantity = c.preview)">
+              <span class="vs-swatch__dot" :style="{ background: viewerStore.colors[c.key] }"></span>
+              <span class="vs-swatch__name">{{ $t(`common.${c.key}`) }}</span>
+            </button>
           </template>
-          <v-color-picker v-model="viewerStore.colors.nodes" mode="hex" hide-inputs class="mx-auto"></v-color-picker>
-        </v-menu>
-
-        <v-menu :close-on-content-click="false" offset-y location="right">
-          <template #activator="{ props }">
-            <v-text-field
-              v-bind="props"
-              v-model="viewerStore.colors.elements"
-              hide-details="auto"
-              :label="$t('common.elements')"
-            >
-              <template #prepend-inner>
-                <div
-                  :style="`width: 24px; height: 24px; border-radius: 100%; background: ${viewerStore.colors.elements};`"
-                ></div>
-              </template>
-            </v-text-field>
-          </template>
-          <v-color-picker v-model="viewerStore.colors.elements" mode="hex" hide-inputs class="mx-auto"></v-color-picker>
-        </v-menu>
-
-        <v-menu :close-on-content-click="false" offset-y location="left">
-          <template #activator="{ props }">
-            <v-text-field
-              v-bind="props"
-              v-model="viewerStore.colors.loads"
-              hide-details="auto"
-              :label="$t('common.loads')"
-            >
-              <template #prepend-inner>
-                <div
-                  :style="`width: 24px; height: 24px; border-radius: 100%; background: ${viewerStore.colors.loads};`"
-                ></div>
-              </template>
-            </v-text-field>
-          </template>
-          <v-color-picker v-model="viewerStore.colors.loads" mode="hex" hide-inputs class="mx-auto"></v-color-picker>
-        </v-menu>
-
-        <v-menu :close-on-content-click="false" offset-y location="right">
-          <template #activator="{ props }">
-            <v-text-field
-              v-bind="props"
-              v-model="viewerStore.colors.deformedShape"
-              hide-details="auto"
-              :label="$t('common.deformedShape')"
-              @focus="showQuantity = 'deformedShape'"
-            >
-              <template #prepend-inner>
-                <div
-                  :style="`width: 24px; height: 24px; border-radius: 100%; background: ${viewerStore.colors.deformedShape};`"
-                ></div>
-              </template>
-            </v-text-field>
-          </template>
-          <v-color-picker
-            v-model="viewerStore.colors.deformedShape"
-            mode="hex"
-            hide-inputs
-            class="mx-auto"
-          ></v-color-picker>
-        </v-menu>
-
-        <v-menu :close-on-content-click="false" offset-y location="left">
-          <template #activator="{ props }">
-            <v-text-field
-              v-bind="props"
-              v-model="viewerStore.colors.normalForce"
-              hide-details="auto"
-              :label="$t('common.normalForce')"
-              @focus="showQuantity = 'normalForce'"
-            >
-              <template #prepend-inner>
-                <div
-                  :style="`width: 24px; height: 24px; border-radius: 100%; background: ${viewerStore.colors.normalForce};`"
-                ></div>
-              </template>
-            </v-text-field>
-          </template>
-          <v-color-picker
-            v-model="viewerStore.colors.normalForce"
-            mode="hex"
-            hide-inputs
-            class="mx-auto"
-          ></v-color-picker>
-        </v-menu>
-
-        <v-menu :close-on-content-click="false" offset-y location="right">
-          <template #activator="{ props }">
-            <v-text-field
-              v-bind="props"
-              v-model="viewerStore.colors.shearForce"
-              hide-details="auto"
-              :label="$t('common.shearForce')"
-              @focus="showQuantity = 'shearForce'"
-            >
-              <template #prepend-inner>
-                <div
-                  :style="`width: 24px; height: 24px; border-radius: 100%; background: ${viewerStore.colors.shearForce};`"
-                ></div>
-              </template>
-            </v-text-field>
-          </template>
-          <v-color-picker
-            v-model="viewerStore.colors.shearForce"
-            mode="hex"
-            hide-inputs
-            class="mx-auto"
-          ></v-color-picker>
-        </v-menu>
-
-        <v-menu :close-on-content-click="false" offset-y location="left">
-          <template #activator="{ props }">
-            <v-text-field
-              v-bind="props"
-              v-model="viewerStore.colors.bendingMoment"
-              hide-details="auto"
-              :label="$t('common.bendingMoment')"
-              @focus="showQuantity = 'bendingMoment'"
-            >
-              <template #prepend-inner>
-                <div
-                  :style="`width: 24px; height: 24px; border-radius: 100%; background: ${viewerStore.colors.bendingMoment};`"
-                ></div>
-              </template>
-            </v-text-field>
-          </template>
-          <v-color-picker
-            v-model="viewerStore.colors.bendingMoment"
-            mode="hex"
-            hide-inputs
-            class="mx-auto"
-          ></v-color-picker>
-        </v-menu>
-
-        <v-menu :close-on-content-click="false" offset-y location="right">
-          <template #activator="{ props }">
-            <v-text-field
-              v-bind="props"
-              v-model="viewerStore.colors.reactions"
-              hide-details="auto"
-              :label="$t('common.reactions')"
-              @focus="showQuantity = 'reactions'"
-            >
-              <template #prepend-inner>
-                <div
-                  :style="`width: 24px; height: 24px; border-radius: 100%; background: ${viewerStore.colors.reactions};`"
-                ></div>
-              </template>
-            </v-text-field>
-          </template>
-          <v-color-picker
-            v-model="viewerStore.colors.reactions"
-            mode="hex"
-            hide-inputs
-            class="mx-auto"
-          ></v-color-picker>
+          <v-color-picker v-model="viewerStore.colors[c.key]" mode="hex" :modes="['hex']" />
         </v-menu>
       </div>
     </v-col>
@@ -284,13 +141,15 @@
 
 <script lang="ts" setup>
 import { useViewerStore } from '@/store/viewer';
+import { useAppStore } from '@/store/app';
 import SVGElementViewer from '../SVGElementViewer.vue';
 import { LinearStaticSolver, DofID } from 'ts-fem';
-import { computed, onMounted, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { onMounted, ref, watch } from 'vue';
 import { checkNumber, parseFloat2, positiveNumberRules } from '@/utils';
+import SettingStepper from './SettingStepper.vue';
 
 const viewerStore = useViewerStore();
+const appStore = useAppStore();
 
 /**
  * Edited as text rather than `type="number"`: a decimal comma, which is what a phone keyboard
@@ -312,28 +171,41 @@ const commitGridStep = () => {
 
   viewerStore.gridStep = step;
 };
-const showQuantity = ref('deformedShape');
-const { t } = useI18n();
 
-const resultLabelModeItems = computed(() => [
-  { title: t('settings.result_label_orientation_axis'), value: 'axis' },
-  { title: t('settings.result_label_orientation_horizontal'), value: 'horizontal' },
-]);
+// No normal force: a simply supported beam under vertical load carries none
+type PreviewQuantity = 'deformedShape' | 'shearForce' | 'bendingMoment' | 'reactions';
+
+const previewQuantities: PreviewQuantity[] = ['deformedShape', 'shearForce', 'bendingMoment', 'reactions'];
+const showQuantity = ref<PreviewQuantity>('deformedShape');
+
+/** Picking a result's colour shows that result in the preview, so the change can be seen. */
+const colorKeys: { key: keyof typeof viewerStore.colors; preview?: PreviewQuantity }[] = [
+  { key: 'nodes' },
+  { key: 'elements' },
+  { key: 'loads' },
+  { key: 'deformedShape', preview: 'deformedShape' },
+  { key: 'normalForce' },
+  { key: 'shearForce', preview: 'shearForce' },
+  { key: 'bendingMoment', preview: 'bendingMoment' },
+  { key: 'reactions', preview: 'reactions' },
+];
+
+/**
+ * A 4 m simply supported beam under 10 kN/m, for round results (M = 20 kNm, reactions 20 kN).
+ * Labels are always in kN, whatever the units chosen, so the preview reads 20 rather than 20,000.
+ */
+const toKilo = (value: number) => value / 1000;
 
 const solver = ref(new LinearStaticSolver());
 const domain = solver.value.domain;
 
-domain.createNode('a', [0, 0, 0], [DofID.Dx, DofID.Ry, DofID.Dz]);
-domain.createNode('b', [0, 0, -3], []);
-domain.createNode('c', [3, 0, -3], []);
-domain.createNode('d', [3, 0, 0], [DofID.Dx, DofID.Dz]);
+domain.createNode('a', [0, 0, 0], [DofID.Dx, DofID.Dz]);
+domain.createNode('b', [4, 0, 0], [DofID.Dz]);
 
-domain.createBeam2D(1, ['a', 'b'], 1, 1, [false, true]);
-domain.createBeam2D(2, ['b', 'c'], 1, 1);
-domain.createBeam2D(3, ['d', 'c'], 1, 1);
+domain.createBeam2D(1, ['a', 'b'], 1, 1);
 
 domain.createCrossSection(1, {
-  a: 1,
+  a: 1e-2,
   iy: 8.356e-5,
   iz: 1.0,
   dyz: 999991.0,
@@ -349,15 +221,129 @@ domain.createMaterial(1, {
   d: 4000 /*kg/m3!!!*/,
 });
 
+solver.value.loadCases[0].createBeamElementUniformEdgeLoad(1, [0, 10000], true);
+solver.value.solve();
+
+/**
+ * The fit only reserves the sides for the end labels, and an equal band above and below for the
+ * supports, which keeps the beam in the middle of the preview. The diagrams are not measured, and
+ * reserving their height as well would leave the beam no room and the fit nothing to settle on.
+ */
+const SUPPORT_BAND_PX = 40;
+const PREVIEW_PADDING = 8;
+
+const previewReserve = { top: SUPPORT_BAND_PX, bottom: SUPPORT_BAND_PX, left: 48, right: 48 };
+
 const _created = ref(false);
 onMounted(() => {
-  solver.value.solve();
   _created.value = true;
 });
-
-// solver.value.loadCases[0].createNodalLoad('b', { [DofID.Dx]: 2000, [DofID.Dz]: 10 });
-//solver.loadCases[0].createNodalLoad(3, { [DofID.Dx]: 0, [DofID.Dz]: 20 });
-
-solver.value.loadCases[0].createBeamElementUniformEdgeLoad(2, [0, 25000], true);
-solver.value.solve();
 </script>
+
+<style scoped>
+.vs-heading {
+  margin: 16px 0 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgba(var(--v-theme-on-surface), 0.64);
+}
+
+.vs-group {
+  border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+  border-radius: 8px;
+}
+
+.vs-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 48px;
+  padding: 4px 8px 4px 14px;
+}
+
+.vs-row + .vs-row {
+  border-top: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+}
+
+.vs-row :deep(.v-switch) {
+  flex: 0 0 auto;
+}
+
+.vs-grid-step {
+  flex: 0 0 120px;
+}
+
+.vs-toggle {
+  width: 100%;
+  height: auto;
+}
+
+/* Some languages need two lines for an orientation on a phone */
+.vs-toggle > .v-btn {
+  flex: 1 1 0;
+  height: auto;
+  min-height: 40px;
+  padding-block: 6px;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.vs-toggle > .v-btn :deep(.v-btn__content) {
+  white-space: normal;
+}
+
+.vs-preview {
+  /* Room for the load arrows above and the diagrams below at the default sizes */
+  height: 220px;
+  border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.vs-preview > * {
+  height: 100%;
+}
+
+.vs-quantities :deep(.v-chip) {
+  text-transform: none;
+}
+
+.vs-colors {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 6px;
+}
+
+.vs-swatch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 6px 10px;
+  border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+  border-radius: 8px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.vs-swatch:hover,
+.vs-swatch:focus-visible {
+  background: rgba(var(--v-theme-on-surface), 0.04);
+}
+
+.vs-swatch__dot {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
+}
+
+.vs-swatch__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+</style>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Bounds } from '@/utils/fitBounds';
 import { centerSvgContent, fitSvgContent } from '@/utils/fitSvgContent';
-import type { ViewBox } from '@/utils/fitBounds';
+import type { Padding, ViewBox } from '@/utils/fitBounds';
 import type { FitContentResult } from '@/utils/fitContent';
 import { nextTick, onMounted, onBeforeUnmount, ref } from 'vue';
 
@@ -17,7 +17,7 @@ const props = withDefaults(
     /** Selector for decorations excluded from the fit; `fitReserve` makes room for them. */
     fitIgnore?: string;
     /** Screen pixels guaranteed free around the geometry for the ignored decorations. */
-    fitReserve?: number;
+    fitReserve?: number | Partial<Padding>;
     panButton?: number;
     zoomEnabled?: boolean;
   }>(),

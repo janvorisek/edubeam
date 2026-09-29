@@ -29,7 +29,7 @@ import SVGElement from './svg/Element.vue';
 import SVGElementTemperatureLoad from './svg/ElementTemperatureLoad.vue';
 import SVGDimensioning from './svg/Dimensioning.vue';
 import { loadType } from '../utils/loadType';
-import { boundsFromPoints, type ViewBox } from '@/utils/fitBounds';
+import { boundsFromPoints, type Padding, type ViewBox } from '@/utils/fitBounds';
 import type { DimensionRenderableNode } from '@/types/dimension';
 
 const props = withDefaults(
@@ -64,8 +64,11 @@ const props = withDefaults(
     resultsScalePx?: number;
     /** Decorations excluded from the fit (their room comes from `fitReservePx`). */
     fitIgnore?: string;
-    /** Pixels kept free around the structure on every side; defaults to results + loads + a label. */
-    fitReservePx?: number;
+    /**
+     * Pixels kept free around the structure, on every side or per side; defaults to results + loads
+     * + a label all round.
+     */
+    fitReservePx?: number | Partial<Padding>;
     /**
      * The viewer never draws results or loads, so the fit reserves no room for them.
      * Without it a small preview (the widget header is 64x48) spends most of its box on

@@ -54,6 +54,17 @@
     "defineSupports": "Node supports",
     "lcsAngle": "Nodal LCS angle"
   },
+  "supports": {
+    "free": "Free",
+    "pin": "Pin",
+    "roller": "Roller",
+    "verticalRoller": "Vertical roller",
+    "slider": "Slider",
+    "verticalSlider": "Vertical slider",
+    "rotation": "Rotation only",
+    "fixed": "Fixed",
+    "custom": "Custom"
+  },
   "elements": {
     "addElement": "Add element",
     "editElement": "Edit element",

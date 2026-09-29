@@ -54,6 +54,17 @@
     "defineSupports": "การรองรับโหนด",
     "lcsAngle": "มุมระบบพิกัดท้องถิ่นของโหนด"
   },
+  "supports": {
+    "free": "อิสระ",
+    "pin": "หมุด",
+    "roller": "ล้อเลื่อน",
+    "verticalRoller": "ล้อเลื่อนแนวตั้ง",
+    "slider": "แบบเลื่อน",
+    "verticalSlider": "แบบเลื่อนแนวตั้ง",
+    "rotation": "ยึดการหมุนเท่านั้น",
+    "fixed": "ยึดแน่น",
+    "custom": "กำหนดเอง"
+  },
   "elements": {
     "addElement": "เพิ่มองค์ประกอบ",
     "editElement": "แก้ไของค์ประกอบ",

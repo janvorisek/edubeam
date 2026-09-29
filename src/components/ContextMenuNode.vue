@@ -5,6 +5,8 @@ import { useProjectStore } from '@/store/project';
 import { useAppStore } from '@/store/app';
 import { deleteNode, nodeLcsAngle, setNodeLcsAngle, toggleSet } from '@/utils';
 import { computed, ref, watch } from 'vue';
+import SupportPicker from './SupportPicker.vue';
+import { setSupportType } from '@/utils/supports';
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
@@ -60,8 +62,9 @@ const removeNode = () => {
         <div class="pr-2"><v-icon size="16" icon="mdi-triangle-outline" /></div>
       </template>
       {{ $t('nodes.defineSupports') }}
-      <v-menu activator="parent" open-on-click min-width="170" location="end" :close-on-content-click="false">
+      <v-menu activator="parent" open-on-click min-width="290" location="end" :close-on-content-click="false">
         <v-list density="compact" class="py-0">
+          <SupportPicker class="px-1 pt-1" :bcs="node.bcs" @select="(type) => setSupportType(node, type)" />
           <v-row no-gutters class="px-1">
             <v-col>
               <v-checkbox

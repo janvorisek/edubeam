@@ -152,7 +152,10 @@
             </div>
           </template>
           <template #item.bcs="{ item }">
-            <div class="d-flex">
+            <div class="d-flex align-center">
+              <div class="mr-2">
+                <SupportPicker compact :bcs="item.bcs" @select="(type) => setSupportType(item, type)" />
+              </div>
               <div class="inline-edit-group">
                 <label :for="`bcs0-${item.label}`" class="input-before">D<sub>x</sub></label>
                 <div class="inline-edit">
@@ -1548,6 +1551,8 @@ import { formatMeasureAsHTML } from '../SVGUtils';
 import { buildResultsTsv, downloadResultsCsv, resultUnitsFromStore } from '../utils/exportResults';
 
 import HelpTip from './HelpTip.vue';
+import SupportPicker from './SupportPicker.vue';
+import { setSupportType } from '@/utils/supports';
 import type { HelpTopicKey } from '../utils/helpTopics';
 
 import { openModal } from 'jenesius-vue-modal';
@@ -2031,7 +2036,7 @@ const headers = reactive({
       title: 'dofs.bcs',
       help: 'supports',
       key: 'bcs',
-      width: 260,
+      width: 296,
       sortable: false,
     },
     {

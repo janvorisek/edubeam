@@ -170,6 +170,17 @@
     "defineSupports": "Podepření uzlu",
     "lcsAngle": "Pootočení systému souřadnic"
   },
+  "supports": {
+    "free": "Volný",
+    "pin": "Kloub",
+    "roller": "Posuvný kloub",
+    "verticalRoller": "Svislý posuvný kloub",
+    "slider": "Posuvné vetknutí",
+    "verticalSlider": "Svislé posuvné vetknutí",
+    "rotation": "Zamezené pootočení",
+    "fixed": "Vetknutí",
+    "custom": "Vlastní"
+  },
   "tabView": {
     "results": "Výsledky",
     "settings": "Nastavení",

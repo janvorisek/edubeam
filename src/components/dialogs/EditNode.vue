@@ -98,6 +98,12 @@
               </div>
             </v-col>
           </v-row>
+          <v-row>
+            <v-col cols="12" class="pt-0">
+              <div class="text-caption">{{ $t('nodes.defineSupports') }}</div>
+              <SupportPicker :bcs="tmpNode.bcs" @select="(type) => (tmpNode.bcs = new Set(supportTypes[type]))" />
+            </v-col>
+          </v-row>
         </v-form>
       </v-card-text>
 
@@ -130,6 +136,8 @@ import {
   toggleSet,
 } from '@/utils';
 import SupportHelper from '../svg/SupportHelper.vue';
+import SupportPicker from '../SupportPicker.vue';
+import { supportTypes } from '@/utils/supports';
 import { numberRules } from '../../utils';
 
 const projectStore = useProjectStore();

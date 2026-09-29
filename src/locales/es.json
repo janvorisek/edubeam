@@ -54,6 +54,17 @@
     "defineSupports": "Apoyos del nodo",
     "lcsAngle": "Ángulo del SCL nodal"
   },
+  "supports": {
+    "free": "Libre",
+    "pin": "Articulación",
+    "roller": "Rodillo",
+    "verticalRoller": "Rodillo vertical",
+    "slider": "Deslizadera",
+    "verticalSlider": "Deslizadera vertical",
+    "rotation": "Solo giro impedido",
+    "fixed": "Empotramiento",
+    "custom": "Personalizado"
+  },
   "elements": {
     "addElement": "Añadir elemento",
     "editElement": "Editar elemento",

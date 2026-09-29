@@ -54,6 +54,17 @@
     "defineSupports": "Apoios do nó",
     "lcsAngle": "Ângulo do SCL nodal"
   },
+  "supports": {
+    "free": "Livre",
+    "pin": "Apoio fixo",
+    "roller": "Apoio móvel",
+    "verticalRoller": "Apoio móvel vertical",
+    "slider": "Engaste deslizante",
+    "verticalSlider": "Engaste deslizante vertical",
+    "rotation": "Apenas rotação impedida",
+    "fixed": "Engaste",
+    "custom": "Personalizado"
+  },
   "elements": {
     "addElement": "Adicionar elemento",
     "editElement": "Editar elemento",

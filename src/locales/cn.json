@@ -54,6 +54,17 @@
     "defineSupports": "节点支座",
     "lcsAngle": "节点局部坐标系角度"
   },
+  "supports": {
+    "free": "自由",
+    "pin": "固定铰支座",
+    "roller": "滑动铰支座",
+    "verticalRoller": "竖向滑动铰支座",
+    "slider": "滑动固定端",
+    "verticalSlider": "竖向滑动固定端",
+    "rotation": "仅约束转动",
+    "fixed": "固定端",
+    "custom": "自定义"
+  },
   "elements": {
     "addElement": "添加单元",
     "editElement": "编辑单元",

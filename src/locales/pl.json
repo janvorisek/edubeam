@@ -54,6 +54,17 @@
     "defineSupports": "Podpory węzła",
     "lcsAngle": "Kąt lokalnego układu"
   },
+  "supports": {
+    "free": "Swobodny",
+    "pin": "Przegub",
+    "roller": "Przegub przesuwny",
+    "verticalRoller": "Przegub przesuwny pionowy",
+    "slider": "Utwierdzenie przesuwne",
+    "verticalSlider": "Utwierdzenie przesuwne pionowe",
+    "rotation": "Tylko obrót zablokowany",
+    "fixed": "Utwierdzenie",
+    "custom": "Własne"
+  },
   "elements": {
     "addElement": "Dodaj element",
     "editElement": "Edytuj element",

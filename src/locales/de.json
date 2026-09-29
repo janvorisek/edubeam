@@ -54,6 +54,17 @@
     "defineSupports": "Knotenlagerung",
     "lcsAngle": "Knoten-LKS-Winkel"
   },
+  "supports": {
+    "free": "Frei",
+    "pin": "Festlager",
+    "roller": "Loslager",
+    "verticalRoller": "Vertikales Loslager",
+    "slider": "Parallelführung",
+    "verticalSlider": "Vertikale Parallelführung",
+    "rotation": "Nur Verdrehung gehalten",
+    "fixed": "Einspannung",
+    "custom": "Benutzerdefiniert"
+  },
   "elements": {
     "addElement": "Element hinzufügen",
     "editElement": "Element bearbeiten",

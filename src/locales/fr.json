@@ -54,6 +54,17 @@
     "defineSupports": "Appuis du nœud",
     "lcsAngle": "Angle du SCL nodal"
   },
+  "supports": {
+    "free": "Libre",
+    "pin": "Rotule",
+    "roller": "Appui simple",
+    "verticalRoller": "Appui simple vertical",
+    "slider": "Glissière",
+    "verticalSlider": "Glissière verticale",
+    "rotation": "Rotation bloquée seule",
+    "fixed": "Encastrement",
+    "custom": "Personnalisé"
+  },
   "elements": {
     "addElement": "Ajouter un élément",
     "editElement": "Modifier l'élément",

@@ -54,6 +54,17 @@
     "defineSupports": "Düğüm mesnetleri",
     "lcsAngle": "Düğüm yerel eksen açısı"
   },
+  "supports": {
+    "free": "Serbest",
+    "pin": "Mafsal",
+    "roller": "Kayıcı mesnet",
+    "verticalRoller": "Düşey kayıcı mesnet",
+    "slider": "Kayar ankastre",
+    "verticalSlider": "Düşey kayar ankastre",
+    "rotation": "Yalnız dönme tutulu",
+    "fixed": "Ankastre",
+    "custom": "Özel"
+  },
   "elements": {
     "addElement": "Eleman ekle",
     "editElement": "Elemanı düzenle",

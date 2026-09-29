@@ -40,27 +40,39 @@
                 :padding="6"
                 :mobile-padding="6"
                 :zoom-enabled="false"
+                :results-scale-px="28"
+                :convert-force="convertForce"
+                :convert-moment="convertMoment"
+                :convert-force-distance="convertForce"
                 :support-size="0.5"
               />
             </button>
             <div class="recent-copy">
-              <div class="flex-grow-1">
-                <div class="text-body-2 font-weight-medium">{{ $t(`recentStructures.reasons.${entry.reason}`) }}</div>
-                <div class="text-caption text-medium-emphasis">
-                  {{ formatDate(entry.savedAt) }} ·
+              <div class="d-flex align-start">
+                <div class="flex-grow-1">
+                  <div class="text-body-2 font-weight-medium">
+                    {{ $t(`recentStructures.reasons.${entry.reason}`) }}
+                  </div>
+                  <div class="text-caption text-medium-emphasis">{{ formatDate(entry.savedAt) }}</div>
+                </div>
+                <v-btn
+                  icon="mdi-delete-outline"
+                  size="small"
+                  variant="text"
+                  density="comfortable"
+                  class="mt-n1 mr-n1"
+                  :aria-label="$t('recentStructures.remove')"
+                  @click="recentStructures.remove(entry.id)"
+                />
+              </div>
+              <div class="d-flex align-center mt-1">
+                <div class="flex-grow-1 text-caption text-medium-emphasis">
                   {{ $t('recentStructures.counts', { nodes: entry.nodes, elements: entry.elements }) }}
                 </div>
+                <v-btn size="small" variant="tonal" color="primary" class="text-none" @click="restore(entry)">
+                  {{ $t('recentStructures.restore') }}
+                </v-btn>
               </div>
-              <v-btn
-                icon="mdi-delete-outline"
-                size="small"
-                variant="text"
-                :aria-label="$t('recentStructures.remove')"
-                @click="recentStructures.remove(entry.id)"
-              />
-              <v-btn size="small" variant="tonal" color="primary" class="text-none" @click="restore(entry)">
-                {{ $t('recentStructures.restore') }}
-              </v-btn>
             </div>
           </div>
         </div>
@@ -84,6 +96,10 @@ import type { DimensionLine } from '@/types/dimension';
 const open = ref(true);
 const recentStructures = useRecentStructuresStore();
 const appStore = useAppStore();
+
+// Previews render in SI, like the examples gallery, so a card reads the same whatever units the project uses.
+const convertForce = (value: number) => value / 1000;
+const convertMoment = (value: number) => value / 1000;
 
 const previews = computed(() =>
   recentStructures.entries.map((entry) => {
@@ -163,10 +179,7 @@ const restore = (entry: RecentStructure) => {
 }
 
 .recent-copy {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 8px 8px 10px 10px;
+  padding: 8px 8px 8px 10px;
 }
 
 .recent-empty {

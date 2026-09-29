@@ -7,7 +7,7 @@
         <p class="mb-4">{{ description }}</p>
 
         <div v-if="props.diagnostics.errors.length > 0" class="mb-4">
-          <div class="text-subtitle-1 font-weight-medium mb-2">Errors</div>
+          <div class="text-subtitle-1 font-weight-medium mb-2">{{ $t('solveDiagnostics.errors') }}</div>
           <div v-for="issue in props.diagnostics.errors" :key="issue.code + issue.message" class="issue">
             <v-icon color="error" size="small" class="issue-icon">mdi-alert-circle</v-icon>
             <span class="issue-message">{{ issue.message }}</span>
@@ -15,7 +15,7 @@
         </div>
 
         <div v-if="props.diagnostics.warnings.length > 0">
-          <div class="text-subtitle-1 font-weight-medium mb-2">Warnings</div>
+          <div class="text-subtitle-1 font-weight-medium mb-2">{{ $t('solveDiagnostics.warnings') }}</div>
           <div v-for="issue in props.diagnostics.warnings" :key="issue.code + issue.message" class="issue">
             <v-icon color="warning" size="small" class="issue-icon">mdi-alert</v-icon>
             <span class="issue-message">{{ issue.message }}</span>
@@ -36,7 +36,7 @@
           {{ $t('help.troubleshooting') }}
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="primary" @click="close">OK</v-btn>
+        <v-btn color="primary" @click="close">{{ $t('common.ok') }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -44,9 +44,12 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { popModal } from 'jenesius-vue-modal';
 import type { SolveDiagnostics } from '@/utils/validateSolverModel';
 import { docsUrl, trackDocsClick } from '@/utils/docs';
+
+const { t } = useI18n();
 
 const open = ref(true);
 
@@ -55,11 +58,9 @@ const props = defineProps<{
   blocked: boolean;
 }>();
 
-const title = computed(() => (props.blocked ? 'Cannot solve model' : 'Model warnings'));
+const title = computed(() => t(props.blocked ? 'solveDiagnostics.blockedTitle' : 'solveDiagnostics.warningsTitle'));
 const description = computed(() =>
-  props.blocked
-    ? 'Fix the listed errors before solving the model.'
-    : 'The model was solved, but the following warnings were detected.'
+  t(props.blocked ? 'solveDiagnostics.blockedDescription' : 'solveDiagnostics.warningsDescription')
 );
 
 const close = () => {

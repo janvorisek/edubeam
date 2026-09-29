@@ -43,8 +43,8 @@
               />
             </div>
             <div class="example-copy">
-              <div class="text-body-2 font-weight-medium">{{ example.title }}</div>
-              <div class="text-caption text-medium-emphasis">{{ example.blurb }}</div>
+              <div class="text-body-2 font-weight-medium">{{ $t(`examples.items.${example.id}.title`) }}</div>
+              <div class="text-caption text-medium-emphasis">{{ $t(`examples.items.${example.id}.blurb`) }}</div>
             </div>
           </button>
         </div>

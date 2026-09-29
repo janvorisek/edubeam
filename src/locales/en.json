@@ -43,7 +43,10 @@
     "paste": "Paste",
     "addNew": "Add new",
     "whatisnew": "What’s New?",
-    "reverse_orientation": "Flip dimension"
+    "reverse_orientation": "Flip dimension",
+    "undo": "Undo",
+    "redo": "Redo",
+    "ok": "OK"
   },
   "nodes": {
     "addNode": "Add node",
@@ -57,7 +60,9 @@
     "swapNodeOrder": "Swap nodes",
     "hingeStart": "Start hinge",
     "hingeEnd": "End hinge",
-    "hinge": "Hinge"
+    "hinge": "Hinge",
+    "from": "From",
+    "to": "To"
   },
   "loads": {
     "addNodalLoad": "Add nodal load",
@@ -137,7 +142,8 @@
       "mouse": "Mouse",
       "pan_button": "Pan using",
       "wheel": "Mouse wheel",
-      "right_button": "Right button"
+      "right_button": "Right button",
+      "all": "Mouse wheel or right button"
     },
     "colors": {
       "colors": "Colors"
@@ -172,6 +178,14 @@
     "elementLabels": "Element labels",
     "more_settings": "More settings",
     "showReactions": "Reactions"
+  },
+  "viewer": {
+    "toggleGrid": "Toggle grid (G)",
+    "toggleSnap": "Toggle snap to grid (S)",
+    "boxSelect": "Box select",
+    "centerContent": "Center content",
+    "fitContent": "Fit content to screen",
+    "holdCtrl": "Hold Ctrl to add using mouse"
   },
   "dofs": {
     "bcs": "Supported DOFs"
@@ -253,7 +267,8 @@
     "changelog": {
       "title": "What's New?",
       "description": "New features, improvements, and sneak peeks of what we’re working on.",
-      "contributors": "Contributors to this release: {names}"
+      "contributors": "Contributors to this release: {names}",
+      "comingSoon": "Coming soon"
     },
     "polygonSection": {
       "title": "New polygonal cross section",
@@ -383,6 +398,52 @@
     "materialInUse": "Material is used by element(s) {elements}. Reassign them before deleting it.",
     "crossSectionInUse": "Cross-section is used by element(s) {elements}. Reassign them before deleting it."
   },
+  "solveDiagnostics": {
+    "summaryErrors": "Model has {errors} error(s).",
+    "summaryWarnings": "Model has {warnings} warning(s).",
+    "summaryBoth": "Model has {errors} error(s) and {warnings} warning(s).",
+    "showDetails": "Show details",
+    "blockedTitle": "Cannot solve model",
+    "blockedDescription": "Fix the listed errors before solving the model.",
+    "warningsTitle": "Model warnings",
+    "warningsDescription": "The model was solved, but the following warnings were detected.",
+    "errors": "Errors",
+    "warnings": "Warnings",
+    "issues": {
+      "elementNodeCount": "Element {element} must reference exactly 2 nodes.",
+      "elementSameNode": "Element {element} references the same node at both ends.",
+      "elementMissingNode": "Element {element} references missing node {node}.",
+      "elementMissingMaterial": "Element {element} references missing material {material}.",
+      "elementMissingCrossSection": "Element {element} references missing cross section {crossSection}.",
+      "nodalLoadMissingNode": "Nodal load #{index} references missing node {node}.",
+      "nodalLoadInvalid": "Nodal load #{index} contains invalid values.",
+      "prescribedMissingNode": "Prescribed displacement #{index} references missing node {node}.",
+      "prescribedInvalid": "Prescribed displacement #{index} contains invalid values.",
+      "elementLoadMissingElement": "Element load #{index} references missing element {element}.",
+      "supportedNodeNotConnected": "Node {node} is supported but no element connects to it, so the support carries nothing.",
+      "nodeNotConnected": "Node {node} is not connected to any element and is ignored by the solver.",
+      "insufficientSupports": "Model needs at least 3 constrained DOFs to be stable in 2D analysis.",
+      "partUnsupported": "A separate part of the structure (nodes {nodes}) has fewer than 3 restrained DOFs and can move freely.",
+      "mechanism": "Structure has enough supports but they do not hold it: it can still {motion}. Supports that are all parallel, or whose lines of action meet in one point, leave the structure free to move.",
+      "partMechanism": "A separate part of the structure (nodes {nodes}) has enough supports but they do not hold it: it can still {motion}. Supports that are all parallel, or whose lines of action meet in one point, leave the structure free to move.",
+      "motion": {
+        "horizontal": "slide horizontally",
+        "vertical": "move vertically",
+        "rotation": "rotate freely",
+        "mixed": "move as a rigid body"
+      },
+      "unstable": "Structure is unstable: {dofs} moves practically without resistance. Add a support or an element, remove an end hinge, or check the cross section stiffness.",
+      "unstableDof": {
+        "dx": "node {node} horizontally (Dx)",
+        "dz": "node {node} vertically (Dz)",
+        "ry": "node {node} in rotation (Ry)",
+        "other": "node {node} in DOF {dof}"
+      },
+      "unstableMore": "{list} and {count} more",
+      "singularMatrix": "Structure is a mechanism: the stiffness matrix is singular. Check that every part is held by at least 3 restraints and that end hinges do not leave a member free to rotate.",
+      "solverFailed": "Solver failed due to an internal model inconsistency. Please review model references and loads."
+    }
+  },
   "loadType": {
     "loadType": "Load type",
     "concentrated": "Concentrated load",
@@ -396,7 +457,14 @@
   },
   "warnings": {
     "noMaterialsDefined": "No materials defined.",
-    "noCrossSectionsDefined": "No cross sections defined."
+    "noCrossSectionsDefined": "No cross sections defined.",
+    "importFailed": "Could not import the file. Please check the file format.",
+    "prescribedDisplacementExists": "Prescribed displacement already exists for this node. Please remove it first.",
+    "addMaterialFirst": "Please add a material first.",
+    "addCrossSectionFirst": "Please add a cross section first.",
+    "selectMaterialAndCrossSection": "Please select a material and a cross section.",
+    "labelInUse": "Label {label} is already in use.",
+    "noMaterialOrCrossSection": "Element does not specify material or cross section."
   },
   "help": {
     "aria": "Show help",
@@ -495,6 +563,32 @@
   "examples": {
     "title": "Examples",
     "instructions": "Open a ready-made model to explore. It replaces the current one, and Ctrl+Z brings yours back.",
-    "moreInDocs": "More examples and exercises"
+    "moreInDocs": "More examples and exercises",
+    "items": {
+      "welcome": {
+        "title": "Indeterminate beam",
+        "blurb": "Statically indeterminate 3 m fixed–roller beam under 10 kN/m UDL."
+      },
+      "cantilever": {
+        "title": "Cantilever",
+        "blurb": "4 m cantilever resisting an 18 kN downward nodal load, highlighting curvature and tip deflection."
+      },
+      "pratt": {
+        "title": "Pratt truss",
+        "blurb": "Simple Pratt truss with 8 kN joint loads showing axial force distribution and displacements."
+      },
+      "continuous": {
+        "title": "Three-span continuous beam",
+        "blurb": "5+6+5 m spans with UDL + point + UDL to compare curvature and support rotations."
+      },
+      "portal": {
+        "title": "Portal frame load case",
+        "blurb": "8 m beam on 6 m columns under roof UDL and lateral + vertical knee loads for sway and bending checks."
+      },
+      "temperature": {
+        "title": "Temperature load",
+        "blurb": "Simply supported 8 m beam with uniform and non-uniform temperature load."
+      }
+    }
   }
 }

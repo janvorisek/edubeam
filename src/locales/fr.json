@@ -43,7 +43,10 @@
     "paste": "Coller",
     "addNew": "Ajouter",
     "whatisnew": "Quoi de neuf ?",
-    "reverse_orientation": "Inverser la cote"
+    "reverse_orientation": "Inverser la cote",
+    "undo": "Annuler",
+    "redo": "Rétablir",
+    "ok": "OK"
   },
   "nodes": {
     "addNode": "Ajouter un nœud",
@@ -57,7 +60,9 @@
     "swapNodeOrder": "Inverser les nœuds",
     "hingeStart": "Rotule au début",
     "hingeEnd": "Rotule à la fin",
-    "hinge": "Rotule"
+    "hinge": "Rotule",
+    "from": "De",
+    "to": "À"
   },
   "loads": {
     "addNodalLoad": "Ajouter une charge nodale",
@@ -90,7 +95,14 @@
     "area": "Aire",
     "h": "Hauteur",
     "iy": "Iy",
-    "k": "Coefficient de cisaillement"
+    "k": "Coefficient de cisaillement",
+    "iz": "Iz",
+    "b": "Largeur",
+    "centroid": "Centre de gravité",
+    "alpha": "Angle des axes principaux",
+    "radiusOfGyration": "Rayon de giration",
+    "polygonal": "Forme polygonale",
+    "derivedFromShape": "Déduit de la forme polygonale – modifiez la forme pour le changer"
   },
   "material": {
     "e": "E",
@@ -130,7 +142,8 @@
       "mouse": "Souris",
       "pan_button": "Déplacer la vue avec",
       "wheel": "Molette de la souris",
-      "right_button": "Bouton droit"
+      "right_button": "Bouton droit",
+      "all": "Molette ou bouton droit"
     },
     "colors": {
       "colors": "Couleurs"
@@ -154,7 +167,8 @@
     "font_size": "Taille de police",
     "result_label_orientation": "Orientation des étiquettes de résultats",
     "result_label_orientation_axis": "Perpendiculaires au diagramme",
-    "result_label_orientation_horizontal": "Toujours horizontales"
+    "result_label_orientation_horizontal": "Toujours horizontales",
+    "result_labels": "Étiquettes des résultats"
   },
   "sideSettings": {
     "showDeformedShape": "Déformée",
@@ -165,6 +179,14 @@
     "more_settings": "Plus de paramètres",
     "showReactions": "Réactions"
   },
+  "viewer": {
+    "toggleGrid": "Afficher/masquer la grille (G)",
+    "toggleSnap": "Activer/désactiver le magnétisme (S)",
+    "boxSelect": "Sélection par rectangle",
+    "centerContent": "Centrer le contenu",
+    "fitContent": "Ajuster à l'écran",
+    "holdCtrl": "Maintenez Ctrl pour ajouter à la souris"
+  },
   "dofs": {
     "bcs": "DDL bloqués"
   },
@@ -172,7 +194,11 @@
     "results": "Résultats",
     "nodal_results": "Résultats nodaux",
     "element_results": "Résultats par élément",
-    "end_forces": "Efforts aux extrémités (dans le système de coordonnées local)"
+    "end_forces": "Efforts aux extrémités (dans le système de coordonnées local)",
+    "exportCsv": "Exporter en CSV",
+    "exportHint": "Téléchargez les deux tableaux de résultats dans les unités affichées, prêts pour un tableur.",
+    "copied": "Résultats copiés dans le presse-papiers",
+    "copyFailed": "Impossible de copier les résultats dans le presse-papiers."
   },
   "materials": {
     "addMaterial": "Ajouter un matériau",
@@ -180,7 +206,8 @@
     "section_library": "Bibliothèque de sections"
   },
   "crossSections": {
-    "addCrossSection": "Ajouter une section"
+    "addCrossSection": "Ajouter une section",
+    "addPolygonal": "Section polygonale"
   },
   "dialogs": {
     "addNode": {
@@ -219,7 +246,8 @@
     },
     "addCrossSection": {
       "addNewCrossSection": "Ajouter une nouvelle section",
-      "addCrossSection": "Ajouter une section"
+      "addCrossSection": "Ajouter une section",
+      "orDefinePolygon": "Ou définir une forme polygonale"
     },
     "editNodalLoad": {
       "editNodalLoad": "Modifier la charge nodale"
@@ -239,7 +267,55 @@
     "changelog": {
       "title": "Quoi de neuf ?",
       "description": "Nouvelles fonctionnalités, améliorations et aperçu de ce que nous préparons.",
-      "contributors": "Ont contribué à cette version : {names}"
+      "contributors": "Ont contribué à cette version : {names}",
+      "comingSoon": "Bientôt disponible"
+    },
+    "polygonSection": {
+      "title": "Nouvelle section polygonale",
+      "editTitle": "Modifier la section polygonale",
+      "preset": "Modèle",
+      "apply": "Appliquer",
+      "snapStep": "Pas de magnétisme",
+      "centerAtCentroid": "Centrer sur le centre de gravité",
+      "hint": "Faites glisser les sommets pour les déplacer, cliquez sur le milieu d'une arête pour insérer un sommet, double-cliquez sur un sommet pour le supprimer.",
+      "outline": "Contour",
+      "hole": "Évidement",
+      "addHole": "Ajouter un évidement",
+      "addVertex": "Ajouter un sommet",
+      "removeContour": "Supprimer l'évidement",
+      "properties": "Caractéristiques de la section",
+      "invalidShape": "La forme doit être un polygone simple d'aire positive : aucune arête ne doit se croiser et les évidements doivent rester à l'intérieur du contour.",
+      "labelInUse": "Libellé déjà utilisé",
+      "save": "Enregistrer",
+      "editShape": "Modifier la forme polygonale",
+      "presets": {
+        "rectangle": "Rectangle",
+        "iSection": "Profilé en I",
+        "tSection": "Profilé en T",
+        "lSection": "Cornière (L)",
+        "channel": "Profilé en U",
+        "box": "Tube rectangulaire",
+        "circle": "Cercle",
+        "pipe": "Tube circulaire"
+      },
+      "params": {
+        "b": "Largeur b",
+        "h": "Hauteur h",
+        "tw": "Âme tw",
+        "tf": "Semelle tf",
+        "t": "Épaisseur t",
+        "d": "Diamètre d",
+        "n": "Segments"
+      },
+      "vertices": "Sommets",
+      "legendOutline": "Contour",
+      "legendHole": "Évidement",
+      "legendPrincipal": "Axes principaux et ellipse d'inertie",
+      "legendCentroid": "Centre de gravité",
+      "shape": "Forme",
+      "noShape": "Aucune forme polygonale",
+      "centroidal": "central",
+      "centroidalNote": "Tous les moments quadratiques sont calculés par rapport à des axes passant par le centre de gravité ; I₁, I₂ sont les valeurs principales et α est l'angle entre l'axe y et l'axe 1."
     }
   },
   "tooltip": {
@@ -316,7 +392,57 @@
   },
   "validators": {
     "enterValue": "Saisissez une valeur",
-    "invalidNumber": "Nombre invalide"
+    "invalidNumber": "Nombre invalide",
+    "positiveNumber": "Saisissez un nombre supérieur à zéro",
+    "sameNodes": "Un élément doit relier deux nœuds différents",
+    "materialInUse": "Le matériau est utilisé par les éléments suivants : {elements}. Réaffectez-les avant de le supprimer.",
+    "crossSectionInUse": "La section est utilisée par les éléments suivants : {elements}. Réaffectez-les avant de la supprimer."
+  },
+  "solveDiagnostics": {
+    "summaryErrors": "Erreurs dans le modèle : {errors}",
+    "summaryWarnings": "Avertissements dans le modèle : {warnings}",
+    "summaryBoth": "Erreurs dans le modèle : {errors} ; avertissements : {warnings}",
+    "showDetails": "Afficher les détails",
+    "blockedTitle": "Impossible de résoudre le modèle",
+    "blockedDescription": "Corrigez les erreurs listées avant de résoudre le modèle.",
+    "warningsTitle": "Avertissements du modèle",
+    "warningsDescription": "Le modèle a été résolu, mais les avertissements suivants ont été détectés.",
+    "errors": "Erreurs",
+    "warnings": "Avertissements",
+    "issues": {
+      "elementNodeCount": "L'élément {element} doit référencer exactement 2 nœuds.",
+      "elementSameNode": "L'élément {element} référence le même nœud à ses deux extrémités.",
+      "elementMissingNode": "L'élément {element} référence le nœud inexistant {node}.",
+      "elementMissingMaterial": "L'élément {element} référence le matériau inexistant {material}.",
+      "elementMissingCrossSection": "L'élément {element} référence la section inexistante {crossSection}.",
+      "nodalLoadMissingNode": "La charge nodale n° {index} référence le nœud inexistant {node}.",
+      "nodalLoadInvalid": "La charge nodale n° {index} contient des valeurs invalides.",
+      "prescribedMissingNode": "Le déplacement imposé n° {index} référence le nœud inexistant {node}.",
+      "prescribedInvalid": "Le déplacement imposé n° {index} contient des valeurs invalides.",
+      "elementLoadMissingElement": "La charge d'élément n° {index} référence l'élément inexistant {element}.",
+      "supportedNodeNotConnected": "Le nœud {node} possède un appui mais aucun élément n'y est relié : l'appui ne reprend donc rien.",
+      "nodeNotConnected": "Le nœud {node} n'est relié à aucun élément et est ignoré par le solveur.",
+      "insufficientSupports": "Le modèle doit comporter au moins 3 DDL bloqués pour être stable en analyse 2D.",
+      "partUnsupported": "Une partie séparée de la structure (nœuds {nodes}) a moins de 3 DDL bloqués et peut se déplacer librement.",
+      "mechanism": "La structure a suffisamment d'appuis, mais ils ne la maintiennent pas : elle peut encore {motion}. Des appuis tous parallèles, ou dont les lignes d'action concourent en un même point, laissent la structure libre de se déplacer.",
+      "partMechanism": "Une partie séparée de la structure (nœuds {nodes}) a suffisamment d'appuis, mais ils ne la maintiennent pas : elle peut encore {motion}. Des appuis tous parallèles, ou dont les lignes d'action concourent en un même point, laissent la structure libre de se déplacer.",
+      "motion": {
+        "horizontal": "glisser horizontalement",
+        "vertical": "se déplacer verticalement",
+        "rotation": "tourner librement",
+        "mixed": "se déplacer comme un corps rigide"
+      },
+      "unstable": "La structure est instable. Déplacement pratiquement sans résistance : {dofs}. Ajoutez un appui ou un élément, supprimez une rotule d'extrémité ou vérifiez la rigidité de la section.",
+      "unstableDof": {
+        "dx": "nœud {node} horizontalement (Dx)",
+        "dz": "nœud {node} verticalement (Dz)",
+        "ry": "nœud {node} en rotation (Ry)",
+        "other": "nœud {node} selon le DDL {dof}"
+      },
+      "unstableMore": "{list} et {count} de plus",
+      "singularMatrix": "La structure est un mécanisme : la matrice de rigidité est singulière. Vérifiez que chaque partie est maintenue par au moins 3 liaisons et que les rotules d'extrémité ne laissent aucune barre libre de tourner.",
+      "solverFailed": "Échec du solveur dû à une incohérence interne du modèle. Veuillez vérifier les références et les charges du modèle."
+    }
   },
   "loadType": {
     "loadType": "Type de charge",
@@ -331,7 +457,14 @@
   },
   "warnings": {
     "noMaterialsDefined": "Aucun matériau défini.",
-    "noCrossSectionsDefined": "Aucune section définie."
+    "noCrossSectionsDefined": "Aucune section définie.",
+    "importFailed": "Impossible d'importer le fichier. Veuillez vérifier le format du fichier.",
+    "prescribedDisplacementExists": "Un déplacement imposé existe déjà pour ce nœud. Veuillez d'abord le supprimer.",
+    "addMaterialFirst": "Veuillez d'abord ajouter un matériau.",
+    "addCrossSectionFirst": "Veuillez d'abord ajouter une section.",
+    "selectMaterialAndCrossSection": "Veuillez sélectionner un matériau et une section.",
+    "labelInUse": "Le libellé {label} est déjà utilisé.",
+    "noMaterialOrCrossSection": "L'élément ne spécifie pas de matériau ou de section."
   },
   "help": {
     "aria": "Afficher l'aide",
@@ -396,6 +529,66 @@
     "sharing": {
       "title": "Enregistrer et partager",
       "body": "Enregistrez le modèle dans un fichier, copiez un lien contenant toute la structure, ou intégrez une vue en lecture seule dans votre page."
+    }
+  },
+  "exportImage": {
+    "title": "Exporter une image",
+    "transparentBackground": "Fond transparent",
+    "download": "Télécharger en PNG",
+    "downloadSvg": "Télécharger en SVG",
+    "copyToClipboard": "Copier dans le presse-papiers",
+    "copied": "Image copiée dans le presse-papiers",
+    "exported": "Image exportée",
+    "failed": "Impossible de générer l'image.",
+    "previewAlt": "Aperçu de l'image exportée",
+    "instructions": "Le dessin est remis en page pour la taille choisie, de sorte que les traits et les étiquettes gardent leur épaisseur réelle. Une même taille cadre toujours la structure de la même façon — pratique pour exporter M, N et V côte à côte.",
+    "width": "Largeur",
+    "height": "Hauteur",
+    "lockAspect": "Conserver les proportions",
+    "fitPreview": "Ajuster",
+    "actualSize": "Taille réelle",
+    "preview": "Aperçu",
+    "fitAll": "Tout afficher",
+    "window": "Fenêtre…",
+    "pickWindowHint": "Tracez un rectangle sur le dessin à exporter",
+    "dragEdge": "Faites glisser pour étendre ou rogner ce côté",
+    "scale": "Échelle",
+    "scaleCaption": "1 m du modèle correspond à {cm} cm sur papier (96 DPI). Faites défiler sur l'aperçu pour zoomer.",
+    "doesNotFit": "Tout ne tient pas à cette taille : les diagrammes, charges et étiquettes dépassent le bord d'environ {px} px. Réduisez les diagrammes (actuellement {diagrams} px) ou agrandissez le canevas.",
+    "shrinkDiagrams": "Réduire les diagrammes",
+    "enlargeCanvas": "Agrandir le canevas",
+    "diagramHeight": "Hauteur des diagrammes",
+    "shrinkNotEnough": "Réduire les diagrammes ne suffit pas ici — les charges et les étiquettes à elles seules demandent plus de place. Agrandissez plutôt le canevas."
+  },
+  "examples": {
+    "title": "Exemples",
+    "instructions": "Ouvrez un modèle prêt à l'emploi pour l'explorer. Il remplace le modèle actuel, et Ctrl+Z restaure le vôtre.",
+    "moreInDocs": "Plus d'exemples et d'exercices",
+    "items": {
+      "welcome": {
+        "title": "Poutre hyperstatique",
+        "blurb": "Poutre hyperstatique de 3 m, encastrée et sur appui simple, sous une charge uniformément répartie de 10 kN/m."
+      },
+      "cantilever": {
+        "title": "Console",
+        "blurb": "Console de 4 m reprenant une charge nodale de 18 kN vers le bas, mettant en évidence la courbure et la flèche en bout."
+      },
+      "pratt": {
+        "title": "Treillis Pratt",
+        "blurb": "Treillis Pratt simple avec des charges nodales de 8 kN, montrant la répartition des efforts normaux et les déplacements."
+      },
+      "continuous": {
+        "title": "Poutre continue à trois travées",
+        "blurb": "Travées de 5+6+5 m avec charge répartie + ponctuelle + répartie pour comparer la courbure et les rotations sur appuis."
+      },
+      "portal": {
+        "title": "Portique sous chargement",
+        "blurb": "Traverse de 8 m sur poteaux de 6 m sous charge répartie de toiture et charges latérales + verticales aux angles, pour vérifier le déplacement latéral et la flexion."
+      },
+      "temperature": {
+        "title": "Charge thermique",
+        "blurb": "Poutre sur appuis simples de 8 m soumise à une charge thermique uniforme et non uniforme."
+      }
     }
   }
 }

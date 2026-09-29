@@ -18,7 +18,7 @@
                       :items="projectStore.beams"
                       item-title="label"
                       item-value="label"
-                      label="Element id"
+                      :label="$t('common.element')"
                       hide-details="auto"
                       required
                       disabled

@@ -589,7 +589,7 @@ export const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputEl
 
   //if (isNaN(parseInt(el.value))) return;
   if (useProjectStore().solver.domain[map].has(el.value)) {
-    alert('ERROR: Label ' + el.value + ' already used!');
+    alert(i18n.global.t('warnings.labelInUse', { label: el.value }));
     el.value = item.label;
     return;
   }

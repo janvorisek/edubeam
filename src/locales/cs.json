@@ -38,7 +38,10 @@
     "paste": "Vložit",
     "addNew": "Přidat",
     "whatisnew": "Co je nového?",
-    "reverse_orientation": "Převrátit kótu"
+    "reverse_orientation": "Převrátit kótu",
+    "undo": "Zpět",
+    "redo": "Znovu",
+    "ok": "OK"
   },
   "tabs": {
     "nodes": "Uzly",
@@ -93,7 +96,8 @@
       "mouse": "Myš",
       "pan_button": "Posun zobrazení pomocí",
       "wheel": "Kolečko myši",
-      "right_button": "Pravé tlačítko"
+      "right_button": "Pravé tlačítko",
+      "all": "Kolečko nebo pravé tlačítko"
     },
     "results": {
       "results": "Výsledky"
@@ -117,7 +121,8 @@
     "font_size": "Velikost písma",
     "result_label_orientation": "Orientace popisků výsledků",
     "result_label_orientation_axis": "Kolmo k vykreslení grafu",
-    "result_label_orientation_horizontal": "Vždy vodorovně"
+    "result_label_orientation_horizontal": "Vždy vodorovně",
+    "result_labels": "Popisky výsledků"
   },
   "elements": {
     "addElement": "Přidat prvek",
@@ -125,7 +130,9 @@
     "editElement": "Upravit prvek",
     "hingeStart": "Kloub na začátku",
     "hingeEnd": "Kloub na konci",
-    "hinge": "Kloub"
+    "hinge": "Kloub",
+    "from": "Od",
+    "to": "Do"
   },
   "loads": {
     "addElementLoad": "Přidat prvkové zatížení",
@@ -135,6 +142,7 @@
     "prescribedDisplacement": "Předepsané posunutí",
     "addLoad": "Přidat zatížení",
     "addPrescribedDisplacement": "Předepsat posunutí",
+    "UDL": "Rovnoměrné",
     "forceMoment": "Síla/moment",
     "editLoad": "Upravit zatížení",
     "loadPositionOnBeam": "Vzdálenost od počátečního uzlu",
@@ -170,6 +178,14 @@
     "supports": "Podpory",
     "more_settings": "Všechna nastavení",
     "showReactions": "Reakce"
+  },
+  "viewer": {
+    "toggleGrid": "Zobrazit/skrýt mřížku (G)",
+    "toggleSnap": "Přichytávání k mřížce (S)",
+    "boxSelect": "Výběr obdélníkem",
+    "centerContent": "Vystředit konstrukci",
+    "fitContent": "Přizpůsobit obrazovce",
+    "holdCtrl": "Podržením Ctrl přidáte myší"
   },
   "dofs": {
     "bcs": "Podepřené stupně volnosti"
@@ -251,7 +267,8 @@
     "changelog": {
       "title": "Co je nového?",
       "description": "Novinky, vylepšení a ukázky toho, co chystáme dál.",
-      "contributors": "Na této verzi se podíleli: {names}"
+      "contributors": "Na této verzi se podíleli: {names}",
+      "comingSoon": "Připravujeme"
     },
     "polygonSection": {
       "title": "Nový polygonální průřez",
@@ -307,7 +324,8 @@
       "density": "Hustota je mírou toho, kolik hmoty je obsaženo v daném objemu látky.",
       "e": "Youngův modul pružnosti vyjadřuje závilosti mezi napětím a deformací v tahu a tlaku.",
       "g": "Smykový modul je vlastnost, která měří odolnost vůči deformaci při smykovém napětí, indikující tuhost materiálu v reakci na síly působící rovnoběžně s jeho povrchem."
-    }
+    },
+    "materials": {}
   },
   "footer": {
     "released": "vydáno",
@@ -374,7 +392,57 @@
   },
   "validators": {
     "enterValue": "Zadejte hodnotu",
-    "invalidNumber": "Neplatné číslo"
+    "invalidNumber": "Neplatné číslo",
+    "positiveNumber": "Zadejte číslo větší než nula",
+    "sameNodes": "Prvek musí spojovat dva různé uzly",
+    "materialInUse": "Materiál používají prvky {elements}. Před smazáním jim přiřaďte jiný.",
+    "crossSectionInUse": "Průřez používají prvky {elements}. Před smazáním jim přiřaďte jiný."
+  },
+  "solveDiagnostics": {
+    "summaryErrors": "Chyby v modelu: {errors}",
+    "summaryWarnings": "Varování v modelu: {warnings}",
+    "summaryBoth": "Chyby v modelu: {errors}, varování: {warnings}",
+    "showDetails": "Zobrazit podrobnosti",
+    "blockedTitle": "Model nelze vypočítat",
+    "blockedDescription": "Před výpočtem opravte uvedené chyby.",
+    "warningsTitle": "Varování k modelu",
+    "warningsDescription": "Model byl vypočten, ale byla zjištěna následující varování.",
+    "errors": "Chyby",
+    "warnings": "Varování",
+    "issues": {
+      "elementNodeCount": "Prvek {element} musí odkazovat právě na 2 uzly.",
+      "elementSameNode": "Prvek {element} má na obou koncích stejný uzel.",
+      "elementMissingNode": "Prvek {element} odkazuje na neexistující uzel {node}.",
+      "elementMissingMaterial": "Prvek {element} odkazuje na neexistující materiál {material}.",
+      "elementMissingCrossSection": "Prvek {element} odkazuje na neexistující průřez {crossSection}.",
+      "nodalLoadMissingNode": "Uzlové zatížení č. {index} odkazuje na neexistující uzel {node}.",
+      "nodalLoadInvalid": "Uzlové zatížení č. {index} obsahuje neplatné hodnoty.",
+      "prescribedMissingNode": "Předepsané posunutí č. {index} odkazuje na neexistující uzel {node}.",
+      "prescribedInvalid": "Předepsané posunutí č. {index} obsahuje neplatné hodnoty.",
+      "elementLoadMissingElement": "Prvkové zatížení č. {index} odkazuje na neexistující prvek {element}.",
+      "supportedNodeNotConnected": "Uzel {node} je podepřen, ale nepřipojuje se k němu žádný prvek, takže podpora nic nepřenáší.",
+      "nodeNotConnected": "Uzel {node} není připojen k žádnému prvku a výpočet jej ignoruje.",
+      "insufficientSupports": "Aby byl model při 2D výpočtu stabilní, musí mít alespoň 3 podepřené stupně volnosti.",
+      "partUnsupported": "Samostatná část konstrukce (uzly {nodes}) má méně než 3 podepřené stupně volnosti a může se volně pohybovat.",
+      "mechanism": "Konstrukce má dostatek podpor, ale ty ji nezajišťují: stále se může {motion}. Jsou-li všechny vazby rovnoběžné nebo se jejich nositelky protínají v jednom bodě, konstrukce se může volně pohybovat.",
+      "partMechanism": "Samostatná část konstrukce (uzly {nodes}) má dostatek podpor, ale ty ji nezajišťují: stále se může {motion}. Jsou-li všechny vazby rovnoběžné nebo se jejich nositelky protínají v jednom bodě, konstrukce se může volně pohybovat.",
+      "motion": {
+        "horizontal": "posouvat vodorovně",
+        "vertical": "posouvat svisle",
+        "rotation": "volně otáčet",
+        "mixed": "pohybovat jako tuhý celek"
+      },
+      "unstable": "Konstrukce je nestabilní – tyto pohyby nemají prakticky žádný odpor: {dofs}. Přidejte podporu nebo prvek, odstraňte koncový kloub nebo zkontrolujte tuhost průřezu.",
+      "unstableDof": {
+        "dx": "vodorovný posun uzlu {node} (Dx)",
+        "dz": "svislý posun uzlu {node} (Dz)",
+        "ry": "pootočení uzlu {node} (Ry)",
+        "other": "stupeň volnosti {dof} uzlu {node}"
+      },
+      "unstableMore": "{list} a další ({count})",
+      "singularMatrix": "Konstrukce je mechanismus: matice tuhosti je singulární. Zkontrolujte, zda je každá část zajištěna alespoň 3 vazbami a zda koncové klouby nenechávají některý prut volně otočný.",
+      "solverFailed": "Výpočet selhal kvůli vnitřní nekonzistenci modelu. Zkontrolujte prosím odkazy v modelu a zatížení."
+    }
   },
   "loadType": {
     "concentrated": "Osamělá síla",
@@ -389,7 +457,14 @@
   },
   "warnings": {
     "noMaterialsDefined": "Není definovaný žádný materiál",
-    "noCrossSectionsDefined": "Není definovaný žádný průřez"
+    "noCrossSectionsDefined": "Není definovaný žádný průřez",
+    "importFailed": "Soubor se nepodařilo importovat. Zkontrolujte prosím formát souboru.",
+    "prescribedDisplacementExists": "Pro tento uzel již předepsané posunutí existuje. Nejprve jej prosím odstraňte.",
+    "addMaterialFirst": "Nejprve prosím přidejte materiál.",
+    "addCrossSectionFirst": "Nejprve prosím přidejte průřez.",
+    "selectMaterialAndCrossSection": "Vyberte prosím materiál a průřez.",
+    "labelInUse": "Označení {label} je již použito.",
+    "noMaterialOrCrossSection": "Prvek nemá zadaný materiál nebo průřez."
   },
   "help": {
     "aria": "Zobrazit nápovědu",
@@ -488,6 +563,32 @@
   "examples": {
     "title": "Příklady",
     "instructions": "Otevřete připravený model a zkoumejte ho. Nahradí ten současný, Ctrl+Z vám ho vrátí zpět.",
-    "moreInDocs": "Další příklady a cvičení"
+    "moreInDocs": "Další příklady a cvičení",
+    "items": {
+      "welcome": {
+        "title": "Staticky neurčitý nosník",
+        "blurb": "Staticky neurčitý nosník délky 3 m (vetknutí – posuvný kloub) se spojitým rovnoměrným zatížením 10 kN/m."
+      },
+      "cantilever": {
+        "title": "Konzola",
+        "blurb": "Konzola délky 4 m zatížená svislou uzlovou silou 18 kN směrem dolů – ukazuje křivost a průhyb volného konce."
+      },
+      "pratt": {
+        "title": "Prattův příhradový nosník",
+        "blurb": "Jednoduchý Prattův příhradový nosník se styčníkovými silami 8 kN – ukazuje rozdělení normálových sil a posunutí."
+      },
+      "continuous": {
+        "title": "Spojitý nosník o třech polích",
+        "blurb": "Pole 5 + 6 + 5 m se spojitým, osamělým a opět spojitým zatížením pro porovnání křivosti a pootočení nad podporami."
+      },
+      "portal": {
+        "title": "Rámová konstrukce",
+        "blurb": "Příčel délky 8 m na sloupech výšky 6 m, zatížená rovnoměrným zatížením střechy a vodorovnými a svislými silami v rozích rámu – pro posouzení vodorovného posunu a ohybu."
+      },
+      "temperature": {
+        "title": "Teplotní zatížení",
+        "blurb": "Prostě uložený nosník délky 8 m s rovnoměrnou a nerovnoměrnou změnou teploty."
+      }
+    }
   }
 }

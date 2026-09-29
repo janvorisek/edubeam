@@ -1905,12 +1905,12 @@ const addElementUsingMouse = () => {
 
   // check if we have material and CS to assign
   if (projStore.solver.domain.materials.size === 0) {
-    alert('Please add some material first.');
+    alert(t('warnings.addMaterialFirst'));
     return;
   }
 
   if (projStore.solver.domain.crossSections.size === 0) {
-    alert('Please add some cross section first.');
+    alert(t('warnings.addCrossSectionFirst'));
     return;
   }
 

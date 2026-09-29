@@ -15,10 +15,12 @@ import { ensureDimensionId } from '@/utils/id';
 import type { DimensionLine } from '@/types/dimension';
 import {
   findMechanismIssues,
+  solveIssue,
   validateSolverModel,
   type SolveDiagnostics,
   type SolveIssue,
 } from '@/utils/validateSolverModel';
+import { i18n } from '@/plugins/i18n';
 
 export const useProjectStore = defineStore(
   'project',
@@ -152,13 +154,15 @@ export const useProjectStore = defineStore(
         // mathjs reports an exactly singular system, which for a structure means a mechanism.
         const isSingular = /singular/i.test(e instanceof Error ? e.message : String(e));
 
-        failWith({
-          level: 'error',
-          code: isSingular ? 'SINGULAR_STIFFNESS_MATRIX' : 'SOLVER_RUNTIME_EXCEPTION',
-          message: isSingular
-            ? 'Structure is a mechanism: the stiffness matrix is singular. Check that every part is held by at least 3 restraints and that end hinges do not leave a member free to rotate.'
-            : 'Solver failed due to an internal model inconsistency. Please review model references and loads.',
-        });
+        failWith(
+          isSingular
+            ? solveIssue('error', 'SINGULAR_STIFFNESS_MATRIX', () =>
+                i18n.global.t('solveDiagnostics.issues.singularMatrix')
+              )
+            : solveIssue('error', 'SOLVER_RUNTIME_EXCEPTION', () =>
+                i18n.global.t('solveDiagnostics.issues.solverFailed')
+              )
+        );
         return;
       }
 
@@ -356,7 +360,6 @@ export const useProjectStore = defineStore(
           return serializeModel(value.solver, value.dimensions);
         },
         deserialize: (value) => {
-          console.log(value);
           if (value === undefined) return { _solver: '' };
           return { _solver: value };
         },

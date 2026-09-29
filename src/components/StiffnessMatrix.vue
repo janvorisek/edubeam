@@ -60,7 +60,7 @@ const elementHasMaterialAndCS = computed(() => {
         </tr>
       </tbody>
     </v-table>
-    <div v-else class="pa-3">Element does not specify material or cross section.</div>
+    <div v-else class="pa-3">{{ $t('warnings.noMaterialOrCrossSection') }}</div>
   </div>
 </template>
 

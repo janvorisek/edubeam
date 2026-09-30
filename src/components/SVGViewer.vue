@@ -665,6 +665,8 @@ watch(
 );
 
 const paste = () => {
+  if (!useClipboardStore().isAnythingInClipboard()) return;
+
   const midpoint = useClipboardStore().midpoint();
   deltaPaste.value = {
     x: mouseXReal.value - midpoint[0],
@@ -2995,7 +2997,7 @@ defineExpose({ centerContent, fitContent });
           <g v-if="appStore.mouseMode === MouseMode.PASTE_CLIPBOARD" ref="pasteLayer">
             <g>
               <SVGElement
-                v-for="(element, index) in useClipboardStore().selection.elements"
+                v-for="(element, index) in useClipboardStore().elements"
                 :key="`element-${index}`"
                 :element="projectStore.solver.domain.elements.get(element) as Beam2D"
                 :scale="scale"
@@ -3018,7 +3020,7 @@ defineExpose({ centerContent, fitContent });
             </g>
             <g class="nodes">
               <SVGNode
-                v-for="(node, index) in useClipboardStore().selection.nodes"
+                v-for="(node, index) in useClipboardStore().nodes"
                 :key="`node-${index}`"
                 :node="projectStore.solver.domain.nodes.get(node) as Node"
                 :scale="scale"

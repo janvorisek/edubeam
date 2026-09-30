@@ -120,7 +120,7 @@ const stackedTransform = computed(() => {
       :font-size="fontSize / scale"
       font-weight="normal"
       text-anchor="start"
-      dominant-baseline="central"
+      dy="0.35em"
       :transform="`translate(${target.coords[0] + (fontSize + 8) / scale}
               ${target.coords[2] - (fontSize / 2 + 2) / scale})`"
     >
@@ -132,7 +132,7 @@ const stackedTransform = computed(() => {
       :font-size="fontSize / scale"
       font-weight="normal"
       :text-anchor="nload.values[0] > 0 ? 'end' : 'start'"
-      dominant-baseline="central"
+      dy="0.35em"
       :transform="`translate(${
         target.coords[0] -
         (40 * nload.values[0]) /

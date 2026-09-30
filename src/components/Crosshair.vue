@@ -139,7 +139,7 @@ const tagWidth = (text: string) => text.length * 7 + 8;
             :height="RULER"
             rx="3"
           />
-          <text text-anchor="middle" dominant-baseline="central">{{ xLabel }}</text>
+          <text text-anchor="middle" dy="0.35em">{{ xLabel }}</text>
         </g>
         <g
           v-for="[x, angle] in [
@@ -157,7 +157,7 @@ const tagWidth = (text: string) => text.length * 7 + 8;
             :height="RULER"
             rx="3"
           />
-          <text text-anchor="middle" dominant-baseline="central">{{ yLabel }}</text>
+          <text text-anchor="middle" dy="0.35em">{{ yLabel }}</text>
         </g>
       </template>
     </g>

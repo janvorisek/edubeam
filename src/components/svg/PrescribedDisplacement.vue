@@ -97,7 +97,7 @@ const rotationHandleRadius = computed(() => (20 * (50 / 60)) / props.scale);
       :font-size="fontSize / scale"
       font-weight="normal"
       :text-anchor="nload.prescribedValues[0] > 0 ? 'start' : 'end'"
-      dominant-baseline="central"
+      dy="0.35em"
       :transform="`translate(${translationTip.x + (nload.prescribedValues[0] > 0 ? 10 / scale : -10 / scale)}
               ${translationTip.z})`"
     >
@@ -113,7 +113,7 @@ const rotationHandleRadius = computed(() => (20 * (50 / 60)) / props.scale);
       :font-size="fontSize / scale"
       font-weight="normal"
       text-anchor="start"
-      dominant-baseline="central"
+      dy="0.35em"
       :transform="`translate(${target.coords[0] + (fontSize + 8) / scale}
               ${target.coords[2] - (fontSize / 2 + 2) / scale})`"
     >

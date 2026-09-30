@@ -297,16 +297,18 @@ const lineToPath = (clone: Element) => {
 /**
  * Vertical text alignment, turned into a coordinate.
  *
- * The viewer centres labels on their anchor with `dominant-baseline="central"` (or
- * `middle`). Renderers older than SVG 2 ignore the property and drop the baseline
- * straight onto `y`, which lifts every label by half its height — node and element
- * labels float above the thing they name.
+ * The viewer centres labels on their anchor with `dy`, which every renderer
+ * understands, so there is usually nothing here to bake. A label that does carry a
+ * baseline property still needs it turned into a number: renderers older than SVG 2
+ * ignore the property and drop the baseline straight onto `y`, which lifts the label by
+ * half its height and leaves it floating above the thing it names.
  *
  * The offset is taken from the element's own bounding box, measured once as it stands
  * and once forced back to an alphabetic baseline: the difference is exactly what the
  * property was contributing. (`getStartPositionOfChar` looks like the direct way to ask
  * and is not — it reports the anchor unchanged whatever the baseline is set to.)
  *
+ * Whatever `dy` the label already had is resolved to user units and kept on top.
  */
 const bakeBaseline = (source: Element, clone: Element) => {
   const text = source as SVGTextElement;

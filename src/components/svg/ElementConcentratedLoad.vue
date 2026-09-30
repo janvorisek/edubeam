@@ -111,7 +111,7 @@ const momentLabelPosition = computed(() => {
       :font-size="fontSize / scale"
       font-weight="normal"
       text-anchor="start"
-      dominant-baseline="central"
+      dy="0.35em"
       :transform="momentLabelPosition"
     >
       {{ numberFormat.format(Math.abs(convertMoment(eload.values[2]))) }}
@@ -121,7 +121,7 @@ const momentLabelPosition = computed(() => {
       v-if="eload.values[0] !== 0 || eload.values[1] !== 0"
       :font-size="fontSize / scale"
       font-weight="normal"
-      dominant-baseline="central"
+      dy="0.35em"
       :text-anchor="eload.values[0] > 0 ? 'end' : 'start'"
       :transform="labelPosition"
     >

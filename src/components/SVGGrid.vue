@@ -16,25 +16,25 @@
       <rect fill="white" x="0" y="0" width="100%" height="16" />
       <rect fill="white" x="0" y="100%" width="100%" height="16" transform="translate(0 -16)" />
       <g v-for="(item, i) in xGridTexts" :key="`x${i}`" :transform="`translate(${item.x + gridTX} ${item.y})`">
-        <text text-anchor="middle" alignment-baseline="middle">
+        <text text-anchor="middle" dy="0.35em">
           {{ rulerLabel(appStore.convertLength(Number(item.value) + trueOffsetX)) }}
         </text>
       </g>
       <g v-for="(item, i) in yGridTexts" :key="`y${i}`" :transform="`translate(${item.x} ${item.y + gridTY})`">
-        <text text-anchor="middle" alignment-baseline="middle" :transform="`rotate(${item.angle})`">
+        <text text-anchor="middle" dy="0.35em" :transform="`rotate(${item.angle})`">
           {{ rulerLabel(vertical(appStore.convertLength(Number(item.value) + trueOffsetY))) }}
         </text>
       </g>
     </g>
     <g v-if="!props.viewMode && axisConvention === 'y-up'" class="cs" :transform="`translate(${csLeft} ${csTop})`">
-      <text fill="red" text-anchor="middle" alignment-baseline="middle" x="40" y="-10"> x </text>
-      <text fill="green" text-anchor="middle" alignment-baseline="middle" x="10" y="-40"> y </text>
+      <text fill="red" text-anchor="middle" dy="0.35em" x="40" y="-10"> x </text>
+      <text fill="green" text-anchor="middle" dy="0.35em" x="10" y="-40"> y </text>
       <line y1="0" x1="0" y2="-40" x2="0" stroke-width="3" stroke="green" stroke-linecap="round" />
       <line y1="0" x1="0" y2="0" x2="40" stroke-width="3" stroke="red" stroke-linecap="round" />
     </g>
     <g v-else-if="!props.viewMode" class="cs" :transform="`translate(${csLeft} ${csTop})`">
-      <text fill="red" text-anchor="middle" alignment-baseline="middle" x="40" y="-30"> x </text>
-      <text fill="green" text-anchor="middle" alignment-baseline="middle" x="10" y="0"> z </text>
+      <text fill="red" text-anchor="middle" dy="0.35em" x="40" y="-30"> x </text>
+      <text fill="green" text-anchor="middle" dy="0.35em" x="10" y="0"> z </text>
       <line y1="-40" x1="0" y2="0" x2="0" stroke-width="3" stroke="green" stroke-linecap="round" />
       <line y1="-40" x1="0" y2="-40" x2="40" stroke-width="3" stroke="red" stroke-linecap="round" />
     </g>

@@ -255,7 +255,7 @@ const strokeDash = computed(() => (isDisplacement.value ? '4 3' : undefined));
         fill="red"
         font-size="10"
         text-anchor="middle"
-        alignment-baseline="middle"
+        dy="0.35em"
       >
         {{ formatValue(Math.abs(loadNodeValueFxInUnits)) }}
       </text>
@@ -266,7 +266,7 @@ const strokeDash = computed(() => (isDisplacement.value ? '4 3' : undefined));
         fill="blue"
         font-size="10"
         :text-anchor="props.fx < 0 ? 'end' : 'start'"
-        alignment-baseline="middle"
+        dy="0.35em"
       >
         {{ formatValue(Math.abs(loadNodeValueFzInUnits)) }}
       </text>
@@ -293,14 +293,7 @@ const strokeDash = computed(() => (isDisplacement.value ? '4 3' : undefined));
         vector-effect="non-scaling-stroke"
         :marker-end="`url(#${arrowheadId})`"
       />
-      <text
-        :x="rotationLabel.x"
-        :y="rotationLabel.y"
-        fill="black"
-        font-size="10"
-        text-anchor="middle"
-        alignment-baseline="middle"
-      >
+      <text :x="rotationLabel.x" :y="rotationLabel.y" fill="black" font-size="10" text-anchor="middle" dy="0.35em">
         {{ formatValue(Math.abs(loadNodeValueMyInUnits)) }}
       </text>
     </g>
@@ -321,7 +314,7 @@ const strokeDash = computed(() => (isDisplacement.value ? '4 3' : undefined));
           stroke="black"
           vector-effect="non-scaling-stroke"
         />
-        <text font-size="10" font-weight="normal" text-anchor="middle" dominant-baseline="central">
+        <text font-size="10" font-weight="normal" text-anchor="middle" dy="0.35em">
           {{ props.label }}
         </text>
       </g>

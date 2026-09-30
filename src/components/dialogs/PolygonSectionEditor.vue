@@ -207,7 +207,7 @@
                   class="principal-label"
                   :font-size="fontSize"
                   text-anchor="middle"
-                  dominant-baseline="middle"
+                  dy="0.35em"
                 >
                   1
                 </text>
@@ -217,7 +217,7 @@
                   class="principal-label"
                   :font-size="fontSize"
                   text-anchor="middle"
-                  dominant-baseline="middle"
+                  dy="0.35em"
                 >
                   2
                 </text>

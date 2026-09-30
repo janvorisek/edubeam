@@ -41,7 +41,7 @@ const elementLabel = computed(() => {
       :font-size="14 / scale"
       font-weight="normal"
       text-anchor="middle"
-      dominant-baseline="central"
+      dy="0.35em"
       :transform="`${elementLabel} rotate(${elementAngle} ${(n1.coords[0] + n2.coords[0]) / 2} ${
         (n1.coords[2] + n2.coords[2]) / 2
       })`"

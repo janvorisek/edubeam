@@ -561,7 +561,8 @@
     "addCrossSectionFirst": "โปรดเพิ่มหน้าตัดก่อน",
     "selectMaterialAndCrossSection": "โปรดเลือกวัสดุและหน้าตัด",
     "labelInUse": "ชื่อ {label} ถูกใช้แล้ว",
-    "noMaterialOrCrossSection": "องค์ประกอบไม่ได้ระบุวัสดุหรือหน้าตัด"
+    "noMaterialOrCrossSection": "องค์ประกอบไม่ได้ระบุวัสดุหรือหน้าตัด",
+    "elementMissing": "องค์ประกอบ {label} ไม่มีอยู่แล้ว"
   },
   "help": {
     "aria": "แสดงความช่วยเหลือ",

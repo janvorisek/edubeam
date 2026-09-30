@@ -561,7 +561,8 @@
     "addCrossSectionFirst": "Сначала добавьте сечение.",
     "selectMaterialAndCrossSection": "Выберите материал и сечение.",
     "labelInUse": "Метка {label} уже используется.",
-    "noMaterialOrCrossSection": "Для элемента не задан материал или сечение."
+    "noMaterialOrCrossSection": "Для элемента не задан материал или сечение.",
+    "elementMissing": "Элемент {label} больше не существует."
   },
   "help": {
     "aria": "Показать справку",

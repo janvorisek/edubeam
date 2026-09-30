@@ -561,7 +561,8 @@
     "addCrossSectionFirst": "Спочатку додайте переріз.",
     "selectMaterialAndCrossSection": "Оберіть матеріал і переріз.",
     "labelInUse": "Мітка {label} вже використовується.",
-    "noMaterialOrCrossSection": "Для елемента не задано матеріал або переріз."
+    "noMaterialOrCrossSection": "Для елемента не задано матеріал або переріз.",
+    "elementMissing": "Елемент {label} більше не існує."
   },
   "help": {
     "aria": "Показати довідку",

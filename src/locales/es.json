@@ -561,7 +561,8 @@
     "addCrossSectionFirst": "Añada primero una sección transversal.",
     "selectMaterialAndCrossSection": "Seleccione un material y una sección transversal.",
     "labelInUse": "La etiqueta {label} ya está en uso.",
-    "noMaterialOrCrossSection": "El elemento no tiene material o sección transversal."
+    "noMaterialOrCrossSection": "El elemento no tiene material o sección transversal.",
+    "elementMissing": "El elemento {label} ya no existe."
   },
   "help": {
     "aria": "Mostrar ayuda",

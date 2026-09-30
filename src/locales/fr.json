@@ -561,7 +561,8 @@
     "addCrossSectionFirst": "Veuillez d'abord ajouter une section.",
     "selectMaterialAndCrossSection": "Veuillez sélectionner un matériau et une section.",
     "labelInUse": "Le libellé {label} est déjà utilisé.",
-    "noMaterialOrCrossSection": "L'élément ne spécifie pas de matériau ou de section."
+    "noMaterialOrCrossSection": "L'élément ne spécifie pas de matériau ou de section.",
+    "elementMissing": "L'élément {label} n'existe plus."
   },
   "help": {
     "aria": "Afficher l'aide",

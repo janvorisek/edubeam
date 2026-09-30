@@ -561,7 +561,8 @@
     "addCrossSectionFirst": "Adicione uma seção primeiro.",
     "selectMaterialAndCrossSection": "Selecione um material e uma seção.",
     "labelInUse": "O rótulo {label} já está em uso.",
-    "noMaterialOrCrossSection": "O elemento não especifica material ou seção."
+    "noMaterialOrCrossSection": "O elemento não especifica material ou seção.",
+    "elementMissing": "O elemento {label} não existe mais."
   },
   "help": {
     "aria": "Mostrar ajuda",

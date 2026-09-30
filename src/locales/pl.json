@@ -561,7 +561,8 @@
     "addCrossSectionFirst": "Najpierw dodaj przekrój.",
     "selectMaterialAndCrossSection": "Wybierz materiał i przekrój.",
     "labelInUse": "Etykieta {label} jest już używana.",
-    "noMaterialOrCrossSection": "Element nie ma określonego materiału lub przekroju."
+    "noMaterialOrCrossSection": "Element nie ma określonego materiału lub przekroju.",
+    "elementMissing": "Element {label} już nie istnieje."
   },
   "help": {
     "aria": "Pokaż pomoc",

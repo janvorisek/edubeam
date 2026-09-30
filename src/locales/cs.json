@@ -561,7 +561,8 @@
     "addCrossSectionFirst": "Nejprve prosím přidejte průřez.",
     "selectMaterialAndCrossSection": "Vyberte prosím materiál a průřez.",
     "labelInUse": "Označení {label} je již použito.",
-    "noMaterialOrCrossSection": "Prvek nemá zadaný materiál nebo průřez."
+    "noMaterialOrCrossSection": "Prvek nemá zadaný materiál nebo průřez.",
+    "elementMissing": "Prvek {label} už neexistuje."
   },
   "help": {
     "aria": "Zobrazit nápovědu",

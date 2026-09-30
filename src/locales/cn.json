@@ -561,7 +561,8 @@
     "addCrossSectionFirst": "请先添加截面。",
     "selectMaterialAndCrossSection": "请选择材料和截面。",
     "labelInUse": "标签 {label} 已被使用。",
-    "noMaterialOrCrossSection": "单元未指定材料或截面。"
+    "noMaterialOrCrossSection": "单元未指定材料或截面。",
+    "elementMissing": "单元 {label} 已不存在。"
   },
   "help": {
     "aria": "显示帮助",

@@ -561,7 +561,8 @@
     "addCrossSectionFirst": "Lütfen önce bir kesit ekleyin.",
     "selectMaterialAndCrossSection": "Lütfen bir malzeme ve bir kesit seçin.",
     "labelInUse": "{label} etiketi zaten kullanılıyor.",
-    "noMaterialOrCrossSection": "Elemana malzeme veya kesit atanmamış."
+    "noMaterialOrCrossSection": "Elemana malzeme veya kesit atanmamış.",
+    "elementMissing": "{label} elemanı artık mevcut değil."
   },
   "help": {
     "aria": "Yardımı göster",

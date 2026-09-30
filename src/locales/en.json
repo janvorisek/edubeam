@@ -561,7 +561,8 @@
     "addCrossSectionFirst": "Please add a cross section first.",
     "selectMaterialAndCrossSection": "Please select a material and a cross section.",
     "labelInUse": "Label {label} is already in use.",
-    "noMaterialOrCrossSection": "Element does not specify material or cross section."
+    "noMaterialOrCrossSection": "Element does not specify material or cross section.",
+    "elementMissing": "Element {label} no longer exists."
   },
   "help": {
     "aria": "Show help",

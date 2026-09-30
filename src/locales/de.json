@@ -561,7 +561,8 @@
     "addCrossSectionFirst": "Bitte fügen Sie zuerst einen Querschnitt hinzu.",
     "selectMaterialAndCrossSection": "Bitte wählen Sie ein Material und einen Querschnitt aus.",
     "labelInUse": "Die Bezeichnung {label} ist bereits vergeben.",
-    "noMaterialOrCrossSection": "Für das Element ist kein Material oder Querschnitt angegeben."
+    "noMaterialOrCrossSection": "Für das Element ist kein Material oder Querschnitt angegeben.",
+    "elementMissing": "Element {label} existiert nicht mehr."
   },
   "help": {
     "aria": "Hilfe anzeigen",

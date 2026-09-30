@@ -208,6 +208,7 @@
   "viewer": {
     "toggleGrid": "Przełącz siatkę (G)",
     "toggleSnap": "Przełącz przyciąganie do siatki (S)",
+    "toggleCrosshair": "Przełącz celownik",
     "boxSelect": "Zaznaczanie prostokątem",
     "centerContent": "Wyśrodkuj widok",
     "fitContent": "Dopasuj do ekranu",

@@ -208,6 +208,7 @@
   "viewer": {
     "toggleGrid": "Toggle grid (G)",
     "toggleSnap": "Toggle snap to grid (S)",
+    "toggleCrosshair": "Toggle crosshair",
     "boxSelect": "Box select",
     "centerContent": "Center content",
     "fitContent": "Fit content to screen",

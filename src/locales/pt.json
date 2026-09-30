@@ -208,6 +208,7 @@
   "viewer": {
     "toggleGrid": "Alternar grade (G)",
     "toggleSnap": "Alternar encaixe na grade (S)",
+    "toggleCrosshair": "Alternar mira",
     "boxSelect": "Seleção por retângulo",
     "centerContent": "Centralizar conteúdo",
     "fitContent": "Ajustar conteúdo à tela",

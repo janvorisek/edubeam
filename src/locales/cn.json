@@ -208,6 +208,7 @@
   "viewer": {
     "toggleGrid": "切换网格 (G)",
     "toggleSnap": "切换网格吸附 (S)",
+    "toggleCrosshair": "切换十字准线",
     "boxSelect": "框选",
     "centerContent": "内容居中",
     "fitContent": "适配屏幕",

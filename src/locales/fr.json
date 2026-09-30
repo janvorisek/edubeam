@@ -208,6 +208,7 @@
   "viewer": {
     "toggleGrid": "Afficher/masquer la grille (G)",
     "toggleSnap": "Activer/désactiver le magnétisme (S)",
+    "toggleCrosshair": "Afficher/masquer le réticule",
     "boxSelect": "Sélection par rectangle",
     "centerContent": "Centrer le contenu",
     "fitContent": "Ajuster à l'écran",

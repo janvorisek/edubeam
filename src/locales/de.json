@@ -208,6 +208,7 @@
   "viewer": {
     "toggleGrid": "Raster ein/aus (G)",
     "toggleSnap": "Am Raster ausrichten ein/aus (S)",
+    "toggleCrosshair": "Fadenkreuz ein/aus",
     "boxSelect": "Rechteckauswahl",
     "centerContent": "Inhalt zentrieren",
     "fitContent": "Inhalt an Bildschirm anpassen",

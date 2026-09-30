@@ -2325,6 +2325,41 @@ defineExpose({ centerContent, fitContent });
           </v-tooltip>
         </v-chip>
       </div>
+      <!--
+        The crosshair follows a mouse and is drawn for nothing else, so the switch for it is
+        offered only where there is one. Its own icon rather than a letter: G and S name the keys
+        that do the same thing, and this has no key of its own - c centres the view.
+      -->
+      <v-tooltip
+        v-if="deviceHasHover"
+        :text="$t('viewer.toggleCrosshair')"
+        location="top"
+        :open-on-click="!deviceHasHover"
+      >
+        <template #activator="{ props: tooltipProps }">
+          <v-chip
+            v-bind="tooltipProps"
+            density="compact"
+            class="pa-0 justify-center align-self-center"
+            :class="viewerStore.showCrosshair ? 'text-black' : 'text-grey'"
+            style="min-width: 28px"
+            @click="viewerStore.showCrosshair = !viewerStore.showCrosshair"
+          >
+            <!-- what it draws: two dashed lines crossing, with the point they cross at marked -->
+            <svg class="crosshair-icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+              <path
+                d="M0.5 8H5.5M10.5 8H15.5M8 0.5V5.5M8 10.5V15.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1"
+                stroke-dasharray="2 1"
+              />
+              <circle cx="8" cy="8" r="1.5" fill="currentColor" />
+            </svg>
+          </v-chip>
+        </template>
+      </v-tooltip>
+
       <v-chip-group>
         <v-chip class="justify-end" density="compact" @click="appStore.openSettings('lang')">
           <div class="d-flex ga-1">

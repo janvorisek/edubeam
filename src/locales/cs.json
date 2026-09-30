@@ -208,6 +208,7 @@
   "viewer": {
     "toggleGrid": "Zobrazit/skrýt mřížku (G)",
     "toggleSnap": "Přichytávání k mřížce (S)",
+    "toggleCrosshair": "Zobrazit/skrýt zaměřovací kříž",
     "boxSelect": "Výběr obdélníkem",
     "centerContent": "Vystředit konstrukci",
     "fitContent": "Přizpůsobit obrazovce",

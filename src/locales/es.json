@@ -208,6 +208,7 @@
   "viewer": {
     "toggleGrid": "Mostrar/ocultar cuadrícula (G)",
     "toggleSnap": "Activar/desactivar ajuste a la cuadrícula (S)",
+    "toggleCrosshair": "Mostrar/ocultar cruceta",
     "boxSelect": "Selección por rectángulo",
     "centerContent": "Centrar contenido",
     "fitContent": "Ajustar contenido a la pantalla",

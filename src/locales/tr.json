@@ -208,6 +208,7 @@
   "viewer": {
     "toggleGrid": "Izgarayı aç/kapat (G)",
     "toggleSnap": "Izgaraya yaslamayı aç/kapat (S)",
+    "toggleCrosshair": "Artı imlecini aç/kapat",
     "boxSelect": "Dikdörtgenle seç",
     "centerContent": "Modeli ortala",
     "fitContent": "Modeli ekrana sığdır",

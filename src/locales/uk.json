@@ -208,6 +208,7 @@
   "viewer": {
     "toggleGrid": "Показати/сховати сітку (G)",
     "toggleSnap": "Прив'язка до сітки (S)",
+    "toggleCrosshair": "Показати/сховати перехрестя",
     "boxSelect": "Виділення рамкою",
     "centerContent": "Центрувати вміст",
     "fitContent": "Вмістити на екран",

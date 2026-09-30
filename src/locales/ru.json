@@ -208,6 +208,7 @@
   "viewer": {
     "toggleGrid": "Показать/скрыть сетку (G)",
     "toggleSnap": "Вкл./выкл. привязку к сетке (S)",
+    "toggleCrosshair": "Показать/скрыть перекрестие",
     "boxSelect": "Выделение рамкой",
     "centerContent": "Центрировать",
     "fitContent": "Вписать в экран",

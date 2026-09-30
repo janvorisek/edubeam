@@ -3,6 +3,7 @@ import { createPinia, setActivePinia } from 'pinia';
 import { DofID } from 'ts-fem';
 import { useProjectStore } from '@/store/project';
 import { changeLabel } from '@/utils';
+import { undoRedoManager } from '@/CommandManager';
 
 /**
  * A node is referenced by label, so renaming one has to re-point everything that names it. Elements
@@ -77,5 +78,39 @@ describe('renaming a node', () => {
     rename(store, '1', 'A');
 
     expect(store.solver.domain.getElement('b').nodes).toContain('A');
+  });
+
+  it('can be undone', () => {
+    const store = build();
+
+    rename(store, '2', 'B');
+    undoRedoManager.undo();
+
+    expect([...store.solver.domain.nodes.keys()]).toEqual(['1', '2']);
+    expect(store.solver.domain.getElement('b').nodes).toEqual(['1', '2']);
+  });
+
+  /** A panel open on the renamed node looked it up under the old label and threw. */
+  it('keeps the node selected under its new name', () => {
+    const store = build();
+    store.selection.type = 'node';
+    store.selection.label = 2;
+    store.selection2.nodes = ['2'];
+
+    rename(store, '2', 'B');
+
+    expect(store.selection.label).toBe('B');
+    expect(store.selection2.nodes).toEqual(['B']);
+  });
+
+  it('refuses a blank name', () => {
+    const store = build();
+    const node = store.solver.domain.nodes.get('2')!;
+    const input = { value: '  ' } as HTMLInputElement;
+
+    changeLabel('nodes', node, input);
+
+    expect(store.solver.domain.nodes.has('2')).toBe(true);
+    expect(input.value).toBe('2');
   });
 });

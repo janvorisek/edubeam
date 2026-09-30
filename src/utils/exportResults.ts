@@ -45,6 +45,16 @@ export const resultUnitsFromStore = (app: AppStoreUnitsSource): ResultUnits => (
 /** Reaction components a 2D model can produce, in table order. */
 const REACTION_DOFS: DofID[] = [DofID.Dx, DofID.Dz, DofID.Ry];
 
+/**
+ * A node no element touches gets no equation numbers, so the solver has nothing to read back for it
+ * - asking anyway throws instead of returning a value.
+ */
+const readUnknown = (solver: LinearStaticSolver, node: Node, dof: DofID) => {
+  if (solver.nodeCodeNumbers.get(node.label)?.[dof] === undefined) return null;
+
+  return node.getUnknowns(solver.loadCases[0], [dof]) as unknown as number;
+};
+
 const readReaction = (node: Node, loadCase: LinearStaticSolver['loadCases'][number], dof: DofID) => {
   if (node.bcs.size === 0) return null;
 
@@ -89,7 +99,11 @@ export const buildNodeResultRows = (solver: LinearStaticSolver, units: ResultUni
   ];
 
   for (const node of sortByLabel([...solver.domain.nodes.values()])) {
-    const displacement = (dof: DofID) => units.length(node.getUnknowns(loadCase, [dof]) as unknown as number);
+    const displacement = (dof: DofID) => {
+      const value = readUnknown(solver, node, dof);
+
+      return value === null ? null : units.length(value);
+    };
     const reaction = (dof: DofID) => {
       const value = readReaction(node, loadCase, dof);
 
@@ -99,14 +113,16 @@ export const buildNodeResultRows = (solver: LinearStaticSolver, units: ResultUni
       return dof === DofID.Ry ? units.moment(value) : units.force(value);
     };
 
+    const dz = displacement(DofID.Dz);
+
     rows.push([
       node.label,
       units.length(node.coords[0]),
       vertical(units.length(node.coords[2])),
       displacement(DofID.Dx),
-      vertical(displacement(DofID.Dz)),
+      dz === null ? null : vertical(dz),
       // Rotations are an angle, not a length, so they bypass the length conversion.
-      node.getUnknowns(loadCase, [DofID.Ry]) as unknown as number,
+      readUnknown(solver, node, DofID.Ry),
       ...REACTION_DOFS.map(reaction),
     ]);
   }

@@ -111,4 +111,15 @@ describe('exportResults', () => {
     expect(csv).toContain(String.fromCharCode(34) + 'a,b' + String.fromCharCode(34));
     expect(csv).toContain('\r\n\r\nElement,');
   });
+
+  it('leaves the displacements of a node no element touches empty instead of throwing', () => {
+    const ls = buildSolved();
+    ls.domain.createNode('3', [5, 0, 0], []);
+    ls.solve();
+
+    const loose = buildNodeResultRows(ls, SI).find((row) => row[0] === '3');
+
+    expect(loose.slice(3, 6)).toEqual([null, null, null]);
+    expect(loose[1]).toBe(5);
+  });
 });

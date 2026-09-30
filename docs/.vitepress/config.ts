@@ -836,14 +836,6 @@ export default defineConfig({
       {},
       "window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', 'G-FGX9PYDV0G');",
     ],
-    [
-      'script',
-      {
-        async: '',
-        src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3761845630657739',
-        crossorigin: 'anonymous',
-      },
-    ],
   ],
   markdown: {
     config: (md) => {

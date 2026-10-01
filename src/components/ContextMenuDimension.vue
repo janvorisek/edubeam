@@ -1,12 +1,21 @@
 <script setup lang="ts">
-import { computed, ref, watch, type Ref } from 'vue';
+import { computed, reactive, watch } from 'vue';
 import { useProjectStore } from '@/store/project';
+import { useAppStore } from '@/store/app';
 import { ensureDimensionId } from '@/utils/id';
 import { resolveDimensionPoints } from '@/types/dimension';
-import { executeModelMutationWithUndo, parseFloat2 } from '@/utils';
+import {
+  dimensionFieldValues,
+  dimensionPointsFromFields,
+  fieldMeans,
+  type DimensionFieldUnits,
+  type DimensionFields,
+} from '@/utils/dimensionFields';
+import { executeModelMutationWithUndo } from '@/utils';
 import { useI18n } from 'vue-i18n';
 
 const projectStore = useProjectStore();
+const appStore = useAppStore();
 const { t } = useI18n();
 
 const selectedDimensionId = computed(() => {
@@ -31,73 +40,57 @@ const resolvedPoints = computed(() => {
   return resolveDimensionPoints(dim, projectStore.solver.domain.nodes);
 });
 
-const x1 = ref('');
-const y1 = ref('');
-const x2 = ref('');
-const y2 = ref('');
+const fields = reactive<DimensionFields>({ x1: '', v1: '', x2: '', v2: '' });
 
-let syncingFromDimension = false;
-
-/**
- * Writes a field, unless what it already says means that same number. Editing a field feeds the
- * point it writes straight back here, and "1." or "-0" would be rewritten as "1" and "0" under
- * the typing hand.
- */
-const setInput = (field: Ref<string>, value: number | undefined) => {
-  if (value !== undefined && field.value !== '' && parseFloat2(field.value) === value) return;
-
-  field.value = value?.toString() ?? '';
+const fieldUnits: DimensionFieldUnits = {
+  toDisplay: (metres) => appStore.convertLength(metres),
+  toMetres: (display) => appStore.convertInverseLength(display),
+  vertical: (value) => appStore.vertical(value),
 };
 
 const syncInputsFromDimension = () => {
   const points = resolvedPoints.value;
+  const values = points ? dimensionFieldValues(points, fieldUnits) : null;
 
-  syncingFromDimension = true;
-  setInput(x1, points?.[0].x);
-  setInput(y1, points?.[0].y);
-  setInput(x2, points?.[1].x);
-  setInput(y2, points?.[1].y);
-  syncingFromDimension = false;
+  for (const key of ['x1', 'v1', 'x2', 'v2'] as const) {
+    const value = values?.[key];
+    if (value !== undefined && fieldMeans(fields[key], value)) continue;
+
+    fields[key] = value?.toString() ?? '';
+  }
 };
 
 // Follows the points themselves, not just the choice of dimension: a node dragged while the panel
-// is open moves the end snapped to it, and the fields have to say so.
-watch(
-  resolvedPoints,
-  () => {
-    syncInputsFromDimension();
-  },
-  { immediate: true }
-);
+// is open moves the end snapped to it, and the fields have to say so. The units and the axis
+// convention change what the same points read as.
+watch([resolvedPoints, () => appStore.units.Length, () => appStore.axisConvention], syncInputsFromDimension, {
+  immediate: true,
+});
 
-watch(
-  [x1, y1, x2, y2],
-  ([newX1, newY1, newX2, newY2]) => {
-    if (syncingFromDimension) return;
-    const dim = selectedDimension.value;
-    if (!dim) return;
-    if (!newX1 || !newY1 || !newX2 || !newY2) return;
+/** A field is done with on Enter or on leaving it; each such edit is one step to undo. */
+const commitFields = () => {
+  const dim = selectedDimension.value;
+  const current = resolvedPoints.value;
+  if (!dim || !current) return;
 
-    const nextPoints = [
-      { ...dim.points[0], x: parseFloat2(newX1), y: parseFloat2(newY1), sourceNodeLabel: null },
-      { ...dim.points[1], x: parseFloat2(newX2), y: parseFloat2(newY2), sourceNodeLabel: null },
-    ] as const;
+  const nextPoints = dimensionPointsFromFields(current, fields, fieldUnits);
+  if (!nextPoints) return;
 
-    const unchanged = dim.points.every((point, index) => {
-      const nextPoint = nextPoints[index];
-      return (
-        point.x === nextPoint.x &&
-        point.y === nextPoint.y &&
-        (point.sourceNodeLabel ?? null) === nextPoint.sourceNodeLabel
-      );
-    });
+  const unchanged = dim.points.every((point, index) => {
+    const nextPoint = nextPoints[index];
+    return (
+      point.x === nextPoint.x &&
+      point.y === nextPoint.y &&
+      (point.sourceNodeLabel ?? null) === nextPoint.sourceNodeLabel
+    );
+  });
 
-    if (unchanged) return;
+  if (unchanged) return;
 
-    dim.points = [nextPoints[0], nextPoints[1]];
-  },
-  { flush: 'sync' }
-);
+  executeModelMutationWithUndo(() => {
+    dim.points = nextPoints;
+  });
+};
 
 const snappedLabels = computed(() => {
   const dim = selectedDimension.value;
@@ -143,38 +136,46 @@ const removeDimension = () => {
           <v-row no-gutters>
             <v-col cols="6">
               <v-text-field
-                v-model="x1"
+                v-model="fields.x1"
                 density="compact"
                 label="X1"
+                :suffix="appStore.units.Length"
                 hide-details="auto"
                 class="menu-select"
+                @change="commitFields"
               ></v-text-field>
             </v-col>
             <v-col cols="6">
               <v-text-field
-                v-model="y1"
+                v-model="fields.v1"
                 density="compact"
-                label="Y1"
+                :label="`${appStore.axes.v.toUpperCase()}1`"
+                :suffix="appStore.units.Length"
                 hide-details="auto"
                 class="menu-select"
+                @change="commitFields"
               ></v-text-field>
             </v-col>
             <v-col cols="6">
               <v-text-field
-                v-model="x2"
+                v-model="fields.x2"
                 density="compact"
                 label="X2"
+                :suffix="appStore.units.Length"
                 hide-details="auto"
                 class="menu-select"
+                @change="commitFields"
               ></v-text-field>
             </v-col>
             <v-col cols="6">
               <v-text-field
-                v-model="y2"
+                v-model="fields.v2"
                 density="compact"
-                label="Y2"
+                :label="`${appStore.axes.v.toUpperCase()}2`"
+                :suffix="appStore.units.Length"
                 hide-details="auto"
                 class="menu-select"
+                @change="commitFields"
               ></v-text-field>
             </v-col>
           </v-row>

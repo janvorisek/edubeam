@@ -456,6 +456,30 @@ export const importJSON = (json: any) => {
   }
 };
 
+/**
+ * The app settings as local storage holds them, before the store reads them back: `undefined` on a
+ * first visit (or storage that cannot be read, which only means the defaults are suggested again),
+ * `null` for something stored that is not an object.
+ */
+export const readStoredAppSettings = (): Record<string, unknown> | null | undefined => {
+  let raw: string | null;
+
+  try {
+    raw = localStorage.getItem('app');
+  } catch {
+    return undefined;
+  }
+
+  if (raw === null) return undefined;
+
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    return typeof parsed === 'object' && parsed !== null ? (parsed as Record<string, unknown>) : null;
+  } catch {
+    return null;
+  }
+};
+
 export const suggestLanguage = () => {
   const langs = navigator.languages || [navigator.language];
 
@@ -571,6 +595,23 @@ export const positiveNumberRules = [
     return true;
   },
 ];
+
+/**
+ * A rule for a value typed in display units that has to lie within [min, max], e.g. a load position
+ * along an element. The bounds have passed through a unit conversion, so a value typed as exactly
+ * the displayed maximum may sit a rounding error above it; the tolerance keeps that one valid.
+ */
+export const rangeRule =
+  (min: number, max: number, unit: string) =>
+  (v: unknown): string | true => {
+    const val = ruleValueAsNumber(v);
+    const tolerance = 1e-9 * Math.max(Math.abs(min), Math.abs(max), 1);
+    if (Number.isFinite(val) && val >= min - tolerance && val <= max + tolerance) return true;
+
+    // A converted length such as 9.842519685039372 ft reads better trimmed
+    const show = (x: number) => `${Number(x.toPrecision(6))}`;
+    return i18n.global.t('validators.between', { min: show(min), max: `${show(max)} ${unit}` });
+  };
 
 export const changeItem = (item: object, value: string, el?: HTMLInputElement, formatter?: (v: number) => number) => {
   if (el.value === '') el.value = '0';

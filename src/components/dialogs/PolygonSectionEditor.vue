@@ -25,7 +25,7 @@
                 :key="param"
                 v-model="presetValues[param]"
                 :label="$t(`dialogs.polygonSection.params.${param}`)"
-                :suffix="param === 'n' ? '' : appStore.units.Length"
+                :suffix="param === 'n' ? '' : appStore.units.SectionLength"
                 density="compact"
                 hide-details
                 variant="outlined"
@@ -43,7 +43,7 @@
               <v-text-field
                 v-model="snapStep"
                 :label="$t('dialogs.polygonSection.snapStep')"
-                :suffix="appStore.units.Length"
+                :suffix="appStore.units.SectionLength"
                 density="compact"
                 hide-details
                 variant="outlined"
@@ -298,8 +298,8 @@
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>y [{{ appStore.units.Length }}]</th>
-                        <th>z [{{ appStore.units.Length }}]</th>
+                        <th>y [{{ appStore.units.SectionLength }}]</th>
+                        <th>z [{{ appStore.units.SectionLength }}]</th>
                         <th class="text-right">
                           <v-btn
                             density="compact"
@@ -394,7 +394,7 @@
                 <span v-html="inertiaUnitHtml"></span
               ></span>
               <span
-                >h = <b>{{ formatLength(properties.h) }}</b> {{ appStore.units.Length }}</span
+                >h = <b>{{ formatLength(properties.h) }}</b> {{ appStore.units.SectionLength }}</span
               >
             </div>
             <v-alert
@@ -471,7 +471,6 @@ import {
   isShapeValid,
   isStoredAsFreeOutOfPlane,
   isSymmetricAboutFramePlane,
-  sectionPresetDefaults,
   sectionPresetParams,
   type SectionContour,
   type SectionPoint,
@@ -481,6 +480,9 @@ import {
   unrestrainedInPlaneInertia,
 } from '@/utils/sectionProperties';
 import '@/types/crossSection';
+import type { LengthUnit } from '@/utils/unitConversions';
+import { newSectionPresetDefaults } from '@/utils/newEntityDefaults';
+import { presetFamily } from '@/utils/presetFamily';
 
 const props = defineProps<{
   /** Label of an existing cross section to edit; omit to create a new one. */
@@ -556,11 +558,13 @@ const labelRules = [
 // Units
 // ---------------------------------------------------------------------------
 
-const toDisplay = (m: number) => appStore.convertLength(m);
-const toModel = (v: number) => appStore.convertInverseLength(v);
+const toDisplay = (m: number) => appStore.convertSectionLength(m);
+const toModel = (v: number) => appStore.convertInverseSectionLength(v);
 const formatLength = (m: number) => formatCompactNumber(toDisplay(m));
 
-const snapStep = ref(formatCompactNumber(toDisplay(0.005)));
+// About 5 mm, as a round number of the unit the outline is drawn in: a quarter inch, not 0.19685 in
+const SNAP_STEPS: Record<LengthUnit, number> = { m: 0.005, cm: 0.5, mm: 5, in: 0.25, ft: 0.02 };
+const snapStep = ref(formatCompactNumber(SNAP_STEPS[appStore.units.SectionLength]));
 const snapStepModel = computed(() => {
   const v = parseFloat2(snapStep.value);
   return v > 0 ? toModel(v) : 0;
@@ -584,6 +588,7 @@ const presetItems = computed(() =>
   }))
 );
 const presetParams = computed(() => sectionPresetParams[presetId.value]);
+const sectionPresetDefaults = newSectionPresetDefaults(presetFamily(appStore.units.SectionLength));
 const presetValues = reactive<Record<SectionPresetParam, string>>({
   b: formatCompactNumber(toDisplay(sectionPresetDefaults.b)),
   h: formatCompactNumber(toDisplay(sectionPresetDefaults.h)),
@@ -830,7 +835,7 @@ const centroidalSuffix = computed(
 
 const propertyRows = computed(() => {
   const p = properties.value;
-  const lengthU = formatMeasureAsHTML(appStore.units.Length);
+  const lengthU = formatMeasureAsHTML(appStore.units.SectionLength);
   const areaU = formatMeasureAsHTML(appStore.units.Area);
   const inertiaU = formatMeasureAsHTML(appStore.units.AreaM2);
   const num = (v: number) => formatScientificNumber(v);

@@ -77,6 +77,7 @@ import ContextMenuDimension from './ContextMenuDimension.vue';
 
 import { MouseMode } from '@/mouse';
 import { formatMeasureAsHTML } from '../SVGUtils';
+import { snapToGrid, type LengthDisplay } from '@/utils/grid';
 
 import Selection from './Selection.vue';
 
@@ -731,7 +732,7 @@ const buildElementLoadDetails = (el: BeamElementLoad): EntityDetails => {
   // A distributed load is an intensity, a concentrated one a force; both parts of the unit count.
   const convertIntensity = isDistributed ? appStore.convertForceDistance : appStore.convertForce;
   let uu = isDistributed ? appStore.units.ForceDistance : appStore.units.Force;
-  if (el instanceof BeamTemperatureLoad) uu = appStore.units.Temperature;
+  if (el instanceof BeamTemperatureLoad) uu = formatMeasureAsHTML(appStore.units.Temperature);
 
   const rows: string[] = [];
 
@@ -790,13 +791,13 @@ const buildPrescribedBCDetails = (el: PrescribedDisplacement): EntityDetails => 
   const rows: string[] = [];
 
   if (Math.abs(el.prescribedValues[0]) > 1e-32) {
-    rows.push(`D<sub>x</sub> = ${appStore.convertLength(el.prescribedValues[0])} ${appStore.units.Length}`);
+    rows.push(`D<sub>x</sub> = ${appStore.convertDisplacement(el.prescribedValues[0])} ${appStore.units.Displacement}`);
   }
 
   if (Math.abs(el.prescribedValues[2]) > 1e-32) {
     rows.push(
-      `D<sub>${appStore.axes.v}</sub> = ${appStore.vertical(appStore.convertLength(el.prescribedValues[2]))} ` +
-        appStore.units.Length
+      `D<sub>${appStore.axes.v}</sub> = ${appStore.vertical(appStore.convertDisplacement(el.prescribedValues[2]))} ` +
+        appStore.units.Displacement
     );
   }
 
@@ -817,22 +818,24 @@ const buildNodeDetails = (node: Node): EntityDetails => {
     rows.push(
       `u<sub>x</sub> = ${appStore.formatResultHTML(
         // @ts-expect-error It return value for single Dof
-        node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx])
-      )} m`
+        appStore.convertDisplacement(node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]))
+      )} ${appStore.units.Displacement}`
     );
 
     rows.push(
       `u<sub>${appStore.axes.v}</sub> = ${appStore.formatResultHTML(
-        // @ts-expect-error It return value for single Dof
-        appStore.vertical(node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]))
-      )} m`
+        appStore.vertical(
+          // @ts-expect-error It return value for single Dof
+          appStore.convertDisplacement(node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]))
+        )
+      )} ${appStore.units.Displacement}`
     );
 
     rows.push(
       `φ<sub>${appStore.axes.r}</sub> = ${appStore.formatResultHTML(
         // @ts-expect-error It return value for single Dof
         node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry])
-      )} rad`
+      )} ${appStore.units.Angle}`
     );
   }
 
@@ -1394,6 +1397,11 @@ const cancelDimensionPointDrag = () => {
  * between a pointerdown and the pointerup that follows it, and a touch lands on a child element
  * far more often than a mouse does, which put placed nodes anywhere but under the finger.
  */
+const lengthDisplay: LengthDisplay = {
+  toDisplay: (metres) => appStore.convertLength(metres),
+  toMetres: (display) => appStore.convertInverseLength(display),
+};
+
 const updatePointerPosition = (e: Pick<PointerEvent, 'clientX' | 'clientY'>) => {
   appStore.mouse.x = e.clientX;
   appStore.mouse.y = e.clientY;
@@ -1410,8 +1418,8 @@ const updatePointerPosition = (e: Pick<PointerEvent, 'clientX' | 'clientY'>) => 
   const realStep = viewerStore.gridStep;
   const canSnap = viewerStore.snapToGrid && Number.isFinite(realStep) && realStep > 0;
 
-  const snappedX = Math.round(mXReal / realStep) * realStep;
-  const snappedY = Math.round(mYReal / realStep) * realStep;
+  const snappedX = snapToGrid(mXReal, realStep, lengthDisplay);
+  const snappedY = snapToGrid(mYReal, realStep, lengthDisplay);
 
   mouseXReal.value = canSnap ? snappedX : mXReal;
   mouseYReal.value = canSnap ? snappedY : mYReal;
@@ -2784,7 +2792,7 @@ defineExpose({ centerContent, fitContent });
                   :data-element-load-id="index"
                   :eload="eload"
                   :scale="scale"
-                  :convert-force="appStore.convertForce"
+                  :convert-temperature="appStore.convertTemperature"
                   :font-size="viewerStore.fontSize"
                   :number-format="appStore.numberFormatter"
                   @mousemove="onElementLoadHover($event, eload)"
@@ -2909,7 +2917,7 @@ defineExpose({ centerContent, fitContent });
               :class="{ selected: projectStore.selection2.prescribedBC.includes(index) }"
               :nload="nload"
               :scale="scale"
-              :convert-length="appStore.convertLength"
+              :convert-displacement="appStore.convertDisplacement"
               :multiplier="projectStore.defoScale * viewerStore.resultsScalePx_"
               :font-size="viewerStore.fontSize"
               :number-format="appStore.numberFormatter"
@@ -2956,6 +2964,7 @@ defineExpose({ centerContent, fitContent });
               :scale="scale"
               :font-size="viewerStore.fontSize"
               :number-format="appStore.numberFormatter"
+              :convert-length="appStore.convertLength"
               :selected="projectStore.selection2.dimensions.includes(getDimensionId(dim))"
               :show-points="projectStore.selection2.dimensions.includes(getDimensionId(dim))"
               @dimensionpointerdown="onDimensionPointerDown($event, getDimensionId(dim))"
@@ -2971,6 +2980,7 @@ defineExpose({ centerContent, fitContent });
               :scale="scale"
               :font-size="viewerStore.fontSize"
               :number-format="appStore.numberFormatter"
+              :convert-length="appStore.convertLength"
               :show-points="true"
               :interactive="false"
             />

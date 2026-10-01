@@ -3,6 +3,8 @@ import { computed, inject, onBeforeUnmount, ref, watch } from 'vue';
 import { useViewerStore } from '@/store/viewer';
 import { placingKey } from '@/types/placing';
 import { vertical } from '@/utils/axisConvention';
+import { useAppStore } from '@/store/app';
+import { formatFeetInches, stepDecimals } from '@/utils/grid';
 
 /**
  * Lines across the drawing through the point the pointer would place at, with that point's
@@ -25,6 +27,7 @@ const props = defineProps<{
 const RULER = 16;
 
 const viewerStore = useViewerStore();
+const appStore = useAppStore();
 const placing = inject(placingKey)!;
 
 const overlay = ref<SVGSVGElement | null>(null);
@@ -95,15 +98,9 @@ const frame = computed(() => {
 const visible = computed(() => viewerStore.showCrosshair && hasHover.matches && mouseOver.value && !!frame.value);
 
 /** As many decimals as the snap step has, so a snapped value reads exactly; three when free. */
-const decimals = computed(() => {
-  const step = viewerStore.gridStep;
-
-  if (!viewerStore.snapToGrid || !Number.isFinite(step) || step <= 0) return 3;
-
-  const fraction = String(step).split('.')[1] ?? '';
-
-  return Math.min(Math.max(fraction.length, 2), 6);
-});
+const decimals = computed(() =>
+  viewerStore.snapToGrid ? stepDecimals(appStore.convertLength(viewerStore.gridStep)) : 3
+);
 
 const format = (value: number) => {
   const text = value.toFixed(decimals.value);
@@ -112,8 +109,11 @@ const format = (value: number) => {
   return Number(text) === 0 ? (0).toFixed(decimals.value) : text;
 };
 
-const xLabel = computed(() => format(placing.x.value));
-const yLabel = computed(() => format(vertical(placing.y.value)));
+// In feet, as the rulers read: feet and inches
+const label = (value: number) => (appStore.units.Length === 'ft' ? formatFeetInches(value) : format(value));
+
+const xLabel = computed(() => label(appStore.convertLength(placing.x.value)));
+const yLabel = computed(() => label(vertical(appStore.convertLength(placing.y.value))));
 
 /** A tag wide enough for its text; the ruler font is 12 px, about 7 px a character. */
 const tagWidth = (text: string) => text.length * 7 + 8;

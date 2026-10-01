@@ -48,52 +48,53 @@
 
         <div class="mb-1">{{ $t('settings.units_description') }}</div>
 
+        <v-select
+          v-model="unitSystemProxy"
+          :items="unitSystemItems"
+          hide-details="auto"
+          class="mb-2"
+          :label="$t('settings.units.system')"
+        />
+
         <v-row no-gutters>
           <v-col cols="6">
             <v-select
-              v-model="appStore.units.Length"
-              item-title="name"
-              item-value="code"
+              :model-value="appStore.units.Length"
+              :items="lengthItems"
               hide-details="auto"
-              :items="[
-                { name: 'm', code: 'm' },
-                { name: 'cm', code: 'cm' },
-                { name: 'mm', code: 'mm' },
-                { name: 'in', code: 'in' },
-                { name: 'ft', code: 'ft' },
-              ]"
               :label="$t('settings.units.length')"
-            >
-            </v-select>
+              @update:model-value="appStore.setLengthUnit"
+            />
+          </v-col>
+          <v-col cols="6">
+            <v-select
+              v-model="appStore.units.SectionLength"
+              :items="lengthItems"
+              hide-details="auto"
+              :label="$t('settings.units.sectionLength')"
+            />
+          </v-col>
+          <v-col cols="6">
+            <v-select
+              v-model="appStore.units.Displacement"
+              :items="lengthItems"
+              hide-details="auto"
+              :label="$t('settings.units.displacement')"
+            />
           </v-col>
           <v-col cols="6">
             <v-select
               v-model="appStore.units.Area"
-              item-title="name"
-              item-value="code"
+              :items="areaItems"
               hide-details="auto"
-              :items="[
-                { name: 'm²', code: 'm2' },
-                { name: 'cm²', code: 'cm2' },
-                { name: 'mm²', code: 'mm2' },
-                { name: 'in²', code: 'in2' },
-                { name: 'ft²', code: 'ft2' },
-              ]"
               :label="$t('settings.units.area')"
-            ></v-select> </v-col
-          ><v-col cols="6">
+            />
+          </v-col>
+          <v-col cols="6">
             <v-select
               v-model="appStore.units.AreaM2"
-              item-title="name"
-              item-value="code"
+              :items="secondMomentItems"
               hide-details="auto"
-              :items="[
-                { name: 'm4', code: 'm4' },
-                { name: 'cm4', code: 'cm4' },
-                { name: 'mm4', code: 'mm4' },
-                { name: 'in4', code: 'in4' },
-                { name: 'ft4', code: 'ft4' },
-              ]"
               :label="$t('settings.units.areaM2')"
             >
               <template #item="{ item, props }">
@@ -104,80 +105,49 @@
 
               <template #selection="{ item }">
                 <span v-html="formatMeasureAsHTML(item.title)"></span>
-              </template> </v-select
-          ></v-col>
-          <v-col cols="6"
-            ><v-select
+              </template>
+            </v-select>
+          </v-col>
+          <v-col cols="6">
+            <v-select
               v-model="appStore.units.Mass"
-              item-title="name"
-              item-value="code"
+              :items="massItems"
               hide-details="auto"
-              :items="[
-                { name: 'kg', code: 'kg' },
-                { name: 'lb', code: 'lb' },
-              ]"
               :label="$t('settings.units.mass')"
-            >
-            </v-select
-          ></v-col>
-
-          <v-col cols="6"
-            ><v-select
+            />
+          </v-col>
+          <v-col cols="6">
+            <v-select
               v-model="appStore.units.Force"
-              item-title="name"
-              item-value="code"
+              :items="forceItems"
               hide-details="auto"
-              :items="[
-                { name: 'N', code: 'N' },
-                { name: 'kN', code: 'kN' },
-                { name: 'MN', code: 'MN' },
-                { name: 'lbf', code: 'lbf' },
-                { name: 'Tonf', code: 'Tonf' },
-                { name: 'kgf', code: 'kgf' },
-              ]"
               :label="$t('settings.units.force')"
-            >
-            </v-select
-          ></v-col>
-
-          <v-col cols="6"
-            ><v-select
+            />
+          </v-col>
+          <v-col cols="6">
+            <v-select
               v-model="momentUnitsProxy"
-              item-title="name"
-              item-value="code"
+              :items="momentItems"
               hide-details="auto"
-              :items="[
-                { name: 'Nmm', code: 'N_mm' },
-                { name: 'Nm', code: 'N_m' },
-                { name: 'kNm', code: 'kN_m' },
-                { name: 'MNm', code: 'MN_m' },
-                { name: 'Tonf·m', code: 'Tonf_m' },
-                { name: 'lbf·in', code: 'lbf_in' },
-                { name: 'lbf·ft', code: 'lbf_ft' },
-              ]"
               :label="$t('settings.units.moment')"
-            >
-            </v-select
-          ></v-col>
-
-          <v-col cols="6"
-            ><v-select
+            />
+          </v-col>
+          <v-col cols="6">
+            <v-select
               v-model="appStore.units.Pressure"
-              item-title="name"
-              item-value="code"
+              :items="pressureItems"
               hide-details="auto"
-              :items="[
-                { name: 'Pa', code: 'Pa' },
-                { name: 'kPa', code: 'kPa' },
-                { name: 'MPa', code: 'MPa' },
-                { name: 'GPa', code: 'GPa' },
-                { name: 'psi', code: 'psi' },
-                { name: 'ksc', code: 'ksc' },
-              ]"
               :label="$t('settings.units.pressure')"
-            >
-            </v-select
-          ></v-col>
+            />
+          </v-col>
+          <v-col cols="6">
+            <v-select
+              v-model="temperatureProxy"
+              :items="temperatureItems"
+              hide-details="auto"
+              :label="$t('settings.units.temperature')"
+            />
+          </v-col>
         </v-row>
       </v-col>
     </v-row>
@@ -205,6 +175,8 @@ import Russian from 'language-icons/icons/ru.svg';
 import Turkish from 'language-icons/icons/tr.svg';
 import ThaiFlag from '../../assets/th-flag.svg';
 import { computed } from 'vue';
+import { momentLabel, unitText, type ForceUnit, type LengthUnit, type TemperatureUnit } from '@/utils/unitConversions';
+import type { UnitSystem } from '@/utils/unitSystems';
 import { useI18n } from 'vue-i18n';
 
 const flags = {
@@ -234,12 +206,60 @@ const numberStyleItems = computed(() => [
   { title: t('settings.number_format_engineering'), value: 'engineering' },
 ]);
 
+const unit = <T extends string>(value: T, title: string = value) => ({ title, value });
+
+const lengthItems = (['m', 'cm', 'mm', 'ft', 'in'] as const).map((u) => unit(u));
+const areaItems = (['m', 'cm', 'mm', 'ft', 'in'] as const).map((u) => unit(`${u}2`, `${u}²`));
+const secondMomentItems = (['m', 'cm', 'mm', 'ft', 'in'] as const).map((u) => unit(`${u}4`));
+const massItems = (['kg', 'lb'] as const).map((u) => unit(u));
+const forceItems = (['N', 'kN', 'MN', 'kgf', 'Tonf', 'lbf', 'kip'] as const).map((u) => unit(u));
+const pressureItems = (['Pa', 'kPa', 'MPa', 'GPa', 'ksc', 'psi', 'ksi', 'psf', 'ksf'] as const).map((u) => unit(u));
+const temperatureItems = (['C', 'F'] as const).map((u) => unit(u, unitText(u)));
+
+// Each value is a force and a length; the store keeps them apart, the list shows them together.
+const momentPairs = [
+  ['N', 'mm'],
+  ['N', 'm'],
+  ['kN', 'm'],
+  ['MN', 'm'],
+  ['Tonf', 'm'],
+  ['lbf', 'in'],
+  ['lbf', 'ft'],
+  ['kip', 'in'],
+  ['kip', 'ft'],
+] as const satisfies readonly (readonly [ForceUnit, LengthUnit])[];
+
+const momentItems = momentPairs.map(([force, length]) => unit(`${force}_${length}`, momentLabel(force, length)));
+
 const momentUnitsProxy = computed({
   get: () => `${appStore.momentUnits.force}_${appStore.momentUnits.length}`,
   set: (val: string) => {
-    const [force, length] = val.split('_');
-    appStore.momentUnits.force = force;
-    appStore.momentUnits.length = length;
+    const pair = momentPairs.find(([force, length]) => `${force}_${length}` === val);
+    if (pair) appStore.momentUnits = { force: pair[0], length: pair[1] };
+  },
+});
+
+// A coefficient of thermal expansion is per degree of the same scale, so both change together.
+const temperatureProxy = computed({
+  get: () => appStore.units.Temperature,
+  set: (val: TemperatureUnit) => {
+    appStore.units.Temperature = val;
+    appStore.units.ThermalExpansion = val === 'F' ? '1/F' : '1/K';
+  },
+});
+
+const unitSystemItems = computed(() => [
+  { title: t('settings.units.systemSI'), value: 'si' },
+  { title: t('settings.units.systemUS'), value: 'us' },
+  { title: t('settings.units.systemCustom'), value: 'custom', props: { disabled: true } },
+]);
+
+// A mix of the two shows as custom, which cannot itself be chosen: it is what a change of any
+// single unit below makes.
+const unitSystemProxy = computed({
+  get: () => appStore.unitSystem ?? 'custom',
+  set: (val: UnitSystem | 'custom') => {
+    if (val !== 'custom') appStore.unitSystem = val;
   },
 });
 </script>

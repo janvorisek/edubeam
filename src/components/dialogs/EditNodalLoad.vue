@@ -125,7 +125,7 @@ const realFx = computed(() => {
     return appStore.convertInverseForce(parseFloat2(loadNodeValueFx.value));
   }
 
-  return appStore.convertInverseLength(parseFloat2(loadNodeValueFx.value));
+  return appStore.convertInverseDisplacement(parseFloat2(loadNodeValueFx.value));
 });
 
 const realFz = computed(() => {
@@ -133,7 +133,7 @@ const realFz = computed(() => {
     return appStore.vertical(appStore.convertInverseForce(parseFloat2(loadNodeValueFz.value)));
   }
 
-  return appStore.vertical(appStore.convertInverseLength(parseFloat2(loadNodeValueFz.value)));
+  return appStore.vertical(appStore.convertInverseDisplacement(parseFloat2(loadNodeValueFz.value)));
 });
 
 const realMy = computed(() => {
@@ -148,7 +148,7 @@ const realMy = computed(() => {
 const mainLabel = computed(() => (loadType.value === 'force' ? 'F' : 'D'));
 const momentLabel = computed(() => (loadType.value === 'force' ? 'M' : 'R'));
 
-const mainUnits = computed(() => (loadType.value === 'force' ? appStore.units.Force : appStore.units.Length));
+const mainUnits = computed(() => (loadType.value === 'force' ? appStore.units.Force : appStore.units.Displacement));
 const momentUnits = computed(() => (loadType.value === 'force' ? appStore.units.Moment : 'rad'));
 
 onMounted(() => {
@@ -158,8 +158,8 @@ onMounted(() => {
 
   if (props.type === 'displacement') {
     const load = useProjectStore().solver.loadCases[0].prescribedBC[props.index];
-    loadNodeValueFx.value = appStore.convertLength(load.prescribedValues[DofID.Dx]).toString();
-    loadNodeValueFz.value = appStore.vertical(appStore.convertLength(load.prescribedValues[DofID.Dz])).toString();
+    loadNodeValueFx.value = appStore.convertDisplacement(load.prescribedValues[DofID.Dx]).toString();
+    loadNodeValueFz.value = appStore.vertical(appStore.convertDisplacement(load.prescribedValues[DofID.Dz])).toString();
     loadNodeValueMy.value = load.prescribedValues[DofID.Ry].toString();
   } else {
     const load = useProjectStore().solver.loadCases[0].nodalLoadList[props.index];

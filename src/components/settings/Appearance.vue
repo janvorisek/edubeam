@@ -28,7 +28,7 @@
             variant="outlined"
             hide-details="auto"
             inputmode="decimal"
-            suffix="m"
+            :suffix="appStore.units.Length"
             @keydown="checkNumber($event)"
             @change="commitGridStep"
             @blur="commitGridStep"
@@ -115,11 +115,13 @@
           id="settings-appearance"
           class="overflow-hidden"
           :solver="solver"
-          :nodes="[domain.getNode('a'), domain.getNode('b')]"
-          :elements="[domain.getElement(1)]"
-          :convert-force="toKilo"
-          :convert-force-distance="toKilo"
-          :convert-moment="toKilo"
+          :nodes="[solver.domain.getNode('a'), solver.domain.getNode('b')]"
+          :elements="[solver.domain.getElement(1)]"
+          :convert-force="appStore.convertForce"
+          :convert-force-distance="appStore.convertForceDistance"
+          :convert-moment="appStore.convertMoment"
+          :convert-length="appStore.convertLength"
+          :convert-displacement="appStore.convertDisplacement"
           :number-format="appStore.numberFormatter"
           :nodal-loads="solver.loadCases[0].nodalLoadList"
           :element-loads="solver.loadCases[0].elementLoadList"
@@ -167,7 +169,9 @@ import { useViewerStore } from '@/store/viewer';
 import { useAppStore } from '@/store/app';
 import SVGElementViewer from '../SVGElementViewer.vue';
 import { LinearStaticSolver, DofID } from 'ts-fem';
-import { onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch, type Ref } from 'vue';
+import { unitSize } from '@/utils/unitConversions';
+import { presetFamily, type PresetFamily } from '@/utils/presetFamily';
 import { checkNumber, parseFloat2, positiveNumberRules } from '@/utils';
 import SettingStepper from './SettingStepper.vue';
 
@@ -179,20 +183,19 @@ const appStore = useAppStore();
  * offers in most locales, leaves a number input empty and the field then complains that nothing
  * was entered. The store keeps a number, so the text is parsed on change.
  */
-const gridStepInput = ref(String(viewerStore.gridStep));
+const gridStepInput = ref(String(appStore.convertLength(viewerStore.gridStep)));
 
-watch(
-  () => viewerStore.gridStep,
-  (step) => {
-    if (parseFloat2(gridStepInput.value) !== step) gridStepInput.value = String(step);
-  }
-);
+// The store keeps metres; the field shows the length unit, and follows a change of either
+watch([() => viewerStore.gridStep, () => appStore.units.Length], () => {
+  const step = appStore.convertLength(viewerStore.gridStep);
+  if (parseFloat2(gridStepInput.value) !== step) gridStepInput.value = String(step);
+});
 
 const commitGridStep = () => {
   const step = parseFloat2(gridStepInput.value);
   if (!Number.isFinite(step) || step <= 0) return;
 
-  viewerStore.gridStep = step;
+  viewerStore.gridStep = appStore.convertInverseLength(step);
 };
 
 // No normal force: a simply supported beam under vertical load carries none
@@ -214,38 +217,50 @@ const colorKeys: { key: keyof typeof viewerStore.colors; preview?: PreviewQuanti
 ];
 
 /**
- * A 4 m simply supported beam under 10 kN/m, for round results (M = 20 kNm, reactions 20 kN).
- * Labels are always in kN, whatever the units chosen, so the preview reads 20 rather than 20,000.
+ * A simply supported beam in round numbers of the units in use, so its results are round too:
+ * 4 m under 10 kN/m (M = 20 kNm, reactions 20 kN), or 12 ft under 1 kip/ft (M = 18 kip·ft,
+ * reactions 6 kip). Labels are in the chosen units, as everywhere else.
  */
-const toKilo = (value: number) => value / 1000;
+const buildPreview = (span: number, load: number) => {
+  const preview = new LinearStaticSolver();
+  const domain = preview.domain;
 
-const solver = ref(new LinearStaticSolver());
-const domain = solver.value.domain;
+  domain.createNode('a', [0, 0, 0], [DofID.Dx, DofID.Dz]);
+  domain.createNode('b', [span, 0, 0], [DofID.Dz]);
 
-domain.createNode('a', [0, 0, 0], [DofID.Dx, DofID.Dz]);
-domain.createNode('b', [4, 0, 0], [DofID.Dz]);
+  domain.createBeam2D(1, ['a', 'b'], 1, 1);
 
-domain.createBeam2D(1, ['a', 'b'], 1, 1);
+  domain.createCrossSection(1, {
+    a: 1e-2,
+    iy: 8.356e-5,
+    iz: 1.0,
+    dyz: 999991.0,
+    h: 1,
+    k: 1e32,
+    j: 99999.0,
+  });
 
-domain.createCrossSection(1, {
-  a: 1e-2,
-  iy: 8.356e-5,
-  iz: 1.0,
-  dyz: 999991.0,
-  h: 1,
-  k: 1e32,
-  j: 99999.0,
-});
+  domain.createMaterial(1, {
+    e: 210000e6,
+    g: 210000e6 / (2 * (1 + 0.2)),
+    alpha: 1.0,
+    d: 4000,
+  });
 
-domain.createMaterial(1, {
-  e: 210000e6,
-  g: 210000e6 / (2 * (1 + 0.2)),
-  alpha: 1.0,
-  d: 4000 /*kg/m3!!!*/,
-});
+  preview.loadCases[0].createBeamElementUniformEdgeLoad(1, [0, load], true);
+  preview.solve();
 
-solver.value.loadCases[0].createBeamElementUniformEdgeLoad(1, [0, 10000], true);
-solver.value.solve();
+  return preview;
+};
+
+const FT = unitSize.length('ft');
+
+const previews: Record<PresetFamily, Ref<LinearStaticSolver>> = {
+  metric: ref(buildPreview(4, 10e3)),
+  us: ref(buildPreview(12 * FT, unitSize.force('kip') / FT)),
+};
+
+const solver = computed(() => previews[presetFamily(appStore.units.Length)].value);
 
 /**
  * The fit only reserves the sides for the end labels, and an equal band above and below for the

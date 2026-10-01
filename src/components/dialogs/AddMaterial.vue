@@ -43,7 +43,7 @@
                 <v-text-field
                   v-model="matDensity"
                   :label="$t('dialogs.addMaterial.density')"
-                  :suffix="densityUnits"
+                  :suffix="appStore.units.Density"
                   hide-details="auto"
                   :rules="numberRules"
                   required
@@ -57,7 +57,7 @@
                 <v-text-field
                   v-model="matAlphaTemp"
                   :label="$t('dialogs.addMaterial.alphaT')"
-                  :suffix="appStore.units.ThermalExpansion"
+                  :suffix="unitText(appStore.units.ThermalExpansion)"
                   hide-details="auto"
                   :rules="numberRules"
                   required
@@ -97,7 +97,7 @@
 
 <script setup lang="ts">
 import HelpTip from '../HelpTip.vue';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { closeModal, openModal } from 'jenesius-vue-modal';
 import { useProjectStore } from '@/store/project';
 import { useAppStore } from '@/store/app';
@@ -110,6 +110,9 @@ import {
   setUnsolved,
 } from '@/utils';
 import MaterialLibraryDialog from './MaterialLibrary.vue';
+import { unitText } from '@/utils/unitConversions';
+import { newMaterialDefaults } from '@/utils/newEntityDefaults';
+import { presetFamily } from '@/utils/presetFamily';
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
@@ -117,12 +120,11 @@ const appStore = useAppStore();
 const open = ref(true);
 const valid = ref(false);
 
-const matE = ref(`${appStore.convertPressure(210000e6)}`);
-const matG = ref(`${appStore.convertPressure(210000e6 / (2 * (1 + 0.2)))}`);
-const matDensity = ref('1000');
-const matAlphaTemp = ref('0.000012');
-
-const densityUnits = computed(() => `${appStore.units.Mass}/${appStore.units.Length}3`);
+const defaults = newMaterialDefaults(presetFamily(appStore.units.Length));
+const matE = ref(`${appStore.convertPressure(defaults.e)}`);
+const matG = ref(`${appStore.convertPressure(defaults.g)}`);
+const matDensity = ref(`${appStore.convertDensity(defaults.d)}`);
+const matAlphaTemp = ref(`${appStore.convertThermalExpansion(defaults.alpha)}`);
 
 const addMaterial = () => {
   if (valid.value === false) return;
@@ -141,8 +143,8 @@ const addMaterial = () => {
     domain.createMaterial(nid, {
       e: appStore.convertInversePressure(parseFloat2(matE.value)),
       g: appStore.convertInversePressure(parseFloat2(matG.value)),
-      alpha: parseFloat2(matAlphaTemp.value),
-      d: parseFloat2(matDensity.value),
+      alpha: appStore.convertInverseThermalExpansion(parseFloat2(matAlphaTemp.value)),
+      d: appStore.convertInverseDensity(parseFloat2(matDensity.value)),
     });
 
     domain.materials = new Map(domain.materials);

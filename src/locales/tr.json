@@ -149,7 +149,14 @@
       "moment": "Eğilme momenti",
       "pressure": "Basınç",
       "area": "Alan",
-      "areaM2": "Atalet momenti"
+      "areaM2": "Atalet momenti",
+      "system": "Birim sistemi",
+      "systemSI": "SI (metrik)",
+      "systemUS": "ABD (emperyal)",
+      "systemCustom": "Özel",
+      "temperature": "Sıcaklık",
+      "sectionLength": "Kesit boyutları",
+      "displacement": "Yer değiştirme"
     },
     "grid": "Izgara",
     "show_grid": "Izgarayı göster",
@@ -475,6 +482,7 @@
     "enterValue": "Bir değer girin",
     "invalidNumber": "Geçersiz sayı",
     "positiveNumber": "Sıfırdan büyük bir sayı girin",
+    "between": "{min} ile {max} arasında bir değer girin",
     "sameNodes": "Bir eleman iki farklı düğümü birbirine bağlamalıdır",
     "materialInUse": "Bu malzeme şu elemanlarda kullanılıyor: {elements}. Silmeden önce bu elemanlara başka bir malzeme atayın.",
     "crossSectionInUse": "Bu kesit şu elemanlarda kullanılıyor: {elements}. Silmeden önce bu elemanlara başka bir kesit atayın."

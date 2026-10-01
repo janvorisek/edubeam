@@ -17,27 +17,32 @@ import { axisLetters, vertical } from './axisConvention';
  */
 export interface ResultUnits {
   lengthLabel: string;
+  displacementLabel: string;
   angleLabel: string;
   forceLabel: string;
   momentLabel: string;
   length: (value: number) => number;
+  displacement: (value: number) => number;
   force: (value: number) => number;
   moment: (value: number) => number;
 }
 
 interface AppStoreUnitsSource {
-  units: { Length: string; Angle: string; Force: string; Moment: string };
+  units: { Length: string; Displacement: string; Angle: string; Force: string; Moment: string };
   convertLength: (value: number) => number;
+  convertDisplacement: (value: number) => number;
   convertForce: (value: number) => number;
   convertMoment: (value: number) => number;
 }
 
 export const resultUnitsFromStore = (app: AppStoreUnitsSource): ResultUnits => ({
   lengthLabel: app.units.Length,
+  displacementLabel: app.units.Displacement,
   angleLabel: app.units.Angle,
   forceLabel: app.units.Force,
   momentLabel: app.units.Moment,
   length: (value) => app.convertLength(value),
+  displacement: (value) => app.convertDisplacement(value),
   force: (value) => app.convertForce(value),
   moment: (value) => app.convertMoment(value),
 });
@@ -89,8 +94,8 @@ export const buildNodeResultRows = (solver: LinearStaticSolver, units: ResultUni
       'Node',
       `x [${units.lengthLabel}]`,
       `${v} [${units.lengthLabel}]`,
-      `Dx [${units.lengthLabel}]`,
-      `D${v} [${units.lengthLabel}]`,
+      `Dx [${units.displacementLabel}]`,
+      `D${v} [${units.displacementLabel}]`,
       `R${r} [${units.angleLabel}]`,
       `Rx [${units.forceLabel}]`,
       `R${v} [${units.forceLabel}]`,
@@ -102,7 +107,7 @@ export const buildNodeResultRows = (solver: LinearStaticSolver, units: ResultUni
     const displacement = (dof: DofID) => {
       const value = readUnknown(solver, node, dof);
 
-      return value === null ? null : units.length(value);
+      return value === null ? null : units.displacement(value);
     };
     const reaction = (dof: DofID) => {
       const value = readReaction(node, loadCase, dof);

@@ -208,7 +208,9 @@ import { computed, ref, watch } from 'vue';
 import { useProjectStore } from '../../store/project';
 import { useAppStore } from '../../store/app';
 import { closeModal } from 'jenesius-vue-modal';
-import { checkNumber, executeModelMutationWithUndo, parseFloat2, numberRules } from '@/utils';
+import { checkNumber, executeModelMutationWithUndo, parseFloat2, numberRules, rangeRule } from '@/utils';
+import { newPointLoadPosition } from '@/utils/newEntityDefaults';
+import { presetFamily } from '@/utils/presetFamily';
 import ElementLoadPreview from '../ElementLoadPreview.vue';
 import { deviceHasHover } from '@/utils/pointer';
 import {
@@ -325,13 +327,9 @@ const previewLoad = computed(() => {
   return null;
 });
 
-const minMax = (v) => {
-  const geo = target.value.computeGeo();
-  if (v < 0 || v > geo.l) {
-    return 'Enter value between 0 and ' + geo.l;
-  }
-  return true;
-};
+// The position is typed in the display length unit, so the element length is converted to match
+const minMax = (v: unknown) =>
+  rangeRule(0, appStore.convertLength(target.value.computeGeo().l), appStore.units.Length)(v);
 
 const addElementLoad = () => {
   if (valid.value === false) return;
@@ -381,7 +379,7 @@ const target = computed(() => {
 watch(loadType, () => {
   if (loadType.value === 'concentrated') {
     const geo = target.value.computeGeo();
-    elementLoadPos.value = `${appStore.convertLength(Math.max(Math.min(Math.floor(geo.l / 2), 5.0), geo.l / 10))}`;
+    elementLoadPos.value = `${appStore.convertLength(newPointLoadPosition(geo.l, presetFamily(appStore.units.Length)))}`;
   }
 });
 </script>

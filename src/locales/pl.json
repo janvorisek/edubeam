@@ -149,7 +149,14 @@
       "moment": "Moment zginający",
       "pressure": "Naprężenie",
       "area": "Pole",
-      "areaM2": "Geometryczny moment bezwładności"
+      "areaM2": "Geometryczny moment bezwładności",
+      "system": "Układ jednostek",
+      "systemSI": "SI (metryczny)",
+      "systemUS": "Amerykański (imperialny)",
+      "systemCustom": "Własny",
+      "temperature": "Temperatura",
+      "sectionLength": "Wymiary przekroju",
+      "displacement": "Przemieszczenie"
     },
     "grid": "Siatka",
     "show_grid": "Pokaż siatkę",
@@ -475,6 +482,7 @@
     "enterValue": "Wprowadź wartość",
     "invalidNumber": "Nieprawidłowa liczba",
     "positiveNumber": "Wprowadź liczbę większą od zera",
+    "between": "Wprowadź wartość od {min} do {max}",
     "sameNodes": "Element musi łączyć dwa różne węzły",
     "materialInUse": "Materiał jest używany przez elementy: {elements}. Przed usunięciem przypisz im inny materiał.",
     "crossSectionInUse": "Przekrój jest używany przez elementy: {elements}. Przed usunięciem przypisz im inny przekrój."

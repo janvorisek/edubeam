@@ -8,7 +8,7 @@ const props = withDefaults(
   defineProps<{
     nload: PrescribedDisplacement;
     scale: number;
-    convertLength: (f: number) => number;
+    convertDisplacement: (f: number) => number;
     multiplier: number;
     fontSize?: number;
     numberFormat?: Intl.NumberFormat;
@@ -101,10 +101,10 @@ const rotationHandleRadius = computed(() => (20 * (50 / 60)) / props.scale);
       :transform="`translate(${translationTip.x + (nload.prescribedValues[0] > 0 ? 10 / scale : -10 / scale)}
               ${translationTip.z})`"
     >
-      {{ formatScientificNumber(convertLength(translationMagnitude), 2) }}
+      {{ formatScientificNumber(convertDisplacement(translationMagnitude), 2) }}
       <template v-if="hasBothTranslationComponents">
-        ({{ formatScientificNumber(convertLength(nload.prescribedValues[0]), 2) }};
-        {{ formatScientificNumber(vertical(convertLength(nload.prescribedValues[2])), 2) }})
+        ({{ formatScientificNumber(convertDisplacement(nload.prescribedValues[0]), 2) }};
+        {{ formatScientificNumber(vertical(convertDisplacement(nload.prescribedValues[2])), 2) }})
       </template>
     </text>
 

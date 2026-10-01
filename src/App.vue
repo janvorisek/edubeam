@@ -210,7 +210,8 @@ onMounted(() => {
 
   if (domain.nodes.size > 0) return solve();
 
-  buildStarterModel(solver, useProjectStore().dimensions);
+  // The frame in round numbers of the units in use: 3 m, or 10 ft
+  buildStarterModel(solver, useProjectStore().dimensions, appStore.unitSystem === 'us' ? 'us' : 'si');
 
   requestAnimationFrame(solve);
 });

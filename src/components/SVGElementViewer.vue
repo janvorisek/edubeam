@@ -89,6 +89,8 @@ const props = withDefaults(
     convertForceDistance?: (value: number) => number;
     convertMoment?: (value: number) => number;
     convertLength?: (value: number) => number;
+    convertTemperature?: (value: number) => number;
+    convertDisplacement?: (value: number) => number;
     resultLabelMode?: 'axis' | 'horizontal';
     numberFormat?: Intl.NumberFormat;
     zoomEnabled?: boolean;
@@ -137,6 +139,8 @@ const props = withDefaults(
     convertForceDistance: (v) => v,
     convertMoment: (v) => v,
     convertLength: (v) => v,
+    convertTemperature: (v) => v,
+    convertDisplacement: (v) => v,
     resultLabelMode: 'axis',
     numberFormat: () => new Intl.NumberFormat(),
     zoomEnabled: false,
@@ -394,7 +398,7 @@ defineExpose({ centerContent, fitContent, setView, update });
                   :data-element-load-id="index"
                   :eload="eload"
                   :scale="scale"
-                  :convert-force="props.convertForce"
+                  :convert-temperature="props.convertTemperature"
                   :font-size="props.fontSize"
                   :number-format="props.numberFormat"
                 />
@@ -480,7 +484,7 @@ defineExpose({ centerContent, fitContent, setView, update });
               :key="`nodal-load-${index}`"
               :nload="nload"
               :scale="scale"
-              :convert-length="props.convertLength"
+              :convert-displacement="props.convertDisplacement"
               :multiplier="defoScale * props.resultsScalePx"
               :font-size="props.fontSize"
               :number-format="props.numberFormat"

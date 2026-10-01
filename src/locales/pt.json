@@ -149,7 +149,14 @@
       "moment": "Momento fletor",
       "pressure": "Tensão",
       "area": "Área",
-      "areaM2": "Segundo momento de área"
+      "areaM2": "Segundo momento de área",
+      "system": "Sistema de unidades",
+      "systemSI": "SI (métrico)",
+      "systemUS": "Americano (imperial)",
+      "systemCustom": "Personalizado",
+      "temperature": "Temperatura",
+      "sectionLength": "Dimensões da seção",
+      "displacement": "Deslocamento"
     },
     "grid": "Grade",
     "show_grid": "Mostrar grade",
@@ -475,6 +482,7 @@
     "enterValue": "Insira um valor",
     "invalidNumber": "Número inválido",
     "positiveNumber": "Insira um número maior que zero",
+    "between": "Insira um valor entre {min} e {max}",
     "sameNodes": "Um elemento deve ligar dois nós diferentes",
     "materialInUse": "O material é usado pelos elementos {elements}. Reatribua-os antes de excluí-lo.",
     "crossSectionInUse": "A seção é usada pelos elementos {elements}. Reatribua-os antes de excluí-la."

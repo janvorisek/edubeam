@@ -149,7 +149,14 @@
       "moment": "Bending moment",
       "pressure": "Pressure",
       "area": "Area",
-      "areaM2": "Second moment of area"
+      "areaM2": "Second moment of area",
+      "system": "Unit system",
+      "systemSI": "SI (metric)",
+      "systemUS": "US customary (imperial)",
+      "systemCustom": "Custom",
+      "temperature": "Temperature",
+      "sectionLength": "Section dimensions",
+      "displacement": "Displacement"
     },
     "grid": "Grid",
     "show_grid": "Show grid",
@@ -475,6 +482,7 @@
     "enterValue": "Enter a value",
     "invalidNumber": "Invalid number",
     "positiveNumber": "Enter a number greater than zero",
+    "between": "Enter a value between {min} and {max}",
     "sameNodes": "An element must connect two different nodes",
     "materialInUse": "Material is used by element(s) {elements}. Reassign them before deleting it.",
     "crossSectionInUse": "Cross-section is used by element(s) {elements}. Reassign them before deleting it."

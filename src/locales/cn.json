@@ -149,7 +149,14 @@
       "moment": "弯矩",
       "pressure": "应力",
       "area": "面积",
-      "areaM2": "截面二次矩"
+      "areaM2": "截面二次矩",
+      "system": "单位制",
+      "systemSI": "国际单位制（公制）",
+      "systemUS": "美制（英制）",
+      "systemCustom": "自定义",
+      "temperature": "温度",
+      "sectionLength": "截面尺寸",
+      "displacement": "位移"
     },
     "grid": "网格",
     "show_grid": "显示网格",
@@ -475,6 +482,7 @@
     "enterValue": "请输入数值",
     "invalidNumber": "无效数字",
     "positiveNumber": "请输入大于零的数",
+    "between": "请输入 {min} 到 {max} 之间的数值",
     "sameNodes": "单元必须连接两个不同的节点",
     "materialInUse": "该材料正被单元 {elements} 使用。删除前请先为这些单元重新指定材料。",
     "crossSectionInUse": "该截面正被单元 {elements} 使用。删除前请先为这些单元重新指定截面。"

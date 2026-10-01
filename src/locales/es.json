@@ -149,7 +149,14 @@
       "moment": "Momento flector",
       "pressure": "Presión",
       "area": "Área",
-      "areaM2": "Segundo momento de área"
+      "areaM2": "Segundo momento de área",
+      "system": "Sistema de unidades",
+      "systemSI": "SI (métrico)",
+      "systemUS": "Estadounidense (imperial)",
+      "systemCustom": "Personalizado",
+      "temperature": "Temperatura",
+      "sectionLength": "Dimensiones de sección",
+      "displacement": "Desplazamiento"
     },
     "grid": "Cuadrícula",
     "show_grid": "Mostrar cuadrícula",
@@ -475,6 +482,7 @@
     "enterValue": "Introduzca un valor",
     "invalidNumber": "Número no válido",
     "positiveNumber": "Introduzca un número mayor que cero",
+    "between": "Introduzca un valor entre {min} y {max}",
     "sameNodes": "Un elemento debe unir dos nodos distintos",
     "materialInUse": "El material lo usan los elementos {elements}. Reasígnelos antes de eliminarlo.",
     "crossSectionInUse": "La sección transversal la usan los elementos {elements}. Reasígnelos antes de eliminarla."

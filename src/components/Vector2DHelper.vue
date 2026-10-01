@@ -44,7 +44,7 @@ const LABEL_OFFSET = 12;
 const isDisplacement = computed(() => props.type === 'displacement');
 
 const convertMain = (value: number) =>
-  isDisplacement.value ? appStore.convertLength(value) : appStore.convertForce(value);
+  isDisplacement.value ? appStore.convertDisplacement(value) : appStore.convertForce(value);
 
 /** A prescribed rotation is stored and shown in radians, a moment in the selected moment unit. */
 const convertRotational = (value: number) => (isDisplacement.value ? value : appStore.convertMoment(value));

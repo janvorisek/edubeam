@@ -21,10 +21,12 @@ afterEach(() => {
 
 const SI: ResultUnits = {
   lengthLabel: 'm',
+  displacementLabel: 'm',
   angleLabel: 'rad',
   forceLabel: 'kN',
   momentLabel: 'kNm',
   length: (v) => v,
+  displacement: (v) => v,
   force: (v) => v / 1000,
   moment: (v) => v / 1000,
 };

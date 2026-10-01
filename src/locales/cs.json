@@ -93,7 +93,14 @@
       "moment": "Ohybový moment",
       "mass": "Hmotnost",
       "pressure": "Napětí",
-      "units": "Jednotky"
+      "units": "Jednotky",
+      "system": "Soustava jednotek",
+      "systemSI": "SI (metrická)",
+      "systemUS": "Americká (imperiální)",
+      "systemCustom": "Vlastní",
+      "temperature": "Teplota",
+      "sectionLength": "Rozměry průřezu",
+      "displacement": "Posun"
     },
     "show_grid": "Zobrazit mřížku",
     "mouse": {
@@ -475,6 +482,7 @@
     "enterValue": "Zadejte hodnotu",
     "invalidNumber": "Neplatné číslo",
     "positiveNumber": "Zadejte číslo větší než nula",
+    "between": "Zadejte hodnotu mezi {min} a {max}",
     "sameNodes": "Prvek musí spojovat dva různé uzly",
     "materialInUse": "Materiál používají prvky {elements}. Před smazáním jim přiřaďte jiný.",
     "crossSectionInUse": "Průřez používají prvky {elements}. Před smazáním jim přiřaďte jiný."

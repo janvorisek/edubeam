@@ -87,6 +87,12 @@ describe('the recent structures', () => {
     deserializeModel(serializeModel(solver, dimensions)!, reloaded, reloadedDimensions);
     expect(store.remember(serializeModel(reloaded, reloadedDimensions), 'clear')).toBe(false);
 
+    // The frame a first visit in US units opens with is no more worth keeping
+    const us = new LinearStaticSolver();
+    const usDimensions: DimensionLine[] = [];
+    buildStarterModel(us, usDimensions, 'us');
+    expect(store.remember(serializeModel(us, usDimensions), 'clear')).toBe(false);
+
     expect(store.entries).toEqual([]);
   });
 

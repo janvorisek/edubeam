@@ -200,7 +200,7 @@ import { useProjectStore } from '@/store/project';
 import { closeModal } from 'jenesius-vue-modal';
 import { onMounted } from 'vue';
 import { useAppStore } from '@/store/app';
-import { checkNumber, numberRules, parseFloat2, loadType as LT } from '@/utils';
+import { checkNumber, numberRules, parseFloat2, rangeRule, loadType as LT } from '@/utils';
 import {
   BeamConcentratedLoad,
   BeamElementTrapezoidalEdgeLoad,
@@ -269,13 +269,9 @@ const loadNodeValueTbt = ref('0.0');
 const elementLoadPos = ref('0.0');
 const elementLCS = ref(false);
 
-const minMax = (v) => {
-  const geo = target.value.computeGeo();
-  if (v < 0 || v > geo.l) {
-    return 'Enter value between 0 and ' + geo.l;
-  }
-  return true;
-};
+// The position is typed in the display length unit, so the element length is converted to match
+const minMax = (v: unknown) =>
+  rangeRule(0, appStore.convertLength(target.value.computeGeo().l), appStore.units.Length)(v);
 
 const inverseIntensity = computed(() =>
   loadType.value === 'udl' ? appStore.convertInverseForceDistance : appStore.convertInverseForce

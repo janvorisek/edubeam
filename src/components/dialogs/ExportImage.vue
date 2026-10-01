@@ -531,6 +531,8 @@ const viewerProps = computed(() => ({
   convertForceDistance: appStore.convertForceDistance,
   convertMoment: appStore.convertMoment,
   convertLength: appStore.convertLength,
+  convertDisplacement: appStore.convertDisplacement,
+  convertTemperature: appStore.convertTemperature,
   numberFormat: appStore.numberFormatter,
   padding: EXPORT_MARGIN_PX,
   mobilePadding: EXPORT_MARGIN_PX,

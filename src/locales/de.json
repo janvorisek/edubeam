@@ -149,7 +149,14 @@
       "moment": "Biegemoment",
       "pressure": "Druck",
       "area": "Fläche",
-      "areaM2": "Flächenträgheitsmoment"
+      "areaM2": "Flächenträgheitsmoment",
+      "system": "Einheitensystem",
+      "systemSI": "SI (metrisch)",
+      "systemUS": "US-amerikanisch (imperial)",
+      "systemCustom": "Benutzerdefiniert",
+      "temperature": "Temperatur",
+      "sectionLength": "Querschnittsabmessungen",
+      "displacement": "Verschiebung"
     },
     "grid": "Raster",
     "show_grid": "Raster anzeigen",
@@ -475,6 +482,7 @@
     "enterValue": "Wert eingeben",
     "invalidNumber": "Ungültige Zahl",
     "positiveNumber": "Geben Sie eine Zahl größer als null ein",
+    "between": "Geben Sie einen Wert zwischen {min} und {max} ein",
     "sameNodes": "Ein Element muss zwei verschiedene Knoten verbinden",
     "materialInUse": "Das Material wird von Element(en) {elements} verwendet. Weisen Sie diesen vor dem Löschen ein anderes zu.",
     "crossSectionInUse": "Der Querschnitt wird von Element(en) {elements} verwendet. Weisen Sie diesen vor dem Löschen einen anderen zu."

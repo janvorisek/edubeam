@@ -149,7 +149,14 @@
       "moment": "Moment fléchissant",
       "pressure": "Contrainte",
       "area": "Aire",
-      "areaM2": "Moment quadratique"
+      "areaM2": "Moment quadratique",
+      "system": "Système d'unités",
+      "systemSI": "SI (métrique)",
+      "systemUS": "Américain (impérial)",
+      "systemCustom": "Personnalisé",
+      "temperature": "Température",
+      "sectionLength": "Dimensions de section",
+      "displacement": "Déplacement"
     },
     "grid": "Grille",
     "show_grid": "Afficher la grille",
@@ -475,6 +482,7 @@
     "enterValue": "Saisissez une valeur",
     "invalidNumber": "Nombre invalide",
     "positiveNumber": "Saisissez un nombre supérieur à zéro",
+    "between": "Saisissez une valeur entre {min} et {max}",
     "sameNodes": "Un élément doit relier deux nœuds différents",
     "materialInUse": "Le matériau est utilisé par les éléments suivants : {elements}. Réaffectez-les avant de le supprimer.",
     "crossSectionInUse": "La section est utilisée par les éléments suivants : {elements}. Réaffectez-les avant de la supprimer."

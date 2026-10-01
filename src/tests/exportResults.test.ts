@@ -4,10 +4,12 @@ import { buildElementResultRows, buildNodeResultRows, buildResultsCsv, type Resu
 
 const SI: ResultUnits = {
   lengthLabel: 'm',
+  displacementLabel: 'm',
   angleLabel: 'rad',
   forceLabel: 'kN',
   momentLabel: 'kNm',
   length: (v) => v,
+  displacement: (v) => v,
   force: (v) => v / 1000,
   moment: (v) => v / 1000,
 };
@@ -58,6 +60,23 @@ describe('exportResults', () => {
     expect(tip[4]).toBeCloseTo((1000 * 3 ** 3) / (3 * 210e9 * 8e-5), 9);
     // An unsupported node has no reactions rather than zeroes.
     expect(tip.slice(6)).toEqual([null, null, null]);
+  });
+
+  it('writes displacements in their own unit, apart from the coordinates', () => {
+    // US practice: the frame in feet, its deflections in inches
+    const rows = buildNodeResultRows(buildSolved(), {
+      ...SI,
+      lengthLabel: 'ft',
+      displacementLabel: 'in',
+      length: (v) => v / 0.3048,
+      displacement: (v) => v / 0.0254,
+    });
+
+    expect(rows[0].slice(1, 5)).toEqual(['x [ft]', 'z [ft]', 'Dx [in]', 'Dz [in]']);
+    expect(rows[2][1]).toBeCloseTo(3 / 0.3048, 9);
+
+    const inMetres = buildNodeResultRows(buildSolved(), SI);
+    expect(rows[2][4]).toBeCloseTo((inMetres[2][4] as number) / 0.0254, 12);
   });
 
   it('follows the units it is handed', () => {

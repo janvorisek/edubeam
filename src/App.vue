@@ -114,6 +114,19 @@ const startTour = async () => {
 // The step slot's own `exit` only emits an event; this is what takes the tour down.
 const endTour = () => useVOnboarding(onboardingWrapper).finish();
 
+/**
+ * v-onboarding builds a fresh popper for each step the moment its bubble mounts, from whatever
+ * the anchor measures right then - and on the last couple of steps that is still mid-layout, so
+ * the bubble lands wherever an empty, top-left anchor would have put it. A resize is what the
+ * library already listens for to put a popper right; asking for one after the bubble has painted
+ * is cheaper than reaching into the library to redo its own positioning.
+ */
+const fixTourStepPosition = () => {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
+  });
+};
+
 onMounted(() => {
   document.addEventListener('keydown', function (e) {
     if (e.ctrlKey && (e.key === '+' || e.key === '=' || e.key === '-')) {
@@ -395,7 +408,7 @@ const app_commit = APP_COMMIT;
     >
       <template #default="{ previous, next, step, isFirst, isLast, index }">
         <VOnboardingStep>
-          <v-card v-if="step.content" max-width="400" elevation="6" class="pa-4">
+          <v-card v-if="step.content" max-width="400" elevation="6" class="pa-4" @vue:mounted="fixTourStepPosition">
             <div class="d-flex align-start">
               <h3 class="text-h6 flex-grow-1">{{ step.content.title }}</h3>
               <v-btn

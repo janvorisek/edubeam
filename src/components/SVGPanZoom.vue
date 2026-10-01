@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Bounds } from '@/utils/fitBounds';
 import { centerSvgContent, fitSvgContent } from '@/utils/fitSvgContent';
+import { limitZoomFactor } from '@/utils/zoomLimits';
 import { nextTick, onMounted, onUnmounted, ref } from 'vue';
 import { useAppStore } from '@/store/app';
 import { debounce } from '@/utils';
@@ -96,8 +97,12 @@ const updateMatrix = (zooming = false): void => {
   emit('update', zooming);
 };
 
-const zoom = (mx: number, my: number, deltaY: number): void => {
-  if (deltaY === 0) return;
+/** Zoom about a screen point; `false` when the zoom limit left nothing to do. */
+const zoom = (mx: number, my: number, deltaY: number): boolean => {
+  if (deltaY === 0) return false;
+
+  const factor = limitZoomFactor(Math.max(viewBox.w, viewBox.h), 1 + deltaY, props.modelBounds());
+  if (Math.abs(factor - 1) < 1e-9) return false;
 
   autoFit.value = false;
 
@@ -105,8 +110,8 @@ const zoom = (mx: number, my: number, deltaY: number): void => {
 
   const w = viewBox.w;
   const h = viewBox.h;
-  const dw = -w * deltaY;
-  const dh = -h * deltaY;
+  const dw = w * (1 - factor);
+  const dh = h * (1 - factor);
   const dx = (dw * mx) / svgEl.clientWidth;
   const dy = (dh * my) / svgEl.clientHeight;
   viewBox = {
@@ -119,6 +124,7 @@ const zoom = (mx: number, my: number, deltaY: number): void => {
   scale.value = svgEl.clientWidth / viewBox.w;
 
   updateMatrix(true);
+  return true;
 };
 
 const debonceZoom = debounce(() => {
@@ -162,12 +168,9 @@ const touchFrame = frameQueue((touch: { x: number; y: number; distance: number; 
   const deltaY = Math.sign(touchPointer.value.ds - touch.distance) * 0.025;
   touchPointer.value.ds = touch.distance;
 
-  if (deltaY !== 0) {
-    zooming.value = true;
-    zoom(touchPointer.value.x, touchPointer.value.y, deltaY);
-  } else {
-    updateMatrix(true);
-  }
+  if (deltaY !== 0) zooming.value = true;
+  // At the zoom limit the fingers still pan.
+  if (!zoom(touchPointer.value.x, touchPointer.value.y, deltaY)) updateMatrix(true);
 });
 
 const onTouchStart = (event: TouchEvent): void => {

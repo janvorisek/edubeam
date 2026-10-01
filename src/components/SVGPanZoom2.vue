@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Bounds } from '@/utils/fitBounds';
 import { centerSvgContent, fitSvgContent } from '@/utils/fitSvgContent';
+import { limitZoomFactor } from '@/utils/zoomLimits';
 import type { Padding, ViewBox } from '@/utils/fitBounds';
 import type { FitContentResult } from '@/utils/fitContent';
 import { nextTick, onMounted, onBeforeUnmount, ref } from 'vue';
@@ -74,14 +75,17 @@ const updateMatrix = (zooming = false): void => {
 const zoom = (mx: number, my: number, deltaY: number): void => {
   if (deltaY === 0 || !props.zoomEnabled) return;
 
+  const factor = limitZoomFactor(Math.max(viewBox.w, viewBox.h), 1 + deltaY, props.modelBounds());
+  if (Math.abs(factor - 1) < 1e-9) return;
+
   autoFit.value = false;
 
   const svgEl = svgRef.value as SVGElement;
 
   const w = viewBox.w;
   const h = viewBox.h;
-  const dw = -w * deltaY;
-  const dh = -h * deltaY;
+  const dw = w * (1 - factor);
+  const dh = h * (1 - factor);
   const dx = (dw * mx) / svgEl.clientWidth;
   const dy = (dh * my) / svgEl.clientHeight;
   viewBox = {

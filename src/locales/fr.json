@@ -443,7 +443,8 @@
   },
   "welcome": {
     "title": "Bienvenue dans <span class=\"edubeam\">edubeam</span> ! 🚀",
-    "description": "Modélisez poutres, portiques et treillis et voyez leurs efforts internes pendant que vous dessinez. Comment voulez-vous commencer ?",
+    "description": "Modélisez poutres, portiques et treillis et voyez leurs efforts internes pendant que vous dessinez.",
+    "start": "Comment voulez-vous commencer ?",
     "showAround": "Faire le tour",
     "showAroundHint": "Un aperçu rapide de la vue, des options d'affichage et de la barre du bas.",
     "drawFirstBeam": "Dessiner votre première poutre",

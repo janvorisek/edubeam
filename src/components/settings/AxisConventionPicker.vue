@@ -1,5 +1,10 @@
 <template>
-  <div class="axis-picker" role="radiogroup" :aria-label="$t('settings.axisConvention')">
+  <div
+    class="axis-picker"
+    :class="{ 'axis-picker--compact': compact }"
+    role="radiogroup"
+    :aria-label="$t('settings.axisConvention')"
+  >
     <v-card
       v-for="option in options"
       :key="option.value"
@@ -12,7 +17,13 @@
       @click="emit('update:modelValue', option.value)"
       @keydown="onRadioKeydown($event, values, option.value, (value) => emit('update:modelValue', value))"
     >
-      <v-icon v-if="modelValue === option.value" class="axis-picker__check" icon="mdi-check-circle" color="primary" />
+      <!-- Compact cards say which is chosen by their tint alone, like the cards beside them -->
+      <v-icon
+        v-if="!compact && modelValue === option.value"
+        class="axis-picker__check"
+        icon="mdi-check-circle"
+        color="primary"
+      />
 
       <svg class="axis-picker__drawing" viewBox="0 0 112 88" aria-hidden="true">
         <!-- Positive rotation, counter-clockwise in both systems -->
@@ -68,7 +79,8 @@ import { useI18n } from 'vue-i18n';
 import type { AxisConvention } from '@/utils/axisConvention';
 import { onRadioKeydown, radioTabIndex } from '@/utils/radioGroup';
 
-defineProps<{ modelValue: AxisConvention }>();
+/** `compact` draws the axes smaller, for a dialog where the picker is one choice among several. */
+defineProps<{ modelValue: AxisConvention; compact?: boolean }>();
 const emit = defineEmits<{ 'update:modelValue': [value: AxisConvention] }>();
 
 const { t } = useI18n();
@@ -166,6 +178,19 @@ const options = computed(() => [
   width: 100%;
   max-width: 140px;
   height: auto;
+}
+
+.axis-picker--compact .axis-picker__option {
+  padding: 8px 6px 6px;
+}
+
+.axis-picker--compact .axis-picker__option--active {
+  padding: 7px 5px 5px;
+  background: rgba(var(--v-theme-primary), 0.06);
+}
+
+.axis-picker--compact .axis-picker__drawing {
+  max-width: 84px;
 }
 
 .axis-picker__title {

@@ -443,7 +443,8 @@
   },
   "welcome": {
     "title": "<span class=\"edubeam\">edubeam</span>'e hoş geldiniz! 🚀",
-    "description": "Kiriş, çerçeve ve kafes sistemleri modelleyin, iç kuvvetleri çizerken görün. Nasıl başlamak istersiniz?",
+    "description": "Kiriş, çerçeve ve kafes sistemleri modelleyin, iç kuvvetleri çizerken görün.",
+    "start": "Nasıl başlamak istersiniz?",
     "showAround": "Beni gezdir",
     "showAroundHint": "Görüntüleyiciye, görünüm seçeneklerine ve alt çubuğa kısa bir bakış.",
     "drawFirstBeam": "İlk kirişinizi çizin",

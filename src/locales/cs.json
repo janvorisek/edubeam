@@ -443,7 +443,8 @@
   },
   "welcome": {
     "title": "Vítejte v <span class=\"edubeam\">edubeamu</span>! 🚀",
-    "description": "Modelujte nosníky, rámy a příhradové konstrukce a sledujte vnitřní síly už při kreslení. Jak chcete začít?",
+    "description": "Modelujte nosníky, rámy a příhradové konstrukce a sledujte vnitřní síly už při kreslení.",
+    "start": "Jak chcete začít?",
     "showAround": "Provést aplikací",
     "showAroundHint": "Krátká prohlídka prohlížeče, možností zobrazení a spodního panelu.",
     "drawFirstBeam": "Nakreslit první nosník",

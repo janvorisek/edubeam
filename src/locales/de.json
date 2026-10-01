@@ -443,7 +443,8 @@
   },
   "welcome": {
     "title": "Willkommen bei <span class=\"edubeam\">edubeam</span>! 🚀",
-    "description": "Modellieren Sie Balken, Rahmen und Fachwerke und sehen Sie die Schnittgrößen schon beim Zeichnen. Wie möchten Sie beginnen?",
+    "description": "Modellieren Sie Balken, Rahmen und Fachwerke und sehen Sie die Schnittgrößen schon beim Zeichnen.",
+    "start": "Wie möchten Sie beginnen?",
     "showAround": "Rundgang starten",
     "showAroundHint": "Ein kurzer Blick auf die Ansicht, die Anzeigeoptionen und die untere Leiste.",
     "drawFirstBeam": "Ersten Balken zeichnen",

@@ -18,12 +18,14 @@ const KIP_PER_FT = unitSize.force('kip') / FT;
 const starterFrames = {
   si: {
     span: 3,
+    dimensionOffset: 1,
     section: { a: 1, iy: 8.356e-5, h: 1 },
     material: { e: 210000e6, g: 210000e6 / (2 * (1 + 0.2)), alpha: 12.0e-6, d: 4000 },
     load: [10000, 30000],
   },
   us: {
     span: 10 * FT,
+    dimensionOffset: 3 * FT,
     // A large area keeps the members axially stiff, as in the SI frame
     section: { a: 1000 * IN ** 2, iy: 204 * IN ** 4, h: 12.2 * IN },
     material: {
@@ -80,6 +82,9 @@ export const buildStarterModel = (
       createDimensionPointFromNode(domain.nodes.get('1')!),
       createDimensionPointFromNode(domain.nodes.get('4')!),
     ],
-    distance: 1,
+    // In model units: a dimension without them is read as a legacy pixel offset and scaled by
+    // whatever the zoom is when the viewer first sees it
+    distance: frame.dimensionOffset,
+    distanceUnit: 'world',
   });
 };

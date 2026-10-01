@@ -443,7 +443,8 @@
   },
   "welcome": {
     "title": "Welcome to <span class=\"edubeam\">edubeam</span>! 🚀",
-    "description": "Model beams, frames and trusses and see their internal forces as you draw. How would you like to start?",
+    "description": "Model beams, frames and trusses and see their internal forces as you draw.",
+    "start": "How would you like to start?",
     "showAround": "Show me around",
     "showAroundHint": "A quick look at the viewer, the display options and the bottom bar.",
     "drawFirstBeam": "Draw your first beam",

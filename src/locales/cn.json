@@ -443,7 +443,8 @@
   },
   "welcome": {
     "title": "欢迎使用 <span class=\"edubeam\">edubeam</span>！ 🚀",
-    "description": "建模梁、框架和桁架，绘制的同时即可看到内力。您想如何开始？",
+    "description": "建模梁、框架和桁架，绘制的同时即可看到内力。",
+    "start": "您想如何开始？",
     "showAround": "带我看看",
     "showAroundHint": "快速了解视图、显示选项和底部面板。",
     "drawFirstBeam": "绘制第一根梁",

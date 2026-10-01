@@ -84,6 +84,12 @@ const isStarterModel = (fingerprint: string) => {
   return starterFingerprints.includes(fingerprint);
 };
 
+/** Whether a serialized model is one of the starter frames, as a first visit opens it. */
+export const isUntouchedStarterModel = (model: string | null) => {
+  const fingerprint = model === null ? null : modelFingerprint(model);
+  return fingerprint !== null && isStarterModel(fingerprint);
+};
+
 const createId = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 
 /**

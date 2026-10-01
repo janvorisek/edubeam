@@ -443,7 +443,8 @@
   },
   "welcome": {
     "title": "¡Bienvenido a <span class=\"edubeam\">edubeam</span>! 🚀",
-    "description": "Modela vigas, pórticos y celosías y ve sus esfuerzos internos mientras dibujas. ¿Cómo quieres empezar?",
+    "description": "Modela vigas, pórticos y celosías y ve sus esfuerzos internos mientras dibujas.",
+    "start": "¿Cómo quieres empezar?",
     "showAround": "Hacer un recorrido",
     "showAroundHint": "Un vistazo rápido al visor, las opciones de visualización y la barra inferior.",
     "drawFirstBeam": "Dibuja tu primera viga",

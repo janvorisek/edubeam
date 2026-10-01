@@ -443,7 +443,8 @@
   },
   "welcome": {
     "title": "Witamy w <span class=\"edubeam\">edubeam</span>! 🚀",
-    "description": "Modeluj belki, ramy i kratownice i obserwuj siły wewnętrzne już podczas rysowania. Jak chcesz zacząć?",
+    "description": "Modeluj belki, ramy i kratownice i obserwuj siły wewnętrzne już podczas rysowania.",
+    "start": "Jak chcesz zacząć?",
     "showAround": "Oprowadź mnie",
     "showAroundHint": "Krótki przegląd widoku, opcji wyświetlania i dolnego panelu.",
     "drawFirstBeam": "Narysuj pierwszą belkę",

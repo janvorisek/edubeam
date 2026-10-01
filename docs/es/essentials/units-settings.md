@@ -1,28 +1,31 @@
 # Unidades y ajustes
 
-Abre la configuración con el **botón ⚙ del visor → Más ajustes**, haciendo clic en la **etiqueta de unidades** de la esquina inferior derecha del visor o desde la pestaña **Configuración** sobre el visor. La configuración se guarda en el navegador y sobrevive a las recargas; **Restablecer configuración** devuelve los ajustes del visor a sus valores predeterminados (el idioma y las unidades se conservan).
+Abre la configuración con el **botón ⚙ del visor → Más ajustes**, haciendo clic en la **etiqueta de unidades** de la esquina inferior derecha del visor o desde la pestaña **Configuración** sobre el visor. La configuración se guarda en el navegador y sobrevive a las recargas; **Restablecer configuración** devuelve los ajustes del visor a sus valores predeterminados y las unidades a las de tu región (el idioma se conserva).
 
 ## Idioma y configuración regional
 
 **Idioma**: 11 idiomas de interfaz. También puedes abrir la aplicación con `?lang=<código>` (`en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`).
 
-**Unidades**: cada magnitud tiene su propia unidad. Entradas, tablas, tooltips y etiquetas de los diagramas usan la unidad elegida, y cambiarla convierte lo que se muestra (el modelo se guarda internamente en SI, así que cambiar de unidades no pierde nada).
+**Sistema de unidades**: *SI (métrico)* o *Estadounidense (imperial)* ajusta de una vez todas las unidades de abajo. Si después cambias cualquier unidad por separado, el sistema aparece como *Personalizado*. En la primera visita, EduBeam empieza en unidades estadounidenses si el navegador tiene la configuración regional de EE. UU. *y* el ordenador está en una zona horaria de EE. UU.; en cualquier otro caso, empieza en SI.
 
-| Magnitud | Opciones | Por defecto |
-| --- | --- | --- |
-| Longitud | m, cm, mm, in, ft | m |
-| Área | m², cm², mm², in², ft² | m² |
-| Segundo momento de área | m⁴, cm⁴, mm⁴, in⁴, ft⁴ | m⁴ |
-| Masa | kg, lb | kg |
-| Fuerza | N, kN, MN, lbf, tonf, kgf | kN |
-| Momento flector | Nmm, Nm, kNm, MNm, tonf·m, lbf·in, lbf·ft | kNm |
-| Presión (E, G) | Pa, kPa, MPa, GPa, psi, ksc | MPa |
+**Unidades**: cada magnitud tiene su propia unidad. Entradas, tablas, tooltips y etiquetas de los diagramas usan la unidad elegida, y cambiarla convierte lo que se muestra (el modelo se guarda internamente en SI, así que cambiar de unidades no pierde nada, y un enlace compartido abre el mismo modelo en cualquier unidad).
 
-Las cargas distribuidas usan *fuerza / longitud* en las unidades elegidas (kN/m por defecto). Los ángulos siempre están en radianes y las temperaturas siempre en °C/K.
+| Magnitud | Opciones | SI | Estadounidense |
+| --- | --- | --- | --- |
+| Longitud (geometría) | m, cm, mm, ft, in | m | ft |
+| Dimensiones de sección | m, cm, mm, ft, in | m | in |
+| Desplazamiento | m, cm, mm, ft, in | m | in |
+| Área | m², cm², mm², ft², in² | m² | in² |
+| Segundo momento de área | m⁴, cm⁴, mm⁴, ft⁴, in⁴ | m⁴ | in⁴ |
+| Masa | kg, lb | kg | lb |
+| Fuerza | N, kN, MN, kgf, Tonf, lbf, kip | kN | kip |
+| Momento flector | Nmm, Nm, kNm, MNm, Tonf·m, lbf·in, lbf·ft, kip·in, kip·ft | kNm | kip·ft |
+| Presión (E, G) | Pa, kPa, MPa, GPa, ksc, psi, ksi, psf, ksf | MPa | ksi |
+| Temperatura | °C, °F | °C | °F |
 
-::: tip Unidades imperiales
-Elige ft (o in), in², in⁴, lbf y psi según necesites: no hay un único interruptor «imperial», cada magnitud se ajusta por separado.
-:::
+Las cargas distribuidas usan *fuerza / longitud* en las unidades elegidas (kN/m en SI, kip/ft en unidades estadounidenses) y la densidad, *masa / longitud³*. El coeficiente de dilatación térmica sigue la unidad de temperatura (1/K o 1/°F). Las cargas de temperatura son *variaciones* de temperatura, así que 10 °C equivalen a 18 °F. Los giros siempre están en radianes.
+
+Tonf es la tonelada-fuerza métrica (1000 kgf), no la tonelada corta estadounidense. Las unidades estadounidenses se convierten con sus definiciones exactas (1 ft = 0,3048 m, 1 kip = 4448,2216 N).
 
 **Sistema de coordenadas**: *x a la derecha, z hacia abajo* (predeterminado) o *x a la derecha, y hacia arriba*. La opción y hacia arriba invierte el signo de los valores verticales y de los ángulos de apoyo y renombra los ejes en todas las entradas, tablas, descripciones y exportaciones; el modelo y los archivos guardados no cambian. Consulta [Eje y hacia arriba](/es/elements/conventions#y-up-axes).
 
@@ -33,7 +36,7 @@ Una **Vista previa** en la parte superior muestra un modelo pequeño que reaccio
 **Cuadrícula**
 - **Mostrar cuadrícula** (<kbd>G</kbd>): dibuja la cuadrícula y las reglas.
 - **Ajustar a la cuadrícula** (<kbd>S</kbd>): los nodos colocados o arrastrados con el ratón se ajustan al paso.
-- **Paso de ajuste a la cuadrícula**: separación en metros (0,1 por defecto).
+- **Paso de ajuste a la cuadrícula**: separación en la unidad de longitud (0,1 m por defecto, o 0,5 ft en unidades estadounidenses). Al cambiar entre unidades métricas y estadounidenses, un paso que sigue en su valor predeterminado pasa al predeterminado del otro sistema; un paso que hayas fijado tú se conserva. Las reglas también cuentan en la unidad de longitud; en pies, las reglas y la cruceta muestran pies y pulgadas (5′-6″), mientras que las entradas y las tablas mantienen pies decimales (5,5).
 
 **Etiquetas de resultados**
 - **Orientación de las etiquetas de resultados**: *Perpendicular al diagrama* (las etiquetas siguen el diagrama) o *Siempre horizontales*.

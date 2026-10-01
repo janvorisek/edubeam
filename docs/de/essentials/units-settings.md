@@ -1,28 +1,31 @@
 # Einheiten & Einstellungen
 
-Öffnen Sie die Einstellungen über die Schaltfläche **⚙ in der Ansicht → Weitere Einstellungen**, per Klick auf den **Einheiten-Chip** unten rechts in der Ansicht oder über den Reiter **Einstellungen** über der Ansicht. Einstellungen werden im Browser gespeichert und überstehen ein Neuladen; **Einstellungen zurücksetzen** stellt die Anzeigestandards wieder her (Sprache und Einheiten bleiben erhalten).
+Öffnen Sie die Einstellungen über die Schaltfläche **⚙ in der Ansicht → Weitere Einstellungen**, per Klick auf den **Einheiten-Chip** unten rechts in der Ansicht oder über den Reiter **Einstellungen** über der Ansicht. Einstellungen werden im Browser gespeichert und überstehen ein Neuladen; **Einstellungen zurücksetzen** stellt die Anzeigestandards und die Einheiten Ihrer Region wieder her (die Sprache bleibt erhalten).
 
 ## Sprache & Region
 
 **Sprache** – 11 Oberflächensprachen. Die App lässt sich auch mit `?lang=<code>` öffnen (`en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`).
 
-**Einheiten** – jede Größe hat ihre eigene Einheit. Eingaben, Tabellen, Tooltips und Diagrammbeschriftungen verwenden die gewählte Einheit, und ein Wechsel rechnet die Anzeige um (das Modell selbst wird intern in SI gespeichert, ein Hin- und Herschalten verliert also nichts).
+**Einheitensystem** – *SI (metrisch)* oder *US-amerikanisch (imperial)* stellt alle Einheiten unten in einem Schritt ein. Wird danach eine einzelne Einheit geändert, zeigt das System *Benutzerdefiniert* an. Beim ersten Besuch startet EduBeam in US-amerikanischen Einheiten, wenn der Browser auf ein US-Gebietsschema eingestellt ist *und* der Computer in einer US-Zeitzone steht, überall sonst in SI.
 
-| Größe | Auswahl | Standard |
-| --- | --- | --- |
-| Länge | m, cm, mm, in, ft | m |
-| Fläche | m², cm², mm², in², ft² | m² |
-| Flächenträgheitsmoment | m⁴, cm⁴, mm⁴, in⁴, ft⁴ | m⁴ |
-| Masse | kg, lb | kg |
-| Kraft | N, kN, MN, lbf, tonf, kgf | kN |
-| Biegemoment | Nmm, Nm, kNm, MNm, tonf·m, lbf·in, lbf·ft | kNm |
-| Spannung (E, G) | Pa, kPa, MPa, GPa, psi, ksc | MPa |
+**Einheiten** – jede Größe hat ihre eigene Einheit. Eingaben, Tabellen, Tooltips und Diagrammbeschriftungen verwenden die gewählte Einheit, und ein Wechsel rechnet die Anzeige um (das Modell selbst wird intern in SI gespeichert, ein Hin- und Herschalten verliert also nichts, und ein geteilter Link öffnet dasselbe Modell in beliebigen Einheiten).
 
-Streckenlasten verwenden *Kraft / Länge* in den gewählten Einheiten (Standard kN/m). Winkel sind immer in Radiant, Temperaturen immer in °C/K.
+| Größe | Auswahl | SI | US-amerikanisch |
+| --- | --- | --- | --- |
+| Länge (Geometrie) | m, cm, mm, ft, in | m | ft |
+| Querschnittsabmessungen | m, cm, mm, ft, in | m | in |
+| Verschiebung | m, cm, mm, ft, in | m | in |
+| Fläche | m², cm², mm², ft², in² | m² | in² |
+| Flächenträgheitsmoment | m⁴, cm⁴, mm⁴, ft⁴, in⁴ | m⁴ | in⁴ |
+| Masse | kg, lb | kg | lb |
+| Kraft | N, kN, MN, kgf, Tonf, lbf, kip | kN | kip |
+| Biegemoment | Nmm, Nm, kNm, MNm, Tonf·m, lbf·in, lbf·ft, kip·in, kip·ft | kNm | kip·ft |
+| Spannung (E, G) | Pa, kPa, MPa, GPa, ksc, psi, ksi, psf, ksf | MPa | ksi |
+| Temperatur | °C, °F | °C | °F |
 
-::: tip Angloamerikanische Einheiten
-Wählen Sie nach Bedarf ft (oder in), in², in⁴, lbf und psi – es gibt keinen einzelnen „Imperial“-Schalter, jede Größe wird einzeln eingestellt.
-:::
+Streckenlasten verwenden *Kraft / Länge* in den gewählten Einheiten (kN/m in SI, kip/ft in US-Einheiten), die Dichte *Masse / Länge³*. Der Wärmeausdehnungskoeffizient folgt der Temperatureinheit (1/K oder 1/°F). Temperaturlasten sind *Änderungen* der Temperatur, daher entsprechen 10 °C 18 °F. Verdrehungen sind immer in Radiant.
+
+Tonf ist die metrische Tonne-Kraft (1000 kgf), nicht die US-amerikanische Short Ton. Die US-Einheiten werden mit ihren exakten Definitionen umgerechnet (1 ft = 0,3048 m, 1 kip = 4448,2216 N).
 
 **Koordinatensystem** – *x nach rechts, z nach unten* (Standard) oder *x nach rechts, y nach oben*. Die Option y nach oben kehrt das Vorzeichen vertikaler Werte und Auflagerwinkel um und benennt die Achsen in allen Eingaben, Tabellen, Tooltips und Exporten um; Modell und gespeicherte Dateien ändern sich nicht. Siehe [Y-Achse nach oben](/de/elements/conventions#y-up-axes).
 
@@ -33,7 +36,7 @@ Eine **Vorschau** oben zeigt ein kleines Modell, das auf jede Änderung darunter
 **Raster**
 - **Raster anzeigen** (<kbd>G</kbd>) – zeichnet Raster und Lineale.
 - **Am Raster ausrichten** (<kbd>S</kbd>) – per Maus gesetzte oder gezogene Knoten rasten auf der Schrittweite ein.
-- **Raster-Schrittweite** – Abstand in Metern (Standard 0,1).
+- **Raster-Schrittweite** – Abstand in der Längeneinheit (Standard 0,1 m bzw. 0,5 ft in US-Einheiten). Beim Wechsel zwischen metrischen und US-Einheiten springt eine Schrittweite, die noch auf ihrem Standard steht, auf den Standard des anderen Systems; eine selbst gesetzte Schrittweite bleibt erhalten. Auch die Lineale zählen in der Längeneinheit; in Fuß zeigen Lineale und Fadenkreuz Fuß und Zoll (5′-6″), während Eingaben und Tabellen bei dezimalen Fuß bleiben (5,5).
 
 **Ergebnisbeschriftungen**
 - **Ausrichtung der Ergebnisbeschriftungen** – *Senkrecht zum Diagramm* (Beschriftungen folgen dem Verlauf) oder *Immer horizontal*.

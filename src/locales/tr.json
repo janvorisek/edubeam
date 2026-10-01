@@ -434,9 +434,6 @@
       }
     }
   },
-  "emptyModel": {
-    "message": "Model boş. Başlamak için bir kiriş çizin."
-  },
   "welcome": {
     "title": "<span class=\"edubeam\">edubeam</span>'e hoş geldiniz! 🚀",
     "description": "Kiriş, çerçeve ve kafes sistemleri modelleyin, iç kuvvetleri çizerken görün. Nasıl başlamak istersiniz?",

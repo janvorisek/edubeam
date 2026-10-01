@@ -434,9 +434,6 @@
       }
     }
   },
-  "emptyModel": {
-    "message": "Le modèle est vide. Dessinez une poutre pour commencer."
-  },
   "welcome": {
     "title": "Bienvenue dans <span class=\"edubeam\">edubeam</span> ! 🚀",
     "description": "Modélisez poutres, portiques et treillis et voyez leurs efforts internes pendant que vous dessinez. Comment voulez-vous commencer ?",

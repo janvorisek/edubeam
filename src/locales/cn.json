@@ -434,9 +434,6 @@
       }
     }
   },
-  "emptyModel": {
-    "message": "模型为空。绘制一根梁开始吧。"
-  },
   "welcome": {
     "title": "欢迎使用 <span class=\"edubeam\">edubeam</span>！ 🚀",
     "description": "建模梁、框架和桁架，绘制的同时即可看到内力。您想如何开始？",

@@ -434,9 +434,6 @@
       }
     }
   },
-  "emptyModel": {
-    "message": "The model is empty. Draw a beam to get started."
-  },
   "welcome": {
     "title": "Welcome to <span class=\"edubeam\">edubeam</span>! 🚀",
     "description": "Model beams, frames and trusses and see their internal forces as you draw. How would you like to start?",

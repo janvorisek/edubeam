@@ -8,7 +8,6 @@ import { useProjectStore } from '../store/project';
 import { ref, onMounted, computed, nextTick, watch, reactive, onUnmounted, provide } from 'vue';
 import { useViewerStore } from '../store/viewer';
 import { useAppStore } from '@/store/app';
-import { startFirstBeam } from '@/utils/startFirstBeam';
 
 import AddElementDialog from './dialogs/AddElement.vue';
 import AddNodeDialog from './dialogs/AddNode.vue';
@@ -321,10 +320,6 @@ const solve = () => {
     useProjectStore().solve();
   });
 };
-
-const isModelEmpty = computed(
-  () => projectStore.nodes.length === 0 && !appStore.firstBeamActive && !appStore.inViewerMode
-);
 
 /**
  * Why there are no results, if anything. A model still being drawn gets the next step in
@@ -2572,19 +2567,8 @@ defineExpose({ centerContent, fitContent });
 
     <div class="text-body-2 warning ga-1 d-flex flex-column pr-6">
       <div style="width: fit-content">
-        <!-- An empty canvas is where every model starts, not a mistake. -->
-        <v-alert v-if="isModelEmpty" icon="mdi-vector-polyline-plus" density="compact" type="info">
-          <template #text>
-            <div class="d-flex align-center flex-wrap">
-              {{ $t('emptyModel.message') }}
-              <v-btn variant="text" density="compact" size="small" @click="startFirstBeam">{{
-                $t('welcome.drawFirstBeam')
-              }}</v-btn>
-            </div>
-          </template>
-        </v-alert>
         <v-chip
-          v-else-if="solveBanner?.type === 'incomplete'"
+          v-if="solveBanner?.type === 'incomplete'"
           color="info"
           variant="flat"
           size="small"

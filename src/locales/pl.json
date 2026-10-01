@@ -434,9 +434,6 @@
       }
     }
   },
-  "emptyModel": {
-    "message": "Model jest pusty. Narysuj belkę, aby zacząć."
-  },
   "welcome": {
     "title": "Witamy w <span class=\"edubeam\">edubeam</span>! 🚀",
     "description": "Modeluj belki, ramy i kratownice i obserwuj siły wewnętrzne już podczas rysowania. Jak chcesz zacząć?",

@@ -434,9 +434,6 @@
       }
     }
   },
-  "emptyModel": {
-    "message": "El modelo está vacío. Dibuja una viga para empezar."
-  },
   "welcome": {
     "title": "¡Bienvenido a <span class=\"edubeam\">edubeam</span>! 🚀",
     "description": "Modela vigas, pórticos y celosías y ve sus esfuerzos internos mientras dibujas. ¿Cómo quieres empezar?",

@@ -434,9 +434,6 @@
       }
     }
   },
-  "emptyModel": {
-    "message": "O modelo está vazio. Desenhe uma viga para começar."
-  },
   "welcome": {
     "title": "Bem-vindo ao <span class=\"edubeam\">edubeam</span>! 🚀",
     "description": "Modele vigas, pórticos e treliças e veja os esforços internos enquanto desenha. Como você quer começar?",

@@ -434,9 +434,6 @@
       }
     }
   },
-  "emptyModel": {
-    "message": "Das Modell ist leer. Zeichnen Sie einen Balken, um zu beginnen."
-  },
   "welcome": {
     "title": "Willkommen bei <span class=\"edubeam\">edubeam</span>! 🚀",
     "description": "Modellieren Sie Balken, Rahmen und Fachwerke und sehen Sie die Schnittgrößen schon beim Zeichnen. Wie möchten Sie beginnen?",

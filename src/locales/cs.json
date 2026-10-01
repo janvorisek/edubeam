@@ -434,9 +434,6 @@
       }
     }
   },
-  "emptyModel": {
-    "message": "Model je prázdný. Začněte nakreslením nosníku."
-  },
   "welcome": {
     "title": "Vítejte v <span class=\"edubeam\">edubeamu</span>! 🚀",
     "description": "Modelujte nosníky, rámy a příhradové konstrukce a sledujte vnitřní síly už při kreslení. Jak chcete začít?",

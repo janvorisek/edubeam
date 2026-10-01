@@ -1,6 +1,35 @@
 {
   "releases": [
     {
+      "version": "1.3.1",
+      "title": "Americké jednotky",
+      "date": "1. října 2026",
+      "highlights": [
+        "Pracujte v amerických jednotkách: v nastavení přepnete mezi SI a americkými jednotkami.",
+        "Jednotky a souřadnicový systém si zvolíte na uvítací obrazovce.",
+        "Průřezy AISC a materiály ASTM v knihovnách.",
+        "Opravená tuhost průřezů IPE a HEA v knihovně průřezů."
+      ],
+      "media": [
+        {
+          "src": "/changelog/media/us-customary-units.png",
+          "alt": "Rám 10 ft v kip a kip·ft s pravítky a zaměřovacím křížem ve stopách a palcích",
+          "caption": "Rám ve stopách a palcích"
+        },
+        {
+          "src": "/changelog/media/welcome-setup.png",
+          "alt": "Uvítací okno s volbou soustavy jednotek a souřadnicového systému",
+          "caption": "Jednotky a osy na uvítací obrazovce"
+        },
+        {
+          "src": "/changelog/media/aisc-sections.png",
+          "alt": "Knihovna průřezů s průřezy AISC W v palcích",
+          "caption": "Průřezy AISC"
+        }
+      ],
+      "tag": "Nejnovější"
+    },
+    {
       "version": "1.3.0",
       "title": "Nedávné konstrukce, mechanismy a symboly podpor",
       "date": "29. září 2026",
@@ -28,8 +57,7 @@
           "alt": "Symboly podpor v dialogu uzlu",
           "caption": "Symboly podpor"
         }
-      ],
-      "tag": "Nejnovější"
+      ]
     },
     {
       "version": "1.2.0",

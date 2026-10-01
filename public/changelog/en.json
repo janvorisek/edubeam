@@ -1,6 +1,42 @@
 {
   "releases": [
     {
+      "version": "1.3.1",
+      "title": "US Customary Units",
+      "date": "October 1, 2026",
+      "highlights": [
+        "Work in US customary units: switch between SI and US customary in Settings.",
+        "Choose your units and coordinate system on the welcome screen.",
+        "AISC sections and ASTM materials in the libraries.",
+        "Corrected stiffness of the IPE and HEA sections in the section library."
+      ],
+      "media": [
+        {
+          "src": "/changelog/media/us-customary-units.png",
+          "alt": "A 10 ft frame in kip and kip·ft, with the rulers and crosshair in feet and inches",
+          "caption": "A frame in feet and inches"
+        },
+        {
+          "src": "/changelog/media/welcome-setup.png",
+          "alt": "Welcome dialog with unit system and coordinate system choices",
+          "caption": "Units and axes on the welcome screen"
+        },
+        {
+          "src": "/changelog/media/aisc-sections.png",
+          "alt": "Section library listing AISC W-shapes in square and quartic inches",
+          "caption": "AISC sections"
+        }
+      ],
+      "tag": "Latest",
+      "contributors": [
+        {
+          "name": "Jan Vorisek",
+          "commits": 20,
+          "url": "https://github.com/janvorisek"
+        }
+      ]
+    },
+    {
       "version": "1.3.0",
       "title": "Recent Structures, Mechanisms & Support Symbols",
       "date": "September 29, 2026",
@@ -29,7 +65,6 @@
           "caption": "Support symbols"
         }
       ],
-      "tag": "Latest",
       "contributors": [
         {
           "name": "Jan Vorisek",

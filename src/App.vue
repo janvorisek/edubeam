@@ -368,6 +368,24 @@ const app_commit = APP_COMMIT;
                 offset: [0, 10],
               },
             },
+            /*
+             * On by default, but not reliably: left to pick its own moment, flip has measured the
+             * wrong thing often enough - the bubble landing half off the window regardless of a
+             * step's own placement - that it is worth asking for explicitly, with room to work with.
+             */
+            {
+              name: 'flip',
+              options: {
+                padding: 8,
+              },
+            },
+            {
+              name: 'preventOverflow',
+              options: {
+                padding: 8,
+                altAxis: true,
+              },
+            },
           ],
         },
         scrollToStep: {

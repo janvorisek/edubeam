@@ -389,7 +389,8 @@
                 <span v-html="areaUnitHtml"></span
               ></span>
               <span
-                >I<sub>y</sub> = <b>{{ formatScientificNumber(appStore.convertAreaM2(properties.iy)) }}</b>
+                ><span v-html="bendingInertiaSymbol"></span> =
+                <b>{{ formatScientificNumber(appStore.convertAreaM2(bendingInertia)) }}</b>
                 <span v-html="inertiaUnitHtml"></span
               ></span>
               <span
@@ -404,6 +405,27 @@
               class="mt-2"
             >
               {{ $t('dialogs.polygonSection.invalidShape') }}
+            </v-alert>
+            <v-alert v-if="outOfPlaneNote" type="info" density="compact" variant="tonal" class="mt-2 text-body-2">
+              {{ $t('dialogs.polygonSection.outOfPlaneNote') }}
+              <v-radio-group
+                v-if="outOfPlaneChoice"
+                v-model="freeOutOfPlane"
+                density="compact"
+                hide-details
+                class="out-of-plane-choice mt-1"
+              >
+                <v-radio :value="false">
+                  <template #label>
+                    <span v-html="outOfPlaneOptionHtml(false)"></span>
+                  </template>
+                </v-radio>
+                <v-radio :value="true">
+                  <template #label>
+                    <span v-html="outOfPlaneOptionHtml(true)"></span>
+                  </template>
+                </v-radio>
+              </v-radio-group>
             </v-alert>
           </v-col>
         </v-row>
@@ -444,7 +466,11 @@ import {
   cloneShape,
   computeSectionProperties,
   createPresetShape,
+  hasSignificantIyz,
+  inPlaneBendingInertia,
   isShapeValid,
+  isStoredAsFreeOutOfPlane,
+  isSymmetricAboutFramePlane,
   sectionPresetDefaults,
   sectionPresetParams,
   type SectionContour,
@@ -452,6 +478,7 @@ import {
   type SectionPresetId,
   type SectionPresetParam,
   type SectionShape,
+  unrestrainedInPlaneInertia,
 } from '@/utils/sectionProperties';
 import '@/types/crossSection';
 
@@ -493,6 +520,10 @@ const initialShape = (): SectionShape => {
 const existing = props.label !== undefined ? projectStore.solver.domain.crossSections.get(props.label) : undefined;
 
 const shape = reactive<SectionShape>(initialShape());
+// Reopening a section saved with Iy,eff must keep that choice, or a plain Save would silently stiffen it.
+const freeOutOfPlane = ref(
+  existing?.shape !== undefined && isStoredAsFreeOutOfPlane(existing.iy, computeSectionProperties(shape))
+);
 const csLabel = ref(existing?.label ?? nextFreeLabel());
 const shear = ref(`${existing?.k ?? 0.833}`);
 const selected = ref<{ ci: number; vi: number } | null>(null);
@@ -768,6 +799,23 @@ const activeContourPath = computed(() => {
 const areaUnitHtml = computed(() => formatMeasureAsHTML(appStore.units.Area));
 const inertiaUnitHtml = computed(() => formatMeasureAsHTML(appStore.units.AreaM2));
 
+// A 2D frame is exact only for members that cannot deflect sideways or twist. A section that is not
+// symmetric about the frame plane would twist (its shear centre is off the load line), which we only
+// point out. When also Iyz ≠ 0, in-plane stiffness depends on sideways restraint, so the user chooses.
+const outOfPlaneNote = computed(() => shapeValid.value && !isSymmetricAboutFramePlane(shape));
+const outOfPlaneChoice = computed(() => outOfPlaneNote.value && hasSignificantIyz(properties.value));
+const bendingInertia = computed(() =>
+  inPlaneBendingInertia(properties.value, outOfPlaneChoice.value && freeOutOfPlane.value)
+);
+const inertiaSymbol = (free: boolean) => (free ? 'I<sub>y,eff</sub>' : 'I<sub>y</sub>');
+const bendingInertiaSymbol = computed(() => inertiaSymbol(outOfPlaneChoice.value && freeOutOfPlane.value));
+const outOfPlaneOptionHtml = (free: boolean) => {
+  const value = formatScientificNumber(appStore.convertAreaM2(inPlaneBendingInertia(properties.value, free)));
+  return t(free ? 'dialogs.polygonSection.outOfPlaneFree' : 'dialogs.polygonSection.outOfPlaneRestrained', {
+    inertia: `${inertiaSymbol(free)} = <b>${value}</b> ${inertiaUnitHtml.value}`,
+  });
+};
+
 const sectionPath = computed(() =>
   shape.contours
     .filter((c) => c.points.length >= 3)
@@ -810,6 +858,16 @@ const propertyRows = computed(() => {
       value: num(appStore.convertAreaM2(p.iyz)),
       units: inertiaU,
     },
+    ...(outOfPlaneChoice.value
+      ? [
+          {
+            key: 'iyEff',
+            title: 'I<sub>y,eff</sub> = (I<sub>y</sub>I<sub>z</sub> − I<sub>yz</sub><sup>2</sup>) / I<sub>z</sub>',
+            value: num(appStore.convertAreaM2(unrestrainedInPlaneInertia(p))),
+            units: inertiaU,
+          },
+        ]
+      : []),
     { key: 'i1', title: 'I<sub>1</sub>', value: num(appStore.convertAreaM2(p.i1)), units: inertiaU },
     { key: 'i2', title: 'I<sub>2</sub>', value: num(appStore.convertAreaM2(p.i2)), units: inertiaU },
     { key: 'alpha', title: t('crossSection.alpha') + ' α', value: formatCompactNumber(alphaDeg.value, 4), units: '°' },
@@ -862,7 +920,7 @@ const save = () => {
     }
 
     cs.a = p.a;
-    cs.iy = p.iy;
+    cs.iy = bendingInertia.value;
     cs.iz = p.iz;
     cs.dyz = p.iyz;
     cs.h = p.h;
@@ -1134,5 +1192,18 @@ watch(
 
 .coord-input:focus {
   background: rgba(var(--v-theme-primary), 0.08);
+}
+</style>
+
+<style>
+/* main.scss forces radio labels onto one line; the out-of-plane options carry a formula and must wrap. */
+.out-of-plane-choice .v-selection-control {
+  height: auto;
+  min-height: 28px;
+}
+
+.out-of-plane-choice .v-selection-control .v-label {
+  white-space: normal !important;
+  opacity: 1;
 }
 </style>

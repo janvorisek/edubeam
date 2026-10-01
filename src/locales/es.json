@@ -334,7 +334,10 @@
       "shape": "Forma",
       "noShape": "Sin forma poligonal",
       "centroidal": "baricéntrico",
-      "centroidalNote": "Todos los momentos de segundo orden se calculan respecto a ejes que pasan por el centro de gravedad; I₁, I₂ son los valores principales y α es el ángulo del eje y al eje 1."
+      "centroidalNote": "Todos los momentos de segundo orden se calculan respecto a ejes que pasan por el centro de gravedad; I₁, I₂ son los valores principales y α es el ángulo del eje y al eje 1.",
+      "outOfPlaneNote": "La sección no es simétrica respecto al plano del pórtico. Un análisis 2D solo es exacto si la barra está restringida frente al desplazamiento lateral (fuera de la pantalla) y al giro por torsión en toda su longitud, por ejemplo por una losa o por arriostramientos poco espaciados; los apoyos en los nudos no bastan. Una barra libre además se tuerce porque las cargas no actúan en su centro de cortante, y esa torsión no se incluye en las deformaciones.",
+      "outOfPlaneRestrained": "Restringida lateralmente y a torsión en toda su longitud: {inertia}",
+      "outOfPlaneFree": "Libre de desplazarse lateralmente (la torsión sigue sin incluirse): {inertia}"
     }
   },
   "tooltip": {

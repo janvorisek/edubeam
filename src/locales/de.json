@@ -334,7 +334,10 @@
       "shape": "Form",
       "noShape": "Keine polygonale Form",
       "centroidal": "Schwerachse",
-      "centroidalNote": "Alle Flächenträgheitsmomente beziehen sich auf Achsen durch den Schwerpunkt; I₁, I₂ sind die Hauptträgheitsmomente, α ist der Winkel von der y-Achse zur Achse 1."
+      "centroidalNote": "Alle Flächenträgheitsmomente beziehen sich auf Achsen durch den Schwerpunkt; I₁, I₂ sind die Hauptträgheitsmomente, α ist der Winkel von der y-Achse zur Achse 1.",
+      "outOfPlaneNote": "Der Querschnitt ist nicht symmetrisch zur Rahmenebene. Eine 2D-Berechnung ist nur dann exakt, wenn der Stab über seine ganze Länge gegen seitliches Ausweichen (aus dem Bildschirm) und Verdrehen gehalten ist, z. B. durch eine Platte oder eng liegende Aussteifungen; Lager in den Knoten allein genügen nicht. Ein freier Stab verdreht sich zusätzlich, weil die Lasten nicht im Schubmittelpunkt angreifen, und diese Verdrehung ist in den Verformungen nicht enthalten.",
+      "outOfPlaneRestrained": "Über die Länge seitlich und gegen Verdrehen gehalten: {inertia}",
+      "outOfPlaneFree": "Seitlich frei verformbar (Verdrehung weiterhin nicht berücksichtigt): {inertia}"
     }
   },
   "tooltip": {

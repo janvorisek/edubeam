@@ -334,7 +334,10 @@
       "shape": "Şekil",
       "noShape": "Çokgen kesit yok",
       "centroidal": "ağırlık merkezine göre",
-      "centroidalNote": "Tüm atalet momentleri ağırlık merkezinden geçen eksenlere göre hesaplanır; I₁ ve I₂ asal atalet momentleri, α ise y ekseninden 1 eksenine olan açıdır."
+      "centroidalNote": "Tüm atalet momentleri ağırlık merkezinden geçen eksenlere göre hesaplanır; I₁ ve I₂ asal atalet momentleri, α ise y ekseninden 1 eksenine olan açıdır.",
+      "outOfPlaneNote": "Kesit çerçeve düzlemine göre simetrik değildir. 2B analiz yalnızca eleman tüm boyu boyunca yanal yer değiştirmeye (ekranın dışına) ve burulmaya karşı tutulduğunda, örneğin bir döşeme veya sık aralıklı çaprazlarla, kesindir; yalnızca düğümlerdeki mesnetler yeterli değildir. Serbest bir eleman, yükler kayma merkezinden geçmediği için ayrıca burulur ve bu burulma yer değiştirmelere dahil edilmez.",
+      "outOfPlaneRestrained": "Tüm boyu boyunca yanal olarak ve burulmaya karşı tutulu: {inertia}",
+      "outOfPlaneFree": "Yanal yönde serbest (burulma yine dahil değil): {inertia}"
     }
   },
   "tooltip": {

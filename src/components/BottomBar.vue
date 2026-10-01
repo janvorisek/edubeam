@@ -1610,10 +1610,11 @@ const props = defineProps({
 });
 
 onMounted(() => {
+  // Enter or Escape in a field leaves it, which commits an inline edit. Only a field: blurring
+  // whatever has focus threw keyboard users off every button and card they pressed Enter on.
   window.addEventListener('keydown', (e) => {
-    if (e.key == 'Escape' || e.keyCode === 13) {
-      (document.activeElement as HTMLElement).blur();
-    }
+    const field = document.activeElement;
+    if ((e.key === 'Escape' || e.key === 'Enter') && field instanceof HTMLInputElement) field.blur();
   });
 });
 

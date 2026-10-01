@@ -8,7 +8,9 @@
       variant="outlined"
       role="radio"
       :aria-checked="modelValue === option.value"
+      :tabindex="radioTabIndex(values, option.value, modelValue)"
       @click="emit('update:modelValue', option.value)"
+      @keydown="onRadioKeydown($event, values, option.value, (value) => emit('update:modelValue', value))"
     >
       <v-icon v-if="modelValue === option.value" class="axis-picker__check" icon="mdi-check-circle" color="primary" />
 
@@ -64,11 +66,14 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { AxisConvention } from '@/utils/axisConvention';
+import { onRadioKeydown, radioTabIndex } from '@/utils/radioGroup';
 
 defineProps<{ modelValue: AxisConvention }>();
 const emit = defineEmits<{ 'update:modelValue': [value: AxisConvention] }>();
 
 const { t } = useI18n();
+
+const values: readonly AxisConvention[] = ['z-down', 'y-up'];
 
 type Point = [number, number];
 
@@ -144,6 +149,11 @@ const options = computed(() => [
   border-color: rgb(var(--v-theme-primary));
   border-width: 2px;
   padding: 11px 7px 9px;
+}
+
+.axis-picker__option:focus-visible {
+  outline: 2px solid rgb(var(--v-theme-primary));
+  outline-offset: 2px;
 }
 
 .axis-picker__check {

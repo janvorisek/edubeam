@@ -24,6 +24,9 @@ if (import.meta.env.PROD) {
   if (import.meta.env.VITE_GANALYTICS_TAG_ID) {
     const gtag = createGtag({
       tagId: import.meta.env.VITE_GANALYTICS_TAG_ID,
+      // vue-gtag 3 turns gtag's own page view off and leaves it to a router's page tracker, which
+      // this app has none of - without this, not a single view was ever recorded
+      config: { send_page_view: true },
     });
     app.use(gtag);
   }

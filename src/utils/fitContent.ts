@@ -42,6 +42,14 @@ export interface FitContentOptions extends Omit<FitOptions, 'padding'> {
    */
   reserve?: number | Partial<Padding>;
   /**
+   * Smallest short-to-long side ratio of the geometry box the zoom is computed for. A
+   * straight beam has no height, so the width alone would set the zoom and the beam
+   * would run edge to edge; widening the box around its centre leaves the room a
+   * structure of ordinary proportions would take. Boxes already this square are fitted
+   * exactly, and nothing moves on screen beyond the zoom.
+   */
+  minAspect?: number;
+  /**
    * Pure model-space bounds (typically node coordinates). Only used to seed the view
    * when nothing is on screen yet; the fit itself relies on measurements alone.
    */
@@ -112,6 +120,27 @@ const maxPadding = (a: Padding, b: Padding): Padding => ({
   bottom: Math.max(a.bottom, b.bottom),
   left: Math.max(a.left, b.left),
 });
+
+/** Grow the short side of `bounds` symmetrically until it is `minAspect` of the long side. */
+export const enforceMinAspect = (bounds: Bounds, minAspect: number | undefined): Bounds => {
+  if (minAspect === undefined || !(minAspect > 0)) return bounds;
+
+  const width = bounds.maxX - bounds.minX;
+  const height = bounds.maxY - bounds.minY;
+  const result = { ...bounds };
+
+  if (height < width * minAspect) {
+    const grow = (width * minAspect - height) / 2;
+    result.minY -= grow;
+    result.maxY += grow;
+  } else if (width < height * minAspect) {
+    const grow = (height * minAspect - width) / 2;
+    result.minX -= grow;
+    result.maxX += grow;
+  }
+
+  return result;
+};
 
 /** Two views that differ by less than a thousandth of a pixel anywhere on screen. */
 const sameView = (a: FitResult, b: FitResult) => {
@@ -264,7 +293,9 @@ export const fitRenderedContent = async (
 
   const maxIterations = options.maxIterations ?? DEFAULT_MAX_ITERATIONS;
   const tolerancePx = options.tolerancePx ?? DEFAULT_TOLERANCE_PX;
-  const modelBounds = isValidBounds(options.modelBounds) ? options.modelBounds : null;
+  const modelBounds = isValidBounds(options.modelBounds)
+    ? enforceMinAspect(options.modelBounds, options.minAspect)
+    : null;
   const fitOptions: FitOptions = {
     viewportWidth,
     viewportHeight,
@@ -312,6 +343,7 @@ export const fitRenderedContent = async (
 
     const current: Measurement = { bounds: rendered, scale: view.scale };
     const estimate = estimateExtents(current, previous);
+    const target = enforceMinAspect(estimate.bounds, options.minAspect);
 
     const check = checkFit(
       rendered,
@@ -320,7 +352,7 @@ export const fitRenderedContent = async (
       viewportHeight,
       options.padding,
       tolerancePx,
-      estimate.bounds,
+      target,
       reserve
     );
 
@@ -334,7 +366,7 @@ export const fitRenderedContent = async (
 
     previous = current;
 
-    const next = fitBounds(estimate.bounds, {
+    const next = fitBounds(target, {
       ...fitOptions,
       padding: addPadding(options.padding, maxPadding(estimate.overhang, reserve)),
     });

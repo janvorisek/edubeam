@@ -23,6 +23,8 @@ const props = withDefaults(
     fitIgnore?: string;
     /** Screen pixels guaranteed free around the geometry for the ignored decorations. */
     fitReserve?: number;
+    /** Smallest short-to-long side ratio of the geometry box the fit zooms for (0 = exact fit). */
+    fitMinAspect?: number;
     /**
      * After fitting, centre the view on everything actually drawn (ignored decorations
      * included), so a diagram hanging off one side does not leave the picture lopsided.
@@ -37,6 +39,7 @@ const props = withDefaults(
     modelBounds: () => null,
     fitIgnore: '',
     fitReserve: 0,
+    fitMinAspect: 0,
     centerAfterFit: false,
     touch: true,
   }
@@ -305,6 +308,7 @@ const fitContent = async (): Promise<boolean> => {
     {
       padding: window.innerWidth > 768 ? props.padding : props.mobilePadding,
       reserve: props.fitReserve,
+      minAspect: props.fitMinAspect,
       modelBounds: props.modelBounds?.() ?? null,
       viewBox,
     }

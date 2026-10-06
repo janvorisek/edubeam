@@ -2794,6 +2794,7 @@ defineExpose({ centerContent, fitContent });
       :model-bounds="modelBounds"
       fit-ignore="[data-fit-ignore]"
       :fit-reserve="fitReserve"
+      :fit-min-aspect="0.5"
       center-after-fit
       style="overflow: visible; z-index: 50; min-height: 0"
       @update="onUpdate"

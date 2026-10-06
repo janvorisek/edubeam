@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/janvorisek/edubeam">
+  <a href="https://run.edubeam.app">
     <img src="src/assets/logo.svg" alt="edubeam logo" width="90" height="90">
   </a>
 </p>
@@ -7,141 +7,143 @@
 <h1 align="center">edubeam</h1>
 
 <p align="center">
-  <strong>Free online structural analysis software for 2D beams, trusses, and frames.</strong><br/>
-  Real-time solver, Timoshenko beam formulation, sharable projects, and fully localized UI—perfect for classrooms, design studios, and hobby labs.
+  <strong>Sketch a beam, truss or frame in your browser and watch it bend.</strong><br/>
+  Free, open source and nothing to install. Made by civil engineers who teach.
 </p>
 
 <p align="center">
-  <a href="https://run.edubeam.app"><strong>Launch the web app</strong></a> ·
-  <a href="https://edubeam.app"><strong>Read the documentation</strong></a> ·
-  <a href="https://run.edubeam.app/?panel=examples"><strong>Explore example models</strong></a>
+  <a href="https://run.edubeam.app"><strong>Try it now</strong></a> ·
+  <a href="https://run.edubeam.app/?panel=examples"><strong>Browse examples</strong></a> ·
+  <a href="https://edubeam.app"><strong>Read the docs</strong></a>
 </p>
 
 <p align="center">
+  <img alt="Version" src="https://img.shields.io/github/package-json/v/janvorisek/edubeam?color=1a1f4e">
   <img alt="Contributors" src="https://img.shields.io/github/contributors/janvorisek/edubeam?color=0f9d58">
   <img alt="Issues" src="https://img.shields.io/github/issues/janvorisek/edubeam">
   <img alt="License" src="https://img.shields.io/github/license/janvorisek/edubeam">
 </p>
 
-## Table of contents
+<p align="center">
+  <a href="https://run.edubeam.app"><img src="docs/public/download.png" alt="A braced frame in edubeam with its deformed shape, bending moment diagram and reactions" width="820"></a>
+</p>
 
-- [Why edubeam?](#why-edubeam)
-- [Product highlights](#product-highlights)
-- [Launch & try it](#launch--try-it)
-- [Development setup](#development-setup)
-- [Available scripts](#available-scripts)
-- [Documentation & localization](#documentation--localization)
-- [Contributing](#contributing)
-- [License](#license)
+## Hi there 👋
 
-## Why edubeam?
+edubeam is a small structural analysis app for 2D beams, trusses and frames. Add a few nodes, connect them, put in supports and a load, and the deformed shape, reactions and N, V and M diagrams are already on screen. Change anything and the results update right away.
 
-Edubeam is a lightweight yet professional-grade **finite element environment for 2D structural analysis**. Created by civil engineers and educators, it helps you:
+It's built for learning. Students can try "what if?" as fast as they can click, and teachers can put a live model in front of a class without installing anything. Everything runs in your browser, and your models stay on your machine.
 
-- Teach structural mechanics, stiffness matrices, and load paths with a live, visual tool.
-- Validate early-stage beam or truss designs without installing heavy desktop suites.
-- Share reproducible models via URLs or JSON for peer review, grading, or collaboration.
+## What you can do with it
 
-Under the hood Edubeam combines a Timoshenko beam formulation, axial truss elements, static condensation, and temperature/load tools into a single browser experience. Everything runs client-side, which means **zero install, zero license servers, and instant updates**.
+- 🏗️ **Model beams and trusses together.** It uses Timoshenko beams (shear deformation included) and axial-only truss members. You can add end hinges, angled supports and prescribed displacements.
+- ⬇️ **Load it however you like.** Point loads, uniform and trapezoidal distributed loads, moments along an element, support settlement, and uniform or gradient temperature loads.
+- 📈 **See what's going on.** You get the deformed shape, N, V and M diagrams, reactions and hover tooltips, plus result tables you can copy or save as CSV.
+- 🔍 **Find out why a model won't solve.** Instead of a "singular matrix" message, edubeam circles the hinges or supports that let the structure move and animates the motion.
+- 🎓 **Look under the hood.** Open any element's stiffness matrix, check the degrees of freedom, and compare the numbers with the [hand calculations in the docs](https://edubeam.app/guide/verification).
+- ✏️ **Draw your own cross section.** Pick a preset or draw any polygon, holes included. edubeam calculates the area, moments of inertia, principal axes and the ellipse of inertia for you.
+- 🖼️ **Take it with you.** Export SVG for Word, LaTeX or Inkscape, PNG at any size, CSV for spreadsheets, or a readable `project.json`.
+- 🌍 **Use it your way.** Mouse, keyboard or touch. Choose your units and number format, z-down or y-up axes, and one of 12 languages.
 
-[![Live view of Edubeam](docs/public/download.png)](https://run.edubeam.app)
+<table>
+  <tr>
+    <td width="50%"><img src="public/changelog/media/hinge-mechanism.png" alt="Portal frame with two hinges circled and the dashed outline of its sway"></td>
+    <td width="50%"><img src="public/changelog/media/polygonal-section-editor.png" alt="Polygonal cross section editor showing an angle section with its principal axes and ellipse of inertia"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Too many hinges? edubeam shows you which ones.</sub></td>
+    <td align="center"><sub>Draw a section and get its properties.</sub></td>
+  </tr>
+</table>
 
-## Product highlights
+New to edubeam? The welcome screen offers **Draw your first beam**, a short guided task that walks you through drawing a beam, supporting it and loading it.
 
-- **Real-time structural analysis** – Every edit recalculates reactions, nodal displacements, and internal forces on the fly.
-- **Comprehensive loading** – Point loads, distributed loads, prescribed displacements, settlement, and thermal gradients.
-- **Rich visualization** – Overlay undeformed/deformed shapes, N-V-M diagrams, support reactions, and coordinate HUD to spot issues quickly.
-- **Timoshenko beams + truss elements** – Mix frame members and axial-only elements in the same model.
-- **Education-ready** – Show stiffness matrices, DOFs, and solver details to connect theory with practice.
-- **Localization & accessibility** – Full UI translations (EN, CS, DE, ES, FR, ZH) plus keyboard-friendly navigation.
-- **Open source & extensible** – Vue 3 + Vite + TypeScript front-end, Pinia state management, and a dedicated documentation site built with VitePress.
+## For teachers
 
-## Launch & try it
+edubeam fits easily into a lecture, a tutorial or homework.
 
-1. **Open the live app** – [https://run.edubeam.app](https://run.edubeam.app)
-2. **Load an example** – use the _Examples_ sidebar or jump straight to the [gallery](https://run.edubeam.app/?panel=examples).
-3. **Inspect the guides** – the [Introduction](https://edubeam.app/guide/introduction) and [User Interface](https://edubeam.app/guide/user-interface) pages mirror the workflow inside the app.
-4. **Share your work** – use _Share model_ to generate a link or download a JSON snapshot for grading and archives.
+- **Share a model as a link.** _Share model_ puts the whole model into the URL. There are no accounts and no uploads, and every student who opens the link gets their own copy to play with.
+- **Embed it in your notes.** Add `viewer=1` to a link and you get a clean, zoomable, read-only model for an `<iframe>`:
+  ```html
+  <iframe src="https://run.edubeam.app/?viewer=1&model=…" width="100%" height="400"></iframe>
+  ```
+- **Choose the language for your class.** Add `lang=cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `tr`, `uk` or `ru` to the link.
+- **Collect assignments as files.** <kbd>Ctrl</kbd>+<kbd>S</kbd> saves a plain-JSON `project.json`, so you can generate or check models with a script. See the [file format](https://edubeam.app/essentials/import-export).
+- **Start from an example.** The [gallery](https://run.edubeam.app/?panel=examples) has continuous and indeterminate beams, a cantilever, a Pratt truss, a portal frame and a temperature load, all ready to open.
 
-Edubeam is optimized for desktops/laptops but also runs on tablets with mouse or pencil input.
+You don't need to worry about losing work: edubeam saves to your browser as you go, and _Recent structures_ brings back the last ten models you cleared.
 
 ### Need 3D?
 
-Edubeam stays focused on 2D. For 3D frames, slabs and shells, have a look at [Elementarium](https://elementarium.app/?utm_source=edubeam&utm_medium=link&utm_campaign=readme).
+edubeam is happy staying in 2D. When you need 3D frames, slabs and shells, try our sibling app [Elementarium](https://elementarium.app/?utm_source=edubeam&utm_medium=link&utm_campaign=readme).
 
 <a href="https://elementarium.app/?utm_source=edubeam&utm_medium=banner&utm_campaign=leaderboard&utm_content=readme">
   <img src="docs/public/elementarium/leaderboard@2x.png" alt="Elementarium: take your frames into 3D. Slabs, shells and steel checks in your browser." width="728">
 </a>
 
-## Development setup
+## Hacking on edubeam
 
-Requirements:
-
-- Node.js **20.x**
-- npm, pnpm, or yarn (examples below use `npm`)
+Want to run it yourself? You need Node.js 20 or newer. CI uses 22.
 
 ```bash
 git clone https://github.com/janvorisek/edubeam.git
 cd edubeam
 npm install
-npm run dev
+npm run dev          # http://localhost:5173
 ```
 
-The Vite dev server starts at `http://localhost:5173` with hot-module reloading.
+That's all you need. Here are the other scripts:
 
-### Production build
+| Command                                | What it does                                      |
+| -------------------------------------- | ------------------------------------------------- |
+| `npm run dev`                          | Start the dev server with hot reload              |
+| `npm run build`                        | Build the app into `dist/`                        |
+| `npm test` / `npm run test:run`        | Run the tests in watch mode / once                |
+| `npm run lint` / `npm run lint:fix`    | Check `src/` with ESLint / fix what it can        |
+| `npm run docs:dev`                     | Preview the documentation site                    |
+| `npm run docs:build`                   | Build the documentation site                      |
+| `npm run contributors`                 | See who has contributed since the last release    |
 
-```bash
-npm run build
+### Where things live
+
+```
+src/
+  views/Editor.vue      the editor: canvas, tables and panels
+  components/           SVG viewer, context menus, dialogs, settings
+  store/                Pinia stores (project, viewer, layout, clipboard, recent structures)
+  CommandManager.ts     undo/redo; every model edit goes through here
+  locales/              UI translations, one JSON file per language
+  tests/                Vitest specs
+docs/                   VitePress documentation, one folder per language
+public/changelog/       in-app release notes and their screenshots
 ```
 
-Assets are emitted to `dist/` and can be deployed to any static host. The main branch is continuously deployed to [run.edubeam.app](https://run.edubeam.app).
+The finite element solver has its own package: [ts-fem](https://github.com/janvorisek/ts-fem).
 
-### Serving from a subdirectory
+### Building and hosting
 
-The build assumes the app has a host to itself. To serve it from a path, say
-`https://example.org/edubeam/`, say so at build time:
+`dist/` is a plain static site, so you can host it anywhere. These optional environment variables can go in `.env`:
 
-```bash
-VITE_BASE=/edubeam/ npm run build
-```
+| Variable                  | What it's for                                                             |
+| ------------------------- | ------------------------------------------------------------------------- |
+| `VITE_BASE`               | Serve the app from a subpath, e.g. `/edubeam/`. Keep the trailing slash.  |
+| `VITE_GANALYTICS_TAG_ID`  | Google Analytics tag. Leave it out and analytics stays off.               |
+| `SENTRY_AUTH_TOKEN`       | Upload source maps to Sentry during the build.                            |
 
-Without it every absolute URL points at the root of the host rather than at the app: the assets,
-the manifest, the service worker and the scope it registers with. The app may still load, but an
-installed copy opens the host's root instead of the app, and the update prompt cannot find the
-worker it is meant to replace. The trailing slash matters.
+If you host edubeam in a subfolder, set `VITE_BASE`. Otherwise the assets, the PWA manifest and the service worker all look for files at the root of your domain. The page may still load, but installed copies open the wrong page and update prompts stop working.
 
-## Available scripts
+Our own copy deploys automatically: `main` goes to [run.edubeam.app](https://run.edubeam.app), and `dev` goes to a preview on Cloudflare Pages.
 
-| Command                             | Description                                      |
-| ----------------------------------- | ------------------------------------------------ |
-| `npm run dev`                       | Start the application in development mode (Vite) |
-| `npm run build`                     | Produce the production bundle                    |
-| `npm run test` / `npm run test:run` | Execute unit tests via Vitest                    |
-| `npm run lint`                      | Run ESLint with auto-fix                         |
-| `npm run contributors`              | List who has committed since the last release    |
-| `npm run docs:dev`                  | Launch the VitePress docs locally                |
-| `npm run docs:build`                | Build the static documentation site              |
+## Come help out 🤝
 
-## Documentation & localization
+You don't have to write code to help. Bug reports, example models, docs fixes and translations are all very welcome, and so are messages telling us how you use edubeam in your classes.
 
-- **Docs hub:** [https://edubeam.app](https://edubeam.app) (built with VitePress).
-- **Guides:** introduction, UI tour, essentials, and theory manuals (Timoshenko beam, truss element).
-- **Languages:** English plus localized content for Czech, German, Spanish, French, and Chinese, matching the in-app translations.
-- **FAQ & examples:** curated to help educators drop Edubeam into lesson plans immediately.
+- **Found something odd?** [Open an issue](https://github.com/janvorisek/edubeam/issues). A screenshot or a share link helps a lot.
+- **Want to send code?** Branch from `dev`, run `npm run test:run` and `npm run lint`, then open a pull request against `dev`. Small, focused PRs are the easiest to review, and before/after screenshots help if you've changed the UI.
+- **Speak another language?** The app strings are in [`src/locales/`](src/locales). [`en.json`](src/locales/en.json) is the source, and the docs are in [`docs/<lang>/`](docs). You can fix a translation or start a new language.
 
-If you are improving docs, run `npm run docs:dev` for live previews.
-
-## Contributing
-
-We welcome bug reports, feature ideas, documentation edits, and localisation help. To get started:
-
-1. Check existing [issues](https://github.com/janvorisek/edubeam/issues) or open a new one (bug/feature templates available).
-2. Fork the repo and create a feature branch (`git checkout -b feature/your-topic`).
-3. Commit with clear messages, run tests/linting, and submit a pull request.
-
-Please keep PRs scope-focused (one fix/feature per PR) and include screenshots when changing UI flows.
+edubeam currently speaks English, Czech, German, Spanish, French, Polish, Portuguese, Russian, Ukrainian, Chinese, Thai and Turkish, and the docs are in Hindi too. Thanks to everyone who helped get it there! ❤️
 
 ## License
 
-Distributed under the **GPL-3.0** license. See [`LICENSE`](LICENSE) for the full text.
+edubeam is free software under the [GPL-3.0](LICENSE) license.

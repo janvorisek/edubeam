@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
 import { useProjectStore } from '../store/project';
+import { useAppStore } from '@/store/app';
 import SectionThumbnail from './SectionThumbnail.vue';
 import '@/types/crossSection';
-import { watch } from 'vue';
 
 const projectStore = useProjectStore();
+const appStore = useAppStore();
+
+// ts-fem nodes are 3D; the 2D model lives in the x-z plane
+const coord = (label: string, index: 0 | 2) => projectStore.solver.domain.nodes.get(label).coords[index];
 </script>
 
 <template>
@@ -15,15 +18,15 @@ const projectStore = useProjectStore();
         <thead>
           <tr>
             <th>{{ $t('common.node') }}</th>
-            <th>x</th>
-            <th>z</th>
+            <th>x [{{ appStore.units.Length }}]</th>
+            <th>{{ appStore.axes.v }} [{{ appStore.units.Length }}]</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="label in projectStore.selection2.nodes" :key="label">
             <td>{{ label }}</td>
-            <td>{{ projectStore.solver.domain.nodes.get(label).coords[0].toFixed(2) }}</td>
-            <td>{{ projectStore.solver.domain.nodes.get(label).coords[1].toFixed(2) }}</td>
+            <td>{{ appStore.convertLength(coord(label, 0)).toFixed(2) }}</td>
+            <td>{{ appStore.vertical(appStore.convertLength(coord(label, 2))).toFixed(2) }}</td>
           </tr>
         </tbody>
       </v-table>

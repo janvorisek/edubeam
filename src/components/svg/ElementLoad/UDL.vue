@@ -266,7 +266,7 @@ const stackedTransform = computed(() => {
         :font-size="fontSize / scale"
         font-weight="normal"
         text-anchor="end"
-        dominant-baseline="middle"
+        dy="0.35em"
         :transform="eloadLabels[0]"
       >
         {{ numberFormat.format(Math.abs(convertForceDistance(eload.values[0]))) }}
@@ -276,7 +276,7 @@ const stackedTransform = computed(() => {
         :font-size="fontSize / scale"
         font-weight="normal"
         text-anchor="end"
-        dominant-baseline="middle"
+        dy="0.35em"
         :transform="eloadLabels[1]"
       >
         {{ numberFormat.format(Math.abs(convertForceDistance(eload.values[1]))) }}

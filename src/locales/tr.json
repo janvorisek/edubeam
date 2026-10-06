@@ -1,0 +1,722 @@
+{
+  "tabView": {
+    "viewer": "Görüntüleyici",
+    "settings": "Ayarlar",
+    "results": "Sonuçlar"
+  },
+  "common": {
+    "label": "Etiket",
+    "node": "Düğüm",
+    "element": "Eleman",
+    "crossSection": "Kesit",
+    "material": "Malzeme",
+    "settings": "Ayarlar",
+    "actions": "İşlemler",
+    "coords": "Koordinatlar",
+    "type": "Tür",
+    "nodes": "Düğümler",
+    "endHinges": "Uç mafsalları",
+    "massMatrix": "Kütle matrisi",
+    "target": "Hedef",
+    "components": "Bileşenler",
+    "loadCase": "Yükleme durumu",
+    "loads": "Yükler",
+    "clearMesh": "Modeli temizle",
+    "shareModel": "Modeli paylaş",
+    "documentation": "Dokümantasyon",
+    "addUsingDialog": "Pencereden ekle",
+    "addUsingMouse": "Fareyle ekle",
+    "edit": "Düzenle",
+    "copy": "Kopyala",
+    "delete": "Sil",
+    "stiffnessMatrix": "Rijitlik matrisi",
+    "normalForce": "Normal kuvvet",
+    "shearForce": "Kesme kuvveti",
+    "bendingMoment": "Eğilme momenti",
+    "deformedShape": "Deforme şekil",
+    "reactions": "Mesnet tepkileri",
+    "elements": "Elemanlar",
+    "confirm": "Onayla",
+    "saveProject": "Projeyi kaydet",
+    "openProject": "Proje aç",
+    "lcs": "Yerel koordinat sistemi",
+    "paste": "Yapıştır",
+    "addNew": "Yeni ekle",
+    "whatisnew": "Yenilikler",
+    "reverse_orientation": "Ölçü çizgisini ters çevir",
+    "undo": "Geri al",
+    "redo": "Yinele",
+    "ok": "Tamam"
+  },
+  "nodes": {
+    "addNode": "Düğüm ekle",
+    "editNode": "Düğümü düzenle",
+    "defineSupports": "Düğüm mesnetleri",
+    "lcsAngle": "Düğüm yerel eksen açısı"
+  },
+  "supports": {
+    "free": "Serbest",
+    "pin": "Mafsal",
+    "roller": "Kayıcı mesnet",
+    "verticalRoller": "Düşey kayıcı mesnet",
+    "slider": "Kayar ankastre",
+    "verticalSlider": "Düşey kayar ankastre",
+    "rotation": "Yalnız dönme tutulu",
+    "fixed": "Ankastre",
+    "custom": "Özel"
+  },
+  "elements": {
+    "addElement": "Eleman ekle",
+    "editElement": "Elemanı düzenle",
+    "swapNodeOrder": "Düğümleri yer değiştir",
+    "hingeStart": "Başlangıç mafsalı",
+    "hingeEnd": "Bitiş mafsalı",
+    "hinge": "Mafsal",
+    "from": "Başlangıç",
+    "to": "Bitiş"
+  },
+  "loads": {
+    "addNodalLoad": "Düğüm yükü ekle",
+    "addElementLoad": "Eleman yükü ekle",
+    "addLoad": "Yük ekle",
+    "nodalLoad": "Düğüm yükü",
+    "elementLoad": "Eleman yükü",
+    "prescribedDisplacement": "Öngörülen yer değiştirme",
+    "addPrescribedDisplacement": "Yer değiştirme öngör",
+    "UDL": "Yayılı yük",
+    "forceMoment": "Kuvvet/Moment",
+    "editLoad": "Yükü düzenle",
+    "loadPositionOnBeam": "Yükün başlangıç düğümüne uzaklığı",
+    "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Alt ve üst liflerin sıcaklık değişimleri farkı",
+    "temperatureBending": "ΔT<sub>c</sub> ... Eksendeki sıcaklık değişimi",
+    "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
+    "temperatureDeltaTs": "ΔT<sub>c</sub>",
+    "temperatureDeltaTsNoHTML": "ΔTc",
+    "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
+  },
+  "tabs": {
+    "nodes": "Düğümler",
+    "elements": "Elemanlar",
+    "loads": "Yükler",
+    "materials": "Malzemeler",
+    "crossSections": "Kesitler",
+    "results": "Sonuçlar"
+  },
+  "crossSection": {
+    "area": "Alan",
+    "h": "Yükseklik",
+    "iy": "Iy",
+    "k": "Kayma düzeltme katsayısı",
+    "iz": "Iz",
+    "b": "Genişlik",
+    "centroid": "Ağırlık merkezi",
+    "alpha": "Asal eksen açısı",
+    "radiusOfGyration": "Atalet yarıçapı",
+    "polygonal": "Çokgen kesit",
+    "derivedFromShape": "Çokgen kesitten hesaplanır – değiştirmek için kesiti düzenleyin"
+  },
+  "material": {
+    "e": "E",
+    "g": "G",
+    "density": "Yoğunluk",
+    "alphaT": "α_T"
+  },
+  "settings": {
+    "results_scale": "Sonuç ölçeği",
+    "grid_snap_step": "Izgara adımı",
+    "snap_to_grid": "Izgaraya yasla",
+    "show_crosshair": "Artı imlecini göster",
+    "model_checks": "Model denetimi",
+    "show_mechanisms": "Kararsız yapının nasıl hareket edebileceğini göster",
+    "animate_mechanisms": "Hareketi canlandır",
+    "number_format": "Sayı biçimi",
+    "number_format_description": "Sonuç değerlerinin nasıl yazılacağı; ondalık ayırıcı dile göre belirlenir.",
+    "number_format_auto": "Otomatik",
+    "number_format_scientific": "Bilimsel (1,5 · 10⁴)",
+    "number_format_engineering": "Mühendislik (15 · 10³)",
+    "language": "Dil",
+    "language_and_locale": "Dil ve bölge",
+    "show_normal_force": "Normal kuvveti göster",
+    "show_shear_force": "Kesme kuvvetini göster",
+    "show_bending_moment": "Eğilme momentini göster",
+    "show_deformed_shape": "Deforme şekli göster",
+    "show_loads": "Yükleri göster",
+    "units": {
+      "units": "Birimler",
+      "length": "Uzunluk",
+      "mass": "Kütle",
+      "force": "Kuvvet",
+      "moment": "Eğilme momenti",
+      "pressure": "Basınç",
+      "area": "Alan",
+      "areaM2": "Atalet momenti",
+      "system": "Birim sistemi",
+      "systemSI": "SI (metrik)",
+      "systemUS": "ABD (emperyal)",
+      "systemCustom": "Özel",
+      "temperature": "Sıcaklık",
+      "sectionLength": "Kesit boyutları",
+      "displacement": "Yer değiştirme"
+    },
+    "grid": "Izgara",
+    "show_grid": "Izgarayı göster",
+    "mouse": {
+      "mouse": "Fare",
+      "pan_button": "Kaydırma",
+      "wheel": "Fare tekerleği",
+      "right_button": "Sağ tuş",
+      "all": "Fare tekerleği veya sağ tuş"
+    },
+    "colors": {
+      "colors": "Renkler"
+    },
+    "results": {
+      "results": "Sonuçlar"
+    },
+    "viewer_settings": "Görüntüleyici ayarları",
+    "controls_and_shortcuts": "Kontroller ve kısayollar",
+    "language_and_locale_subtitle": "Dil, bölge ve birim ayarları",
+    "viewer_settings_subtitle": "Ölçek, renkler, ızgara ve daha fazlası",
+    "controls_and_shortcuts_subtitle": "Klavye ve fare ayarları",
+    "viewer_preview": "Görüntüleyici önizlemesi",
+    "language_description": "Arayüz dilini seçin.",
+    "units_description": "Kullanmak istediğiniz ölçü birimlerini seçin.",
+    "axisConvention": "Koordinat sistemi",
+    "axisConvention_description": "Girdilerde ve sonuçlarda düşey eksenin yönü. Model ve kaydedilen dosyalar bundan etkilenmez.",
+    "axisConvention_zDown": "x sağa, z aşağı",
+    "axisConvention_yUp": "x sağa, y yukarı",
+    "reset_settings": "Ayarları sıfırla",
+    "sizes": {
+      "sizes": "Boyutlar",
+      "supportSize": "Mesnet boyutu"
+    },
+    "font_size": "Yazı boyutu",
+    "result_label_orientation": "Sonuç etiketlerinin yönü",
+    "result_label_orientation_axis": "Diyagrama dik",
+    "result_label_orientation_horizontal": "Her zaman yatay",
+    "result_labels": "Sonuç etiketleri"
+  },
+  "sideSettings": {
+    "showDeformedShape": "Deforme şekil",
+    "supports": "Mesnetler",
+    "loads": "Yükler",
+    "nodeLabels": "Düğüm etiketleri",
+    "elementLabels": "Eleman etiketleri",
+    "more_settings": "Diğer ayarlar",
+    "showReactions": "Mesnet tepkileri"
+  },
+  "viewer": {
+    "toggleGrid": "Izgarayı aç/kapat (G)",
+    "toggleSnap": "Izgaraya yaslamayı aç/kapat (S)",
+    "toggleCrosshair": "Artı imlecini aç/kapat",
+    "boxSelect": "Dikdörtgenle seç",
+    "centerContent": "Modeli ortala",
+    "fitContent": "Modeli ekrana sığdır",
+    "holdCtrl": "Fareyle eklemek için Ctrl tuşunu basılı tutun"
+  },
+  "dofs": {
+    "bcs": "Tutulu serbestlik dereceleri"
+  },
+  "results": {
+    "results": "Sonuçlar",
+    "nodal_results": "Düğüm sonuçları",
+    "element_results": "Eleman sonuçları",
+    "end_forces": "Çubuk uç kuvvetleri (yerel koordinat sisteminde)",
+    "exportCsv": "CSV olarak dışa aktar",
+    "exportHint": "İki sonuç tablosunu da gösterilen birimlerle, elektronik tabloya hazır biçimde indirin.",
+    "copied": "Sonuçlar panoya kopyalandı",
+    "copyFailed": "Sonuçlar panoya kopyalanamadı."
+  },
+  "materials": {
+    "addMaterial": "Malzeme ekle",
+    "material_library": "Malzeme kütüphanesi",
+    "section_library": "Kesit kütüphanesi"
+  },
+  "crossSections": {
+    "addCrossSection": "Kesit ekle",
+    "addPolygonal": "Çokgen kesit"
+  },
+  "dialogs": {
+    "addNode": {
+      "addNewNode": "Yeni düğüm ekle",
+      "coordinate_x": "X koordinatı",
+      "coordinate_z": "{v} koordinatı",
+      "addNode": "Düğüm ekle"
+    },
+    "common": {
+      "cancel": "İptal",
+      "orChooseFromLibrary": "Veya kütüphaneden seçin"
+    },
+    "addElement": {
+      "fromNodeId": "Başlangıç düğümü",
+      "toNodeId": "Bitiş düğümü",
+      "addElement": "Eleman ekle",
+      "addNewElement": "Yeni eleman ekle",
+      "material": "Malzeme",
+      "crossSection": "Kesit"
+    },
+    "addNodalLoad": {
+      "addNewNodalLoad": "Yeni düğüm yükü ekle",
+      "addNodalLoad": "Düğüm yükü ekle"
+    },
+    "addElementLoad": {
+      "addNewElementLoad": "Yeni eleman yükü ekle",
+      "addElementLoad": "Eleman yükü ekle"
+    },
+    "addMaterial": {
+      "addNewMaterial": "Yeni malzeme ekle",
+      "addMaterial": "Malzeme ekle",
+      "E": "E - Elastisite modülü (Young modülü)",
+      "G": "G - Kayma modülü",
+      "density": "ρ - Yoğunluk",
+      "alphaT": "α - Isıl genleşme katsayısı"
+    },
+    "addCrossSection": {
+      "addNewCrossSection": "Yeni kesit ekle",
+      "addCrossSection": "Kesit ekle",
+      "orDefinePolygon": "Veya çokgen bir kesit tanımlayın"
+    },
+    "editNodalLoad": {
+      "editNodalLoad": "Düğüm yükünü düzenle"
+    },
+    "editElementLoad": {
+      "editElementLoad": "Eleman yükünü düzenle"
+    },
+    "update": {
+      "title": "Güncelleme mevcut",
+      "update": "Güncelle",
+      "text1": "Uygulamanın sıfırlanmasını gerektiren bir güncelleme yayımlıyoruz. Bu, kaydedilmemiş çalışmanızın kaybolacağı anlamına gelir.",
+      "text2": "Mevcut çalışmanızı korumak istiyorsanız güncellemeyi iptal edebilirsiniz."
+    },
+    "editNode": {
+      "editNode": "Düğümü düzenle"
+    },
+    "changelog": {
+      "title": "Yenilikler",
+      "description": "Yeni özellikler, iyileştirmeler ve üzerinde çalıştığımız şeylerden ilk bakış.",
+      "contributors": "Bu sürüme katkıda bulunanlar: {names}",
+      "comingSoon": "Yakında"
+    },
+    "polygonSection": {
+      "title": "Yeni çokgen kesit",
+      "editTitle": "Çokgen kesiti düzenle",
+      "preset": "Hazır şekil",
+      "apply": "Uygula",
+      "snapStep": "Yaslama adımı",
+      "centerAtCentroid": "Ağırlık merkezine ortala",
+      "hint": "Köşeleri taşımak için sürükleyin, köşe eklemek için bir kenarın orta noktasına tıklayın, köşeyi silmek için üzerine çift tıklayın.",
+      "outline": "Dış kontur",
+      "hole": "Boşluk",
+      "addHole": "Boşluk ekle",
+      "addVertex": "Köşe ekle",
+      "removeContour": "Boşluğu kaldır",
+      "properties": "Kesit özellikleri",
+      "invalidShape": "Şekil, alanı pozitif olan basit bir çokgen olmalıdır: kenarlar kesişmemeli ve boşluklar dış konturun içinde kalmalıdır.",
+      "labelInUse": "Bu etiket zaten kullanılıyor",
+      "save": "Kaydet",
+      "editShape": "Çokgen kesiti düzenle",
+      "presets": {
+        "rectangle": "Dikdörtgen",
+        "iSection": "I kesit",
+        "tSection": "T kesit",
+        "lSection": "L kesit (korniyer)",
+        "channel": "U kesit",
+        "box": "Kutu kesit",
+        "circle": "Daire",
+        "pipe": "Boru kesit"
+      },
+      "params": {
+        "b": "Genişlik b",
+        "h": "Yükseklik h",
+        "tw": "Gövde kalınlığı tw",
+        "tf": "Başlık kalınlığı tf",
+        "t": "Kalınlık t",
+        "d": "Çap d",
+        "n": "Parça sayısı"
+      },
+      "vertices": "Köşeler",
+      "legendOutline": "Dış kontur",
+      "legendHole": "Boşluk",
+      "legendPrincipal": "Asal eksenler ve atalet elipsi",
+      "legendCentroid": "Ağırlık merkezi",
+      "shape": "Şekil",
+      "noShape": "Çokgen kesit yok",
+      "centroidal": "ağırlık merkezine göre",
+      "centroidalNote": "Tüm atalet momentleri ağırlık merkezinden geçen eksenlere göre hesaplanır; I₁ ve I₂ asal atalet momentleri, α ise y ekseninden 1 eksenine olan açıdır.",
+      "outOfPlaneNote": "Kesit çerçeve düzlemine göre simetrik değildir. 2B analiz yalnızca eleman tüm boyu boyunca yanal yer değiştirmeye (ekranın dışına) ve burulmaya karşı tutulduğunda, örneğin bir döşeme veya sık aralıklı çaprazlarla, kesindir; yalnızca düğümlerdeki mesnetler yeterli değildir. Serbest bir eleman, yükler kayma merkezinden geçmediği için ayrıca burulur ve bu burulma yer değiştirmelere dahil edilmez.",
+      "outOfPlaneRestrained": "Tüm boyu boyunca yanal olarak ve burulmaya karşı tutulu: {inertia}",
+      "outOfPlaneFree": "Yanal yönde serbest (burulma yine dahil değil): {inertia}"
+    }
+  },
+  "tooltip": {
+    "materials": {},
+    "material": {
+      "alphaT": "Isıl genleşme katsayısı, bir cismin boyutlarının sıcaklık değişimiyle ne kadar değiştiğini gösterir.",
+      "e": "Elastisite modülü (Young modülü), eksen doğrultusunda etkiyen kuvvet altında malzemenin çekme veya basınç rijitliğini ifade eder.",
+      "g": "Kayma modülü, malzemenin kayma gerilmesi altındaki şekil değiştirmeye karşı direncini, yani yüzeyine paralel etkiyen kuvvetlere karşı rijitliğini ifade eder.",
+      "density": "Yoğunluk, bir maddenin birim hacmindeki kütledir."
+    }
+  },
+  "footer": {
+    "reportIssue": "Hata bildir",
+    "requestFeature": "Özellik öner",
+    "released": "yayımlandı"
+  },
+  "sharing": {
+    "shareViaURL": "Modeli bağlantıyla paylaş",
+    "instructions": "Bağlantıyı kopyalamak için alanın herhangi bir yerine tıklayın, ardından çalışma arkadaşlarınıza gönderin.",
+    "copyCue": "Bağlantıyı kopyala",
+    "openLink": "Bağlantıyı aç",
+    "nativeShare": "Sistem penceresiyle paylaş",
+    "linkCopied": "Bağlantı panoya kopyalandı",
+    "copyFailed": "Otomatik kopyalanamadı. Lütfen klavye kısayollarını kullanın."
+  },
+  "tour": {
+    "menu": {
+      "title": "Menü",
+      "description": "Projelerinizi açın, kaydedin ve paylaşın, görüntü dışa aktarın, örnek yükleyin ya da bu turu veya ilk kiriş görevini yeniden başlatın."
+    },
+    "undoRedo": {
+      "title": "Geri al ve yinele",
+      "description": "Değişiklikleriniz arasında geri ve ileri gidin. Ctrl+Z ve Ctrl+Shift+Z aynı işi yapar."
+    },
+    "viewerControls": {
+      "title": "Görüntüleyici düğmeleri",
+      "description": "Bu düğmelerle yapıyı ortalayabilir, ekrana sığdırabilir ve nelerin gösterileceğini seçebilirsiniz."
+    },
+    "viewerSettings": {
+      "title": "Görünüm seçeneklerini özelleştirin",
+      "description": "Normal kuvvet, kesme kuvveti, eğilme momenti, deforme şekil ya da hepsi birden – neyin gösterileceğini siz seçin."
+    },
+    "gridUnits": {
+      "title": "Izgara, yakalama ve birimler",
+      "description": "G ızgarayı gösterir, S yeni düğümleri ızgaraya yakalar. Birimleri, dili veya koordinat sistemini değiştirmek için birimlere tıklayın."
+    },
+    "bottomBar": {
+      "title": "Ekleyin, silin ve düzenleyin",
+      "description": "Yapınızın her parçasını değiştirebileceğiniz merkez burası. Düğümlerden elemanlara, yüklerden malzeme ve kesitlere kadar tüm değişiklikleri hızlıca buradan yapabilirsiniz."
+    },
+    "help": {
+      "title": "Yardım",
+      "description": "? açık olan sekmeyi açıklar. Sütun başlığının yanındaki ? o sütunu açıklar."
+    },
+    "previousButton": "Önceki",
+    "nextButton": "Sonraki",
+    "finishButton": "Bitir",
+    "close": "Turu kapat"
+  },
+  "firstBeam": {
+    "title": "İlk kirişiniz",
+    "step": "Adım {n} / {total}",
+    "close": "Rehberi kapat",
+    "finish": "Bitti",
+    "next": "İleri",
+    "steps": {
+      "tool": {
+        "title": "Aracı seçin",
+        "body": "Aşağıdaki {elementsTab} sekmesinde imleç simgeli {addElement} düğmesine basın."
+      },
+      "draw": {
+        "title": "Kirişi çizin",
+        "body": "Kirişin başladığı yere, sonra bittiği yere tıklayın. Uçlar ızgaraya yapışır."
+      },
+      "supports": {
+        "title": "Mesnetleyin",
+        "body": "Sol uca tıklayın, {defineSupports} menüsünü açın ve sabit mesnet için Dx ile D{v} seçeneklerini işaretleyin. Ardından sağ uca tıklayın ve kayıcı mesnet için D{v} seçeneğini işaretleyin."
+      },
+      "load": {
+        "title": "Yükleyin",
+        "body": "Kirişe tıklayın, {addLoad} seçeneğini seçin, f{v} alanına bir değer girin ve onaylayın."
+      },
+      "display": {
+        "title": "Neyin gösterileceğini seçin",
+        "body": "Sağ üstteki dişli görüntüleme seçeneklerini açar: iç kuvvetler, deforme şekil, mesnet tepkileri ve daha fazlası. Şimdi açın."
+      },
+      "fit": {
+        "title": "Ekrana sığdırın",
+        "body": "Sağ üstteki düğmeler modeli ekrana sığdırır veya ortalar. Şimdi ekrana sığdır düğmesine basın; çizim görünümden kaydığında yine kullanın."
+      },
+      "results": {
+        "title": "Sonuçları okuyun",
+        "body": "Eğilme momenti ve deforme şekil kirişin üzerinde çizilidir ve her düzenlemede güncellenir. Tüm düğümler, elemanlar ve yükler aşağıdaki tablolarda da listelenir; orada tam değerler girebilirsiniz. {undo} önceki modelinizi geri getirir."
+      }
+    }
+  },
+  "welcome": {
+    "title": "<span class=\"edubeam\">edubeam</span>'e hoş geldiniz! 🚀",
+    "description": "Kiriş, çerçeve ve kafes sistemleri modelleyin, iç kuvvetleri çizerken görün.",
+    "start": "Nasıl başlamak istersiniz?",
+    "showAround": "Beni gezdir",
+    "showAroundHint": "Görüntüleyiciye, görünüm seçeneklerine ve alt çubuğa kısa bir bakış.",
+    "drawFirstBeam": "İlk kirişinizi çizin",
+    "drawFirstBeamHint": "Kısa bir rehber: bir kiriş çizin, mesnetleyin ve yükleyin.",
+    "openExample": "Bir örnek açın",
+    "openExampleHint": "Hazır bir modelle başlayıp onu değiştirin.",
+    "skip": "Şimdilik geç"
+  },
+  "confirmation": {
+    "clearMesh": {
+      "message": "Modeli temizlemek istediğinizden emin misiniz? Ctrl+Z geri getirir ve model Son modeller listesinde kalır.",
+      "title": "Model temizlensin mi?",
+      "materials": "Malzemeleri sil",
+      "crossSections": "Kesitleri sil"
+    },
+    "resetSettings": {
+      "title": "Ayarlar sıfırlansın mı?",
+      "message": "Tüm ayarları varsayılan değerlerine döndürmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
+    },
+    "splitElementAndPlaceNode": {
+      "title": "Düğüm yerleştirme",
+      "message": "<p>Düğümü {label} etiketli kirişin üzerine yerleştiriyorsunuz.</p><p class=\"mt-3\">Elemanı bölüp düğümü yapıya bağlamak mı, yoksa düğümü yapıya bağlamadan yerleştirmek mi istersiniz?</p>",
+      "split": "Yapıya bağla"
+    },
+    "placeIndividualNode": "Bağımsız düğüm yerleştir"
+  },
+  "selection": {
+    "node": "Düğüm",
+    "element": "Eleman",
+    "dimension": "Ölçü çizgisi",
+    "nodal-load": "Düğüm yükü",
+    "element-load": "Eleman yükü",
+    "prescribedbc-load": "Öngörülen yer değiştirme"
+  },
+  "validators": {
+    "enterValue": "Bir değer girin",
+    "invalidNumber": "Geçersiz sayı",
+    "positiveNumber": "Sıfırdan büyük bir sayı girin",
+    "between": "{min} ile {max} arasında bir değer girin",
+    "sameNodes": "Bir eleman iki farklı düğümü birbirine bağlamalıdır",
+    "materialInUse": "Bu malzeme şu elemanlarda kullanılıyor: {elements}. Silmeden önce bu elemanlara başka bir malzeme atayın.",
+    "crossSectionInUse": "Bu kesit şu elemanlarda kullanılıyor: {elements}. Silmeden önce bu elemanlara başka bir kesit atayın."
+  },
+  "solveDiagnostics": {
+    "summaryErrors": "Modelde {errors} hata var.",
+    "summaryWarnings": "Modelde {warnings} uyarı var.",
+    "summaryIncomplete": "Yapının {count} parçasının mesnete ihtiyacı var.",
+    "incompleteChip": "Mesnet gerekli",
+    "hideMotion": "Hareketi gizle",
+    "showMotion": "Hareketi göster",
+    "dismissWarnings": "Bu uyarıları gizle",
+    "collapseErrors": "Bu mesajı küçült",
+    "showDetails": "Ayrıntıları göster",
+    "blockedTitle": "Model çözülemiyor",
+    "blockedDescription": "Modeli çözmeden önce listelenen hataları giderin.",
+    "warningsTitle": "Model uyarıları",
+    "warningsDescription": "Model çözüldü, ancak aşağıdaki uyarılar tespit edildi.",
+    "incompleteTitle": "Henüz çözülemiyor",
+    "incompleteDescription": "Yapı sabitlendiğinde sonuçlar görünür. Kesikli çizgi, yapının hâlâ nasıl hareket edebildiğini gösterir.",
+    "errors": "Hatalar",
+    "warnings": "Uyarılar",
+    "incomplete": "Eksik olanlar",
+    "issues": {
+      "elementNodeCount": "{element} elemanı tam olarak 2 düğüme bağlanmalıdır.",
+      "elementSameNode": "{element} elemanının iki ucu da aynı düğüme bağlı.",
+      "elementMissingNode": "{element} elemanı mevcut olmayan {node} düğümüne bağlı.",
+      "elementMissingMaterial": "{element} elemanına atanan {material} malzemesi mevcut değil.",
+      "elementMissingCrossSection": "{element} elemanına atanan {crossSection} kesiti mevcut değil.",
+      "nodalLoadMissingNode": "Düğüm yükü #{index}, mevcut olmayan {node} düğümüne etkiyor.",
+      "nodalLoadInvalid": "Düğüm yükü #{index} geçersiz değerler içeriyor.",
+      "prescribedMissingNode": "Öngörülen yer değiştirme #{index}, mevcut olmayan {node} düğümüne tanımlanmış.",
+      "prescribedInvalid": "Öngörülen yer değiştirme #{index} geçersiz değerler içeriyor.",
+      "elementLoadMissingElement": "Eleman yükü #{index}, mevcut olmayan {element} elemanına etkiyor.",
+      "supportedNodeNotConnected": "{node} düğümü mesnetli, ancak hiçbir elemana bağlı değil; bu nedenle mesnet hiçbir yük taşımıyor.",
+      "nodeNotConnected": "{node} düğümü hiçbir elemana bağlı değil ve çözümde dikkate alınmıyor.",
+      "insufficientSupports": "Düzlem analizde modelin stabil olması için en az 3 serbestlik derecesinin tutulu olması gerekir.",
+      "needsSupports": "Yapının çözülebilmesi için mesnet gerekiyor.",
+      "partUnsupported": "Yapının ayrık bir parçasında (düğümler {nodes}) 3'ten az tutulu serbestlik derecesi var ve bu parça serbestçe hareket edebiliyor.",
+      "partNeedsSupports": "{nodes} düğümlü parçanın mesnete ihtiyacı var.",
+      "mechanism": "Yapıda yeterli sayıda mesnet var, ancak bu mesnetler yapıyı tutmuyor: yapı hâlâ {motion}. Mesnet doğrultularının tümü paralelse veya tek bir noktada kesişiyorsa sistem labildir.",
+      "mechanismShort": "Mesnetler yapıyı tutmuyor: yapı hâlâ {motion}.",
+      "partMechanism": "Yapının ayrık bir parçasında (düğümler {nodes}) yeterli sayıda mesnet var, ancak bu mesnetler parçayı tutmuyor: parça hâlâ {motion}. Mesnet doğrultularının tümü paralelse veya tek bir noktada kesişiyorsa sistem labildir.",
+      "partMechanismShort": "{nodes} düğümlü parça tutulmuyor: hâlâ {motion}.",
+      "hingeMechanism": "Mesnetler yapıyı tutuyor, ancak yapı yine de bir mekanizma: çubukları {nodes} düğümündeki mafsallar etrafında dönebiliyor. Bir mafsalı kaldırın ya da hareketi durduracak bir çubuk veya mesnet ekleyin.",
+      "hingeMechanismShort": "{nodes} düğümündeki mafsallar yapının hareket etmesine izin veriyor.",
+      "motion": {
+        "horizontal": "yatay doğrultuda kayabiliyor",
+        "vertical": "düşey doğrultuda hareket edebiliyor",
+        "rotation": "serbestçe dönebiliyor",
+        "mixed": "rijit cisim olarak hareket edebiliyor"
+      },
+      "unstable": "Yapı labil: {dofs} pratikte hiçbir dirençle karşılaşmıyor. Bir mesnet veya eleman ekleyin, bir uç mafsalını kaldırın ya da kesit rijitliğini kontrol edin.",
+      "unstableShort": "Yapı kararsız: neredeyse hiç direnç göstermeden hareket ediyor.",
+      "unstableDof": {
+        "dx": "{node} düğümünün yatay yer değiştirmesi (Dx)",
+        "dz": "{node} düğümünün düşey yer değiştirmesi (D{v})",
+        "ry": "{node} düğümünün dönmesi (R{r})",
+        "other": "{node} düğümünün {dof} serbestlik derecesi"
+      },
+      "unstableMore": "{list} ve {count} tane daha",
+      "singularMatrix": "Yapı bir mekanizma: rijitlik matrisi tekil. Her parçanın en az 3 bağla tutulduğunu ve uç mafsallarının hiçbir çubuğu serbestçe dönebilir bırakmadığını kontrol edin.",
+      "singularMatrixShort": "Yapı bir mekanizma: dirençsiz hareket edebiliyor.",
+      "solverFailed": "Modeldeki bir iç tutarsızlık nedeniyle çözüm başarısız oldu. Lütfen modeldeki bağlantıları ve yükleri gözden geçirin."
+    }
+  },
+  "loadType": {
+    "loadType": "Yük türü",
+    "concentrated": "Tekil yük",
+    "trapezoidal": "Trapez yayılı yük",
+    "udl": "Düzgün yayılı yük",
+    "temperature": "Sıcaklık yüklemesi"
+  },
+  "dimensioning": {
+    "add_dimension": "Ölçü ekle",
+    "add_along_element": "{label} elemanını ölçülendir"
+  },
+  "warnings": {
+    "noMaterialsDefined": "Tanımlı malzeme yok.",
+    "noCrossSectionsDefined": "Tanımlı kesit yok.",
+    "importFailed": "Dosya içe aktarılamadı. Lütfen dosya biçimini kontrol edin.",
+    "prescribedDisplacementExists": "Bu düğüm için zaten öngörülen bir yer değiştirme var. Lütfen önce onu kaldırın.",
+    "addMaterialFirst": "Lütfen önce bir malzeme ekleyin.",
+    "addCrossSectionFirst": "Lütfen önce bir kesit ekleyin.",
+    "selectMaterialAndCrossSection": "Lütfen bir malzeme ve bir kesit seçin.",
+    "labelInUse": "{label} etiketi zaten kullanılıyor.",
+    "noMaterialOrCrossSection": "Elemana malzeme veya kesit atanmamış.",
+    "elementMissing": "{label} elemanı artık mevcut değil."
+  },
+  "help": {
+    "aria": "Yardımı göster",
+    "readMore": "Dokümantasyonda devamını okuyun",
+    "troubleshooting": "Sorun giderme",
+    "nodes": {
+      "title": "Düğümler",
+      "body": "Düğümler yapıyı bir arada tutan noktalardır. Koordinatlar, mesnetler, mafsallar ve düğüme etkiyen yükler her düğüm için ayrı tanımlanır."
+    },
+    "supports": {
+      "title": "Mesnetler",
+      "body": "Bir serbestlik derecesini tutmak için kutusunu işaretleyin: Dx ve D{v} ötelenmeyi, R{r} dönmeyi engeller. Bir yapının en az üç bağımsız bağla tutulması gerekir."
+    },
+    "elements": {
+      "title": "Elemanlar",
+      "body": "Elemanlar iki düğümü birbirine bağlar ve bir malzeme ile bir kesite sahiptir. Bir kirişin ucunu serbest bırakarak onu mafsallı bir çubuğa ya da kafes çubuğuna dönüştürebilirsiniz."
+    },
+    "loads": {
+      "title": "Yükler",
+      "body": "Yükler düğümlere veya elemanlar boyunca etkir. Pozitif değerler genel eksenlerin yönündedir; z ekseni aşağı doğrudur.",
+      "bodyYUp": "Yükler düğümlere veya elemanlar boyunca etkir. Pozitif değerler genel eksenlerin yönündedir; y ekseni yukarı doğrudur."
+    },
+    "nodalLoads": {
+      "title": "Düğüm yükleri",
+      "body": "Düğüm yükü, bir düğüme doğrudan etkiyen kuvvet veya momenttir. Mesnet çökmesi tanımlamak için ise öngörülen yer değiştirme kullanılır."
+    },
+    "elementLoads": {
+      "title": "Eleman yükleri",
+      "body": "Eleman yükleri çubuk boyunca etkir: düzgün yayılı, trapez, tekil veya sıcaklık yüklemesi. Genel ya da yerel eksenlerde tanımlanabilirler."
+    },
+    "materials": {
+      "title": "Malzemeler",
+      "body": "Malzeme; elastisite modülü, kayma modülü, yoğunluk ve ısıl genleşme katsayısıyla tanımlanır. Basit bir statik analizde yalnızca E ve kesit özellikleri etkilidir."
+    },
+    "crossSections": {
+      "title": "Kesitler",
+      "body": "Kesit, rijitlik hesabında kullanılan alanı ve atalet momentini verir. Kütüphaneden seçebilir veya kendi çokgen kesitinizi çizebilirsiniz."
+    },
+    "hinges": {
+      "title": "Uç mafsalları",
+      "body": "İşaretli kutu, elemanın o ucundaki eğilme momentini serbest bırakır. İki ucu da işaretlerseniz kafes çubuğu, tek ucu işaretlerseniz çerçeve içinde bir mafsal elde edersiniz."
+    },
+    "signConvention": {
+      "title": "İşaret kabulü",
+      "body": "Genel z ekseni aşağı doğrudur; bu nedenle pozitif Fz veya fz aşağı doğru etkir, My ise saat yönünün tersine pozitiftir. Yerel eksenlere alınan yükler elemanın doğrultusunu izler.",
+      "bodyYUp": "Genel y ekseni yukarı doğrudur; bu nedenle pozitif Fy veya fy yukarı doğru etkir, Mz ise saat yönünün tersine pozitiftir. Yerel eksenlere alınan yükler elemanın doğrultusunu izler."
+    },
+    "results": {
+      "title": "Sonuçlar",
+      "body": "Model çözüldüğünde normal kuvvet, kesme kuvveti, eğilme momenti, deforme şekil ve mesnet tepkilerini hem diyagram hem de tablo olarak görürsünüz."
+    },
+    "diagrams": {
+      "title": "Sonuç diyagramları",
+      "body": "Bu anahtarlar normal kuvvet, kesme kuvveti, eğilme momenti, deforme şekil ve mesnet tepkilerini model üzerinde çizer. N çekmede pozitif, M{r} ise alt lifleri çektiğinde pozitiftir."
+    },
+    "endForces": {
+      "title": "Çubuk uç kuvvetleri",
+      "body": "X12, Z12 ve M12 başlangıç düğümünde, X21, Z21 ve M21 bitiş düğümünde etkir; her zaman elemanın başlangıç düğümünden bitiş düğümüne yönelen yerel koordinat sisteminde verilir."
+    },
+    "settings": {
+      "title": "Birimler ve ayarlar",
+      "body": "Dil, birimler, görüntüleyici ölçeği, renkler ve kısayollar burada bulunur. Birim değişikliği mevcut değerleri dönüştürür, modeli asla değiştirmez."
+    },
+    "sharing": {
+      "title": "Kaydetme ve paylaşma",
+      "body": "Modeli dosya olarak kaydedin, tüm yapıyı içeren bir bağlantı kopyalayın veya salt okunur bir görüntüleyiciyi kendi sayfanıza gömün."
+    }
+  },
+  "exportImage": {
+    "title": "Görüntüyü dışa aktar",
+    "transparentBackground": "Saydam arka plan",
+    "download": "PNG indir",
+    "downloadSvg": "SVG indir",
+    "copyToClipboard": "Panoya kopyala",
+    "copied": "Görüntü panoya kopyalandı",
+    "exported": "Görüntü dışa aktarıldı",
+    "failed": "Görüntü oluşturulamadı.",
+    "previewAlt": "Dışa aktarılacak görüntünün önizlemesi",
+    "instructions": "Çizim, seçtiğiniz boyuta göre yeniden düzenlenir; böylece çizgiler ve etiketler gerçek kalınlıklarını korur. Aynı boyut, yapıyı her zaman aynı şekilde çerçeveler – M, N ve V diyagramlarını yan yana koymak için idealdir.",
+    "width": "Genişlik",
+    "height": "Yükseklik",
+    "lockAspect": "En-boy oranını koru",
+    "fitPreview": "Sığdır",
+    "actualSize": "Gerçek boyut",
+    "preview": "Önizleme",
+    "fitAll": "Tümünü sığdır",
+    "window": "Pencere…",
+    "pickWindowHint": "Dışa aktarılacak alanı seçmek için çizim üzerinde bir dikdörtgen sürükleyin",
+    "dragEdge": "Bu kenarı genişletmek veya kırpmak için sürükleyin",
+    "scale": "Ölçek",
+    "scaleCaption": "Modeldeki 1 m, kâğıtta {cm} cm'dir (96 DPI). Yakınlaştırmak için önizleme üzerinde kaydırın.",
+    "doesNotFit": "Bu boyuta her şey sığmıyor: diyagramlar, yükler ve etiketler kenarı yaklaşık {px} px aşıyor. Diyagramları küçültün (şu an {diagrams} px) veya tuvali büyütün.",
+    "shrinkDiagrams": "Diyagramları küçült",
+    "enlargeCanvas": "Tuvali büyüt",
+    "diagramHeight": "Diyagram yüksekliği",
+    "shrinkNotEnough": "Diyagramları küçültmek burada yetmiyor – yalnızca yükler ve etiketler bile daha fazla yer gerektiriyor. Bunun yerine tuvali büyütün."
+  },
+  "examples": {
+    "title": "Örnekler",
+    "instructions": "İncelemek için hazır bir model açın. Mevcut modelin yerini alır; Ctrl+Z ile kendi modelinize geri dönebilirsiniz.",
+    "moreInDocs": "Daha fazla örnek ve alıştırma",
+    "items": {
+      "welcome": {
+        "title": "Hiperstatik kiriş",
+        "blurb": "10 kN/m düzgün yayılı yük altında, bir ucu ankastre diğer ucu kayıcı mesnetli 3 m'lik hiperstatik kiriş."
+      },
+      "cantilever": {
+        "title": "Konsol kiriş",
+        "blurb": "Aşağı yönlü 18 kN'lik tekil düğüm yükü taşıyan 4 m'lik konsol; eğrilik ve uç sehimi öne çıkıyor."
+      },
+      "pratt": {
+        "title": "Pratt kafes kirişi",
+        "blurb": "Düğümlerine 8 kN yük etkiyen basit Pratt kafes kirişi; çubuk kuvvetlerinin dağılımını ve yer değiştirmeleri gösterir."
+      },
+      "continuous": {
+        "title": "Üç açıklıklı sürekli kiriş",
+        "blurb": "5+6+5 m açıklıklar; yayılı + tekil + yayılı yük ile eğrilik ve mesnet dönmeleri karşılaştırılır."
+      },
+      "portal": {
+        "title": "Portal çerçeve",
+        "blurb": "6 m'lik kolonlar üzerinde 8 m'lik kiriş; çatı yayılı yükü ile köşelerdeki yatay ve düşey yükler altında yanal öteleme ve eğilme kontrolü."
+      },
+      "temperature": {
+        "title": "Sıcaklık yüklemesi",
+        "blurb": "Düzgün ve düzgün olmayan sıcaklık değişimi etkisindeki 8 m'lik basit mesnetli kiriş."
+      }
+    }
+  },
+  "recentStructures": {
+    "title": "Son modeller",
+    "instructions": "Temizlenen veya değiştirilen son {count} model bu tarayıcıda saklanır. Birini geri yüklemek mevcut modelin yerini alır; Ctrl+Z onu geri getirir.",
+    "empty": "Henüz bir şey yok. Bir modeli temizlediğinizde veya üzerine başka birini açtığınızda burada saklanır.",
+    "restore": "Geri yükle",
+    "remove": "Kaldır",
+    "counts": "Düğümler: {nodes} · Elemanlar: {elements}",
+    "linkNotice": "Paylaşılan bir model açıldı. Öncekini Son modeller listesinde bulabilirsiniz.",
+    "show": "Göster",
+    "reasons": {
+      "clear": "Temizlendi",
+      "link": "Paylaşılan bağlantıyla değiştirildi",
+      "file": "Açılan dosyayla değiştirildi",
+      "example": "Bir örnekle değiştirildi",
+      "firstBeam": "“İlk kiriş” göreviyle değiştirildi",
+      "restore": "Geri yüklenen modelle değiştirildi"
+    }
+  }
+}

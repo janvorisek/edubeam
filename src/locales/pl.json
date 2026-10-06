@@ -54,6 +54,17 @@
     "defineSupports": "Podpory węzła",
     "lcsAngle": "Kąt lokalnego układu"
   },
+  "supports": {
+    "free": "Swobodny",
+    "pin": "Przegub",
+    "roller": "Przegub przesuwny",
+    "verticalRoller": "Przegub przesuwny pionowy",
+    "slider": "Utwierdzenie przesuwne",
+    "verticalSlider": "Utwierdzenie przesuwne pionowe",
+    "rotation": "Tylko obrót zablokowany",
+    "fixed": "Utwierdzenie",
+    "custom": "Własne"
+  },
   "elements": {
     "addElement": "Dodaj element",
     "editElement": "Edytuj element",
@@ -114,6 +125,10 @@
     "results_scale": "Skala wyników",
     "grid_snap_step": "Krok przyciągania do siatki",
     "snap_to_grid": "Przyciągaj do siatki",
+    "show_crosshair": "Pokaż celownik",
+    "model_checks": "Sprawdzanie modelu",
+    "show_mechanisms": "Pokazuj, jak może się poruszać niestabilna konstrukcja",
+    "animate_mechanisms": "Animuj ruch",
     "number_format": "Format liczb",
     "number_format_description": "Jak zapisywane są wyniki; separator dziesiętny zależy od języka.",
     "number_format_auto": "Automatyczny",
@@ -134,7 +149,14 @@
       "moment": "Moment zginający",
       "pressure": "Naprężenie",
       "area": "Pole",
-      "areaM2": "Geometryczny moment bezwładności"
+      "areaM2": "Geometryczny moment bezwładności",
+      "system": "Układ jednostek",
+      "systemSI": "SI (metryczny)",
+      "systemUS": "Amerykański (imperialny)",
+      "systemCustom": "Własny",
+      "temperature": "Temperatura",
+      "sectionLength": "Wymiary przekroju",
+      "displacement": "Przemieszczenie"
     },
     "grid": "Siatka",
     "show_grid": "Pokaż siatkę",
@@ -159,6 +181,10 @@
     "viewer_preview": "Podgląd widoku",
     "language_description": "Wybierz preferowany język interfejsu.",
     "units_description": "Wybierz preferowane jednostki miary.",
+    "axisConvention": "Układ współrzędnych",
+    "axisConvention_description": "W którą stronę skierowana jest oś pionowa przy wprowadzaniu danych i w wynikach. Model i zapisane pliki się nie zmieniają.",
+    "axisConvention_zDown": "x w prawo, z w dół",
+    "axisConvention_yUp": "x w prawo, y w górę",
     "reset_settings": "Przywróć ustawienia",
     "sizes": {
       "sizes": "Rozmiary",
@@ -182,6 +208,7 @@
   "viewer": {
     "toggleGrid": "Przełącz siatkę (G)",
     "toggleSnap": "Przełącz przyciąganie do siatki (S)",
+    "toggleCrosshair": "Przełącz celownik",
     "boxSelect": "Zaznaczanie prostokątem",
     "centerContent": "Wyśrodkuj widok",
     "fitContent": "Dopasuj do ekranu",
@@ -213,7 +240,7 @@
     "addNode": {
       "addNewNode": "Dodaj nowy węzeł",
       "coordinate_x": "Współrzędna X",
-      "coordinate_z": "Współrzędna Z",
+      "coordinate_z": "Współrzędna {v}",
       "addNode": "Dodaj węzeł"
     },
     "common": {
@@ -315,7 +342,10 @@
       "shape": "Kształt",
       "noShape": "Brak kształtu wielokątnego",
       "centroidal": "centralny",
-      "centroidalNote": "Wszystkie momenty bezwładności liczone są względem osi przechodzących przez środek ciężkości; I₁, I₂ to wartości główne, a α to kąt od osi y do osi 1."
+      "centroidalNote": "Wszystkie momenty bezwładności liczone są względem osi przechodzących przez środek ciężkości; I₁, I₂ to wartości główne, a α to kąt od osi y do osi 1.",
+      "outOfPlaneNote": "Przekrój nie jest symetryczny względem płaszczyzny ramy. Analiza 2D jest dokładna tylko wtedy, gdy pręt jest na całej długości zabezpieczony przed przemieszczeniem bocznym (poza ekran) i skręceniem, np. przez płytę lub gęsto rozmieszczone stężenia; same podpory w węzłach nie wystarczą. Swobodny pręt dodatkowo się skręca, ponieważ obciążenia nie działają w środku ścinania, a to skręcenie nie jest uwzględnione w przemieszczeniach.",
+      "outOfPlaneRestrained": "Stężony bocznie i przeciw skręceniu na całej długości: {inertia}",
+      "outOfPlaneFree": "Swobodny w kierunku bocznym (skręcenie nadal nieuwzględnione): {inertia}"
     }
   },
   "tooltip": {
@@ -342,8 +372,14 @@
     "copyFailed": "Nie udało się skopiować automatycznie. Użyj skrótów klawiaturowych."
   },
   "tour": {
-    "startTour": "Rozpocznij samouczek",
-    "skipTour": "Pomiń na razie",
+    "menu": {
+      "title": "Menu",
+      "description": "Otwieraj, zapisuj i udostępniaj projekty, eksportuj obraz, wczytaj przykład albo uruchom ponownie ten przewodnik lub zadanie z pierwszą belką."
+    },
+    "undoRedo": {
+      "title": "Cofnij i ponów",
+      "description": "Przechodź wstecz i naprzód przez swoje zmiany. Ctrl+Z i Ctrl+Shift+Z robią to samo."
+    },
     "viewerControls": {
       "title": "Przyciski widoku",
       "description": "Przyciski widoku służą do wyśrodkowania lub dopasowania konstrukcji do ekranu oraz wyboru wyświetlanych danych."
@@ -352,21 +388,75 @@
       "title": "Dostosuj opcje wyświetlania",
       "description": "Wybierz, co wyświetlać — siłę normalną, siłę tnącą, moment zginający, kształt odkształcony lub wszystko naraz."
     },
+    "gridUnits": {
+      "title": "Siatka, przyciąganie i jednostki",
+      "description": "G pokazuje siatkę, a S przyciąga do niej nowe węzły. Kliknij jednostki, aby zmienić je, język lub układ współrzędnych."
+    },
     "bottomBar": {
       "title": "Dodawaj, usuwaj i modyfikuj obiekty",
       "description": "Centralne miejsce, w którym możesz łatwo modyfikować każdy aspekt konstrukcji — od węzłów i elementów po obciążenia, materiały i przekroje."
     },
+    "help": {
+      "title": "Pomoc",
+      "description": "? objaśnia otwartą kartę. ? przy nagłówku kolumny objaśnia tę kolumnę."
+    },
     "previousButton": "Wstecz",
     "nextButton": "Dalej",
-    "finishButton": "Zakończ"
+    "finishButton": "Zakończ",
+    "close": "Zamknij przewodnik"
+  },
+  "firstBeam": {
+    "title": "Twoja pierwsza belka",
+    "step": "Krok {n} z {total}",
+    "close": "Zamknij przewodnik",
+    "finish": "Gotowe",
+    "next": "Dalej",
+    "steps": {
+      "tool": {
+        "title": "Wybierz narzędzie",
+        "body": "Na karcie {elementsTab} na dole naciśnij przycisk {addElement} z ikoną kursora."
+      },
+      "draw": {
+        "title": "Narysuj belkę",
+        "body": "Kliknij, gdzie belka się zaczyna, a potem gdzie się kończy. Końce przyciągają się do siatki."
+      },
+      "supports": {
+        "title": "Podeprzyj ją",
+        "body": "Kliknij lewy koniec, otwórz {defineSupports} i zaznacz Dx oraz D{v} dla podpory przegubowej nieprzesuwnej. Potem kliknij prawy koniec i zaznacz D{v} dla podpory przesuwnej."
+      },
+      "load": {
+        "title": "Obciąż ją",
+        "body": "Kliknij belkę, wybierz {addLoad}, wpisz wartość w polu f{v} i zatwierdź."
+      },
+      "display": {
+        "title": "Wybierz, co widać",
+        "body": "Koło zębate w prawym górnym rogu otwiera opcje wyświetlania: siły wewnętrzne, deformację, reakcje i więcej. Otwórz je teraz."
+      },
+      "fit": {
+        "title": "Dopasuj do ekranu",
+        "body": "Przyciski w prawym górnym rogu dopasowują model do ekranu lub go wyśrodkowują. Naciśnij teraz dopasowanie do ekranu i używaj go zawsze, gdy rysunek ucieknie z widoku."
+      },
+      "results": {
+        "title": "Odczytaj wyniki",
+        "body": "Moment zginający i deformacja są narysowane na belce i zmieniają się przy każdej edycji. Wszystkie węzły, elementy i obciążenia są też w tabelach na dole, gdzie możesz wpisać dokładne wartości. {undo} przywraca poprzedni model."
+      }
+    }
   },
   "welcome": {
     "title": "Witamy w <span class=\"edubeam\">edubeam</span>! 🚀",
-    "description": "Aby ułatwić start, przygotowaliśmy krótki samouczek wprowadzający, który pokaże najważniejsze funkcje programu."
+    "description": "Modeluj belki, ramy i kratownice i obserwuj siły wewnętrzne już podczas rysowania.",
+    "start": "Jak chcesz zacząć?",
+    "showAround": "Oprowadź mnie",
+    "showAroundHint": "Krótki przegląd widoku, opcji wyświetlania i dolnego panelu.",
+    "drawFirstBeam": "Narysuj pierwszą belkę",
+    "drawFirstBeamHint": "Krótki przewodnik: narysuj belkę, podeprzyj ją i obciąż.",
+    "openExample": "Otwórz przykład",
+    "openExampleHint": "Zacznij od gotowego modelu i zmień go.",
+    "skip": "Pomiń na razie"
   },
   "confirmation": {
     "clearMesh": {
-      "message": "Czy na pewno chcesz wyczyścić model? Tej operacji nie można cofnąć.",
+      "message": "Czy na pewno chcesz wyczyścić model? Ctrl+Z go przywróci, a model pozostanie w Ostatnich modelach.",
       "title": "Wyczyścić model?",
       "materials": "Usuń materiały",
       "crossSections": "Usuń przekroje"
@@ -394,6 +484,7 @@
     "enterValue": "Wprowadź wartość",
     "invalidNumber": "Nieprawidłowa liczba",
     "positiveNumber": "Wprowadź liczbę większą od zera",
+    "between": "Wprowadź wartość od {min} do {max}",
     "sameNodes": "Element musi łączyć dwa różne węzły",
     "materialInUse": "Materiał jest używany przez elementy: {elements}. Przed usunięciem przypisz im inny materiał.",
     "crossSectionInUse": "Przekrój jest używany przez elementy: {elements}. Przed usunięciem przypisz im inny przekrój."
@@ -401,14 +492,22 @@
   "solveDiagnostics": {
     "summaryErrors": "Błędy w modelu: {errors}",
     "summaryWarnings": "Ostrzeżenia w modelu: {warnings}",
-    "summaryBoth": "Błędy w modelu: {errors}, ostrzeżenia: {warnings}",
+    "summaryIncomplete": "Części konstrukcji bez podpór: {count}.",
+    "incompleteChip": "Brak podpór",
+    "hideMotion": "Ukryj ruch",
+    "showMotion": "Pokaż ruch",
+    "dismissWarnings": "Ukryj te ostrzeżenia",
+    "collapseErrors": "Zmniejsz ten komunikat",
     "showDetails": "Pokaż szczegóły",
     "blockedTitle": "Nie można rozwiązać modelu",
     "blockedDescription": "Przed rozwiązaniem modelu popraw wymienione błędy.",
     "warningsTitle": "Ostrzeżenia modelu",
     "warningsDescription": "Model został rozwiązany, ale wykryto następujące ostrzeżenia.",
+    "incompleteTitle": "Model nie jest jeszcze gotowy do obliczeń",
+    "incompleteDescription": "Wyniki pojawią się, gdy konstrukcja zostanie podparta. Przerywany zarys pokazuje, jak może się jeszcze poruszać.",
     "errors": "Błędy",
     "warnings": "Ostrzeżenia",
+    "incomplete": "Do uzupełnienia",
     "issues": {
       "elementNodeCount": "Element {element} musi odwoływać się do dokładnie 2 węzłów.",
       "elementSameNode": "Element {element} ma ten sam węzeł na obu końcach.",
@@ -423,9 +522,15 @@
       "supportedNodeNotConnected": "Węzeł {node} jest podparty, ale nie łączy się z nim żaden element, więc podpora niczego nie przenosi.",
       "nodeNotConnected": "Węzeł {node} nie jest połączony z żadnym elementem i jest pomijany w obliczeniach.",
       "insufficientSupports": "Aby model był stateczny w analizie 2D, potrzebuje co najmniej 3 podpartych stopni swobody.",
+      "needsSupports": "Konstrukcja potrzebuje podpór, aby można ją było obliczyć.",
       "partUnsupported": "Oddzielna część konstrukcji (węzły {nodes}) ma mniej niż 3 podparte stopnie swobody i może się swobodnie przemieszczać.",
+      "partNeedsSupports": "Część z węzłami {nodes} potrzebuje podpór.",
       "mechanism": "Konstrukcja ma wystarczającą liczbę podpór, ale nie utrzymują jej one: nadal może {motion}. Podpory, które są wszystkie równoległe lub których kierunki działania przecinają się w jednym punkcie, pozwalają konstrukcji się przemieszczać.",
+      "mechanismShort": "Podpory nie utrzymują konstrukcji: nadal może {motion}.",
       "partMechanism": "Oddzielna część konstrukcji (węzły {nodes}) ma wystarczającą liczbę podpór, ale nie utrzymują jej one: nadal może {motion}. Podpory, które są wszystkie równoległe lub których kierunki działania przecinają się w jednym punkcie, pozwalają konstrukcji się przemieszczać.",
+      "partMechanismShort": "Część z węzłami {nodes} nie jest utrzymana: nadal może {motion}.",
+      "hingeMechanism": "Podpory utrzymują konstrukcję, ale nadal jest ona mechanizmem: jej pręty mogą się obracać wokół przegubów w węźle {nodes}. Usuń przegub lub dodaj pręt albo podporę, która zatrzyma ruch.",
+      "hingeMechanismShort": "Przeguby w węźle {nodes} pozwalają konstrukcji się poruszać.",
       "motion": {
         "horizontal": "przesuwać się poziomo",
         "vertical": "przemieszczać się pionowo",
@@ -433,14 +538,16 @@
         "mixed": "przemieszczać się jak ciało sztywne"
       },
       "unstable": "Konstrukcja jest niestateczna – praktycznie bez oporu przemieszcza się: {dofs}. Dodaj podporę lub element, usuń przegub końcowy albo sprawdź sztywność przekroju.",
+      "unstableShort": "Konstrukcja jest niestabilna: porusza się niemal bez oporu.",
       "unstableDof": {
         "dx": "węzeł {node} poziomo (Dx)",
-        "dz": "węzeł {node} pionowo (Dz)",
-        "ry": "węzeł {node} obrotowo (Ry)",
+        "dz": "węzeł {node} pionowo (D{v})",
+        "ry": "węzeł {node} obrotowo (R{r})",
         "other": "węzeł {node} w stopniu swobody {dof}"
       },
       "unstableMore": "{list} i jeszcze {count}",
       "singularMatrix": "Konstrukcja jest mechanizmem: macierz sztywności jest osobliwa. Sprawdź, czy każda część jest utrzymywana przez co najmniej 3 więzy i czy przeguby końcowe nie pozostawiają pręta swobodnie obracającego się.",
+      "singularMatrixShort": "Konstrukcja jest mechanizmem: może się poruszać bez oporu.",
       "solverFailed": "Obliczenia nie powiodły się z powodu wewnętrznej niespójności modelu. Sprawdź odwołania w modelu i obciążenia."
     }
   },
@@ -464,7 +571,8 @@
     "addCrossSectionFirst": "Najpierw dodaj przekrój.",
     "selectMaterialAndCrossSection": "Wybierz materiał i przekrój.",
     "labelInUse": "Etykieta {label} jest już używana.",
-    "noMaterialOrCrossSection": "Element nie ma określonego materiału lub przekroju."
+    "noMaterialOrCrossSection": "Element nie ma określonego materiału lub przekroju.",
+    "elementMissing": "Element {label} już nie istnieje."
   },
   "help": {
     "aria": "Pokaż pomoc",
@@ -476,7 +584,7 @@
     },
     "supports": {
       "title": "Podpory",
-      "body": "Zaznaczenie stopnia swobody odbiera go: Dx i Dz blokują przesuw, Ry obrót. Konstrukcja potrzebuje co najmniej trzech niezależnych więzów."
+      "body": "Zaznaczenie stopnia swobody odbiera go: Dx i D{v} blokują przesuw, R{r} obrót. Konstrukcja potrzebuje co najmniej trzech niezależnych więzów."
     },
     "elements": {
       "title": "Elementy",
@@ -484,7 +592,8 @@
     },
     "loads": {
       "title": "Obciążenia",
-      "body": "Obciążenia działają w węzłach lub wzdłuż elementów. Wartości dodatnie są zgodne z osiami globalnymi, przy czym oś z skierowana jest w dół."
+      "body": "Obciążenia działają w węzłach lub wzdłuż elementów. Wartości dodatnie są zgodne z osiami globalnymi, przy czym oś z skierowana jest w dół.",
+      "bodyYUp": "Obciążenia działają w węzłach lub wzdłuż elementów. Wartości dodatnie są zgodne z osiami globalnymi, przy czym oś y skierowana jest w górę."
     },
     "nodalLoads": {
       "title": "Obciążenia węzłowe",
@@ -508,7 +617,8 @@
     },
     "signConvention": {
       "title": "Konwencja znaków",
-      "body": "Globalna oś z skierowana jest w dół, więc dodatnie Fz lub fz działa w dół, a My jest dodatni przeciwnie do ruchu wskazówek zegara. Obciążenia w układzie lokalnym podążają za elementem."
+      "body": "Globalna oś z skierowana jest w dół, więc dodatnie Fz lub fz działa w dół, a My jest dodatni przeciwnie do ruchu wskazówek zegara. Obciążenia w układzie lokalnym podążają za elementem.",
+      "bodyYUp": "Globalna oś y skierowana jest w górę, więc dodatnie Fy lub fy działa w górę, a Mz jest dodatni przeciwnie do ruchu wskazówek zegara. Obciążenia w układzie lokalnym podążają za elementem."
     },
     "results": {
       "title": "Wyniki",
@@ -516,7 +626,7 @@
     },
     "diagrams": {
       "title": "Wykresy wyników",
-      "body": "Te przełączniki rysują siłę normalną, tnącą, moment zginający, postać odkształconą i reakcje na modelu. N jest dodatnia przy rozciąganiu, My przy rozciąganiu włókien dolnych."
+      "body": "Te przełączniki rysują siłę normalną, tnącą, moment zginający, postać odkształconą i reakcje na modelu. N jest dodatnia przy rozciąganiu, M{r} przy rozciąganiu włókien dolnych."
     },
     "endForces": {
       "title": "Siły końcowe",
@@ -589,6 +699,24 @@
         "title": "Obciążenie termiczne",
         "blurb": "Belka swobodnie podparta o rozpiętości 8 m z równomiernym i nierównomiernym obciążeniem termicznym."
       }
+    }
+  },
+  "recentStructures": {
+    "title": "Ostatnie modele",
+    "instructions": "Ostatnie {count} wyczyszczonych lub zastąpionych modeli jest przechowywanych w tej przeglądarce. Przywrócenie zastępuje bieżący model, a Ctrl+Z go przywraca.",
+    "empty": "Na razie nic tu nie ma. Gdy wyczyścisz model lub otworzysz na nim inny, zostanie on zachowany tutaj.",
+    "restore": "Przywróć",
+    "remove": "Usuń",
+    "counts": "Węzły: {nodes} · Elementy: {elements}",
+    "linkNotice": "Otwarto udostępniony model. Poprzedni znajdziesz w Ostatnich modelach.",
+    "show": "Pokaż",
+    "reasons": {
+      "clear": "Wyczyszczony",
+      "link": "Zastąpiony udostępnionym linkiem",
+      "file": "Zastąpiony otwartym plikiem",
+      "example": "Zastąpiony przykładem",
+      "firstBeam": "Zastąpiony zadaniem „pierwsza belka”",
+      "restore": "Zastąpiony przywróconym modelem"
     }
   }
 }

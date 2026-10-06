@@ -170,9 +170,7 @@ const results = computed(() => {
   const nseg = truss ? 1 : 16;
   const scaleBy = props.deformedShapeMultiplier / props.scale;
   const n1 = props.element.domain.nodes.get(props.element.nodes[0]) as Node;
-  let def = null;
-
-  def = props.element.computeGlobalDefl(props.loadCase, nseg);
+  const def = props.element.computeGlobalDefl(props.loadCase, nseg);
 
   const geo = props.element.computeGeo();
   const cos = geo.dx / geo.l;
@@ -497,7 +495,7 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
           :x="labelAnchorOffset(mv[4])"
           y="0"
           :text-anchor="mv[4]"
-          dominant-baseline="central"
+          dy="0.35em"
         >
           {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }}
         </text>
@@ -508,7 +506,7 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
           :x="labelAnchorOffset(mv[4])"
           y="0"
           :text-anchor="mv[4]"
-          dominant-baseline="central"
+          dy="0.35em"
         >
           {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }}
         </text>
@@ -536,7 +534,7 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
           :x="labelAnchorOffset(mv[4])"
           y="0"
           :text-anchor="mv[4]"
-          dominant-baseline="central"
+          dy="0.35em"
         >
           {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }}
         </text>
@@ -547,7 +545,7 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
           :x="labelAnchorOffset(mv[4])"
           y="0"
           :text-anchor="mv[4]"
-          dominant-baseline="central"
+          dy="0.35em"
         >
           {{ numberFormat.format(Math.abs(mv[2]) < 1e-6 ? 0 : mv[2]) }}
         </text>
@@ -582,7 +580,7 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
           :x="labelAnchorOffset(mv[9])"
           y="0"
           :text-anchor="mv[9]"
-          dominant-baseline="central"
+          dy="0.35em"
           :transform="`translate(${mv[4]} ${mv[5]}) rotate(${mv[8]})`"
         >
           {{ numberFormat.format(Math.abs(mv[6]) < 1e-6 ? 0 : mv[6]) }}
@@ -594,7 +592,7 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
           :x="labelAnchorOffset(mv[9])"
           y="0"
           :text-anchor="mv[9]"
-          dominant-baseline="central"
+          dy="0.35em"
           :transform="`translate(${mv[4]} ${mv[5]}) rotate(${mv[8]})`"
         >
           {{ numberFormat.format(Math.abs(mv[6]) < 1e-6 ? 0 : mv[6]) }}
@@ -643,7 +641,7 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
           :font-size="fontSize / scale"
           font-weight="normal"
           text-anchor="middle"
-          dominant-baseline="central"
+          dy="0.35em"
           :transform="`${elementLabel} rotate(${elementAngle} ${
             (element.domain.nodes.get(element.nodes[0])!.coords[0] +
               element.domain.nodes.get(element.nodes[1])!.coords[0]) /

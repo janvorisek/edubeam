@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { Node, Beam2D, BeamElementUniformEdgeLoad, BeamElementTrapezoidalEdgeLoad } from 'ts-fem';
-import { computed } from 'vue';
+import { BeamElementUniformEdgeLoad, BeamElementTrapezoidalEdgeLoad } from 'ts-fem';
 
 import SVGElementLoadUDL from './ElementLoad/UDL.vue';
 import SVGElementLoadTrapezoidal from './ElementLoad/Trapezoidal.vue';

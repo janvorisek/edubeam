@@ -1,28 +1,33 @@
 # Unités et paramètres
 
-Ouvrez les paramètres via le **bouton ⚙ de la vue → Plus de paramètres**, en cliquant sur la **pastille des unités** en bas à droite de la vue, ou depuis l’onglet **Paramètres** au-dessus de la vue. Les paramètres sont stockés dans le navigateur et survivent aux rechargements ; **Réinitialiser les paramètres** rétablit les valeurs par défaut de l’affichage (langue et unités sont conservées).
+Ouvrez les paramètres via le **bouton ⚙ de la vue → Plus de paramètres**, en cliquant sur la **pastille des unités** en bas à droite de la vue, ou depuis l’onglet **Paramètres** au-dessus de la vue. Les paramètres sont stockés dans le navigateur et survivent aux rechargements ; **Réinitialiser les paramètres** rétablit les valeurs par défaut de l’affichage et les unités de votre région (la langue est conservée).
 
 ## Langue et paramètres régionaux
 
 **Langue** : 11 langues d’interface. Vous pouvez aussi ouvrir l’application avec `?lang=<code>` (`en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`).
 
-**Unités** : chaque grandeur a sa propre unité. Saisies, tableaux, infobulles et étiquettes des diagrammes utilisent l’unité choisie, et changer d’unité convertit ce qui est affiché (le modèle est stocké en SI en interne, un aller-retour ne perd donc rien).
+**Système d’unités** : *SI (métrique)* ou *Américain (impérial)* règle toutes les unités ci-dessous en une seule fois. Si vous changez ensuite une seule unité, le système s’affiche comme *Personnalisé*. À la première visite, EduBeam démarre en unités américaines si le navigateur utilise des paramètres régionaux américains *et* que l’ordinateur se trouve dans un fuseau horaire des États-Unis, et en SI partout ailleurs.
 
-| Grandeur | Choix | Par défaut |
-| --- | --- | --- |
-| Longueur | m, cm, mm, in, ft | m |
-| Aire | m², cm², mm², in², ft² | m² |
-| Moment quadratique | m⁴, cm⁴, mm⁴, in⁴, ft⁴ | m⁴ |
-| Masse | kg, lb | kg |
-| Force | N, kN, MN, lbf, tonf, kgf | kN |
-| Moment fléchissant | Nmm, Nm, kNm, MNm, tonf·m, lbf·in, lbf·ft | kNm |
-| Contrainte (E, G) | Pa, kPa, MPa, GPa, psi, ksc | MPa |
+**Unités** : chaque grandeur a sa propre unité. Saisies, tableaux, infobulles et étiquettes des diagrammes utilisent l’unité choisie, et changer d’unité convertit ce qui est affiché (le modèle est stocké en SI en interne, un aller-retour ne perd donc rien, et un lien partagé ouvre le même modèle dans n’importe quelles unités).
 
-Les charges réparties sont en *force / longueur* dans les unités choisies (kN/m par défaut). Les angles sont toujours en radians, les températures toujours en °C/K.
+| Grandeur | Choix | SI | Américain |
+| --- | --- | --- | --- |
+| Longueur (géométrie) | m, cm, mm, ft, in | m | ft |
+| Dimensions de section | m, cm, mm, ft, in | m | in |
+| Déplacement | m, cm, mm, ft, in | m | in |
+| Aire | m², cm², mm², ft², in² | m² | in² |
+| Moment quadratique | m⁴, cm⁴, mm⁴, ft⁴, in⁴ | m⁴ | in⁴ |
+| Masse | kg, lb | kg | lb |
+| Force | N, kN, MN, kgf, Tonf, lbf, kip | kN | kip |
+| Moment fléchissant | Nmm, Nm, kNm, MNm, Tonf·m, lbf·in, lbf·ft, kip·in, kip·ft | kNm | kip·ft |
+| Contrainte (E, G) | Pa, kPa, MPa, GPa, ksc, psi, ksi, psf, ksf | MPa | ksi |
+| Température | °C, °F | °C | °F |
 
-::: tip Unités impériales
-Choisissez ft (ou in), in², in⁴, lbf et psi selon les besoins : il n’y a pas d’interrupteur « impérial » unique, chaque grandeur se règle séparément.
-:::
+Les charges réparties sont en *force / longueur* dans les unités choisies (kN/m en SI, kip/ft en unités américaines), la densité en *masse / longueur³*. Le coefficient de dilatation thermique suit l’unité de température (1/K ou 1/°F). Les charges thermiques sont des *variations* de température, donc 10 °C valent 18 °F. Les rotations sont toujours en radians.
+
+Tonf est la tonne-force métrique (1000 kgf), pas la « short ton » américaine. Les unités américaines sont converties avec leurs définitions exactes (1 ft = 0,3048 m, 1 kip = 4448,2216 N).
+
+**Système de coordonnées** — *x vers la droite, z vers le bas* (par défaut) ou *x vers la droite, y vers le haut*. L'option y vers le haut inverse le signe des valeurs verticales et des angles d'appui et renomme les axes dans toutes les saisies, tableaux, info-bulles et exports ; le modèle et les fichiers enregistrés ne changent pas. Voir [Axe y vers le haut](/fr/elements/conventions#y-up-axes).
 
 ## Paramètres d’affichage
 
@@ -31,7 +36,7 @@ Un **Aperçu** en haut montre un petit modèle qui réagit à chaque changement.
 **Grille**
 - **Afficher la grille** (<kbd>G</kbd>) : dessine la grille et les règles.
 - **Magnétisme à la grille** (<kbd>S</kbd>) : les nœuds placés ou déplacés à la souris se calent sur le pas.
-- **Pas de magnétisme de la grille** : espacement en mètres (0,1 par défaut).
+- **Pas de magnétisme de la grille** : espacement dans l’unité de longueur (0,1 m par défaut, ou 0,5 ft en unités américaines). En passant des unités métriques aux unités américaines ou inversement, un pas resté à sa valeur par défaut prend la valeur par défaut de l’autre système ; un pas que vous avez réglé vous-même est conservé. Les règles comptent aussi dans l’unité de longueur ; en pieds, les règles et le réticule affichent pieds et pouces (5′-6″), tandis que les saisies et les tableaux restent en pieds décimaux (5,5).
 
 **Étiquettes de résultats**
 - **Orientation des étiquettes de résultats** : *Perpendiculaires au diagramme* (les étiquettes suivent le diagramme) ou *Toujours horizontales*.

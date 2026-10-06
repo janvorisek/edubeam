@@ -1,61 +1,47 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed } from 'vue';
+import type { Matrix } from 'mathjs';
 import { useProjectStore } from '../store/project';
-import { watch } from 'vue';
 
 const projStore = useProjectStore();
 
 const props = defineProps<{
-  label: string;
+  label: string | number;
 }>();
 
-const size = ref(0);
-
-const update = () => {
-  if (!elementHasMaterialAndCS.value) return;
-
-  const el = projStore.solver.domain.getElement(props.label);
-
-  if (!el) return;
-
-  size.value = el.computeStiffness().size()[0];
-};
-
-onMounted(() => {
-  update();
-});
-
-watch(projStore.solver, () => {
-  update();
-});
+/**
+ * The widget stays open while the model changes under it, so the element it was opened for can be
+ * deleted or renamed. Look it up without `getElement`, which throws for a missing label.
+ */
+const element = computed(() => projStore.solver.domain.elements.get(String(props.label)));
 
 const elementHasMaterialAndCS = computed(() => {
-  const el = projStore.solver.domain.getElement(props.label);
-
+  const el = element.value;
   if (!el) return false;
 
-  const mat = projStore.solver.domain.materials.get(el.mat);
-  const cs = projStore.solver.domain.crossSections.get(el.cs);
+  const { materials, crossSections } = projStore.solver.domain;
 
-  if (!mat || !cs) return false;
-
-  return true;
+  return materials.has(String(el.mat)) && crossSections.has(String(el.cs));
 });
+
+const stiffness = computed(() =>
+  elementHasMaterialAndCS.value ? ((element.value.computeStiffness() as Matrix).toArray() as number[][]) : []
+);
 </script>
 
 <template>
   <div class="fill-height" style="overflow: auto">
-    <v-table v-if="elementHasMaterialAndCS" class="border-t text-right" density="compact">
+    <div v-if="!element" class="pa-3">{{ $t('warnings.elementMissing', { label: String(props.label) }) }}</div>
+    <v-table v-else-if="elementHasMaterialAndCS" class="border-t text-right" density="compact">
       <tbody>
-        <tr v-for="i in size">
-          <td v-for="j in size" :class="{ 'bg-grey-lighten-3 font-weight-medium': i === j }" class="px-1">
-            {{
-              projStore.solver.domain.elements
-                .get(props.label as number)
-                .computeStiffness()
-                .get([i - 1, j - 1])
-                .toExponential(2)
-            }}
+        <tr v-for="(row, i) in stiffness" :key="i">
+          <td
+            v-for="(value, j) in row"
+            :key="j"
+            :class="{ 'bg-grey-lighten-3 font-weight-medium': i === j }"
+            class="px-1"
+          >
+            {{ value.toExponential(2) }}
           </td>
         </tr>
       </tbody>

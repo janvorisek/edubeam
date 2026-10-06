@@ -46,6 +46,20 @@ Lokalna oś **x** biegnie od węzła początkowego do końcowego; lokalna oś **
 
 Reakcja istnieje dla każdego zablokowanego stopnia swobody i jest podawana w układzie współrzędnych węzła (obróconym o kąt lokalnego układu węzła, jeśli został ustawiony). Strzałki reakcji w widoku wskazują kierunek, w jakim podpora działa na konstrukcję.
 
+## Oś y w górę {#y-up-axes}
+
+**Ustawienia → Układ współrzędnych → x w prawo, y w górę** przełącza wszystko, co wpisujesz i odczytujesz, na układ podręcznikowy: **x** w prawo, **y** w górę i **z** w stronę obserwatora. Model, zapisane pliki i rysunek pozostają takie same; zmieniają się tylko liczby i nazwy:
+
+| Wielkość | z w dół (domyślnie) | y w górę |
+| --- | --- | --- |
+| Współrzędna pionowa | `Z` | `Y`, przeciwny znak |
+| Pionowe obciążenia, przemieszczenia, reakcje, siły przywęzłowe | `Fz`, `fz`, `Dz`, `Z12`… | `Fy`, `fy`, `Dy`, `Y12`…, przeciwny znak |
+| Obroty i momenty | `Ry`, `My` | `Rz`, `Mz`, ten sam znak (dodatnie przeciwnie do ruchu wskazówek zegara) |
+| Kąt podpory α | mierzony zgodnie z ruchem wskazówek zegara | mierzony przeciwnie do ruchu wskazówek zegara, przeciwny znak |
+| Siły wewnętrzne N, V, M | | bez zmian, wykresy rysowane tak samo |
+
+Obciążenie grawitacyjne to więc **ujemne** `fy`, a wierzchołek słupa o wysokości 3 m ma `Y = 3`.
+
 ## Jednostki
 
 Solver pracuje wewnętrznie w SI (m, N, Pa, rad, K). Jednostki wyświetlania wpływają tylko na to, co wpisujesz i odczytujesz; ich zmiana nigdy nie zmienia modelu.

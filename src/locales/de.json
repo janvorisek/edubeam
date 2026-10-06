@@ -54,6 +54,17 @@
     "defineSupports": "Knotenlagerung",
     "lcsAngle": "Knoten-LKS-Winkel"
   },
+  "supports": {
+    "free": "Frei",
+    "pin": "Festlager",
+    "roller": "Loslager",
+    "verticalRoller": "Vertikales Loslager",
+    "slider": "Parallelführung",
+    "verticalSlider": "Vertikale Parallelführung",
+    "rotation": "Nur Verdrehung gehalten",
+    "fixed": "Einspannung",
+    "custom": "Benutzerdefiniert"
+  },
   "elements": {
     "addElement": "Element hinzufügen",
     "editElement": "Element bearbeiten",
@@ -114,6 +125,10 @@
     "results_scale": "Ergebnisskalierung",
     "grid_snap_step": "Raster-Schrittweite",
     "snap_to_grid": "Am Raster ausrichten",
+    "show_crosshair": "Fadenkreuz anzeigen",
+    "model_checks": "Modellprüfung",
+    "show_mechanisms": "Zeigen, wie sich eine instabile Struktur bewegen kann",
+    "animate_mechanisms": "Bewegung animieren",
     "number_format": "Zahlenformat",
     "number_format_description": "Wie Ergebniswerte geschrieben werden; das Dezimaltrennzeichen folgt der Sprache.",
     "number_format_auto": "Automatisch",
@@ -134,7 +149,14 @@
       "moment": "Biegemoment",
       "pressure": "Druck",
       "area": "Fläche",
-      "areaM2": "Flächenträgheitsmoment"
+      "areaM2": "Flächenträgheitsmoment",
+      "system": "Einheitensystem",
+      "systemSI": "SI (metrisch)",
+      "systemUS": "US-amerikanisch (imperial)",
+      "systemCustom": "Benutzerdefiniert",
+      "temperature": "Temperatur",
+      "sectionLength": "Querschnittsabmessungen",
+      "displacement": "Verschiebung"
     },
     "grid": "Raster",
     "show_grid": "Raster anzeigen",
@@ -159,6 +181,10 @@
     "viewer_preview": "Vorschau",
     "language_description": "Wählen Sie Ihre bevorzugte Sprache für die Benutzeroberfläche.",
     "units_description": "Wählen Sie Ihre bevorzugten Maßeinheiten.",
+    "axisConvention": "Koordinatensystem",
+    "axisConvention_description": "In welche Richtung die vertikale Achse bei Eingaben und Ergebnissen zeigt. Modell und gespeicherte Dateien bleiben unverändert.",
+    "axisConvention_zDown": "x nach rechts, z nach unten",
+    "axisConvention_yUp": "x nach rechts, y nach oben",
     "reset_settings": "Einstellungen zurücksetzen",
     "sizes": {
       "sizes": "Größen",
@@ -182,6 +208,7 @@
   "viewer": {
     "toggleGrid": "Raster ein/aus (G)",
     "toggleSnap": "Am Raster ausrichten ein/aus (S)",
+    "toggleCrosshair": "Fadenkreuz ein/aus",
     "boxSelect": "Rechteckauswahl",
     "centerContent": "Inhalt zentrieren",
     "fitContent": "Inhalt an Bildschirm anpassen",
@@ -213,7 +240,7 @@
     "addNode": {
       "addNewNode": "Neuen Knoten hinzufügen",
       "coordinate_x": "X-Koordinate",
-      "coordinate_z": "Z-Koordinate",
+      "coordinate_z": "{v}-Koordinate",
       "addNode": "Knoten hinzufügen"
     },
     "common": {
@@ -315,7 +342,10 @@
       "shape": "Form",
       "noShape": "Keine polygonale Form",
       "centroidal": "Schwerachse",
-      "centroidalNote": "Alle Flächenträgheitsmomente beziehen sich auf Achsen durch den Schwerpunkt; I₁, I₂ sind die Hauptträgheitsmomente, α ist der Winkel von der y-Achse zur Achse 1."
+      "centroidalNote": "Alle Flächenträgheitsmomente beziehen sich auf Achsen durch den Schwerpunkt; I₁, I₂ sind die Hauptträgheitsmomente, α ist der Winkel von der y-Achse zur Achse 1.",
+      "outOfPlaneNote": "Der Querschnitt ist nicht symmetrisch zur Rahmenebene. Eine 2D-Berechnung ist nur dann exakt, wenn der Stab über seine ganze Länge gegen seitliches Ausweichen (aus dem Bildschirm) und Verdrehen gehalten ist, z. B. durch eine Platte oder eng liegende Aussteifungen; Lager in den Knoten allein genügen nicht. Ein freier Stab verdreht sich zusätzlich, weil die Lasten nicht im Schubmittelpunkt angreifen, und diese Verdrehung ist in den Verformungen nicht enthalten.",
+      "outOfPlaneRestrained": "Über die Länge seitlich und gegen Verdrehen gehalten: {inertia}",
+      "outOfPlaneFree": "Seitlich frei verformbar (Verdrehung weiterhin nicht berücksichtigt): {inertia}"
     }
   },
   "tooltip": {
@@ -342,8 +372,14 @@
     "copyFailed": "Automatisches Kopieren war nicht möglich. Bitte verwenden Sie Ihre Tastenkürzel."
   },
   "tour": {
-    "startTour": "Tour starten",
-    "skipTour": "Vorerst überspringen",
+    "menu": {
+      "title": "Menü",
+      "description": "Projekte öffnen, speichern und teilen, ein Bild exportieren, ein Beispiel laden oder diesen Rundgang bzw. die Aufgabe zum ersten Träger erneut starten."
+    },
+    "undoRedo": {
+      "title": "Rückgängig und Wiederholen",
+      "description": "Gehen Sie in Ihren Änderungen zurück und vor. Strg+Z und Strg+Umschalt+Z tun dasselbe."
+    },
     "viewerControls": {
       "title": "Viewer-Schaltflächen",
       "description": "Mit den Viewer-Steuerelementen können Sie die Struktur zentrieren, an den Bildschirm anpassen und auswählen, was angezeigt wird."
@@ -352,21 +388,75 @@
       "title": "Anzeigeoptionen anpassen",
       "description": "Wählen Sie, was angezeigt werden soll – Normalkraft, Querkraft, Biegemoment, verformte Form oder alles zusammen."
     },
+    "gridUnits": {
+      "title": "Raster, Fangen und Einheiten",
+      "description": "G zeigt das Raster, S fängt neue Knoten daran. Klicken Sie auf die Einheiten, um sie, die Sprache oder das Koordinatensystem zu ändern."
+    },
     "bottomBar": {
       "title": "Entitäten hinzufügen, entfernen und bearbeiten",
       "description": "Der zentrale Bereich, in dem Sie jeden Aspekt Ihrer Struktur bearbeiten können – von Knoten und Elementen bis zu Lasten, Materialien und Querschnitten."
     },
+    "help": {
+      "title": "Hilfe",
+      "description": "Das ? erklärt den geöffneten Reiter. Das ? neben einer Spaltenüberschrift erklärt diese Spalte."
+    },
     "previousButton": "Zurück",
     "nextButton": "Weiter",
-    "finishButton": "Fertig"
+    "finishButton": "Fertig",
+    "close": "Rundgang schließen"
+  },
+  "firstBeam": {
+    "title": "Ihr erster Balken",
+    "step": "Schritt {n} von {total}",
+    "close": "Anleitung schließen",
+    "finish": "Fertig",
+    "next": "Weiter",
+    "steps": {
+      "tool": {
+        "title": "Werkzeug wählen",
+        "body": "Drücken Sie unten im Reiter {elementsTab} die Schaltfläche {addElement} mit dem Mauszeiger-Symbol."
+      },
+      "draw": {
+        "title": "Balken zeichnen",
+        "body": "Klicken Sie auf den Anfang des Balkens und dann auf sein Ende. Die Enden rasten am Raster ein."
+      },
+      "supports": {
+        "title": "Balken lagern",
+        "body": "Klicken Sie auf das linke Ende, öffnen Sie {defineSupports} und aktivieren Sie Dx und D{v} für ein Festlager. Klicken Sie dann auf das rechte Ende und aktivieren Sie D{v} für ein Loslager."
+      },
+      "load": {
+        "title": "Balken belasten",
+        "body": "Klicken Sie auf den Balken, wählen Sie {addLoad}, geben Sie einen Wert bei f{v} ein und bestätigen Sie."
+      },
+      "display": {
+        "title": "Anzeige wählen",
+        "body": "Das Zahnrad oben rechts öffnet die Anzeigeoptionen: Schnittgrößen, Verformungsfigur, Auflagerreaktionen und mehr. Öffnen Sie es jetzt."
+      },
+      "fit": {
+        "title": "An den Bildschirm anpassen",
+        "body": "Die Schaltflächen oben rechts passen das Modell an den Bildschirm an oder zentrieren es. Drücken Sie jetzt auf Anpassen – und immer dann, wenn die Zeichnung aus dem Blick gerät."
+      },
+      "results": {
+        "title": "Ergebnisse ablesen",
+        "body": "Biegemoment und Verformungsfigur sind am Balken gezeichnet und ändern sich bei jeder Bearbeitung. Alle Knoten, Elemente und Lasten stehen auch in den Tabellen unten, wo Sie genaue Werte eingeben können. {undo} holt Ihr vorheriges Modell zurück."
+      }
+    }
   },
   "welcome": {
     "title": "Willkommen bei <span class=\"edubeam\">edubeam</span>! 🚀",
-    "description": "Damit Sie schnell starten können, haben wir eine kurze Einführungstour vorbereitet, die Sie durch die wichtigsten Funktionen unseres Programms führt."
+    "description": "Modellieren Sie Balken, Rahmen und Fachwerke und sehen Sie die Schnittgrößen schon beim Zeichnen.",
+    "start": "Wie möchten Sie beginnen?",
+    "showAround": "Rundgang starten",
+    "showAroundHint": "Ein kurzer Blick auf die Ansicht, die Anzeigeoptionen und die untere Leiste.",
+    "drawFirstBeam": "Ersten Balken zeichnen",
+    "drawFirstBeamHint": "Eine kurze Anleitung: Balken zeichnen, lagern und belasten.",
+    "openExample": "Beispiel öffnen",
+    "openExampleHint": "Mit einem fertigen Modell beginnen und es anpassen.",
+    "skip": "Vorerst überspringen"
   },
   "confirmation": {
     "clearMesh": {
-      "message": "Möchten Sie das Modell wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "message": "Möchten Sie das Modell wirklich löschen? Mit Ctrl+Z erhalten Sie es zurück, und es bleibt unter „Zuletzt verwendete Modelle“.",
       "title": "Modell löschen?",
       "materials": "Materialien löschen",
       "crossSections": "Querschnitte löschen"
@@ -394,6 +484,7 @@
     "enterValue": "Wert eingeben",
     "invalidNumber": "Ungültige Zahl",
     "positiveNumber": "Geben Sie eine Zahl größer als null ein",
+    "between": "Geben Sie einen Wert zwischen {min} und {max} ein",
     "sameNodes": "Ein Element muss zwei verschiedene Knoten verbinden",
     "materialInUse": "Das Material wird von Element(en) {elements} verwendet. Weisen Sie diesen vor dem Löschen ein anderes zu.",
     "crossSectionInUse": "Der Querschnitt wird von Element(en) {elements} verwendet. Weisen Sie diesen vor dem Löschen einen anderen zu."
@@ -401,14 +492,22 @@
   "solveDiagnostics": {
     "summaryErrors": "Fehler im Modell: {errors}",
     "summaryWarnings": "Warnungen im Modell: {warnings}",
-    "summaryBoth": "Fehler im Modell: {errors}, Warnungen: {warnings}",
+    "summaryIncomplete": "{count} Teile der Struktur brauchen Lager.",
+    "incompleteChip": "Lager fehlen",
+    "hideMotion": "Bewegung ausblenden",
+    "showMotion": "Bewegung anzeigen",
+    "dismissWarnings": "Diese Warnungen ausblenden",
+    "collapseErrors": "Diese Meldung verkleinern",
     "showDetails": "Details anzeigen",
     "blockedTitle": "Modell kann nicht berechnet werden",
     "blockedDescription": "Beheben Sie die aufgeführten Fehler, bevor Sie das Modell berechnen.",
     "warningsTitle": "Warnungen zum Modell",
     "warningsDescription": "Das Modell wurde berechnet, es wurden jedoch folgende Warnungen festgestellt.",
+    "incompleteTitle": "Noch nicht berechenbar",
+    "incompleteDescription": "Ergebnisse erscheinen, sobald die Struktur gehalten wird. Die gestrichelte Kontur zeigt, wie sie sich noch bewegen kann.",
     "errors": "Fehler",
     "warnings": "Warnungen",
+    "incomplete": "Noch erforderlich",
     "issues": {
       "elementNodeCount": "Element {element} muss genau 2 Knoten referenzieren.",
       "elementSameNode": "Element {element} referenziert an beiden Enden denselben Knoten.",
@@ -423,9 +522,15 @@
       "supportedNodeNotConnected": "Knoten {node} ist gelagert, aber mit keinem Element verbunden, daher trägt das Lager nichts.",
       "nodeNotConnected": "Knoten {node} ist mit keinem Element verbunden und wird bei der Berechnung ignoriert.",
       "insufficientSupports": "Für die Stabilität in der ebenen Berechnung braucht das Modell mindestens 3 gelagerte Freiheitsgrade.",
+      "needsSupports": "Die Struktur braucht Lager, bevor sie berechnet werden kann.",
       "partUnsupported": "Ein separater Teil der Struktur (Knoten {nodes}) hat weniger als 3 gelagerte Freiheitsgrade und kann sich frei bewegen.",
+      "partNeedsSupports": "Der Teil mit den Knoten {nodes} braucht Lager.",
       "mechanism": "Die Struktur hat genügend Lager, die sie aber nicht festhalten: Sie kann sich noch {motion}. Lager, die alle parallel sind oder deren Wirkungslinien sich in einem Punkt schneiden, lassen die Struktur beweglich.",
+      "mechanismShort": "Die Lager halten die Struktur nicht: Sie kann sich noch {motion}.",
       "partMechanism": "Ein separater Teil der Struktur (Knoten {nodes}) hat genügend Lager, die ihn aber nicht festhalten: Er kann sich noch {motion}. Lager, die alle parallel sind oder deren Wirkungslinien sich in einem Punkt schneiden, lassen die Struktur beweglich.",
+      "partMechanismShort": "Der Teil mit den Knoten {nodes} wird nicht gehalten: Er kann sich noch {motion}.",
+      "hingeMechanism": "Die Lager halten die Struktur, sie ist aber trotzdem ein Mechanismus: Ihre Stäbe können sich um die Gelenke am Knoten {nodes} drehen. Entfernen Sie ein Gelenk oder fügen Sie einen Stab oder ein Lager hinzu, das die Bewegung verhindert.",
+      "hingeMechanismShort": "Die Gelenke am Knoten {nodes} lassen die Struktur sich bewegen.",
       "motion": {
         "horizontal": "horizontal verschieben",
         "vertical": "vertikal verschieben",
@@ -433,14 +538,16 @@
         "mixed": "als starrer Körper bewegen"
       },
       "unstable": "Die Struktur ist instabil. Praktisch ohne Widerstand beweglich: {dofs}. Fügen Sie ein Lager oder ein Element hinzu, entfernen Sie ein Endgelenk oder prüfen Sie die Steifigkeit des Querschnitts.",
+      "unstableShort": "Die Struktur ist instabil: Sie bewegt sich fast ohne Widerstand.",
       "unstableDof": {
         "dx": "Knoten {node} horizontal (Dx)",
-        "dz": "Knoten {node} vertikal (Dz)",
-        "ry": "Knoten {node} in Verdrehung (Ry)",
+        "dz": "Knoten {node} vertikal (D{v})",
+        "ry": "Knoten {node} in Verdrehung (R{r})",
         "other": "Knoten {node} im Freiheitsgrad {dof}"
       },
       "unstableMore": "{list} und {count} weitere",
       "singularMatrix": "Die Struktur ist kinematisch: Die Steifigkeitsmatrix ist singulär. Prüfen Sie, ob jeder Teil durch mindestens 3 Bindungen gehalten wird und ob Endgelenke keinen Stab frei drehbar lassen.",
+      "singularMatrixShort": "Die Struktur ist ein Mechanismus: Sie kann sich ohne Widerstand bewegen.",
       "solverFailed": "Die Berechnung ist wegen einer internen Inkonsistenz des Modells fehlgeschlagen. Bitte überprüfen Sie die Referenzen und Lasten im Modell."
     }
   },
@@ -464,7 +571,8 @@
     "addCrossSectionFirst": "Bitte fügen Sie zuerst einen Querschnitt hinzu.",
     "selectMaterialAndCrossSection": "Bitte wählen Sie ein Material und einen Querschnitt aus.",
     "labelInUse": "Die Bezeichnung {label} ist bereits vergeben.",
-    "noMaterialOrCrossSection": "Für das Element ist kein Material oder Querschnitt angegeben."
+    "noMaterialOrCrossSection": "Für das Element ist kein Material oder Querschnitt angegeben.",
+    "elementMissing": "Element {label} existiert nicht mehr."
   },
   "help": {
     "aria": "Hilfe anzeigen",
@@ -476,7 +584,7 @@
     },
     "supports": {
       "title": "Lager",
-      "body": "Ein angehakter Freiheitsgrad wird festgehalten: Dx und Dz sperren die Verschiebung, Ry die Verdrehung. Eine Struktur braucht mindestens drei unabhängige Bindungen."
+      "body": "Ein angehakter Freiheitsgrad wird festgehalten: Dx und D{v} sperren die Verschiebung, R{r} die Verdrehung. Eine Struktur braucht mindestens drei unabhängige Bindungen."
     },
     "elements": {
       "title": "Elemente",
@@ -484,7 +592,8 @@
     },
     "loads": {
       "title": "Lasten",
-      "body": "Lasten wirken in Knoten oder entlang der Elemente. Positive Werte folgen den globalen Achsen, wobei z nach unten zeigt."
+      "body": "Lasten wirken in Knoten oder entlang der Elemente. Positive Werte folgen den globalen Achsen, wobei z nach unten zeigt.",
+      "bodyYUp": "Lasten wirken in Knoten oder entlang der Elemente. Positive Werte folgen den globalen Achsen, wobei y nach oben zeigt."
     },
     "nodalLoads": {
       "title": "Knotenlasten",
@@ -508,7 +617,8 @@
     },
     "signConvention": {
       "title": "Vorzeichenkonvention",
-      "body": "Die globale z-Achse zeigt nach unten, ein positives Fz oder fz wirkt also nach unten; My ist gegen den Uhrzeigersinn positiv. Lasten im lokalen System folgen dem Element."
+      "body": "Die globale z-Achse zeigt nach unten, ein positives Fz oder fz wirkt also nach unten; My ist gegen den Uhrzeigersinn positiv. Lasten im lokalen System folgen dem Element.",
+      "bodyYUp": "Die globale y-Achse zeigt nach oben, ein positives Fy oder fy wirkt also nach oben; Mz ist gegen den Uhrzeigersinn positiv. Lasten im lokalen System folgen dem Element."
     },
     "results": {
       "title": "Ergebnisse",
@@ -516,7 +626,7 @@
     },
     "diagrams": {
       "title": "Ergebnisdarstellung",
-      "body": "Diese Schalter zeichnen Normalkraft, Querkraft, Biegemoment, verformte Figur und Auflagerkräfte über dem Modell. N ist im Zug positiv, My bei Zug an der Unterseite."
+      "body": "Diese Schalter zeichnen Normalkraft, Querkraft, Biegemoment, verformte Figur und Auflagerkräfte über dem Modell. N ist im Zug positiv, M{r} bei Zug an der Unterseite."
     },
     "endForces": {
       "title": "Endkräfte",
@@ -589,6 +699,24 @@
         "title": "Temperaturlast",
         "blurb": "Einfeldträger mit 8 m Spannweite unter gleichmäßiger und ungleichmäßiger Temperaturlast."
       }
+    }
+  },
+  "recentStructures": {
+    "title": "Zuletzt verwendete Modelle",
+    "instructions": "Die letzten {count} gelöschten oder ersetzten Modelle werden in diesem Browser aufbewahrt. Beim Wiederherstellen wird das aktuelle Modell ersetzt; mit Ctrl+Z erhalten Sie es zurück.",
+    "empty": "Noch nichts vorhanden. Wenn Sie ein Modell löschen oder ein anderes darüber öffnen, wird es hier aufbewahrt.",
+    "restore": "Wiederherstellen",
+    "remove": "Entfernen",
+    "counts": "Knoten: {nodes} · Elemente: {elements}",
+    "linkNotice": "Geteiltes Modell geöffnet. Ihr vorheriges finden Sie unter „Zuletzt verwendete Modelle“.",
+    "show": "Anzeigen",
+    "reasons": {
+      "clear": "Gelöscht",
+      "link": "Durch geteilten Link ersetzt",
+      "file": "Durch geöffnete Datei ersetzt",
+      "example": "Durch ein Beispiel ersetzt",
+      "firstBeam": "Durch die Aufgabe „Erster Balken“ ersetzt",
+      "restore": "Durch wiederhergestelltes Modell ersetzt"
     }
   }
 }

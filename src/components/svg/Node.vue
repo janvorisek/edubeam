@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Matrix, inv, multiply } from 'mathjs';
+import { Matrix, multiply } from 'mathjs';
 import { Node, DofID, LoadCase } from 'ts-fem';
 import { computed } from 'vue';
 
@@ -237,7 +237,7 @@ const getSupportAngle = (node: Node) => {
   return Math.atan2(lx[2], lx[0]) * (180 / Math.PI);
 };
 
-const getRotSupportAngle = (node: Node, dof: DofID) => {
+const getRotSupportAngle = (node: Node) => {
   if (!node.hasLcs()) return 0;
 
   const angle = getSupportAngle(node);
@@ -322,7 +322,7 @@ const emit = defineEmits(['nodemousemove', 'nodepointerdown', 'nodepointerup', '
       points="0,0 0.0001,0.0001"
       class="decoration marker-reaction"
       :transform="`translate(${node.coords[0]} ${node.coords[2]}) rotate(${
-        (Math.sign(getReaction(node, DofID.Dz)) >= 0 ? 0 : 180) + getRotSupportAngle(node, DofID.Dz)
+        (Math.sign(getReaction(node, DofID.Dz)) >= 0 ? 0 : 180) + getRotSupportAngle(node)
       })`"
     />
 
@@ -357,7 +357,7 @@ const emit = defineEmits(['nodemousemove', 'nodepointerdown', 'nodepointerup', '
       points="0,0 0.0001,0.0001"
       class="decoration marker-reaction"
       :transform="`translate(${node.coords[0]} ${node.coords[2]}) rotate(${
-        -90 * Math.sign(getReaction(node, DofID.Dx)) + getRotSupportAngle(node, DofID.Dx)
+        -90 * Math.sign(getReaction(node, DofID.Dx)) + getRotSupportAngle(node)
       })`"
     />
 
@@ -448,7 +448,7 @@ const emit = defineEmits(['nodemousemove', 'nodepointerdown', 'nodepointerup', '
         :font-size="fontSize / scale"
         font-weight="normal"
         text-anchor="middle"
-        dominant-baseline="central"
+        dy="0.35em"
       >
         {{ node.label }}
       </text>

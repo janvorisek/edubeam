@@ -1,28 +1,33 @@
 # Jednotky a nastavení
 
-Nastavení otevřete tlačítkem **⚙ v zobrazení → Všechna nastavení**, kliknutím na **štítek jednotek** v pravém dolním rohu zobrazení nebo záložkou **Nastavení** nad zobrazením. Nastavení se ukládá v prohlížeči a přežije obnovení stránky; **Obnovit výchozí nastavení** vrátí výchozí hodnoty zobrazení (jazyk a jednotky zůstanou).
+Nastavení otevřete tlačítkem **⚙ v zobrazení → Všechna nastavení**, kliknutím na **štítek jednotek** v pravém dolním rohu zobrazení nebo záložkou **Nastavení** nad zobrazením. Nastavení se ukládá v prohlížeči a přežije obnovení stránky; **Obnovit výchozí nastavení** vrátí výchozí hodnoty zobrazení a jednotky vašeho regionu (jazyk zůstane).
 
 ## Jazyk a prostředí
 
 **Jazyk** – 11 jazyků rozhraní. Aplikaci lze otevřít i s parametrem `?lang=<kód>` (`en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`).
 
-**Jednotky** – každá veličina má vlastní jednotku. Vstupy, tabulky, popisky i hodnoty v průbězích používají zvolenou jednotku a změna jednotky přepočítá, co je zobrazeno (model se interně ukládá v SI, takže přepínáním nic neztratíte).
+**Soustava jednotek** – *SI (metrická)* nebo *Americká (imperiální)* nastaví všechny jednotky níže jedním krokem. Jakmile pak změníte kteroukoli jednotlivou jednotku, soustava se zobrazí jako *Vlastní*. Při první návštěvě začne EduBeam v amerických jednotkách, pokud je prohlížeč nastaven na americké národní prostředí *a* počítač je v americkém časovém pásmu; všude jinde začne v SI.
 
-| Veličina | Možnosti | Výchozí |
-| --- | --- | --- |
-| Délka | m, cm, mm, in, ft | m |
-| Plocha | m², cm², mm², in², ft² | m² |
-| Moment setrvačnosti | m⁴, cm⁴, mm⁴, in⁴, ft⁴ | m⁴ |
-| Hmotnost | kg, lb | kg |
-| Síla | N, kN, MN, lbf, tonf, kgf | kN |
-| Ohybový moment | Nmm, Nm, kNm, MNm, tonf·m, lbf·in, lbf·ft | kNm |
-| Napětí (E, G) | Pa, kPa, MPa, GPa, psi, ksc | MPa |
+**Jednotky** – každá veličina má vlastní jednotku. Vstupy, tabulky, popisky i hodnoty v průbězích používají zvolenou jednotku a změna jednotky přepočítá, co je zobrazeno (model se interně ukládá v SI, takže přepínáním nic neztratíte a sdílený odkaz otevře stejný model v jakýchkoli jednotkách).
 
-Spojitá zatížení používají *sílu / délku* ve zvolených jednotkách (výchozí kN/m). Úhly jsou vždy v radiánech, teploty vždy ve °C/K.
+| Veličina | Možnosti | SI | Americká |
+| --- | --- | --- | --- |
+| Délka (geometrie) | m, cm, mm, ft, in | m | ft |
+| Rozměry průřezu | m, cm, mm, ft, in | m | in |
+| Posun | m, cm, mm, ft, in | m | in |
+| Plocha | m², cm², mm², ft², in² | m² | in² |
+| Moment setrvačnosti | m⁴, cm⁴, mm⁴, ft⁴, in⁴ | m⁴ | in⁴ |
+| Hmotnost | kg, lb | kg | lb |
+| Síla | N, kN, MN, kgf, Tonf, lbf, kip | kN | kip |
+| Ohybový moment | Nmm, Nm, kNm, MNm, Tonf·m, lbf·in, lbf·ft, kip·in, kip·ft | kNm | kip·ft |
+| Napětí (E, G) | Pa, kPa, MPa, GPa, ksc, psi, ksi, psf, ksf | MPa | ksi |
+| Teplota | °C, °F | °C | °F |
 
-::: tip Imperiální jednotky
-Zvolte ft (nebo in), in², in⁴, lbf a psi podle potřeby – jediný „imperiální“ přepínač neexistuje, každá veličina se nastavuje zvlášť.
-:::
+Spojitá zatížení používají *sílu / délku* ve zvolených jednotkách (kN/m v SI, kip/ft v amerických jednotkách), hustota *hmotnost / délku³*. Součinitel teplotní roztažnosti se řídí jednotkou teploty (1/K nebo 1/°F). Teplotní zatížení jsou *změny* teploty, takže 10 °C odpovídá 18 °F. Pootočení jsou vždy v radiánech.
+
+Tonf je metrická tuna-síla (1000 kgf), ne americká krátká tuna (short ton). Americké jednotky se převádějí podle přesných definic (1 ft = 0,3048 m, 1 kip = 4448,2216 N).
+
+**Souřadnicový systém** – *x doprava, z dolů* (výchozí) nebo *x doprava, y nahoru*. Volba y nahoru obrací znaménko svislých hodnot a úhlů podpor a přejmenuje osy ve všech vstupech, tabulkách, popiscích i exportu; model ani uložené soubory se nemění. Viz [Osa y nahoru](/cs/elements/conventions#y-up-axes).
 
 ## Nastavení zobrazení
 
@@ -31,7 +36,7 @@ Zvolte ft (nebo in), in², in⁴, lbf a psi podle potřeby – jediný „imperi
 **Mřížka**
 - **Zobrazit mřížku** (<kbd>G</kbd>) – vykreslí mřížku a pravítka.
 - **Přichytávat k mřížce** (<kbd>S</kbd>) – uzly umístěné či přetažené myší se přichytí ke kroku mřížky.
-- **Krok příchytu k mřížce** – rozteč v metrech (výchozí 0,1).
+- **Krok příchytu k mřížce** – rozteč v jednotce délky (výchozí 0,1 m, v amerických jednotkách 0,5 ft). Při přepnutí mezi metrickými a americkými jednotkami se krok ponechaný na výchozí hodnotě změní na výchozí hodnotu druhé soustavy; krok, který jste nastavili sami, zůstane. Pravítka také počítají v jednotce délky; ve stopách ukazují pravítka i zaměřovací kříž stopy a palce (5′-6″), zatímco vstupy a tabulky zůstávají v desetinných stopách (5,5).
 
 **Popisky výsledků**
 - **Orientace popisků výsledků** – *Kolmo k vykreslení grafu* (popisky sledují průběh) nebo *Vždy vodorovně*.

@@ -18,11 +18,9 @@ import Widget from '@/components/Widget.vue';
 
 import { onMounted, onUnmounted, ref, computed } from 'vue';
 import { useAppStore } from '@/store/app';
-import { useProjectStore } from '@/store/project';
 import { useLayoutStore } from '@/store/layout';
 
 const appStore = useAppStore();
-const projectStore = useProjectStore();
 const layoutStore = useLayoutStore();
 
 const drag = ref(false);

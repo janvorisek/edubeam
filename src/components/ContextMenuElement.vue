@@ -103,7 +103,6 @@ watch([n1, n2], () => {
             <v-col cols="12">
               <v-select
                 v-model="element.mat"
-                @update:model-value="resolveAgain"
                 density="compact"
                 :label="$t('common.material')"
                 hide-details="auto"
@@ -111,12 +110,12 @@ watch([n1, n2], () => {
                 item-value="label"
                 :items="projectStore.materials"
                 class="menu-select"
+                @update:model-value="resolveAgain"
               ></v-select>
             </v-col>
             <v-col cols="12" class="d-flex align-center ga-2">
               <v-select
                 v-model="element.cs"
-                @update:model-value="resolveAgain"
                 density="compact"
                 :label="$t('common.crossSection')"
                 hide-details="auto"
@@ -124,6 +123,7 @@ watch([n1, n2], () => {
                 item-value="label"
                 :items="projectStore.crossSections"
                 class="menu-select flex-grow-1"
+                @update:model-value="resolveAgain"
               >
                 <template #item="{ props: itemProps, item }">
                   <v-list-item v-bind="itemProps">

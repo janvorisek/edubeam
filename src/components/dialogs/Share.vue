@@ -122,7 +122,7 @@ const fallbackCopy = () => {
     const copied = document.execCommand('copy');
     clipboardHelper.value.blur();
     return copied;
-  } catch (error) {
+  } catch {
     return false;
   }
 };
@@ -136,7 +136,7 @@ const copyLink = async () => {
       throw new Error('Clipboard unavailable');
     }
     showFeedback('sharing.linkCopied', 'success');
-  } catch (error) {
+  } catch {
     const fallbackSucceeded = fallbackCopy();
     showFeedback(
       fallbackSucceeded ? 'sharing.linkCopied' : 'sharing.copyFailed',

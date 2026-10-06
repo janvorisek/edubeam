@@ -18,6 +18,10 @@ export default defineConfig({
     environment: 'happy-dom',
     setupFiles: ['./src/tests/setup.ts'],
     globals: true,
+    // Node 25 turns on its own `localStorage`, which is broken without `--localstorage-file` and
+    // shadows happy-dom's; pinia's devtools-kit calls `localStorage.getItem` on import.
+    // The flag only exists from Node 22.
+    execArgv: Number(process.versions.node.split('.')[0]) >= 22 ? ['--no-experimental-webstorage'] : [],
     // Vuetify components import their own CSS, which Vite has to transform for a test that mounts one.
     server: { deps: { inline: ['vuetify'] } },
   },

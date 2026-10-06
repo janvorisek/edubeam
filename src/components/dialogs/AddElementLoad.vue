@@ -50,7 +50,7 @@
                   <v-col cols="12" md="12">
                     <v-text-field
                       v-model="loadNodeValueFz"
-                      :label="`${unitAndLabel.l}z`"
+                      :label="`${unitAndLabel.l}${appStore.axes.v}`"
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="unitAndLabel.u"
@@ -61,7 +61,7 @@
                   <v-col v-if="loadType === 'concentrated'" cols="12" md="12">
                     <v-text-field
                       v-model="loadNodeValueMy"
-                      :label="`My`"
+                      :label="`M${appStore.axes.r}`"
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="unitAndLabel.r"
@@ -123,7 +123,7 @@
                           @keydown="checkNumber($event)"
                         >
                           <template #label>
-                            <span>f<sub>1</sub>z</span>
+                            <span>f<sub>1</sub>{{ appStore.axes.v }}</span>
                           </template>
                         </v-text-field>
                       </v-col>
@@ -136,7 +136,7 @@
                           @keydown="checkNumber($event)"
                         >
                           <template #label>
-                            <span>f<sub>2</sub>z</span>
+                            <span>f<sub>2</sub>{{ appStore.axes.v }}</span>
                           </template>
                         </v-text-field>
                       </v-col>
@@ -208,7 +208,9 @@ import { computed, ref, watch } from 'vue';
 import { useProjectStore } from '../../store/project';
 import { useAppStore } from '../../store/app';
 import { closeModal } from 'jenesius-vue-modal';
-import { checkNumber, executeModelMutationWithUndo, parseFloat2, numberRules } from '@/utils';
+import { checkNumber, executeModelMutationWithUndo, parseFloat2, numberRules, rangeRule } from '@/utils';
+import { newPointLoadPosition } from '@/utils/newEntityDefaults';
+import { presetFamily } from '@/utils/presetFamily';
 import ElementLoadPreview from '../ElementLoadPreview.vue';
 import { deviceHasHover } from '@/utils/pointer';
 import {
@@ -278,12 +280,16 @@ const inverseIntensity = computed(() =>
 );
 
 const realFx = computed(() => inverseIntensity.value(parseFloat2(loadNodeValueFx.value)));
-const realFz = computed(() => inverseIntensity.value(parseFloat2(loadNodeValueFz.value)));
+const realFz = computed(() => appStore.vertical(inverseIntensity.value(parseFloat2(loadNodeValueFz.value))));
 const realMy = computed(() => appStore.convertInverseMoment(parseFloat2(loadNodeValueMy.value)));
 const realTrapStartFx = computed(() => appStore.convertInverseForceDistance(parseFloat2(loadTrapezoidStartFx.value)));
-const realTrapStartFz = computed(() => appStore.convertInverseForceDistance(parseFloat2(loadTrapezoidStartFz.value)));
+const realTrapStartFz = computed(() =>
+  appStore.vertical(appStore.convertInverseForceDistance(parseFloat2(loadTrapezoidStartFz.value)))
+);
 const realTrapEndFx = computed(() => appStore.convertInverseForceDistance(parseFloat2(loadTrapezoidEndFx.value)));
-const realTrapEndFz = computed(() => appStore.convertInverseForceDistance(parseFloat2(loadTrapezoidEndFz.value)));
+const realTrapEndFz = computed(() =>
+  appStore.vertical(appStore.convertInverseForceDistance(parseFloat2(loadTrapezoidEndFz.value)))
+);
 const realDist = computed(() => appStore.convertInverseLength(parseFloat2(elementLoadPos.value)));
 const realTc = computed(() => appStore.convertInverseTemperature(parseFloat2(loadNodeValueTc.value)));
 const realTbt = computed(() => appStore.convertInverseTemperature(parseFloat2(loadNodeValueTbt.value)));
@@ -321,13 +327,9 @@ const previewLoad = computed(() => {
   return null;
 });
 
-const minMax = (v) => {
-  const geo = target.value.computeGeo();
-  if (v < 0 || v > geo.l) {
-    return 'Enter value between 0 and ' + geo.l;
-  }
-  return true;
-};
+// The position is typed in the display length unit, so the element length is converted to match
+const minMax = (v: unknown) =>
+  rangeRule(0, appStore.convertLength(target.value.computeGeo().l), appStore.units.Length)(v);
 
 const addElementLoad = () => {
   if (valid.value === false) return;
@@ -377,7 +379,7 @@ const target = computed(() => {
 watch(loadType, () => {
   if (loadType.value === 'concentrated') {
     const geo = target.value.computeGeo();
-    elementLoadPos.value = `${appStore.convertLength(Math.max(Math.min(Math.floor(geo.l / 2), 5.0), geo.l / 10))}`;
+    elementLoadPos.value = `${appStore.convertLength(newPointLoadPosition(geo.l, presetFamily(appStore.units.Length)))}`;
   }
 });
 </script>

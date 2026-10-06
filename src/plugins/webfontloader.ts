@@ -5,7 +5,10 @@
  */
 
 export async function loadFonts() {
-  const webFontLoader = await import(/* webpackChunkName: "webfontloader" */ 'webfontloader');
+  // Roboto is only a nicer face: offline, or with a chunk from a replaced deploy, the system font
+  // stands in and there is nothing to report.
+  const webFontLoader = await import('webfontloader').catch(() => null);
+  if (!webFontLoader) return;
 
   webFontLoader.load({
     google: {

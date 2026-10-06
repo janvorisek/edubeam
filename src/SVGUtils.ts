@@ -66,10 +66,9 @@ export function formatResults(el: Beam2D, scale: number, defoScale: number = 1, 
   const nseg = 20;
   const scaleBy = (resultsScalePx * defoScale) / scale;
   const n1 = el.domain.getNode(el.nodes[0]);
-  let def = null;
 
   //if (useProjectStore().model === "LinearStaticSolver") {
-  def = el.computeGlobalDefl(el.domain.solver.loadCases[0], nseg);
+  const def = el.computeGlobalDefl(el.domain.solver.loadCases[0], nseg);
   // } else {
   //   nseg = 10;
   //   def = el.computeGlobalEigenMode(el.domain.solver.loadCases[0], useProjectStore().nthEigenVector - 1, nseg);
@@ -570,7 +569,9 @@ export function formatExpValueAsHTML(n: number, decimals: number) {
 
 export function formatMeasureAsHTML(s: string) {
   if (s === '1/K') return 'K<sup>-1</sup>';
+  if (s === '1/F') return '°F<sup>-1</sup>';
   if (s === 'C') return '°C';
+  if (s === 'F') return '°F';
 
   // find string before fist number
   const n = s.search(/\d/);

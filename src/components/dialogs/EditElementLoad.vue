@@ -41,7 +41,7 @@
                     <v-col cols="12" md="12">
                       <v-text-field
                         v-model="elementNodeValueFz"
-                        :label="`${unitAndLabel.l}z`"
+                        :label="`${unitAndLabel.l}${appStore.axes.v}`"
                         hide-details="auto"
                         :rules="numberRules"
                         :suffix="unitAndLabel.u"
@@ -52,7 +52,7 @@
                     <v-col v-if="loadType === 'concentrated'" cols="12" md="12">
                       <v-text-field
                         v-model="loadNodeValueMy"
-                        :label="`My`"
+                        :label="`M${appStore.axes.r}`"
                         hide-details="auto"
                         :rules="numberRules"
                         :suffix="unitAndLabel.r"
@@ -114,7 +114,7 @@
                             @keydown="checkNumber($event)"
                           >
                             <template #label>
-                              <span>f<sub>1</sub>z</span>
+                              <span>f<sub>1</sub>{{ appStore.axes.v }}</span>
                             </template>
                           </v-text-field>
                         </v-col>
@@ -127,7 +127,7 @@
                             @keydown="checkNumber($event)"
                           >
                             <template #label>
-                              <span>f<sub>2</sub>z</span>
+                              <span>f<sub>2</sub>{{ appStore.axes.v }}</span>
                             </template>
                           </v-text-field>
                         </v-col>
@@ -200,7 +200,7 @@ import { useProjectStore } from '@/store/project';
 import { closeModal } from 'jenesius-vue-modal';
 import { onMounted } from 'vue';
 import { useAppStore } from '@/store/app';
-import { checkNumber, numberRules, parseFloat2, loadType as LT } from '@/utils';
+import { checkNumber, numberRules, parseFloat2, rangeRule, loadType as LT } from '@/utils';
 import {
   BeamConcentratedLoad,
   BeamElementTrapezoidalEdgeLoad,
@@ -212,10 +212,7 @@ import { deviceHasHover } from '@/utils/pointer';
 import { formatMeasureAsHTML } from '@/SVGUtils';
 
 type EditableElementLoad =
-  | BeamElementUniformEdgeLoad
-  | BeamElementTrapezoidalEdgeLoad
-  | BeamConcentratedLoad
-  | BeamTemperatureLoad;
+  BeamElementUniformEdgeLoad | BeamElementTrapezoidalEdgeLoad | BeamConcentratedLoad | BeamTemperatureLoad;
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
@@ -272,25 +269,25 @@ const loadNodeValueTbt = ref('0.0');
 const elementLoadPos = ref('0.0');
 const elementLCS = ref(false);
 
-const minMax = (v) => {
-  const geo = target.value.computeGeo();
-  if (v < 0 || v > geo.l) {
-    return 'Enter value between 0 and ' + geo.l;
-  }
-  return true;
-};
+// The position is typed in the display length unit, so the element length is converted to match
+const minMax = (v: unknown) =>
+  rangeRule(0, appStore.convertLength(target.value.computeGeo().l), appStore.units.Length)(v);
 
 const inverseIntensity = computed(() =>
   loadType.value === 'udl' ? appStore.convertInverseForceDistance : appStore.convertInverseForce
 );
 
 const realFx = computed(() => inverseIntensity.value(parseFloat2(elementNodeValueFx.value)));
-const realFz = computed(() => inverseIntensity.value(parseFloat2(elementNodeValueFz.value)));
+const realFz = computed(() => appStore.vertical(inverseIntensity.value(parseFloat2(elementNodeValueFz.value))));
 const realMy = computed(() => appStore.convertInverseMoment(parseFloat2(loadNodeValueMy.value)));
 const realTrapStartFx = computed(() => appStore.convertInverseForceDistance(parseFloat2(trapezoidStartFx.value)));
-const realTrapStartFz = computed(() => appStore.convertInverseForceDistance(parseFloat2(trapezoidStartFz.value)));
+const realTrapStartFz = computed(() =>
+  appStore.vertical(appStore.convertInverseForceDistance(parseFloat2(trapezoidStartFz.value)))
+);
 const realTrapEndFx = computed(() => appStore.convertInverseForceDistance(parseFloat2(trapezoidEndFx.value)));
-const realTrapEndFz = computed(() => appStore.convertInverseForceDistance(parseFloat2(trapezoidEndFz.value)));
+const realTrapEndFz = computed(() =>
+  appStore.vertical(appStore.convertInverseForceDistance(parseFloat2(trapezoidEndFz.value)))
+);
 const realDist = computed(() => appStore.convertInverseLength(parseFloat2(elementLoadPos.value)));
 const realTc = computed(() => appStore.convertInverseTemperature(parseFloat2(loadNodeValueTc.value)));
 const realTbt = computed(() => appStore.convertInverseTemperature(parseFloat2(loadNodeValueTbt.value)));
@@ -334,7 +331,7 @@ onMounted(() => {
       load.value instanceof BeamElementUniformEdgeLoad ? appStore.convertForceDistance : appStore.convertForce;
 
     elementNodeValueFx.value = convert(load.value.values[0]).toString();
-    elementNodeValueFz.value = convert(load.value.values[1]).toString();
+    elementNodeValueFz.value = appStore.vertical(convert(load.value.values[1])).toString();
   }
   if (
     load.value instanceof BeamElementUniformEdgeLoad ||
@@ -346,9 +343,9 @@ onMounted(() => {
 
   if (load.value instanceof BeamElementTrapezoidalEdgeLoad) {
     trapezoidStartFx.value = appStore.convertForceDistance(load.value.startValues[0]).toString();
-    trapezoidStartFz.value = appStore.convertForceDistance(load.value.startValues[1]).toString();
+    trapezoidStartFz.value = appStore.vertical(appStore.convertForceDistance(load.value.startValues[1])).toString();
     trapezoidEndFx.value = appStore.convertForceDistance(load.value.endValues[0]).toString();
-    trapezoidEndFz.value = appStore.convertForceDistance(load.value.endValues[1]).toString();
+    trapezoidEndFz.value = appStore.vertical(appStore.convertForceDistance(load.value.endValues[1])).toString();
   }
 
   if (load.value instanceof BeamConcentratedLoad) {

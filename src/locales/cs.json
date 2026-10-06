@@ -67,6 +67,10 @@
   "settings": {
     "results_scale": "Měřítko výsledků",
     "snap_to_grid": "Přichytávat k mřížce",
+    "show_crosshair": "Zobrazit zaměřovací kříž",
+    "model_checks": "Kontrola modelu",
+    "show_mechanisms": "Zobrazit, jak se nestabilní konstrukce může pohybovat",
+    "animate_mechanisms": "Animovat pohyb",
     "grid_snap_step": "Krok příchytu k mřížce",
     "number_format": "Formát čísel",
     "number_format_description": "Jak se zapisují hodnoty výsledků; desetinný oddělovač se řídí jazykem.",
@@ -89,7 +93,14 @@
       "moment": "Ohybový moment",
       "mass": "Hmotnost",
       "pressure": "Napětí",
-      "units": "Jednotky"
+      "units": "Jednotky",
+      "system": "Soustava jednotek",
+      "systemSI": "SI (metrická)",
+      "systemUS": "Americká (imperiální)",
+      "systemCustom": "Vlastní",
+      "temperature": "Teplota",
+      "sectionLength": "Rozměry průřezu",
+      "displacement": "Posun"
     },
     "show_grid": "Zobrazit mřížku",
     "mouse": {
@@ -113,6 +124,10 @@
     "viewer_preview": "Náhled zobrazení",
     "language_description": "Vyberte preferovaný jazyk uživatelského prostředí.",
     "units_description": "Vyberte si vámi preferované měrné jednotky.",
+    "axisConvention": "Souřadnicový systém",
+    "axisConvention_description": "Kterým směrem míří svislá osa při zadávání a ve výsledcích. Model ani uložené soubory se nemění.",
+    "axisConvention_zDown": "x doprava, z dolů",
+    "axisConvention_yUp": "x doprava, y nahoru",
     "reset_settings": "Obnovit výchozí nastavení",
     "sizes": {
       "sizes": "Velikost",
@@ -165,6 +180,17 @@
     "defineSupports": "Podepření uzlu",
     "lcsAngle": "Pootočení systému souřadnic"
   },
+  "supports": {
+    "free": "Volný",
+    "pin": "Kloub",
+    "roller": "Posuvný kloub",
+    "verticalRoller": "Svislý posuvný kloub",
+    "slider": "Posuvné vetknutí",
+    "verticalSlider": "Svislé posuvné vetknutí",
+    "rotation": "Zamezené pootočení",
+    "fixed": "Vetknutí",
+    "custom": "Vlastní"
+  },
   "tabView": {
     "results": "Výsledky",
     "settings": "Nastavení",
@@ -182,6 +208,7 @@
   "viewer": {
     "toggleGrid": "Zobrazit/skrýt mřížku (G)",
     "toggleSnap": "Přichytávání k mřížce (S)",
+    "toggleCrosshair": "Zobrazit/skrýt zaměřovací kříž",
     "boxSelect": "Výběr obdélníkem",
     "centerContent": "Vystředit konstrukci",
     "fitContent": "Přizpůsobit obrazovce",
@@ -213,7 +240,7 @@
     "addNode": {
       "addNewNode": "Přidat nový uzel",
       "coordinate_x": "Souřadnice X",
-      "coordinate_z": "Souřadnice Z",
+      "coordinate_z": "Souřadnice {v}",
       "addNode": "Přidat uzel"
     },
     "common": {
@@ -315,7 +342,10 @@
       "shape": "Tvar",
       "noShape": "Bez polygonálního tvaru",
       "centroidal": "těžišťové",
-      "centroidalNote": "Všechny momenty setrvačnosti jsou vztaženy k osám procházejícím těžištěm; I₁, I₂ jsou hlavní momenty a α je úhel od osy y k ose 1."
+      "centroidalNote": "Všechny momenty setrvačnosti jsou vztaženy k osám procházejícím těžištěm; I₁, I₂ jsou hlavní momenty a α je úhel od osy y k ose 1.",
+      "outOfPlaneNote": "Průřez není symetrický k rovině rámu. 2D výpočet je přesný jen tehdy, je-li prut po celé délce zajištěn proti vybočení do strany (z obrazovky) a proti zkroucení, například deskou nebo hustě rozmístěným ztužením; samotné podpory v uzlech nestačí. Volný prut se navíc kroutí, protože zatížení nepůsobí ve středu smyku, a toto zkroucení není v deformacích zahrnuto.",
+      "outOfPlaneRestrained": "Zajištěn do strany a proti zkroucení po celé délce: {inertia}",
+      "outOfPlaneFree": "Volně vychýlitelný do strany (zkroucení stále není zahrnuto): {inertia}"
     }
   },
   "tooltip": {
@@ -342,8 +372,14 @@
     "copyFailed": "Nepodařilo se automaticky zkopírovat. Použijte prosím klávesové zkratky."
   },
   "tour": {
-    "skipTour": "Přeskočit",
-    "startTour": "Začít prohlídku",
+    "menu": {
+      "title": "Menu",
+      "description": "Otevřete, uložte a sdílejte projekty, exportujte obrázek, načtěte příklad nebo znovu spusťte tuto prohlídku či úlohu s prvním nosníkem."
+    },
+    "undoRedo": {
+      "title": "Zpět a znovu",
+      "description": "Procházejte své změny dozadu i dopředu. Totéž dělá Ctrl+Z a Ctrl+Shift+Z."
+    },
     "viewerControls": {
       "title": "Tlačítka zobrazení",
       "description": "Ovládací prvky zobrazení slouží k vycentrování nebo přizpůsobení konstrukce obrazovce a k výběru toho, co se má zobrazovat."
@@ -352,22 +388,76 @@
       "title": "Přizpůsobit možnosti zobrazení",
       "description": "Vyberte, co se má zobrazit - normálová síla, posouvající síla, ohybový moment, deformovaný tvar, nebo vše dohromady."
     },
+    "gridUnits": {
+      "title": "Mřížka, přichytávání a jednotky",
+      "description": "G zobrazí mřížku a S k ní přichytí nové uzly. Kliknutím na jednotky změníte jednotky, jazyk nebo souřadnicový systém."
+    },
     "bottomBar": {
       "title": "Přidávání, odebírání a úprava entit",
       "description": " Ústředí edubeamu, kde lze jednodušše měnit každý aspekt vaší konstrukce. Od uzlů po prvky, zatížení, materiály a průřezy - je to místo, kde můžete provádět rychlé a komplexní změny."
     },
+    "help": {
+      "title": "Nápověda",
+      "description": "? vysvětlí otevřenou záložku. ? u záhlaví sloupce vysvětlí daný sloupec."
+    },
     "previousButton": "Předchozí",
     "nextButton": "Další",
-    "finishButton": "Dokončit prohlídku"
+    "finishButton": "Dokončit prohlídku",
+    "close": "Zavřít prohlídku"
+  },
+  "firstBeam": {
+    "title": "Váš první nosník",
+    "step": "Krok {n} z {total}",
+    "close": "Zavřít průvodce",
+    "finish": "Hotovo",
+    "next": "Další",
+    "steps": {
+      "tool": {
+        "title": "Vyberte nástroj",
+        "body": "Na kartě {elementsTab} dole stiskněte tlačítko {addElement} s ikonou kurzoru."
+      },
+      "draw": {
+        "title": "Nakreslete nosník",
+        "body": "Klikněte, kde nosník začíná, a pak kde končí. Konce se přichytí k mřížce."
+      },
+      "supports": {
+        "title": "Podepřete ho",
+        "body": "Klikněte na levý konec, otevřete {defineSupports} a zaškrtněte Dx a D{v} pro kloubovou podporu. Pak klikněte na pravý konec a zaškrtněte D{v} pro posuvnou podporu."
+      },
+      "load": {
+        "title": "Zatěžte ho",
+        "body": "Klikněte na nosník, zvolte {addLoad}, zadejte hodnotu do f{v} a potvrďte."
+      },
+      "display": {
+        "title": "Vyberte, co se zobrazí",
+        "body": "Ozubené kolo vpravo nahoře otevírá možnosti zobrazení: vnitřní síly, deformovaný tvar, reakce a další. Otevřete ho teď."
+      },
+      "fit": {
+        "title": "Přizpůsobte zobrazení",
+        "body": "Tlačítka vpravo nahoře přizpůsobí model obrazovce nebo ho vycentrují. Stiskněte teď přizpůsobení obrazovce a použijte ho vždy, když vám výkres uteče ze zobrazení."
+      },
+      "results": {
+        "title": "Prohlédněte si výsledky",
+        "body": "Ohybový moment a deformovaný tvar jsou vykreslené na nosníku a mění se při každé úpravě. Všechny uzly, prvky a zatížení najdete také v tabulkách dole, kde můžete zadat přesné hodnoty. {undo} vrátí model, který jste měli předtím."
+      }
+    }
   },
   "welcome": {
     "title": "Vítejte v <span class=\"edubeam\">edubeamu</span>! 🚀",
-    "description": "Abychom vám usnadnili začátek, připravili jsme pro vás rychlou úvodní prohlídku, která vás seznámí s vlastnostmi a funkcemi našeho programu."
+    "description": "Modelujte nosníky, rámy a příhradové konstrukce a sledujte vnitřní síly už při kreslení.",
+    "start": "Jak chcete začít?",
+    "showAround": "Provést aplikací",
+    "showAroundHint": "Krátká prohlídka prohlížeče, možností zobrazení a spodního panelu.",
+    "drawFirstBeam": "Nakreslit první nosník",
+    "drawFirstBeamHint": "Krátký průvodce: nakreslíte nosník, podepřete ho a zatížíte.",
+    "openExample": "Otevřít příklad",
+    "openExampleHint": "Začněte hotovým modelem a upravte ho.",
+    "skip": "Přeskočit"
   },
   "confirmation": {
     "clearMesh": {
       "title": "Smazat konstrukci?",
-      "message": "Jste si jisti, že chcete smazat konstrukci? Tuto akci nelze vrátit zpět.",
+      "message": "Opravdu chcete smazat konstrukci? Ctrl+Z ji vrátí a zůstane také v Nedávných konstrukcích.",
       "materials": "Smazat materiály",
       "crossSections": "Smazat průřezy"
     },
@@ -394,6 +484,7 @@
     "enterValue": "Zadejte hodnotu",
     "invalidNumber": "Neplatné číslo",
     "positiveNumber": "Zadejte číslo větší než nula",
+    "between": "Zadejte hodnotu mezi {min} a {max}",
     "sameNodes": "Prvek musí spojovat dva různé uzly",
     "materialInUse": "Materiál používají prvky {elements}. Před smazáním jim přiřaďte jiný.",
     "crossSectionInUse": "Průřez používají prvky {elements}. Před smazáním jim přiřaďte jiný."
@@ -401,14 +492,22 @@
   "solveDiagnostics": {
     "summaryErrors": "Chyby v modelu: {errors}",
     "summaryWarnings": "Varování v modelu: {warnings}",
-    "summaryBoth": "Chyby v modelu: {errors}, varování: {warnings}",
+    "summaryIncomplete": "Podpory chybí u částí konstrukce: {count}.",
+    "incompleteChip": "Chybí podpory",
+    "hideMotion": "Skrýt pohyb",
+    "showMotion": "Zobrazit pohyb",
+    "dismissWarnings": "Skrýt tato upozornění",
+    "collapseErrors": "Zmenšit tuto zprávu",
     "showDetails": "Zobrazit podrobnosti",
     "blockedTitle": "Model nelze vypočítat",
     "blockedDescription": "Před výpočtem opravte uvedené chyby.",
     "warningsTitle": "Varování k modelu",
     "warningsDescription": "Model byl vypočten, ale byla zjištěna následující varování.",
+    "incompleteTitle": "Model zatím nelze vypočítat",
+    "incompleteDescription": "Výsledky se zobrazí, jakmile bude konstrukce podepřena. Čárkovaný obrys na plátně ukazuje, jak se ještě může pohybovat.",
     "errors": "Chyby",
     "warnings": "Varování",
+    "incomplete": "Zbývá doplnit",
     "issues": {
       "elementNodeCount": "Prvek {element} musí odkazovat právě na 2 uzly.",
       "elementSameNode": "Prvek {element} má na obou koncích stejný uzel.",
@@ -423,9 +522,15 @@
       "supportedNodeNotConnected": "Uzel {node} je podepřen, ale nepřipojuje se k němu žádný prvek, takže podpora nic nepřenáší.",
       "nodeNotConnected": "Uzel {node} není připojen k žádnému prvku a výpočet jej ignoruje.",
       "insufficientSupports": "Aby byl model při 2D výpočtu stabilní, musí mít alespoň 3 podepřené stupně volnosti.",
+      "needsSupports": "Konstrukce potřebuje podpory, jinak ji nelze vypočítat.",
       "partUnsupported": "Samostatná část konstrukce (uzly {nodes}) má méně než 3 podepřené stupně volnosti a může se volně pohybovat.",
+      "partNeedsSupports": "Část s uzly {nodes} potřebuje podpory.",
       "mechanism": "Konstrukce má dostatek podpor, ale ty ji nezajišťují: stále se může {motion}. Jsou-li všechny vazby rovnoběžné nebo se jejich nositelky protínají v jednom bodě, konstrukce se může volně pohybovat.",
+      "mechanismShort": "Podpory konstrukci nezajišťují: stále se může {motion}.",
       "partMechanism": "Samostatná část konstrukce (uzly {nodes}) má dostatek podpor, ale ty ji nezajišťují: stále se může {motion}. Jsou-li všechny vazby rovnoběžné nebo se jejich nositelky protínají v jednom bodě, konstrukce se může volně pohybovat.",
+      "partMechanismShort": "Část s uzly {nodes} není zajištěna: stále se může {motion}.",
+      "hingeMechanism": "Podpory konstrukci drží, ale přesto je to mechanismus: její pruty se mohou otáčet kolem kloubů v uzlu {nodes}. Odstraňte kloub nebo přidejte prut či podporu, která pohybu zabrání.",
+      "hingeMechanismShort": "Klouby v uzlu {nodes} umožňují konstrukci pohyb.",
       "motion": {
         "horizontal": "posouvat vodorovně",
         "vertical": "posouvat svisle",
@@ -433,14 +538,16 @@
         "mixed": "pohybovat jako tuhý celek"
       },
       "unstable": "Konstrukce je nestabilní – tyto pohyby nemají prakticky žádný odpor: {dofs}. Přidejte podporu nebo prvek, odstraňte koncový kloub nebo zkontrolujte tuhost průřezu.",
+      "unstableShort": "Konstrukce je nestabilní: pohybuje se téměř bez odporu.",
       "unstableDof": {
         "dx": "vodorovný posun uzlu {node} (Dx)",
-        "dz": "svislý posun uzlu {node} (Dz)",
-        "ry": "pootočení uzlu {node} (Ry)",
+        "dz": "svislý posun uzlu {node} (D{v})",
+        "ry": "pootočení uzlu {node} (R{r})",
         "other": "stupeň volnosti {dof} uzlu {node}"
       },
       "unstableMore": "{list} a další ({count})",
       "singularMatrix": "Konstrukce je mechanismus: matice tuhosti je singulární. Zkontrolujte, zda je každá část zajištěna alespoň 3 vazbami a zda koncové klouby nenechávají některý prut volně otočný.",
+      "singularMatrixShort": "Konstrukce je mechanismus: může se pohybovat bez odporu.",
       "solverFailed": "Výpočet selhal kvůli vnitřní nekonzistenci modelu. Zkontrolujte prosím odkazy v modelu a zatížení."
     }
   },
@@ -464,7 +571,8 @@
     "addCrossSectionFirst": "Nejprve prosím přidejte průřez.",
     "selectMaterialAndCrossSection": "Vyberte prosím materiál a průřez.",
     "labelInUse": "Označení {label} je již použito.",
-    "noMaterialOrCrossSection": "Prvek nemá zadaný materiál nebo průřez."
+    "noMaterialOrCrossSection": "Prvek nemá zadaný materiál nebo průřez.",
+    "elementMissing": "Prvek {label} už neexistuje."
   },
   "help": {
     "aria": "Zobrazit nápovědu",
@@ -476,7 +584,7 @@
     },
     "supports": {
       "title": "Podpory",
-      "body": "Zaškrtnutím stupně volnosti jej podepřete: Dx a Dz brání posunu, Ry pootočení. Konstrukce potřebuje alespoň tři nezávislé vazby."
+      "body": "Zaškrtnutím stupně volnosti jej podepřete: Dx a D{v} brání posunu, R{r} pootočení. Konstrukce potřebuje alespoň tři nezávislé vazby."
     },
     "elements": {
       "title": "Prvky",
@@ -484,7 +592,8 @@
     },
     "loads": {
       "title": "Zatížení",
-      "body": "Zatížení působí v uzlech nebo po délce prvku. Kladné hodnoty odpovídají globálním osám, osa z míří dolů."
+      "body": "Zatížení působí v uzlech nebo po délce prvku. Kladné hodnoty odpovídají globálním osám, osa z míří dolů.",
+      "bodyYUp": "Zatížení působí v uzlech nebo po délce prvku. Kladné hodnoty odpovídají globálním osám, osa y míří nahoru."
     },
     "nodalLoads": {
       "title": "Uzlová zatížení",
@@ -508,7 +617,8 @@
     },
     "signConvention": {
       "title": "Znaménková konvence",
-      "body": "Globální osa z míří dolů, kladné Fz nebo fz tedy působí dolů a My je kladný proti směru hodinových ručiček. Zatížení v lokálním systému sleduje prvek."
+      "body": "Globální osa z míří dolů, kladné Fz nebo fz tedy působí dolů a My je kladný proti směru hodinových ručiček. Zatížení v lokálním systému sleduje prvek.",
+      "bodyYUp": "Globální osa y míří nahoru, kladné Fy nebo fy tedy působí nahoru a Mz je kladný proti směru hodinových ručiček. Zatížení v lokálním systému sleduje prvek."
     },
     "results": {
       "title": "Výsledky",
@@ -516,7 +626,7 @@
     },
     "diagrams": {
       "title": "Vykreslení výsledků",
-      "body": "Přepínače vykreslují normálovou a posouvající sílu, ohybový moment, deformovaný tvar a reakce. N je kladná v tahu, My kladný při ohybu dolů."
+      "body": "Přepínače vykreslují normálovou a posouvající sílu, ohybový moment, deformovaný tvar a reakce. N je kladná v tahu, M{r} kladný při ohybu dolů."
     },
     "endForces": {
       "title": "Koncové síly",
@@ -589,6 +699,24 @@
         "title": "Teplotní zatížení",
         "blurb": "Prostě uložený nosník délky 8 m s rovnoměrnou a nerovnoměrnou změnou teploty."
       }
+    }
+  },
+  "recentStructures": {
+    "title": "Nedávné konstrukce",
+    "instructions": "V tomto prohlížeči se uchovává posledních {count} konstrukcí, které byly smazány nebo nahrazeny. Obnovení nahradí aktuální konstrukci a Ctrl+Z ji vrátí zpět.",
+    "empty": "Zatím tu nic není. Když konstrukci smažete nebo přes ni otevřete jinou, uloží se sem.",
+    "restore": "Obnovit",
+    "remove": "Odebrat",
+    "counts": "Uzly: {nodes} · Prvky: {elements}",
+    "linkNotice": "Otevřena sdílená konstrukce. Předchozí najdete v Nedávných konstrukcích.",
+    "show": "Zobrazit",
+    "reasons": {
+      "clear": "Smazáno",
+      "link": "Nahrazeno sdíleným odkazem",
+      "file": "Nahrazeno otevřeným souborem",
+      "example": "Nahrazeno příkladem",
+      "firstBeam": "Nahrazeno úlohou „první nosník“",
+      "restore": "Nahrazeno obnovenou konstrukcí"
     }
   }
 }

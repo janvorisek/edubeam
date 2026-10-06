@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { docsUrl } from '@/utils/docs';
 import { i18n } from '@/plugins/i18n';
-import { helpTopics } from '@/utils/helpTopics';
+import { helpTopics, type HelpTopic } from '@/utils/helpTopics';
 import { availableLocales } from '@/plugins/i18n';
 
 const setLocale = (locale: string) => (i18n.global.locale.value = locale);
@@ -38,7 +38,9 @@ describe('docsUrl', () => {
 });
 
 describe('helpTopics', () => {
-  const keys = Object.values(helpTopics).flatMap((topic) => [topic.title, topic.body]);
+  const keys = Object.values(helpTopics).flatMap((topic: HelpTopic) =>
+    [topic.title, topic.body, topic.bodyYUp].filter((key) => key !== undefined)
+  );
 
   it.each(availableLocales.map((l) => l.code))('is fully translated in %s', (locale) => {
     const missing = keys.filter((key) => !i18n.global.te(key, locale));

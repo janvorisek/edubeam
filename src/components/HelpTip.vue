@@ -26,7 +26,7 @@
     <v-card class="help-tip__card" max-width="320">
       <v-card-text class="pb-1">
         <div class="text-body-2 font-weight-medium mb-1">{{ $t(topicDef.title) }}</div>
-        <div class="text-body-2 text-medium-emphasis">{{ $t(topicDef.body) }}</div>
+        <div class="text-body-2 text-medium-emphasis">{{ $t(body, axisLetters(axisConvention)) }}</div>
       </v-card-text>
       <v-card-actions class="pt-0">
         <v-btn
@@ -48,7 +48,8 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { helpTopics, type HelpTopicKey } from '@/utils/helpTopics';
+import { helpTopics, type HelpTopic, type HelpTopicKey } from '@/utils/helpTopics';
+import { axisConvention, axisLetters } from '@/utils/axisConvention';
 import { docsUrl, trackDocsClick } from '@/utils/docs';
 
 /**
@@ -77,7 +78,12 @@ const open = ref(false);
 // Touch devices never fire hover, there the icon has to be tapped.
 const hasHover = typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches;
 
-const topicDef = computed(() => helpTopics[props.topic]);
+const topicDef = computed<HelpTopic>(() => helpTopics[props.topic]);
+
+// Texts name axes through {v} and {r}; those saying which way the vertical axis points have a y-up twin.
+const body = computed(() =>
+  axisConvention.value === 'y-up' && topicDef.value.bodyYUp ? topicDef.value.bodyYUp : topicDef.value.body
+);
 const href = computed(() => docsUrl(topicDef.value.path, props.topic));
 
 const onReadMore = () => {

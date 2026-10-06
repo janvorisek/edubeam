@@ -1,6 +1,65 @@
 {
   "releases": [
     {
+      "version": "1.3.1",
+      "title": "Americké jednotky",
+      "date": "1. října 2026",
+      "highlights": [
+        "Pracujte v amerických jednotkách: v nastavení přepnete mezi SI a americkými jednotkami.",
+        "Jednotky a souřadnicový systém si zvolíte na uvítací obrazovce.",
+        "Průřezy AISC a materiály ASTM v knihovnách.",
+        "Opravená tuhost průřezů IPE a HEA v knihovně průřezů."
+      ],
+      "media": [
+        {
+          "src": "/changelog/media/us-customary-units.png",
+          "alt": "Rám 10 ft v kip a kip·ft s pravítky a zaměřovacím křížem ve stopách a palcích",
+          "caption": "Rám ve stopách a palcích"
+        },
+        {
+          "src": "/changelog/media/welcome-setup.png",
+          "alt": "Uvítací okno s volbou soustavy jednotek a souřadnicového systému",
+          "caption": "Jednotky a osy na uvítací obrazovce"
+        },
+        {
+          "src": "/changelog/media/aisc-sections.png",
+          "alt": "Knihovna průřezů s průřezy AISC W v palcích",
+          "caption": "Průřezy AISC"
+        }
+      ],
+      "tag": "Nejnovější"
+    },
+    {
+      "version": "1.3.0",
+      "title": "Nedávné konstrukce, mechanismy a symboly podpor",
+      "date": "29. září 2026",
+      "highlights": [
+        "Nedávné konstrukce v nabídce uchovávají posledních 10 konstrukcí, které jste smazali nebo nahradili odkazem, souborem či příkladem, i po zavření karty. Smazání konstrukce nově vrátíte i pomocí Ctrl+Z.",
+        "Když se konstrukce může pohybovat, edubeam zakroužkuje podpory nebo klouby, které pohyb umožňují, a čárkovaně ukáže pohyb, takže vidíte, proč ji nelze vyřešit.",
+        "Podporu vyberete podle jejího symbolu - kloub, posuvný kloub, vetknutí, posuvné vetknutí a další - v dialogu uzlu, v nabídce uzlu i v tabulce uzlů.",
+        "Jste tu poprvé? Provést aplikací ukáže hlavní části aplikace a Nakreslit první nosník vás provede nakreslením, podepřením a zatížením nosníku.",
+        "V nastavení si zvolíte souřadnicový systém: x doprava a z dolů, nebo x doprava a y nahoru, jak to znáte z učebnic.",
+        "A dále: zaměřovací kříž na pravítkách na počítači, turečtina a změna materiálu nebo průřezu prvku ve spodním panelu se opět ukládá."
+      ],
+      "media": [
+        {
+          "src": "/changelog/media/recent-structures.png",
+          "alt": "Dialog nedávných konstrukcí se třemi uloženými konstrukcemi",
+          "caption": "Nedávné konstrukce"
+        },
+        {
+          "src": "/changelog/media/hinge-mechanism.png",
+          "alt": "Rám se dvěma zakroužkovanými klouby a čárkovaným naznačením posuvu",
+          "caption": "Kloubový mechanismus"
+        },
+        {
+          "src": "/changelog/media/support-symbols.png",
+          "alt": "Symboly podpor v dialogu uzlu",
+          "caption": "Symboly podpor"
+        }
+      ]
+    },
+    {
       "version": "1.2.0",
       "title": "Ovládání prstem, rychlost a export do SVG",
       "date": "22. září 2026",
@@ -12,8 +71,7 @@
         "Velké modely se kreslí, vybírají a posouvají mnohem rychleji.",
         "Zatížení upravíte přímo v tabulce zatížení; přibylo zadání úhlu podpory, předepsaného pootočení a koncových kloubů.",
         "Opravy: převody jednotek u zatížení, rolování nastavení na telefonu a dokončení aktualizace."
-      ],
-      "tag": "Nejnovější"
+      ]
     },
     {
       "version": "1.1.1",

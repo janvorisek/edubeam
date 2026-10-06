@@ -433,7 +433,7 @@ const stackedTransform = computed(() => {
           :font-size="fontSize / scale"
           font-weight="normal"
           text-anchor="end"
-          dominant-baseline="middle"
+          dy="0.35em"
           :transform="labelTransforms.fx.constant"
         >
           {{ fxConstantLabel }}
@@ -443,7 +443,7 @@ const stackedTransform = computed(() => {
             :font-size="fontSize / scale"
             font-weight="normal"
             text-anchor="end"
-            dominant-baseline="middle"
+            dy="0.35em"
             :transform="labelTransforms.fx.start"
           >
             {{ fxStartLabel }}
@@ -452,7 +452,7 @@ const stackedTransform = computed(() => {
             :font-size="fontSize / scale"
             font-weight="normal"
             text-anchor="start"
-            dominant-baseline="middle"
+            dy="0.35em"
             :transform="labelTransforms.fx.end"
           >
             {{ fxEndLabel }}
@@ -465,7 +465,7 @@ const stackedTransform = computed(() => {
           :font-size="fontSize / scale"
           font-weight="normal"
           text-anchor="end"
-          dominant-baseline="middle"
+          dy="0.35em"
           :transform="labelTransforms.fz.constant"
         >
           {{ fzConstantLabel }}
@@ -475,7 +475,7 @@ const stackedTransform = computed(() => {
             :font-size="fontSize / scale"
             font-weight="normal"
             text-anchor="end"
-            dominant-baseline="middle"
+            dy="0.35em"
             :transform="labelTransforms.fz.start"
           >
             {{ fzStartLabel }}
@@ -484,7 +484,7 @@ const stackedTransform = computed(() => {
             :font-size="fontSize / scale"
             font-weight="normal"
             text-anchor="start"
-            dominant-baseline="middle"
+            dy="0.35em"
             :transform="labelTransforms.fz.end"
           >
             {{ fzEndLabel }}

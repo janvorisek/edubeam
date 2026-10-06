@@ -2,6 +2,8 @@
 import { defineStore } from 'pinia';
 import { reactive, ref } from 'vue';
 import type { ViewBox } from '@/utils/fitBounds';
+import { defaultGridStep } from '@/utils/grid';
+import { useAppStore } from './app';
 
 export const useViewerStore = defineStore(
   'viewer',
@@ -32,7 +34,13 @@ export const useViewerStore = defineStore(
 
     const showGrid = ref(true);
     const snapToGrid = ref(true);
-    const gridStep = ref(0.1);
+    // In metres, like the model; a fresh grid starts at a round step of the length unit
+    const gridStep = ref(defaultGridStep(useAppStore().units.Length));
+    const showCrosshair = ref(true);
+    /** Outline how a structure that is not held can still move. */
+    const showMechanisms = ref(true);
+    /** Swing that outline; off, it is drawn standing still. */
+    const animateMechanisms = ref(true);
     const resultsScalePx_ = ref(48);
     const supportSize = ref(1);
 
@@ -65,7 +73,10 @@ export const useViewerStore = defineStore(
 
       showGrid.value = true;
       snapToGrid.value = true;
-      gridStep.value = 0.1;
+      gridStep.value = defaultGridStep(useAppStore().units.Length);
+      showCrosshair.value = true;
+      showMechanisms.value = true;
+      animateMechanisms.value = true;
       resultsScalePx_.value = 48;
       supportSize.value = 1;
 
@@ -114,6 +125,9 @@ export const useViewerStore = defineStore(
       showGrid,
       snapToGrid,
       gridStep,
+      showCrosshair,
+      showMechanisms,
+      animateMechanisms,
       resultsScalePx_: resultsScalePx_,
 
       fontSize,

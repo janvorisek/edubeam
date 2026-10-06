@@ -54,6 +54,17 @@
     "defineSupports": "节点支座",
     "lcsAngle": "节点局部坐标系角度"
   },
+  "supports": {
+    "free": "自由",
+    "pin": "固定铰支座",
+    "roller": "滑动铰支座",
+    "verticalRoller": "竖向滑动铰支座",
+    "slider": "滑动固定端",
+    "verticalSlider": "竖向滑动固定端",
+    "rotation": "仅约束转动",
+    "fixed": "固定端",
+    "custom": "自定义"
+  },
   "elements": {
     "addElement": "添加单元",
     "editElement": "编辑单元",
@@ -114,6 +125,10 @@
     "results_scale": "结果缩放",
     "grid_snap_step": "网格吸附步长",
     "snap_to_grid": "吸附到网格",
+    "show_crosshair": "显示十字准线",
+    "model_checks": "模型检查",
+    "show_mechanisms": "显示不稳定结构可能的运动",
+    "animate_mechanisms": "以动画显示运动",
     "number_format": "数字格式",
     "number_format_description": "结果数值的书写方式；小数分隔符跟随语言。",
     "number_format_auto": "自动",
@@ -134,7 +149,14 @@
       "moment": "弯矩",
       "pressure": "应力",
       "area": "面积",
-      "areaM2": "截面二次矩"
+      "areaM2": "截面二次矩",
+      "system": "单位制",
+      "systemSI": "国际单位制（公制）",
+      "systemUS": "美制（英制）",
+      "systemCustom": "自定义",
+      "temperature": "温度",
+      "sectionLength": "截面尺寸",
+      "displacement": "位移"
     },
     "grid": "网格",
     "show_grid": "显示网格",
@@ -159,6 +181,10 @@
     "viewer_preview": "视图预览",
     "language_description": "选择界面显示语言。",
     "units_description": "选择常用计量单位。",
+    "axisConvention": "坐标系",
+    "axisConvention_description": "输入和结果中竖轴的指向。模型和已保存的文件不受影响。",
+    "axisConvention_zDown": "x 向右，z 向下",
+    "axisConvention_yUp": "x 向右，y 向上",
     "reset_settings": "重置设置",
     "sizes": {
       "sizes": "尺寸",
@@ -182,6 +208,7 @@
   "viewer": {
     "toggleGrid": "切换网格 (G)",
     "toggleSnap": "切换网格吸附 (S)",
+    "toggleCrosshair": "切换十字准线",
     "boxSelect": "框选",
     "centerContent": "内容居中",
     "fitContent": "适配屏幕",
@@ -213,7 +240,7 @@
     "addNode": {
       "addNewNode": "添加新节点",
       "coordinate_x": "X 坐标",
-      "coordinate_z": "Z 坐标",
+      "coordinate_z": "{v} 坐标",
       "addNode": "添加节点"
     },
     "common": {
@@ -315,7 +342,10 @@
       "shape": "形状",
       "noShape": "无多边形形状",
       "centroidal": "形心轴",
-      "centroidalNote": "所有截面二次矩均对通过形心的轴计算；I₁、I₂ 为主惯性矩，α 为 y 轴到轴 1 的夹角。"
+      "centroidalNote": "所有截面二次矩均对通过形心的轴计算；I₁、I₂ 为主惯性矩，α 为 y 轴到轴 1 的夹角。",
+      "outOfPlaneNote": "该截面关于框架平面不对称。只有当构件沿全长受到侧向（垂直于屏幕）变形和扭转约束时，例如由楼板或间距较小的支撑约束，二维分析才是精确的；仅靠节点处的支座是不够的。自由构件还会发生扭转，因为荷载未作用于剪切中心，而这部分扭转未计入变形结果。",
+      "outOfPlaneRestrained": "沿全长侧向及扭转约束：{inertia}",
+      "outOfPlaneFree": "侧向自由变形（仍未计入扭转）：{inertia}"
     }
   },
   "tooltip": {
@@ -342,8 +372,14 @@
     "copyFailed": "无法自动复制，请使用键盘快捷键。"
   },
   "tour": {
-    "startTour": "开始导览",
-    "skipTour": "暂时跳过",
+    "menu": {
+      "title": "菜单",
+      "description": "打开、保存和分享项目，导出图片，加载示例，或重新开始本导览或“第一根梁”任务。"
+    },
+    "undoRedo": {
+      "title": "撤销和重做",
+      "description": "在修改记录中前后移动。Ctrl+Z 和 Ctrl+Shift+Z 功能相同。"
+    },
     "viewerControls": {
       "title": "视图按钮",
       "description": "使用视图控制可将结构居中或适配屏幕，并选择需要显示的内容。"
@@ -352,21 +388,75 @@
       "title": "自定义显示选项",
       "description": "可选择显示轴力、剪力、弯矩、变形图，或同时显示全部。"
     },
+    "gridUnits": {
+      "title": "网格、捕捉和单位",
+      "description": "G 显示网格，S 将新节点捕捉到网格上。点击单位可更改单位、语言或坐标系。"
+    },
     "bottomBar": {
       "title": "添加、删除与修改对象",
       "description": "底部栏是编辑结构的核心区域，可快速管理节点、单元、荷载、材料和截面。"
     },
+    "help": {
+      "title": "帮助",
+      "description": "? 解释当前打开的选项卡。列标题旁的 ? 解释该列。"
+    },
     "previousButton": "上一步",
     "nextButton": "下一步",
-    "finishButton": "完成"
+    "finishButton": "完成",
+    "close": "关闭导览"
+  },
+  "firstBeam": {
+    "title": "您的第一根梁",
+    "step": "第 {n} 步，共 {total} 步",
+    "close": "关闭引导",
+    "finish": "完成",
+    "next": "下一步",
+    "steps": {
+      "tool": {
+        "title": "选择工具",
+        "body": "在下方的“{elementsTab}”选项卡中，点击带光标图标的“{addElement}”按钮。"
+      },
+      "draw": {
+        "title": "绘制梁",
+        "body": "点击梁的起点，再点击终点。端点会吸附到网格上。"
+      },
+      "supports": {
+        "title": "添加支座",
+        "body": "点击左端，打开“{defineSupports}”，勾选 Dx 和 D{v} 设为固定铰支座。然后点击右端，勾选 D{v} 设为滑动铰支座。"
+      },
+      "load": {
+        "title": "施加荷载",
+        "body": "点击梁，选择“{addLoad}”，在 f{v} 中输入数值并确认。"
+      },
+      "display": {
+        "title": "选择显示内容",
+        "body": "右上角的齿轮用于打开显示选项：内力、变形图、支座反力等。现在打开它。"
+      },
+      "fit": {
+        "title": "适应屏幕",
+        "body": "右上角的按钮可让模型适应屏幕或居中显示。现在点击“适应屏幕”，以后图形移出视野时也可随时使用。"
+      },
+      "results": {
+        "title": "查看结果",
+        "body": "弯矩图和变形图已绘制在梁上，并会随每次编辑更新。所有节点、单元和荷载也列在下方的表格中，可在其中输入精确数值。“{undo}”可恢复之前的模型。"
+      }
+    }
   },
   "welcome": {
     "title": "欢迎使用 <span class=\"edubeam\">edubeam</span>！ 🚀",
-    "description": "为了帮助你快速上手，我们准备了一个简短的入门导览，带你了解本程序的主要功能。"
+    "description": "建模梁、框架和桁架，绘制的同时即可看到内力。",
+    "start": "您想如何开始？",
+    "showAround": "带我看看",
+    "showAroundHint": "快速了解视图、显示选项和底部面板。",
+    "drawFirstBeam": "绘制第一根梁",
+    "drawFirstBeamHint": "简短引导：绘制一根梁，添加支座并施加荷载。",
+    "openExample": "打开示例",
+    "openExampleHint": "从现成的模型开始并进行修改。",
+    "skip": "暂时跳过"
   },
   "confirmation": {
     "clearMesh": {
-      "message": "确定要清空结构吗？此操作不可撤销。",
+      "message": "确定要清空结构吗？按 Ctrl+Z 可以恢复，它也会保存在“最近的结构”中。",
       "title": "清空结构？",
       "materials": "删除材料",
       "crossSections": "删除截面"
@@ -394,6 +484,7 @@
     "enterValue": "请输入数值",
     "invalidNumber": "无效数字",
     "positiveNumber": "请输入大于零的数",
+    "between": "请输入 {min} 到 {max} 之间的数值",
     "sameNodes": "单元必须连接两个不同的节点",
     "materialInUse": "该材料正被单元 {elements} 使用。删除前请先为这些单元重新指定材料。",
     "crossSectionInUse": "该截面正被单元 {elements} 使用。删除前请先为这些单元重新指定截面。"
@@ -401,14 +492,22 @@
   "solveDiagnostics": {
     "summaryErrors": "模型有 {errors} 个错误。",
     "summaryWarnings": "模型有 {warnings} 个警告。",
-    "summaryBoth": "模型有 {errors} 个错误和 {warnings} 个警告。",
+    "summaryIncomplete": "结构中有 {count} 个部分需要支座。",
+    "incompleteChip": "需要支座",
+    "hideMotion": "隐藏运动",
+    "showMotion": "显示运动",
+    "dismissWarnings": "隐藏这些警告",
+    "collapseErrors": "缩小此消息",
     "showDetails": "显示详情",
     "blockedTitle": "无法求解模型",
     "blockedDescription": "求解模型前请先修正下列错误。",
     "warningsTitle": "模型警告",
     "warningsDescription": "模型已求解，但检测到以下警告。",
+    "incompleteTitle": "尚不能求解",
+    "incompleteDescription": "结构被固定后即会显示结果。画布上的虚线轮廓显示结构仍可如何运动。",
     "errors": "错误",
     "warnings": "警告",
+    "incomplete": "尚需完成",
     "issues": {
       "elementNodeCount": "单元 {element} 必须恰好引用 2 个节点。",
       "elementSameNode": "单元 {element} 的两端引用了同一个节点。",
@@ -423,9 +522,15 @@
       "supportedNodeNotConnected": "节点 {node} 设有支座，但没有单元与之相连，因此该支座不承受任何力。",
       "nodeNotConnected": "节点 {node} 未与任何单元相连，求解器将忽略该节点。",
       "insufficientSupports": "在二维分析中，模型至少需要 3 个受约束自由度才能保持稳定。",
+      "needsSupports": "结构需要支座才能求解。",
       "partUnsupported": "结构中一个独立部分（节点 {nodes}）的受约束自由度少于 3 个，可以自由运动。",
+      "partNeedsSupports": "包含节点 {nodes} 的部分需要支座。",
       "mechanism": "结构的支座数量足够，但无法将其固定：结构仍可{motion}。若所有支座相互平行，或其作用线交于一点，结构仍可自由运动。",
+      "mechanismShort": "支座无法固定结构：结构仍可{motion}。",
       "partMechanism": "结构中一个独立部分（节点 {nodes}）的支座数量足够，但无法将其固定：该部分仍可{motion}。若所有支座相互平行，或其作用线交于一点，结构仍可自由运动。",
+      "partMechanismShort": "包含节点 {nodes} 的部分未被固定：仍可{motion}。",
+      "hingeMechanism": "支座能够固定结构，但它仍是机构：杆件可绕节点 {nodes} 处的铰转动。请去掉一个铰，或添加能阻止运动的杆件或支座。",
+      "hingeMechanismShort": "节点 {nodes} 处的铰使结构可以运动。",
       "motion": {
         "horizontal": "水平滑动",
         "vertical": "竖向移动",
@@ -433,14 +538,16 @@
         "mixed": "作刚体运动"
       },
       "unstable": "结构不稳定：以下自由度几乎没有抵抗即可运动：{dofs}。请添加支座或单元、取消端部铰接，或检查截面刚度。",
+      "unstableShort": "结构不稳定：几乎可以无阻力地运动。",
       "unstableDof": {
         "dx": "节点 {node} 水平方向 (Dx)",
-        "dz": "节点 {node} 竖向 (Dz)",
-        "ry": "节点 {node} 转角 (Ry)",
+        "dz": "节点 {node} 竖向 (D{v})",
+        "ry": "节点 {node} 转角 (R{r})",
         "other": "节点 {node} 自由度 {dof}"
       },
       "unstableMore": "{list} 以及另外 {count} 个",
       "singularMatrix": "结构为机构：刚度矩阵奇异。请检查每个部分是否至少有 3 个约束，以及端部铰接是否导致某根杆件可以自由转动。",
+      "singularMatrixShort": "结构是机构：可以无阻力地运动。",
       "solverFailed": "由于模型内部不一致，求解失败。请检查模型中的引用和荷载。"
     }
   },
@@ -464,7 +571,8 @@
     "addCrossSectionFirst": "请先添加截面。",
     "selectMaterialAndCrossSection": "请选择材料和截面。",
     "labelInUse": "标签 {label} 已被使用。",
-    "noMaterialOrCrossSection": "单元未指定材料或截面。"
+    "noMaterialOrCrossSection": "单元未指定材料或截面。",
+    "elementMissing": "单元 {label} 已不存在。"
   },
   "help": {
     "aria": "显示帮助",
@@ -476,7 +584,7 @@
     },
     "supports": {
       "title": "支座",
-      "body": "勾选自由度即可约束它：Dx 与 Dz 约束平动，Ry 约束转动。结构至少需要三个独立约束。"
+      "body": "勾选自由度即可约束它：Dx 与 D{v} 约束平动，R{r} 约束转动。结构至少需要三个独立约束。"
     },
     "elements": {
       "title": "单元",
@@ -484,7 +592,8 @@
     },
     "loads": {
       "title": "荷载",
-      "body": "荷载作用在节点上或沿单元分布。正值遵循整体坐标轴，其中 z 轴向下。"
+      "body": "荷载作用在节点上或沿单元分布。正值遵循整体坐标轴，其中 z 轴向下。",
+      "bodyYUp": "荷载作用在节点上或沿单元分布。正值遵循整体坐标轴，其中 y 轴向上。"
     },
     "nodalLoads": {
       "title": "节点荷载",
@@ -508,7 +617,8 @@
     },
     "signConvention": {
       "title": "符号规定",
-      "body": "整体坐标 z 轴向下，因此正的 Fz 或 fz 向下作用，My 以逆时针为正。切换到局部坐标的荷载则跟随单元。"
+      "body": "整体坐标 z 轴向下，因此正的 Fz 或 fz 向下作用，My 以逆时针为正。切换到局部坐标的荷载则跟随单元。",
+      "bodyYUp": "整体坐标 y 轴向上，因此正的 Fy 或 fy 向上作用，Mz 以逆时针为正。切换到局部坐标的荷载则跟随单元。"
     },
     "results": {
       "title": "结果",
@@ -516,7 +626,7 @@
     },
     "diagrams": {
       "title": "结果图形",
-      "body": "这些开关在模型上绘制轴力、剪力、弯矩、变形图和反力。N 受拉为正，My 以下缘受拉为正。"
+      "body": "这些开关在模型上绘制轴力、剪力、弯矩、变形图和反力。N 受拉为正，M{r} 以下缘受拉为正。"
     },
     "endForces": {
       "title": "单元端力",
@@ -589,6 +699,24 @@
         "title": "温度荷载",
         "blurb": "8 m 简支梁承受均匀和非均匀温度荷载。"
       }
+    }
+  },
+  "recentStructures": {
+    "title": "最近的结构",
+    "instructions": "最近 {count} 个被清空或替换的结构会保存在此浏览器中。恢复其中一个会替换当前结构，按 Ctrl+Z 可以撤回。",
+    "empty": "这里还没有内容。清空结构或在其上打开其他结构时，原结构会保存在这里。",
+    "restore": "恢复",
+    "remove": "移除",
+    "counts": "节点：{nodes} · 单元：{elements}",
+    "linkNotice": "已打开共享的结构。之前的结构保存在“最近的结构”中。",
+    "show": "查看",
+    "reasons": {
+      "clear": "已清空",
+      "link": "被共享链接替换",
+      "file": "被打开的文件替换",
+      "example": "被示例替换",
+      "firstBeam": "被“第一根梁”任务替换",
+      "restore": "被恢复的结构替换"
     }
   }
 }

@@ -48,7 +48,7 @@
                   <v-col cols="12">
                     <v-text-field
                       v-model="loadNodeValueFz"
-                      :label="`${mainLabel}z`"
+                      :label="`${mainLabel}${appStore.axes.v}`"
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="mainUnits"
@@ -60,7 +60,7 @@
                   <v-col cols="12">
                     <v-text-field
                       v-model="loadNodeValueMy"
-                      :label="`${momentLabel}y`"
+                      :label="`${momentLabel}${appStore.axes.r}`"
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="`${momentUnits}`"
@@ -90,9 +90,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, reactive, computed } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { useProjectStore } from '../../store/project';
-import { DofID, NodalLoad } from 'ts-fem';
+import { DofID } from 'ts-fem';
 import { closeModal } from 'jenesius-vue-modal';
 import { useAppStore } from '@/store/app';
 import { checkNumber, parseFloat2 } from '@/utils';
@@ -125,15 +125,15 @@ const realFx = computed(() => {
     return appStore.convertInverseForce(parseFloat2(loadNodeValueFx.value));
   }
 
-  return appStore.convertInverseLength(parseFloat2(loadNodeValueFx.value));
+  return appStore.convertInverseDisplacement(parseFloat2(loadNodeValueFx.value));
 });
 
 const realFz = computed(() => {
   if (loadType.value === 'force') {
-    return appStore.convertInverseForce(parseFloat2(loadNodeValueFz.value));
+    return appStore.vertical(appStore.convertInverseForce(parseFloat2(loadNodeValueFz.value)));
   }
 
-  return appStore.convertInverseLength(parseFloat2(loadNodeValueFz.value));
+  return appStore.vertical(appStore.convertInverseDisplacement(parseFloat2(loadNodeValueFz.value)));
 });
 
 const realMy = computed(() => {
@@ -148,7 +148,7 @@ const realMy = computed(() => {
 const mainLabel = computed(() => (loadType.value === 'force' ? 'F' : 'D'));
 const momentLabel = computed(() => (loadType.value === 'force' ? 'M' : 'R'));
 
-const mainUnits = computed(() => (loadType.value === 'force' ? appStore.units.Force : appStore.units.Length));
+const mainUnits = computed(() => (loadType.value === 'force' ? appStore.units.Force : appStore.units.Displacement));
 const momentUnits = computed(() => (loadType.value === 'force' ? appStore.units.Moment : 'rad'));
 
 onMounted(() => {
@@ -158,13 +158,13 @@ onMounted(() => {
 
   if (props.type === 'displacement') {
     const load = useProjectStore().solver.loadCases[0].prescribedBC[props.index];
-    loadNodeValueFx.value = appStore.convertLength(load.prescribedValues[DofID.Dx]).toString();
-    loadNodeValueFz.value = appStore.convertLength(load.prescribedValues[DofID.Dz]).toString();
+    loadNodeValueFx.value = appStore.convertDisplacement(load.prescribedValues[DofID.Dx]).toString();
+    loadNodeValueFz.value = appStore.vertical(appStore.convertDisplacement(load.prescribedValues[DofID.Dz])).toString();
     loadNodeValueMy.value = load.prescribedValues[DofID.Ry].toString();
   } else {
     const load = useProjectStore().solver.loadCases[0].nodalLoadList[props.index];
     loadNodeValueFx.value = appStore.convertForce(load.values[DofID.Dx]).toString();
-    loadNodeValueFz.value = appStore.convertForce(load.values[DofID.Dz]).toString();
+    loadNodeValueFz.value = appStore.vertical(appStore.convertForce(load.values[DofID.Dz])).toString();
     loadNodeValueMy.value = appStore.convertMoment(load.values[DofID.Ry]).toString();
   }
 });

@@ -70,7 +70,7 @@ All shortcuts are listed on the [Keyboard & mouse](/reference/shortcuts) page.
 
 ### Alerts
 
-Messages appear in the top-left of the viewer when something is wrong: *No materials defined* / *No cross sections defined* (with an **Add new** button) or *Model has N error(s)*, with a **Show details** button that lists every problem. See [Troubleshooting](/reference/troubleshooting).
+Messages appear in the top-left of the viewer: *No materials defined* / *No cross sections defined* (with an **Add new** button), a small blue *Needs supports* chip while the model is unfinished, or a red message when something is wrong, with a **Show details** button that lists every problem. A structure that can still move briefly swings as a dashed outline, and the nodes at fault are circled; point at the message to see the motion again, or use the eye button on it to hide the outline. *Settings → Viewer settings → Model checks* turns the outline or just its animation off for good. See [Troubleshooting](/reference/troubleshooting).
 
 ## Bottom bar
 

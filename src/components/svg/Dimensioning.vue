@@ -153,7 +153,7 @@ const handlePointPointerUp = (event: PointerEvent, index: number) => {
         :x="center[0]"
         :y="center[1]"
         text-anchor="middle"
-        dominant-baseline="middle"
+        dy="0.35em"
         :font-size="props.fontSize / props.scale"
         pointer-events="visiblePainted"
       >

@@ -43,7 +43,7 @@
                 <v-text-field
                   v-model="csH"
                   :label="$t('crossSection.h')"
-                  :suffix="appStore.units.Length"
+                  :suffix="appStore.units.SectionLength"
                   hide-details="auto"
                   :rules="positiveNumberRules"
                   required
@@ -112,6 +112,8 @@ import { useProjectStore } from '@/store/project';
 import { useAppStore } from '@/store/app';
 import { checkNumber, executeModelMutationWithUndo, positiveNumberRules, parseFloat2, setUnsolved } from '@/utils';
 import CrossSectionLibraryDialog from './CrossSectionLibrary.vue';
+import { newCrossSectionDefaults } from '@/utils/newEntityDefaults';
+import { presetFamily } from '@/utils/presetFamily';
 import PolygonSectionEditor from './PolygonSectionEditor.vue';
 
 const projectStore = useProjectStore();
@@ -120,9 +122,10 @@ const appStore = useAppStore();
 const open = ref(true);
 const valid = ref(false);
 
-const csArea = ref(`${appStore.convertArea(1)}`);
-const csIy = ref(`${appStore.convertAreaM2(0.0001)}`);
-const csH = ref(`${appStore.convertLength(1)}`);
+const defaults = newCrossSectionDefaults(presetFamily(appStore.units.Length));
+const csArea = ref(`${appStore.convertArea(defaults.a)}`);
+const csIy = ref(`${appStore.convertAreaM2(defaults.iy)}`);
+const csH = ref(`${appStore.convertSectionLength(defaults.h)}`);
 const csShear = ref('1');
 
 const openPolygonEditor = () => {
@@ -146,7 +149,7 @@ const addCrossSection = () => {
     domain.createCrossSection(nid, {
       a: appStore.convertInverseArea(parseFloat2(csArea.value)),
       iy: appStore.convertInverseAreaM2(parseFloat2(csIy.value)),
-      h: appStore.convertInverseLength(parseFloat2(csH.value)),
+      h: appStore.convertInverseSectionLength(parseFloat2(csH.value)),
       k: parseFloat2(csShear.value),
     });
 

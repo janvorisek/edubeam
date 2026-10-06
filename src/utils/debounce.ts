@@ -1,11 +1,7 @@
-export const debounce = (fn: Function, wait = 300) => {
+export const debounce = <A extends unknown[]>(fn: (...args: A) => void, wait = 300) => {
   let timeout: ReturnType<typeof setTimeout>;
-  return function (this: any) {
-    const context = this,
-      args = arguments;
+  return (...args: A) => {
     clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      fn.apply(context, args);
-    }, wait);
+    timeout = setTimeout(() => fn(...args), wait);
   };
 };

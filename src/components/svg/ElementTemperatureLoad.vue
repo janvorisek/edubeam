@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { Node, Beam2D, BeamTemperatureLoad } from 'ts-fem';
-import { getCurrentInstance } from 'vue';
 import { computed } from 'vue';
 
 const props = withDefaults(
@@ -10,8 +9,10 @@ const props = withDefaults(
     padding?: number;
     fontSize?: number;
     numberFormat?: Intl.NumberFormat;
+    /** Kelvin to the display unit; a temperature load is a difference, so this is a scale. */
+    convertTemperature?: (value: number) => number;
   }>(),
-  { padding: 10, fontSize: 13, numberFormat: new Intl.NumberFormat() }
+  { padding: 10, fontSize: 13, numberFormat: new Intl.NumberFormat(), convertTemperature: (v: number) => v }
 );
 
 const target = computed(() => props.eload.domain.elements.get(props.eload.target) as Beam2D);
@@ -40,7 +41,7 @@ const elementLabel = computed(() => {
       :font-size="14 / scale"
       font-weight="normal"
       text-anchor="middle"
-      dominant-baseline="central"
+      dy="0.35em"
       :transform="`${elementLabel} rotate(${elementAngle} ${(n1.coords[0] + n2.coords[0]) / 2} ${
         (n1.coords[2] + n2.coords[2]) / 2
       })`"
@@ -50,11 +51,13 @@ const elementLabel = computed(() => {
         letter, so one load answered to two names depending on where it was read.
       -->
       <template v-if="eload.values[0] !== 0"
-        >{{ $t ? $t('loads.temperatureDeltaTsNoHTML') : 'ΔTs' }}={{ numberFormat.format(eload.values[0]) }}</template
+        >{{ $t ? $t('loads.temperatureDeltaTsNoHTML') : 'ΔTs' }}={{
+          numberFormat.format(convertTemperature(eload.values[0]))
+        }}</template
       >
       <template v-if="eload.values[1] !== 0 || eload.values[2] !== 0">
         {{ $t ? $t('loads.temperatureDeltaTbtNoHTML') : 'ΔTb-ΔTt' }}={{
-          numberFormat.format(eload.values[1] - eload.values[2])
+          numberFormat.format(convertTemperature(eload.values[1] - eload.values[2]))
         }}
       </template>
     </text>

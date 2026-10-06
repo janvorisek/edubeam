@@ -1,7 +1,20 @@
-import { describe, it, expect } from 'vitest';
-import { computed, reactive, watch, nextTick } from 'vue';
-import { createDimensionPoint, resolveDimensionPoints, type DimensionLine } from '../types/dimension';
-import { parseFloat2 } from '../utils';
+import { describe, it, expect, afterEach } from 'vitest';
+import { defineComponent, h, reactive } from 'vue';
+import { mount } from '@vue/test-utils';
+import { createPinia, setActivePinia } from 'pinia';
+import { LinearStaticSolver, DofID } from 'ts-fem';
+import { i18n } from '@/plugins/i18n';
+import { useProjectStore } from '@/store/project';
+import { useAppStore } from '@/store/app';
+import { undoRedoManager } from '@/CommandManager';
+import { axisConvention } from '@/utils/axisConvention';
+import ContextMenuDimension from '@/components/ContextMenuDimension.vue';
+import {
+  createDimensionPoint,
+  resolveDimensionPoints,
+  type DimensionLine,
+  type DimensionPoint,
+} from '../types/dimension';
 
 /** Enough of a ts-fem node for the lookup: a label and coordinates. */
 type TestNode = { label: string; coords: [number, number, number] };
@@ -61,78 +74,154 @@ describe('resolveDimensionPoints', () => {
   });
 });
 
-/** The edit panel's field sync, wired the way ContextMenuDimension.vue wires it. */
-const editPanel = (dimension: DimensionLine, nodes: Map<string, TestNode>) => {
-  const fields = reactive({ x1: '', y1: '', x2: '', y2: '' });
-  const resolvedPoints = computed(() => resolveDimensionPoints(dimension, lookup(nodes)));
+/** Stands in for the Vuetify field, so a test can type into a coordinate and commit it. */
+const TextFieldStub = defineComponent({
+  props: { modelValue: { type: String, default: '' }, label: { type: String, default: '' } },
+  emits: ['update:modelValue', 'change'],
+  setup(props, { emit }) {
+    return () =>
+      h('input', {
+        'data-label': props.label,
+        value: props.modelValue,
+        onInput: (e: Event) => emit('update:modelValue', (e.target as HTMLInputElement).value),
+        onChange: (e: Event) => emit('change', e),
+      });
+  },
+});
 
-  const setInput = (key: keyof typeof fields, value: number | undefined) => {
-    if (value !== undefined && fields[key] !== '' && parseFloat2(fields[key]) === value) return;
-    fields[key] = value?.toString() ?? '';
+const mountPanel = (p1: DimensionPoint, p2: DimensionPoint) => {
+  setActivePinia(createPinia());
+
+  const projectStore = useProjectStore();
+  const solver = new LinearStaticSolver();
+  solver.domain.createNode(1, [0, 0, 0], [DofID.Dx, DofID.Dz]);
+  solver.domain.createNode(2, [4, 0, 0], [DofID.Dx, DofID.Dz]);
+  projectStore.solver = solver;
+
+  const dimension: DimensionLine = { id: 'd1', distance: 1, points: [p1, p2] };
+  projectStore.dimensions = [dimension];
+  projectStore.selection.type = 'dimension';
+  projectStore.selection.label = 'd1';
+
+  const wrapper = mount(ContextMenuDimension, {
+    shallow: true,
+    global: { plugins: [i18n], stubs: { 'v-text-field': TextFieldStub } },
+  });
+
+  const field = (label: string) => wrapper.find(`input[data-label="${label}"]`);
+  const value = (label: string) => (field(label).element as HTMLInputElement).value;
+
+  /** Types without committing, as a person does before pressing Enter. */
+  const type = async (label: string, text: string) => {
+    (field(label).element as HTMLInputElement).value = text;
+    await field(label).trigger('input');
   };
 
-  watch(
-    resolvedPoints,
-    () => {
-      const points = resolvedPoints.value;
-      setInput('x1', points?.[0].x);
-      setInput('y1', points?.[0].y);
-      setInput('x2', points?.[1].x);
-      setInput('y2', points?.[1].y);
-    },
-    { immediate: true }
-  );
+  const commit = (label: string) => field(label).trigger('change');
 
-  /** Editing any field pins both ends where the fields say they are. */
-  const commit = () => {
-    dimension.points = [
-      { ...dimension.points[0], x: parseFloat2(fields.x1), y: parseFloat2(fields.y1), sourceNodeLabel: null },
-      { ...dimension.points[1], x: parseFloat2(fields.x2), y: parseFloat2(fields.y2), sourceNodeLabel: null },
-    ];
-  };
-
-  return { fields, commit };
+  return { projectStore, appStore: useAppStore(), wrapper, value, type, commit };
 };
 
 describe('the dimension edit panel', () => {
+  afterEach(() => {
+    axisConvention.value = 'z-down';
+    undoRedoManager.clearHistory();
+  });
+
   it('follows a snapped node moved while it is open', async () => {
-    const { nodes, dimension } = model(createDimensionPoint(0, 0, '1'), createDimensionPoint(4, 0, '2'));
-    const { fields } = editPanel(dimension, nodes);
+    const { projectStore, wrapper, value } = mountPanel(
+      createDimensionPoint(0, 0, '1'),
+      createDimensionPoint(4, 0, '2')
+    );
 
-    expect([fields.x1, fields.y1, fields.x2, fields.y2]).toEqual(['0', '0', '4', '0']);
+    expect(['X1', 'Z1', 'X2', 'Z2'].map(value)).toEqual(['0', '0', '4', '0']);
 
-    nodes.get('1')!.coords[0] = 7;
-    nodes.get('1')!.coords[2] = -2;
-    await nextTick();
+    projectStore.solver.domain.nodes.get('1')!.coords[0] = 7;
+    projectStore.solver.domain.nodes.get('1')!.coords[2] = -2;
+    projectStore.solver.domain.nodes = new Map(projectStore.solver.domain.nodes);
+    await wrapper.vm.$nextTick();
 
-    expect([fields.x1, fields.y1]).toEqual(['7', '-2']);
-    expect([fields.x2, fields.y2]).toEqual(['4', '0']);
+    expect([value('X1'), value('Z1')]).toEqual(['7', '-2']);
   });
 
   it('pins the other end where its node is, not where the dimension last cached it', async () => {
-    const { nodes, dimension } = model(createDimensionPoint(0, 0, null), createDimensionPoint(4, 0, '2'));
-    const { fields, commit } = editPanel(dimension, nodes);
+    const { projectStore, wrapper, type, commit } = mountPanel(
+      createDimensionPoint(0, 0, null),
+      createDimensionPoint(4, 0, '2')
+    );
 
-    nodes.get('2')!.coords[0] = 9;
-    await nextTick();
+    projectStore.solver.domain.nodes.get('2')!.coords[0] = 9;
+    projectStore.solver.domain.nodes = new Map(projectStore.solver.domain.nodes);
+    await wrapper.vm.$nextTick();
 
     // editing the free end unsnaps both; the snapped one must stay at 9, not fall back to 4
-    fields.x1 = '1';
-    commit();
-    await nextTick();
+    await type('X1', '1');
+    await commit('X1');
 
-    expect(dimension.points[1].x).toBe(9);
-    expect(fields.x2).toBe('9');
+    expect(projectStore.dimensions[0].points[0].x).toBe(1);
+    expect(projectStore.dimensions[0].points[1]).toMatchObject({ x: 9, sourceNodeLabel: null });
   });
 
-  it('leaves a half typed value alone when it already means the stored number', async () => {
-    const { nodes, dimension } = model(createDimensionPoint(1, 0, null), createDimensionPoint(4, 0, '2'));
-    const { fields } = editPanel(dimension, nodes);
+  it('leaves the model alone until the field is committed, and a half typed value with it', async () => {
+    const { projectStore, wrapper, value, type } = mountPanel(
+      createDimensionPoint(1, 0, null),
+      createDimensionPoint(4, 0, null)
+    );
 
-    // "1." parses to the 1 the point already holds, so the trailing dot survives the sync
-    fields.x1 = '1.';
-    await nextTick();
+    await type('X1', '1.');
+    await wrapper.vm.$nextTick();
 
-    expect(fields.x1).toBe('1.');
+    expect(value('X1')).toBe('1.');
+    expect(projectStore.dimensions[0].points[0].x).toBe(1);
+  });
+
+  it('makes each committed edit one step to undo', async () => {
+    const { projectStore, wrapper, value, type, commit } = mountPanel(
+      createDimensionPoint(0, 0, null),
+      createDimensionPoint(4, 0, null)
+    );
+
+    await type('X2', '6');
+    await commit('X2');
+    expect(projectStore.dimensions[0].points[1].x).toBe(6);
+
+    undoRedoManager.undo();
+    await wrapper.vm.$nextTick();
+
+    expect(projectStore.dimensions[0].points[1].x).toBe(4);
+    // The field has to follow, or the next commit would bring the undone value back
+    expect(value('X2')).toBe('4');
+  });
+
+  it('reads and writes the vertical coordinate in the axis convention: y up is minus z', async () => {
+    axisConvention.value = 'y-up';
+    const { projectStore, value, type, commit } = mountPanel(
+      createDimensionPoint(0, -3, null),
+      createDimensionPoint(4, 0, null)
+    );
+
+    // 3 m above the origin is z = -3 in the model, y = 3 on screen
+    expect(value('Y1')).toBe('3');
+
+    await type('Y1', '5');
+    await commit('Y1');
+
+    expect(projectStore.dimensions[0].points[0].y).toBe(-5);
+  });
+
+  it('shows and takes the coordinates in the display length unit', async () => {
+    const { projectStore, appStore, wrapper, value, type, commit } = mountPanel(
+      createDimensionPoint(0, 0, null),
+      createDimensionPoint(3.048, 0, null)
+    );
+
+    appStore.units.Length = 'ft';
+    await wrapper.vm.$nextTick();
+    expect(value('X2')).toBe('10');
+
+    await type('X2', '20');
+    await commit('X2');
+
+    expect(projectStore.dimensions[0].points[1].x).toBeCloseTo(6.096, 12);
   });
 });

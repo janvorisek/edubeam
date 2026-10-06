@@ -1,6 +1,12 @@
 import { describe, it, expect } from 'vitest';
 import { boundsFromPoints, type Bounds, type FitResult, type Padding, type ViewBox } from '@/utils/fitBounds';
-import { checkFit, estimateExtents, fitRenderedContent, type FitContentOptions } from '@/utils/fitContent';
+import {
+  checkFit,
+  enforceMinAspect,
+  estimateExtents,
+  fitRenderedContent,
+  type FitContentOptions,
+} from '@/utils/fitContent';
 
 /** Something drawn at a model anchor with a fixed pixel offset (label, diagram peak, arrow tip). */
 interface Item {
@@ -337,6 +343,53 @@ describe('fitRenderedContent', () => {
     expect((0 - fit.viewBox.x) * fit.scale).toBeCloseTo(70, 0);
     expect((4 - fit.viewBox.x) * fit.scale).toBeCloseTo(730, 0);
     expect((0 - fit.viewBox.y) * fit.scale).toBeCloseTo(100, 0);
+  });
+
+  it('fits a straight beam as if it were at least half as tall as it is wide', async () => {
+    const items: Item[] = [
+      { x: 0, y: 0, py: -14 },
+      { x: 4, y: 0, py: -14 },
+      { x: 0, y: 0, py: 24 },
+      { x: 4, y: 0, py: 24 },
+    ];
+    const options = { padding: 16, reserve: 82, minAspect: 0.5, viewportWidth: 1600, viewportHeight: 800 };
+
+    const sim = await simulate(items, options);
+
+    expect(sim.result!.converged).toBe(true);
+    const fit = sim.result!;
+    // Geometry frame 1404 x 604 px; the beam fits as a 4 x 2 m box, so the height sets
+    // the zoom (302 px/m) instead of the width (351 px/m).
+    expect(fit.scale).toBeCloseTo(302);
+    expect((0 - fit.viewBox.x) * fit.scale).toBeCloseTo(196, 0);
+    expect((4 - fit.viewBox.x) * fit.scale).toBeCloseTo(1404, 0);
+    expect((0 - fit.viewBox.y) * fit.scale).toBeCloseTo(400, 0);
+  });
+
+  it('fits structures of ordinary proportions exactly as without minAspect', async () => {
+    const frame: Item[] = [
+      { x: 0, y: 0 },
+      { x: 6, y: 0 },
+      { x: 0, y: -3, py: -14 },
+      { x: 6, y: -3, py: -14 },
+    ];
+    const options = { padding: 16, reserve: 82, viewportWidth: 1600, viewportHeight: 800 };
+
+    const capped = await simulate(frame, { ...options, minAspect: 0.5 });
+    const plain = await simulate(frame, options);
+
+    expect(capped.result!.scale).toBeCloseTo(plain.result!.scale);
+    expect(capped.result!.viewBox.x).toBeCloseTo(plain.result!.viewBox.x);
+    expect(capped.result!.viewBox.y).toBeCloseTo(plain.result!.viewBox.y);
+  });
+
+  it('widens a slender column the same way', () => {
+    expect(enforceMinAspect({ minX: 2, maxX: 2, minY: -6, maxY: 0 }, 0.5)).toEqual({
+      minX: 0.5,
+      maxX: 3.5,
+      minY: -6,
+      maxY: 0,
+    });
   });
 
   it('lets decorations larger than the reserve drive the fit instead', async () => {

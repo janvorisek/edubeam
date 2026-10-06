@@ -46,6 +46,20 @@ Le **x** local va du nœud initial au nœud final ; le **z** local lui est perpe
 
 Il existe une réaction pour chaque DDL bloqué, donnée dans le repère du nœud (tourné de l’angle du SCL nodal s’il est défini). Les flèches de réaction dans la vue pointent dans le sens où l’appui pousse la structure.
 
+## Axe y vers le haut {#y-up-axes}
+
+**Paramètres → Système de coordonnées → x vers la droite, y vers le haut** passe tout ce que vous saisissez et lisez au repère des manuels : **x** vers la droite, **y** vers le haut et **z** vers l'observateur. Le modèle, les fichiers enregistrés et le dessin restent identiques ; seuls les nombres et les noms changent :
+
+| Grandeur | z vers le bas (par défaut) | y vers le haut |
+| --- | --- | --- |
+| Coordonnée verticale | `Z` | `Y`, signe opposé |
+| Charges, déplacements, réactions et efforts d'extrémité verticaux | `Fz`, `fz`, `Dz`, `Z12`… | `Fy`, `fy`, `Dy`, `Y12`…, signe opposé |
+| Rotations et moments | `Ry`, `My` | `Rz`, `Mz`, même signe (positif dans le sens antihoraire) |
+| Angle d'appui α | mesuré dans le sens horaire | mesuré dans le sens antihoraire, signe opposé |
+| Efforts internes N, V, M | | inchangés, diagrammes tracés de la même façon |
+
+Une charge de pesanteur est donc un `fy` **négatif**, et le sommet d'un poteau de 3 m a `Y = 3`.
+
 ## Unités
 
 Le solveur travaille en SI en interne (m, N, Pa, rad, K). Les unités d’affichage n’influent que sur ce que vous saisissez et lisez ; les changer ne modifie jamais le modèle.

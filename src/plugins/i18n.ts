@@ -14,6 +14,7 @@ export const availableLocales = [
   { code: 'th', name: 'ไทย' },
   { code: 'uk', name: 'Українська' },
   { code: 'ru', name: 'Русский' },
+  { code: 'tr', name: 'Türkçe' },
 ];
 
 // Create Vue I18n instance.

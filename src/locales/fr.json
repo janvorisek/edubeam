@@ -54,6 +54,17 @@
     "defineSupports": "Appuis du nœud",
     "lcsAngle": "Angle du SCL nodal"
   },
+  "supports": {
+    "free": "Libre",
+    "pin": "Rotule",
+    "roller": "Appui simple",
+    "verticalRoller": "Appui simple vertical",
+    "slider": "Glissière",
+    "verticalSlider": "Glissière verticale",
+    "rotation": "Rotation bloquée seule",
+    "fixed": "Encastrement",
+    "custom": "Personnalisé"
+  },
   "elements": {
     "addElement": "Ajouter un élément",
     "editElement": "Modifier l'élément",
@@ -114,6 +125,10 @@
     "results_scale": "Échelle des résultats",
     "grid_snap_step": "Pas de magnétisme de la grille",
     "snap_to_grid": "Magnétisme à la grille",
+    "show_crosshair": "Afficher le réticule",
+    "model_checks": "Vérification du modèle",
+    "show_mechanisms": "Montrer comment une structure instable peut bouger",
+    "animate_mechanisms": "Animer le mouvement",
     "number_format": "Format des nombres",
     "number_format_description": "Comment les résultats sont écrits ; le séparateur décimal suit la langue.",
     "number_format_auto": "Automatique",
@@ -134,7 +149,14 @@
       "moment": "Moment fléchissant",
       "pressure": "Contrainte",
       "area": "Aire",
-      "areaM2": "Moment quadratique"
+      "areaM2": "Moment quadratique",
+      "system": "Système d'unités",
+      "systemSI": "SI (métrique)",
+      "systemUS": "Américain (impérial)",
+      "systemCustom": "Personnalisé",
+      "temperature": "Température",
+      "sectionLength": "Dimensions de section",
+      "displacement": "Déplacement"
     },
     "grid": "Grille",
     "show_grid": "Afficher la grille",
@@ -159,6 +181,10 @@
     "viewer_preview": "Aperçu",
     "language_description": "Choisissez votre langue d'interface préférée.",
     "units_description": "Choisissez vos unités de mesure préférées.",
+    "axisConvention": "Système de coordonnées",
+    "axisConvention_description": "Sens de l'axe vertical dans les saisies et les résultats. Le modèle et les fichiers enregistrés ne changent pas.",
+    "axisConvention_zDown": "x vers la droite, z vers le bas",
+    "axisConvention_yUp": "x vers la droite, y vers le haut",
     "reset_settings": "Réinitialiser les paramètres",
     "sizes": {
       "sizes": "Tailles",
@@ -182,6 +208,7 @@
   "viewer": {
     "toggleGrid": "Afficher/masquer la grille (G)",
     "toggleSnap": "Activer/désactiver le magnétisme (S)",
+    "toggleCrosshair": "Afficher/masquer le réticule",
     "boxSelect": "Sélection par rectangle",
     "centerContent": "Centrer le contenu",
     "fitContent": "Ajuster à l'écran",
@@ -213,7 +240,7 @@
     "addNode": {
       "addNewNode": "Ajouter un nouveau nœud",
       "coordinate_x": "Coordonnée X",
-      "coordinate_z": "Coordonnée Z",
+      "coordinate_z": "Coordonnée {v}",
       "addNode": "Ajouter un nœud"
     },
     "common": {
@@ -315,7 +342,10 @@
       "shape": "Forme",
       "noShape": "Aucune forme polygonale",
       "centroidal": "central",
-      "centroidalNote": "Tous les moments quadratiques sont calculés par rapport à des axes passant par le centre de gravité ; I₁, I₂ sont les valeurs principales et α est l'angle entre l'axe y et l'axe 1."
+      "centroidalNote": "Tous les moments quadratiques sont calculés par rapport à des axes passant par le centre de gravité ; I₁, I₂ sont les valeurs principales et α est l'angle entre l'axe y et l'axe 1.",
+      "outOfPlaneNote": "La section n'est pas symétrique par rapport au plan du portique. Un calcul 2D n'est exact que si la barre est maintenue contre le déplacement latéral (hors de l'écran) et la torsion sur toute sa longueur, par exemple par une dalle ou des contreventements rapprochés ; des appuis aux nœuds ne suffisent pas. Une barre libre se tord aussi, car les charges n'agissent pas au centre de cisaillement, et cette torsion n'est pas prise en compte dans les déformations.",
+      "outOfPlaneRestrained": "Maintenue latéralement et en torsion sur toute sa longueur : {inertia}",
+      "outOfPlaneFree": "Libre de se déplacer latéralement (torsion toujours non prise en compte) : {inertia}"
     }
   },
   "tooltip": {
@@ -342,8 +372,14 @@
     "copyFailed": "Impossible de copier automatiquement. Veuillez utiliser vos raccourcis clavier."
   },
   "tour": {
-    "startTour": "Commencer la visite",
-    "skipTour": "Passer pour l'instant",
+    "menu": {
+      "title": "Menu",
+      "description": "Ouvrez, enregistrez et partagez vos projets, exportez une image, chargez un exemple, ou relancez cette visite ou l'exercice de la première poutre."
+    },
+    "undoRedo": {
+      "title": "Annuler et rétablir",
+      "description": "Revenez en arrière ou en avant dans vos modifications. Ctrl+Z et Ctrl+Maj+Z font de même."
+    },
     "viewerControls": {
       "title": "Boutons de visualisation",
       "description": "Les commandes d'affichage servent à centrer la structure, à l'ajuster à l'écran et à choisir les éléments à afficher."
@@ -352,21 +388,75 @@
       "title": "Personnaliser l'affichage",
       "description": "Choisissez ce qu'il faut afficher : effort normal, effort tranchant, moment fléchissant, déformée, ou tout à la fois."
     },
+    "gridUnits": {
+      "title": "Grille, accrochage et unités",
+      "description": "G affiche la grille et S y accroche les nouveaux nœuds. Cliquez sur les unités pour les changer, ainsi que la langue ou le repère."
+    },
     "bottomBar": {
       "title": "Ajouter, supprimer et modifier des entités",
       "description": "Le centre de contrôle où chaque aspect de votre structure peut être modifié facilement. Des nœuds aux éléments, charges, matériaux et sections : tout y est pour des modifications rapides et complètes."
     },
+    "help": {
+      "title": "Aide",
+      "description": "Le ? explique l'onglet ouvert. Le ? à côté d'un en-tête de colonne explique cette colonne."
+    },
     "previousButton": "Précédent",
     "nextButton": "Suivant",
-    "finishButton": "Terminer"
+    "finishButton": "Terminer",
+    "close": "Fermer la visite"
+  },
+  "firstBeam": {
+    "title": "Votre première poutre",
+    "step": "Étape {n} sur {total}",
+    "close": "Fermer le guide",
+    "finish": "Terminé",
+    "next": "Suivant",
+    "steps": {
+      "tool": {
+        "title": "Choisissez l'outil",
+        "body": "Dans l'onglet {elementsTab} en bas, appuyez sur le bouton {addElement} avec l'icône du curseur."
+      },
+      "draw": {
+        "title": "Dessinez la poutre",
+        "body": "Cliquez là où la poutre commence, puis là où elle finit. Les extrémités s'accrochent à la grille."
+      },
+      "supports": {
+        "title": "Ajoutez les appuis",
+        "body": "Cliquez sur l'extrémité gauche, ouvrez {defineSupports} et cochez Dx et D{v} pour un appui articulé. Cliquez ensuite sur l'extrémité droite et cochez D{v} pour un appui simple."
+      },
+      "load": {
+        "title": "Chargez-la",
+        "body": "Cliquez sur la poutre, choisissez {addLoad}, saisissez une valeur dans f{v} et validez."
+      },
+      "display": {
+        "title": "Choisissez l'affichage",
+        "body": "La roue dentée en haut à droite ouvre les options d'affichage : efforts internes, déformée, réactions et plus. Ouvrez-la maintenant."
+      },
+      "fit": {
+        "title": "Ajustez à l'écran",
+        "body": "Les boutons en haut à droite ajustent le modèle à l'écran ou le centrent. Appuyez maintenant sur ajuster à l'écran, et à chaque fois que le dessin sort de la vue."
+      },
+      "results": {
+        "title": "Lisez les résultats",
+        "body": "Le moment fléchissant et la déformée sont tracés sur la poutre et se mettent à jour à chaque modification. Tous les nœuds, éléments et charges figurent aussi dans les tableaux en bas, où vous pouvez saisir des valeurs exactes. {undo} rétablit votre modèle précédent."
+      }
+    }
   },
   "welcome": {
     "title": "Bienvenue dans <span class=\"edubeam\">edubeam</span> ! 🚀",
-    "description": "Pour vous aider à démarrer, nous avons préparé une courte visite guidée qui présente les principales fonctionnalités du programme."
+    "description": "Modélisez poutres, portiques et treillis et voyez leurs efforts internes pendant que vous dessinez.",
+    "start": "Comment voulez-vous commencer ?",
+    "showAround": "Faire le tour",
+    "showAroundHint": "Un aperçu rapide de la vue, des options d'affichage et de la barre du bas.",
+    "drawFirstBeam": "Dessiner votre première poutre",
+    "drawFirstBeamHint": "Un court guide : dessinez une poutre, ajoutez des appuis et chargez-la.",
+    "openExample": "Ouvrir un exemple",
+    "openExampleHint": "Partez d'un modèle prêt à l'emploi et modifiez-le.",
+    "skip": "Passer pour l'instant"
   },
   "confirmation": {
     "clearMesh": {
-      "message": "Voulez-vous vraiment effacer la structure ? Cette action est irréversible.",
+      "message": "Voulez-vous vraiment effacer la structure ? Ctrl+Z la rétablit, et elle reste dans Structures récentes.",
       "title": "Effacer la structure ?",
       "materials": "Supprimer les matériaux",
       "crossSections": "Supprimer les sections"
@@ -394,6 +484,7 @@
     "enterValue": "Saisissez une valeur",
     "invalidNumber": "Nombre invalide",
     "positiveNumber": "Saisissez un nombre supérieur à zéro",
+    "between": "Saisissez une valeur entre {min} et {max}",
     "sameNodes": "Un élément doit relier deux nœuds différents",
     "materialInUse": "Le matériau est utilisé par les éléments suivants : {elements}. Réaffectez-les avant de le supprimer.",
     "crossSectionInUse": "La section est utilisée par les éléments suivants : {elements}. Réaffectez-les avant de la supprimer."
@@ -401,14 +492,22 @@
   "solveDiagnostics": {
     "summaryErrors": "Erreurs dans le modèle : {errors}",
     "summaryWarnings": "Avertissements dans le modèle : {warnings}",
-    "summaryBoth": "Erreurs dans le modèle : {errors} ; avertissements : {warnings}",
+    "summaryIncomplete": "{count} parties de la structure ont besoin d'appuis.",
+    "incompleteChip": "Appuis manquants",
+    "hideMotion": "Masquer le mouvement",
+    "showMotion": "Afficher le mouvement",
+    "dismissWarnings": "Masquer ces avertissements",
+    "collapseErrors": "Réduire ce message",
     "showDetails": "Afficher les détails",
     "blockedTitle": "Impossible de résoudre le modèle",
     "blockedDescription": "Corrigez les erreurs listées avant de résoudre le modèle.",
     "warningsTitle": "Avertissements du modèle",
     "warningsDescription": "Le modèle a été résolu, mais les avertissements suivants ont été détectés.",
+    "incompleteTitle": "Pas encore prêt pour le calcul",
+    "incompleteDescription": "Les résultats apparaissent dès que la structure est maintenue. Le contour en pointillés montre comment elle peut encore bouger.",
     "errors": "Erreurs",
     "warnings": "Avertissements",
+    "incomplete": "Reste à faire",
     "issues": {
       "elementNodeCount": "L'élément {element} doit référencer exactement 2 nœuds.",
       "elementSameNode": "L'élément {element} référence le même nœud à ses deux extrémités.",
@@ -423,9 +522,15 @@
       "supportedNodeNotConnected": "Le nœud {node} possède un appui mais aucun élément n'y est relié : l'appui ne reprend donc rien.",
       "nodeNotConnected": "Le nœud {node} n'est relié à aucun élément et est ignoré par le solveur.",
       "insufficientSupports": "Le modèle doit comporter au moins 3 DDL bloqués pour être stable en analyse 2D.",
+      "needsSupports": "La structure a besoin d'appuis pour pouvoir être calculée.",
       "partUnsupported": "Une partie séparée de la structure (nœuds {nodes}) a moins de 3 DDL bloqués et peut se déplacer librement.",
+      "partNeedsSupports": "La partie avec les nœuds {nodes} a besoin d'appuis.",
       "mechanism": "La structure a suffisamment d'appuis, mais ils ne la maintiennent pas : elle peut encore {motion}. Des appuis tous parallèles, ou dont les lignes d'action concourent en un même point, laissent la structure libre de se déplacer.",
+      "mechanismShort": "Les appuis ne maintiennent pas la structure : elle peut encore {motion}.",
       "partMechanism": "Une partie séparée de la structure (nœuds {nodes}) a suffisamment d'appuis, mais ils ne la maintiennent pas : elle peut encore {motion}. Des appuis tous parallèles, ou dont les lignes d'action concourent en un même point, laissent la structure libre de se déplacer.",
+      "partMechanismShort": "La partie avec les nœuds {nodes} n'est pas maintenue : elle peut encore {motion}.",
+      "hingeMechanism": "Les appuis maintiennent la structure, mais c'est encore un mécanisme : ses barres peuvent tourner autour des articulations du nœud {nodes}. Supprimez une articulation ou ajoutez une barre ou un appui qui empêche le mouvement.",
+      "hingeMechanismShort": "Les articulations du nœud {nodes} laissent la structure bouger.",
       "motion": {
         "horizontal": "glisser horizontalement",
         "vertical": "se déplacer verticalement",
@@ -433,14 +538,16 @@
         "mixed": "se déplacer comme un corps rigide"
       },
       "unstable": "La structure est instable. Déplacement pratiquement sans résistance : {dofs}. Ajoutez un appui ou un élément, supprimez une rotule d'extrémité ou vérifiez la rigidité de la section.",
+      "unstableShort": "La structure est instable : elle bouge presque sans résistance.",
       "unstableDof": {
         "dx": "nœud {node} horizontalement (Dx)",
-        "dz": "nœud {node} verticalement (Dz)",
-        "ry": "nœud {node} en rotation (Ry)",
+        "dz": "nœud {node} verticalement (D{v})",
+        "ry": "nœud {node} en rotation (R{r})",
         "other": "nœud {node} selon le DDL {dof}"
       },
       "unstableMore": "{list} et {count} de plus",
       "singularMatrix": "La structure est un mécanisme : la matrice de rigidité est singulière. Vérifiez que chaque partie est maintenue par au moins 3 liaisons et que les rotules d'extrémité ne laissent aucune barre libre de tourner.",
+      "singularMatrixShort": "La structure est un mécanisme : elle peut bouger sans résistance.",
       "solverFailed": "Échec du solveur dû à une incohérence interne du modèle. Veuillez vérifier les références et les charges du modèle."
     }
   },
@@ -464,7 +571,8 @@
     "addCrossSectionFirst": "Veuillez d'abord ajouter une section.",
     "selectMaterialAndCrossSection": "Veuillez sélectionner un matériau et une section.",
     "labelInUse": "Le libellé {label} est déjà utilisé.",
-    "noMaterialOrCrossSection": "L'élément ne spécifie pas de matériau ou de section."
+    "noMaterialOrCrossSection": "L'élément ne spécifie pas de matériau ou de section.",
+    "elementMissing": "L'élément {label} n'existe plus."
   },
   "help": {
     "aria": "Afficher l'aide",
@@ -476,7 +584,7 @@
     },
     "supports": {
       "title": "Appuis",
-      "body": "Cochez un degré de liberté pour le bloquer : Dx et Dz bloquent la translation, Ry la rotation. Une structure exige au moins trois blocages indépendants."
+      "body": "Cochez un degré de liberté pour le bloquer : Dx et D{v} bloquent la translation, R{r} la rotation. Une structure exige au moins trois blocages indépendants."
     },
     "elements": {
       "title": "Éléments",
@@ -484,7 +592,8 @@
     },
     "loads": {
       "title": "Charges",
-      "body": "Les charges agissent sur les nœuds ou le long des éléments. Les valeurs positives suivent les axes globaux, z étant dirigé vers le bas."
+      "body": "Les charges agissent sur les nœuds ou le long des éléments. Les valeurs positives suivent les axes globaux, z étant dirigé vers le bas.",
+      "bodyYUp": "Les charges agissent sur les nœuds ou le long des éléments. Les valeurs positives suivent les axes globaux, y étant dirigé vers le haut."
     },
     "nodalLoads": {
       "title": "Charges nodales",
@@ -508,7 +617,8 @@
     },
     "signConvention": {
       "title": "Convention de signes",
-      "body": "L'axe global z pointe vers le bas : un Fz ou fz positif agit vers le bas et My est positif dans le sens antihoraire. Les charges en repère local suivent l'élément."
+      "body": "L'axe global z pointe vers le bas : un Fz ou fz positif agit vers le bas et My est positif dans le sens antihoraire. Les charges en repère local suivent l'élément.",
+      "bodyYUp": "L'axe global y pointe vers le haut : un Fy ou fy positif agit vers le haut et Mz est positif dans le sens antihoraire. Les charges en repère local suivent l'élément."
     },
     "results": {
       "title": "Résultats",
@@ -516,7 +626,7 @@
     },
     "diagrams": {
       "title": "Tracés des résultats",
-      "body": "Ces cases tracent l'effort normal, l'effort tranchant, le moment fléchissant, la déformée et les réactions sur le modèle. N est positif en traction, My lorsque la fibre inférieure est tendue."
+      "body": "Ces cases tracent l'effort normal, l'effort tranchant, le moment fléchissant, la déformée et les réactions sur le modèle. N est positif en traction, M{r} lorsque la fibre inférieure est tendue."
     },
     "endForces": {
       "title": "Efforts aux extrémités",
@@ -589,6 +699,24 @@
         "title": "Charge thermique",
         "blurb": "Poutre sur appuis simples de 8 m soumise à une charge thermique uniforme et non uniforme."
       }
+    }
+  },
+  "recentStructures": {
+    "title": "Structures récentes",
+    "instructions": "Les {count} dernières structures effacées ou remplacées sont conservées dans ce navigateur. En restaurer une remplace la structure actuelle, et Ctrl+Z la rétablit.",
+    "empty": "Rien pour l’instant. Lorsque vous effacez une structure ou en ouvrez une autre par-dessus, elle est conservée ici.",
+    "restore": "Restaurer",
+    "remove": "Retirer",
+    "counts": "Nœuds : {nodes} · Éléments : {elements}",
+    "linkNotice": "Structure partagée ouverte. La précédente est conservée dans Structures récentes.",
+    "show": "Afficher",
+    "reasons": {
+      "clear": "Effacée",
+      "link": "Remplacée par un lien partagé",
+      "file": "Remplacée par un fichier ouvert",
+      "example": "Remplacée par un exemple",
+      "firstBeam": "Remplacée par la tâche « première poutre »",
+      "restore": "Remplacée par une structure restaurée"
     }
   }
 }

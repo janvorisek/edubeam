@@ -122,6 +122,8 @@ watch(
       :convert-force-distance="appStore.convertForceDistance"
       :convert-moment="appStore.convertMoment"
       :convert-length="appStore.convertLength"
+      :convert-temperature="appStore.convertTemperature"
+      :convert-displacement="appStore.convertDisplacement"
       :colors="viewerStore.colors"
     />
   </div>

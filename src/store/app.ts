@@ -9,11 +9,26 @@ import { MouseMode } from '@/mouse';
 import { setLocale } from '@/plugins/i18n';
 import { openModal } from 'jenesius-vue-modal';
 import SettingsModal from '../components/dialogs/Settings.vue';
-import Qty from 'js-quantities';
-import { isMobile, suggestLanguage } from '@/utils';
+import { isMobile, readStoredAppSettings, suggestLanguage } from '@/utils';
 import { formatResultAsHTML, formatResultAsText, type ResultNumberStyle } from '@/utils/numberDisplay';
-import { customForceConversion, customPressureConversion } from '@/utils/unitConversions';
+import { fromSI, momentLabel, unitSize, type ForceUnit, type LengthUnit } from '@/utils/unitConversions';
+import {
+  matchUnitSystem,
+  sanitizeUnitChoice,
+  suggestBrowserUnitSystem,
+  unitSystems,
+  type UnitChoice,
+  type UnitSystem,
+} from '@/utils/unitSystems';
+import { angle, axisConvention, axisLetters, vertical } from '@/utils/axisConvention';
 import { useProjectStore } from './project';
+import { useViewerStore } from './viewer';
+import { gridStepAfterUnitChange } from '@/utils/grid';
+
+export type SettingsTab = 'lang' | 'appearance' | 'controls';
+
+const asRecord = (value: unknown): Record<string, unknown> =>
+  typeof value === 'object' && value !== null ? (value as Record<string, unknown>) : {};
 
 export const useAppStore = defineStore(
   'app',
@@ -38,112 +53,155 @@ export const useAppStore = defineStore(
     const formatResultHTML = (value: number) => formatResultAsHTML(value, numberStyle.value, resultFormatter.value);
     const formatResultText = (value: number) => formatResultAsText(value, numberStyle.value, resultFormatter.value);
 
-    // The converter cant handle moment units, so we store them separately and call the converter for length and force separately
-    const momentUnits = ref({ force: 'kN', length: 'm' });
+    // A first visit starts in the units of the browser's region. Anyone who has been here before
+    // starts from what they saved, so a unit their version did not have yet is derived from the
+    // units it did have; the persisted state then restores the rest.
+    const stored = readStoredAppSettings();
+    const initial: UnitChoice =
+      stored === undefined
+        ? unitSystems[suggestBrowserUnitSystem()]
+        : sanitizeUnitChoice({ ...asRecord(stored?.units), moment: stored?.momentUnits }, unitSystems.si);
+
+    // A moment unit is a pair, so it is stored as one: `units.Moment` is only its label.
+    const momentUnits = ref<{ force: ForceUnit; length: LengthUnit }>({ ...initial.moment });
 
     const units = reactive({
-      Length: 'm',
-      Area: 'm2',
-      AreaM2: 'm4',
-      Mass: 'kg',
-      Force: 'kN',
-      Moment: computed(() => `${momentUnits.value.force}${momentUnits.value.length}`),
-      Pressure: 'MPa',
-      ThermalExpansion: '1/K',
+      Length: initial.Length,
+      SectionLength: initial.SectionLength,
+      Displacement: initial.Displacement,
+      Area: initial.Area,
+      AreaM2: initial.AreaM2,
+      Mass: initial.Mass,
+      Force: initial.Force,
+      Moment: computed(() => momentLabel(momentUnits.value.force, momentUnits.value.length)),
+      Pressure: initial.Pressure,
+      ThermalExpansion: initial.ThermalExpansion,
       Angle: 'rad',
-      Temperature: 'C',
+      Temperature: initial.Temperature,
       ForceDistance: computed(() => `${units.Force}/${units.Length}`),
+      Density: computed(() => `${units.Mass}/${units.Length}3`),
     });
 
     // TODO: We really don't need to solve anything, but this triggers most of the reactivity we need
-    watch(units, (newUnits) => {
+    watch(units, () => {
       useProjectStore().solve();
     });
 
-    let _convertLength = Qty.swiftConverter('m', units.Length);
-    let _convertInverseLength = Qty.swiftConverter(units.Length, 'm');
-    let _convertArea = Qty.swiftConverter('m2', units.Area);
-    let _convertInverseArea = Qty.swiftConverter(units.Area, 'm2');
-    let _convertAreaM2 = Qty.swiftConverter('m4', units.AreaM2);
-    let _convertInverseAreaM2 = Qty.swiftConverter(units.AreaM2, 'm4');
-    let _convertPressure = customPressureConversion('Pa', units.Pressure);
-    let _convertInversePressure = customPressureConversion(units.Pressure, 'Pa');
-    let _convertForce = customForceConversion('N', units.Force);
-    let _convertInverseForce = customForceConversion(units.Force, 'N');
-    let _convertMoment = (v) => {
-      const lenConv = Qty.swiftConverter('m', momentUnits.value.length);
-      const forceConv = customForceConversion('N', momentUnits.value.force);
+    watch(units, () => {
+      if (useAppStore().bottomBarOpen) {
+        useAppStore().bottomBarOpen = false;
+        nextTick(() => {
+          useAppStore().bottomBarOpen = true;
+        });
+      }
+    });
 
-      return lenConv(forceConv(v));
+    // The size of one display unit in SI. A value goes to the screen divided by it, and comes back
+    // multiplied; compound units are products of their parts.
+    const size = computed(() => {
+      const length = unitSize.length(units.Length);
+      const force = unitSize.force(units.Force);
+
+      return {
+        length,
+        sectionLength: unitSize.length(units.SectionLength),
+        displacement: unitSize.length(units.Displacement),
+        area: unitSize.area(units.Area),
+        secondMoment: unitSize.secondMoment(units.AreaM2),
+        force,
+        moment: unitSize.force(momentUnits.value.force) * unitSize.length(momentUnits.value.length),
+        forceDistance: force / length,
+        pressure: unitSize.pressure(units.Pressure),
+        density: unitSize.mass(units.Mass) / length ** 3,
+        temperature: unitSize.temperature(units.Temperature),
+        thermalExpansion: unitSize.thermalExpansion(units.ThermalExpansion),
+      };
+    });
+
+    const convertLength = (value: number) => fromSI(value, size.value.length);
+    const convertInverseLength = (value: number) => value * size.value.length;
+    const convertSectionLength = (value: number) => fromSI(value, size.value.sectionLength);
+    const convertInverseSectionLength = (value: number) => value * size.value.sectionLength;
+    const convertDisplacement = (value: number) => fromSI(value, size.value.displacement);
+    const convertInverseDisplacement = (value: number) => value * size.value.displacement;
+    const convertArea = (value: number) => fromSI(value, size.value.area);
+    const convertInverseArea = (value: number) => value * size.value.area;
+    const convertAreaM2 = (value: number) => fromSI(value, size.value.secondMoment);
+    const convertInverseAreaM2 = (value: number) => value * size.value.secondMoment;
+    const convertPressure = (value: number) => fromSI(value, size.value.pressure);
+    const convertInversePressure = (value: number) => value * size.value.pressure;
+    const convertForce = (value: number) => fromSI(value, size.value.force);
+    const convertInverseForce = (value: number) => value * size.value.force;
+    const convertMoment = (value: number) => fromSI(value, size.value.moment);
+    const convertInverseMoment = (value: number) => value * size.value.moment;
+    const convertForceDistance = (value: number) => fromSI(value, size.value.forceDistance);
+    const convertInverseForceDistance = (value: number) => value * size.value.forceDistance;
+    const convertDensity = (value: number) => fromSI(value, size.value.density);
+    const convertInverseDensity = (value: number) => value * size.value.density;
+    const convertTemperature = (value: number) => fromSI(value, size.value.temperature);
+    const convertInverseTemperature = (value: number) => value * size.value.temperature;
+    const convertThermalExpansion = (value: number) => fromSI(value, size.value.thermalExpansion);
+    const convertInverseThermalExpansion = (value: number) => value * size.value.thermalExpansion;
+
+    const unitChoice = (): UnitChoice => ({
+      Length: units.Length,
+      SectionLength: units.SectionLength,
+      Displacement: units.Displacement,
+      Area: units.Area,
+      AreaM2: units.AreaM2,
+      Mass: units.Mass,
+      Force: units.Force,
+      Pressure: units.Pressure,
+      Temperature: units.Temperature,
+      ThermalExpansion: units.ThermalExpansion,
+      moment: momentUnits.value,
+    });
+
+    const applyUnitChoice = ({ moment, ...rest }: UnitChoice) => {
+      Object.assign(units, rest);
+      momentUnits.value = { ...moment };
     };
-    let _convertInverseMoment = (v) => {
-      const lenConv = Qty.swiftConverter(momentUnits.value.length, 'm');
-      const forceConv = customForceConversion(momentUnits.value.force, 'N');
 
-      return lenConv(forceConv(v));
+    /**
+     * The length unit as a person picks it. The grid snap step is kept in metres, and one still at
+     * the default of the old unit family moves to the default of the new.
+     */
+    const setLengthUnit = (unit: LengthUnit) => {
+      const viewerStore = useViewerStore();
+      viewerStore.gridStep = gridStepAfterUnitChange(viewerStore.gridStep, units.Length, unit);
+      units.Length = unit;
     };
 
-    let _convertTemperature = Qty.swiftConverter('C', units.Temperature);
-    let _convertInverseTemperature = Qty.swiftConverter(units.Temperature, 'C');
+    /** SI or US customary when every unit is that system's, null for a custom mix. */
+    const unitSystem = computed<UnitSystem | null>({
+      get: () => matchUnitSystem(unitChoice()),
+      set: (system) => {
+        if (!system) return;
 
-    watch(
-      units,
-      (newUnits) => {
-        _convertLength = Qty.swiftConverter('m', newUnits.Length);
-        _convertInverseLength = Qty.swiftConverter(newUnits.Length, 'm');
-        _convertArea = Qty.swiftConverter('m2', newUnits.Area);
-        _convertInverseArea = Qty.swiftConverter(newUnits.Area, 'm2');
-        _convertAreaM2 = Qty.swiftConverter('m4', newUnits.AreaM2);
-        _convertInverseAreaM2 = Qty.swiftConverter(newUnits.AreaM2, 'm4');
-        _convertPressure = customPressureConversion('Pa', newUnits.Pressure);
-        _convertInversePressure = customPressureConversion(newUnits.Pressure, 'Pa');
-        _convertForce = customForceConversion('N', newUnits.Force);
-        _convertInverseForce = customForceConversion(newUnits.Force, 'N');
-        _convertMoment = (v) => {
-          const lenConv = Qty.swiftConverter('m', momentUnits.value.length);
-          const forceConv = customForceConversion('N', momentUnits.value.force);
-
-          return lenConv(forceConv(v));
-        };
-        _convertInverseMoment = (v) => {
-          const lenConv = Qty.swiftConverter(momentUnits.value.length, 'm');
-          const forceConv = customForceConversion(momentUnits.value.force, 'N');
-
-          return lenConv(forceConv(v));
-        };
-        _convertTemperature = Qty.swiftConverter('C', newUnits.Temperature);
-        _convertInverseTemperature = Qty.swiftConverter(newUnits.Temperature, 'C');
-
-        if (useAppStore().bottomBarOpen) {
-          useAppStore().bottomBarOpen = false;
-          nextTick(() => {
-            useAppStore().bottomBarOpen = true;
-          });
-        }
+        setLengthUnit(unitSystems[system].Length);
+        applyUnitChoice(unitSystems[system]);
       },
-      { immediate: true }
-    );
+    });
 
-    const convertLength = (value: number) => _convertLength(value);
-    const convertInverseLength = (value: number) => _convertInverseLength(value);
-    const convertArea = (value: number) => _convertArea(value);
-    const convertInverseArea = (value: number) => _convertInverseArea(value);
-    const convertAreaM2 = (value: number) => _convertAreaM2(value);
-    const convertInverseAreaM2 = (value: number) => _convertInverseAreaM2(value);
-    const convertPressure = (value: number) => _convertPressure(value);
-    const convertInversePressure = (value: number) => _convertInversePressure(value);
-    const convertForce = (value: number) => _convertForce(value);
-    const convertInverseForce = (value: number) => _convertInverseForce(value);
-    const convertMoment = (value: number) => _convertMoment(value);
-    const convertInverseMoment = (value: number) => _convertInverseMoment(value);
-    // Distributed load intensities are a force per length, so both parts of the unit have to be
-    // converted. Length conversion is a pure scale factor, hence dividing by the factor for 1 m.
-    const convertForceDistance = (value: number) => _convertForce(value) / _convertLength(1);
-    const convertInverseForceDistance = (value: number) => _convertInverseForce(value * _convertLength(1));
-    const convertTemperature = (value: number) => _convertTemperature(value);
-    const convertInverseTemperature = (value: number) => _convertInverseTemperature(value);
+    /** Called after local storage is read back, which knows nothing of which units exist. */
+    const sanitizeUnits = () => applyUnitChoice(sanitizeUnitChoice(unitChoice(), unitSystems.si));
+
+    // Vertical components and angles pass through `vertical` and `angle` on their way to and
+    // from the screen, after unit conversion; `axes` holds the letters to label them with.
+    const axes = computed(() => axisLetters(axisConvention.value));
+
+    watch(axisConvention, () => {
+      if (useAppStore().bottomBarOpen) {
+        useAppStore().bottomBarOpen = false;
+        nextTick(() => {
+          useAppStore().bottomBarOpen = true;
+        });
+      }
+    });
 
     const onboardingFinished = ref(false);
+    /** The "draw your first beam" task is running; see utils/firstBeam.ts. */
+    const firstBeamActive = ref(false);
     const lastSeenChangelogVersion = ref('');
 
     watch(locale, (newLocale) => {
@@ -179,13 +237,18 @@ export const useAppStore = defineStore(
     > = ref([
       { title: 'tabView.viewer', component: markRaw(SVGViewer), props: { id: 'viewer' }, closable: false },
       //{ title: "tabView.results", component: markRaw(Results), props: {}, closable: true },
-      { title: 'tabView.settings', component: markRaw(Settings), props: { id: 'settings' }, closable: true },
+      /*
+       * Not closable: closing it was a one way door, since nothing ever put it back - the gear opens
+       * the same panel in a dialog instead, and the code that would have reopened the tab has been
+       * commented out below since it was written.
+       */
+      { title: 'tabView.settings', component: markRaw(Settings), props: { id: 'settings' }, closable: false },
     ]);
 
     const openedTab = computed(() => tabs.value[tab.value] || null);
 
-    const openSettings = () => {
-      openModal(SettingsModal);
+    const openSettings = (tab: SettingsTab = 'lang') => {
+      openModal(SettingsModal, { tab });
       /*const si = tabs.value.findIndex((t) => t.title === "tabView.settings");
 
       // If settings already open, switch to it
@@ -200,12 +263,20 @@ export const useAppStore = defineStore(
 
     const panButton = ref(-1);
 
-    const test = ref(20);
+    // Everything the settings dialog edits except the language, which is a person's choice rather
+    // than a preference to fall back from.
+    const resetSettings = () => {
+      numberStyle.value = 'scientific';
+      applyUnitChoice(unitSystems[suggestBrowserUnitSystem()]);
+      axisConvention.value = 'z-down';
+      panButton.value = -1;
+    };
 
     return {
       inViewerMode,
 
       onboardingFinished,
+      firstBeamActive,
       drawerOpen,
       rightDrawerOpen,
       bottomBarOpen,
@@ -218,6 +289,9 @@ export const useAppStore = defineStore(
       formatResultText,
       units,
       momentUnits,
+      unitSystem,
+      setLengthUnit,
+      sanitizeUnits,
       dialogs,
       zooming,
       tab,
@@ -227,12 +301,17 @@ export const useAppStore = defineStore(
       mouseMode,
       mouse,
       openSettings,
+      resetSettings,
 
       panButton,
 
       // Convert units
       convertLength,
       convertInverseLength,
+      convertSectionLength,
+      convertInverseSectionLength,
+      convertDisplacement,
+      convertInverseDisplacement,
       convertArea,
       convertInverseArea,
       convertAreaM2,
@@ -245,8 +324,17 @@ export const useAppStore = defineStore(
       convertInverseMoment,
       convertForceDistance,
       convertInverseForceDistance,
+      convertDensity,
+      convertInverseDensity,
       convertTemperature,
       convertInverseTemperature,
+      convertThermalExpansion,
+      convertInverseThermalExpansion,
+
+      axisConvention,
+      axes,
+      vertical,
+      angle,
 
       lastSeenChangelogVersion,
     };
@@ -262,6 +350,8 @@ export const useAppStore = defineStore(
         'tab',
         'bottomBarHeight',
         'units.Length',
+        'units.SectionLength',
+        'units.Displacement',
         'units.Area',
         'units.AreaM2',
         'units.Mass',
@@ -271,8 +361,10 @@ export const useAppStore = defineStore(
         'units.ThermalExpansion',
         'units.Angle',
         'momentUnits',
+        'axisConvention',
       ],
       debug: true,
+      afterHydrate: ({ store }) => store.sanitizeUnits(),
     },
   }
 );

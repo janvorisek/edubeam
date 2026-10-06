@@ -73,7 +73,7 @@ import { closeModal } from 'jenesius-vue-modal';
 import SVGElementViewer from '../SVGElementViewer.vue';
 import { buildExampleSolver, createExampleLibrary, examples, type ExampleDefinition } from '@/utils/examples';
 import { docsUrl, trackDocsClick } from '@/utils/docs';
-import { executeModelMutationWithUndo } from '@/utils';
+import { replaceModel, resetModel } from '@/utils';
 import { useProjectStore } from '@/store/project';
 import { eventBus, EventType } from '@/EventBus';
 
@@ -100,24 +100,13 @@ const previews = examples.map((example) => {
  * Replaces the project with the chosen example.
  *
  * Wrapped as a single undoable mutation, so browsing examples never costs anyone the
- * model they were working on — Ctrl+Z brings it straight back.
+ * model they were working on — Ctrl+Z brings it straight back, and so do the recent structures.
  */
 const load = (example: ExampleDefinition) => {
   const projectStore = useProjectStore();
 
-  executeModelMutationWithUndo(() => {
-    const loadCase = projectStore.solver.loadCases[0];
-
-    loadCase.solved = false;
-    loadCase.prescribedBC = [];
-    loadCase.nodalLoadList = [];
-    loadCase.elementLoadList = [];
-
-    projectStore.solver.domain.elements.clear();
-    projectStore.solver.domain.nodes.clear();
-    projectStore.solver.domain.materials.clear();
-    projectStore.solver.domain.crossSections.clear();
-    projectStore.dimensions = [];
+  replaceModel('example', () => {
+    resetModel();
     projectStore.clearSelection();
     projectStore.clearSelection2();
 

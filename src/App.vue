@@ -8,14 +8,14 @@ import {
   importJSON,
   redoModelChange,
   undoModelChange,
+  replaceModel,
+  resetModel,
 } from './utils';
-import { provide, nextTick } from 'vue';
-import { undoRedoManager } from './CommandManager';
+import { nextTick } from 'vue';
 import { useViewerStore } from './store/viewer';
 import Confirmation from './components/dialogs/Confirmation.vue';
 import ReloadPrompt from './components/ReloadPrompt.vue';
-import { createDimensionId } from './utils/id';
-import { createDimensionPointFromNode } from './types/dimension';
+import { buildStarterModel } from './utils/starterModel';
 
 export default {
   name: 'App',
@@ -24,21 +24,22 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue';
-import { DofID } from 'ts-fem';
+import { computed, onMounted, provide, ref } from 'vue';
 import { setLocale, availableLocales } from './plugins/i18n';
 
 import Welcome from '@/components/dialogs/Welcome.vue';
 import Share from '@/components/dialogs/Share.vue';
 import Examples from '@/components/dialogs/Examples.vue';
+import RecentStructures from '@/components/dialogs/RecentStructures.vue';
 import ExportImage from '@/components/dialogs/ExportImage.vue';
 import Changelog from '@/components/dialogs/Changelog.vue';
 import Editor from '@/views/Editor.vue';
 import Dialogs from '@/components/Dialogs.vue';
 import { useProjectStore } from './store/project';
 import { useAppStore } from './store/app';
+import { startFirstBeam } from './utils/startFirstBeam';
 
-import { VOnboardingWrapper, VOnboardingStep } from 'v-onboarding';
+import { VOnboardingWrapper, VOnboardingStep, useVOnboarding } from 'v-onboarding';
 import 'v-onboarding/dist/style.css';
 
 import { useI18n } from 'vue-i18n';
@@ -47,12 +48,20 @@ const { t } = useI18n();
 
 const viewerStore = useViewerStore();
 
+const file = ref(null);
+
 const onboardingWrapper = ref(null);
 provide('onboardingWrapper', onboardingWrapper);
 
-const file = ref(null);
-
 const steps = computed(() => [
+  {
+    attachTo: { element: '#appMenu' },
+    content: { title: t('tour.menu.title'), description: t('tour.menu.description') },
+  },
+  {
+    attachTo: { element: '#undoRedo' },
+    content: { title: t('tour.undoRedo.title'), description: t('tour.undoRedo.description') },
+  },
   {
     attachTo: { element: '#viewerControls' },
     content: {
@@ -68,13 +77,55 @@ const steps = computed(() => [
     },
   },
   {
+    attachTo: { element: '#gridAndUnits' },
+    content: { title: t('tour.gridUnits.title'), description: t('tour.gridUnits.description') },
+  },
+  {
     attachTo: { element: '#bottomBar' },
     content: {
       title: t('tour.bottomBar.title'),
       description: t('tour.bottomBar.description'),
     },
   },
+  {
+    attachTo: { element: '#bottomBarHelp' },
+    content: { title: t('tour.help.title'), description: t('tour.help.description') },
+  },
 ]);
+
+/**
+ * Also offered in the menu, for anyone who skipped it. The display options are one of its stops.
+ *
+ * Every step but the first is about the drawing, and the tour can be started from any tab - the
+ * menu is always there. Started from Settings, say, a step about the drawing would have nothing to
+ * attach to: the pane it is about is hidden, so everything in it measures zero. Switching to it
+ * once, before the first step, is simpler than asking each step that needs it to switch for itself.
+ */
+const startTour = async () => {
+  const drawing = appStore.tabs.findIndex((tab) => tab.props.id === 'viewer');
+
+  if (drawing >= 0) appStore.tab = drawing;
+
+  viewerStore.settingsOpen = true;
+  await nextTick();
+  useVOnboarding(onboardingWrapper).start();
+};
+
+// The step slot's own `exit` only emits an event; this is what takes the tour down.
+const endTour = () => useVOnboarding(onboardingWrapper).finish();
+
+/**
+ * v-onboarding builds a fresh popper for each step the moment its bubble mounts, from whatever
+ * the anchor measures right then - and on the last couple of steps that is still mid-layout, so
+ * the bubble lands wherever an empty, top-left anchor would have put it. A resize is what the
+ * library already listens for to put a popper right; asking for one after the bubble has painted
+ * is cheaper than reaching into the library to redo its own positioning.
+ */
+const fixTourStepPosition = () => {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
+  });
+};
 
 onMounted(() => {
   document.addEventListener('keydown', function (e) {
@@ -112,6 +163,12 @@ onMounted(() => {
       e.preventDefault();
       file.value.click();
     }
+
+    // Leave the tour. Harmless when none is running - finish() just sets the state it is
+    // already in.
+    if (e.key === 'Escape') {
+      endTour();
+    }
   });
 
   document.addEventListener(
@@ -139,6 +196,10 @@ onMounted(() => {
   // Documented entry point: run.edubeam.app/?panel=examples opens the gallery straight away.
   const panel = params.get('panel');
 
+  // Someone who has not been through the welcome dialog yet is new here: this version is what
+  // they start with, not news, so the changelog waits for the next release.
+  if (!appStore.onboardingFinished && currentAppVersion) appStore.lastSeenChangelogVersion = currentAppVersion;
+
   if (inViewerMode) {
     appStore.inViewerMode = true;
   } else if (panel === 'examples') {
@@ -152,8 +213,12 @@ onMounted(() => {
     // Validate the shared model before touching the current one, so a broken link
     // cannot wipe the project persisted in localStorage.
     if (parseSerializedModel(name) !== null) {
-      clearMesh(true, true);
-      deserializeModel(name, solver, useProjectStore().dimensions);
+      const saved = replaceModel('link', () => {
+        resetModel();
+        deserializeModel(name, solver, useProjectStore().dimensions);
+      });
+      // Opening a link used to overwrite whatever was here without a word.
+      if (saved && !appStore.inViewerMode) previousModelSaved.value = true;
     } else {
       console.warn('Ignoring invalid ?model= parameter');
     }
@@ -176,56 +241,8 @@ onMounted(() => {
 
   if (domain.nodes.size > 0) return solve();
 
-  domain.createNode(1, [0, 0, 0], [DofID.Dx, DofID.Ry, DofID.Dz]);
-  domain.createNode(2, [0, 0, -3], []);
-  domain.createNode(3, [3, 0, -3], []);
-  domain.createNode(4, [3, 0, 0], [DofID.Dx, DofID.Dz]);
-
-  domain.nodes = new Map(domain.nodes);
-
-  domain.createBeam2D(1, [1, 2], 1, 1, [false, true]);
-  domain.createBeam2D(2, [2, 3], 1, 1);
-  domain.createBeam2D(3, [4, 3], 1, 1);
-
-  domain.elements = new Map(domain.elements);
-
-  domain.createCrossSection(1, {
-    a: 1,
-    iy: 8.356e-5,
-    iz: 1.0,
-    dyz: 999991.0,
-    h: 1,
-    k: 1e32,
-    j: 99999.0,
-  });
-
-  domain.createMaterial(1, {
-    e: 210000e6,
-    g: 210000e6 / (2 * (1 + 0.2)),
-    alpha: 12.0e-6,
-    d: 4000 /*kg/m3!!!*/,
-  });
-
-  //solver.loadCases[0].createNodalLoad(3, { [DofID.Dx]: 10000, [DofID.Dz]: 0, [DofID.Ry]: 10000 });
-  //solver.loadCases[0].createNodalLoad(3, { [DofID.Dx]: 0, [DofID.Dz]: 20 });
-
-  solver.loadCases[0].createBeamElementTrapezoidalEdgeLoad(2, [0, 10000], [0, 30000], true);
-  //solver.loadCases[0].createBeamElementUniformEdgeLoad(2, [0, 10000], true);
-  //solver.loadCases[0].createPrescribedDisplacement("a", { [DofID.Dx]: 0.3, [DofID.Dz]: 0.2, [DofID.Ry]: 0.01 });
-
-  domain.materials = new Map(domain.materials);
-  domain.crossSections = new Map(domain.crossSections);
-
-  solver.domain = domain;
-
-  useProjectStore().dimensions.push({
-    id: createDimensionId(),
-    points: [
-      createDimensionPointFromNode(domain.nodes.get('1')!),
-      createDimensionPointFromNode(domain.nodes.get('4')!),
-    ],
-    distance: 1,
-  });
+  // The frame in round numbers of the units in use: 3 m, or 10 ft
+  buildStarterModel(solver, useProjectStore().dimensions, appStore.unitSystem === 'us' ? 'us' : 'si');
 
   requestAnimationFrame(solve);
 });
@@ -238,23 +255,27 @@ const solve = () => {
 };
 
 const clearMesh = (clearMaterials = false, clearCrossSects = false) => {
-  useProjectStore().solver.loadCases[0].solved = false;
-  useProjectStore().solver.loadCases[0].prescribedBC = [];
-  useProjectStore().solver.loadCases[0].nodalLoadList = [];
-  useProjectStore().solver.loadCases[0].elementLoadList = [];
-  useProjectStore().solver.domain.elements.clear();
-  useProjectStore().solver.domain.nodes.clear();
-  useProjectStore().dimensions = [];
+  // Undoable, and the cleared model is kept in the recent structures.
+  replaceModel('clear', () => resetModel({ materials: clearMaterials, crossSections: clearCrossSects }));
+  useProjectStore().clearSelection();
+  // Otherwise the diagnostics of the model just cleared stay on screen.
+  solve();
+};
 
-  if (clearMaterials) {
-    useProjectStore().solver.domain.materials.clear();
+/** Loads a project file over the current model; alerts and keeps the model if it is not one. */
+const loadProjectFile = (text: string) => {
+  try {
+    const json = JSON.parse(text);
+    if (typeof json !== 'object' || json === null || typeof json.domain !== 'object') throw new Error('Not a project');
+    replaceModel('file', () => {
+      resetModel();
+      importJSON(json);
+    });
+    useProjectStore().clearSelection();
+    solve();
+  } catch (e) {
+    alert(t('warnings.importFailed'));
   }
-
-  if (clearCrossSects) {
-    useProjectStore().solver.domain.crossSections.clear();
-  }
-
-  undoRedoManager.clearHistory();
 };
 
 const shareMesh = () => {
@@ -264,6 +285,14 @@ const shareMesh = () => {
 const openExamples = () => {
   openModal(Examples);
 };
+
+const openRecentStructures = () => {
+  previousModelSaved.value = false;
+  openModal(RecentStructures);
+};
+
+/** Set when a shared link replaced a model worth keeping, so the user learns where it went. */
+const previousModelSaved = ref(false);
 
 const openExportImage = () => {
   openModal(ExportImage);
@@ -302,17 +331,7 @@ function onDrop(e) {
     const file = e.dataTransfer.files[i];
     const reader = new FileReader();
     reader.onload = function (e) {
-      const text = e.target.result.toString();
-      try {
-        const json = JSON.parse(text);
-        if (typeof json !== 'object' || json === null || typeof json.domain !== 'object')
-          throw new Error('Not a project');
-        clearMesh(true, true);
-        importJSON(json);
-        solve();
-      } catch (e) {
-        alert(t('warnings.importFailed'));
-      }
+      loadProjectFile(e.target.result.toString());
     };
     reader.readAsText(file);
   }
@@ -325,18 +344,7 @@ function openFile(e) {
   const file = e.target.files[0];
   const reader = new FileReader();
   reader.onload = function (e) {
-    const text = e.target.result.toString();
-
-    try {
-      const json = JSON.parse(text);
-      if (typeof json !== 'object' || json === null || typeof json.domain !== 'object')
-        throw new Error('Not a project');
-      clearMesh(true, true);
-      importJSON(json);
-      solve();
-    } catch (e) {
-      alert(t('warnings.importFailed'));
-    }
+    loadProjectFile(e.target.result.toString());
 
     appStore.tab = 0;
     appStore.drawerOpen = false;
@@ -360,11 +368,35 @@ const app_commit = APP_COMMIT;
       :steps="steps"
       :options="{
         popper: {
+          /*
+           * Laid out against the window, not the document. Absolutely positioned, a bubble that
+           * lands low can make the page taller than the window, and the page then scrolls to show
+           * it - the app slides up and a strip of blank appears under it.
+           */
+          strategy: 'fixed',
           modifiers: [
             {
               name: 'offset',
               options: {
                 offset: [0, 10],
+              },
+            },
+            /*
+             * On by default, but not reliably: left to pick its own moment, flip has measured the
+             * wrong thing often enough - the bubble landing half off the window regardless of a
+             * step's own placement - that it is worth asking for explicitly, with room to work with.
+             */
+            {
+              name: 'flip',
+              options: {
+                padding: 8,
+              },
+            },
+            {
+              name: 'preventOverflow',
+              options: {
+                padding: 8,
+                altAxis: true,
               },
             },
           ],
@@ -374,38 +406,39 @@ const app_commit = APP_COMMIT;
         },
       }"
     >
-      <template #default="{ previous, next, step, exit, isFirst, isLast, index }">
+      <template #default="{ previous, next, step, isFirst, isLast, index }">
         <VOnboardingStep>
-          <div class="bg-white shadow rounded-lg" style="max-width: 400px">
-            <div class="px-4 py-5 sm:p-6">
-              <div class="sm:flex sm:items-center sm:justify-between">
-                <div v-if="step.content">
-                  <h3 v-if="step.content.title" class="text-lg font-medium leading-6 text-gray-900">
-                    {{ step.content.title }}
-                  </h3>
-                  <div v-if="step.content.description" class="mt-2 max-w-xl text-sm text-gray-500">
-                    <p>{{ step.content.description }}</p>
-                  </div>
-                </div>
-                <div class="mt-5 space-x-4 sm:mt-0 sm:ml-6 sm:flex sm:flex-shrink-0 sm:items-center relative">
-                  <template v-if="!isFirst">
-                    <v-btn type="button" flat color="grey-lighten-3" @click="previous">
-                      {{ $t('tour.previousButton') }}
-                    </v-btn>
-                  </template>
-                  <v-btn type="button" color="primary" flat class="ml-1" @click="next">
-                    {{ isLast ? $t('tour.finishButton') : $t('tour.nextButton') }}
-                  </v-btn>
-                </div>
-              </div>
+          <v-card v-if="step.content" max-width="400" elevation="6" class="pa-4" @vue:mounted="fixTourStepPosition">
+            <div class="d-flex align-start">
+              <h3 class="text-h6 flex-grow-1">{{ step.content.title }}</h3>
+              <v-btn
+                icon="mdi-close"
+                variant="text"
+                size="small"
+                density="comfortable"
+                class="mt-n1 mr-n2"
+                :aria-label="$t('tour.close')"
+                @click="endTour"
+              />
             </div>
-          </div>
+            <p class="mt-2 text-body-2">{{ step.content.description }}</p>
+            <div class="d-flex align-center ga-2 mt-4">
+              <span class="text-caption text-medium-emphasis">{{ index + 1 }} / {{ steps.length }}</span>
+              <v-spacer />
+              <v-btn v-if="!isFirst" flat color="grey-lighten-3" @click="previous">
+                {{ $t('tour.previousButton') }}
+              </v-btn>
+              <v-btn color="primary" flat @click="next">
+                {{ isLast ? $t('tour.finishButton') : $t('tour.nextButton') }}
+              </v-btn>
+            </div>
+          </v-card>
         </VOnboardingStep>
       </template>
     </VOnboardingWrapper>
 
     <v-app-bar v-if="!appStore.inViewerMode" clipped-lefs clipped-right app color="primary" density="compact">
-      <v-app-bar-nav-icon @click="appStore.drawerOpen = !appStore.drawerOpen"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon id="appMenu" @click="appStore.drawerOpen = !appStore.drawerOpen"></v-app-bar-nav-icon>
 
       <div class="app-title ml-3 d-flex align-center" style="user-select: none">edubeam</div>
 
@@ -453,7 +486,8 @@ const app_commit = APP_COMMIT;
 
       <v-divider></v-divider>
 
-      <v-list density="compact" nav>
+      <!-- Every item opens something else or acts on the model, so the menu gets out of the way -->
+      <v-list density="compact" nav @click="appStore.drawerOpen = false">
         <v-list-item
           prepend-icon="mdi-folder-open-outline"
           :title="$t('common.openProject')"
@@ -465,6 +499,12 @@ const app_commit = APP_COMMIT;
           :title="$t('common.saveProject')"
           value="about"
           @click="saveProject"
+        ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-backup-restore"
+          :title="$t('recentStructures.title')"
+          value="recentStructures"
+          @click="openRecentStructures"
         ></v-list-item>
         <v-list-item
           prepend-icon="mdi-image-outline"
@@ -484,6 +524,18 @@ const app_commit = APP_COMMIT;
           :title="$t('examples.title')"
           value="examples"
           @click="openExamples"
+        ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-vector-polyline-plus"
+          :title="$t('welcome.drawFirstBeam')"
+          value="firstBeam"
+          @click="startFirstBeam"
+        ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-map-marker-path"
+          :title="$t('welcome.showAround')"
+          value="tour"
+          @click="startTour"
         ></v-list-item>
         <v-list-item
           prepend-icon="mdi-delete-empty"
@@ -543,6 +595,14 @@ const app_commit = APP_COMMIT;
       <div>edubeam v{{ app_version }} {{ $t("footer.released") }} {{ app_released }}</div>
     </div> -->
     <ReloadPrompt />
+    <v-snackbar v-model="previousModelSaved" :timeout="10000" location="bottom">
+      {{ $t('recentStructures.linkNotice') }}
+      <template #actions>
+        <v-btn variant="text" color="primary" @click="openRecentStructures">
+          {{ $t('recentStructures.show') }}
+        </v-btn>
+      </template>
+    </v-snackbar>
     <input ref="file" type="file" style="display: none" @change="openFile" />
   </v-app>
 </template>

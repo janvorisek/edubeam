@@ -36,7 +36,7 @@
                 <v-col cols="12">
                   <v-text-field
                     v-model="newNodeZ"
-                    :label="$t('dialogs.addNode.coordinate_z')"
+                    :label="$t('dialogs.addNode.coordinate_z', { v: appStore.axes.v.toUpperCase() })"
                     :suffix="appStore.units.Length"
                     hide-details="auto"
                     :rules="numberRules"
@@ -49,7 +49,7 @@
             </v-col>
             <v-col cols="6">
               <div class="d-flex justify-center" style="height: 64px">
-                <SupportHelper :angle="angleVal" :node="tmpNode" />
+                <SupportHelper :angle="appStore.angle(angleVal)" :node="tmpNode" />
               </div>
               <div>
                 <div class="text-caption">{{ $t('dofs.bcs') }}</div>
@@ -66,7 +66,7 @@
                   <v-col>
                     <v-checkbox
                       density="compact"
-                      label="Dz"
+                      :label="`D${appStore.axes.v}`"
                       hide-details="auto"
                       :model-value="tmpNode.bcs.has(2)"
                       @click="toggleSet(tmpNode, 'bcs', 2)"
@@ -75,7 +75,7 @@
                   <v-col>
                     <v-checkbox
                       density="compact"
-                      label="Ry"
+                      :label="`R${appStore.axes.r}`"
                       hide-details="auto"
                       :model-value="tmpNode.bcs.has(4)"
                       @click="toggleSet(tmpNode, 'bcs', 4)"
@@ -96,6 +96,12 @@
                   </v-col>
                 </v-row>
               </div>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" class="pt-0">
+              <div class="text-caption">{{ $t('nodes.defineSupports') }}</div>
+              <SupportPicker :bcs="tmpNode.bcs" @select="(type) => (tmpNode.bcs = new Set(supportTypes[type]))" />
             </v-col>
           </v-row>
         </v-form>
@@ -120,8 +126,18 @@ import { useProjectStore } from '../../store/project';
 import { Node } from 'ts-fem';
 import { closeModal } from 'jenesius-vue-modal';
 import { useAppStore } from '@/store/app';
-import { checkNumber, executeModelMutationWithUndo, parseFloat2, setUnsolved, toggleSet } from '@/utils';
+import {
+  applyNodeLcsAngle,
+  checkNumber,
+  executeModelMutationWithUndo,
+  nodeLcsAngle,
+  parseFloat2,
+  setUnsolved,
+  toggleSet,
+} from '@/utils';
 import SupportHelper from '../svg/SupportHelper.vue';
+import SupportPicker from '../SupportPicker.vue';
+import { supportTypes } from '@/utils/supports';
 import { numberRules } from '../../utils';
 
 const projectStore = useProjectStore();
@@ -157,19 +173,11 @@ const minMax = (v) => {
 };
 
 onMounted(() => {
-  nodalAngle.value = node.value.hasLcs() ? angle.value.toString() : '0';
+  nodalAngle.value = appStore.angle(nodeLcsAngle(node.value)).toString();
   tmpNode.value = new Node(node.value.label, node.value.domain, node.value.coords, [...node.value.bcs.values()]);
 
   newNodeX.value = appStore.convertLength(node.value.coords[0]).toString();
-  newNodeZ.value = appStore.convertLength(node.value.coords[2]).toString();
-});
-
-const angle = computed(() => {
-  if (!node.value.hasLcs()) {
-    return 0;
-  }
-
-  return 90 - Math.atan2(node.value.lcs[0][0], node.value.lcs[0][2]) * (180 / Math.PI);
+  newNodeZ.value = appStore.vertical(appStore.convertLength(node.value.coords[2])).toString();
 });
 
 const node = computed(() => {
@@ -179,20 +187,13 @@ const node = computed(() => {
 const edit = () => {
   if (!valid.value) return;
 
-  const ang = parseFloat(nodalAngle.value) * (Math.PI / 180);
   const x = appStore.convertInverseLength(parseFloat2(newNodeX.value));
-  const z = appStore.convertInverseLength(parseFloat2(newNodeZ.value));
+  const z = appStore.vertical(appStore.convertInverseLength(parseFloat2(newNodeZ.value)));
 
   executeModelMutationWithUndo(() => {
     setUnsolved();
 
-    if (isNaN(ang) || Math.abs(ang) < 1e-8) {
-      node.value.lcs = undefined;
-    } else {
-      const locx = [Math.cos(ang), 0, Math.sin(ang)];
-      const locy = [0, 1, 0];
-      node.value.updateLcs({ locx, locy });
-    }
+    applyNodeLcsAngle(node.value, appStore.angle(parseFloat(nodalAngle.value)));
 
     node.value.coords = [x, 0, z];
     node.value.bcs = new Set(tmpNode.value.bcs);

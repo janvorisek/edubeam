@@ -4,10 +4,12 @@ import { buildElementResultRows, buildNodeResultRows, buildResultsCsv, type Resu
 
 const SI: ResultUnits = {
   lengthLabel: 'm',
+  displacementLabel: 'm',
   angleLabel: 'rad',
   forceLabel: 'kN',
   momentLabel: 'kNm',
   length: (v) => v,
+  displacement: (v) => v,
   force: (v) => v / 1000,
   moment: (v) => v / 1000,
 };
@@ -60,6 +62,23 @@ describe('exportResults', () => {
     expect(tip.slice(6)).toEqual([null, null, null]);
   });
 
+  it('writes displacements in their own unit, apart from the coordinates', () => {
+    // US practice: the frame in feet, its deflections in inches
+    const rows = buildNodeResultRows(buildSolved(), {
+      ...SI,
+      lengthLabel: 'ft',
+      displacementLabel: 'in',
+      length: (v) => v / 0.3048,
+      displacement: (v) => v / 0.0254,
+    });
+
+    expect(rows[0].slice(1, 5)).toEqual(['x [ft]', 'z [ft]', 'Dx [in]', 'Dz [in]']);
+    expect(rows[2][1]).toBeCloseTo(3 / 0.3048, 9);
+
+    const inMetres = buildNodeResultRows(buildSolved(), SI);
+    expect(rows[2][4]).toBeCloseTo((inMetres[2][4] as number) / 0.0254, 12);
+  });
+
   it('follows the units it is handed', () => {
     const rows = buildNodeResultRows(buildSolved(), {
       ...SI,
@@ -110,5 +129,16 @@ describe('exportResults', () => {
 
     expect(csv).toContain(String.fromCharCode(34) + 'a,b' + String.fromCharCode(34));
     expect(csv).toContain('\r\n\r\nElement,');
+  });
+
+  it('leaves the displacements of a node no element touches empty instead of throwing', () => {
+    const ls = buildSolved();
+    ls.domain.createNode('3', [5, 0, 0], []);
+    ls.solve();
+
+    const loose = buildNodeResultRows(ls, SI).find((row) => row[0] === '3');
+
+    expect(loose.slice(3, 6)).toEqual([null, null, null]);
+    expect(loose[1]).toBe(5);
   });
 });

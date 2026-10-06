@@ -54,6 +54,17 @@
     "defineSupports": "Apoyos del nodo",
     "lcsAngle": "Ángulo del SCL nodal"
   },
+  "supports": {
+    "free": "Libre",
+    "pin": "Articulación",
+    "roller": "Rodillo",
+    "verticalRoller": "Rodillo vertical",
+    "slider": "Deslizadera",
+    "verticalSlider": "Deslizadera vertical",
+    "rotation": "Solo giro impedido",
+    "fixed": "Empotramiento",
+    "custom": "Personalizado"
+  },
   "elements": {
     "addElement": "Añadir elemento",
     "editElement": "Editar elemento",
@@ -114,6 +125,10 @@
     "results_scale": "Escala de resultados",
     "grid_snap_step": "Paso de ajuste a la cuadrícula",
     "snap_to_grid": "Ajustar a la cuadrícula",
+    "show_crosshair": "Mostrar cruceta",
+    "model_checks": "Comprobación del modelo",
+    "show_mechanisms": "Mostrar cómo puede moverse una estructura inestable",
+    "animate_mechanisms": "Animar el movimiento",
     "number_format": "Formato numérico",
     "number_format_description": "Cómo se escriben los resultados; el separador decimal sigue el idioma.",
     "number_format_auto": "Automático",
@@ -134,7 +149,14 @@
       "moment": "Momento flector",
       "pressure": "Presión",
       "area": "Área",
-      "areaM2": "Segundo momento de área"
+      "areaM2": "Segundo momento de área",
+      "system": "Sistema de unidades",
+      "systemSI": "SI (métrico)",
+      "systemUS": "Estadounidense (imperial)",
+      "systemCustom": "Personalizado",
+      "temperature": "Temperatura",
+      "sectionLength": "Dimensiones de sección",
+      "displacement": "Desplazamiento"
     },
     "grid": "Cuadrícula",
     "show_grid": "Mostrar cuadrícula",
@@ -159,6 +181,10 @@
     "viewer_preview": "Vista previa",
     "language_description": "Seleccione su idioma preferido para la interfaz.",
     "units_description": "Elija sus unidades de medida preferidas.",
+    "axisConvention": "Sistema de coordenadas",
+    "axisConvention_description": "Hacia dónde apunta el eje vertical en los datos y los resultados. El modelo y los archivos guardados no cambian.",
+    "axisConvention_zDown": "x a la derecha, z hacia abajo",
+    "axisConvention_yUp": "x a la derecha, y hacia arriba",
     "reset_settings": "Restablecer configuración",
     "sizes": {
       "sizes": "Tamaños",
@@ -182,6 +208,7 @@
   "viewer": {
     "toggleGrid": "Mostrar/ocultar cuadrícula (G)",
     "toggleSnap": "Activar/desactivar ajuste a la cuadrícula (S)",
+    "toggleCrosshair": "Mostrar/ocultar cruceta",
     "boxSelect": "Selección por rectángulo",
     "centerContent": "Centrar contenido",
     "fitContent": "Ajustar contenido a la pantalla",
@@ -213,7 +240,7 @@
     "addNode": {
       "addNewNode": "Añadir nuevo nodo",
       "coordinate_x": "Coordenada X",
-      "coordinate_z": "Coordenada Z",
+      "coordinate_z": "Coordenada {v}",
       "addNode": "Añadir nodo"
     },
     "common": {
@@ -315,7 +342,10 @@
       "shape": "Forma",
       "noShape": "Sin forma poligonal",
       "centroidal": "baricéntrico",
-      "centroidalNote": "Todos los momentos de segundo orden se calculan respecto a ejes que pasan por el centro de gravedad; I₁, I₂ son los valores principales y α es el ángulo del eje y al eje 1."
+      "centroidalNote": "Todos los momentos de segundo orden se calculan respecto a ejes que pasan por el centro de gravedad; I₁, I₂ son los valores principales y α es el ángulo del eje y al eje 1.",
+      "outOfPlaneNote": "La sección no es simétrica respecto al plano del pórtico. Un análisis 2D solo es exacto si la barra está restringida frente al desplazamiento lateral (fuera de la pantalla) y al giro por torsión en toda su longitud, por ejemplo por una losa o por arriostramientos poco espaciados; los apoyos en los nudos no bastan. Una barra libre además se tuerce porque las cargas no actúan en su centro de cortante, y esa torsión no se incluye en las deformaciones.",
+      "outOfPlaneRestrained": "Restringida lateralmente y a torsión en toda su longitud: {inertia}",
+      "outOfPlaneFree": "Libre de desplazarse lateralmente (la torsión sigue sin incluirse): {inertia}"
     }
   },
   "tooltip": {
@@ -342,8 +372,14 @@
     "copyFailed": "No se pudo copiar automáticamente. Use los atajos de teclado."
   },
   "tour": {
-    "startTour": "Iniciar recorrido",
-    "skipTour": "Omitir por ahora",
+    "menu": {
+      "title": "Menú",
+      "description": "Abre, guarda y comparte tus proyectos, exporta una imagen, carga un ejemplo o vuelve a iniciar este recorrido o la tarea de la primera viga."
+    },
+    "undoRedo": {
+      "title": "Deshacer y rehacer",
+      "description": "Avanza y retrocede por tus cambios. Ctrl+Z y Ctrl+Mayús+Z hacen lo mismo."
+    },
     "viewerControls": {
       "title": "Botones del visor",
       "description": "Los controles del visor permiten centrar o ajustar la estructura a la pantalla y seleccionar qué se muestra."
@@ -352,21 +388,75 @@
       "title": "Personalizar opciones de visualización",
       "description": "Elija qué visualizar: fuerza normal, fuerza cortante, momento flector, forma deformada o todo a la vez."
     },
+    "gridUnits": {
+      "title": "Rejilla, ajuste y unidades",
+      "description": "G muestra la rejilla y S ajusta los nuevos nudos a ella. Haz clic en las unidades para cambiarlas, el idioma o el sistema de coordenadas."
+    },
     "bottomBar": {
       "title": "Añadir, eliminar y modificar entidades",
       "description": "El centro principal donde puede transformar fácilmente cada aspecto de su estructura. Desde nodos y elementos hasta cargas, materiales y secciones, es el lugar ideal para cambios rápidos y completos."
     },
+    "help": {
+      "title": "Ayuda",
+      "description": "El ? explica la pestaña abierta. El ? junto al encabezado de una columna explica esa columna."
+    },
     "previousButton": "Anterior",
     "nextButton": "Siguiente",
-    "finishButton": "Finalizar"
+    "finishButton": "Finalizar",
+    "close": "Cerrar recorrido"
+  },
+  "firstBeam": {
+    "title": "Tu primera viga",
+    "step": "Paso {n} de {total}",
+    "close": "Cerrar la guía",
+    "finish": "Listo",
+    "next": "Siguiente",
+    "steps": {
+      "tool": {
+        "title": "Elige la herramienta",
+        "body": "En la pestaña {elementsTab} de abajo, pulsa el botón {addElement} con el icono del cursor."
+      },
+      "draw": {
+        "title": "Dibuja la viga",
+        "body": "Haz clic donde empieza la viga y luego donde termina. Los extremos se ajustan a la cuadrícula."
+      },
+      "supports": {
+        "title": "Apóyala",
+        "body": "Haz clic en el extremo izquierdo, abre {defineSupports} y marca Dx y D{v} para un apoyo articulado. Luego haz clic en el extremo derecho y marca D{v} para un apoyo deslizante."
+      },
+      "load": {
+        "title": "Cárgala",
+        "body": "Haz clic en la viga, elige {addLoad}, introduce un valor en f{v} y confirma."
+      },
+      "display": {
+        "title": "Elige qué se muestra",
+        "body": "El engranaje de arriba a la derecha abre las opciones de visualización: esfuerzos internos, deformada, reacciones y más. Ábrelo ahora."
+      },
+      "fit": {
+        "title": "Ajústalo a la pantalla",
+        "body": "Los botones de arriba a la derecha ajustan el modelo a la pantalla o lo centran. Pulsa ahora ajustar a la pantalla, y úsalo siempre que el dibujo se salga de la vista."
+      },
+      "results": {
+        "title": "Lee los resultados",
+        "body": "El momento flector y la deformada están dibujados sobre la viga y se actualizan al editar. Todos los nudos, elementos y cargas aparecen también en las tablas de abajo, donde puedes escribir valores exactos. {undo} recupera el modelo que tenías antes."
+      }
+    }
   },
   "welcome": {
     "title": "¡Bienvenido a <span class=\"edubeam\">edubeam</span>! 🚀",
-    "description": "Para ayudarle a empezar, hemos preparado un breve recorrido inicial que le guiará por las funciones de nuestro programa."
+    "description": "Modela vigas, pórticos y celosías y ve sus esfuerzos internos mientras dibujas.",
+    "start": "¿Cómo quieres empezar?",
+    "showAround": "Hacer un recorrido",
+    "showAroundHint": "Un vistazo rápido al visor, las opciones de visualización y la barra inferior.",
+    "drawFirstBeam": "Dibuja tu primera viga",
+    "drawFirstBeamHint": "Una guía breve: dibuja una viga, apóyala y cárgala.",
+    "openExample": "Abrir un ejemplo",
+    "openExampleHint": "Empieza con un modelo ya hecho y modifícalo.",
+    "skip": "Omitir por ahora"
   },
   "confirmation": {
     "clearMesh": {
-      "message": "¿Seguro que desea limpiar la estructura? Esta acción no se puede deshacer.",
+      "message": "¿Seguro que desea limpiar la estructura? Ctrl+Z la recupera y queda guardada en Estructuras recientes.",
       "title": "¿Limpiar estructura?",
       "materials": "Eliminar materiales",
       "crossSections": "Eliminar secciones"
@@ -394,6 +484,7 @@
     "enterValue": "Introduzca un valor",
     "invalidNumber": "Número no válido",
     "positiveNumber": "Introduzca un número mayor que cero",
+    "between": "Introduzca un valor entre {min} y {max}",
     "sameNodes": "Un elemento debe unir dos nodos distintos",
     "materialInUse": "El material lo usan los elementos {elements}. Reasígnelos antes de eliminarlo.",
     "crossSectionInUse": "La sección transversal la usan los elementos {elements}. Reasígnelos antes de eliminarla."
@@ -401,14 +492,22 @@
   "solveDiagnostics": {
     "summaryErrors": "Errores en el modelo: {errors}",
     "summaryWarnings": "Advertencias en el modelo: {warnings}",
-    "summaryBoth": "Errores en el modelo: {errors}; advertencias: {warnings}",
+    "summaryIncomplete": "{count} partes de la estructura necesitan apoyos.",
+    "incompleteChip": "Faltan apoyos",
+    "hideMotion": "Ocultar el movimiento",
+    "showMotion": "Mostrar el movimiento",
+    "dismissWarnings": "Ocultar estas advertencias",
+    "collapseErrors": "Reducir este mensaje",
     "showDetails": "Mostrar detalles",
     "blockedTitle": "No se puede resolver el modelo",
     "blockedDescription": "Corrija los errores indicados antes de resolver el modelo.",
     "warningsTitle": "Advertencias del modelo",
     "warningsDescription": "El modelo se ha resuelto, pero se han detectado las siguientes advertencias.",
+    "incompleteTitle": "Aún no se puede resolver",
+    "incompleteDescription": "Los resultados aparecen cuando la estructura queda sujeta. El contorno discontinuo muestra cómo puede moverse todavía.",
     "errors": "Errores",
     "warnings": "Advertencias",
+    "incomplete": "Falta por completar",
     "issues": {
       "elementNodeCount": "El elemento {element} debe hacer referencia a exactamente 2 nodos.",
       "elementSameNode": "El elemento {element} hace referencia al mismo nodo en ambos extremos.",
@@ -423,9 +522,15 @@
       "supportedNodeNotConnected": "El nodo {node} tiene apoyo, pero ningún elemento llega a él, así que el apoyo no transmite nada.",
       "nodeNotConnected": "El nodo {node} no está conectado a ningún elemento y el solver lo ignora.",
       "insufficientSupports": "El modelo necesita al menos 3 grados de libertad restringidos para ser estable en un análisis 2D.",
+      "needsSupports": "La estructura necesita apoyos para poder resolverse.",
       "partUnsupported": "Una parte independiente de la estructura (nodos {nodes}) tiene menos de 3 grados de libertad restringidos y puede moverse libremente.",
+      "partNeedsSupports": "La parte con los nudos {nodes} necesita apoyos.",
       "mechanism": "La estructura tiene suficientes apoyos, pero no la sujetan: todavía puede {motion}. Si todos los apoyos son paralelos o sus líneas de acción se cortan en un punto, la estructura queda libre para moverse.",
+      "mechanismShort": "Los apoyos no sujetan la estructura: todavía puede {motion}.",
       "partMechanism": "Una parte independiente de la estructura (nodos {nodes}) tiene suficientes apoyos, pero no la sujetan: todavía puede {motion}. Si todos los apoyos son paralelos o sus líneas de acción se cortan en un punto, la estructura queda libre para moverse.",
+      "partMechanismShort": "La parte con los nudos {nodes} no está sujeta: todavía puede {motion}.",
+      "hingeMechanism": "Los apoyos sujetan la estructura, pero sigue siendo un mecanismo: sus barras pueden girar alrededor de las articulaciones del nudo {nodes}. Quita una articulación o añade una barra o un apoyo que impida el movimiento.",
+      "hingeMechanismShort": "Las articulaciones del nudo {nodes} permiten que la estructura se mueva.",
       "motion": {
         "horizontal": "desplazarse horizontalmente",
         "vertical": "moverse verticalmente",
@@ -433,14 +538,16 @@
         "mixed": "moverse como sólido rígido"
       },
       "unstable": "La estructura es inestable; se mueve prácticamente sin resistencia: {dofs}. Añada un apoyo o un elemento, elimine una rótula de extremo o compruebe la rigidez de la sección transversal.",
+      "unstableShort": "La estructura es inestable: se mueve casi sin resistencia.",
       "unstableDof": {
         "dx": "nodo {node} en horizontal (Dx)",
-        "dz": "nodo {node} en vertical (Dz)",
-        "ry": "nodo {node} en giro (Ry)",
+        "dz": "nodo {node} en vertical (D{v})",
+        "ry": "nodo {node} en giro (R{r})",
         "other": "nodo {node} en el grado de libertad {dof}"
       },
       "unstableMore": "{list} y {count} más",
       "singularMatrix": "La estructura es un mecanismo: la matriz de rigidez es singular. Compruebe que cada parte esté sujeta por al menos 3 restricciones y que las rótulas de extremo no dejen una barra libre para girar.",
+      "singularMatrixShort": "La estructura es un mecanismo: puede moverse sin resistencia.",
       "solverFailed": "El solver falló por una incoherencia interna del modelo. Revise las referencias y las cargas del modelo."
     }
   },
@@ -464,7 +571,8 @@
     "addCrossSectionFirst": "Añada primero una sección transversal.",
     "selectMaterialAndCrossSection": "Seleccione un material y una sección transversal.",
     "labelInUse": "La etiqueta {label} ya está en uso.",
-    "noMaterialOrCrossSection": "El elemento no tiene material o sección transversal."
+    "noMaterialOrCrossSection": "El elemento no tiene material o sección transversal.",
+    "elementMissing": "El elemento {label} ya no existe."
   },
   "help": {
     "aria": "Mostrar ayuda",
@@ -476,7 +584,7 @@
     },
     "supports": {
       "title": "Apoyos",
-      "body": "Marca un grado de libertad para restringirlo: Dx y Dz bloquean la traslación y Ry el giro. La estructura necesita al menos tres restricciones independientes."
+      "body": "Marca un grado de libertad para restringirlo: Dx y D{v} bloquean la traslación y R{r} el giro. La estructura necesita al menos tres restricciones independientes."
     },
     "elements": {
       "title": "Elementos",
@@ -484,7 +592,8 @@
     },
     "loads": {
       "title": "Cargas",
-      "body": "Las cargas actúan en los nodos o a lo largo de los elementos. Los valores positivos siguen los ejes globales, con z hacia abajo."
+      "body": "Las cargas actúan en los nodos o a lo largo de los elementos. Los valores positivos siguen los ejes globales, con z hacia abajo.",
+      "bodyYUp": "Las cargas actúan en los nodos o a lo largo de los elementos. Los valores positivos siguen los ejes globales, con y hacia arriba."
     },
     "nodalLoads": {
       "title": "Cargas nodales",
@@ -508,7 +617,8 @@
     },
     "signConvention": {
       "title": "Convención de signos",
-      "body": "El eje global z apunta hacia abajo, así que un Fz o fz positivo actúa hacia abajo y My es positivo en sentido antihorario. Las cargas en ejes locales siguen al elemento."
+      "body": "El eje global z apunta hacia abajo, así que un Fz o fz positivo actúa hacia abajo y My es positivo en sentido antihorario. Las cargas en ejes locales siguen al elemento.",
+      "bodyYUp": "El eje global y apunta hacia arriba, así que un Fy o fy positivo actúa hacia arriba y Mz es positivo en sentido antihorario. Las cargas en ejes locales siguen al elemento."
     },
     "results": {
       "title": "Resultados",
@@ -516,7 +626,7 @@
     },
     "diagrams": {
       "title": "Diagramas de resultados",
-      "body": "Estos interruptores dibujan el axil, el cortante, el momento flector, la deformada y las reacciones sobre el modelo. N es positivo a tracción y My con tracción en la fibra inferior."
+      "body": "Estos interruptores dibujan el axil, el cortante, el momento flector, la deformada y las reacciones sobre el modelo. N es positivo a tracción y M{r} con tracción en la fibra inferior."
     },
     "endForces": {
       "title": "Fuerzas en extremos",
@@ -589,6 +699,24 @@
         "title": "Carga térmica",
         "blurb": "Viga biapoyada de 8 m con carga térmica uniforme y no uniforme."
       }
+    }
+  },
+  "recentStructures": {
+    "title": "Estructuras recientes",
+    "instructions": "Las últimas {count} estructuras borradas o reemplazadas se guardan en este navegador. Restaurar una reemplaza la estructura actual, y Ctrl+Z la recupera.",
+    "empty": "Aún no hay nada. Cuando limpie una estructura o abra otra encima, se guardará aquí.",
+    "restore": "Restaurar",
+    "remove": "Quitar",
+    "counts": "Nudos: {nodes} · Elementos: {elements}",
+    "linkNotice": "Se abrió una estructura compartida. La anterior está en Estructuras recientes.",
+    "show": "Mostrar",
+    "reasons": {
+      "clear": "Limpiada",
+      "link": "Reemplazada por un enlace compartido",
+      "file": "Reemplazada por un archivo abierto",
+      "example": "Reemplazada por un ejemplo",
+      "firstBeam": "Reemplazada por la tarea «primera viga»",
+      "restore": "Reemplazada por una estructura restaurada"
     }
   }
 }

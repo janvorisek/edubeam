@@ -1,6 +1,84 @@
 {
   "releases": [
     {
+      "version": "1.3.1",
+      "title": "US Customary Units",
+      "date": "October 1, 2026",
+      "highlights": [
+        "Work in US customary units: switch between SI and US customary in Settings.",
+        "Choose your units and coordinate system on the welcome screen.",
+        "AISC sections and ASTM materials in the libraries.",
+        "Corrected stiffness of the IPE and HEA sections in the section library."
+      ],
+      "media": [
+        {
+          "src": "/changelog/media/us-customary-units.png",
+          "alt": "A 10 ft frame in kip and kip·ft, with the rulers and crosshair in feet and inches",
+          "caption": "A frame in feet and inches"
+        },
+        {
+          "src": "/changelog/media/welcome-setup.png",
+          "alt": "Welcome dialog with unit system and coordinate system choices",
+          "caption": "Units and axes on the welcome screen"
+        },
+        {
+          "src": "/changelog/media/aisc-sections.png",
+          "alt": "Section library listing AISC W-shapes in square and quartic inches",
+          "caption": "AISC sections"
+        }
+      ],
+      "tag": "Latest",
+      "contributors": [
+        {
+          "name": "Jan Vorisek",
+          "commits": 20,
+          "url": "https://github.com/janvorisek"
+        }
+      ]
+    },
+    {
+      "version": "1.3.0",
+      "title": "Recent Structures, Mechanisms & Support Symbols",
+      "date": "September 29, 2026",
+      "highlights": [
+        "Recent structures in the menu keeps the last 10 structures you cleared or replaced with a link, a file or an example, even after you close the tab. Clearing can now be undone with Ctrl+Z too.",
+        "When a structure can move, edubeam circles the supports or hinges at fault and swings a dashed outline through the motion, so you can see why it cannot be solved.",
+        "Pick a support by its symbol - pin, roller, fixed, slider and more - in the node dialog, the node menu or the nodes table.",
+        "New here? Show me around points out the main parts of the app, and Draw your first beam walks you through drawing, supporting and loading a beam.",
+        "Choose your coordinate system in Settings: x right and z down, or x right and y up as in most textbooks.",
+        "Also: a crosshair on the rulers on desktop, a Turkish translation, and changing an element's material or cross section in the bottom bar is saved again."
+      ],
+      "media": [
+        {
+          "src": "/changelog/media/recent-structures.png",
+          "alt": "Recent structures dialog with three saved structures",
+          "caption": "Recent structures"
+        },
+        {
+          "src": "/changelog/media/hinge-mechanism.png",
+          "alt": "A frame with two hinges, circled, and the dashed outline of its sway",
+          "caption": "Hinge mechanism"
+        },
+        {
+          "src": "/changelog/media/support-symbols.png",
+          "alt": "Support symbols in the node dialog",
+          "caption": "Support symbols"
+        }
+      ],
+      "contributors": [
+        {
+          "name": "Jan Vorisek",
+          "commits": 16,
+          "url": "https://github.com/janvorisek"
+        },
+        {
+          "name": "kelidas",
+          "commits": 1,
+          "url": "https://github.com/kelidas"
+        }
+      ]
+    },
+    {
       "version": "1.2.0",
       "title": "Touch, Speed & Vector Export",
       "date": "September 22, 2026",
@@ -13,7 +91,6 @@
         "Edit loads straight from the loads table, and set support angles, prescribed rotations and end hinges.",
         "Fixes to unit conversions in loads, the settings dialog on a phone, and the update prompt."
       ],
-      "tag": "Latest",
       "contributors": [
         {
           "name": "kelidas",

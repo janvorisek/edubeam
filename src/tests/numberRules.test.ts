@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { numberRules, positiveNumberRules } from '../utils';
+import { numberRules, positiveNumberRules, rangeRule } from '../utils';
 
 const check = (rules: ((v: unknown) => unknown)[], v: unknown) =>
   rules.map((r) => r(v)).find((r) => r !== true) ?? true;
@@ -23,5 +23,26 @@ describe('numeric field rules', () => {
     expect(check(numberRules, NaN)).not.toBe(true);
     expect(check(positiveNumberRules, 0)).not.toBe(true);
     expect(check(positiveNumberRules, -3)).not.toBe(true);
+  });
+});
+
+describe('a position along an element', () => {
+  // A 3 m element measured in feet: 3 / 0.3048 = 9.842519685039372 ft
+  const lengthInFeet = 3 / 0.3048;
+  const withinElement = rangeRule(0, lengthInFeet, 'ft');
+
+  it('takes the position in the display unit, so 9 ft fits a 3 m element', () => {
+    expect(withinElement('9')).toBe(true);
+    expect(withinElement('0')).toBe(true);
+    expect(withinElement('10')).not.toBe(true);
+    expect(withinElement('-0,1')).not.toBe(true);
+  });
+
+  it('accepts the far end as displayed, though it went through a conversion', () => {
+    expect(withinElement(`${(3 / 0.3048) * (1 + 1e-15)}`)).toBe(true);
+  });
+
+  it('says the bound in the display unit', () => {
+    expect(withinElement('10')).toContain('9.84252 ft');
   });
 });

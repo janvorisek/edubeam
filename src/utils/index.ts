@@ -1,21 +1,9 @@
-import {
-  Beam2D,
-  BeamConcentratedLoad,
-  BeamElementUniformEdgeLoad,
-  BeamElementTrapezoidalEdgeLoad,
-  BeamTemperatureLoad,
-  DofID,
-  LinearStaticSolver,
-  Load,
-  NodalLoad,
-  Node,
-  PrescribedDisplacement,
-} from 'ts-fem';
-import { Ref } from 'vue';
+import { Beam2D, BeamElementTrapezoidalEdgeLoad, NodalLoad, Node } from 'ts-fem';
 import { availableLocales, i18n } from '../plugins/i18n';
 import { useProjectStore } from '../store/project';
 import { Command, IKeyValue, undoRedoManager } from '../CommandManager';
 import { useViewerStore } from '../store/viewer';
+import { useRecentStructuresStore, type RecentStructureReason } from '../store/recentStructures';
 
 import { loadType } from './loadType';
 import { ensureDimensionId, createDimensionId } from './id';
@@ -23,6 +11,7 @@ import { deserializeModel, parseSerializedModel, serializeModel } from './serial
 import { deserializeShape, serializeShape } from './sectionProperties';
 import { createDimensionPoint, createDimensionPointFromNode, type DimensionPoint } from '@/types/dimension';
 import { applyNodeLcsAngle, nodeLcsAngle } from './nodalLcs';
+import { angle, axisLetters } from './axisConvention';
 
 export type EntityWithLabel = { label: string & { [key: string]: unknown } };
 
@@ -75,18 +64,7 @@ const captureProjectSnapshot = (): ProjectSnapshot => {
 const restoreProjectSnapshot = (snapshot: ProjectSnapshot) => {
   const projectStore = useProjectStore();
 
-  for (const loadCase of projectStore.solver.loadCases) {
-    loadCase.solved = false;
-    loadCase.prescribedBC = [];
-    loadCase.nodalLoadList = [];
-    loadCase.elementLoadList = [];
-  }
-
-  projectStore.solver.domain.elements.clear();
-  projectStore.solver.domain.nodes.clear();
-  projectStore.solver.domain.materials.clear();
-  projectStore.solver.domain.crossSections.clear();
-  projectStore.dimensions = [];
+  resetModel();
 
   if (snapshot.model && !deserializeModel(snapshot.model, projectStore.solver, projectStore.dimensions)) {
     console.error('Could not restore project snapshot');
@@ -138,6 +116,51 @@ export const executeModelMutationWithUndo = (mutate: () => void) => {
   );
 
   undoRedoManager.executeCommand(setCommand);
+};
+
+/**
+ * Empties the model. Materials and cross sections stay unless asked for, as the clear dialog
+ * offers keeping them.
+ */
+export const resetModel = ({ materials = true, crossSections = true } = {}) => {
+  const projectStore = useProjectStore();
+
+  for (const loadCase of projectStore.solver.loadCases) {
+    loadCase.solved = false;
+    loadCase.prescribedBC = [];
+    loadCase.nodalLoadList = [];
+    loadCase.elementLoadList = [];
+  }
+
+  projectStore.solver.domain.elements.clear();
+  projectStore.solver.domain.nodes.clear();
+  if (materials) projectStore.solver.domain.materials.clear();
+  if (crossSections) projectStore.solver.domain.crossSections.clear();
+  projectStore.dimensions = [];
+};
+
+/**
+ * Replaces the whole model - clearing it, or loading a link, a file or an example over it - as
+ * one undoable step, with the model it replaces saved to the recent structures so it survives a
+ * reload too. If `replace` throws, the previous model is put back before the error is rethrown,
+ * so a broken import never leaves a half-cleared model behind.
+ *
+ * Returns whether the previous model was saved; an empty or untouched starter model is not.
+ */
+export const replaceModel = (reason: RecentStructureReason, replace: () => void): boolean => {
+  const before = captureProjectSnapshot();
+
+  try {
+    executeModelMutationWithUndo(replace);
+  } catch (e) {
+    if (before.model !== null) restoreProjectSnapshot(before);
+    throw e;
+  }
+
+  const after = serializeModel(useProjectStore().solver, useProjectStore().dimensions);
+  if (after === before.model) return false;
+
+  return useRecentStructuresStore().remember(before.model, reason);
 };
 
 /**
@@ -433,6 +456,30 @@ export const importJSON = (json: any) => {
   }
 };
 
+/**
+ * The app settings as local storage holds them, before the store reads them back: `undefined` on a
+ * first visit (or storage that cannot be read, which only means the defaults are suggested again),
+ * `null` for something stored that is not an object.
+ */
+export const readStoredAppSettings = (): Record<string, unknown> | null | undefined => {
+  let raw: string | null;
+
+  try {
+    raw = localStorage.getItem('app');
+  } catch {
+    return undefined;
+  }
+
+  if (raw === null) return undefined;
+
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    return typeof parsed === 'object' && parsed !== null ? (parsed as Record<string, unknown>) : null;
+  } catch {
+    return null;
+  }
+};
+
 export const suggestLanguage = () => {
   const langs = navigator.languages || [navigator.language];
 
@@ -484,6 +531,18 @@ const restoreRenderedValue = (el: HTMLInputElement, modelValue: unknown) => {
 
   el.value = String(rendered ?? modelValue ?? '');
 };
+
+/**
+ * Where a concentrated load or deformation may sit on its beam: from one node to the other, and
+ * never past either.
+ *
+ * The solver splits the beam at that distance to work out what the load does, so a distance outside
+ * it leaves a segment of negative length - which comes back as nonsense rather than as an error.
+ * A number too large to hold still means "far past the end", so it lands on the end like any other;
+ * only what cannot be read as a number at all leaves the load where it was.
+ */
+export const positionAlongBeam = (distance: number, length: number, current: number): number =>
+  Math.min(Math.max(Number.isNaN(distance) ? current : distance, 0), Math.max(length, 0));
 
 export const changeSetArrayItem = (
   item: unknown,
@@ -549,6 +608,23 @@ export const positiveNumberRules = [
   },
 ];
 
+/**
+ * A rule for a value typed in display units that has to lie within [min, max], e.g. a load position
+ * along an element. The bounds have passed through a unit conversion, so a value typed as exactly
+ * the displayed maximum may sit a rounding error above it; the tolerance keeps that one valid.
+ */
+export const rangeRule =
+  (min: number, max: number, unit: string) =>
+  (v: unknown): string | true => {
+    const val = ruleValueAsNumber(v);
+    const tolerance = 1e-9 * Math.max(Math.abs(min), Math.abs(max), 1);
+    if (Number.isFinite(val) && val >= min - tolerance && val <= max + tolerance) return true;
+
+    // A converted length such as 9.842519685039372 ft reads better trimmed
+    const show = (x: number) => `${Number(x.toPrecision(6))}`;
+    return i18n.global.t('validators.between', { min: show(min), max: `${show(max)} ${unit}` });
+  };
+
 export const changeItem = (item: object, value: string, el?: HTMLInputElement, formatter?: (v: number) => number) => {
   if (el.value === '') el.value = '0';
 
@@ -571,85 +647,117 @@ export const setNodeLcsAngle = (node: Node | undefined, degrees: number) => {
   });
 };
 
-/** The same, driven by an inline field: an unreadable entry puts the shown angle back. */
+/**
+ * The same, driven by an inline field showing the angle in the chosen axis convention: an
+ * unreadable entry puts the shown angle back.
+ */
 export const changeNodeLcsAngle = (node: Node | undefined, el: HTMLInputElement) => {
   if (el.value === '') el.value = '0';
 
   const degrees = parseFloat(el.value.replace(/\s/g, '').replace(',', '.'));
-  if (!Number.isFinite(degrees)) return restoreRenderedValue(el, nodeLcsAngle(node));
+  if (!Number.isFinite(degrees)) return restoreRenderedValue(el, angle(nodeLcsAngle(node)));
 
-  setNodeLcsAngle(node, degrees);
+  setNodeLcsAngle(node, angle(degrees));
 };
 
 export const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputElement) => {
-  setUnsolved();
+  const label = el.value.trim();
+  const prevId = item.label;
+
+  if (label === '' || label === String(prevId)) {
+    el.value = String(prevId);
+    return;
+  }
+
+  if (useProjectStore().solver.domain[map].has(label)) {
+    alert(i18n.global.t('warnings.labelInUse', { label }));
+    el.value = String(prevId);
+    return;
+  }
 
   const _showLoads = useViewerStore().showLoads;
   useViewerStore().showLoads = false;
 
-  //if (isNaN(parseInt(el.value))) return;
-  if (useProjectStore().solver.domain[map].has(el.value)) {
-    alert(i18n.global.t('warnings.labelInUse', { label: el.value }));
-    el.value = item.label;
-    return;
-  }
+  executeModelMutationWithUndo(() => {
+    setUnsolved();
+    relabel(map, item, label);
+  });
 
+  useViewerStore().showLoads = _showLoads;
+};
+
+/** Everything that names an entity by its label, re-pointed at the new one. */
+const relabel = (map: string, item: EntityWithLabel, label: string) => {
+  const projectStore = useProjectStore();
   const prevId = item.label;
 
-  item.label = el.value;
-  useProjectStore().solver.domain[map].set(item.label, item);
+  item.label = label;
+  projectStore.solver.domain[map].set(label, item);
 
   if (map === 'nodes') {
-    for (const [key, element] of useProjectStore().solver.domain.elements) {
+    for (const element of projectStore.solver.domain.elements.values()) {
       const idtomodify = element.nodes.findIndex((nid) => nid == prevId);
       if (idtomodify > -1) {
-        element.nodes[idtomodify] = item.label;
+        element.nodes[idtomodify] = label;
       }
     }
 
     // Every list that names a node, and every case - a prescribed displacement left behind by a
     // rename is a load pointing at a node that no longer exists, which the drawing cannot place.
-    for (const loadCase of useProjectStore().solver.loadCases) {
+    for (const loadCase of projectStore.solver.loadCases) {
       for (const load of loadCase.nodalLoadList) {
-        if (load.target == prevId) load.target = item.label;
+        if (load.target == prevId) load.target = label;
       }
 
       for (const bc of loadCase.prescribedBC) {
-        if (bc.target == prevId) bc.target = item.label;
+        if (bc.target == prevId) bc.target = label;
+      }
+    }
+
+    for (const dim of projectStore.dimensions) {
+      for (const point of dim.points) {
+        if (point.sourceNodeLabel == prevId) point.sourceNodeLabel = label;
       }
     }
   }
 
   if (map === 'elements') {
-    for (const loadCase of useProjectStore().solver.loadCases) {
+    for (const loadCase of projectStore.solver.loadCases) {
       for (const load of loadCase.elementLoadList) {
-        if (load.target == prevId) load.target = item.label;
+        if (load.target == prevId) load.target = label;
       }
     }
   }
 
   if (map === 'materials') {
-    for (const [key, element] of useProjectStore().solver.domain.elements) {
+    for (const element of projectStore.solver.domain.elements.values()) {
       if (element.mat == prevId) {
-        element.mat = item.label;
+        element.mat = label;
       }
     }
   }
 
   if (map === 'crossSections') {
-    for (const [key, element] of useProjectStore().solver.domain.elements) {
+    for (const element of projectStore.solver.domain.elements.values()) {
       if (element.cs == prevId) {
-        element.cs = item.label;
+        element.cs = label;
       }
     }
   }
 
-  // delete current
-  useProjectStore().solver.domain[map].delete(prevId);
+  // Panels and context menus look the selection up by label; left on the old one they find nothing.
+  const selectionType = { nodes: 'node', elements: 'element' }[map];
+  if (selectionType && projectStore.selection.type === selectionType && projectStore.selection.label == prevId) {
+    projectStore.selection.label = label;
+  }
 
-  useViewerStore().showLoads = _showLoads;
+  if (map === 'nodes' || map === 'elements') {
+    const selected = projectStore.selection2[map];
+    const index = selected.findIndex((selectedLabel) => selectedLabel == prevId);
+    if (index > -1) selected[index] = label;
+  }
 
-  solve();
+  projectStore.solver.domain[map].delete(prevId);
 };
 
 export const toggleSet = (item: unknown, set: string, value: number) => {
@@ -870,10 +978,10 @@ export const deletePrescribedDisplacement = (load: unknown, _id?: number, trackH
 
 export const nameBeamForce = (dof: number) => {
   if (dof === 0) return 'X';
-  if (dof === 1) return 'Z';
+  if (dof === 1) return axisLetters().v.toUpperCase();
   if (dof === 2) return 'M';
   if (dof === 3) return 'X';
-  if (dof === 4) return 'Z';
+  if (dof === 4) return axisLetters().v.toUpperCase();
   if (dof === 5) return 'M';
   return '';
 };

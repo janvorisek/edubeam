@@ -212,6 +212,69 @@ export const computeSectionProperties = (shape: SectionShape): SectionProperties
   };
 };
 
+/**
+ * In-plane (x–z) bending stiffness of a member that is free to deflect out of the frame plane:
+ * with Mz = 0, the curvature about y is My·Iz / (E·(Iy·Iz − Iyz²)). The 2D solver uses Iy instead,
+ * which is exact only when out-of-plane deflection is restrained or Iyz = 0.
+ */
+export const unrestrainedInPlaneInertia = (p: Readonly<SectionProperties>) =>
+  p.iz > 0 ? p.iy - (p.iyz * p.iyz) / p.iz : p.iy;
+
+/**
+ * `true` when the frame plane is not a principal plane of the section, i.e. Iyz differs enough from
+ * zero that assuming restrained out-of-plane deflection changes the in-plane stiffness by over 0.1 %.
+ */
+export const hasSignificantIyz = (p: Readonly<SectionProperties>) =>
+  p.iy > 0 && p.iz > 0 && (p.iyz * p.iyz) / (p.iy * p.iz) > 1e-3;
+
+/** Second moment of area the 2D solver should bend the member with [m4]. */
+export const inPlaneBendingInertia = (p: Readonly<SectionProperties>, freeOutOfPlane: boolean) =>
+  freeOutOfPlane ? unrestrainedInPlaneInertia(p) : p.iy;
+
+/**
+ * Whether a stored Iy was saved with the out-of-plane-free assumption. Share links and project files
+ * keep only Iy next to the shape, so the choice is recovered by which candidate the stored value matches.
+ */
+export const isStoredAsFreeOutOfPlane = (storedIy: number, p: Readonly<SectionProperties>) =>
+  hasSignificantIyz(p) && Math.abs(storedIy - unrestrainedInPlaneInertia(p)) < Math.abs(storedIy - p.iy);
+
+const distanceToSegment = ([py, pz]: SectionPoint, [ay, az]: SectionPoint, [by, bz]: SectionPoint) => {
+  const dy = by - ay;
+  const dz = bz - az;
+  const len2 = dy * dy + dz * dz;
+  const t = len2 > 0 ? Math.max(0, Math.min(1, ((py - ay) * dy + (pz - az) * dz) / len2)) : 0;
+  return Math.hypot(py - ay - t * dy, pz - az - t * dz);
+};
+
+/**
+ * `true` when the section is its own mirror image about the vertical z axis through the centroid,
+ * i.e. the frame plane is a plane of symmetry. Only then does the shear centre lie in the frame plane,
+ * so loads through the centroid bend the member without twisting it. Checked by mirroring every
+ * vertex and edge midpoint onto the boundary of the contours of the same kind; extra collinear
+ * vertices on one side do not break symmetry.
+ */
+export const isSymmetricAboutFramePlane = (shape: SectionShape) => {
+  const p = computeSectionProperties(shape);
+  const tol = 1e-6 * Math.max(p.b, p.h);
+  const contours = shape.contours.filter((c) => c.points.length >= 3);
+
+  const onBoundary = (q: SectionPoint, hole: boolean) =>
+    contours.some(
+      (c) =>
+        !!c.hole === hole &&
+        c.points.some((a, i) => distanceToSegment(q, a, c.points[(i + 1) % c.points.length]) <= tol)
+    );
+
+  return contours.every((c) =>
+    c.points.every((a, i) => {
+      const b = c.points[(i + 1) % c.points.length];
+      const mirror = ([y, z]: SectionPoint): SectionPoint => [2 * p.cy - y, z];
+      const mid: SectionPoint = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+      return onBoundary(mirror(a), !!c.hole) && onBoundary(mirror(mid), !!c.hole);
+    })
+  );
+};
+
 /** Translates the shape so that its centroid lies at the origin. */
 export const centerShape = (shape: SectionShape): SectionShape => {
   const { cy, cz } = computeSectionProperties(shape);
@@ -235,14 +298,7 @@ export const cloneShape = (shape: SectionShape): SectionShape => ({
 // ---------------------------------------------------------------------------
 
 export type SectionPresetId =
-  | 'rectangle'
-  | 'iSection'
-  | 'tSection'
-  | 'lSection'
-  | 'channel'
-  | 'box'
-  | 'circle'
-  | 'pipe';
+  'rectangle' | 'iSection' | 'tSection' | 'lSection' | 'channel' | 'box' | 'circle' | 'pipe';
 
 export type SectionPresetParam = 'b' | 'h' | 'tw' | 'tf' | 't' | 'd' | 'n';
 

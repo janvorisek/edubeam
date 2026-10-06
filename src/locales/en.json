@@ -54,6 +54,17 @@
     "defineSupports": "Node supports",
     "lcsAngle": "Nodal LCS angle"
   },
+  "supports": {
+    "free": "Free",
+    "pin": "Pin",
+    "roller": "Roller",
+    "verticalRoller": "Vertical roller",
+    "slider": "Slider",
+    "verticalSlider": "Vertical slider",
+    "rotation": "Rotation only",
+    "fixed": "Fixed",
+    "custom": "Custom"
+  },
   "elements": {
     "addElement": "Add element",
     "editElement": "Edit element",
@@ -114,6 +125,10 @@
     "results_scale": "Results scale",
     "grid_snap_step": "Grid snap step",
     "snap_to_grid": "Snap to grid",
+    "show_crosshair": "Show crosshair",
+    "model_checks": "Model checks",
+    "show_mechanisms": "Show how an unstable structure can move",
+    "animate_mechanisms": "Animate the movement",
     "number_format": "Number format",
     "number_format_description": "How result values are written; the decimal separator follows the language.",
     "number_format_auto": "Automatic",
@@ -134,7 +149,14 @@
       "moment": "Bending moment",
       "pressure": "Pressure",
       "area": "Area",
-      "areaM2": "Second moment of area"
+      "areaM2": "Second moment of area",
+      "system": "Unit system",
+      "systemSI": "SI (metric)",
+      "systemUS": "US customary (imperial)",
+      "systemCustom": "Custom",
+      "temperature": "Temperature",
+      "sectionLength": "Section dimensions",
+      "displacement": "Displacement"
     },
     "grid": "Grid",
     "show_grid": "Show grid",
@@ -159,6 +181,10 @@
     "viewer_preview": "Viewer preview",
     "language_description": "Select your preferred language for the interface.",
     "units_description": "Choose your preferred measurement units.",
+    "axisConvention": "Coordinate system",
+    "axisConvention_description": "Which way the vertical axis points in inputs and results. The model and saved files are not affected.",
+    "axisConvention_zDown": "x right, z down",
+    "axisConvention_yUp": "x right, y up",
     "reset_settings": "Reset settings",
     "sizes": {
       "sizes": "Sizes",
@@ -182,6 +208,7 @@
   "viewer": {
     "toggleGrid": "Toggle grid (G)",
     "toggleSnap": "Toggle snap to grid (S)",
+    "toggleCrosshair": "Toggle crosshair",
     "boxSelect": "Box select",
     "centerContent": "Center content",
     "fitContent": "Fit content to screen",
@@ -213,7 +240,7 @@
     "addNode": {
       "addNewNode": "Add new node",
       "coordinate_x": "X-coordinate",
-      "coordinate_z": "Z-coordinate",
+      "coordinate_z": "{v}-coordinate",
       "addNode": "Add node"
     },
     "common": {
@@ -315,7 +342,10 @@
       "shape": "Shape",
       "noShape": "No polygonal shape",
       "centroidal": "centroidal",
-      "centroidalNote": "All second moments of area are taken about axes through the centroid; I₁, I₂ are the principal values and α is the angle from the y axis to axis 1."
+      "centroidalNote": "All second moments of area are taken about axes through the centroid; I₁, I₂ are the principal values and α is the angle from the y axis to axis 1.",
+      "outOfPlaneNote": "This section is not symmetric about the frame plane. A 2D analysis is exact only if the member is held against sideways deflection (out of the screen) and twisting along its whole length, for example by a slab or closely spaced bracing; supports at the nodes alone are not enough. A free member also twists because the loads act off its shear centre, and that twist is not included in the deflections.",
+      "outOfPlaneRestrained": "Held sideways and against twisting along its length: {inertia}",
+      "outOfPlaneFree": "Free to deflect sideways (twisting still not included): {inertia}"
     }
   },
   "tooltip": {
@@ -342,8 +372,14 @@
     "copyFailed": "Could not copy automatically. Please use your keyboard shortcuts."
   },
   "tour": {
-    "startTour": "Start the Tour",
-    "skipTour": "Skip for Now",
+    "menu": {
+      "title": "Menu",
+      "description": "Open, save and share your projects, export an image, load an example, or start this tour or the first-beam task again."
+    },
+    "undoRedo": {
+      "title": "Undo and redo",
+      "description": "Step back and forward through your changes. Ctrl+Z and Ctrl+Shift+Z do the same."
+    },
     "viewerControls": {
       "title": "Viewer buttons",
       "description": "The viewer controls are the way to center or fit the structure to screen, and to select what to display."
@@ -352,21 +388,75 @@
       "title": "Customize Display Options",
       "description": "Choose what to display – be it normal force, shear force, bending moment, deformed shape, or everything together."
     },
+    "gridUnits": {
+      "title": "Grid, snapping and units",
+      "description": "G shows the grid and S snaps new nodes to it. Click the units to change them, the language or the coordinate system."
+    },
     "bottomBar": {
       "title": "Add, remove & modify entities",
       "description": "The central hub where every aspect of your structure can be effortlessly transformed. From nodes to elements, loads, materials, and cross-sections, it's the go-to place for swift and comprehensive changes."
     },
+    "help": {
+      "title": "Help",
+      "description": "The ? explains the tab you have open. The ? next to a column heading explains that column."
+    },
     "previousButton": "Previous",
     "nextButton": "Next",
-    "finishButton": "Finish"
+    "finishButton": "Finish",
+    "close": "Close tour"
+  },
+  "firstBeam": {
+    "title": "Your first beam",
+    "step": "Step {n} of {total}",
+    "close": "Close the guide",
+    "finish": "Done",
+    "next": "Next",
+    "steps": {
+      "tool": {
+        "title": "Pick the drawing tool",
+        "body": "In the {elementsTab} tab below, press the {addElement} button with the cursor icon."
+      },
+      "draw": {
+        "title": "Draw the beam",
+        "body": "Click where the beam starts, then where it ends. The ends snap to the grid."
+      },
+      "supports": {
+        "title": "Support it",
+        "body": "Click the left end, open {defineSupports} and tick Dx and D{v} for a pinned support. Then click the right end and tick D{v} for a roller."
+      },
+      "load": {
+        "title": "Load it",
+        "body": "Click the beam, choose {addLoad}, enter a value in f{v} and confirm."
+      },
+      "display": {
+        "title": "Choose what's shown",
+        "body": "The cog at the top right opens the display options: internal forces, deformed shape, reactions and more. Open it now."
+      },
+      "fit": {
+        "title": "Fit it to the screen",
+        "body": "The buttons at the top right fit the model to the screen or center it. Press fit to screen now, and again whenever the drawing drifts out of view."
+      },
+      "results": {
+        "title": "Read the results",
+        "body": "The bending moment and deformed shape are drawn on the beam and update as you edit. Every node, element and load is also listed in the tables below, where you can type exact values. {undo} brings back the model you had before."
+      }
+    }
   },
   "welcome": {
     "title": "Welcome to <span class=\"edubeam\">edubeam</span>! 🚀",
-    "description": "To help you get started, we've prepared a quick onboarding tour that will guide you through the features and functionalities of our program."
+    "description": "Model beams, frames and trusses and see their internal forces as you draw.",
+    "start": "How would you like to start?",
+    "showAround": "Show me around",
+    "showAroundHint": "A quick look at the viewer, the display options and the bottom bar.",
+    "drawFirstBeam": "Draw your first beam",
+    "drawFirstBeamHint": "A short guided task: draw a beam, support it and load it.",
+    "openExample": "Open an example",
+    "openExampleHint": "Start from a ready-made model and change it.",
+    "skip": "Skip for now"
   },
   "confirmation": {
     "clearMesh": {
-      "message": "Are you sure you want to clear the mesh? This action cannot be undone.",
+      "message": "Are you sure you want to clear the mesh? Ctrl+Z brings it back, and it stays in Recent structures.",
       "title": "Clear mesh?",
       "materials": "Delete materials",
       "crossSections": "Delete cross sections"
@@ -394,21 +484,30 @@
     "enterValue": "Enter a value",
     "invalidNumber": "Invalid number",
     "positiveNumber": "Enter a number greater than zero",
+    "between": "Enter a value between {min} and {max}",
     "sameNodes": "An element must connect two different nodes",
     "materialInUse": "Material is used by element(s) {elements}. Reassign them before deleting it.",
     "crossSectionInUse": "Cross-section is used by element(s) {elements}. Reassign them before deleting it."
   },
   "solveDiagnostics": {
-    "summaryErrors": "Model has {errors} error(s).",
-    "summaryWarnings": "Model has {warnings} warning(s).",
-    "summaryBoth": "Model has {errors} error(s) and {warnings} warning(s).",
+    "summaryErrors": "Errors in the model: {errors}",
+    "summaryWarnings": "Warnings in the model: {warnings}",
+    "summaryIncomplete": "{count} parts of the structure need supports.",
+    "incompleteChip": "Needs supports",
+    "hideMotion": "Hide the movement",
+    "showMotion": "Show the movement",
+    "dismissWarnings": "Hide these warnings",
+    "collapseErrors": "Make this message smaller",
     "showDetails": "Show details",
     "blockedTitle": "Cannot solve model",
     "blockedDescription": "Fix the listed errors before solving the model.",
     "warningsTitle": "Model warnings",
     "warningsDescription": "The model was solved, but the following warnings were detected.",
+    "incompleteTitle": "Not ready to solve yet",
+    "incompleteDescription": "Results appear once the structure is held in place. The dashed outline on the canvas shows how it can still move.",
     "errors": "Errors",
     "warnings": "Warnings",
+    "incomplete": "Still needed",
     "issues": {
       "elementNodeCount": "Element {element} must reference exactly 2 nodes.",
       "elementSameNode": "Element {element} references the same node at both ends.",
@@ -423,9 +522,15 @@
       "supportedNodeNotConnected": "Node {node} is supported but no element connects to it, so the support carries nothing.",
       "nodeNotConnected": "Node {node} is not connected to any element and is ignored by the solver.",
       "insufficientSupports": "Model needs at least 3 constrained DOFs to be stable in 2D analysis.",
+      "needsSupports": "The structure needs supports before it can be solved.",
       "partUnsupported": "A separate part of the structure (nodes {nodes}) has fewer than 3 restrained DOFs and can move freely.",
+      "partNeedsSupports": "The part with nodes {nodes} needs supports.",
       "mechanism": "Structure has enough supports but they do not hold it: it can still {motion}. Supports that are all parallel, or whose lines of action meet in one point, leave the structure free to move.",
+      "mechanismShort": "The supports do not hold the structure: it can still {motion}.",
       "partMechanism": "A separate part of the structure (nodes {nodes}) has enough supports but they do not hold it: it can still {motion}. Supports that are all parallel, or whose lines of action meet in one point, leave the structure free to move.",
+      "partMechanismShort": "The part with nodes {nodes} is not held: it can still {motion}.",
+      "hingeMechanism": "The supports hold the structure, but it is still a mechanism: its members can turn about the hinges at node {nodes}. Remove a hinge, or add a member or a support that stops the motion.",
+      "hingeMechanismShort": "The hinges at node {nodes} let the structure move.",
       "motion": {
         "horizontal": "slide horizontally",
         "vertical": "move vertically",
@@ -433,14 +538,16 @@
         "mixed": "move as a rigid body"
       },
       "unstable": "Structure is unstable: {dofs} moves practically without resistance. Add a support or an element, remove an end hinge, or check the cross section stiffness.",
+      "unstableShort": "The structure is unstable: it moves almost without resistance.",
       "unstableDof": {
         "dx": "node {node} horizontally (Dx)",
-        "dz": "node {node} vertically (Dz)",
-        "ry": "node {node} in rotation (Ry)",
+        "dz": "node {node} vertically (D{v})",
+        "ry": "node {node} in rotation (R{r})",
         "other": "node {node} in DOF {dof}"
       },
       "unstableMore": "{list} and {count} more",
       "singularMatrix": "Structure is a mechanism: the stiffness matrix is singular. Check that every part is held by at least 3 restraints and that end hinges do not leave a member free to rotate.",
+      "singularMatrixShort": "The structure is a mechanism: it can move without resistance.",
       "solverFailed": "Solver failed due to an internal model inconsistency. Please review model references and loads."
     }
   },
@@ -464,7 +571,8 @@
     "addCrossSectionFirst": "Please add a cross section first.",
     "selectMaterialAndCrossSection": "Please select a material and a cross section.",
     "labelInUse": "Label {label} is already in use.",
-    "noMaterialOrCrossSection": "Element does not specify material or cross section."
+    "noMaterialOrCrossSection": "Element does not specify material or cross section.",
+    "elementMissing": "Element {label} no longer exists."
   },
   "help": {
     "aria": "Show help",
@@ -476,7 +584,7 @@
     },
     "supports": {
       "title": "Supports",
-      "body": "Tick a degree of freedom to restrain it: Dx and Dz block translation, Ry blocks rotation. A structure needs at least three independent restraints."
+      "body": "Tick a degree of freedom to restrain it: Dx and D{v} block translation, R{r} blocks rotation. A structure needs at least three independent restraints."
     },
     "elements": {
       "title": "Elements",
@@ -484,7 +592,8 @@
     },
     "loads": {
       "title": "Loads",
-      "body": "Loads act on nodes or along elements. Positive values follow the global axes, with z pointing down."
+      "body": "Loads act on nodes or along elements. Positive values follow the global axes, with z pointing down.",
+      "bodyYUp": "Loads act on nodes or along elements. Positive values follow the global axes, with y pointing up."
     },
     "nodalLoads": {
       "title": "Nodal loads",
@@ -508,7 +617,8 @@
     },
     "signConvention": {
       "title": "Sign convention",
-      "body": "Global z points down, so a positive Fz or fz pulls downwards and My is positive counter-clockwise. Loads switched to the local system follow the element instead."
+      "body": "Global z points down, so a positive Fz or fz pulls downwards and My is positive counter-clockwise. Loads switched to the local system follow the element instead.",
+      "bodyYUp": "Global y points up, so a positive Fy or fy pushes upwards and Mz is positive counter-clockwise. Loads switched to the local system follow the element instead."
     },
     "results": {
       "title": "Results",
@@ -516,7 +626,7 @@
     },
     "diagrams": {
       "title": "Result overlays",
-      "body": "These switches draw the normal force, shear force, bending moment, deformed shape and reactions over the model. N is positive in tension, My positive when sagging."
+      "body": "These switches draw the normal force, shear force, bending moment, deformed shape and reactions over the model. N is positive in tension, M{r} positive when sagging."
     },
     "endForces": {
       "title": "End forces",
@@ -589,6 +699,24 @@
         "title": "Temperature load",
         "blurb": "Simply supported 8 m beam with uniform and non-uniform temperature load."
       }
+    }
+  },
+  "recentStructures": {
+    "title": "Recent structures",
+    "instructions": "The last {count} structures that were cleared or replaced are kept in this browser. Restoring one replaces the current structure, and Ctrl+Z brings that back.",
+    "empty": "Nothing here yet. When you clear a structure or open another one over it, it is kept here.",
+    "restore": "Restore",
+    "remove": "Remove",
+    "counts": "Nodes: {nodes} · Elements: {elements}",
+    "linkNotice": "Opened a shared structure. Your previous one is kept in Recent structures.",
+    "show": "Show",
+    "reasons": {
+      "clear": "Cleared",
+      "link": "Replaced by a shared link",
+      "file": "Replaced by an opened file",
+      "example": "Replaced by an example",
+      "firstBeam": "Replaced by the first-beam task",
+      "restore": "Replaced by a restored structure"
     }
   }
 }

@@ -42,7 +42,9 @@ describe('force per length conversion', () => {
       ['kN', 'mm'],
       ['N', 'cm'],
       ['kgf', 'mm'],
-    ]) {
+      ['kip', 'ft'],
+      ['lbf', 'in'],
+    ] as const) {
       appStore.units.Force = force;
       appStore.units.Length = length;
       await nextTick();

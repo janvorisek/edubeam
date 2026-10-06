@@ -4,9 +4,14 @@ import {
   createPresetShape,
   deserializeShape,
   isContourSelfIntersecting,
+  inPlaneBendingInertia,
   isShapeValid,
+  isSymmetricAboutFramePlane,
+  isStoredAsFreeOutOfPlane,
+  hasSignificantIyz,
   serializeShape,
   type SectionShape,
+  unrestrainedInPlaneInertia,
 } from '@/utils/sectionProperties';
 
 const near = (value: number, expected: number, rel = 1e-9) =>
@@ -191,5 +196,62 @@ describe('shape validation and serialization', () => {
     expect(isContourSelfIntersecting(square)).toBe(false);
     expect(isContourSelfIntersecting(createPresetShape('iSection').contours[0].points)).toBe(false);
     expect(isContourSelfIntersecting(createPresetShape('circle', { n: 64 }).contours[0].points)).toBe(false);
+  });
+});
+
+describe('out-of-plane restraint', () => {
+  it('needs no restraint for sections symmetric about the frame plane', () => {
+    for (const id of ['rectangle', 'iSection', 'tSection', 'channel', 'pipe'] as const) {
+      const p = computeSectionProperties(createPresetShape(id));
+      expect(hasSignificantIyz(p)).toBe(false);
+      near(unrestrainedInPlaneInertia(p), p.iy);
+    }
+  });
+
+  it('matches a hand calculation for an equal-leg angle 100x10 mm', () => {
+    // Legs split into 10x100 and 90x10 rectangles: Iy = Iz = 1.80005e-6, Iyz = 1.06579e-6 m4,
+    // so Iy,eff = Iy - Iyz^2 / Iz = 1.16901e-6 m4.
+    const p = computeSectionProperties(createPresetShape('lSection', { b: 0.1, h: 0.1, t: 0.01 }));
+    expect(hasSignificantIyz(p)).toBe(true);
+    near(p.iy, 1.80005e-6, 1e-5);
+    near(Math.abs(p.iyz), 1.06579e-6, 1e-5);
+    near(unrestrainedInPlaneInertia(p), 1.16901e-6, 1e-5);
+    near(unrestrainedInPlaneInertia(p), (p.i1 * p.i2) / p.iz);
+  });
+
+  it('recovers the out-of-plane choice from the stored Iy', () => {
+    const angle = computeSectionProperties(createPresetShape('lSection', { b: 0.1, h: 0.1, t: 0.01 }));
+    expect(isStoredAsFreeOutOfPlane(inPlaneBendingInertia(angle, true), angle)).toBe(true);
+    expect(isStoredAsFreeOutOfPlane(inPlaneBendingInertia(angle, false), angle)).toBe(false);
+
+    const rect = computeSectionProperties(createPresetShape('rectangle'));
+    expect(isStoredAsFreeOutOfPlane(rect.iy, rect)).toBe(false);
+  });
+
+  it('detects mirror symmetry about the frame plane', () => {
+    for (const id of ['rectangle', 'iSection', 'tSection', 'box', 'circle', 'pipe'] as const) {
+      expect(isSymmetricAboutFramePlane(createPresetShape(id)), id).toBe(true);
+    }
+    // A channel has Iyz = 0 but its shear centre lies behind the web, off the frame plane.
+    const channel = createPresetShape('channel');
+    near(computeSectionProperties(channel).iyz, 0);
+    expect(isSymmetricAboutFramePlane(channel)).toBe(false);
+    expect(isSymmetricAboutFramePlane(createPresetShape('lSection'))).toBe(false);
+
+    // An extra collinear vertex on one side keeps the outline symmetric.
+    const rect: SectionShape = {
+      contours: [
+        {
+          points: [
+            [0, 0],
+            [0.1, 0],
+            [0.1, 0.05],
+            [0.1, 0.2],
+            [0, 0.2],
+          ],
+        },
+      ],
+    };
+    expect(isSymmetricAboutFramePlane(rect)).toBe(true);
   });
 });

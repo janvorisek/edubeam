@@ -28,7 +28,7 @@
                 <v-col cols="6">
                   <v-text-field
                     v-model="newNodeZ"
-                    :label="$t('dialogs.addNode.coordinate_z')"
+                    :label="$t('dialogs.addNode.coordinate_z', { v: appStore.axes.v.toUpperCase() })"
                     :suffix="appStore.units.Length"
                     hide-details="auto"
                     :rules="numberRules"
@@ -42,7 +42,7 @@
 
             <v-col cols="12">
               <div class="d-flex justify-center mb-6" style="height: 64px">
-                <SupportHelper :angle="angleVal" :node="tmpNode" />
+                <SupportHelper :angle="appStore.angle(angleVal)" :node="tmpNode" />
               </div>
               <div>
                 <v-row no-gutters>
@@ -61,7 +61,7 @@
                       <v-col cols="4">
                         <v-checkbox
                           density="compact"
-                          label="Dz"
+                          :label="`D${appStore.axes.v}`"
                           hide-details="auto"
                           :model-value="tmpNode.bcs.has(2)"
                           @click="toggleSet(tmpNode, 'bcs', 2)"
@@ -70,7 +70,7 @@
                       <v-col cols="4">
                         <v-checkbox
                           density="compact"
-                          label="Ry"
+                          :label="`R${appStore.axes.r}`"
                           hide-details="auto"
                           :model-value="tmpNode.bcs.has(4)"
                           @click="toggleSet(tmpNode, 'bcs', 4)"
@@ -91,6 +91,12 @@
                   </v-col>
                 </v-row>
               </div>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" class="pt-0">
+              <div class="text-caption">{{ $t('nodes.defineSupports') }}</div>
+              <SupportPicker :bcs="tmpNode.bcs" @select="(type) => (tmpNode.bcs = new Set(supportTypes[type]))" />
             </v-col>
           </v-row>
         </v-form>
@@ -117,6 +123,8 @@ import { Node } from 'ts-fem';
 import { closeModal } from 'jenesius-vue-modal';
 import { useAppStore } from '@/store/app';
 import SupportHelper from '../svg/SupportHelper.vue';
+import SupportPicker from '../SupportPicker.vue';
+import { supportTypes } from '@/utils/supports';
 import {
   applyNodeLcsAngle,
   checkNumber,
@@ -162,12 +170,12 @@ const addNode = () => {
   }
 
   const nx = appStore.convertInverseLength(changeRefNumValue(newNodeX.value.toString()));
-  const nz = appStore.convertInverseLength(changeRefNumValue(newNodeZ.value.toString()));
+  const nz = appStore.vertical(appStore.convertInverseLength(changeRefNumValue(newNodeZ.value.toString())));
 
   executeModelMutationWithUndo(() => {
     const node = domain.createNode(nid, [nx, 0.0, nz], [...tmpNode.value.bcs.values()]);
 
-    applyNodeLcsAngle(node, parseFloat(nodalAngle.value));
+    applyNodeLcsAngle(node, appStore.angle(parseFloat(nodalAngle.value)));
 
     domain.nodes = new Map(domain.nodes);
   });

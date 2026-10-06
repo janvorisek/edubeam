@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { Bounds } from '@/utils/fitBounds';
 import { centerSvgContent, fitSvgContent } from '@/utils/fitSvgContent';
-import type { ViewBox } from '@/utils/fitBounds';
+import { limitZoomFactor } from '@/utils/zoomLimits';
+import type { Padding, ViewBox } from '@/utils/fitBounds';
 import type { FitContentResult } from '@/utils/fitContent';
 import { nextTick, onMounted, onBeforeUnmount, ref } from 'vue';
 
 const props = withDefaults(
   defineProps<{
-    onUpdate: (zooming: boolean) => void;
     /** Screen pixels kept free on every side of the fitted content. */
     padding?: number;
     mobilePadding?: number;
@@ -17,22 +17,25 @@ const props = withDefaults(
     /** Selector for decorations excluded from the fit; `fitReserve` makes room for them. */
     fitIgnore?: string;
     /** Screen pixels guaranteed free around the geometry for the ignored decorations. */
-    fitReserve?: number;
+    fitReserve?: number | Partial<Padding>;
     panButton?: number;
     zoomEnabled?: boolean;
   }>(),
   {
-    onUpdate: () => {},
     padding: 0,
     mobilePadding: 0,
     canFitContent: true,
     modelBounds: () => null,
     fitIgnore: '',
-    fitReserve: 0,
+    fitReserve: (): number | Partial<Padding> => 0,
     panButton: 4,
     zoomEnabled: true,
   }
 );
+
+const emit = defineEmits<{
+  update: [zooming: boolean];
+}>();
 
 let viewBox = { x: 0, y: 0, w: 0, h: 0 };
 const scale = ref(1);
@@ -66,11 +69,14 @@ const onWindowResize = (): void => {
 const updateMatrix = (zooming = false): void => {
   const svgEl = svgRef.value as SVGElement;
   svgEl.setAttribute('viewBox', `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
-  props.onUpdate(zooming);
+  emit('update', zooming);
 };
 
 const zoom = (mx: number, my: number, deltaY: number): void => {
   if (deltaY === 0 || !props.zoomEnabled) return;
+
+  const factor = limitZoomFactor(Math.max(viewBox.w, viewBox.h), 1 + deltaY, props.modelBounds());
+  if (Math.abs(factor - 1) < 1e-9) return;
 
   autoFit.value = false;
 
@@ -78,8 +84,8 @@ const zoom = (mx: number, my: number, deltaY: number): void => {
 
   const w = viewBox.w;
   const h = viewBox.h;
-  const dw = -w * deltaY;
-  const dh = -h * deltaY;
+  const dw = w * (1 - factor);
+  const dh = h * (1 - factor);
   const dx = (dw * mx) / svgEl.clientWidth;
   const dy = (dh * my) / svgEl.clientHeight;
   viewBox = {

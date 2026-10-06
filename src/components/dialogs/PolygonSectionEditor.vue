@@ -25,7 +25,7 @@
                 :key="param"
                 v-model="presetValues[param]"
                 :label="$t(`dialogs.polygonSection.params.${param}`)"
-                :suffix="param === 'n' ? '' : appStore.units.Length"
+                :suffix="param === 'n' ? '' : appStore.units.SectionLength"
                 density="compact"
                 hide-details
                 variant="outlined"
@@ -43,7 +43,7 @@
               <v-text-field
                 v-model="snapStep"
                 :label="$t('dialogs.polygonSection.snapStep')"
-                :suffix="appStore.units.Length"
+                :suffix="appStore.units.SectionLength"
                 density="compact"
                 hide-details
                 variant="outlined"
@@ -207,7 +207,7 @@
                   class="principal-label"
                   :font-size="fontSize"
                   text-anchor="middle"
-                  dominant-baseline="middle"
+                  dy="0.35em"
                 >
                   1
                 </text>
@@ -217,7 +217,7 @@
                   class="principal-label"
                   :font-size="fontSize"
                   text-anchor="middle"
-                  dominant-baseline="middle"
+                  dy="0.35em"
                 >
                   2
                 </text>
@@ -298,8 +298,8 @@
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>y [{{ appStore.units.Length }}]</th>
-                        <th>z [{{ appStore.units.Length }}]</th>
+                        <th>y [{{ appStore.units.SectionLength }}]</th>
+                        <th>z [{{ appStore.units.SectionLength }}]</th>
                         <th class="text-right">
                           <v-btn
                             density="compact"
@@ -389,11 +389,12 @@
                 <span v-html="areaUnitHtml"></span
               ></span>
               <span
-                >I<sub>y</sub> = <b>{{ formatScientificNumber(appStore.convertAreaM2(properties.iy)) }}</b>
+                ><span v-html="bendingInertiaSymbol"></span> =
+                <b>{{ formatScientificNumber(appStore.convertAreaM2(bendingInertia)) }}</b>
                 <span v-html="inertiaUnitHtml"></span
               ></span>
               <span
-                >h = <b>{{ formatLength(properties.h) }}</b> {{ appStore.units.Length }}</span
+                >h = <b>{{ formatLength(properties.h) }}</b> {{ appStore.units.SectionLength }}</span
               >
             </div>
             <v-alert
@@ -404,6 +405,27 @@
               class="mt-2"
             >
               {{ $t('dialogs.polygonSection.invalidShape') }}
+            </v-alert>
+            <v-alert v-if="outOfPlaneNote" type="info" density="compact" variant="tonal" class="mt-2 text-body-2">
+              {{ $t('dialogs.polygonSection.outOfPlaneNote') }}
+              <v-radio-group
+                v-if="outOfPlaneChoice"
+                v-model="freeOutOfPlane"
+                density="compact"
+                hide-details
+                class="out-of-plane-choice mt-1"
+              >
+                <v-radio :value="false">
+                  <template #label>
+                    <span v-html="outOfPlaneOptionHtml(false)"></span>
+                  </template>
+                </v-radio>
+                <v-radio :value="true">
+                  <template #label>
+                    <span v-html="outOfPlaneOptionHtml(true)"></span>
+                  </template>
+                </v-radio>
+              </v-radio-group>
             </v-alert>
           </v-col>
         </v-row>
@@ -444,16 +466,23 @@ import {
   cloneShape,
   computeSectionProperties,
   createPresetShape,
+  hasSignificantIyz,
+  inPlaneBendingInertia,
   isShapeValid,
-  sectionPresetDefaults,
+  isStoredAsFreeOutOfPlane,
+  isSymmetricAboutFramePlane,
   sectionPresetParams,
   type SectionContour,
   type SectionPoint,
   type SectionPresetId,
   type SectionPresetParam,
   type SectionShape,
+  unrestrainedInPlaneInertia,
 } from '@/utils/sectionProperties';
 import '@/types/crossSection';
+import type { LengthUnit } from '@/utils/unitConversions';
+import { newSectionPresetDefaults } from '@/utils/newEntityDefaults';
+import { presetFamily } from '@/utils/presetFamily';
 
 const props = defineProps<{
   /** Label of an existing cross section to edit; omit to create a new one. */
@@ -493,6 +522,10 @@ const initialShape = (): SectionShape => {
 const existing = props.label !== undefined ? projectStore.solver.domain.crossSections.get(props.label) : undefined;
 
 const shape = reactive<SectionShape>(initialShape());
+// Reopening a section saved with Iy,eff must keep that choice, or a plain Save would silently stiffen it.
+const freeOutOfPlane = ref(
+  existing?.shape !== undefined && isStoredAsFreeOutOfPlane(existing.iy, computeSectionProperties(shape))
+);
 const csLabel = ref(existing?.label ?? nextFreeLabel());
 const shear = ref(`${existing?.k ?? 0.833}`);
 const selected = ref<{ ci: number; vi: number } | null>(null);
@@ -525,11 +558,13 @@ const labelRules = [
 // Units
 // ---------------------------------------------------------------------------
 
-const toDisplay = (m: number) => appStore.convertLength(m);
-const toModel = (v: number) => appStore.convertInverseLength(v);
+const toDisplay = (m: number) => appStore.convertSectionLength(m);
+const toModel = (v: number) => appStore.convertInverseSectionLength(v);
 const formatLength = (m: number) => formatCompactNumber(toDisplay(m));
 
-const snapStep = ref(formatCompactNumber(toDisplay(0.005)));
+// About 5 mm, as a round number of the unit the outline is drawn in: a quarter inch, not 0.19685 in
+const SNAP_STEPS: Record<LengthUnit, number> = { m: 0.005, cm: 0.5, mm: 5, in: 0.25, ft: 0.02 };
+const snapStep = ref(formatCompactNumber(SNAP_STEPS[appStore.units.SectionLength]));
 const snapStepModel = computed(() => {
   const v = parseFloat2(snapStep.value);
   return v > 0 ? toModel(v) : 0;
@@ -553,6 +588,7 @@ const presetItems = computed(() =>
   }))
 );
 const presetParams = computed(() => sectionPresetParams[presetId.value]);
+const sectionPresetDefaults = newSectionPresetDefaults(presetFamily(appStore.units.SectionLength));
 const presetValues = reactive<Record<SectionPresetParam, string>>({
   b: formatCompactNumber(toDisplay(sectionPresetDefaults.b)),
   h: formatCompactNumber(toDisplay(sectionPresetDefaults.h)),
@@ -768,6 +804,23 @@ const activeContourPath = computed(() => {
 const areaUnitHtml = computed(() => formatMeasureAsHTML(appStore.units.Area));
 const inertiaUnitHtml = computed(() => formatMeasureAsHTML(appStore.units.AreaM2));
 
+// A 2D frame is exact only for members that cannot deflect sideways or twist. A section that is not
+// symmetric about the frame plane would twist (its shear centre is off the load line), which we only
+// point out. When also Iyz ≠ 0, in-plane stiffness depends on sideways restraint, so the user chooses.
+const outOfPlaneNote = computed(() => shapeValid.value && !isSymmetricAboutFramePlane(shape));
+const outOfPlaneChoice = computed(() => outOfPlaneNote.value && hasSignificantIyz(properties.value));
+const bendingInertia = computed(() =>
+  inPlaneBendingInertia(properties.value, outOfPlaneChoice.value && freeOutOfPlane.value)
+);
+const inertiaSymbol = (free: boolean) => (free ? 'I<sub>y,eff</sub>' : 'I<sub>y</sub>');
+const bendingInertiaSymbol = computed(() => inertiaSymbol(outOfPlaneChoice.value && freeOutOfPlane.value));
+const outOfPlaneOptionHtml = (free: boolean) => {
+  const value = formatScientificNumber(appStore.convertAreaM2(inPlaneBendingInertia(properties.value, free)));
+  return t(free ? 'dialogs.polygonSection.outOfPlaneFree' : 'dialogs.polygonSection.outOfPlaneRestrained', {
+    inertia: `${inertiaSymbol(free)} = <b>${value}</b> ${inertiaUnitHtml.value}`,
+  });
+};
+
 const sectionPath = computed(() =>
   shape.contours
     .filter((c) => c.points.length >= 3)
@@ -782,7 +835,7 @@ const centroidalSuffix = computed(
 
 const propertyRows = computed(() => {
   const p = properties.value;
-  const lengthU = formatMeasureAsHTML(appStore.units.Length);
+  const lengthU = formatMeasureAsHTML(appStore.units.SectionLength);
   const areaU = formatMeasureAsHTML(appStore.units.Area);
   const inertiaU = formatMeasureAsHTML(appStore.units.AreaM2);
   const num = (v: number) => formatScientificNumber(v);
@@ -810,6 +863,16 @@ const propertyRows = computed(() => {
       value: num(appStore.convertAreaM2(p.iyz)),
       units: inertiaU,
     },
+    ...(outOfPlaneChoice.value
+      ? [
+          {
+            key: 'iyEff',
+            title: 'I<sub>y,eff</sub> = (I<sub>y</sub>I<sub>z</sub> − I<sub>yz</sub><sup>2</sup>) / I<sub>z</sub>',
+            value: num(appStore.convertAreaM2(unrestrainedInPlaneInertia(p))),
+            units: inertiaU,
+          },
+        ]
+      : []),
     { key: 'i1', title: 'I<sub>1</sub>', value: num(appStore.convertAreaM2(p.i1)), units: inertiaU },
     { key: 'i2', title: 'I<sub>2</sub>', value: num(appStore.convertAreaM2(p.i2)), units: inertiaU },
     { key: 'alpha', title: t('crossSection.alpha') + ' α', value: formatCompactNumber(alphaDeg.value, 4), units: '°' },
@@ -862,7 +925,7 @@ const save = () => {
     }
 
     cs.a = p.a;
-    cs.iy = p.iy;
+    cs.iy = bendingInertia.value;
     cs.iz = p.iz;
     cs.dyz = p.iyz;
     cs.h = p.h;
@@ -1134,5 +1197,18 @@ watch(
 
 .coord-input:focus {
   background: rgba(var(--v-theme-primary), 0.08);
+}
+</style>
+
+<style>
+/* main.scss forces radio labels onto one line; the out-of-plane options carry a formula and must wrap. */
+.out-of-plane-choice .v-selection-control {
+  height: auto;
+  min-height: 28px;
+}
+
+.out-of-plane-choice .v-selection-control .v-label {
+  white-space: normal !important;
+  opacity: 1;
 }
 </style>

@@ -10,6 +10,8 @@ export interface HelpTopic {
   title: string;
   /** i18n key of the one or two sentence explanation */
   body: string;
+  /** i18n key of the explanation when the vertical axis points up, if the text says which way it points */
+  bodyYUp?: string;
   /** documentation path without locale prefix, may contain an anchor */
   path: string;
 }
@@ -18,7 +20,12 @@ export const helpTopics = {
   nodes: { title: 'help.nodes.title', body: 'help.nodes.body', path: '/essentials/nodes-supports' },
   supports: { title: 'help.supports.title', body: 'help.supports.body', path: '/essentials/nodes-supports#supports' },
   elements: { title: 'help.elements.title', body: 'help.elements.body', path: '/essentials/elements' },
-  loads: { title: 'help.loads.title', body: 'help.loads.body', path: '/essentials/loads' },
+  loads: {
+    title: 'help.loads.title',
+    body: 'help.loads.body',
+    bodyYUp: 'help.loads.bodyYUp',
+    path: '/essentials/loads',
+  },
   nodalLoads: { title: 'help.nodalLoads.title', body: 'help.nodalLoads.body', path: '/essentials/loads#nodal-loads' },
   elementLoads: {
     title: 'help.elementLoads.title',
@@ -35,6 +42,7 @@ export const helpTopics = {
   signConvention: {
     title: 'help.signConvention.title',
     body: 'help.signConvention.body',
+    bodyYUp: 'help.signConvention.bodyYUp',
     path: '/elements/conventions#loads',
   },
   results: { title: 'help.results.title', body: 'help.results.body', path: '/essentials/results' },

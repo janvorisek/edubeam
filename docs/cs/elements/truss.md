@@ -1,6 +1,6 @@
 # Příhradový prut
 
-Příhradový prut přenáší pouze normálovou sílu. V <Edubeam /> neexistuje samostatný typ příhradového prvku: příhradový prut je [prutový prvek](/cs/elements/beam) se zaškrtnutými **oběma koncovými klouby**, což kondenzací odstraní ohybové členy a ponechá osovou tuhost uvedenou níže.
+Příhradový prut přenáší pouze normálovou sílu. <Edubeam /> nemá samostatný typ příhradového prvku: příhradový prut je [prutový prvek](/cs/elements/beam) se zaškrtnutými **oběma koncovými klouby**. Kondenzace pak odstraní ohybové členy a zůstane jen osová tuhost uvedená níže.
 
 <TrussElement :hinges="[true, true]"  caption="Schéma rovinného příhradového prutu" />
 

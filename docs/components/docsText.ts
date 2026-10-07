@@ -56,11 +56,12 @@ const strings: Record<DocsLanguage, DocsStrings> = {
       'Jak v EduBeamu vypadají běžné typy zatížení. Každá karta je živý, vyřešený model a otevře se v aplikaci přesně tak, jak je nastavená.',
     openInApp: 'Otevřít v EduBeamu',
     simplySupportedBeam: 'Prostý nosník',
-    udlBlurb: 'Nosník na kloubu a posuvném kloubu se zatížením 12 kN/m: klasické průběhy posouvajících sil a momentů.',
+    udlBlurb:
+      'Nosník na pevném a posuvném kloubu se zatížením 12 kN/m: klasické průběhy posouvajících sil a ohybových momentů.',
     trapezoidalBlurb: 'Zatížení rostoucí ze 4 na 14 kN/m v pravém poli.',
     concentratedBlurb: 'Jediná síla 18 kN dolů uprostřed rozpětí, bez dalšího uzlu.',
-    nodalBlurb: 'Síla 20 kN ve vnitřní podpoře pro kontrolu reakcí a průhybů.',
-    temperatureBlurb: 'Rozdíl teplot po výšce průřezu (nahoře tepleji než dole) a zakřivení, které vyvolá.',
+    nodalBlurb: 'Síla 20 kN nad vnitřní podporou – vhodná pro kontrolu reakcí a průhybů.',
+    temperatureBlurb: 'Rozdíl teplot po výšce průřezu (nahoře tepleji než dole) a zakřivení, které způsobí.',
   },
   de: {
     loadsTitle: 'Lastarten im Überblick',

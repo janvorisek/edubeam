@@ -1,6 +1,6 @@
 # Zatížení
 
-Všechna zatížení patří do **jediného zatěžovacího stavu** a působí současně. Chcete-li porovnat různé scénáře, uložte každý jako samostatný soubor projektu nebo sdílený odkaz.
+Všechna zatížení patří do **jediného zatěžovacího stavu** a působí současně. Různé varianty zatížení porovnáte tak, že každou uložíte jako samostatný soubor projektu nebo sdílený odkaz.
 
 ![Všechny typy zatížení na jednom spojitém nosníku: uzlová síla, rovnoměrné zatížení, lineárně proměnné zatížení, osamělá síla, změna teploty a pokles podpory](/screenshots/cs/loads-overview.webp)
 
@@ -8,7 +8,7 @@ Všechna zatížení patří do **jediného zatěžovacího stavu** a působí s
 
 ## Znaménková konvence jednou větou {#sign-convention-in-one-line}
 
-Globální **x** míří doprava a globální **z** míří **dolů**. Kladné `Fz` nebo `fz` je tedy zatížení směrem dolů, tíhového typu, a kladný moment `My` otáčí na obrazovce proti směru hodinových ručiček. Podrobnosti najdete v kapitole [Souřadný systém a znaménková konvence](/cs/elements/conventions). S [osami y nahoru](/cs/elements/conventions#y-up-axes) se názvy a znaménka svislých veličin obrátí: tíha je záporné `Fy`.
+Globální **x** míří doprava a globální **z** míří **dolů**. Kladné `Fz` nebo `fz` proto působí dolů, stejně jako tíha, a kladný moment `My` otáčí na obrazovce proti směru hodinových ručiček. Podrobnosti najdete v kapitole [Souřadný systém a znaménková konvence](/cs/elements/conventions). Při [osách y nahoru](/cs/elements/conventions#y-up-axes) se názvy a znaménka svislých veličin mění: tíha je pak záporné `Fy`.
 
 ## Uzlová zatížení {#nodal-loads}
 
@@ -22,7 +22,7 @@ Záložka *Zatížení* → **Přidat uzlové zatížení**, nebo klikněte na u
 
 ![Přidat uzlové zatížení. Náhled ukazuje směr už během psaní.](/screenshots/cs/loads-nodal.webp){.shot-md}
 
-Složky jsou vždy v **globálním** souřadném systému. V jednom uzlu může působit více uzlových zatížení; sčítají se a kreslí se nad sebou.
+Složky se vždy zadávají v **globálním** souřadném systému. V jednom uzlu může působit více uzlových zatížení – sečtou se a vykreslí nad sebou.
 
 ### Předepsaná posunutí (poklesy podpor) {#prescribed-displacements-support-settlements}
 
@@ -34,11 +34,11 @@ Ve stejném dialogu zvolte **Předepsané posunutí**, nebo klikněte na podepř
 | `Dz` | vnucené svislé posunutí (kladné dolů) | jednotka posunu |
 | `Ry` | vnucené pootočení | rad |
 
-Hodnotu lze zadat jen pro stupeň volnosti, který je v daném uzlu **podepřen**, protože pohnout lze jen podporami. Každý uzel má nejvýše jedno předepsané posunutí; místo přidávání druhého upravte stávající. U staticky určité konstrukce vyvolá pokles podpory posunutí, ale žádné vnitřní síly; u staticky neurčité obojí.
+Hodnotu zadáte jen pro stupeň volnosti, který je v daném uzlu **podepřen** – posunout lze jen podporu. Každý uzel může mít nejvýše jedno předepsané posunutí; místo přidání dalšího upravte to stávající. U staticky určité konstrukce vyvolá pokles podpory posunutí, ale žádné vnitřní síly; u staticky neurčité obojí.
 
 ## Prvková zatížení {#element-loads}
 
-Záložka *Zatížení* → **Přidat prvkové zatížení**, nebo klikněte na prvek → **Přidat zatížení**. Vyberte **Typ zatížení**; dialog už během psaní ukazuje náhled zatížení na prvku.
+Záložka *Zatížení* → **Přidat prvkové zatížení**, nebo klikněte na prvek → **Přidat zatížení**. Vyberte **Typ zatížení**. Náhled zatížení na prvku se v dialogu ukazuje už během psaní.
 
 ### Spojité rovnoměrné zatížení {#uniformly-distributed-load}
 
@@ -48,11 +48,11 @@ Záložka *Zatížení* → **Přidat prvkové zatížení**, nebo klikněte na 
 | `fz` | zatížení na jednotku délky ve směru z | síla / délka |
 | **LCS** | zaškrtnuto: `fx`, `fz` působí v lokálních osách prvku; nezaškrtnuto: v globálních osách | – |
 
-**LCS** je ve výchozím stavu zaškrtnuto. U vodorovného prvku nakresleného zleva doprava jsou lokální a globální osy stejné, takže na tom nezáleží. U šikmého prutu ano:
+**LCS** je ve výchozím stavu zaškrtnuto. U vodorovného prvku nakresleného zleva doprava jsou lokální a globální osy totožné, takže na nastavení nezáleží. U šikmého prutu ale ano:
 
 - zatížení **kolmé na prut** (vítr na krokev) je `fz` se **zaškrtnutým** LCS;
 - **svislé** zatížení na metr délky prutu (vlastní tíha) je `fz` s **nezaškrtnutým** LCS;
-- svislé zatížení na metr *vodorovného průmětu* (sníh) přímo k dispozici není. Nejprve ho vynásobte $\cos\alpha$, kde $\alpha$ je sklon prutu, a zadejte ho jako svislé zatížení.
+- svislé zatížení na metr *vodorovného průmětu* (sníh) přímo zadat nelze. Vynásobte ho $\cos\alpha$, kde $\alpha$ je sklon prutu, a zadejte jako svislé zatížení.
 
 ### Lineárně proměnné (lichoběžníkové) zatížení {#trapezoidal-load}
 
@@ -61,11 +61,11 @@ Záložka *Zatížení* → **Přidat prvkové zatížení**, nebo klikněte na 
 | `f1x`, `f1z` | intenzita v **počátečním** uzlu |
 | `f2x`, `f2z` | intenzita v **koncovém** uzlu |
 
-Intenzita se mění lineárně od začátku ke konci prvku. Trojúhelníkové zatížení má `f1z = 0`. Lineárně proměnné zatížení působí vždy v **lokálních osách prvku** (políčko LCS je zamčené); u vodorovného prvku je to totéž co globální osy.
+Intenzita se mění lineárně od začátku ke konci prvku. Pro trojúhelníkové zatížení zadejte `f1z = 0`. Lineárně proměnné zatížení působí vždy v **lokálních osách prvku** (políčko LCS je zamčené); u vodorovného prvku se shodují s globálními.
 
 ### Osamělá síla {#concentrated-load}
 
-Bodová síla nebo moment kdekoli **po délce** prvku, bez potřeby dalšího uzlu.
+Síla nebo moment v libovolném bodě **po délce** prvku – bez nutnosti přidávat uzel.
 
 | Pole | Význam |
 | --- | --- |
@@ -73,16 +73,16 @@ Bodová síla nebo moment kdekoli **po délce** prvku, bez potřeby dalšího uz
 | **Vzdálenost od počátečního uzlu** | vzdálenost od počátečního uzlu, `0 ≤ a ≤ L` |
 | **LCS** | složky v lokálních osách |
 
-Průběh posouvající síly má v místě síly skok o `Fz` a průběh momentu tam má zlom; hodnota momentu v tomto bodě se popíše automaticky. Osamělý moment `My` naopak způsobí skok v průběhu momentu.
+V místě síly má průběh posouvající síly skok o `Fz` a průběh ohybového momentu zlom; hodnota momentu se v tomto bodě automaticky popíše. Osamělý moment `My` naopak vyvolá skok v průběhu momentu.
 
 ### Změna teploty {#temperature-load}
 
 | Pole | Význam |
 | --- | --- |
-| **ΔT<sub>s</sub>**, oteplení střednice | rovnoměrná změna teploty celého průřezu, způsobí prodloužení $\alpha\,\Delta T_s\,L$ |
-| **ΔT<sub>d</sub> − ΔT<sub>h</sub>**, rozdíl oteplení | dolní vlákna mínus horní vlákna, způsobí křivost $\alpha\,(\Delta T_d - \Delta T_h)/h$ |
+| **ΔT<sub>s</sub>**, oteplení střednice | rovnoměrná změna teploty celého průřezu; vyvolá prodloužení $\alpha\,\Delta T_s\,L$ |
+| **ΔT<sub>d</sub> − ΔT<sub>h</sub>**, rozdíl oteplení | dolní vlákna mínus horní vlákna; vyvolá křivost $\alpha\,(\Delta T_d - \Delta T_h)/h$ |
 
-Teplotní zatížení používá **α** materiálu a **výšku h** průřezu. Kladné `ΔTd − ΔTh` (teplejší dolní vlákna) prodlouží dolní vlákna, takže se prvek prohne dolů jako nosník pod tíhovým zatížením. U staticky určité konstrukce vyvolá teplota jen posunutí; teprve vazby (vetknuté konce, spojitost, nadbytečné pruty) z ní udělají vnitřní síly.
+Teplotní zatížení počítá s **α** materiálu a **výškou h** průřezu. Kladné `ΔTd − ΔTh` (teplejší dolní vlákna) dolní vlákna prodlouží, takže se prvek prohne dolů – stejně jako nosník zatížený tíhou. U staticky určité konstrukce vyvolá změna teploty jen posunutí. Vnitřní síly vzniknou teprve tehdy, když deformaci brání vazby (vetknuté konce, spojitost, nadbytečné pruty).
 
 <div class="shots">
 
@@ -98,15 +98,15 @@ Teplotní zatížení používá **α** materiálu a **výšku h** průřezu. Kl
 
 ## Úprava a odstranění zatížení {#editing-and-removing-loads}
 
-- Každé zatížení je řádkem v záložce *Zatížení*, kde můžete přímo upravit jeho složky i příznak LCS. Zatížení se také zobrazují jako štítky v tabulkách *Uzly* a *Prvky*.
-- **Dvojklikem** na zatížení v zobrazení, nebo kliknutím a volbou **Upravit zatížení**, otevřete dialog úprav.
-- Vyberte zatížení a stiskněte <kbd>Delete</kbd>, nebo použijte × v tabulce.
-- Zatížení připojená k uzlu či prvku se mažou spolu s ním a při kopírování a vložení se kopírují s ním.
+- Každé zatížení má vlastní řádek na záložce *Zatížení*, kde přímo upravíte jeho složky i příznak LCS. V tabulkách *Uzly* a *Prvky* se zatížení zobrazují také jako štítky.
+- Dialog úprav otevřete **dvojklikem** na zatížení v zobrazení, nebo kliknutím na zatížení a volbou **Upravit zatížení**.
+- Zatížení smažete klávesou <kbd>Delete</kbd> po jeho výběru, nebo křížkem × v tabulce.
+- Zatížení uzlu nebo prvku se smažou spolu s ním a při kopírování a vložení se zkopírují s ním.
 
 ![Záložka Zatížení: jeden řádek na zatížení, složky lze upravovat přímo](/screenshots/cs/loads-table.webp)
 
 ## Co k dispozici není {#what-is-not-available}
 
-- **Zatěžovací stavy a kombinace.** Existuje jen jeden zatěžovací stav.
-- **Vlastní tíha.** Zadejte ji jako rovnoměrné zatížení s nezaškrtnutým LCS: $f_z = \rho\,g\,A$. Pro IPE 200: 7850 × 9,81 × 0,00285 ≈ 0,22 kN/m.
+- **Zatěžovací stavy a kombinace.** Model má jen jeden zatěžovací stav.
+- **Vlastní tíha.** Zadejte ji jako rovnoměrné zatížení s nezaškrtnutým LCS: $f_z = \rho\,g\,A$. Například u IPE 200: 7850 × 9,81 × 0,00285 ≈ 0,22 kN/m.
 - **Lineárně proměnné zatížení v globálních osách** na šikmých prutech.

@@ -1,6 +1,6 @@
 # Klávesnice, myš a dotyk
 
-Klávesové zkratky fungují, když má zobrazení fokus. Při psaní do buňky tabulky nebo do dialogu se ignorují; nejprve klikněte na plátno.
+Klávesové zkratky fungují, jen když má fokus zobrazení. Při psaní do buňky tabulky nebo do dialogu je aplikace ignoruje, proto nejprve klikněte na plátno.
 
 ## Klávesnice {#keyboard}
 
@@ -8,12 +8,12 @@ Klávesové zkratky fungují, když má zobrazení fokus. Při psaní do buňky 
 | --- | --- |
 | <kbd>Ctrl</kbd>+<kbd>Z</kbd> | Zpět |
 | <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd> | Znovu |
-| <kbd>Ctrl</kbd>+<kbd>S</kbd> | Uložit projekt (stažení JSON) |
+| <kbd>Ctrl</kbd>+<kbd>S</kbd> | Uložit projekt (stáhne JSON) |
 | <kbd>Ctrl</kbd>+<kbd>O</kbd> | Otevřít projekt |
 | <kbd>Ctrl</kbd>+<kbd>P</kbd> | Exportovat obrázek |
 | <kbd>Ctrl</kbd>+<kbd>A</kbd> | Vybrat vše |
 | <kbd>Ctrl</kbd>+<kbd>C</kbd> | Zkopírovat výběr (uzly, prvky a jejich zatížení) |
-| <kbd>Ctrl</kbd>+<kbd>V</kbd> | Vložit: obrys kopie sleduje kurzor; kliknutím ji umístíte, nebo v liště zadejte posun Δx, Δz a stiskněte **Vložit** |
+| <kbd>Ctrl</kbd>+<kbd>V</kbd> | Vložit: obrys kopie se pohybuje s kurzorem a kliknutím ji umístíte; nebo v liště zadejte posun Δx, Δz a stiskněte **Vložit** |
 | <kbd>Delete</kbd> | Smazat výběr |
 | <kbd>Esc</kbd> | Zrušit aktuální režim myši, zavřít prohlídku, zrušit výběr nebo opustit buňku tabulky |
 | <kbd>Enter</kbd> | Potvrdit buňku tabulky |
@@ -23,7 +23,7 @@ Klávesové zkratky fungují, když má zobrazení fokus. Při psaní do buňky 
 | <kbd>S</kbd> | Zapnout/vypnout přichytávání k mřížce |
 | <kbd>Ctrl</kbd>+<kbd>=</kbd> / <kbd>Ctrl</kbd>+<kbd>-</kbd> | Přiblížit / oddálit |
 
-Na Macu použijte <kbd>Cmd</kbd> všude, kde je uvedeno <kbd>Ctrl</kbd>.
+Na Macu použijte místo <kbd>Ctrl</kbd> vždy <kbd>Cmd</kbd>.
 
 ## Myš {#mouse}
 
@@ -31,7 +31,7 @@ Na Macu použijte <kbd>Cmd</kbd> všude, kde je uvedeno <kbd>Ctrl</kbd>.
 | --- | --- |
 | Kliknutí | Vybere uzel, prvek, zatížení nebo kótu a otevře jeho panel |
 | Tažení po prázdném plátně | Výběrový obdélník |
-| Tažení uzlu | Přesun uzlu (se zapnutým přichytáváním na mřížku) |
+| Tažení uzlu | Přesun uzlu (při zapnutém přichytávání se uzel přichytí k mřížce) |
 | Kliknutí v režimu myši | Umístí uzel, nebo začne či prodlouží lomenou čáru prvků |
 | Dvojklik na zatížení | Úprava zatížení |
 | Pravé kliknutí | Nabídka plátna: Přidat uzel, Přidat prvek, Přidat kótu, Okótovat prvek (nad prvkem), Upravit, Kopírovat, Vložit, Smazat |
@@ -40,7 +40,7 @@ Na Macu použijte <kbd>Cmd</kbd> všude, kde je uvedeno <kbd>Ctrl</kbd>.
 | Kolečko | Přiblížení ke kurzoru |
 | Najetí myší na objekt | Popisek s posunutími, vlastnostmi nebo hodnotami zatížení |
 
-Na touchpadu přibližuje posouvání dvěma prsty. Zobrazení posunete kliknutím a tažením dvěma prsty (tažení pravým tlačítkem).
+Na touchpadu se posouváním dvěma prsty zobrazení přibližuje. Posunete ho tak, že kliknete a táhnete dvěma prsty (jako tažení pravým tlačítkem).
 
 ## Dotyk {#touch}
 
@@ -56,7 +56,7 @@ Na touchpadu přibližuje posouvání dvěma prsty. Zobrazení posunete kliknut�
 
 ## Panely objektů {#object-panels}
 
-Kliknutí na objekt otevře vedle něj panel s jeho podrobnostmi a těmito akcemi:
+Když na objekt kliknete, otevře se vedle něj panel s podrobnostmi a těmito akcemi:
 
 | Objekt | Akce |
 | --- | --- |

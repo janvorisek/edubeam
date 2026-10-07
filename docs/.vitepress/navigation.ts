@@ -171,7 +171,7 @@ export const cs: NavigationLabels = {
     resultsDiagrams: 'Výsledky a průběhy',
     verification: 'Ověření výsledků ručně',
     importExport: 'Import, export a sdílení',
-    teaching: 'Výuka s EduBeam',
+    teaching: 'Výuka s EduBeamem',
     shortcuts: 'Klávesnice, myš a dotyk',
     troubleshooting: 'Řešení problémů',
     faq: 'Často kladené otázky',

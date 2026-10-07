@@ -4,14 +4,14 @@ Ein Fachwerkstab überträgt nur Normalkraft. In <Edubeam /> gibt es keinen eige
 
 <TrussElement :hinges="[true, true]"  caption="Schema des ebenen Fachwerkstabs" />
 
-## Freiheitsgrade
+## Freiheitsgrade {#degrees-of-freedom}
 
 Der ebene Fachwerkstab hat an jedem Knoten zwei Freiheitsgrade:
 
 - **Verschiebung (Dx):** Verschiebung entlang der x-Achse.
 - **Verschiebung (Dz):** Verschiebung entlang der z-Achse.
 
-## Lokale Steifigkeitsmatrix
+## Lokale Steifigkeitsmatrix {#local-stiffness-matrix}
 
 Die lokale Steifigkeitsmatrix des Fachwerkstabs lautet
 
@@ -31,7 +31,7 @@ mit
 - $A$ der Querschnittsfläche,
 - $L$ der Stablänge.
 
-## Transformationsmatrix
+## Transformationsmatrix {#transformation-matrix}
 
 Die Transformationsmatrix $\mathbf{T}$ des Elements überführt die lokale Steifigkeitsmatrix in das globale Koordinatensystem.
 
@@ -44,7 +44,7 @@ $$
 \end{pmatrix}
 $$
 
-## Globale Steifigkeitsmatrix
+## Globale Steifigkeitsmatrix {#global-stiffness-matrix}
 
 Die globale Steifigkeitsmatrix $\mathbf{K_g}$ ergibt sich aus der Transformationsmatrix $\mathbf{T}$ und der lokalen Steifigkeitsmatrix $\mathbf{K_l}$:
 

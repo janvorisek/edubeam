@@ -1,12 +1,19 @@
 <!--.vitepress/theme/MyLayout.vue-->
 <script setup>
-import { onMounted, watch } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import { useData } from 'vitepress';
 import DefaultTheme from 'vitepress/theme';
 
 const { Layout } = DefaultTheme;
 
-const { frontmatter } = useData();
+const { frontmatter, localeIndex } = useData();
+
+// The app shown in the reader's language; Hindi has no app translation, so it shows English.
+const heroSrc = computed(() =>
+  localeIndex.value === 'root' || localeIndex.value === 'hi'
+    ? '/screenshots/hero.webp'
+    : `/screenshots/${localeIndex.value}/hero.webp`
+);
 
 // AdSense Auto Ads scans the page only once, when its script loads, and never again after
 // client-side navigation. Home pages are excluded in AdSense, so loading the script there
@@ -34,7 +41,7 @@ onMounted(() => {
       <a class="hero-shot" href="https://run.edubeam.app" target="_blank">
         <span class="hero-shot-bar" aria-hidden="true"><i></i><i></i><i></i></span>
         <img
-          src="/screenshots/hero.webp"
+          :src="heroSrc"
           width="1280"
           height="760"
           alt="EduBeam with a three-hinged frame: loads, reactions, bending moment and deformed shape"

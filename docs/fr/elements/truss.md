@@ -4,14 +4,14 @@ Une barre de treillis ne transmet que l’effort normal. Dans <Edubeam />, il n�
 
 <TrussElement :hinges="[true, true]"  caption="Schéma de la barre de treillis 2D" />
 
-## Degrés de liberté
+## Degrés de liberté {#degrees-of-freedom}
 
 La barre de treillis 2D possède deux degrés de liberté en chaque nœud :
 
 - **Translation (Dx) :** déplacement selon l’axe x.
 - **Translation (Dz) :** déplacement selon l’axe z.
 
-## Matrice de rigidité locale
+## Matrice de rigidité locale {#local-stiffness-matrix}
 
 La matrice de rigidité locale d’une barre de treillis s’écrit
 
@@ -31,7 +31,7 @@ où
 - $A$ est l’aire de la section,
 - $L$ est la longueur de la barre.
 
-## Matrice de passage
+## Matrice de passage {#transformation-matrix}
 
 La matrice de passage de l’élément, $\mathbf{T}$, transforme la matrice de rigidité locale dans le repère global.
 
@@ -44,7 +44,7 @@ $$
 \end{pmatrix}
 $$
 
-## Matrice de rigidité globale
+## Matrice de rigidité globale {#global-stiffness-matrix}
 
 La matrice de rigidité globale $\mathbf{K_g}$ s’obtient à partir de la matrice de passage $\mathbf{T}$ et de la matrice de rigidité locale $\mathbf{K_l}$ :
 

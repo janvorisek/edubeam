@@ -1,8 +1,8 @@
-# Clavier et souris
+# Clavier, souris et tactile
 
-Les raccourcis clavier fonctionnent lorsque la vue a le focus ; ils sont ignorés pendant la saisie dans une cellule de tableau ou une boîte de dialogue.
+Les raccourcis clavier fonctionnent lorsque la vue a le focus. Ils sont ignorés pendant la saisie dans une cellule de tableau ou une boîte de dialogue ; cliquez d’abord sur la zone de dessin.
 
-## Clavier
+## Clavier {#keyboard}
 
 | Raccourci | Action |
 | --- | --- |
@@ -10,50 +10,57 @@ Les raccourcis clavier fonctionnent lorsque la vue a le focus ; ils sont ignoré
 | <kbd>Ctrl</kbd>+<kbd>Maj</kbd>+<kbd>Z</kbd> | Rétablir |
 | <kbd>Ctrl</kbd>+<kbd>S</kbd> | Enregistrer le projet (télécharger le JSON) |
 | <kbd>Ctrl</kbd>+<kbd>O</kbd> | Ouvrir le projet |
+| <kbd>Ctrl</kbd>+<kbd>P</kbd> | Exporter une image |
 | <kbd>Ctrl</kbd>+<kbd>A</kbd> | Tout sélectionner |
-| <kbd>Ctrl</kbd>+<kbd>C</kbd> | Copier la sélection (nœuds, éléments, charges) dans le presse-papiers d’EduBeam |
-| <kbd>Ctrl</kbd>+<kbd>V</kbd> | Coller : un fantôme de la copie suit le curseur ; clic gauche pour la déposer |
+| <kbd>Ctrl</kbd>+<kbd>C</kbd> | Copier la sélection (nœuds, éléments et leurs charges) |
+| <kbd>Ctrl</kbd>+<kbd>V</kbd> | Coller : un fantôme de la copie suit le curseur ; cliquez pour la placer, ou saisissez un décalage Δx, Δz dans le bandeau et cliquez sur **Coller** |
 | <kbd>Suppr</kbd> | Supprimer la sélection |
-| <kbd>Échap</kbd> | Annuler le mode souris courant, vider la sélection, quitter une cellule de tableau |
+| <kbd>Échap</kbd> | Annuler le mode souris courant, fermer la visite guidée, vider la sélection ou quitter une cellule de tableau |
 | <kbd>Entrée</kbd> | Valider une cellule de tableau |
 | <kbd>F</kbd> | Ajuster à l’écran |
-| <kbd>C</kbd> | Centrer |
+| <kbd>C</kbd> | Centrer le contenu |
 | <kbd>G</kbd> | Afficher/masquer la grille |
 | <kbd>S</kbd> | Activer/désactiver le magnétisme à la grille |
 | <kbd>Ctrl</kbd>+<kbd>=</kbd> / <kbd>Ctrl</kbd>+<kbd>-</kbd> | Zoom avant / arrière |
 
-Sur macOS, utilisez <kbd>Cmd</kbd> là où <kbd>Ctrl</kbd> est indiqué.
+Sur un Mac, utilisez <kbd>Cmd</kbd> là où <kbd>Ctrl</kbd> est indiqué.
 
-## Souris
+## Souris {#mouse}
 
 | Action | Résultat |
 | --- | --- |
-| Clic gauche | Sélectionne un nœud / élément / charge / cote et ouvre son menu contextuel |
-| Glisser (bouton gauche) sur zone vide | Sélection par rectangle |
-| Glisser (bouton gauche) un nœud | Déplace le nœud (calé sur la grille si le magnétisme est actif) |
-| Clic gauche en mode *Ajouter à la souris* | Place un nœud, ou commence / poursuit une polyligne d’éléments |
+| Clic | Sélectionne un nœud, un élément, une charge ou une ligne de cote et ouvre son panneau |
+| Glisser sur une zone vide | Rectangle de sélection |
+| Glisser un nœud | Déplace le nœud (il s’accroche à la grille quand le magnétisme est activé) |
+| Clic en mode souris | Place un nœud, ou commence ou prolonge une polyligne d’éléments |
 | Double-clic sur une charge | Modifie la charge |
-| Clic droit sur zone vide | Menu de la zone de dessin : Ajouter un nœud, Ajouter un élément, Ajouter une cote, Modifier, Copier, Coller, Supprimer |
-| Glisser (bouton du milieu ou droit) | Déplacer la vue (réglable dans *Paramètres → Commandes et raccourcis*) |
+| Clic droit | Menu contextuel : Ajouter un nœud, Ajouter un élément, Ajouter une cote, Coter l’élément (au-dessus d’un élément), Modifier, Copier, Coller, Supprimer |
+| <kbd>Ctrl</kbd> (<kbd>Cmd</kbd> sur un Mac) + Ajouter un nœud / Ajouter un élément dans le menu contextuel | Placement à la souris au lieu d’une boîte de dialogue |
+| Glisser avec le bouton central ou droit | Panoramique (voir *Paramètres → Commandes et raccourcis*) |
 | Molette | Zoom vers le curseur |
-| Survol | Infobulle avec déplacements / propriétés / valeurs de charge |
+| Pointer un objet | Infobulle avec déplacements, propriétés ou valeurs de charge |
 
-## Tactile
+Sur un pavé tactile, le défilement à deux doigts zoome. Pour déplacer la vue, cliquez et faites glisser avec deux doigts (équivalent d’un glisser avec le bouton droit).
+
+## Tactile {#touch}
 
 | Geste | Résultat |
 | --- | --- |
-| Toucher | Sélectionner |
-| Glisser à un doigt | Déplacer la vue |
+| Toucher | Sélectionne, et affiche les détails et les actions de l’objet |
+| Toucher en mode souris | Place un nœud ou prolonge un élément |
+| Appuyer sur un nœud et glisser | Déplace le nœud |
+| Glisser à un doigt ailleurs | Panoramique |
 | Pincer | Zoom |
-| Appui long sur un nœud | Commencer à le déplacer |
+| Appui long sur la zone de dessin | Menu contextuel |
+| Bouton **Sélection par rectangle** (en haut à droite), puis glisser | Rectangle de sélection |
 
-## Menus contextuels
+## Panneaux des objets {#object-panels}
 
-Cliquer sur un objet ouvre un petit menu à côté :
+Cliquer sur un objet ouvre à côté de lui un panneau avec ses détails et les actions suivantes :
 
-| Objet | Entrées |
+| Objet | Actions |
 | --- | --- |
-| Nœud | Ajouter une charge · Appuis du nœud (Dx / Dz / Ry, Angle du SCL nodal) · Imposer un déplacement (si appuyé) · Supprimer |
-| Élément | Modifier l’élément (nœuds, matériau, section) · Ajouter une charge · Matrice de rigidité · Supprimer |
-| Charge nodale / d’élément | Modifier la charge · Supprimer |
+| Nœud | Ajouter une charge · Appuis du nœud (symbole d’appui, Dx / Dz / Ry, angle du SCL nodal) · Imposer un déplacement (sur un nœud avec appui) · Supprimer |
+| Élément | Modifier l’élément (nœuds et rotules, matériau, section) · Ajouter une charge · Matrice de rigidité · Supprimer |
+| Charge nodale ou d’élément | Modifier la charge · Supprimer |
 | Ligne de cote | Modifier (coordonnées) · Inverser la cote · Supprimer |

@@ -1,102 +1,108 @@
 # Resultados e diagramas
 
-<Edubeam /> resolve o modelo automaticamente após cada alteração (limitado a algumas vezes por segundo), então os resultados estão sempre atualizados. Não há botão *Calcular*. Se nada for desenhado, o modelo ainda não pode ser resolvido — veja [Solução de problemas](/pt/reference/troubleshooting).
+<Edubeam /> resolve o modelo após cada alteração, no máximo algumas vezes por segundo, então os resultados estão sempre atualizados. Não há botão *Calcular*. Se nada for desenhado, o modelo ainda não pode ser resolvido; a mensagem no canto superior esquerdo da visualização diz por quê (veja [Solução de problemas](/pt/reference/troubleshooting)).
 
-## Camadas na visualização
+Todas as imagens desta página mostram o mesmo modelo: o [pórtico triarticulado](/pt/tutorials/three-hinged-frame) sob 10 kN/m.
 
-Ligue e desligue no **painel de exibição** (botão ⚙, canto superior direito da visualização).
+## Diagramas na visualização {#overlays-in-the-viewer}
 
-| Camada | Cor (padrão) | Observações |
+Ligue-os e desligue-os nas **opções de exibição**, no canto superior direito da visualização (o botão ⚙ as mostra ou oculta).
+
+| Diagrama | Cor (padrão) | Observações |
 | --- | --- | --- |
-| **Forma deformada** | cinza | Exagerada; escalada para que o maior deslocamento tenha os pixels da *Escala de resultados*. |
-| **N (x)** – esforço normal | azul | Tração positiva. Constante ao longo de um elemento, a menos que atue uma carga distribuída axial. |
-| **V<sub>z</sub> (x)** – esforço cortante | verde | Linear sob carga uniforme, quadrático sob carga trapezoidal, com salto nas cargas concentradas. |
-| **M<sub>y</sub> (x)** – momento fletor | vermelho | Positivo com tração na fibra inferior. Rotulado nas duas extremidades, nas cargas concentradas e em cada extremo local (onde V = 0). |
-| **Reações** | roxo | Uma seta e um valor para cada GL restringido. |
+| **Forma deformada** | cinza | Exagerada: o maior deslocamento é desenhado com o comprimento em pixels da *Escala de resultados*. Ligada por padrão. |
+| **N (x)**, esforço normal | azul | Tração positiva. Constante ao longo de um elemento, a menos que atue nele uma carga axial. |
+| **V<sub>z</sub> (x)**, esforço cortante | verde | Linear sob carga uniforme, quadrático sob carga trapezoidal, com salto em uma carga concentrada. |
+| **M<sub>y</sub> (x)**, momento fletor | vermelho | Positivo com tração na fibra inferior. Rotulado nas duas extremidades, nas cargas concentradas e em cada extremo local (onde V = 0). Ligado por padrão. |
+| **Reações** | roxo | Uma seta e um valor para cada GL restringido. Ligadas por padrão. |
 
-Os diagramas são desenhados ao longo dos elementos com os valores nos pontos característicos. A orientação dos rótulos e a escala de todos os diagramas podem ser alteradas em [Configurações](/pt/essentials/units-settings#configuracoes-de-visualizacao).
+Os valores são escritos nos pontos característicos de cada diagrama. A orientação dos rótulos, o tamanho dos diagramas e as cores podem ser alterados nas [Configurações](/pt/essentials/units-settings#viewer-settings).
 
-### Esforço normal
+<div class="shots">
 
-<Figure>
-    <Structure :show-loads="true" show-normal-force :nodes="[{label: 'a', coords: [0,0,0], dofs: [0,2, 4]}, {label: 'b', coords: [10,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['a', 'b']}]" :nodal-loads="[{target: 'b', values: { 0: -100, 2: 0, 4: 0 }}]" />
-    <figcaption>Viga em balanço comprimida por uma força horizontal na extremidade livre: N é constante e negativo</figcaption>
-</Figure>
+![Esforço normal N: os dois pilares têm 40 kN de compressão, a viga 20 kN](/screenshots/pt/results-normal.webp)
 
-### Esforço cortante
+![Esforço cortante V: 20 kN nos pilares; na viga, 40 kN nos cantos caindo a zero na rótula](/screenshots/pt/results-shear.webp)
 
-<Figure>
-  <Structure :show-loads="true" show-shear-force :nodes="[{label: 'a', coords: [0,0,0], dofs: [0,2, 4]}, {label: 'b', coords: [10,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['a', 'b']}]" :nodal-loads="[{target: 'b', values: { 0: 0, 2: 10, 4: 0 }}]" />
- <figcaption>Viga em balanço com carga vertical na extremidade: V é constante</figcaption>
-</Figure>
+![Momento fletor M: −80 kNm nos dois cantos, zero nas bases e na rótula](/screenshots/pt/results-moment.webp)
 
-### Momento fletor
+![Forma deformada (exagerada): a rótula em C desce](/screenshots/pt/results-deformed.webp)
 
-<Figure>
-  <Structure :show-loads="true" show-moment :nodes="[{label: 'a', coords: [0,0,0], dofs: [0,2, 4]}, {label: 'b', coords: [10,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['a', 'b']}]" :nodal-loads="[{target: 'b', values: { 0: 0, 2: 10, 4: 0 }}]" />
- <figcaption>A mesma viga em balanço: M cresce linearmente até F·L no engaste</figcaption>
-</Figure>
+</div>
 
-### Forma deformada
+![Reações: 40 kN na vertical e 20 kN na horizontal em cada apoio fixo](/screenshots/pt/results-reactions.webp){.shot-lg}
 
-<Figure>
-  <Structure :show-loads="true" show-deformed-shape :nodes="[{label: 'a', coords: [0,0,0], dofs: [0,2, 4]}, {label: 'b', coords: [10,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['a', 'b']}]" :nodal-loads="[{target: 'b', values: { 0: 0, 2: 10, 4: 0 }}]" />
-  <figcaption>Configuração deformada (exagerada) da viga em balanço</figcaption>
-</Figure>
+### Leitura do sinal {#reading-the-sign}
 
-### Reações
+Leia o sinal de um valor pelo seu rótulo, não pelo lado da barra em que o diagrama está desenhado. Um momento fletor negativo traciona a fibra superior de uma viga, ou o lado externo do canto de um pórtico.
 
-<Structure :show-loads="true" show-reactions :nodes="[{label: 'a', coords: [0,0,0], dofs: [0,2, 4]}, {label: 'b', coords: [10,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['a', 'b']}]" :nodal-loads="[{target: 'b', values: { 0: 0, 2: 10, 4: 0 }}]" />
+## Dicas ao passar o mouse {#hover-tooltips}
 
-## Dicas ao passar o mouse
+Apontar para um objeto é a forma mais rápida de ler um valor:
 
-Passar o mouse na visualização é a forma mais rápida de ler um valor:
+- **Nó**: `ux`, `uz` e `φy` (deslocamentos na unidade de deslocamento, rotação em radianos).
+- **Elemento**: seu rótulo, sua seção e seu material.
+- **Carga**: suas componentes.
 
-- **Nó** → `ux`, `uz`, `φy` (deslocamentos na unidade de comprimento, rotação em radianos).
-- **Elemento** → rótulo, seção e material.
-- **Carga** → suas componentes.
+Em uma tela sensível ao toque, toque no objeto. Os mesmos detalhes aparecem no painel de seleção.
 
-## Aba Resultados
+![Apontando para o nó 2 da viga do Início rápido](/screenshots/pt/ui-hover.webp){.shot-sm}
 
-A aba **Resultados** da barra inferior tem duas visões:
+## Aba Resultados {#results-tab}
 
-### Resultados nodais
+A aba **Resultados** da barra inferior tem duas tabelas, alternadas com **Resultados nodais** e **Resultados dos elementos**.
 
-Uma linha por nó com **Dx**, **Dz** (unidade de comprimento) e **Ry** (rad). Os sinais seguem os eixos globais: `Dz` positivo é para baixo, `Ry` positivo é anti-horário na tela.
+### Resultados nodais {#nodal-results}
 
-<figure>
+Uma linha por nó com **Dx**, **Dz** (unidade de deslocamento) e **Ry** (rad). Os sinais seguem os eixos globais: `Dz` positivo é para baixo e `Ry` positivo é anti-horário na tela.
 
-![Resultados nodais](/results_nodes.png)
+![Resultados nodais do pórtico triarticulado (Formato numérico: Automático)](/screenshots/pt/results-nodal.webp)
 
-</figure>
-
-### Resultados dos elementos
+### Resultados dos elementos {#element-results}
 
 Uma linha por elemento com os **esforços de extremidade no sistema de coordenadas local do elemento**:
 
 | Coluna | Significado |
 | --- | --- |
-| `X12`, `Z12`, `M12` | esforço normal, cortante e momento atuando sobre o elemento no nó **inicial** |
+| `X12`, `Z12`, `M12` | esforço normal, esforço cortante e momento atuando sobre o elemento no nó **inicial** |
 | `X21`, `Z21`, `M21` | o mesmo no nó **final** |
 
-São as forças que os nós exercem sobre o elemento (matriz de rigidez do elemento vezes os deslocamentos de extremidade, menos as cargas nodais equivalentes). Para uma viga biapoiada de 6 m com 12 kN/m você obtém `Z12 = Z21 = −36 kN`: ambos os apoios empurram a viga para cima (z negativo). Para uma viga em balanço engastada no nó inicial com 18 kN para baixo na extremidade: `Z12 = −18`, `M12 = +72 kNm`, `Z21 = +18`, `M21 = 0`.
+![Resultados dos elementos do pórtico triarticulado](/screenshots/pt/results-element.webp)
 
-<figure>
+São as forças que os nós exercem sobre o elemento: a matriz de rigidez do elemento vezes seus deslocamentos de extremidade, menos as cargas nodais equivalentes. Elas seguem os eixos locais, não a convenção N-V-M dos diagramas:
 
-![Resultados dos elementos](/results_elements.png)
+- Para a viga biapoiada de 6 m do [Início rápido](/pt/guide/quick-start): `Z12 = Z21 = −36 kN`. Os dois apoios empurram a viga para cima, que é −z.
+- Para uma viga em balanço engastada no nó inicial, com carga de 18 kN para baixo na extremidade: `Z12 = −18 kN`, `M12 = +72 kNm`, `Z21 = +18 kN`, `M21 = 0`.
+- Para o pilar 1 do pórtico (A embaixo, B em cima): `X12 = +40 kN` empurra ao longo do eixo x local para dentro do elemento, o que corresponde a 40 kN de compressão.
 
-</figure>
+### Exportar CSV e Copiar {#export-csv-and-copy}
 
-### Matriz de rigidez
+**Exportar CSV** baixa `edubeam-results.csv` com as duas tabelas, nas unidades mostradas na tela e prontas para uma planilha. A tabela de nós também lista as **reações** `Rx`, `Rz`, `My`. **Copiar** coloca as mesmas tabelas na área de transferência como texto separado por tabulações, que se cola diretamente no Excel, no LibreOffice ou no Google Planilhas. Na exportação, os esforços de extremidade dos elementos se chamam `N1 V1 M1 N2 V2 M2`.
 
-Escolha **Matriz de rigidez** no menu de contexto de um elemento ou na linha da tabela para abrir uma janela flutuante com a matriz de rigidez 6 × 6 do elemento em coordenadas locais e globais — útil para conferir a montagem manual em uma disciplina de método da rigidez direta. As fórmulas estão no [manual teórico](/pt/elements/beam).
+### Matriz de rigidez {#stiffness-matrix}
 
-## Precisão
+Escolha **Matriz de rigidez** no painel de um elemento ou na linha da tabela para abrir uma janela com a matriz de rigidez 6 × 6 do elemento em coordenadas globais, útil para conferir a montagem manual em uma disciplina de método da rigidez. As fórmulas estão no [manual teórico](/pt/elements/beam).
+
+## Formato numérico {#number-format}
+
+Os resultados são mostrados com cinco algarismos significativos. **Configurações → Idioma e localidade → Formato numérico** define como eles são escritos:
+
+| Formato | 40 000 é escrito como | Use para |
+| --- | --- | --- |
+| **Científico** (padrão) | 4 · 10⁴ | valores que abrangem muitas ordens de grandeza |
+| **Engenharia** | 40 · 10³ | corresponder aos prefixos quilo / mega |
+| **Automático** | 40000 | números do dia a dia no ensino |
+
+O formato automático escreve valores de 0,001 a 100 000 como números simples e passa para potências de dez fora desse intervalo. O separador decimal segue o idioma.
+
+## Precisão e exatidão {#precision-and-accuracy}
 
 - O elemento de viga é exato para o modelo linear de Timoshenko sob cargas nodais, uniformes, trapezoidais, concentradas e térmicas, então os resultados **não** dependem do número de elementos.
-- As tabelas mostram quatro algarismos significativos; o cálculo interno é em dupla precisão.
-- As flechas incluem a **deformação por cisalhamento** (Timoshenko). Em barras esbeltas isso acrescenta uma fração de 1 % em relação às fórmulas de Euler–Bernoulli; em barras altas ou curtas pode chegar a vários por cento. Defina o coeficiente de cisalhamento da seção com um valor grande se quiser suprimi-la.
+- O cálculo é feito em dupla precisão. Valores minúsculos como `1,5 · 10⁻¹⁸` são erros de arredondamento e significam zero.
+- As flechas incluem a **deformação por cisalhamento**. Em barras esbeltas isso acrescenta uma fração de um por cento ao valor de Euler–Bernoulli; em barras altas ou curtas pode chegar a vários por cento. Defina o coeficiente de cisalhamento da seção com um valor grande para suprimi-la.
 
-## Levar os resultados para um relatório
+## Resultados em um relatório {#results-in-a-report}
 
-Não há exportação de tabelas; selecione o texto da tabela e copie, ou faça uma captura de tela da visualização. Para entregar um modelo a outra pessoa, use [Compartilhar modelo](/pt/essentials/import-export).
+- **☰ → Exportar imagem** (<kbd>Ctrl</kbd>+<kbd>P</kbd>) salva o desenho em PNG ou SVG com os diagramas que você escolher. Veja [Exportar uma imagem](/pt/essentials/import-export#export-an-image).
+- **Resultados → Exportar CSV** ou **Copiar** fornece os números.
+- **Compartilhar modelo** fornece um link para que o leitor possa abrir o próprio modelo.

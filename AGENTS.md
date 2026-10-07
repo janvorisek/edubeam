@@ -87,6 +87,8 @@ Rules:
 - `src/locales/en.json` is the source. `locales.test.ts` fails unless **every** locale has every English key, no extra keys, and the same `{placeholders}`. A new string means adding it to all 12 locale files.
 - Where academic and software terminology differ, use the terms structural analysis software (SAP2000, ETABS, …) uses in that language.
 - Docs live in `docs/<lang>/`. English is in `docs/en/` but is served from the root (`/guide/…`, not `/en/guide/…`) through `rewrites` in `docs/.vitepress/config.ts`. Help links in the app go through `docsUrl` (`src/utils/docs.ts`).
+- Every language has the same pages; the nav and sidebar are built once in `docs/.vitepress/navigation.ts`. Translated headings keep the English id (`## Podpory {#supports}`), because the app's help links point to those anchors in every language.
+- Docs screenshots come from `npm run docs:screenshots` (with `npm run dev` running): `--lang cs` or `--lang all` for the translations, `--missing` to fill gaps. Regenerate them when the UI they show changes.
 
 ## Export
 

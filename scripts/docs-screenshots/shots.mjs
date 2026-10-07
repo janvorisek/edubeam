@@ -4,6 +4,20 @@
 //           clip?(page, helpers) → selector(s) or boxes, pad? }
 // Models are files in ./models; `viewer` and `app` seed the persisted stores before the app loads.
 
+/** The app's messages in the language being shot; labels are looked up, never written out. */
+let messages = {};
+
+export const setMessages = (m) => {
+  messages = m;
+};
+
+/** A label of the app in the current language, by its key in src/locales. */
+const t = (key) => {
+  const value = key.split('.').reduce((node, part) => node?.[part], messages);
+  if (typeof value !== 'string') throw new Error(`No message ${key}`);
+  return value;
+};
+
 const drawer = '.v-navigation-drawer--active';
 const dialog = '.v-overlay--active > .v-overlay__content > .v-card';
 
@@ -238,7 +252,7 @@ export const shots = [
     model: 'beam',
     width: 1100,
     height: 720,
-    setup: (page) => menuItem(page, 'Draw your first beam'),
+    setup: (page) => menuItem(page, t('welcome.drawFirstBeam')),
     // The card and the toolbar button it points to
     clip: () => ['.first-beam-task', '#bottomBar .v-btn >> nth=1'],
     pad: 16,
@@ -247,9 +261,9 @@ export const shots = [
     name: 'tour',
     model: 'beam',
     setup: async (page) => {
-      await menuItem(page, 'Show me around');
+      await menuItem(page, t('welcome.showAround'));
       for (let i = 0; i < 3; i++) {
-        await page.getByRole('button', { name: 'Next' }).click();
+        await page.getByRole('button', { name: t('tour.nextButton'), exact: true }).first().click();
         await wait(page, 400);
       }
     },
@@ -257,8 +271,8 @@ export const shots = [
   {
     name: 'qs-material',
     setup: async (page) => {
-      await bottomTab(page, 'Materials');
-      await toolbarButton(page, 'Add material');
+      await bottomTab(page, t('tabs.materials'));
+      await toolbarButton(page, t('materials.addMaterial'));
     },
     clip: () => dialog,
     pad: 0,
@@ -266,8 +280,8 @@ export const shots = [
   {
     name: 'qs-material-library',
     setup: async (page) => {
-      await bottomTab(page, 'Materials');
-      await toolbarButton(page, 'Material library');
+      await bottomTab(page, t('tabs.materials'));
+      await toolbarButton(page, t('materials.material_library'));
     },
     clip: () => dialog,
     pad: 0,
@@ -275,8 +289,8 @@ export const shots = [
   {
     name: 'qs-cross-section',
     setup: async (page) => {
-      await bottomTab(page, 'Cross sections');
-      await toolbarButton(page, 'Add cross section');
+      await bottomTab(page, t('tabs.crossSections'));
+      await toolbarButton(page, t('crossSections.addCrossSection'));
     },
     clip: () => dialog,
     pad: 0,
@@ -284,7 +298,7 @@ export const shots = [
   {
     name: 'qs-node',
     model: 'beam',
-    setup: (page) => toolbarButton(page, 'Add node', 0),
+    setup: (page) => toolbarButton(page, t('nodes.addNode'), 0),
     clip: () => dialog,
     pad: 0,
   },
@@ -292,8 +306,8 @@ export const shots = [
     name: 'qs-element',
     model: 'beam',
     setup: async (page) => {
-      await bottomTab(page, 'Elements');
-      await toolbarButton(page, 'Add element', 0);
+      await bottomTab(page, t('tabs.elements'));
+      await toolbarButton(page, t('elements.addElement'), 0);
     },
     clip: () => dialog,
     pad: 0,
@@ -303,8 +317,8 @@ export const shots = [
     name: 'qs-load',
     model: 'beam',
     setup: async (page) => {
-      await bottomTab(page, 'Loads');
-      await toolbarButton(page, 'Add element load');
+      await bottomTab(page, t('tabs.loads'));
+      await toolbarButton(page, t('loads.addElementLoad'));
       await fillNth(page, 1, 12);
     },
     clip: () => dialog,
@@ -402,7 +416,7 @@ export const shots = [
     model: 'mechanism',
     viewer: { settingsOpen: false },
     setup: async (page) => {
-      await page.getByText('Show details').first().click();
+      await page.getByText(t('solveDiagnostics.showDetails')).first().click();
       await wait(page, 600);
     },
     clip: () => dialog,
@@ -416,7 +430,7 @@ export const shots = [
     viewer: { settingsOpen: false },
     setup: async (page) => {
       await clickNode(page, '1');
-      await page.locator('.selection-tooltip').getByText('Node supports').click();
+      await page.locator('.selection-tooltip').getByText(t('nodes.defineSupports')).click();
       await wait(page, 500);
     },
     clip: async (page) => [
@@ -431,7 +445,7 @@ export const shots = [
     model: 'beam',
     viewer: { settingsOpen: false },
     setup: async (page) => {
-      await toolbarButton(page, 'Add node', 1);
+      await toolbarButton(page, t('nodes.addNode'), 1);
       await page.mouse.move(700, 300);
       await wait(page);
     },
@@ -450,12 +464,12 @@ export const shots = [
   },
 
   // ---------------------------------------------------------------- elements, materials, sections
-  table('elements-table', 'three-hinged-frame', (page) => bottomTab(page, 'Elements')),
+  table('elements-table', 'three-hinged-frame', (page) => bottomTab(page, t('tabs.elements'))),
   {
     name: 'sections-library',
     setup: async (page) => {
-      await bottomTab(page, 'Cross sections');
-      await toolbarButton(page, 'Section library');
+      await bottomTab(page, t('tabs.crossSections'));
+      await toolbarButton(page, t('materials.section_library'));
     },
     clip: () => dialog,
     pad: 0,
@@ -465,10 +479,13 @@ export const shots = [
     width: 1360,
     height: 900,
     setup: async (page) => {
-      await bottomTab(page, 'Cross sections');
-      await toolbarButton(page, 'Polygonal section');
-      await choose(page, dialog, 'Preset', 'I');
-      await page.locator(dialog).getByRole('button', { name: 'Apply' }).click();
+      await bottomTab(page, t('tabs.crossSections'));
+      await toolbarButton(page, t('crossSections.addPolygonal'));
+      await choose(page, dialog, t('dialogs.polygonSection.preset'), t('dialogs.polygonSection.presets.iSection'));
+      await page
+        .locator(dialog)
+        .getByRole('button', { name: t('dialogs.polygonSection.apply') })
+        .click();
       await wait(page, 500);
     },
     clip: () => dialog,
@@ -478,17 +495,17 @@ export const shots = [
   // ---------------------------------------------------------------- loads
   fitAndCrop('loads-overview', 'loads', [], { width: 1200, height: 760 }),
   ...[
-    ['loads-udl', 'Uniformly distributed load', { 1: 12 }],
-    ['loads-trapezoidal', 'Trapezoidal load', { 2: 4, 3: 12 }],
-    ['loads-concentrated', 'Concentrated load', { 1: 20, 3: 2 }],
-    ['loads-temperature', 'Temperature load', { 1: 10 }],
+    ['loads-udl', 'loadType.udl', { 1: 12 }],
+    ['loads-trapezoidal', 'loadType.trapezoidal', { 2: 4, 3: 12 }],
+    ['loads-concentrated', 'loadType.concentrated', { 1: 20, 3: 2 }],
+    ['loads-temperature', 'loadType.temperature', { 1: 10 }],
   ].map(([name, loadType, values]) => ({
     name,
     model: 'beam',
     setup: async (page) => {
-      await bottomTab(page, 'Loads');
-      await toolbarButton(page, 'Add element load');
-      await choose(page, dialog, 'Load type', loadType);
+      await bottomTab(page, t('tabs.loads'));
+      await toolbarButton(page, t('loads.addElementLoad'));
+      await choose(page, dialog, t('loadType.loadType'), t(loadType));
       for (const [n, value] of Object.entries(values)) await fillNth(page, Number(n), value);
     },
     clip: () => dialog,
@@ -498,14 +515,14 @@ export const shots = [
     name: 'loads-nodal',
     model: 'cantilever',
     setup: async (page) => {
-      await bottomTab(page, 'Loads');
-      await toolbarButton(page, 'Add nodal load');
+      await bottomTab(page, t('tabs.loads'));
+      await toolbarButton(page, t('loads.addNodalLoad'));
       await fillNth(page, 1, 10);
     },
     clip: () => dialog,
     pad: 0,
   },
-  table('loads-table', 'loads', (page) => bottomTab(page, 'Loads')),
+  table('loads-table', 'loads', (page) => bottomTab(page, t('tabs.loads'))),
 
   // ---------------------------------------------------------------- results
   fitAndCrop('results-normal', 'three-hinged-frame', ['showNormalForce']),
@@ -514,13 +531,13 @@ export const shots = [
   fitAndCrop('results-deformed', 'three-hinged-frame', ['showDeformedShape']),
   fitAndCrop('results-reactions', 'three-hinged-frame', ['showReactions']),
   // Automatic number format, so 40 kN reads as 40 and not 4 · 10¹
-  table('results-nodal', 'three-hinged-frame', (page) => bottomTab(page, 'Results'), { numberStyle: 'auto' }),
+  table('results-nodal', 'three-hinged-frame', (page) => bottomTab(page, t('tabs.results')), { numberStyle: 'auto' }),
   table(
     'results-element',
     'three-hinged-frame',
     async (page) => {
-      await bottomTab(page, 'Results');
-      await toolbarButton(page, 'Element results');
+      await bottomTab(page, t('tabs.results'));
+      await toolbarButton(page, t('results.element_results'));
     },
     { numberStyle: 'auto' }
   ),
@@ -533,7 +550,11 @@ export const shots = [
     height: 900,
     app: { bottomBarHeight: 100 },
     setup: async (page) => {
-      await page.locator('.v-tab').filter({ hasText: 'Settings' }).first().click();
+      await page
+        .locator('.v-tab')
+        .filter({ hasText: t('tabView.settings') })
+        .first()
+        .click();
       await wait(page, 600);
     },
     clip: settingsArea,
@@ -546,8 +567,12 @@ export const shots = [
     height: 900,
     app: { bottomBarHeight: 100 },
     setup: async (page) => {
-      await page.locator('.v-tab').filter({ hasText: 'Settings' }).first().click();
-      await page.getByText('Viewer settings', { exact: true }).first().click();
+      await page
+        .locator('.v-tab')
+        .filter({ hasText: t('tabView.settings') })
+        .first()
+        .click();
+      await page.getByText(t('settings.viewer_settings'), { exact: true }).first().click();
       await wait(page, 600);
     },
     clip: settingsArea,
@@ -565,7 +590,11 @@ export const shots = [
   {
     name: 'share',
     model: 'beam',
-    setup: (page) => page.locator('header .v-btn').filter({ hasText: 'Share model' }).click(),
+    setup: (page) =>
+      page
+        .locator('header .v-btn')
+        .filter({ hasText: t('common.shareModel') })
+        .click(),
     clip: () => dialog,
     pad: 0,
   },
@@ -573,7 +602,7 @@ export const shots = [
     name: 'export-image',
     model: 'three-hinged-frame',
     height: 900,
-    setup: (page) => menuItem(page, 'Export image'),
+    setup: (page) => menuItem(page, t('exportImage.title')),
     clip: () => dialog,
     pad: 0,
   },
@@ -581,7 +610,7 @@ export const shots = [
     name: 'examples',
     model: 'beam',
     height: 900,
-    setup: (page) => menuItem(page, 'Examples'),
+    setup: (page) => menuItem(page, t('examples.title')),
     clip: () => dialog,
     pad: 0,
   },
@@ -594,7 +623,7 @@ export const shots = [
         await page.setInputFiles('input[type=file]', new URL(`./models/${model}.json`, import.meta.url).pathname);
         await wait(page, 500);
       }
-      await menuItem(page, 'Recent structures');
+      await menuItem(page, t('recentStructures.title'));
     },
     clip: () => dialog,
     pad: 0,

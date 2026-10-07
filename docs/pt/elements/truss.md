@@ -1,17 +1,17 @@
-# Barra de treliça
+# Elemento de treliça
 
 Uma barra de treliça transmite apenas esforço normal. No <Edubeam /> não existe um tipo de elemento de treliça separado: uma barra de treliça é um [elemento de viga](/pt/elements/beam) com **as duas rótulas de extremidade** marcadas, o que condensa os termos de flexão e deixa a rigidez axial abaixo.
 
 <TrussElement :hinges="[true, true]"  caption="Esquema da barra de treliça 2D" />
 
-## Graus de liberdade
+## Graus de liberdade {#degrees-of-freedom}
 
 A barra de treliça 2D tem dois graus de liberdade em cada nó:
 
 - **Translação (Dx):** deslocamento ao longo do eixo x.
 - **Translação (Dz):** deslocamento ao longo do eixo z.
 
-## Matriz de rigidez local
+## Matriz de rigidez local {#local-stiffness-matrix}
 
 A matriz de rigidez local de uma barra de treliça é
 
@@ -31,7 +31,7 @@ onde
 - $A$ é a área da seção transversal,
 - $L$ é o comprimento da barra.
 
-## Matriz de transformação
+## Matriz de transformação {#transformation-matrix}
 
 A matriz de transformação do elemento, $\mathbf{T}$, leva a matriz de rigidez local ao sistema de coordenadas global.
 
@@ -44,7 +44,7 @@ $$
 \end{pmatrix}
 $$
 
-## Matriz de rigidez global
+## Matriz de rigidez global {#global-stiffness-matrix}
 
 A matriz de rigidez global, $\mathbf{K_g}$, é obtida a partir da matriz de transformação $\mathbf{T}$ e da matriz de rigidez local $\mathbf{K_l}$:
 

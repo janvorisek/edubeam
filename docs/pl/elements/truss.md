@@ -4,14 +4,14 @@ Element kratownicy przenosi wyłącznie siłę podłużną. W <Edubeam /> nie ma
 
 <TrussElement :hinges="[true, true]"  caption="Schemat płaskiego elementu kratownicy" />
 
-## Stopnie swobody
+## Stopnie swobody {#degrees-of-freedom}
 
 Płaski element kratownicy ma dwa stopnie swobody w każdym z węzłów:
 
 - **Przesunięcie (Dx):** przemieszczenie wzdłuż osi X.
 - **Przesunięcie (Dz):** przemieszczenie wzdłuż osi Z.
 
-## Lokalna macierz sztywności
+## Lokalna macierz sztywności {#local-stiffness-matrix}
 
 Lokalna macierz sztywności elementu kratownicy ma postać:
 
@@ -31,7 +31,7 @@ gdzie:
 - $A$ — pole przekroju poprzecznego pręta
 - $L$ — długość pręta
 
-## Macierz transformacji
+## Macierz transformacji {#transformation-matrix}
 
 Macierz transformacji elementu $\mathbf{T}$ służy do przekształcenia lokalnej macierzy sztywności do globalnego układu współrzędnych.
 
@@ -44,7 +44,7 @@ $$
 \end{pmatrix}
 $$
 
-## Globalna macierz sztywności
+## Globalna macierz sztywności {#global-stiffness-matrix}
 
 Globalną macierz sztywności $\mathbf{K_g}$ otrzymuje się przez pomnożenie macierzy transformacji elementu $\mathbf{T}$ i lokalnej macierzy sztywności $\mathbf{K_l}$:
 

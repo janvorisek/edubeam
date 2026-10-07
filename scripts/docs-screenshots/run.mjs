@@ -1,26 +1,55 @@
 // Regenerates the app screenshots used by the documentation (docs/public/screenshots).
 //
-//   npm run dev                      # in one terminal
-//   npm run docs:screenshots         # in another; APP=<url> to point elsewhere
-//   npm run docs:screenshots -- ui-  # only shots whose name starts with "ui-"
+//   npm run dev                                # in one terminal
+//   npm run docs:screenshots                   # in another; APP=<url> to point elsewhere
+//   npm run docs:screenshots -- ui-            # only shots whose name starts with "ui-"
+//   npm run docs:screenshots -- --lang cs      # the Czech docs, in screenshots/cs/
+//   npm run docs:screenshots -- --lang all     # every language of the docs
+//   npm run docs:screenshots -- --missing      # only shots that do not exist yet, e.g. after a crash
 //
+// English shots go to screenshots/, every other language to screenshots/<docs language>/, with the
+// app in that language. Buttons are found by their labels in src/locales, so no shot names one.
 // Every shot starts from a fresh browser context, so the output depends only on the app and the
 // model files in ./models. Shots are written as WebP, encoded by Chromium itself, so no image
 // tooling is needed besides Playwright.
 import { chromium } from 'playwright';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { access, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { shots } from './shots.mjs';
+import { setMessages, shots } from './shots.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const APP = process.env.APP ?? 'http://localhost:5173/';
-const OUT = resolve(here, '../../docs/public/screenshots');
-const filter = process.argv[2] ?? '';
+const SCREENSHOTS = resolve(here, '../../docs/public/screenshots');
+
+/** Docs language → app language. The docs say zh where the app says cn. */
+const APP_LANGUAGE = {
+  en: 'en',
+  cs: 'cs',
+  de: 'de',
+  es: 'es',
+  fr: 'fr',
+  pl: 'pl',
+  pt: 'pt',
+  ru: 'ru',
+  uk: 'uk',
+  zh: 'cn',
+};
+
+const args = process.argv.slice(2);
+const langAt = args.indexOf('--lang');
+const langArg = langAt >= 0 ? args.splice(langAt, 2)[1] : 'en';
+if (langArg !== 'all' && !(langArg in APP_LANGUAGE)) {
+  throw new Error(`--lang takes ${Object.keys(APP_LANGUAGE).join(', ')} or all (Hindi docs use the English shots)`);
+}
+const missingAt = args.indexOf('--missing');
+const onlyMissing = missingAt >= 0;
+if (onlyMissing) args.splice(missingAt, 1);
+const languages = langArg === 'all' ? Object.keys(APP_LANGUAGE) : [langArg];
+const filter = args[0] ?? '';
 // Seeded as already seen, or the What's New dialog covers every shot.
 const { version } = JSON.parse(await readFile(resolve(here, '../../package.json'), 'utf8'));
 
-await mkdir(OUT, { recursive: true });
 const browser = await chromium.launch();
 
 /** Opens the app with onboarding done and, optionally, a model from ./models loaded and fitted. */
@@ -97,23 +126,38 @@ async function toWebp(png) {
   return Buffer.from(dataUrl.split(',')[1], 'base64');
 }
 
+const exists = (file) =>
+  access(file).then(
+    () => true,
+    () => false
+  );
+
 const helpers = { clipOf };
 let failed = 0;
 
-for (const shot of shots.filter((s) => s.name.startsWith(filter))) {
-  const { context, page } = await openApp(shot);
-  try {
-    await shot.setup?.(page, helpers);
-    await page.waitForTimeout(shot.settle ?? 500);
-    const clip = shot.clip ? await clipOf(page, await shot.clip(page, helpers), shot.pad ?? 8) : undefined;
-    const png = await page.screenshot({ clip });
-    await writeFile(resolve(OUT, `${shot.name}.webp`), await toWebp(png));
-    console.log(`✓ ${shot.name}`);
-  } catch (e) {
-    failed++;
-    console.error(`✗ ${shot.name}: ${e.message.split('\n')[0]}`);
-  } finally {
-    await context.close();
+for (const docsLanguage of languages) {
+  const lang = APP_LANGUAGE[docsLanguage];
+  const out = docsLanguage === 'en' ? SCREENSHOTS : resolve(SCREENSHOTS, docsLanguage);
+  await mkdir(out, { recursive: true });
+  setMessages(JSON.parse(await readFile(resolve(here, `../../src/locales/${lang}.json`), 'utf8')));
+
+  for (const shot of shots.filter((s) => s.name.startsWith(filter))) {
+    const file = resolve(out, `${shot.name}.webp`);
+    if (onlyMissing && (await exists(file))) continue;
+    const { context, page } = await openApp({ ...shot, lang });
+    try {
+      await shot.setup?.(page, helpers);
+      await page.waitForTimeout(shot.settle ?? 500);
+      const clip = shot.clip ? await clipOf(page, await shot.clip(page, helpers), shot.pad ?? 8) : undefined;
+      const png = await page.screenshot({ clip });
+      await writeFile(file, await toWebp(png));
+      console.log(`✓ ${docsLanguage}/${shot.name}`);
+    } catch (e) {
+      failed++;
+      console.error(`✗ ${docsLanguage}/${shot.name}: ${e.message.split('\n')[0]}`);
+    } finally {
+      await context.close();
+    }
   }
 }
 

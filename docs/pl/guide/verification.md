@@ -1,6 +1,8 @@
 # Sprawdzanie wyników ręcznie
 
-<Edubeam /> to dobre miejsce, by ćwiczyć nawyk potrzebny każdemu inżynierowi: nigdy nie ufaj liczbie, której nie potrafisz choćby w przybliżeniu odtworzyć. Ta strona podaje wzory zamknięte dla klasycznych przypadków i pokazuje, co dla nich zwraca aplikacja, abyś mógł zbudować każdy model samodzielnie i porównać.
+<Edubeam /> to dobre miejsce, by ćwiczyć nawyk potrzebny każdemu inżynierowi: nigdy nie ufaj liczbie, której nie potrafisz choćby w przybliżeniu odtworzyć. Ta strona podaje wzory zamknięte dla klasycznych przypadków i pokazuje, co dla nich zwraca aplikacja, abyś mógł zbudować każdy model samodzielnie i porównać wyniki.
+
+Kompletne rozwiązane przykłady ze sprawdzeniem ręcznym znajdziesz w samouczkach [rama trójprzegubowa](/pl/tutorials/three-hinged-frame) i [kratownica płaska](/pl/tutorials/truss).
 
 Wszystkie przypadki, o ile nie zaznaczono inaczej, używają tego samego przekroju stalowego: $E = 210\,000$ MPa, $G = 81\,000$ MPa, $A = 28{,}5$ cm², $I_y = 1943$ cm⁴, $h = 200$ mm, $k = 1$ (IPE 200).
 
@@ -10,7 +12,7 @@ $$EI = 210 \times 10^9 \cdot 1.943 \times 10^{-5} = 4.080 \times 10^6\ \text{Nm}
 EduBeam używa belek **Timoshenki**, które do klasycznego ugięcia od zginania (Eulera–Bernoulliego) dodają ugięcie od ścinania $\Delta w_s$. Kąty obrotu, reakcje i siły przekrojowe w układach statycznie wyznaczalnych pozostają bez zmian. Dla prętów smukłych dodatkowy człon jest znikomy; poniższe tabele pokazują go jawnie.
 :::
 
-## Belka swobodnie podparta, obciążenie równomierne
+## Belka swobodnie podparta, obciążenie równomierne {#simply-supported-beam-uniform-load}
 
 $L = 6$ m, $q = 12$ kN/m. Podpory: węzeł 1 `Dx + Dz`, węzeł 2 `Dz`.
 
@@ -20,11 +22,15 @@ $L = 6$ m, $q = 12$ kN/m. Podpory: węzeł 1 `Dx + Dz`, węzeł 2 `Dz`.
 | $V_{max}$ | $qL/2$ | 36 kN | 36 kN |
 | $M_{max}$ (środek rozpiętości) | $qL^2/8$ | 54 kNm | 54 kNm |
 | Kąt obrotu na podporze | $qL^3/(24EI)$ | 0,02647 rad | 0,02647 rad |
-| Ugięcie w środku rozpiętości | $5qL^4/(384EI)$ | 49,63 mm | 49,63 mm |
+| Ugięcie w środku rozpiętości (zginanie) | $5qL^4/(384EI)$ | 49,63 mm | — |
+| Ugięcie w środku rozpiętości (ścinanie) | $qL^2/(8kGA)$ | 0,23 mm | — |
+| Ugięcie w środku rozpiętości (łącznie) | suma | 49,86 mm | 49,86 mm |
+
+Aby odczytać ugięcie w środku rozpiętości, dodaj tam węzeł przez *Dodaj węzeł* (myszą) → **Połącz z konstrukcją**; podział elementu nie zmienia żadnego wyniku.
 
 <ExampleStructure />
 
-## Wspornik, siła na końcu
+## Wspornik, siła na końcu {#cantilever-tip-load}
 
 $L = 4$ m, $F = 18$ kN w dół na swobodnym końcu. Podpora: węzeł 1 `Dx + Dz + Ry`.
 
@@ -44,7 +50,7 @@ Człon od ścinania wynosi tu 0,3 %. Skróć wspornik do 1 m, a wzrośnie do 5 %
   <figcaption>Wspornik z siłą 18 kN na końcu: moment zginający i reakcje</figcaption>
 </Figure>
 
-## Belka obustronnie utwierdzona, obciążenie równomierne
+## Belka obustronnie utwierdzona, obciążenie równomierne {#fixed–fixed-beam-uniform-load}
 
 $L = 6$ m, $q = 12$ kN/m. Oba węzły `Dx + Dz + Ry`.
 
@@ -53,11 +59,11 @@ $L = 6$ m, $q = 12$ kN/m. Oba węzły `Dx + Dz + Ry`.
 | Reakcje | $qL/2$ | 36 kN |
 | Moment podporowy | $qL^2/12$ | 36 kNm (ujemny) |
 | Moment w środku rozpiętości | $qL^2/24$ | 18 kNm (dodatni) |
-| Ugięcie w środku rozpiętości | $qL^4/(384EI)$ | 9,93 mm |
+| Ugięcie w środku rozpiętości | $qL^4/(384EI) + qL^2/(8kGA)$ | 9,93 + 0,23 = 10,16 mm |
 
 Zbuduj ją z belki swobodnie podpartej, zaznaczając `Ry` w obu węzłach, i obserwuj, jak przesuwa się wykres momentów.
 
-## Belka utwierdzona i podparta, obciążenie równomierne
+## Belka jednostronnie utwierdzona, obciążenie równomierne {#propped-cantilever-uniform-load}
 
 $L = 6$ m, $q = 12$ kN/m. Węzeł 1 `Dx + Dz + Ry`, węzeł 2 `Dz`.
 
@@ -70,7 +76,7 @@ $L = 6$ m, $q = 12$ kN/m. Węzeł 1 `Dx + Dz + Ry`, węzeł 2 `Dz`.
 
 Aplikacja automatycznie opisuje ekstremum lokalne, więc możesz odczytać zarówno wartość, jak i (z położenia wzdłuż elementu) miejsce jego wystąpienia.
 
-## Kratownica z dwóch prętów
+## Kratownica z dwóch prętów {#two-bar-truss}
 
 Dwa pręty wychodzące z podpór przegubowych nieprzesuwnych w `(0, 0)` i `(4, 0)`, zbiegające się w `(2, −2)` (wierzchołek 2 m wyżej), w obu prętach zaznaczone oba **przeguby końcowe**, siła pionowa $F = 20$ kN w wierzchołku (w dół, czyli `Fz = 20`).
 
@@ -78,9 +84,9 @@ Każdy pręt jest nachylony pod kątem 45°, długość $L = 2\sqrt{2}$ m. Z sym
 
 $$N = -\frac{F}{2 \sin 45^\circ} = -14.14\ \text{kN (ściskanie)}$$
 
-a każda z podpór przejmuje 10 kN pionowo i ±10 kN poziomo. Sprawdź warstwę **N (x)** oraz reakcje.
+a każda z podpór przejmuje 10 kN pionowo i ±10 kN poziomo. Sprawdź wykres **N (x)** oraz reakcje.
 
-## Nierównomierne ogrzanie belki swobodnie podpartej
+## Gradient temperatury w belce swobodnie podpartej {#temperature-gradient-on-a-simply-supported-beam}
 
 $L = 8$ m, $\Delta T_b - \Delta T_t = -10$ K (góra cieplejsza), $\alpha = 12 \times 10^{-6}$, $h = 0{,}2$ m.
 
@@ -90,13 +96,14 @@ $$\kappa = \frac{\alpha\,(\Delta T_b - \Delta T_t)}{h} = \frac{12 \times 10^{-6}
 
 a ugięcie w środku rozpiętości $\kappa L^2 / 8 = -4{,}8$ mm (do góry). Teraz zablokuj `Ry` na obu końcach: krzywizna zostaje powstrzymana i na całej długości pojawia się stały moment $M = EI\kappa = 2{,}45$ kNm.
 
-## Zadane przemieszczenie
+## Zadane przemieszczenie {#prescribed-displacement}
 
-Weź [belkę utwierdzoną i podpartą](#belka-utwierdzona-i-podparta-obciazenie-rownomierne) bez obciążenia i zadaj `Dz = 10 mm` na podporze przesuwnej (osiadanie). Reakcja potrzebna, by przesunąć koniec wspornika w dół o $w$, wynosi $R = 3EIw/L^3 = 0{,}567$ kN, a moment utwierdzenia $RL = 3{,}40$ kNm. Dodaj z powrotem obciążenie równomierne — wyniki sumują się liniowo (zasada superpozycji).
+Weź [belkę jednostronnie utwierdzoną](#propped-cantilever-uniform-load) bez obciążenia i zadaj `Dz = 10 mm` na podporze przesuwnej (osiadanie). Reakcja potrzebna, by przesunąć koniec wspornika w dół o $w$, wynosi $R = 3EIw/L^3 = 0{,}567$ kN, a moment utwierdzenia $RL = 3{,}40$ kNm. Dodaj z powrotem obciążenie równomierne, a wyniki zsumują się liniowo.
 
-## Wskazówki do własnych sprawdzeń
+## Wskazówki do własnych sprawdzeń {#tips-for-your-own-checks}
 
 - Miej na oku **plakietkę jednostek**; większość rozbieżności to pomyłki w jednostkach.
 - Używaj okna **Macierz sztywności**, by porównać pojedynczy element z [podręcznikiem teoretycznym](/pl/elements/beam) podczas nauki metody przemieszczeń.
-- Dokładne liczby odczytuj z zakładki **Wyniki** i podpowiedzi po najechaniu, a nie z etykiet na wykresach, które są zaokrąglone.
+- Dokładne liczby odczytuj z zakładki **Wyniki** i podpowiedzi po najechaniu kursorem, a nie z etykiet na wykresach, które są zaokrąglone. **Eksportuj CSV** lub **Kopiuj** w zakładce Wyniki podają też reakcje, gotowe do arkusza kalkulacyjnego.
+- Ustaw **Format liczb** na *Automatyczny* w Ustawieniach, aby odczytywać `40` zamiast `4 · 10¹`.
 - Użyj **Udostępnij model**, aby przekazać sprawdzony model koledze lub prowadzącemu.

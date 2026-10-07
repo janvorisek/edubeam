@@ -35,6 +35,10 @@ export interface DocsStrings {
   concentratedBlurb: string;
   nodalBlurb: string;
   temperatureBlurb: string;
+  promoTitle: string;
+  promoAccent: string;
+  promoSubtitle: string;
+  promoCta: string;
 }
 
 const strings: Record<DocsLanguage, DocsStrings> = {
@@ -49,6 +53,10 @@ const strings: Record<DocsLanguage, DocsStrings> = {
     concentratedBlurb: 'A single 18 kN downward load at mid-span, with no extra node.',
     nodalBlurb: 'A 20 kN load at the interior support, to check reactions and deflections.',
     temperatureBlurb: 'A temperature difference across the depth (top warmer than bottom) and the curvature it causes.',
+    promoTitle: 'Take your frames',
+    promoAccent: 'into 3D.',
+    promoSubtitle: 'slabs, shells & steel checks in your browser',
+    promoCta: 'Try it free',
   },
   cs: {
     loadsTitle: 'Ukázky typů zatížení',
@@ -62,6 +70,10 @@ const strings: Record<DocsLanguage, DocsStrings> = {
     concentratedBlurb: 'Jediná síla 18 kN dolů uprostřed rozpětí, bez dalšího uzlu.',
     nodalBlurb: 'Síla 20 kN nad vnitřní podporou – vhodná pro kontrolu reakcí a průhybů.',
     temperatureBlurb: 'Rozdíl teplot po výšce průřezu (nahoře tepleji než dole) a zakřivení, které způsobí.',
+    promoTitle: 'Posuňte své rámy',
+    promoAccent: 'do 3D.',
+    promoSubtitle: 'desky, skořepiny a posudky ocelových prvků v prohlížeči',
+    promoCta: 'Vyzkoušet zdarma',
   },
   de: {
     loadsTitle: 'Lastarten im Überblick',
@@ -75,6 +87,10 @@ const strings: Record<DocsLanguage, DocsStrings> = {
     nodalBlurb: 'Eine Last von 20 kN am Innenlager, um Auflagerkräfte und Durchbiegungen zu prüfen.',
     temperatureBlurb:
       'Ein Temperaturunterschied über die Querschnittshöhe (oben wärmer als unten) und die Krümmung, die er erzeugt.',
+    promoTitle: 'Bringen Sie Ihre Rahmen',
+    promoAccent: 'in 3D.',
+    promoSubtitle: 'Platten, Schalen und Stahlnachweise im Browser',
+    promoCta: 'Kostenlos testen',
   },
   es: {
     loadsTitle: 'Vista previa de los tipos de carga',
@@ -88,6 +104,10 @@ const strings: Record<DocsLanguage, DocsStrings> = {
     nodalBlurb: 'Una carga de 20 kN en el apoyo intermedio para comprobar reacciones y flechas.',
     temperatureBlurb:
       'Una diferencia de temperatura en el canto (arriba más caliente que abajo) y la curvatura que produce.',
+    promoTitle: 'Lleve sus pórticos',
+    promoAccent: 'a 3D.',
+    promoSubtitle: 'losas, láminas y comprobaciones de acero en el navegador',
+    promoCta: 'Pruébelo gratis',
   },
   fr: {
     loadsTitle: 'Aperçu des types de charges',
@@ -102,6 +122,10 @@ const strings: Record<DocsLanguage, DocsStrings> = {
     nodalBlurb: 'Une charge de 20 kN sur l’appui intermédiaire, pour vérifier réactions et flèches.',
     temperatureBlurb:
       'Une différence de température sur la hauteur (dessus plus chaud que dessous) et la courbure qu’elle provoque.',
+    promoTitle: 'Passez vos portiques',
+    promoAccent: 'en 3D.',
+    promoSubtitle: 'dalles, coques et vérifications acier dans votre navigateur',
+    promoCta: 'Essayer gratuitement',
   },
   hi: {
     loadsTitle: 'भार प्रकारों का पूर्वावलोकन',
@@ -114,6 +138,10 @@ const strings: Record<DocsLanguage, DocsStrings> = {
     concentratedBlurb: 'स्पैन के मध्य में नीचे की ओर 18 kN का एकल भार, बिना अतिरिक्त नोड के।',
     nodalBlurb: 'प्रतिक्रियाओं और विक्षेपों की जाँच के लिए आंतरिक आधार पर 20 kN भार।',
     temperatureBlurb: 'गहराई के आर-पार तापमान का अंतर (ऊपर नीचे से अधिक गर्म) और उससे उत्पन्न वक्रता।',
+    promoTitle: 'अपने फ्रेम',
+    promoAccent: '3D में ले जाएँ।',
+    promoSubtitle: 'ब्राउज़र में स्लैब, शेल और स्टील जाँच',
+    promoCta: 'मुफ़्त आज़माएँ',
   },
   pl: {
     loadsTitle: 'Podgląd rodzajów obciążeń',
@@ -127,6 +155,10 @@ const strings: Record<DocsLanguage, DocsStrings> = {
     concentratedBlurb: 'Pojedyncza siła 18 kN w dół w środku rozpiętości, bez dodatkowego węzła.',
     nodalBlurb: 'Siła 20 kN na podporze pośredniej, do sprawdzenia reakcji i ugięć.',
     temperatureBlurb: 'Różnica temperatur na wysokości przekroju (u góry cieplej niż u dołu) i wywołana nią krzywizna.',
+    promoTitle: 'Przenieś swoje ramy',
+    promoAccent: 'do 3D.',
+    promoSubtitle: 'płyty, powłoki i wymiarowanie stali w przeglądarce',
+    promoCta: 'Wypróbuj za darmo',
   },
   pt: {
     loadsTitle: 'Prévia dos tipos de carga',
@@ -140,6 +172,10 @@ const strings: Record<DocsLanguage, DocsStrings> = {
     nodalBlurb: 'Uma carga de 20 kN no apoio intermediário, para conferir reações e deslocamentos.',
     temperatureBlurb:
       'Uma diferença de temperatura ao longo da altura (em cima mais quente que embaixo) e a curvatura que ela causa.',
+    promoTitle: 'Leve seus pórticos',
+    promoAccent: 'para o 3D.',
+    promoSubtitle: 'lajes, cascas e verificações de aço no navegador',
+    promoCta: 'Experimente grátis',
   },
   ru: {
     loadsTitle: 'Примеры видов нагрузок',
@@ -152,6 +188,10 @@ const strings: Record<DocsLanguage, DocsStrings> = {
     concentratedBlurb: 'Одна сила 18 кН вниз в середине пролёта, без дополнительного узла.',
     nodalBlurb: 'Сила 20 кН на промежуточной опоре для проверки реакций и прогибов.',
     temperatureBlurb: 'Перепад температур по высоте сечения (сверху теплее, чем снизу) и вызванная им кривизна.',
+    promoTitle: 'Перенесите свои рамы',
+    promoAccent: 'в 3D.',
+    promoSubtitle: 'плиты, оболочки и проверки стальных элементов в браузере',
+    promoCta: 'Попробовать бесплатно',
   },
   uk: {
     loadsTitle: 'Приклади видів навантажень',
@@ -164,6 +204,10 @@ const strings: Record<DocsLanguage, DocsStrings> = {
     concentratedBlurb: 'Одна сила 18 kN донизу посередині прогону, без додаткового вузла.',
     nodalBlurb: 'Сила 20 kN на проміжній опорі для перевірки реакцій і прогинів.',
     temperatureBlurb: 'Перепад температур по висоті перерізу (зверху тепліше, ніж знизу) і кривина, яку він спричиняє.',
+    promoTitle: 'Перенесіть свої рами',
+    promoAccent: 'у 3D.',
+    promoSubtitle: 'плити, оболонки та перевірки сталевих елементів у браузері',
+    promoCta: 'Спробувати безкоштовно',
   },
   zh: {
     loadsTitle: '荷载类型预览',
@@ -175,6 +219,10 @@ const strings: Record<DocsLanguage, DocsStrings> = {
     concentratedBlurb: '跨中一个向下 18 kN 的集中荷载，无需额外节点。',
     nodalBlurb: '中间支座上的 20 kN 荷载，用于检查支座反力和挠度。',
     temperatureBlurb: '沿截面高度的温差（上表面比下表面热）及其引起的曲率。',
+    promoTitle: '将您的框架',
+    promoAccent: '带入 3D。',
+    promoSubtitle: '在浏览器中完成楼板、壳体和钢结构验算',
+    promoCta: '免费试用',
   },
 };
 

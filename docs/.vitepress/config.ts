@@ -96,6 +96,10 @@ const customElements = [
 export default defineConfig({
   title: 'EduBeam',
   description: 'Learn, Contribute, Excel in Structural Analysis!',
+  // English lives in en/ beside the other languages but is served from the root, as it always was.
+  rewrites: {
+    'en/:rest*': ':rest*',
+  },
   sitemap: {
     hostname: 'https://www.edubeam.app',
   },

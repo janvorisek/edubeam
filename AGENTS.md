@@ -73,7 +73,7 @@ Rules:
 - New behavior includes or updates tests in `src/tests/` when practical.
 - Keep lint and type checks clean for the files you touch.
 - Prefer deleting unclear code over keeping speculative abstractions.
-- Check numerical changes against a hand calculation. `docs/guide/verification.md` has closed-form reference cases.
+- Check numerical changes against a hand calculation. `docs/en/guide/verification.md` has closed-form reference cases.
 
 ## UI Changes
 
@@ -86,7 +86,7 @@ Rules:
 
 - `src/locales/en.json` is the source. `locales.test.ts` fails unless **every** locale has every English key, no extra keys, and the same `{placeholders}`. A new string means adding it to all 12 locale files.
 - Where academic and software terminology differ, use the terms structural analysis software (SAP2000, ETABS, …) uses in that language.
-- Docs live in `docs/` (English) and `docs/<lang>/`. Help links in the app go through `docsUrl` (`src/utils/docs.ts`).
+- Docs live in `docs/<lang>/`. English is in `docs/en/` but is served from the root (`/guide/…`, not `/en/guide/…`) through `rewrites` in `docs/.vitepress/config.ts`. Help links in the app go through `docsUrl` (`src/utils/docs.ts`).
 
 ## Export
 

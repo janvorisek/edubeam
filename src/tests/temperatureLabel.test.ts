@@ -86,7 +86,7 @@ describe('the letters of a temperature load', () => {
  */
 describe('the documentation', () => {
   const DOCS = [
-    ['en', 'docs/essentials/loads.md'],
+    ['en', 'docs/en/essentials/loads.md'],
     ['cs', 'docs/cs/essentials/loads.md'],
     ['de', 'docs/de/essentials/loads.md'],
   ] as const;

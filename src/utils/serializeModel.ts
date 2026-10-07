@@ -6,6 +6,7 @@ import {
   BeamTemperatureLoad,
   BeamElementTrapezoidalEdgeLoad,
 } from 'ts-fem';
+import { deflateSync, Inflate } from 'fflate';
 import { createDimensionId, ensureDimensionId } from './id';
 import { deserializeShape, isSerializedShape, serializeShape } from './sectionProperties';
 import {
@@ -15,15 +16,18 @@ import {
   type DimensionPoint,
 } from '@/types/dimension';
 
+const bytesToBase64 = (bytes: Uint8Array): string => {
+  let binary = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  }
+  return btoa(binary);
+};
+
 /** `btoa` only accepts Latin-1; encode as UTF-8 bytes first so labels in any script survive. */
 function objectToBase64(obj: unknown) {
   try {
-    const bytes = new TextEncoder().encode(JSON.stringify(obj));
-    let binary = '';
-    for (let i = 0; i < bytes.length; i += 0x8000) {
-      binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
-    }
-    return btoa(binary);
+    return bytesToBase64(new TextEncoder().encode(JSON.stringify(obj)));
   } catch (error) {
     console.error('Error converting object to base64:', error);
     return null;
@@ -124,6 +128,63 @@ export const isValidSerializedModel = (tmp: unknown): boolean => {
 export const parseSerializedModel = (base64String: string) => {
   const tmp = base64ToObject(base64String);
   return isValidSerializedModel(tmp) ? tmp : null;
+};
+
+/**
+ * Marks a compressed `?model=` value: raw DEFLATE of the model JSON, in base64url.
+ * `.` is outside the standard base64 alphabet, so no plain share link can start with it.
+ */
+const COMPRESSED_SHARE_PREFIX = '1.';
+
+/** A link inflating past this is a decompression bomb, not a model (10 000 entities stay far below it). */
+const MAX_INFLATED_BYTES = 16 * 1024 * 1024;
+
+const inflateCapped = (data: Uint8Array): Uint8Array => {
+  const chunks: Uint8Array[] = [];
+  let size = 0;
+  new Inflate((chunk) => {
+    size += chunk.length;
+    if (size > MAX_INFLATED_BYTES) throw new Error('Share link inflates past the size limit');
+    chunks.push(chunk);
+  }).push(data, true);
+
+  const out = new Uint8Array(size);
+  let offset = 0;
+  for (const chunk of chunks) {
+    out.set(chunk, offset);
+    offset += chunk.length;
+  }
+  return out;
+};
+
+/** Converts a serialized model into the compressed `?model=` value. `null` when `model` is not valid. */
+export const toShareParam = (model: string): string | null => {
+  const obj = parseSerializedModel(model);
+  if (obj === null) return null;
+  const compressed = deflateSync(new TextEncoder().encode(JSON.stringify(obj)), { level: 9 });
+  const base64url = bytesToBase64(compressed).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  return COMPRESSED_SHARE_PREFIX + base64url;
+};
+
+/**
+ * Reads a `?model=` value in any format ever shared, compressed or plain base64, into a
+ * serialized model for `deserializeModel`. `null` when the link is malformed.
+ */
+export const fromShareParam = (param: string): string | null => {
+  if (!param.startsWith(COMPRESSED_SHARE_PREFIX)) return parseSerializedModel(param) === null ? null : param;
+
+  const base64url = param.slice(COMPRESSED_SHARE_PREFIX.length);
+  try {
+    const binary = atob(base64url.replace(/-/g, '+').replace(/_/g, '/'));
+    const json = new TextDecoder('utf-8', { fatal: true }).decode(
+      inflateCapped(Uint8Array.from(binary, (c) => c.charCodeAt(0)))
+    );
+    const obj: unknown = JSON.parse(json);
+    return isValidSerializedModel(obj) ? objectToBase64(obj) : null;
+  } catch (error) {
+    console.warn('Error decoding compressed share link:', error);
+    return null;
+  }
 };
 
 export const serializeModel = (ls: LinearStaticSolver, dims: DimensionLine[]) => {

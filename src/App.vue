@@ -2,7 +2,6 @@
 import { container, openModal } from 'jenesius-vue-modal';
 import {
   deserializeModel,
-  parseSerializedModel,
   download,
   exportJSON,
   importJSON,
@@ -16,6 +15,7 @@ import { useViewerStore } from './store/viewer';
 import Confirmation from './components/dialogs/Confirmation.vue';
 import ReloadPrompt from './components/ReloadPrompt.vue';
 import { buildStarterModel } from './utils/starterModel';
+import { fromShareParam } from './utils/serializeModel';
 
 export default {
   name: 'App',
@@ -212,10 +212,11 @@ onMounted(() => {
   if (name) {
     // Validate the shared model before touching the current one, so a broken link
     // cannot wipe the project persisted in localStorage.
-    if (parseSerializedModel(name) !== null) {
+    const model = fromShareParam(name);
+    if (model !== null) {
       const saved = replaceModel('link', () => {
         resetModel();
-        deserializeModel(name, solver, useProjectStore().dimensions);
+        deserializeModel(model, solver, useProjectStore().dimensions);
       });
       // Opening a link used to overwrite whatever was here without a word.
       if (saved && !appStore.inViewerMode) previousModelSaved.value = true;

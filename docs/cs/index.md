@@ -13,8 +13,8 @@ hero:
       text: Spustit aplikaci
       link: https://run.edubeam.app/?lang=cs
     - theme: alt
-      text: Rychlý start (10 min)
-      link: /cs/guide/quick-start
+      text: Přečíst příručku
+      link: /cs/guide/introduction
     - theme: alt
       text: Prohlédnout příklady
       link: /cs/examples/

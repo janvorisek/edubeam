@@ -14,8 +14,8 @@ hero:
       text: Launch the app
       link: https://run.edubeam.app
     - theme: alt
-      text: Quick start (10 min)
-      link: /guide/quick-start
+      text: Read the guide
+      link: /guide/introduction
     - theme: alt
       text: See examples
       link: /examples/

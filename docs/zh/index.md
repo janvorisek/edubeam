@@ -14,8 +14,8 @@ hero:
       text: 打开应用
       link: https://run.edubeam.app/?lang=cn
     - theme: alt
-      text: 快速入门（10 分钟）
-      link: /zh/guide/quick-start
+      text: 阅读指南
+      link: /zh/guide/introduction
     - theme: alt
       text: 查看示例
       link: /zh/examples/

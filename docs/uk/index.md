@@ -14,8 +14,8 @@ hero:
       text: Запустити застосунок
       link: https://run.edubeam.app/?lang=uk
     - theme: alt
-      text: Швидкий старт (10 хв)
-      link: /uk/guide/quick-start
+      text: Читати посібник
+      link: /uk/guide/introduction
     - theme: alt
       text: Переглянути приклади
       link: /uk/examples/

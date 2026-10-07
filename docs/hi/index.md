@@ -14,8 +14,8 @@ hero:
       text: ऐप खोलें
       link: https://run.edubeam.app/?lang=en
     - theme: alt
-      text: त्वरित शुरुआत (10 मिनट)
-      link: /hi/guide/quick-start
+      text: मार्गदर्शिका पढ़ें
+      link: /hi/guide/introduction
     - theme: alt
       text: उदाहरण देखें
       link: /hi/examples/

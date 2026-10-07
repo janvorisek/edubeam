@@ -233,6 +233,14 @@
   }
 }
 
+/* Below 960px VitePress pulls the image up under the nav and down into the title with negative
+   margins, made for its small round artwork. A framed screenshot needs to sit in the flow. */
+@media (max-width: 959px) {
+  .VPHero.has-image .image {
+    margin: 0 0 2rem;
+  }
+}
+
 .katex { font-size: 1em; }
 
 .main figure {

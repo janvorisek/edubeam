@@ -1476,7 +1476,15 @@ const mouseMove = (e: PointerEvent) => {
     const index = intersected.value.index;
     if (index === null) return;
 
-    const item = useProjectStore().solver.domain.nodes.get(String(index))!;
+    // The hovered node can vanish under the pointer (undo, delete, a newly opened model) while the
+    // hover state still names it, so the drag has nothing to move.
+    const item = useProjectStore().solver.domain.nodes.get(String(index));
+    if (!item) {
+      appStore.mouseMode = MouseMode.NONE;
+      intersected.value.type = null;
+      intersected.value.index = null;
+      return;
+    }
 
     if (drgNode === null) {
       drgNode = item;
@@ -1484,9 +1492,8 @@ const mouseMove = (e: PointerEvent) => {
       origZ = item.coords[2];
     }
 
-    useProjectStore().solver.domain.nodes.get(String(index))!.coords[0] = mouseXReal.value;
-
-    useProjectStore().solver.domain.nodes.get(String(index))!.coords[2] = mouseYReal.value;
+    item.coords[0] = mouseXReal.value;
+    item.coords[2] = mouseYReal.value;
 
     finalX = mouseXReal.value;
     finalZ = mouseYReal.value;

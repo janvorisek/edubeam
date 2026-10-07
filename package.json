@@ -37,7 +37,7 @@
     "markdown-it-implicit-figures": "^0.12.0",
     "markdown-it-katex": "^2.0.3",
     "mathjs": "^15.2.0",
-    "pinia": "^3.0.4",
+    "pinia": "^4.0.3",
     "pinia-plugin-persistedstate": "^4.7.1",
     "roboto-fontface": "*",
     "ts-fem": "github:janvorisek/ts-fem#b18694f42119de46c91cb37143896ca69e54d5a3",

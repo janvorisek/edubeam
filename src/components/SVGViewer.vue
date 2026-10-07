@@ -53,6 +53,7 @@ import { selectionSubtitle } from '@/utils/selectionDetails';
 import { boundsFromPoints } from '@/utils/fitBounds';
 import { placePopupNearAnchor, type AnchorRect } from '@/utils/popupPlacement';
 import { deviceCanTouch, deviceHasHover } from '@/utils/pointer';
+import { hasShortcutModifier } from '@/utils/keyboard';
 import {
   Node,
   DofID,
@@ -274,12 +275,12 @@ const hideTooltip = (clearHoverState = true) => {
 };
 
 const zoom = (e: KeyboardEvent) => {
-  if (e.ctrlKey && e.code === 'Equal') {
+  if (hasShortcutModifier(e) && e.code === 'Equal') {
     panZoom.value?.zoom(svg.value.clientWidth / 2, svg.value.clientHeight / 2, -0.1);
     e.preventDefault();
   }
 
-  if (e.ctrlKey && e.code === 'Minus') {
+  if (hasShortcutModifier(e) && e.code === 'Minus') {
     panZoom.value?.zoom(svg.value.clientWidth / 2, svg.value.clientHeight / 2, 0.1);
     e.preventDefault();
   }
@@ -491,31 +492,39 @@ const { current, escape, f, c, g, s, _delete } = useMagicKeys({
   },
 });
 
-const { ctrl_a, ctrl_c, ctrl_v } = useMagicKeys({
+const { ctrl_a, ctrl_c, ctrl_v, meta_a, meta_c, meta_v } = useMagicKeys({
   passive: false,
   onEventFired(e) {
     if (isShortcutBlocked()) return;
-    if (e.ctrlKey && e.key === 'a' && e.type === 'keydown') e.preventDefault();
+    if (hasShortcutModifier(e) && e.key === 'a' && e.type === 'keydown') e.preventDefault();
   },
 });
 
+// Cmd on a Mac does what Ctrl does elsewhere.
+const selectAllKeys = computed(() => ctrl_a.value || meta_a.value);
+const copyKeys = computed(() => ctrl_c.value || meta_c.value);
+const pasteKeys = computed(() => ctrl_v.value || meta_v.value);
+
+/** F, C, G and S are shortcuts on their own; held with a modifier they belong to the browser or to save. */
+const withModifier = () => current.has('control') || current.has('meta') || current.has('alt');
+
 watch(f, (v) => {
-  if (isShortcutBlocked()) return;
-  if (v) fitContent();
+  if (!v || isShortcutBlocked() || withModifier()) return;
+  fitContent();
 });
 
 watch(c, (v) => {
-  if (isShortcutBlocked()) return;
-  if (v && !current.has('control')) centerContent();
+  if (!v || isShortcutBlocked() || withModifier()) return;
+  centerContent();
 });
 
 watch(g, (v) => {
-  if (!v || isShortcutBlocked()) return;
+  if (!v || isShortcutBlocked() || withModifier()) return;
   toggleGridVisibility();
 });
 
 watch(s, (v) => {
-  if (!v || isShortcutBlocked()) return;
+  if (!v || isShortcutBlocked() || withModifier()) return;
   toggleSnapToGrid();
 });
 
@@ -527,21 +536,21 @@ watch(_delete, (v) => {
   }
 });
 
-watch(ctrl_a, (v) => {
+watch(selectAllKeys, (v) => {
   if (isShortcutBlocked()) return;
   if (v) {
     projectStore.selectAll2();
   }
 });
 
-watch(ctrl_c, (v) => {
+watch(copyKeys, (v) => {
   if (isShortcutBlocked()) return;
   if (v) {
     useClipboardStore().select(projectStore.selection2);
   }
 });
 
-watch(ctrl_v, (v) => {
+watch(pasteKeys, (v) => {
   if (isShortcutBlocked()) return;
   if (v) {
     paste();
@@ -2579,6 +2588,7 @@ defineExpose({ centerContent, fitContent });
     <context-menu v-model:show="showCtxMenu" :options="optionsCtxMenu">
       <context-menu-item
         @click.ctrl="appStore.mouseMode = MouseMode.ADD_NODE"
+        @click.meta="appStore.mouseMode = MouseMode.ADD_NODE"
         @click.exact="openModal(AddNodeDialog, {})"
       >
         <template #icon>
@@ -2591,6 +2601,7 @@ defineExpose({ centerContent, fitContent });
       </context-menu-item>
       <context-menu-item
         @click.ctrl="appStore.mouseMode = MouseMode.ADD_ELEMENT"
+        @click.meta="appStore.mouseMode = MouseMode.ADD_ELEMENT"
         @click.exact="openModal(AddElementDialog, {})"
       >
         <template #icon>

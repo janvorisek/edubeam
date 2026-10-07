@@ -200,6 +200,11 @@ onMounted(() => {
   // they start with, not news, so the changelog waits for the next release.
   if (!appStore.onboardingFinished && currentAppVersion) appStore.lastSeenChangelogVersion = currentAppVersion;
 
+  // Before the model: a shared link opens in the language it asks for too.
+  if (lang && availableLocales.findIndex((l) => l.code === lang) >= 0) {
+    appStore.locale = lang;
+  }
+
   if (inViewerMode) {
     appStore.inViewerMode = true;
   } else if (panel === 'examples') {
@@ -229,10 +234,6 @@ onMounted(() => {
     window.history.pushState({}, '', url.split('?')[0]);
 
     return;
-  }
-
-  if (lang && availableLocales.findIndex((l) => l.code === lang) >= 0) {
-    appStore.locale = lang;
   }
 
   if (lang || panel) {

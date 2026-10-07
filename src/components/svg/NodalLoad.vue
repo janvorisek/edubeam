@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { vertical } from '@/utils/axisConvention';
+import { inPlaneValues } from '@/utils/dofValues';
 import { NodalLoad } from 'ts-fem';
 import { computed } from 'vue';
 
@@ -23,20 +24,22 @@ const props = withDefaults(
 /** Undefined when the load outlives its node; the drawing then leaves it out rather than throwing. */
 const target = computed(() => props.nload.domain.nodes.get(props.nload.target));
 
+const values = computed(() => inPlaneValues(props.nload.values));
+
 const angle = computed(() => {
-  return -(Math.atan2(props.nload.values[0], props.nload.values[2]) * 180) / Math.PI;
+  return -(Math.atan2(values.value[0], values.value[2]) * 180) / Math.PI;
 });
 
 /** Length of the force vector; zero for a load that is a pure moment. */
 const forceSize = computed(() => {
-  return Math.sqrt(props.nload.values[0]! * props.nload.values[0]! + props.nload.values[2]! * props.nload.values[2]!);
+  return Math.sqrt(values.value[0] * values.value[0] + values.value[2] * values.value[2]);
 });
 
 /** Unit vector pointing back along the arrow, or the origin when there is no force to point along. */
 const forceDirection = computed(() => {
   if (forceSize.value === 0) return { x: 0, z: 0 };
 
-  return { x: -props.nload.values[0]! / forceSize.value, z: -props.nload.values[2]! / forceSize.value };
+  return { x: -values.value[0] / forceSize.value, z: -values.value[2] / forceSize.value };
 });
 
 /**
@@ -67,7 +70,8 @@ const stackedTransform = computed(() => {
   const angleMap = new Map<number, number>();
   for (let i = 0; i < index; i++) {
     // calculate full angle in 360deg space
-    const ang = (360 + -(Math.atan2(nloads[i].values[0], nloads[i].values[2]) * 180) / Math.PI) % 360;
+    const { 0: fx, 2: fz } = inPlaneValues(nloads[i].values);
+    const ang = (360 + -(Math.atan2(fx, fz) * 180) / Math.PI) % 360;
 
     angleMap.set(ang, (angleMap.get(ang) || 0) + 1);
   }
@@ -85,7 +89,7 @@ const stackedTransform = computed(() => {
 <template>
   <g v-if="target" class="nodal-load" :transform="stackedTransform">
     <polyline
-      v-if="nload.values[0] !== 0 || nload.values[2] !== 0"
+      v-if="values[0] !== 0 || values[2] !== 0"
       points="0,0 0,0"
       vector-effect="non-scaling-stroke"
       class="decoration force"
@@ -93,18 +97,18 @@ const stackedTransform = computed(() => {
     />
 
     <polyline
-      v-if="nload.values[4] !== 0"
+      v-if="values[4] !== 0"
       points="0,0 0,0"
       vector-effect="non-scaling-stroke"
       class="decoration moment"
-      :class="{ cw: nload.values[4] < 0, ccw: nload.values[4] > 0 }"
+      :class="{ cw: values[4] < 0, ccw: values[4] > 0 }"
       :transform="`translate(${target.coords[0]}
               ${target.coords[2]})`"
     />
 
     <polyline :points="nloadPts" class="handle" />
     <circle
-      v-if="nload.values[4] !== 0"
+      v-if="values[4] !== 0"
       :cx="target.coords[0]"
       :cy="target.coords[2]"
       :r="momentHandleRadius"
@@ -116,7 +120,7 @@ const stackedTransform = computed(() => {
     />
 
     <text
-      v-if="nload.values[4] !== 0"
+      v-if="values[4] !== 0"
       :font-size="fontSize / scale"
       font-weight="normal"
       text-anchor="start"
@@ -124,37 +128,28 @@ const stackedTransform = computed(() => {
       :transform="`translate(${target.coords[0] + (fontSize + 8) / scale}
               ${target.coords[2] - (fontSize / 2 + 2) / scale})`"
     >
-      {{ numberFormat.format(Math.abs(convertMoment(nload.values[4]))) }}
+      {{ numberFormat.format(Math.abs(convertMoment(values[4]))) }}
     </text>
 
     <text
-      v-if="nload.values[0] !== 0 || nload.values[2] !== 0"
+      v-if="values[0] !== 0 || values[2] !== 0"
       :font-size="fontSize / scale"
       font-weight="normal"
-      :text-anchor="nload.values[0] > 0 ? 'end' : 'start'"
+      :text-anchor="values[0] > 0 ? 'end' : 'start'"
       dy="0.35em"
       :transform="`translate(${
         target.coords[0] -
-        (40 * nload.values[0]) /
-          Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2]) /
-          scale -
-        (nload.values[0] > 0 ? 4 : -4) / scale
+        (40 * values[0]) / Math.sqrt(values[0] * values[0] + values[2] * values[2]) / scale -
+        (values[0] > 0 ? 4 : -4) / scale
       }
               ${
-                target.coords[2] -
-                (40 * nload.values[2]) /
-                  Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2]) /
-                  scale
+                target.coords[2] - (40 * values[2]) / Math.sqrt(values[0] * values[0] + values[2] * values[2]) / scale
               })`"
     >
-      {{
-        numberFormat.format(
-          convertForce(Math.sqrt(nload.values[0] * nload.values[0] + nload.values[2] * nload.values[2]))
-        )
-      }}
-      <template v-if="nload.values[0] !== 0 && nload.values[2] !== 0">
-        ({{ numberFormat.format(convertForce(nload.values[0])) }};
-        {{ numberFormat.format(vertical(convertForce(nload.values[2]))) }})
+      {{ numberFormat.format(convertForce(Math.sqrt(values[0] * values[0] + values[2] * values[2]))) }}
+      <template v-if="values[0] !== 0 && values[2] !== 0">
+        ({{ numberFormat.format(convertForce(values[0])) }};
+        {{ numberFormat.format(vertical(convertForce(values[2]))) }})
       </template>
     </text>
   </g>

@@ -1,12 +1,10 @@
-<!-- A quiet pointer to Elementarium for readers who outgrow 2D. Hidden on the Czech site. -->
+<!-- A quiet pointer to Elementarium for readers who outgrow 2D. -->
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useData } from 'vitepress';
 import { useDocsText } from './docsText';
 
 const props = withDefaults(defineProps<{ placement?: string }>(), { placement: 'home' });
 
-const { lang } = useData();
 const { docs } = useDocsText();
 
 const href = `https://elementarium.app/?utm_source=edubeam&utm_medium=banner&utm_campaign=leaderboard&utm_content=${props.placement}`;
@@ -17,7 +15,7 @@ const label = computed(() => `Elementarium: ${docs('promoTitle')} ${docs('promoA
 </script>
 
 <template>
-  <aside v-if="lang !== 'cs'" class="elementarium-promo">
+  <aside class="elementarium-promo">
     <a class="ep" :href="href" target="_blank" rel="noopener" :aria-label="label">
       <img class="ep-logo" src="/elementarium/logo.png" width="31" height="37" alt="" />
       <span class="ep-copy">

@@ -398,6 +398,12 @@ export default defineConfig({
   ],
   markdown: {
     config: (md) => {
+      // <Edubeam /> starts many paragraphs, and a line that starts with a component is taken for raw
+      // HTML: the paragraph lost its <p>, so it sat right under the heading. As a plain span the logo
+      // stays inline and the paragraph is a paragraph.
+      md.core.ruler.before('normalize', 'edubeam-logo', (state) => {
+        state.src = state.src.replaceAll('<Edubeam />', '<span class="edubeam">EduBeam</span>');
+      });
       md.use(markdownItKatex);
       md.use(implicitFigures, {
         figcaption: true,

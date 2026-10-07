@@ -1,0 +1,207 @@
+{
+ "edubeam": true,
+ "version": "1.3.1",
+ "domain": {
+  "materials": [
+   {
+    "label": "1",
+    "e": 210000000000.0,
+    "g": 81000000000.0,
+    "alpha": 1.2e-05,
+    "d": 7850
+   }
+  ],
+  "crossSections": [
+   {
+    "label": "1",
+    "a": 0.00538,
+    "iy": 8.356e-05,
+    "h": 0.3,
+    "k": 1
+   }
+  ],
+  "nodes": [
+   {
+    "label": "1",
+    "coords": [
+     0,
+     0,
+     0
+    ],
+    "bcs": [
+     0,
+     2
+    ]
+   },
+   {
+    "label": "2",
+    "coords": [
+     3,
+     0,
+     0
+    ],
+    "bcs": [
+     2
+    ]
+   },
+   {
+    "label": "3",
+    "coords": [
+     6,
+     0,
+     0
+    ],
+    "bcs": [
+     2
+    ]
+   },
+   {
+    "label": "4",
+    "coords": [
+     9,
+     0,
+     0
+    ],
+    "bcs": [
+     2
+    ]
+   },
+   {
+    "label": "5",
+    "coords": [
+     12,
+     0,
+     0
+    ],
+    "bcs": [
+     2
+    ]
+   }
+  ],
+  "elements": [
+   {
+    "label": "1",
+    "nodes": [
+     "1",
+     "2"
+    ],
+    "mat": "1",
+    "cs": "1",
+    "hinges": [
+     false,
+     false
+    ]
+   },
+   {
+    "label": "2",
+    "nodes": [
+     "2",
+     "3"
+    ],
+    "mat": "1",
+    "cs": "1",
+    "hinges": [
+     false,
+     false
+    ]
+   },
+   {
+    "label": "3",
+    "nodes": [
+     "3",
+     "4"
+    ],
+    "mat": "1",
+    "cs": "1",
+    "hinges": [
+     false,
+     false
+    ]
+   },
+   {
+    "label": "4",
+    "nodes": [
+     "4",
+     "5"
+    ],
+    "mat": "1",
+    "cs": "1",
+    "hinges": [
+     false,
+     false
+    ]
+   }
+  ],
+  "loadCases": [
+   {
+    "label": "1",
+    "nodalLoads": [
+     {
+      "target": "1",
+      "values": {
+       "0": 20000,
+       "2": 0,
+       "4": 0
+      }
+     }
+    ],
+    "elementLoads": [
+     {
+      "type": "udl",
+      "target": "1",
+      "lcs": false,
+      "values": [
+       0,
+       8000
+      ]
+     },
+     {
+      "type": "trapezoidal",
+      "target": "2",
+      "lcs": true,
+      "startValues": [
+       0,
+       0
+      ],
+      "endValues": [
+       0,
+       15000
+      ]
+     },
+     {
+      "type": "concentrated",
+      "target": "3",
+      "lcs": false,
+      "values": [
+       0,
+       25000,
+       0,
+       1.5
+      ]
+     },
+     {
+      "type": "temperature",
+      "target": "4",
+      "lcs": true,
+      "values": [
+       0,
+       15,
+       0
+      ]
+     }
+    ],
+    "prescribedBC": [
+     {
+      "target": "5",
+      "prescribedValues": {
+       "0": 0,
+      "2": 0.01,
+      "4": 0
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "dimensions": []
+}

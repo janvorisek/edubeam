@@ -111,9 +111,11 @@ export default defineConfig({
       lang: 'en',
       themeConfig: {
         nav: [
-          { text: 'Home', link: '/' },
-          { text: 'FAQ', link: '/faq/' },
+          { text: 'Guide', link: '/guide/introduction' },
+          { text: 'Tutorials', link: '/tutorials/three-hinged-frame' },
           { text: 'Examples', link: '/examples/' },
+          { text: 'FAQ', link: '/faq/' },
+          { text: 'Open the app', link: 'https://run.edubeam.app' },
         ],
         sidebar: [
           {
@@ -122,6 +124,13 @@ export default defineConfig({
               { text: 'Introduction', link: '/guide/introduction' },
               { text: 'Quick start (10 min)', link: '/guide/quick-start' },
               { text: 'Examples', link: '/examples/' },
+            ],
+          },
+          {
+            text: 'Tutorials',
+            items: [
+              { text: 'Three-hinged frame', link: '/tutorials/three-hinged-frame' },
+              { text: 'Plane truss', link: '/tutorials/truss' },
             ],
           },
           {
@@ -143,12 +152,15 @@ export default defineConfig({
           },
           {
             text: 'Files & sharing',
-            items: [{ text: 'Import, export & sharing', link: '/essentials/import-export' }],
+            items: [
+              { text: 'Import, export & sharing', link: '/essentials/import-export' },
+              { text: 'Teaching with EduBeam', link: '/guide/teaching' },
+            ],
           },
           {
             text: 'Reference',
             items: [
-              { text: 'Keyboard & mouse', link: '/reference/shortcuts' },
+              { text: 'Keyboard, mouse & touch', link: '/reference/shortcuts' },
               { text: 'Troubleshooting', link: '/reference/troubleshooting' },
               { text: 'FAQ', link: '/faq/' },
             ],

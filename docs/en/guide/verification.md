@@ -2,6 +2,8 @@
 
 <Edubeam /> is a good place to practise the habit every engineer needs: never trust a number you cannot roughly reproduce. This page gives closed-form formulas for the classic cases and shows what the app reports for them, so you can build each model yourself and compare.
 
+For complete worked examples with hand checks, see the [three-hinged frame](/tutorials/three-hinged-frame) and [plane truss](/tutorials/truss) tutorials.
+
 All cases use the same steel section unless stated: $E = 210\,000$ MPa, $G = 81\,000$ MPa, $A = 28.5$ cm², $I_y = 1943$ cm⁴, $h = 200$ mm, $k = 1$ (an IPE 200).
 
 $$EI = 210 \times 10^9 \cdot 1.943 \times 10^{-5} = 4.080 \times 10^6\ \text{Nm}^2$$
@@ -20,7 +22,11 @@ $L = 6$ m, $q = 12$ kN/m. Supports: node 1 `Dx + Dz`, node 2 `Dz`.
 | $V_{max}$ | $qL/2$ | 36 kN | 36 kN |
 | $M_{max}$ (mid-span) | $qL^2/8$ | 54 kNm | 54 kNm |
 | End rotation | $qL^3/(24EI)$ | 0.02647 rad | 0.02647 rad |
-| Mid-span deflection | $5qL^4/(384EI)$ | 49.63 mm | 49.63 mm |
+| Mid-span deflection (bending) | $5qL^4/(384EI)$ | 49.63 mm | — |
+| Mid-span deflection (shear) | $qL^2/(8kGA)$ | 0.23 mm | — |
+| Mid-span deflection (total) | sum | 49.86 mm | 49.86 mm |
+
+To read the mid-span deflection, add a node at mid-span with *Add node* (mouse) → **Connect to structure**; splitting the element does not change any result.
 
 <ExampleStructure />
 
@@ -53,7 +59,7 @@ $L = 6$ m, $q = 12$ kN/m. Both nodes `Dx + Dz + Ry`.
 | Reactions | $qL/2$ | 36 kN |
 | Support moment | $qL^2/12$ | 36 kNm (hogging) |
 | Mid-span moment | $qL^2/24$ | 18 kNm (sagging) |
-| Mid-span deflection | $qL^4/(384EI)$ | 9.93 mm |
+| Mid-span deflection | $qL^4/(384EI) + qL^2/(8kGA)$ | 9.93 + 0.23 = 10.16 mm |
 
 Build it from the simply supported case by ticking `Ry` at both nodes and watch the moment diagram shift.
 
@@ -98,5 +104,6 @@ Take the [propped cantilever](#propped-cantilever-uniform-load) without the load
 
 - Keep the **units chip** in view; most discrepancies are unit slips.
 - Use the **Stiffness matrix** window to compare a single element with the [theory manual](/elements/beam) when learning the direct stiffness method.
-- Read exact numbers from the **Results** tab and hover tooltips rather than from the diagram labels, which are rounded.
+- Read exact numbers from the **Results** tab and hover tooltips rather than from the diagram labels, which are rounded. **Export CSV** or **Copy** in the Results tab also gives you the reactions, ready for a spreadsheet.
+- Set **Number format** to *Automatic* in Settings to read `40` instead of `4 · 10¹`.
 - Use **Share model** to hand a checked model to a colleague or teacher.

@@ -6,8 +6,6 @@ import DefaultTheme from 'vitepress/theme';
 
 const { Layout } = DefaultTheme;
 
-import { VPImage } from 'vitepress/theme';
-
 const { frontmatter } = useData();
 
 // AdSense Auto Ads scans the page only once, when its script loads, and never again after
@@ -33,9 +31,14 @@ onMounted(() => {
 <template>
   <Layout>
     <template #home-hero-image>
-      <a href="https://run.edubeam.app" target="_blank">
-        <WelcomeStructure class="image-src bordered-image figure" />
-        <!-- <VPImage v-if="$frontmatter.hero.image" class="image-src bordered-image" :image="$frontmatter.hero.image" /> -->
+      <a class="hero-shot" href="https://run.edubeam.app" target="_blank">
+        <span class="hero-shot-bar" aria-hidden="true"><i></i><i></i><i></i></span>
+        <img
+          src="/screenshots/hero.webp"
+          width="1280"
+          height="760"
+          alt="EduBeam with a three-hinged frame: loads, reactions, bending moment and deformed shape"
+        />
       </a>
     </template>
   </Layout>

@@ -178,36 +178,107 @@
   }
 }
 
-@media (min-width: 960px) {
-  .VPHero.has-image {
-    .image-src {
-      display: flex;
-      height: 150px !important;
-    }
+/* The hero shows the app itself: a screenshot in a window frame instead of the default round image. */
+.VPHero.has-image .image-container {
+  width: 100%;
+  height: auto;
+  transform: none;
+}
 
-    .text {
-      margin-top: 16px !important;
-    }
+.VPHero .image-bg {
+  width: 70%;
+  height: 70%;
+}
+
+.hero-shot {
+  position: relative;
+  display: block;
+  max-width: 640px;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--vp-c-divider);
+  box-shadow: 0 24px 60px -12px rgba(20, 18, 58, 0.35);
+  transition: transform 0.25s ease;
+}
+
+.hero-shot:hover {
+  transform: translateY(-3px);
+}
+
+.hero-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.hero-shot-bar {
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px;
+  background: #ececf3;
+}
+
+.hero-shot-bar i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #c9c9d6;
+}
+
+@media (min-width: 960px) {
+  .VPHero.has-image .image {
+    flex-grow: 1.4;
   }
 }
 
 .katex { font-size: 1em; }
 
 .main figure {
- margin: 0 auto;
+ margin: 24px auto;
  text-align: center;
  figcaption {
-  font-size: 0.8em;
-  margin-top: 6px;
+  font-size: 0.85em;
+  color: var(--vp-c-text-2);
+  margin-top: 8px;
  }
 
- svg, img {
+ svg {
   padding: 4px;
   box-shadow: 0 0 2px rgba(0,0,0,0.2);
   border-radius: 8px;
   margin: 0 auto;
  }
+
+ /* App screenshots, stored at 2x: framed so white dialogs stand out from the page in both themes */
+ img {
+  margin: 0 auto;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 10px;
+  box-shadow: 0 8px 28px -10px rgba(20, 18, 58, 0.28);
+  background: #fff;
+ }
+
+ &.shot-xs img { max-width: min(100%, 260px); }
+ &.shot-sm img { max-width: min(100%, 360px); }
+ &.shot-md img { max-width: min(100%, 480px); }
+ &.shot-lg img { max-width: min(100%, 600px); }
 }
+
+/* Two screenshots side by side on wide screens */
+.shots {
+  display: grid;
+  gap: 16px;
+  align-items: start;
+  margin: 24px 0;
+}
+
+@media (min-width: 640px) {
+  .shots { grid-template-columns: 1fr 1fr; }
+}
+
+.shots figure { margin: 0 auto; }
 
 .figure {
   padding: 4px;
@@ -237,4 +308,22 @@
       color: white;
     }
   }
+}
+/* Home page: three ways in, as cards */
+.start-grid {
+  display: grid;
+  gap: 16px;
+  margin: 16px 0 32px;
+}
+
+@media (min-width: 768px) {
+  .start-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.start-grid p {
+  margin: 0;
+  padding: 20px;
+  border-radius: 12px;
+  background: var(--vp-c-bg-soft);
+  line-height: 1.6;
 }

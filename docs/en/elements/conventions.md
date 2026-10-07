@@ -21,7 +21,7 @@ Each node has `Dx`, `Dz` (translations) and `Ry` (rotation). Positive `Dz` is a 
 | `Fx`, `fx`, `f1x`… | +x (right; or along the element's local x when LCS is on) |
 | `Fz`, `fz`, `f1z`… | +z (**down**; or along local z when LCS is on) |
 | `My` | counter-clockwise on screen |
-| `ΔTs` | heating (elongation) |
+| `ΔTc` | heating (elongation) |
 | `ΔTb − ΔTt` | bottom fibre warmer than the top |
 
 So a gravity load is a **positive** `fz`, and a wind load pushing a left column to the right is a positive `fx`.

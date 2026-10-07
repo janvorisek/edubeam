@@ -12,7 +12,11 @@ Yes, and no. Open [run.edubeam.app](https://run.edubeam.app) and start modelling
 
 ### Which browsers and devices work?
 
-Any current Chrome, Edge, Firefox or Safari. Tablets and phones work (tap, drag to pan, pinch to zoom, long-press to move a node), but a mouse and keyboard make modelling much faster.
+Any current Chrome, Edge, Firefox or Safari. Tablets and phones work: tap to select or place, drag a node to move it, drag elsewhere to pan, pinch to zoom, and press and hold for the canvas menu. A mouse and keyboard still make modelling faster. See [Keyboard, mouse & touch](/reference/shortcuts#touch).
+
+### I lost my model. Can I get it back?
+
+Probably. Clearing the model, or opening a link, file or example over it, keeps the old one in **☰ → Recent structures** (the last 10), and <kbd>Ctrl</kbd>+<kbd>Z</kbd> undoes the replacement. Both live in your browser only.
 
 ### Can I use it offline?
 
@@ -26,11 +30,11 @@ Only in your browser. Models are never sent to a server; the share link *is* the
 
 ### How do I make a fixed / pinned / roller support?
 
-Tick DOF checkboxes: **Dx + Dz + Ry** = fixed, **Dx + Dz** = pinned, **Dz** = roller. Every combination and its symbol is listed in [Nodes & supports](/essentials/nodes-supports#supports).
+Click the node, open **Node supports** and pick the symbol: pin, roller, fixed, slider and more. Or tick the DOFs: **Dx + Dz + Ry** = fixed, **Dx + Dz** = pin, **Dz** = roller. Every combination is listed in [Nodes & supports](/essentials/nodes-supports#supports).
 
 ### How do I make a truss?
 
-Use beam elements and tick **both End hinges** for every bar in the *Elements* tab. Apply loads at the joints. See [Elements](/essentials/elements#end-hinges).
+Use beam elements and tick **both End hinges** for every bar in the *Elements* tab, or tick *Start hinge* and *End hinge* in the banner before drawing the bars with the mouse. Apply loads at the joints. The [truss tutorial](/tutorials/truss) walks through one.
 
 ### How do I put a hinge in a frame?
 
@@ -54,7 +58,7 @@ No, one load case only. Model each case separately and save or share it.
 
 ### Why do my loads point up?
 
-Because global z points **down**: positive `Fz` is downward. See [conventions](/elements/conventions).
+Because global z points **down**: positive `Fz` is downward. See [conventions](/elements/conventions). If you prefer a vertical axis pointing up, switch to y-up axes in *Settings → Language & Locale → Coordinate system*.
 
 ## Results
 
@@ -72,21 +76,21 @@ For linear static analysis the beam element is exact under the supported load ty
 
 ### Where are the reactions listed?
 
-In the viewer, as arrows with values (enable **Reactions** in the display settings). Element end forces and nodal displacements are in the **Results** tab.
+In the viewer, as arrows with values (**Reactions** in the display options, on by default). They are also in the file from **Results → Export CSV**, and in **Copy**. Nodal displacements and element end forces are in the **Results** tab.
 
 ## Files & sharing
 
 ### How do I share a model?
 
-**Share model** → **Copy**. The link contains the whole model. Recipients get their own editable copy; there is no live collaboration.
+**Share model** → **Copy**. The link contains the whole model. Recipients get their own editable copy; there is no live collaboration. See also [Teaching with EduBeam](/guide/teaching).
 
 ### Can I embed a model on my website or in slides?
 
-Yes—add `&viewer=1` to a share link and put it in an `<iframe>`. See [Embed a read-only viewer](/essentials/import-export#embed-a-read-only-viewer).
+Yes: add `&viewer=1` to a share link and put it in an `<iframe>`. See [Embed a viewer](/essentials/import-export#embed-a-read-only-viewer).
 
 ### Can I export images or tables?
 
-Not yet. Use a screenshot for images and copy the table text for numbers. Vote for the feature on [GitHub](https://github.com/janvorisek/edubeam/issues).
+Yes. **☰ → Export image** (<kbd>Ctrl</kbd>+<kbd>P</kbd>) saves the drawing as PNG or SVG, at a size or scale you choose. **Results → Export CSV** saves both result tables, and **Copy** puts them on the clipboard for a spreadsheet. See [Import, export & sharing](/essentials/import-export#export-an-image).
 
 ### Can I generate models programmatically?
 

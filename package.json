@@ -17,7 +17,8 @@
     "contributors": "node scripts/contributors.mjs",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "docs:screenshots": "node scripts/docs-screenshots/run.mjs"
   },
   "dependencies": {
     "@fontsource/barlow": "^5.3.0",
@@ -66,6 +67,7 @@
     "eslint-plugin-vue": "^10.11.1",
     "globals": "^17.12.0",
     "happy-dom": "^20.14.5",
+    "playwright": "^1.62.1",
     "prettier": "^3.9.9",
     "prettier-eslint": "^16.4.2",
     "sass": "^1.105.0",

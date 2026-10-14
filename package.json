@@ -68,7 +68,7 @@
     "globals": "^17.12.0",
     "happy-dom": "^20.14.5",
     "playwright": "^1.62.1",
-    "prettier": "^3.9.9",
+    "prettier": "^3.9.10",
     "prettier-eslint": "^16.4.2",
     "sass": "^1.105.0",
     "typescript": "^5.9.3",

@@ -369,7 +369,9 @@
     "openLink": "Otevřít odkaz",
     "nativeShare": "Sdílet přes systémové dialogové okno",
     "linkCopied": "Odkaz zkopírován do schránky",
-    "copyFailed": "Nepodařilo se automaticky zkopírovat. Použijte prosím klávesové zkratky."
+    "copyFailed": "Nepodařilo se automaticky zkopírovat. Použijte prosím klávesové zkratky.",
+    "shortLink": "Kratší odkaz",
+    "shortLinkHint": "Zhruba poloviční délka. Kdo používá starší verzi aplikace edubeam, musí ji před otevřením odkazu aktualizovat."
   },
   "tour": {
     "menu": {

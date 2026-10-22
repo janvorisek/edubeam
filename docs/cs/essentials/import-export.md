@@ -24,6 +24,7 @@ Soubory projektů ze všech dřívějších verzí EduBeamu otevřete i v aktuá
 - **Kopírovat** zkopíruje odkaz do schránky. Stejně funguje kliknutí do pole.
 - **Otevřít odkaz** ho otevře v nové záložce, abyste si ověřili, co uvidí příjemce.
 - **Sdílet přes systémové dialogové okno** předá odkaz do nabídky sdílení vašeho zařízení, pokud to prohlížeč umí.
+- **Kratší odkaz** zapíše tentýž model zhruba na polovinu znaků. Kopie <Edubeam />, která se neaktualizovala od října 2026, ho přečte až po aktualizaci, takže když musí odkaz hned fungovat všude, nechte ho vypnutý.
 
 Odkaz má tvar `https://run.edubeam.app/?model=…` a obsahuje celý zakódovaný model. Kdo ho otevře, dostane vlastní kopii, kterou může upravovat; úpravy se zpět **nesynchronizují**, takže po změně modelu pošlete nový odkaz. Z velmi velkých modelů vznikají velmi dlouhé odkazy; takové modely raději sdílejte jako soubor JSON.
 

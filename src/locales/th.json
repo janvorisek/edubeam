@@ -369,7 +369,9 @@
     "openLink": "Open link",
     "nativeShare": "Share via system dialog",
     "linkCopied": "Link copied to clipboard",
-    "copyFailed": "Could not copy automatically. Please use your keyboard shortcuts."
+    "copyFailed": "Could not copy automatically. Please use your keyboard shortcuts.",
+    "shortLink": "ลิงก์ที่สั้นกว่า",
+    "shortLinkHint": "สั้นลงประมาณครึ่งหนึ่ง ผู้ที่ใช้ edubeam เวอร์ชันเก่าต้องอัปเดตแอปก่อนจึงจะเปิดได้"
   },
   "tour": {
     "menu": {

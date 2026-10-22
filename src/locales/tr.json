@@ -369,7 +369,9 @@
     "openLink": "Bağlantıyı aç",
     "nativeShare": "Sistem penceresiyle paylaş",
     "linkCopied": "Bağlantı panoya kopyalandı",
-    "copyFailed": "Otomatik kopyalanamadı. Lütfen klavye kısayollarını kullanın."
+    "copyFailed": "Otomatik kopyalanamadı. Lütfen klavye kısayollarını kullanın.",
+    "shortLink": "Daha kısa bağlantı",
+    "shortLinkHint": "Yaklaşık yarı uzunlukta. edubeam'in eski bir sürümünü kullananların açmadan önce uygulamayı güncellemesi gerekir."
   },
   "tour": {
     "menu": {

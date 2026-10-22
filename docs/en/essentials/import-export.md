@@ -24,6 +24,7 @@ Project files from every earlier version of EduBeam open in the current one.
 - **Copy** copies the link to the clipboard. Clicking inside the field does the same.
 - **Open link** opens it in a new tab, so you can check what the recipient will see.
 - **Share via system dialog** hands the link to your device's share sheet, where the browser supports it.
+- **Shorter link** writes the same model in about half the characters. A copy of <Edubeam /> that hasn't updated since October 2026 can't read it until it does, so leave it off when a link has to open everywhere right away.
 
 The link has the form `https://run.edubeam.app/?model=…` and encodes the entire model. Whoever opens it gets their own copy to edit; edits are **not** synchronised back, so send a new link when the model changes. Very large models make very long links; for those, share the JSON file instead.
 

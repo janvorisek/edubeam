@@ -369,7 +369,9 @@
     "openLink": "Ouvrir le lien",
     "nativeShare": "Partager via la boîte de dialogue système",
     "linkCopied": "Lien copié dans le presse-papiers",
-    "copyFailed": "Impossible de copier automatiquement. Veuillez utiliser vos raccourcis clavier."
+    "copyFailed": "Impossible de copier automatiquement. Veuillez utiliser vos raccourcis clavier.",
+    "shortLink": "Lien plus court",
+    "shortLinkHint": "Environ deux fois plus court. Avec une ancienne version d'edubeam, il faut d'abord mettre l'application à jour pour l'ouvrir."
   },
   "tour": {
     "menu": {

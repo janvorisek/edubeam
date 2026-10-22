@@ -24,6 +24,7 @@ Projektdateien aus allen früheren Versionen von EduBeam lassen sich in der aktu
 - **Link kopieren** kopiert den Link in die Zwischenablage. Ein Klick in das Feld bewirkt dasselbe.
 - **Link öffnen** öffnet ihn in einem neuen Tab, sodass Sie prüfen können, was der Empfänger sehen wird.
 - **Über Systemdialog teilen** übergibt den Link an die Teilen-Funktion Ihres Geräts, sofern der Browser das unterstützt.
+- **Kürzerer Link** schreibt dasselbe Modell in etwa der Hälfte der Zeichen. Eine Kopie von <Edubeam />, die seit Oktober 2026 nicht aktualisiert wurde, kann ihn erst nach dem Update lesen. Lassen Sie die Option also aus, wenn ein Link sofort überall funktionieren muss.
 
 Der Link hat die Form `https://run.edubeam.app/?model=…` und kodiert das gesamte Modell. Wer ihn öffnet, erhält eine eigene Kopie zum Bearbeiten; Änderungen werden **nicht** zurücksynchronisiert, senden Sie also einen neuen Link, wenn sich das Modell ändert. Sehr große Modelle ergeben sehr lange Links; teilen Sie in diesem Fall besser die JSON-Datei.
 

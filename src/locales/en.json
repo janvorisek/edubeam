@@ -369,7 +369,9 @@
     "openLink": "Open link",
     "nativeShare": "Share via system dialog",
     "linkCopied": "Link copied to clipboard",
-    "copyFailed": "Could not copy automatically. Please use your keyboard shortcuts."
+    "copyFailed": "Could not copy automatically. Please use your keyboard shortcuts.",
+    "shortLink": "Shorter link",
+    "shortLinkHint": "About half as long. Anyone on an older version of edubeam has to update the app before it opens."
   },
   "tour": {
     "menu": {

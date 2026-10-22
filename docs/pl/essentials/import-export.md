@@ -24,6 +24,7 @@ Pliki projektów ze wszystkich wcześniejszych wersji EduBeam otwierają się w 
 - **Kopiuj** kopiuje link do schowka. To samo robi kliknięcie w pole.
 - **Otwórz link** otwiera go w nowej karcie, abyś mógł sprawdzić, co zobaczy odbiorca.
 - **Udostępnij przez systemowe okno dialogowe** przekazuje link do systemowego menu udostępniania urządzenia, jeśli przeglądarka to obsługuje.
+- **Krótszy link** zapisuje ten sam model w mniej więcej połowie znaków. Kopia <Edubeam />, która nie była aktualizowana od października 2026, odczyta go dopiero po aktualizacji, więc zostaw tę opcję wyłączoną, gdy link ma od razu działać wszędzie.
 
 Link ma postać `https://run.edubeam.app/?model=…` i koduje cały model. Każdy, kto go otworzy, dostaje własną kopię do edycji; zmiany **nie** są synchronizowane z powrotem, więc gdy model się zmieni, wyślij nowy link. Bardzo duże modele dają bardzo długie linki; w takim przypadku udostępnij plik JSON.
 

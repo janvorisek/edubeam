@@ -24,6 +24,7 @@ Los archivos de proyecto de todas las versiones anteriores de EduBeam se abren e
 - **Copiar** copia el enlace al portapapeles. Hacer clic dentro del campo hace lo mismo.
 - **Abrir enlace** lo abre en una pestaña nueva, para que compruebes lo que verá el destinatario.
 - **Compartir con el diálogo del sistema** pasa el enlace al menú de compartir de tu dispositivo, si el navegador lo admite.
+- **Enlace más corto** escribe el mismo modelo con aproximadamente la mitad de caracteres. Una copia de <Edubeam /> que no se ha actualizado desde octubre de 2026 no puede leerlo hasta que se actualice, así que déjalo desactivado cuando el enlace tenga que abrirse en todas partes desde el primer momento.
 
 El enlace tiene la forma `https://run.edubeam.app/?model=…` y codifica el modelo completo. Quien lo abre obtiene su propia copia para editar; los cambios **no** se sincronizan de vuelta, así que envía un enlace nuevo cuando cambie el modelo. Los modelos muy grandes generan enlaces muy largos; en ese caso, comparte mejor el archivo JSON.
 

@@ -52,18 +52,21 @@ const REACTION_DOFS: DofID[] = [DofID.Dx, DofID.Dz, DofID.Ry];
 
 /**
  * A node no element touches gets no equation numbers, so the solver has nothing to read back for it
- * - asking anyway throws instead of returning a value.
+ * - asking anyway throws instead of returning a value. That holds for a supported one's reactions too.
  */
+const isNumbered = (solver: LinearStaticSolver, node: Node, dof: DofID) =>
+  solver.nodeCodeNumbers.get(node.label)?.[dof] !== undefined;
+
 const readUnknown = (solver: LinearStaticSolver, node: Node, dof: DofID) => {
-  if (solver.nodeCodeNumbers.get(node.label)?.[dof] === undefined) return null;
+  if (!isNumbered(solver, node, dof)) return null;
 
   return node.getUnknowns(solver.loadCases[0], [dof]) as unknown as number;
 };
 
-const readReaction = (node: Node, loadCase: LinearStaticSolver['loadCases'][number], dof: DofID) => {
-  if (node.bcs.size === 0) return null;
+const readReaction = (solver: LinearStaticSolver, node: Node, dof: DofID) => {
+  if (node.bcs.size === 0 || !isNumbered(solver, node, dof)) return null;
 
-  const reactions = node.getReactions(loadCase, !node.hasLcs());
+  const reactions = node.getReactions(solver.loadCases[0], !node.hasLcs());
   const index = reactions.dofs.findIndex((d) => d === dof);
 
   if (index === -1) return null;
@@ -85,7 +88,6 @@ const sortByLabel = <T extends { label: string }>(items: T[]) =>
   [...items].sort((a, b) => String(a.label).localeCompare(String(b.label), undefined, { numeric: true }));
 
 export const buildNodeResultRows = (solver: LinearStaticSolver, units: ResultUnits) => {
-  const loadCase = solver.loadCases[0];
   // Headers and vertical components follow the axis convention on screen, like the units do.
   const { v, r } = axisLetters();
 
@@ -110,7 +112,7 @@ export const buildNodeResultRows = (solver: LinearStaticSolver, units: ResultUni
       return value === null ? null : units.displacement(value);
     };
     const reaction = (dof: DofID) => {
-      const value = readReaction(node, loadCase, dof);
+      const value = readReaction(solver, node, dof);
 
       if (value === null) return null;
       if (dof === DofID.Dz) return vertical(units.force(value));

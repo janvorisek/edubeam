@@ -125,17 +125,15 @@ const orientedNodeCoords = computed(() => {
     return `${props.node.coords[0]},${props.node.coords[2]} ${props.node.coords[0] + 1e-6},${props.node.coords[2]}`;
   }
 
-  // find first element which has this node
+  // find first element which has this node and can be drawn: one left naming a missing node has no direction
   const elements = props.node.domain.elements.values();
 
   for (const el of elements) {
     if (el.nodes.includes(props.node.label)) {
       const idx = el.nodes.indexOf(props.node.label);
 
-      let node2 = props.node.domain.nodes.get(el.nodes[0])!;
-      if (idx === 0) {
-        node2 = props.node.domain.nodes.get(el.nodes[1])!;
-      }
+      const node2 = props.node.domain.nodes.get(el.nodes[idx === 0 ? 1 : 0]);
+      if (!node2) continue;
 
       let n2x = (node2.coords[0] + props.node.coords[0]) / 2;
       let n2z = (node2.coords[2] + props.node.coords[2]) / 2;

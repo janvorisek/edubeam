@@ -35,33 +35,6 @@ export function formatNode(node: number[]): string {
   return `${node[0]},${node[2]} ${node[0]},${node[2]}`;
 }
 
-export function formatSupportNode(node: Node): string {
-  // find first element which has this node
-  const elements = node.domain.elements.values();
-
-  for (const el of elements) {
-    if (el.nodes.includes(node.label)) {
-      const idx = el.nodes.indexOf(node.label);
-
-      if (idx === 0) {
-        const node2 = node.domain.nodes.get(el.nodes[1])!;
-        const n2x = (node2.coords[0] + node.coords[0]) / 2;
-        const n2z = (node2.coords[2] + node.coords[2]) / 2;
-
-        return `${node.coords[0]},${node.coords[2]} ${n2x},${n2z}`;
-      }
-
-      const node2 = node.domain.nodes.get(el.nodes[0])!;
-      const n2x = (node2.coords[0] + node.coords[0]) / 2;
-      const n2z = (node2.coords[2] + node.coords[2]) / 2;
-
-      return `${node.coords[0]},${node.coords[2]} ${n2x},${n2z}`;
-    }
-  }
-
-  return `${node.coords[0]},${node.coords[2]} ${node.coords[0]},${node.coords[2]}`;
-}
-
 export function formatResults(el: Beam2D, scale: number, defoScale: number = 1, resultsScalePx = 42) {
   let result = '';
   const nseg = 20;

@@ -4,14 +4,14 @@ Una barra de celosía solo transmite esfuerzo axil. En <Edubeam /> no existe un 
 
 <TrussElement :hinges="[true, true]"  caption="Esquema de la barra de celosía 2D" />
 
-## Grados de libertad
+## Grados de libertad {#degrees-of-freedom}
 
 La barra de celosía 2D tiene dos grados de libertad en cada nodo:
 
 - **Traslación (Dx):** desplazamiento según el eje x.
 - **Traslación (Dz):** desplazamiento según el eje z.
 
-## Matriz de rigidez local
+## Matriz de rigidez local {#local-stiffness-matrix}
 
 La matriz de rigidez local de una barra de celosía es
 
@@ -31,7 +31,7 @@ donde
 - $A$ es el área de la sección,
 - $L$ es la longitud de la barra.
 
-## Matriz de transformación
+## Matriz de transformación {#transformation-matrix}
 
 La matriz de transformación del elemento, $\mathbf{T}$, lleva la matriz de rigidez local al sistema de coordenadas global.
 
@@ -44,7 +44,7 @@ $$
 \end{pmatrix}
 $$
 
-## Matriz de rigidez global
+## Matriz de rigidez global {#global-stiffness-matrix}
 
 La matriz de rigidez global, $\mathbf{K_g}$, se obtiene a partir de la matriz de transformación $\mathbf{T}$ y la matriz de rigidez local $\mathbf{K_l}$:
 

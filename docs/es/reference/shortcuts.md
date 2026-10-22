@@ -1,59 +1,66 @@
-# Teclado y ratón
+# Teclado, ratón y pantalla táctil
 
-Los atajos de teclado funcionan mientras el visor tiene el foco; se ignoran mientras escribes en una celda de tabla o en un diálogo.
+Los atajos de teclado funcionan cuando el visor tiene el foco. Se ignoran mientras escribes en una celda de una tabla o en un diálogo; haz clic primero en el lienzo.
 
-## Teclado
+## Teclado {#keyboard}
 
 | Atajo | Acción |
 | --- | --- |
 | <kbd>Ctrl</kbd>+<kbd>Z</kbd> | Deshacer |
 | <kbd>Ctrl</kbd>+<kbd>Mayús</kbd>+<kbd>Z</kbd> | Rehacer |
-| <kbd>Ctrl</kbd>+<kbd>S</kbd> | Guardar proyecto (descargar JSON) |
+| <kbd>Ctrl</kbd>+<kbd>S</kbd> | Guardar proyecto (descarga el JSON) |
 | <kbd>Ctrl</kbd>+<kbd>O</kbd> | Abrir proyecto |
+| <kbd>Ctrl</kbd>+<kbd>P</kbd> | Exportar imagen |
 | <kbd>Ctrl</kbd>+<kbd>A</kbd> | Seleccionar todo |
-| <kbd>Ctrl</kbd>+<kbd>C</kbd> | Copiar la selección (nodos, elementos, cargas) al portapapeles de EduBeam |
-| <kbd>Ctrl</kbd>+<kbd>V</kbd> | Pegar: una silueta de la copia sigue al cursor; clic izquierdo para colocarla |
+| <kbd>Ctrl</kbd>+<kbd>C</kbd> | Copiar la selección (nodos, elementos y sus cargas) |
+| <kbd>Ctrl</kbd>+<kbd>V</kbd> | Pegar: una silueta de la copia sigue al cursor; haz clic para colocarla, o escribe un desplazamiento Δx, Δz en la banda y pulsa **Pegar** |
 | <kbd>Supr</kbd> | Eliminar la selección |
-| <kbd>Esc</kbd> | Cancelar el modo de ratón actual, deseleccionar, salir de una celda de tabla |
-| <kbd>Intro</kbd> | Confirmar una celda de tabla |
-| <kbd>F</kbd> | Ajustar a la pantalla |
-| <kbd>C</kbd> | Centrar |
-| <kbd>G</kbd> | Activar/desactivar cuadrícula |
-| <kbd>S</kbd> | Activar/desactivar ajuste a la cuadrícula |
+| <kbd>Esc</kbd> | Cancelar el modo de ratón actual, cerrar el recorrido, vaciar la selección o salir de una celda de la tabla |
+| <kbd>Intro</kbd> | Confirmar una celda de la tabla |
+| <kbd>F</kbd> | Ajustar contenido a la pantalla |
+| <kbd>C</kbd> | Centrar contenido |
+| <kbd>G</kbd> | Mostrar u ocultar la cuadrícula |
+| <kbd>S</kbd> | Activar o desactivar el ajuste a la cuadrícula |
 | <kbd>Ctrl</kbd>+<kbd>=</kbd> / <kbd>Ctrl</kbd>+<kbd>-</kbd> | Acercar / alejar |
 
-En macOS usa <kbd>Cmd</kbd> donde se indica <kbd>Ctrl</kbd>.
+En un Mac, usa <kbd>Cmd</kbd> donde se indica <kbd>Ctrl</kbd>.
 
-## Ratón
+## Ratón {#mouse}
 
 | Acción | Resultado |
 | --- | --- |
-| Clic izquierdo | Selecciona un nodo / elemento / carga / cota y abre su menú contextual |
-| Arrastrar con botón izquierdo en lienzo vacío | Selección por rectángulo |
-| Arrastrar con botón izquierdo un nodo | Mueve el nodo (se ajusta a la cuadrícula si está activado) |
-| Clic izquierdo en modo *Añadir con ratón* | Coloca un nodo, o inicia / continúa una poligonal de elementos |
+| Clic | Selecciona un nodo, un elemento, una carga o una línea de cota y abre su panel |
+| Arrastrar sobre el lienzo vacío | Rectángulo de selección |
+| Arrastrar un nodo | Mueve el nodo (se ajusta a la cuadrícula si el ajuste está activado) |
+| Clic en modo de ratón | Coloca un nodo, o empieza o continúa una polilínea de elementos |
 | Doble clic en una carga | Edita la carga |
-| Clic derecho en lienzo vacío | Menú del lienzo: Añadir nodo, Añadir elemento, Añadir cota, Editar, Copiar, Pegar, Eliminar |
-| Arrastrar con botón central o derecho | Desplazar (configurable en *Configuración → Controles y atajos*) |
+| Clic derecho | Menú del lienzo: Añadir nodo, Añadir elemento, Añadir cota, Acotar el elemento … (sobre un elemento), Editar, Copiar, Pegar, Eliminar |
+| <kbd>Ctrl</kbd> (<kbd>Cmd</kbd> en un Mac) + Añadir nodo / Añadir elemento en el menú del lienzo | Coloca con el ratón en lugar de con un diálogo |
+| Arrastrar con el botón central o derecho | Desplaza la vista (ver *Configuración → Controles y atajos*) |
 | Rueda | Zoom hacia el cursor |
-| Pasar el ratón | Tooltip con desplazamientos / propiedades / valores de carga |
+| Señalar un objeto | Tooltip con desplazamientos, propiedades o valores de carga |
 
-## Táctil
+En un trackpad, el desplazamiento con dos dedos hace zoom. Para desplazar la vista, haz clic y arrastra con dos dedos (equivale a arrastrar con el botón derecho).
+
+## Pantalla táctil {#touch}
 
 | Gesto | Resultado |
 | --- | --- |
-| Toque | Seleccionar |
-| Arrastrar con un dedo | Desplazar |
-| Pellizco | Zoom |
-| Mantener pulsado un nodo | Empezar a moverlo |
+| Tocar | Selecciona y muestra los datos y las acciones del objeto |
+| Tocar en modo de ratón | Coloca un nodo o continúa un elemento |
+| Pulsar un nodo y arrastrar | Mueve el nodo |
+| Arrastrar con un dedo en otro sitio | Desplaza la vista |
+| Pellizcar | Zoom |
+| Mantener pulsado el lienzo | Menú del lienzo |
+| Botón **Selección por rectángulo** (arriba a la derecha) y luego arrastrar | Rectángulo de selección |
 
-## Menús contextuales
+## Paneles de objeto {#object-panels}
 
-Hacer clic en un objeto abre un pequeño menú junto a él:
+Al hacer clic en un objeto se abre junto a él un panel con sus datos y estas acciones:
 
-| Objeto | Opciones |
+| Objeto | Acciones |
 | --- | --- |
-| Nodo | Añadir carga · Apoyos del nodo (Dx / Dz / Ry, Ángulo del SCL nodal) · Imponer desplazamiento (si está apoyado) · Eliminar |
-| Elemento | Editar elemento (nodos, material, sección) · Añadir carga · Matriz de rigidez · Eliminar |
-| Carga nodal / de elemento | Editar carga · Eliminar |
+| Nodo | Añadir carga · Apoyos del nodo (símbolo de apoyo, Dx / Dz / Ry, ángulo del SCL nodal) · Imponer desplazamiento (en un nodo con apoyo) · Eliminar |
+| Elemento | Editar elemento (nodos y rótulas, material, sección) · Añadir carga · Matriz de rigidez · Eliminar |
+| Carga nodal o de elemento | Editar carga · Eliminar |
 | Línea de cota | Editar (coordenadas) · Invertir cota · Eliminar |

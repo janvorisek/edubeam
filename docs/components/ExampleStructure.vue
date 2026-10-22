@@ -4,6 +4,7 @@ import { ref, onMounted, reactive, nextTick, computed } from 'vue';
 import SVGElementViewer from '../../src/components/SVGElementViewer.vue';
 import { VTweakpane } from 'v-tweakpane';
 import { serializeModel, deserializeModel } from '../../src/utils/serializeModel';
+import { useDocsText } from './docsText';
 
 const colors = {
   normalForce: '#2222ff',
@@ -16,8 +17,10 @@ const colors = {
   reactions: '#a020f0',
 };
 
+const { app, docs, appLocale, numberFormat } = useDocsText();
+
 const pane = ref({
-  title: 'Simply supported beam',
+  title: docs('simplySupportedBeam'),
 });
 
 const PARAMS = reactive({
@@ -39,11 +42,13 @@ const onPaneCreated = (pane: any) => {
     });
 
   const btn = pane.addButton({
-    title: 'Open in edubeam',
+    title: docs('openInApp'),
   });
 
   btn.on('click', () => {
-    window.location.href = 'https://run.edubeam.app?model=' + serializeModel(solver.value);
+    // Without the dimension list serializeModel threw, so this button never opened anything.
+    const model = encodeURIComponent(serializeModel(solver.value, []));
+    window.location.href = `https://run.edubeam.app/?model=${model}&lang=${appLocale.value}`;
   });
 };
 
@@ -122,6 +127,8 @@ const viewer = ref<InstanceType<typeof SVGElementViewer>>();
           :mobile-padding="16"
           :results-scale-px="32"
           :convert-force="(v) => v / 1000"
+          :convert-force-distance="(v) => v / 1000"
+          :number-format="numberFormat"
         />
         <div>
           <v-tweakpane class="p-4" style="width: 260px" :pane="pane" @on-pane-created="onPaneCreated" />
@@ -131,10 +138,18 @@ const viewer = ref<InstanceType<typeof SVGElementViewer>>();
         <div style="width: 100%">
           <div>
             <div class="if-selector">
-              <button :class="{ selected: quantity === 'u' }" @click="changeQuantity('u')">Deformed shape</button>
-              <button :class="{ selected: quantity === 'n' }" @click="changeQuantity('n')">Normal force</button>
-              <button :class="{ selected: quantity === 'v' }" @click="changeQuantity('v')">Shear force</button>
-              <button :class="{ selected: quantity === 'm' }" @click="changeQuantity('m')">Bending moment</button>
+              <button :class="{ selected: quantity === 'u' }" @click="changeQuantity('u')">
+                {{ app('common.deformedShape') }}
+              </button>
+              <button :class="{ selected: quantity === 'n' }" @click="changeQuantity('n')">
+                {{ app('common.normalForce') }}
+              </button>
+              <button :class="{ selected: quantity === 'v' }" @click="changeQuantity('v')">
+                {{ app('common.shearForce') }}
+              </button>
+              <button :class="{ selected: quantity === 'm' }" @click="changeQuantity('m')">
+                {{ app('common.bendingMoment') }}
+              </button>
             </div>
           </div>
           <SVGElementViewer
@@ -155,6 +170,8 @@ const viewer = ref<InstanceType<typeof SVGElementViewer>>();
             :mobile-padding="32"
             :results-scale-px="48"
             :convert-force="(v) => v / 1000"
+            :convert-force-distance="(v) => v / 1000"
+            :number-format="numberFormat"
           />
         </div>
       </div>

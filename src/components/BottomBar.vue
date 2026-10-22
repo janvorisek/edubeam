@@ -579,7 +579,7 @@
               <div class="inline-edit-group load mr-2">
                 <label class="input-before">F<sub>x</sub></label>
                 <input
-                  :value="appStore.convertForce(item.ref.values[0])"
+                  :value="appStore.convertForce(inPlaneValues(item.ref.values)[0])"
                   class="inline-edit"
                   @keydown="checkNumber($event)"
                   @change="
@@ -599,7 +599,7 @@
                   >F<sub>{{ appStore.axes.v }}</sub></span
                 >
                 <input
-                  :value="appStore.vertical(appStore.convertForce(item.ref.values[2]))"
+                  :value="appStore.vertical(appStore.convertForce(inPlaneValues(item.ref.values)[2]))"
                   class="inline-edit"
                   @keydown="checkNumber($event)"
                   @change="
@@ -615,7 +615,7 @@
                   >M<sub>{{ appStore.axes.r }}</sub></span
                 >
                 <input
-                  :value="appStore.convertMoment(item.ref.values[4])"
+                  :value="appStore.convertMoment(inPlaneValues(item.ref.values)[4])"
                   class="inline-edit"
                   @keydown="checkNumber($event)"
                   @change="
@@ -636,7 +636,7 @@
               <div class="inline-edit-group load mr-2" :class="{ disabled: !isDofSupported(item.target, DofID.Dx) }">
                 <label class="input-before">D<sub>x</sub></label>
                 <input
-                  :value="appStore.convertDisplacement(item.ref.prescribedValues[0])"
+                  :value="appStore.convertDisplacement(inPlaneValues(item.ref.prescribedValues)[0])"
                   class="inline-edit"
                   :disabled="!isDofSupported(item.target, DofID.Dx)"
                   @keydown="checkNumber($event)"
@@ -657,7 +657,7 @@
                   >D<sub>{{ appStore.axes.v }}</sub></span
                 >
                 <input
-                  :value="appStore.vertical(appStore.convertDisplacement(item.ref.prescribedValues[2]))"
+                  :value="appStore.vertical(appStore.convertDisplacement(inPlaneValues(item.ref.prescribedValues)[2]))"
                   class="inline-edit"
                   :disabled="!isDofSupported(item.target, DofID.Dz)"
                   @keydown="checkNumber($event)"
@@ -674,7 +674,7 @@
                   >R<sub>{{ appStore.axes.r }}</sub></span
                 >
                 <input
-                  :value="item.ref.prescribedValues[4]"
+                  :value="inPlaneValues(item.ref.prescribedValues)[4]"
                   class="inline-edit"
                   :disabled="!isDofSupported(item.target, DofID.Ry)"
                   @keydown="checkNumber($event)"
@@ -1578,6 +1578,7 @@ import EditNode from './dialogs/EditNode.vue';
 import { useLayoutStore } from '@/store/layout';
 import StiffnessMatrix from '@/components/StiffnessMatrix.vue';
 import { float2String } from '../utils/index';
+import { inPlaneValues } from '@/utils/dofValues';
 
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();

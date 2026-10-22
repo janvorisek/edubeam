@@ -75,7 +75,8 @@ export const examples: ExampleDefinition[] = [
       domain.createNode('A', [0, 0, 0], [DofID.Dx, DofID.Dz, DofID.Ry]);
       domain.createNode('B', [4, 0, 0], []);
       domain.createBeam2D('E1', ['A', 'B'], EXAMPLE_MATERIAL_LABEL, EXAMPLE_CROSS_SECTION_LABEL);
-      solver.loadCases[0].createNodalLoad('B', { [DofID.Dx]: 0, [DofID.Dz]: -18000, [DofID.Ry]: 0 });
+      // Positive z points down: the 18 kN acts downward, as the blurb says.
+      solver.loadCases[0].createNodalLoad('B', { [DofID.Dx]: 0, [DofID.Dz]: 18000, [DofID.Ry]: 0 });
     },
   },
   {
@@ -134,7 +135,7 @@ export const examples: ExampleDefinition[] = [
       domain.createBeam2D('E3', ['C', 'D'], EXAMPLE_MATERIAL_LABEL, EXAMPLE_CROSS_SECTION_LABEL);
 
       solver.loadCases[0].createBeamElementUniformEdgeLoad('E1', [0, 8000], true);
-      solver.loadCases[0].createNodalLoad('C', { [DofID.Dx]: 0, [DofID.Dz]: -20000, [DofID.Ry]: 0 });
+      solver.loadCases[0].createNodalLoad('C', { [DofID.Dx]: 0, [DofID.Dz]: 20000, [DofID.Ry]: 0 });
       solver.loadCases[0].createBeamElementUniformEdgeLoad('E3', [0, 6000], true);
     },
   },

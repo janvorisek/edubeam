@@ -1,90 +1,112 @@
 # Lasten
 
-Alle Lasten liegen in einem **einzigen Lastfall** und wirken gleichzeitig. Zum Vergleich von Szenarien speichern Sie jedes als eigene Projektdatei oder eigenen Link.
+Alle Lasten liegen in einem **einzigen Lastfall** und wirken gleichzeitig. Um Szenarien zu vergleichen, speichern Sie jedes als eigene Projektdatei oder eigenen Link.
+
+![Alle Lastarten an einem Durchlaufträger: eine Knotenkraft, eine Gleichlast, eine Trapezlast, eine Einzellast, eine Temperaturlast und eine Auflagersenkung](/screenshots/de/loads-overview.webp)
 
 <LoadShowcase />
 
-## Vorzeichenkonvention in einem Satz
+## Vorzeichenkonvention in einem Satz {#sign-convention-in-one-line}
 
-Global **x** zeigt nach rechts, global **z** zeigt **nach unten**. Ein positives `Fz` oder `fz` in globalen Koordinaten ist daher eine nach unten wirkende Last (Schwerkraftrichtung); ein positives Moment `My` dreht auf dem Bildschirm gegen den Uhrzeigersinn. Einzelheiten unter [Koordinatensystem & Vorzeichenkonvention](/de/elements/conventions).
+Global **x** zeigt nach rechts und global **z** **nach unten**. Ein positives `Fz` oder `fz` ist daher eine nach unten gerichtete Last wie die Schwerkraft, und ein positives Moment `My` dreht auf dem Bildschirm gegen den Uhrzeigersinn. Einzelheiten unter [Koordinatensystem & Vorzeichenkonventionen](/de/elements/conventions). Mit [Achsen mit y nach oben](/de/elements/conventions#y-up-axes) kehren sich Bezeichnungen und Vorzeichen der Vertikalen um: Die Schwerkraft ist dann ein negatives `Fy`.
 
-## Knotenlasten
+## Knotenlasten {#nodal-loads}
 
-Reiter *Lasten* → **Knotenlast hinzufügen**, oder Klick auf einen Knoten → **Last hinzufügen**. Wählen Sie **Kraft/Moment**:
-
-| Feld | Bedeutung | Einheit |
-| --- | --- | --- |
-| `Fx` | horizontale Kraft (+ → rechts) | Krafteinheit |
-| `Fz` | vertikale Kraft (+ → unten) | Krafteinheit |
-| `My` | Moment um y | Momenteneinheit |
-
-Die Komponenten sind immer im **globalen** Koordinatensystem. Eine Pfeilvorschau im Dialog zeigt Richtung und Größe. Mehrere Knotenlasten an einem Knoten sind erlaubt und addieren sich.
-
-### Vorgegebene Verschiebungen (Auflagersenkungen)
-
-Wählen Sie im selben Dialog **Vorgegebene Verschiebung** (oder Klick auf einen gelagerten Knoten → **Verschiebung vorgeben**). Die Felder wechseln zu:
+Reiter *Lasten* → **Knotenlast hinzufügen** oder Klick auf einen Knoten → **Last hinzufügen**. Wählen Sie **Kraft/Moment**:
 
 | Feld | Bedeutung | Einheit |
 | --- | --- | --- |
-| `Dx` | aufgezwungene horizontale Verschiebung | Längeneinheit |
-| `Dz` | aufgezwungene vertikale Verschiebung (+ → unten) | Längeneinheit |
+| `Fx` | horizontale Kraft (positiv nach rechts) | Krafteinheit |
+| `Fz` | vertikale Kraft (positiv nach unten) | Krafteinheit |
+| `My` | Moment um y (positiv gegen den Uhrzeigersinn) | Momenteneinheit |
+
+![Knotenlast hinzufügen. Die Vorschau zeigt schon beim Tippen die Richtung.](/screenshots/de/loads-nodal.webp){.shot-md}
+
+Die Komponenten beziehen sich immer auf das **globale** Koordinatensystem. Ein Knoten kann mehrere Knotenlasten tragen; sie addieren sich und werden übereinander gezeichnet.
+
+### Vorgegebene Verschiebungen (Auflagersenkungen) {#prescribed-displacements-support-settlements}
+
+Wählen Sie im selben Dialog **Vorgegebene Verschiebung** oder klicken Sie auf einen gelagerten Knoten → **Verschiebung vorgeben**. Die Felder wechseln zu:
+
+| Feld | Bedeutung | Einheit |
+| --- | --- | --- |
+| `Dx` | aufgezwungene horizontale Verschiebung | Verschiebungseinheit |
+| `Dz` | aufgezwungene vertikale Verschiebung (positiv nach unten) | Verschiebungseinheit |
 | `Ry` | aufgezwungene Verdrehung | rad |
 
-Ein Wert kann nur für einen Freiheitsgrad eingegeben werden, der an diesem Knoten **gehalten** ist – nur Lager lassen sich verschieben. Jeder Knoten kann eine vorgegebene Verschiebung haben; bearbeiten Sie sie, statt eine zweite anzulegen. In einem statisch bestimmten Tragwerk erzeugt eine Auflagersenkung Verformungen, aber keine Schnittgrößen; in einem statisch unbestimmten beides.
+Einen Wert können Sie nur für einen Freiheitsgrad eingeben, der an diesem Knoten **gehalten** ist, denn nur Lager lassen sich verschieben. Jeder Knoten hat höchstens eine vorgegebene Verschiebung; bearbeiten Sie sie, statt eine zweite hinzuzufügen. In einem statisch bestimmten Tragwerk erzeugt eine Auflagersenkung Verschiebungen, aber keine Schnittgrößen; in einem statisch unbestimmten beides.
 
-## Elementlasten
+## Elementlasten {#element-loads}
 
-Reiter *Lasten* → **Elementlast hinzufügen**, oder Klick auf ein Element → **Last hinzufügen**. Wählen Sie den **Lasttyp**; der Dialog zeigt eine Live-Vorschau der Last am Element.
+Reiter *Lasten* → **Elementlast hinzufügen** oder Klick auf ein Element → **Last hinzufügen**. Wählen Sie den **Lasttyp**; der Dialog zeigt schon beim Tippen eine Vorschau der Last am Element.
 
-### Gleichmäßig verteilte Last (Gleichlast)
+### Gleichmäßig verteilte Last {#uniformly-distributed-load}
 
 | Feld | Bedeutung | Einheit |
 | --- | --- | --- |
 | `fx` | Last je Länge in x-Richtung | Kraft / Länge |
 | `fz` | Last je Länge in z-Richtung | Kraft / Länge |
-| **LCS** | anhaken, um `fx`, `fz` in den lokalen Achsen des Elements zu interpretieren | – |
+| **LCS** | angehakt: `fx`, `fz` wirken in den lokalen Achsen des Elements; nicht angehakt: in den globalen Achsen | – |
 
-Der häufigste Fall ist eine vertikale Schwerkraftlast: `fz > 0`, LCS aus. Bei einem geneigten Stab ist eine Last **senkrecht zum Stab** (z. B. Wind auf einen Sparren) `fz` mit **eingeschaltetem** LCS; eine vertikale Last je Meter *Grundrissprojektion* gibt es nicht direkt – rechnen Sie sie zuerst auf Meter Stablänge um.
+**LCS** ist standardmäßig angehakt. Bei einem horizontalen, von links nach rechts gezeichneten Element sind lokale und globale Achsen gleich, es macht also keinen Unterschied. Bei einem geneigten Stab schon:
 
-### Trapezlast
+- eine Last **senkrecht zum Stab** (Wind auf einen Sparren) ist `fz` mit **angehaktem** LCS;
+- eine **vertikale** Last je Meter Stablänge (Eigengewicht) ist `fz` mit **nicht angehaktem** LCS;
+- eine vertikale Last je Meter *Grundrissprojektion* (Schnee) gibt es nicht direkt. Multiplizieren Sie sie zuerst mit $\cos\alpha$, wobei $\alpha$ die Neigung des Stabs ist, und geben Sie sie als vertikale Last ein.
 
-| Feld | Bedeutung |
-| --- | --- |
-| `f1x`, `f1z` | Ordinate am **Anfangsknoten** |
-| `f2x`, `f2z` | Ordinate am **Endknoten** |
-
-Die Ordinaten verlaufen zwischen den Enden linear. Eine Dreieckslast ist einfach `f1z = 0`. Trapezlasten sind immer im **lokalen System des Elements** (das LCS-Kästchen ist fest eingeschaltet); bei horizontalen Stäben fallen lokales und globales z zusammen, es spielt also nur bei geneigten Stäben eine Rolle.
-
-### Einzellast
-
-Eine Einzelkraft oder ein Einzelmoment irgendwo **entlang** eines Elements – ohne zusätzlichen Knoten.
+### Trapezlast {#trapezoidal-load}
 
 | Feld | Bedeutung |
 | --- | --- |
-| `Fx`, `Fz`, `My` | Kraft- / Momentenkomponenten |
+| `f1x`, `f1z` | Lastordinate am **Anfangsknoten** |
+| `f2x`, `f2z` | Lastordinate am **Endknoten** |
+
+Die Ordinate verläuft linear vom Anfang zum Ende des Elements. Eine Dreieckslast hat `f1z = 0`. Trapezlasten wirken immer in den **lokalen Achsen des Elements** (das Kästchen LCS ist gesperrt); bei einem horizontalen Element ist das dasselbe wie global.
+
+### Einzellast {#concentrated-load}
+
+Eine Einzelkraft oder ein Einzelmoment an beliebiger Stelle **entlang** eines Elements, ohne dass ein zusätzlicher Knoten nötig ist.
+
+| Feld | Bedeutung |
+| --- | --- |
+| `Fx`, `Fz`, `My` | Kraft- und Momentenkomponenten |
 | **Lastposition vom Anfangsknoten** | Abstand vom Anfangsknoten, `0 ≤ a ≤ L` |
 | **LCS** | Komponenten in lokalen Achsen |
 
-Die Querkraftlinie springt an der Laststelle um `Fz`, die Momentenlinie bekommt dort einen Knick; der Momentenwert an dieser Stelle wird automatisch beschriftet.
+Die Querkraftlinie springt an der Laststelle um `Fz`, und die Momentenlinie hat dort einen Knick; der Momentenwert an dieser Stelle wird automatisch beschriftet. Ein Einzelmoment `My` lässt stattdessen die Momentenlinie springen.
 
-### Temperaturlast
+### Temperaturlast {#temperature-load}
 
 | Feld | Bedeutung |
 | --- | --- |
-| **ΔT<sub>c</sub>** – axiale Temperaturänderung | gleichmäßige Erwärmung des gesamten Querschnitts → Verlängerung $\alpha\,\Delta T_c\,L$ |
-| **ΔT<sub>b</sub> − ΔT<sub>t</sub>** – untere minus obere Faser | Temperaturunterschied über die Höhe → Krümmung $\alpha\,(\Delta T_b - \Delta T_t)/h$ |
+| **ΔT<sub>c</sub>**, axiale Temperaturänderung | gleichmäßige Änderung über den ganzen Querschnitt, ergibt eine Verlängerung $\alpha\,\Delta T_c\,L$ |
+| **ΔT<sub>b</sub> − ΔT<sub>t</sub>**, Temperaturdifferenz | untere minus obere Faser, ergibt eine Krümmung $\alpha\,(\Delta T_b - \Delta T_t)/h$ |
 
-Temperaturlasten verwenden **α** des Materials und die **Querschnittshöhe h**. Ein positives `ΔTb − ΔTt` (untere Faser wärmer) lässt das Element nach oben ausbauchen. In einem statisch bestimmten Tragwerk erzeugt Temperatur nur Verformungen; erst Zwängung (eingespannte Enden, Durchlaufwirkung, überzählige Stäbe) macht daraus Schnittgrößen.
+Temperaturlasten verwenden das **α** des Materials und die **Höhe h** des Querschnitts. Ein positives `ΔTb − ΔTt` (unten wärmer) verlängert die untere Faser, sodass sich das Element wie ein Balken unter Schwerkraftlast nach unten durchbiegt. In einem statisch bestimmten Tragwerk erzeugt Temperatur nur Verschiebungen; erst Zwängung (eingespannte Enden, Durchlaufwirkung, überzählige Stäbe) macht daraus Schnittgrößen.
 
-## Lasten bearbeiten und entfernen
+<div class="shots">
 
-- Lasten erscheinen als Chips in den Tabellen *Knoten* / *Elemente* und als Zeilen im Reiter *Lasten*, wo die Komponenten (und das LCS-Kästchen) direkt bearbeitet werden.
-- **Doppelklick** auf eine Last in der Ansicht oder Klick und **Last bearbeiten** öffnet den Bearbeitungsdialog.
-- Last auswählen und <kbd>Entf</kbd> drücken oder den Papierkorb verwenden.
-- An Knoten oder Elementen hängende Lasten werden mit diesen gelöscht und beim Kopieren mitkopiert.
+![Gleichmäßig verteilte Last](/screenshots/de/loads-udl.webp)
 
-## Was nicht verfügbar ist
+![Trapezlast](/screenshots/de/loads-trapezoidal.webp)
 
-- **Lastfälle und Kombinationen** – nur ein Lastfall.
-- **Eigengewicht** – als Gleichlast eingeben: $f_z = \rho\,g\,A$ (z. B. IPE 200: 7850 × 9,81 × 0,00285 ≈ 0,22 kN/m).
-- **Trapezlasten in globalen Koordinaten** an geneigten Stäben.
+![Einzellast](/screenshots/de/loads-concentrated.webp)
+
+![Temperaturlast](/screenshots/de/loads-temperature.webp)
+
+</div>
+
+## Lasten bearbeiten und entfernen {#editing-and-removing-loads}
+
+- Jede Last ist eine Zeile im Reiter *Lasten*, wo Sie ihre Komponenten und das Kennzeichen LCS direkt bearbeiten können. Lasten erscheinen außerdem als Chips in den Tabellen *Knoten* und *Elemente*.
+- **Doppelklicken** Sie in der Ansicht auf eine Last oder klicken Sie darauf und wählen Sie **Last bearbeiten**, um den Bearbeitungsdialog zu öffnen.
+- Wählen Sie eine Last aus und drücken Sie <kbd>Entf</kbd> oder nutzen Sie das × in der Tabelle.
+- Lasten an einem Knoten oder Element werden mit diesem gelöscht und beim Kopieren und Einfügen mitkopiert.
+
+![Der Reiter Lasten: eine Zeile je Last, die Komponenten direkt bearbeitbar](/screenshots/de/loads-table.webp)
+
+## Was nicht verfügbar ist {#what-is-not-available}
+
+- **Lastfälle und Kombinationen.** Es gibt einen Lastfall.
+- **Eigengewicht.** Geben Sie es als Gleichlast mit nicht angehaktem LCS ein: $f_z = \rho\,g\,A$. Für ein IPE 200: 7850 × 9,81 × 0,00285 ≈ 0,22 kN/m.
+- **Trapezlasten in globalen Achsen** an geneigten Stäben.

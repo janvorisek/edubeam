@@ -96,6 +96,7 @@ import { DofID } from 'ts-fem';
 import { closeModal } from 'jenesius-vue-modal';
 import { useAppStore } from '@/store/app';
 import { checkNumber, parseFloat2 } from '@/utils';
+import { inPlaneValues } from '@/utils/dofValues';
 import Vector2DHelper from '../Vector2DHelper.vue';
 import { executeModelMutationWithUndo, numberRules } from '../../utils';
 
@@ -157,15 +158,15 @@ onMounted(() => {
   }
 
   if (props.type === 'displacement') {
-    const load = useProjectStore().solver.loadCases[0].prescribedBC[props.index];
-    loadNodeValueFx.value = appStore.convertDisplacement(load.prescribedValues[DofID.Dx]).toString();
-    loadNodeValueFz.value = appStore.vertical(appStore.convertDisplacement(load.prescribedValues[DofID.Dz])).toString();
-    loadNodeValueMy.value = load.prescribedValues[DofID.Ry].toString();
+    const values = inPlaneValues(useProjectStore().solver.loadCases[0].prescribedBC[props.index].prescribedValues);
+    loadNodeValueFx.value = appStore.convertDisplacement(values[DofID.Dx]).toString();
+    loadNodeValueFz.value = appStore.vertical(appStore.convertDisplacement(values[DofID.Dz])).toString();
+    loadNodeValueMy.value = values[DofID.Ry].toString();
   } else {
-    const load = useProjectStore().solver.loadCases[0].nodalLoadList[props.index];
-    loadNodeValueFx.value = appStore.convertForce(load.values[DofID.Dx]).toString();
-    loadNodeValueFz.value = appStore.vertical(appStore.convertForce(load.values[DofID.Dz])).toString();
-    loadNodeValueMy.value = appStore.convertMoment(load.values[DofID.Ry]).toString();
+    const values = inPlaneValues(useProjectStore().solver.loadCases[0].nodalLoadList[props.index].values);
+    loadNodeValueFx.value = appStore.convertForce(values[DofID.Dx]).toString();
+    loadNodeValueFz.value = appStore.vertical(appStore.convertForce(values[DofID.Dz])).toString();
+    loadNodeValueMy.value = appStore.convertMoment(values[DofID.Ry]).toString();
   }
 });
 

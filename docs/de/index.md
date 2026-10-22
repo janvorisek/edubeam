@@ -1,45 +1,75 @@
 ---
+# https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
 hero:
   name: "EduBeam"
-  text: "Baustatik online"
-  tagline: Zeichnen Sie einen Balken, setzen Sie eine Last und sehen Sie zu, wie alles sofort neu berechnet wird – vollständige FEM-Ergebnisse im Browser, ohne Installation und kostenlos.
+  text: "Kostenlose Stabwerksberechnung online"
+  tagline: Zeichnen Sie einen Balken, einen Rahmen oder ein Fachwerk, setzen Sie Lasten und sehen Sie zu, wie sich die Verläufe bei jeder Änderung aktualisieren. Vollständige FEM-Ergebnisse im Browser – ohne Installation, ohne Konto, ohne Kosten.
   image:
-    src: /download.png
-    alt: EduBeam im Browser
-    link: https://run.edubeam.app/?lang=de
+    src: /screenshots/de/hero.webp
+    alt: EduBeam mit einem berechneten Rahmen
   actions:
     - theme: brand
       text: App starten
       link: https://run.edubeam.app/?lang=de
     - theme: alt
-      text: Schnellstart
-      link: /de/guide/quick-start
+      text: Anleitung lesen
+      link: /de/guide/introduction
     - theme: alt
-      text: Beispiele
+      text: Beispiele ansehen
       link: /de/examples/
 
 features:
   - icon: ⚡
-    title: Sofortige Rückmeldung
-    details: Spannweite ändern, Lager verschieben oder Last anpassen – die Schnittgrößenverläufe reagieren augenblicklich.
+    title: Ergebnisse schon beim Zeichnen
+    details: Es gibt keine Schaltfläche „Berechnen“. Ziehen Sie einen Knoten, haken Sie ein Gelenk an oder ändern Sie eine Last – N, V, M, Auflagerreaktionen und die Verformungsfigur folgen sofort.
+    link: /de/essentials/results
+    linkText: Ergebnisse lesen
   - icon: 🧑‍🏫
     title: Für die Lehre gemacht
-    details: Rückgängig/Wiederholen, Tooltips mit Werten, Gelenke und Lager als Kontrollkästchen – weniger Erklären, mehr Ausprobieren.
+    details: Geführte erste Schritte, Werte beim Überfahren mit der Maus, ein Solver, der erklärt, warum ein Tragwerk kinematisch ist, und Links, die Sie in Vorlesungsunterlagen einfügen können.
+    link: /de/guide/teaching
+    linkText: Lehren mit EduBeam
   - icon: 🌍
-    title: In Ihrer Sprache
-    details: 11 Oberflächensprachen, metrische oder angloamerikanische Einheiten je Größe frei wählbar.
+    title: Ihre Sprache, Ihre Einheiten
+    details: 12 Oberflächensprachen, SI- oder US-Einheiten und wahlweise z nach unten oder die aus Lehrbüchern bekannte y-Achse nach oben.
+    link: /de/essentials/units-settings
+    linkText: Einheiten & Einstellungen
   - icon: 🔗
-    title: Teilen mit einem Klick
-    details: Ein Link, der das ganze Modell enthält, JSON-Projekte oder ein schreibgeschützter Viewer für Folien und Webseiten.
+    title: Teilen, exportieren, einbetten
+    details: Senden Sie ein ganzes Modell als Link, speichern Sie es als Datei, exportieren Sie die Zeichnung als PNG oder SVG und die Ergebnistabellen als CSV.
+    link: /de/essentials/import-export
+    linkText: Dateien & Teilen
 ---
-## Für wen ist EduBeam?
 
-- **Studierende**, die Handrechnungen prüfen – starten Sie mit dem [10-Minuten-Schnellstart](/de/guide/quick-start) und [Ergebnisse von Hand prüfen](/de/guide/verification).
-- **Lehrende**, die Lager, Gelenke, Lasten und Schnittgrößen live vorführen, in der Sprache ihrer Studierenden.
-- **Ingenieure und Tüftler**, die eine schnelle Plausibilitätsprüfung ebener Tragwerke ohne „großes“ Programm wollen.
+## Hier starten {#start-here}
 
-Wer eine Maus ziehen kann, kann auch <Edubeam /> bedienen. 🙂
+<div class="start-grid">
+
+**Neu bei EduBeam?** Folgen Sie dem [10-Minuten-Schnellstart](/de/guide/quick-start). Sie modellieren Schritt für Schritt einen Einfeldträger und prüfen jedes Ergebnis von Hand.
+
+**Wissen Sie schon, was Sie bauen wollen?** Springen Sie zu einem [Tutorial](/de/tutorials/three-hinged-frame) oder öffnen Sie ein fertiges [Beispiel](/de/examples/) und passen Sie es an.
+
+**Halten Sie eine Lehrveranstaltung?** Siehe [Lehren mit EduBeam](/de/guide/teaching): Links für Übungsaufgaben, ein einbettbarer Viewer für Folien und Übungen.
+
+</div>
+
+<div class="shots">
+
+![Ein Fachwerk: Normalkräfte, Zug positiv](/screenshots/de/tut-truss.webp)
+
+![Ein Mechanismus wird sichtbar: EduBeam zeigt, warum er nicht berechnet werden kann](/screenshots/de/ui-mechanism.webp)
+
+</div>
+
+## Was Sie modellieren können {#what-you-can-model}
+
+- **Balken, Rahmen und Fachwerke** in der Ebene: Durchlaufträger, Portalrahmen, Dreigelenkbögen, gelenkige Fachwerke.
+- **Beliebige Lager**: Festlager, Loslager, Einspannung, Parallelführung, gedrehte Lager und Auflagersenkungen.
+- **Lasten**: Einzelkräfte und -momente, gleichmäßige und trapezförmige Streckenlasten, Einzellasten an beliebiger Stelle eines Stabs und Temperatur.
+- **Beliebige Querschnitte**: aus der Bibliothek (IPE, HEA, AISC W, HSS, Rechtecke, Rohre) oder als Polygon gezeichnet, mit automatisch berechneten Querschnittswerten.
+
+Mehr dazu in der [Einführung](/de/guide/introduction).
 
 <ElementariumPromo />

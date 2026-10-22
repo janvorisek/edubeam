@@ -1,81 +1,91 @@
 # Węzły i podpory
 
-Węzły to punkty modelu. Elementy łączą węzły; podpory i obciążenia węzłowe są przypisane do węzłów.
+Węzły to punkty modelu. Elementy łączą węzły, a podpory i obciążenia węzłowe są przypisane do węzłów.
 
-## Współrzędne
+## Współrzędne {#coordinates}
 
-Każdy węzeł ma współrzędne **X** i **Z** w bieżącej jednostce długości. Oś x jest skierowana w prawo, a **oś z w dół** ekranu — słup rosnący od ziemi biegnie więc od `Z = 0` do `Z = −3`, a nie `+3`. Wskaźnik osi w rogu siatki pokazuje bieżącą orientację. Zobacz [Układ współrzędnych i konwencje znaków](/pl/elements/conventions).
+Każdy węzeł ma współrzędne **X** i **Z** w bieżącej jednostce długości. Oś x jest skierowana w prawo, a **oś z w dół** ekranu, więc słup wyrastający z gruntu biegnie od `Z = 0` do `Z = −3`, a nie `+3`. Wskaźnik osi w rogu siatki pokazuje orientację. Jeśli wolisz oś pionową skierowaną w górę, przełącz się w Ustawieniach na [oś y w górę](/pl/elements/conventions#y-up-axes).
 
-## Dodawanie węzłów
+## Dodawanie węzłów {#adding-nodes}
 
-| Metoda | Jak |
+| Sposób | Jak |
 | --- | --- |
-| **Okno dialogowe** | Zakładka *Węzły* → **Dodaj węzeł** lub kliknięcie prawym przyciskiem na płótnie → *Dodaj węzeł*. Wpisz X i Z. |
-| **Mysz** | Zakładka *Węzły* → **Dodaj myszą** (lub przytrzymaj <kbd>Ctrl</kbd>, wybierając *Dodaj węzeł* z menu płótna), a następnie klikaj na płótnie. Każde kliknięcie dodaje węzeł; naciśnij <kbd>Esc</kbd>, aby zakończyć. |
-| **Podczas rysowania elementów** | W trybie *Dodaj element → Dodaj myszą* kliknięcie pustego płótna tworzy nowy węzeł i od razu go łączy. |
-| **Kopiuj i wklej** | Zaznacz węzły (i elementy), <kbd>Ctrl</kbd>+<kbd>C</kbd>, <kbd>Ctrl</kbd>+<kbd>V</kbd>, a potem kliknij tam, gdzie ma trafić kopia. |
+| **Okno dialogowe** | Zakładka *Węzły* → pierwszy przycisk **Dodaj węzeł** albo prawy przycisk myszy na płótnie → *Dodaj węzeł*. Wpisz X i Z, a opcjonalnie także podpory i kąt podpory. |
+| **Mysz** | Zakładka *Węzły* → drugi przycisk **Dodaj węzeł** (ikona kursora) albo przytrzymaj <kbd>Ctrl</kbd> przy wyborze *Dodaj węzeł* w menu płótna. Każde kliknięcie na płótnie dodaje węzeł. Naciśnij <kbd>Esc</kbd> lub **Anuluj**, aby zakończyć. |
+| **Podczas rysowania elementów** | W trybie dodawania elementów myszą kliknięcie pustego płótna tworzy węzeł i go łączy. |
+| **Kopiuj i wklej** | Zaznacz węzły (i elementy), naciśnij <kbd>Ctrl</kbd>+<kbd>C</kbd> i <kbd>Ctrl</kbd>+<kbd>V</kbd>, a potem kliknij, gdzie ma się znaleźć kopia, albo wpisz przesunięcie Δx, Δz i naciśnij **Wklej**. |
 
-Etykiety są nadawane automatycznie (`1`, `2`, …) i można je zmienić w tabeli.
+<div class="shots">
 
-### Przyciąganie
+![Okno Dodaj węzeł](/screenshots/pl/qs-node.webp)
 
-Przy włączonym **Przyciągaj do siatki** (<kbd>S</kbd> lub plakietka **S**) węzły stawiane i przeciągane myszą trafiają w wielokrotności **Kroku przyciągania do siatki** (domyślnie `0,1 m`, do zmiany w *Ustawienia → Ustawienia widoku → Siatka*). Wyłącz przyciąganie, aby umieszczać swobodnie, albo wpisz potem dokładne współrzędne w tabeli.
+![W trybie myszy pasek u góry ustawia podpory i kąt każdego wstawianego węzła](/screenshots/pl/nodes-add-banner.webp)
 
-### Umieszczanie węzła na istniejącym elemencie
+</div>
 
-Jeśli podczas dodawania węzła klikniesz w odległości ok. 0,1 m od elementu, EduBeam zapyta, o co Ci chodzi:
+Etykiety są nadawane automatycznie (`1`, `2`, … lub w kontynuacji Twojego schematu, np. `A`, `B`) i można je zmienić w tabeli.
 
-- **Połącz z konstrukcją** — element zostaje podzielony na dwa (`1a` i `1b`), przeguby na zewnętrznych końcach są zachowane, a obciążenie rozłożone dzielone między obie części. To najszybszy sposób na dodanie podpory pośredniej lub punktu przyłożenia obciążenia.
-- **Umieść pojedynczy węzeł** — węzeł powstaje na elemencie, ale nie jest z nim połączony.
+### Przyciąganie {#snapping}
 
-## Edycja węzłów
+Przy włączonym **Przyciągaj do siatki** (<kbd>S</kbd> lub przełącznik **S**) wstawiane i przeciągane węzły trafiają w wielokrotności wartości **Krok przyciągania do siatki**: domyślnie 0,1 m lub 0,5 ft w jednostkach amerykańskich. Zmienisz go w *Ustawienia → Ustawienia widoku → Siatka*. Wyłącz przyciąganie, aby wstawiać węzły swobodnie, albo wpisz później dokładne współrzędne w tabeli.
 
-- **Tabela:** edytuj etykietę, X i Z w miejscu.
-- **Przeciąganie:** przesuwaj węzeł w widoku (z możliwością cofnięcia). Na ekranach dotykowych przytrzymaj węzeł, aby zacząć go przesuwać.
-- **Okno Edytuj węzeł:** współrzędne, podpory i kąt lokalnego układu w jednym miejscu, z podglądem symbolu podpory na żywo.
-- **Usuwanie:** ikona kosza w tabeli, *Usuń* w menu podręcznym węzła lub zaznaczenie i <kbd>Delete</kbd>. Usunięcie węzła usuwa przypisane do niego elementy i obciążenia.
+### Wstawianie węzła na istniejącym elemencie {#placing-a-node-on-an-existing-element}
 
-## Podpory
+Jeśli podczas dodawania węzła klikniesz blisko elementu, EduBeam zapyta, o co Ci chodzi:
 
-Podpora to po prostu zbiór zablokowanych stopni swobody. Każdy węzeł ma trzy:
+- **Połącz z konstrukcją** dzieli element na dwa (`1a` i `1b`). Przeguby na zewnętrznych końcach zostają zachowane, a obciążenia równomierne i trapezowe są dzielone między obie części; obciążenia skupione i termiczne trafiają do pierwszej części. To najszybszy sposób na dodanie podpory pośredniej lub punktu przyłożenia obciążenia.
+- **Umieść pojedynczy węzeł** tworzy węzeł na elemencie bez łączenia go.
+
+## Edycja węzłów {#editing-nodes}
+
+- **Tabela:** edytuj etykietę, X i Z bezpośrednio w komórkach.
+- **Przeciąganie:** przesuń węzeł w widoku, także na ekranie dotykowym: dotknij węzła i przeciągnij. Każde przesunięcie można cofnąć.
+- **Okno Edytuj węzeł:** ołówek w kolumnie *Akcje* tabeli. Zawiera współrzędne, podpory i kąt podpory, z podglądem symbolu podpory.
+- **Usuwanie:** × w tabeli, *Usuń* w panelu węzła albo zaznacz węzeł i naciśnij <kbd>Delete</kbd>. Usunięcie węzła usuwa też przyłączone do niego elementy i obciążenia.
+
+## Podpory {#supports}
+
+Podpora to zestaw zablokowanych stopni swobody. Każdy węzeł ma trzy:
 
 | Stopień swobody | Znaczenie |
 | --- | --- |
-| **Dx** | przesunięcie wzdłuż x (poziome) |
-| **Dz** | przesunięcie wzdłuż z (pionowe) |
-| **Ry** | obrót wokół y (obrót w płaszczyźnie) |
+| **Dx** | przesunięcie wzdłuż osi x (poziome) |
+| **Dz** | przesunięcie wzdłuż osi z (pionowe) |
+| **Ry** | obrót wokół osi y (w płaszczyźnie rysunku) |
 
-Zaznacz pola w kolumnie **Podparte stopnie swobody** zakładki *Węzły*, w menu podręcznym **Podpory węzła** zaznaczonego węzła lub w oknie *Edytuj węzeł*. Symbol rysowany w widoku wynika z kombinacji:
+Najszybciej jest **wybrać symbol**. Znajdziesz go w panelu węzła pod **Podpory węzła**, w oknach Dodaj węzeł i Edytuj węzeł oraz jako małe menu na początku kolumny *Podparte stopnie swobody* w tabeli Węzły. Zaznaczanie pól `Dx`, `Dz`, `Ry` robi to samo, po jednym stopniu swobody.
 
-| Zablokowane | Podpora | Symbol |
-| --- | --- | --- |
-| Dx + Dz + Ry | Utwierdzenie | zakreskowany blok |
-| Dx + Dz | Podpora przegubowa nieprzesuwna | trójkąt |
-| Dz | Podpora przegubowa przesuwna pozioma (swobodny przesuw poziomy) | trójkąt na rolkach |
-| Dx | Podpora przegubowa przesuwna pionowa (swobodny przesuw pionowy) | obrócona podpora na rolkach |
-| Dz + Ry | Utwierdzenie przesuwne (prowadnica pionowa) | utwierdzenie na rolkach |
-| Dx + Ry | Utwierdzenie przesuwne (prowadnica pozioma) | obrócone utwierdzenie |
-| Ry | Tylko blokada obrotu | blokada obrotu |
-| brak | Węzeł swobodny | — |
+![Podpory węzła: wybierz symbol lub zaznacz stopnie swobody i ustaw kąt podpory](/screenshots/pl/nodes-support-picker.webp){.shot-lg}
 
-Dla każdego zablokowanego stopnia swobody obliczana — i rysowana — jest reakcja.
+| Podpora | Zablokowane | Może się | Reakcje |
+| --- | --- | --- | --- |
+| **Swobodny** | nic | przemieszczać dowolnie | brak |
+| **Przegub** | Dx + Dz | obracać | R<sub>x</sub>, R<sub>z</sub> |
+| **Przegub przesuwny** | Dz | przesuwać poziomo i obracać | R<sub>z</sub> |
+| **Przegub przesuwny pionowy** | Dx | przesuwać pionowo i obracać | R<sub>x</sub> |
+| **Utwierdzenie** | Dx + Dz + Ry | nic | R<sub>x</sub>, R<sub>z</sub>, M |
+| **Utwierdzenie przesuwne** | Dz + Ry | przesuwać poziomo | R<sub>z</sub>, M |
+| **Utwierdzenie przesuwne pionowe** | Dx + Ry | przesuwać pionowo | R<sub>x</sub>, M |
+| **Tylko obrót zablokowany** | Ry | przesuwać w obu kierunkach | M |
+
+Dla każdego zablokowanego stopnia swobody obliczana i rysowana jest reakcja.
 
 ::: tip Węzły kratownicy
-Pręty kratownicy to elementy belkowe ze zwolnionymi oboma **przegubami końcowymi** (zobacz [Elementy](/pl/essentials/elements#przeguby-koncowe)). W węźle kratownicy zwykle stosuje się podporę przegubową nieprzesuwną (Dx + Dz); **nie** blokuj Ry w węźle, w którym wszystkie zbiegające się elementy są przegubowe — obrót takiego węzła byłby nieokreślony.
+Pręty kratownicy to elementy belkowe ze zwolnionymi oboma **przegubami końcowymi** (zobacz [Elementy](/pl/essentials/elements#end-hinges)). W podporze kratownicy zwykle stosuje się podporę przegubową nieprzesuwną (Dx + Dz). Węzeł, w którym wszystkie przyłączone elementy mają przeguby, nie ma sztywności obrotowej; EduBeam go akceptuje i podaje jego obrót jako 0.
 :::
 
-### Podpory ukośne (pochylone)
+### Podpory ukośne {#inclined-skewed-supports}
 
-Ustaw **Kąt lokalnego układu** (w stopniach, −180…180) w menu podręcznym węzła lub w oknie *Edytuj węzeł*. Osie lokalne węzła obracają się o ten kąt, a stopnie swobody podpory są interpretowane w obróconym układzie — podpora przesuwna na zboczu o nachyleniu 30° to `Dz` z kątem lokalnego układu `30`. Symbol podpory obraca się odpowiednio, a reakcja jest podawana w obróconym kierunku.
+Ustaw **Kąt lokalnego układu** α w stopniach (−180…180). Znajdziesz go w panelu węzła pod *Podpory węzła*, w oknach Dodaj węzeł i Edytuj węzeł oraz w polu α tabeli Węzły. Osie węzła obracają się o ten kąt, a stopnie swobody podpory działają w obróconych kierunkach, więc podpora przesuwna na zboczu nachylonym pod kątem 30° to `Dz` z α = 30. Symbol obraca się odpowiednio, a reakcja jest podawana w obróconym kierunku.
 
-### Stateczność
+### Stateczność {#stability}
 
-Solver potrzebuje łącznie co najmniej **trzech zablokowanych stopni swobody** oraz konstrukcji bez mechanizmu. Brak lub niedostateczna liczba podpór powoduje błąd *Model needs at least 3 constrained DOFs…* (komunikat wyświetlany po angielsku) albo po prostu brak wyników. Zobacz [Rozwiązywanie problemów](/pl/reference/troubleshooting).
+Solver potrzebuje łącznie co najmniej **trzech zablokowanych stopni swobody**, a podpory i przeguby muszą utrzymać konstrukcję. Dopóki podpór jest za mało, widok pokazuje niebieską plakietkę *Brak podpór*. Jeśli podpór jest wystarczająco dużo, ale nie mogą utrzymać konstrukcji (wszystkie są równoległe lub przecinają się w jednym punkcie), albo przeguby pozwalają prętom obracać się względem siebie, czerwony komunikat nazywa problem, a przerywany zarys pokazuje, jak konstrukcja się porusza. Zobacz [Rozwiązywanie problemów](/pl/reference/troubleshooting).
 
-## Obciążenia węzłowe i osiadania
+## Obciążenia węzłowe i osiadania {#nodal-loads-and-settlements}
 
-Siły, momenty i zadane przemieszczenia (osiadania podpór) przykłada się w węzłach — zobacz [Obciążenia](/pl/essentials/loads#obciazenia-wezłowe).
+Siły, momenty i zadane przemieszczenia (osiadania podpór) przykłada się w węzłach. Zobacz [Obciążenia](/pl/essentials/loads#nodal-loads).
 
-## Linie wymiarowe
+## Linie wymiarowe {#dimension-lines}
 
-Kliknij prawym przyciskiem na płótnie → **Dodaj wymiar**, aby narysować linię wymiarową między dwoma punktami. Końce przyciągają się do węzłów, gdy przeciągniesz je w ich pobliże; zaznacz linię i użyj **Edytuj**, aby wpisać współrzędne, lub **Odwróć wymiar**, aby przenieść opis na drugą stronę. Linie wymiarowe są tylko elementem graficznym i są zapisywane razem z projektem.
+Kliknij prawym przyciskiem płótno → **Dodaj wymiar**, aby narysować linię wymiarową między dwoma punktami, albo kliknij prawym przyciskiem element → **Wymiaruj element**, aby zwymiarować go bezpośrednio. Punkty końcowe przyciągają się do węzłów, gdy przeciągniesz je w ich pobliże. Zaznacz linię i użyj **Edytuj**, aby wpisać jej współrzędne, lub **Odwróć wymiar**, aby przenieść opis na drugą stronę. Linie wymiarowe są tylko graficzne; zapisują się w projekcie i są przenoszone w linkach do udostępniania.

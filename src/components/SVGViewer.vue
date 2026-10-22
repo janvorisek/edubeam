@@ -53,6 +53,7 @@ import { selectionSubtitle } from '@/utils/selectionDetails';
 import { boundsFromPoints } from '@/utils/fitBounds';
 import { placePopupNearAnchor, type AnchorRect } from '@/utils/popupPlacement';
 import { deviceCanTouch, deviceHasHover } from '@/utils/pointer';
+import { hasShortcutModifier } from '@/utils/keyboard';
 import {
   Node,
   DofID,
@@ -274,12 +275,12 @@ const hideTooltip = (clearHoverState = true) => {
 };
 
 const zoom = (e: KeyboardEvent) => {
-  if (e.ctrlKey && e.code === 'Equal') {
+  if (hasShortcutModifier(e) && e.code === 'Equal') {
     panZoom.value?.zoom(svg.value.clientWidth / 2, svg.value.clientHeight / 2, -0.1);
     e.preventDefault();
   }
 
-  if (e.ctrlKey && e.code === 'Minus') {
+  if (hasShortcutModifier(e) && e.code === 'Minus') {
     panZoom.value?.zoom(svg.value.clientWidth / 2, svg.value.clientHeight / 2, 0.1);
     e.preventDefault();
   }
@@ -491,31 +492,39 @@ const { current, escape, f, c, g, s, _delete } = useMagicKeys({
   },
 });
 
-const { ctrl_a, ctrl_c, ctrl_v } = useMagicKeys({
+const { ctrl_a, ctrl_c, ctrl_v, meta_a, meta_c, meta_v } = useMagicKeys({
   passive: false,
   onEventFired(e) {
     if (isShortcutBlocked()) return;
-    if (e.ctrlKey && e.key === 'a' && e.type === 'keydown') e.preventDefault();
+    if (hasShortcutModifier(e) && e.key === 'a' && e.type === 'keydown') e.preventDefault();
   },
 });
 
+// Cmd on a Mac does what Ctrl does elsewhere.
+const selectAllKeys = computed(() => ctrl_a.value || meta_a.value);
+const copyKeys = computed(() => ctrl_c.value || meta_c.value);
+const pasteKeys = computed(() => ctrl_v.value || meta_v.value);
+
+/** F, C, G and S are shortcuts on their own; held with a modifier they belong to the browser or to save. */
+const withModifier = () => current.has('control') || current.has('meta') || current.has('alt');
+
 watch(f, (v) => {
-  if (isShortcutBlocked()) return;
-  if (v) fitContent();
+  if (!v || isShortcutBlocked() || withModifier()) return;
+  fitContent();
 });
 
 watch(c, (v) => {
-  if (isShortcutBlocked()) return;
-  if (v && !current.has('control')) centerContent();
+  if (!v || isShortcutBlocked() || withModifier()) return;
+  centerContent();
 });
 
 watch(g, (v) => {
-  if (!v || isShortcutBlocked()) return;
+  if (!v || isShortcutBlocked() || withModifier()) return;
   toggleGridVisibility();
 });
 
 watch(s, (v) => {
-  if (!v || isShortcutBlocked()) return;
+  if (!v || isShortcutBlocked() || withModifier()) return;
   toggleSnapToGrid();
 });
 
@@ -527,21 +536,21 @@ watch(_delete, (v) => {
   }
 });
 
-watch(ctrl_a, (v) => {
+watch(selectAllKeys, (v) => {
   if (isShortcutBlocked()) return;
   if (v) {
     projectStore.selectAll2();
   }
 });
 
-watch(ctrl_c, (v) => {
+watch(copyKeys, (v) => {
   if (isShortcutBlocked()) return;
   if (v) {
     useClipboardStore().select(projectStore.selection2);
   }
 });
 
-watch(ctrl_v, (v) => {
+watch(pasteKeys, (v) => {
   if (isShortcutBlocked()) return;
   if (v) {
     paste();
@@ -1530,8 +1539,7 @@ const placeAtPointer = (e: PointerEvent) => {
 
     // Check whether the node is being placed onto some of the existing elements
     // If so, we need to ask the user if they want split the existing element or place individual node
-    for (const [, el] of projectStore.solver.domain.elements) {
-      const beam = el as Beam2D;
+    for (const beam of projectStore.beams) {
       const n1 = projectStore.solver.domain.nodes.get(beam.nodes[0])!;
       const n2 = projectStore.solver.domain.nodes.get(beam.nodes[1])!;
 
@@ -1569,25 +1577,31 @@ const placeAtPointer = (e: PointerEvent) => {
                   );
                   const splitRatio = totalLength > 0 ? Math.min(Math.max(partialLength / totalLength, 0), 1) : 0.5;
 
-                  projectStore.solver.domain.createBeam2D(el.label + 'a', [el.nodes[0], newNodeId], el.mat, el.cs, [
-                    prevHinges[0],
-                    false,
-                  ]);
+                  projectStore.solver.domain.createBeam2D(
+                    beam.label + 'a',
+                    [beam.nodes[0], newNodeId],
+                    beam.mat,
+                    beam.cs,
+                    [prevHinges[0], false]
+                  );
 
-                  projectStore.solver.domain.createBeam2D(el.label + 'b', [newNodeId, el.nodes[1]], el.mat, el.cs, [
-                    false,
-                    prevHinges[1],
-                  ]);
+                  projectStore.solver.domain.createBeam2D(
+                    beam.label + 'b',
+                    [newNodeId, beam.nodes[1]],
+                    beam.mat,
+                    beam.cs,
+                    [false, prevHinges[1]]
+                  );
 
                   for (const loadCase of projectStore.solver.loadCases) {
                     loadCase.solved = false;
                     for (let i = loadCase.elementLoadList.length - 1; i >= 0; i--) {
                       const load = loadCase.elementLoadList[i];
-                      if (load.target !== el.label) continue;
+                      if (load.target !== beam.label) continue;
 
                       if (load instanceof BeamElementUniformEdgeLoad) {
-                        load.target = el.label + 'a';
-                        loadCase.createBeamElementUniformEdgeLoad(el.label + 'b', [...load.values], load.lcs);
+                        load.target = beam.label + 'a';
+                        loadCase.createBeamElementUniformEdgeLoad(beam.label + 'b', [...load.values], load.lcs);
                       } else if (load instanceof BeamElementTrapezoidalEdgeLoad) {
                         const midValues: [number, number] = [
                           load.startValues[0] + (load.endValues[0] - load.startValues[0]) * splitRatio,
@@ -1595,15 +1609,15 @@ const placeAtPointer = (e: PointerEvent) => {
                         ];
                         const startValues: [number, number] = [...load.startValues] as [number, number];
                         const endValues: [number, number] = [...load.endValues] as [number, number];
-                        load.change(el.label + 'a', startValues, midValues, load.lcs);
-                        loadCase.createBeamElementTrapezoidalEdgeLoad(el.label + 'b', midValues, endValues, load.lcs);
+                        load.change(beam.label + 'a', startValues, midValues, load.lcs);
+                        loadCase.createBeamElementTrapezoidalEdgeLoad(beam.label + 'b', midValues, endValues, load.lcs);
                       } else {
-                        load.target = el.label + 'a';
+                        load.target = beam.label + 'a';
                       }
                     }
                   }
 
-                  projectStore.solver.domain.elements.delete(el.label);
+                  projectStore.solver.domain.elements.delete(beam.label);
                 });
 
                 appStore.mouseMode = MouseMode.NONE;
@@ -1650,8 +1664,27 @@ const placeAtPointer = (e: PointerEvent) => {
 
   if (appStore.mouseMode === MouseMode.ADD_ELEMENT) {
     mouseStartX = -9999;
+    const domain = projectStore.solver.domain;
+
+    // An undo while the mode is open can take away the node the chain goes on from, or every
+    // material or cross section. An element built on either names something that is gone, and
+    // every drawing and selection pass after it fails on the missing node.
+    if (startNode.value !== null && !domain.nodes.has(String(startNode.value.label))) startNode.value = null;
+
+    const mat = [...domain.materials.values()][0]?.label;
+    const cs = [...domain.crossSections.values()][0]?.label;
+    if (mat === undefined || cs === undefined) {
+      alert(t(mat === undefined ? 'warnings.addMaterialFirst' : 'warnings.addCrossSectionFirst'));
+      cancelActiveMode();
+      return true;
+    }
+
+    // On touch nothing clears the hover between taps, so it can still name a node an undo removed.
+    const hoveredNode =
+      intersected.value.type === 'node' ? domain.nodes.get(String(intersected.value.index)) : undefined;
+
     if (startNode.value === null) {
-      const n = projectStore.solver.domain.nodes.get(intersected.value.index as string);
+      const n = hoveredNode;
 
       // No node selected, but want to add element
       // So we add a node for the user
@@ -1671,8 +1704,8 @@ const placeAtPointer = (e: PointerEvent) => {
         return true;
       }
 
-      startNode.value = { label: intersected.value.index, x: n.coords[0], y: n.coords[2] };
-    } else if (intersected.value.type === 'node') {
+      startNode.value = { label: n.label, x: n.coords[0], y: n.coords[2] };
+    } else if (hoveredNode) {
       projectStore.solver.loadCases[0].solved = false;
       let newElId = projectStore.solver.domain.elements.size + 1;
 
@@ -1681,17 +1714,14 @@ const placeAtPointer = (e: PointerEvent) => {
       }
 
       const nid = startNode.value.label;
-      if (nid === null || intersected.value.index === null) return true;
-      const mat = [...useProjectStore().solver.domain.materials.values()][0].label;
-      const cs = [...useProjectStore().solver.domain.crossSections.values()][0].label;
+      if (nid === null) return true;
       executeModelMutationWithUndo(() => {
-        projectStore.solver.domain.createBeam2D(newElId, [String(nid), String(intersected.value.index)], mat, cs, [
+        projectStore.solver.domain.createBeam2D(newElId, [String(nid), hoveredNode.label], mat, cs, [
           ...addElementHinges.value,
         ]);
       });
 
-      const n = projectStore.solver.domain.nodes.get(intersected.value.index as string)!;
-      startNode.value = { label: intersected.value.index, x: n.coords[0], y: n.coords[2] };
+      startNode.value = { label: hoveredNode.label, x: hoveredNode.coords[0], y: hoveredNode.coords[2] };
     } else {
       projectStore.solver.loadCases[0].solved = false;
 
@@ -1710,8 +1740,6 @@ const placeAtPointer = (e: PointerEvent) => {
 
       const nid = startNode.value.label;
       if (nid === null) return true;
-      const mat = [...useProjectStore().solver.domain.materials.values()][0].label;
-      const cs = [...useProjectStore().solver.domain.crossSections.values()][0].label;
       executeModelMutationWithUndo(() => {
         projectStore.solver.domain.createNode(newNodeId, [mouseXReal.value, 0, mouseYReal.value]);
         projectStore.solver.domain.createBeam2D(newElId, [String(nid), String(newNodeId)], mat, cs, [
@@ -2110,7 +2138,8 @@ const onMouseUp = (e: PointerEvent) => {
     }
 
     // Loop over elements and check if element in rectangle
-    for (const [label, el] of useProjectStore().solver.domain.elements) {
+    for (const el of projectStore.beams) {
+      const label = el.label;
       const n1 = useProjectStore().solver.domain.nodes.get(el.nodes[0])!;
       const n2 = useProjectStore().solver.domain.nodes.get(el.nodes[1])!;
 
@@ -2579,6 +2608,7 @@ defineExpose({ centerContent, fitContent });
     <context-menu v-model:show="showCtxMenu" :options="optionsCtxMenu">
       <context-menu-item
         @click.ctrl="appStore.mouseMode = MouseMode.ADD_NODE"
+        @click.meta="appStore.mouseMode = MouseMode.ADD_NODE"
         @click.exact="openModal(AddNodeDialog, {})"
       >
         <template #icon>
@@ -2591,6 +2621,7 @@ defineExpose({ centerContent, fitContent });
       </context-menu-item>
       <context-menu-item
         @click.ctrl="appStore.mouseMode = MouseMode.ADD_ELEMENT"
+        @click.meta="appStore.mouseMode = MouseMode.ADD_ELEMENT"
         @click.exact="openModal(AddElementDialog, {})"
       >
         <template #icon>

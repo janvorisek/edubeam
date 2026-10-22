@@ -1,17 +1,17 @@
 # Příhradový prut
 
-Příhradový prut přenáší pouze normálovou sílu. V <Edubeam /> neexistuje samostatný typ příhradového prvku: příhradový prut je [prutový prvek](/cs/elements/beam) se zaškrtnutými **oběma koncovými klouby**, což kondenzací odstraní ohybové členy a ponechá osovou tuhost uvedenou níže.
+Příhradový prut přenáší pouze normálovou sílu. <Edubeam /> nemá samostatný typ příhradového prvku: příhradový prut je [prutový prvek](/cs/elements/beam) se zaškrtnutými **oběma koncovými klouby**. Kondenzace pak odstraní ohybové členy a zůstane jen osová tuhost uvedená níže.
 
 <TrussElement :hinges="[true, true]"  caption="Schéma rovinného příhradového prutu" />
 
-## Stupně volnosti
+## Stupně volnosti {#degrees-of-freedom}
 
 Rovinný příhradový prut má v každém uzlu dva stupně volnosti:
 
 - **Posunutí (Dx):** posun ve směru osy x.
 - **Posunutí (Dz):** posun ve směru osy z.
 
-## Lokální matice tuhosti
+## Lokální matice tuhosti {#local-stiffness-matrix}
 
 Lokální matice tuhosti příhradového prutu je
 
@@ -31,7 +31,7 @@ kde
 - $A$ je plocha průřezu,
 - $L$ je délka prutu.
 
-## Transformační matice
+## Transformační matice {#transformation-matrix}
 
 Transformační matice prvku $\mathbf{T}$ převádí lokální matici tuhosti do globálního souřadného systému.
 
@@ -44,7 +44,7 @@ $$
 \end{pmatrix}
 $$
 
-## Globální matice tuhosti
+## Globální matice tuhosti {#global-stiffness-matrix}
 
 Globální matice tuhosti $\mathbf{K_g}$ vznikne z transformační matice $\mathbf{T}$ a lokální matice tuhosti $\mathbf{K_l}$:
 

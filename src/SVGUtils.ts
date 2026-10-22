@@ -1,4 +1,5 @@
 import { Node, DofID, Beam2D, NodalLoad, BeamElementUniformEdgeLoad, PrescribedDisplacement } from 'ts-fem';
+import { inPlaneValues } from '@/utils/dofValues';
 
 export function supportMarker(node: Node) {
   const sdofs = Array.from(node.bcs);
@@ -32,33 +33,6 @@ export function supportMarker(node: Node) {
 
 export function formatNode(node: number[]): string {
   return `${node[0]},${node[2]} ${node[0]},${node[2]}`;
-}
-
-export function formatSupportNode(node: Node): string {
-  // find first element which has this node
-  const elements = node.domain.elements.values();
-
-  for (const el of elements) {
-    if (el.nodes.includes(node.label)) {
-      const idx = el.nodes.indexOf(node.label);
-
-      if (idx === 0) {
-        const node2 = node.domain.nodes.get(el.nodes[1])!;
-        const n2x = (node2.coords[0] + node.coords[0]) / 2;
-        const n2z = (node2.coords[2] + node.coords[2]) / 2;
-
-        return `${node.coords[0]},${node.coords[2]} ${n2x},${n2z}`;
-      }
-
-      const node2 = node.domain.nodes.get(el.nodes[0])!;
-      const n2x = (node2.coords[0] + node.coords[0]) / 2;
-      const n2z = (node2.coords[2] + node.coords[2]) / 2;
-
-      return `${node.coords[0]},${node.coords[2]} ${n2x},${n2z}`;
-    }
-  }
-
-  return `${node.coords[0]},${node.coords[2]} ${node.coords[0]},${node.coords[2]}`;
 }
 
 export function formatResults(el: Beam2D, scale: number, defoScale: number = 1, resultsScalePx = 42) {
@@ -307,9 +281,10 @@ export function formatElementHinge(target: Beam2D, i: number, scale: number) {
 }
 
 export function formatNodalLoad(nl: NodalLoad, scale: number) {
-  const size = Math.sqrt(nl.values[0]! * nl.values[0]! + nl.values[2]! * nl.values[2]!);
-  const sx = -nl.values[0]! / size;
-  const sz = -nl.values[2]! / size;
+  const { 0: fx, 2: fz } = inPlaneValues(nl.values);
+  const size = Math.sqrt(fx * fx + fz * fz);
+  const sx = -fx / size;
+  const sz = -fz / size;
 
   return `${nl.domain.nodes.get(nl.target)!.coords[0]},${nl.domain.nodes.get(nl.target)!.coords[2]} ${
     nl.domain.nodes.get(nl.target)!.coords[0] + (sx * 40) / scale
@@ -317,13 +292,15 @@ export function formatNodalLoad(nl: NodalLoad, scale: number) {
 }
 
 export function formatNodalLoadAngle(nl: NodalLoad) {
-  const angle = -(Math.atan2(nl.values[0]!, nl.values[2]!) * 180) / Math.PI;
+  const { 0: fx, 2: fz } = inPlaneValues(nl.values);
+  const angle = -(Math.atan2(fx, fz) * 180) / Math.PI;
 
   return angle;
 }
 
 export function formatPrescribedBCAngle(nl: PrescribedDisplacement) {
-  const angle = -(Math.atan2(nl.prescribedValues[0]!, nl.prescribedValues[2]!) * 180) / Math.PI;
+  const { 0: dx, 2: dz } = inPlaneValues(nl.prescribedValues);
+  const angle = -(Math.atan2(dx, dz) * 180) / Math.PI;
 
   return angle;
 }

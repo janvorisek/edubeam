@@ -12,6 +12,7 @@ import {
   throttle,
 } from '@/utils';
 import { ensureDimensionId } from '@/utils/id';
+import { inPlaneValues } from '@/utils/dofValues';
 import type { DimensionLine } from '@/types/dimension';
 import {
   emptyDiagnostics,
@@ -237,9 +238,8 @@ export const useProjectStore = defineStore(
 
       if (maxDefo === 1e-32 && solver.value.loadCases[0].prescribedBC.length > 0) {
         for (const bc of solver.value.loadCases[0].prescribedBC) {
-          const ux = Math.abs(bc.prescribedValues[0]);
-          const uz = Math.abs(bc.prescribedValues[2]);
-          maxDefo = Math.max(maxDefo, ux, uz);
+          const { 0: ux, 2: uz } = inPlaneValues(bc.prescribedValues);
+          maxDefo = Math.max(maxDefo, Math.abs(ux), Math.abs(uz));
         }
       }
 

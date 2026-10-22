@@ -1,99 +1,103 @@
 # Často kladené otázky
 
-## Obecné
+## Obecné {#general}
 
-### Co je EduBeam?
+### Co je EduBeam? {#what-is-edubeam}
 
-Bezplatný open-source řešič rovinných nosníků, rámů a příhradových konstrukcí běžící v prohlížeči, určený studentům, vyučujícím a inženýrům, kteří chtějí okamžitou zpětnou vazbu. Viz [Úvod](/cs/guide/introduction).
+Bezplatný open-source program pro výpočet rovinných nosníků, rámů a příhradových konstrukcí, který běží v prohlížeči. Je určený studentům, vyučujícím a inženýrům, kteří chtějí okamžitou zpětnou vazbu. Viz [Úvod](/cs/guide/introduction).
 
-### Je opravdu zdarma? Potřebuji účet?
+### Je opravdu zdarma? Potřebuji účet? {#is-it-really-free-do-i-need-an-account}
 
-Ano, a ne. Otevřete [run.edubeam.app](https://run.edubeam.app/?lang=cs) a začněte modelovat. Žádné účty, instalace ani limity používání. Zdrojový kód je na [GitHubu](https://github.com/janvorisek/edubeam).
+Ano a ne. Otevřete [run.edubeam.app](https://run.edubeam.app/?lang=cs) a rovnou modelujte. Žádný účet, žádná instalace a žádné limity. Zdrojový kód je na [GitHubu](https://github.com/janvorisek/edubeam).
 
-### Jaké prohlížeče a zařízení fungují?
+### V jakých prohlížečích a zařízeních EduBeam funguje? {#which-browsers-and-devices-work}
 
-Jakýkoli aktuální Chrome, Edge, Firefox nebo Safari. Tablety a telefony fungují (klepnutí, tažení pro posun, roztažení prstů pro zoom, podržení uzlu pro přesun), ale s myší a klávesnicí je modelování mnohem rychlejší.
+V každém aktuálním prohlížeči Chrome, Edge, Firefox nebo Safari. Funguje i na tabletech a telefonech: klepnutím vybíráte nebo umisťujete, tažením uzlu ho přesouváte, tažením jinde posouváte zobrazení, roztažením prstů přibližujete a dlouhým podržením otevřete nabídku plátna. Myší a klávesnicí se ale modeluje rychleji. Viz [Klávesnice, myš a dotyk](/cs/reference/shortcuts#touch).
 
-### Mohu ho používat offline?
+### Ztratil jsem model. Dá se obnovit? {#i-lost-my-model-can-i-get-it-back}
 
-EduBeam je progresivní webová aplikace: jednou načtená funguje i bez připojení a prohlížeč může nabídnout její instalaci. Je-li k dispozici nová verze, dialog se před aktualizací zeptá.
+Nejspíš ano. Když model smažete nebo ho nahradíte otevřením odkazu, souboru či příkladu, původní model se uloží do **☰ → Nedávné konstrukce** (posledních 10) a nahrazení vrátíte i zkratkou <kbd>Ctrl</kbd>+<kbd>Z</kbd>. Obojí funguje jen ve vašem prohlížeči.
 
-### Kde jsou uložená moje data?
+### Funguje EduBeam i offline? {#can-i-use-it-offline}
 
-Pouze ve vašem prohlížeči. Modely se nikdy neposílají na server; sdílený odkaz *je* model. Viz [Import, export a sdílení](/cs/essentials/import-export).
+Ano. EduBeam je progresivní webová aplikace: po prvním načtení funguje i bez připojení a prohlížeč může nabídnout její instalaci. Když vyjde nová verze, aplikace se vás před aktualizací zeptá.
 
-## Modelování
+### Kde jsou moje data uložená? {#where-is-my-data-stored}
 
-### Jak vytvořím vetknutí / kloubovou / posuvnou podporu?
+Jen ve vašem prohlížeči. Modely se nikdy neposílají na server; sdílený odkaz *je* samotný model. Viz [Import, export a sdílení](/cs/essentials/import-export).
 
-Zaškrtněte stupně volnosti: **Dx + Dz + Ry** = vetknutí, **Dx + Dz** = pevný kloub, **Dz** = posuvný kloub. Všechny kombinace i jejich značky jsou v kapitole [Uzly a podpory](/cs/essentials/nodes-supports#podpory).
+## Modelování {#modelling}
 
-### Jak vytvořím příhradovou konstrukci?
+### Jak zadám vetknutí, pevný kloub nebo posuvný kloub? {#how-do-i-make-a-fixed-pinned-roller-support}
 
-Použijte prutové prvky a u každého prutu zaškrtněte **oba koncové klouby** v záložce *Prvky*. Zatížení zadávejte do styčníků. Viz [Prvky](/cs/essentials/elements#koncove-klouby).
+Klikněte na uzel, otevřete **Podepření uzlu** a vyberte značku: kloub, posuvný kloub, vetknutí, posuvné vetknutí a další. Druhou možností je zaškrtnout stupně volnosti: **Dx + Dz + Ry** = vetknutí, **Dx + Dz** = kloub, **Dz** = posuvný kloub. Všechny kombinace najdete v kapitole [Uzly a podpory](/cs/essentials/nodes-supports#supports).
 
-### Jak vložím kloub do rámu?
+### Jak vytvořím příhradovou konstrukci? {#how-do-i-make-a-truss}
 
-Zaškrtněte **koncový kloub** prvku na té straně styčníku, kde má být moment uvolněn. Kloub na *jednom* prvku ve styčníku uvolní jen tento prvek.
+Použijte nosníkové prvky a v záložce *Prvky* zaškrtněte u každého prutu **oba Koncové klouby**. Při kreslení myší stačí předem zaškrtnout v liště *Kloub na začátku* a *Kloub na konci*. Zatížení zadávejte do styčníků. Celým postupem vás provede [návod pro příhradovou konstrukci](/cs/tutorials/truss).
 
-### Jak přidám podporu nebo osamělou sílu doprostřed nosníku?
+### Jak vložím do rámu kloub? {#how-do-i-put-a-hinge-in-a-frame}
 
-Přidejte uzel na nosník pomocí *Přidat myší* a zvolte **Připojit ke konstrukci** – nosník se rozdělí na dva. Pro samotnou osamělou sílu uzel ani nepotřebujete: použijte prvkové zatížení **Osamělá síla** se vzdáleností od počátečního uzlu.
+U prvku, který leží na té straně styčníku, kde chcete uvolnit moment, zaškrtněte **Kloub na konci**. Kloub u *jednoho* prvku ve styčníku uvolní jen tento prvek.
 
-### Mohu zadat vlastní tíhu?
+### Jak přidám podporu nebo osamělou sílu doprostřed nosníku? {#how-do-i-add-a-support-or-a-point-load-in-the-middle-of-a-beam}
 
-Ne automaticky. Zadejte ji jako spojité rovnoměrné zatížení $f_z = \rho g A$.
+Přidejte na nosník uzel pomocí *Přidat myší* a zvolte **Připojit ke konstrukci** – nosník se rozdělí na dva. Na samotnou osamělou sílu ale uzel nepotřebujete: použijte prvkové zatížení **Osamělá síla** a zadejte jeho polohu.
 
-### Mohu modelovat šikmé podpory?
+### Lze zadat vlastní tíhu? {#can-i-apply-self-weight}
 
-Ano – nastavte u uzlu **Pootočení systému souřadnic**; jeho stupně volnosti se pak vyhodnocují v pootočeném systému.
+Automaticky ne. Zadejte ji jako spojité rovnoměrné zatížení $f_z = \rho g A$.
 
-### Existují zatěžovací stavy nebo kombinace?
+### Lze modelovat šikmé podpory? {#can-i-model-inclined-supports}
 
-Ne, pouze jeden zatěžovací stav. Každý stav modelujte zvlášť a uložte nebo sdílejte.
+Ano – nastavte u uzlu **Pootočení systému souřadnic**; jeho stupně volnosti se pak vztahují k pootočenému systému.
 
-### Proč moje zatížení míří vzhůru?
+### Jsou k dispozici zatěžovací stavy nebo kombinace? {#are-there-load-cases-or-combinations}
 
-Protože globální osa z míří **dolů**: kladné `Fz` působí dolů. Viz [znaménková konvence](/cs/elements/conventions).
+Ne, model má jen jeden zatěžovací stav. Každý stav namodelujte zvlášť a uložte nebo sdílejte.
 
-## Výsledky
+### Proč moje zatížení míří nahoru? {#why-do-my-loads-point-up}
 
-### Proč není tlačítko „Spočítat“?
+Protože globální osa z míří **dolů**: kladné `Fz` působí dolů. Viz [konvence](/cs/elements/conventions). Pokud chcete svislou osu mířící nahoru, přepněte v *Nastavení → Jazyk a prostředí → Souřadnicový systém* na osy s y nahoru.
 
-Model se řeší automaticky po každé změně. Pokud se výsledky neobjeví, model zatím nelze vyřešit – co zkontrolovat, uvádí [Řešení problémů](/cs/reference/troubleshooting).
+## Výsledky {#results}
 
-### Proč se můj průhyb nepatrně liší od vzorce?
+### Proč chybí tlačítko „Spočítat“? {#why-is-there-no-solve-button}
 
-EduBeam používá Timoshenkův nosník, takže průhyby zahrnují smykovou deformaci. U štíhlých prutů je rozdíl hluboko pod 1 %. Podrobnosti a řešená porovnání v kapitole [Ověření výsledků ručně](/cs/guide/verification).
+Model se vyřeší automaticky po každé změně. Pokud se výsledky neobjeví, model zatím nejde vyřešit – co zkontrolovat, najdete v kapitole [Řešení problémů](/cs/reference/troubleshooting).
 
-### Jak přesné jsou výsledky? Potřebuji více prvků?
+### Proč se můj průhyb mírně liší od vzorce? {#why-does-my-deflection-differ-slightly-from-the-formula}
 
-Pro lineární statickou analýzu je prutový prvek při podporovaných typech zatížení přesný, takže stačí jeden prvek na prut. Další uzly potřebujete jen tam, kde chcete podporu, kloub, změnu průřezu nebo uzel pro zatížení.
+EduBeam používá Timoshenkovy nosníky, takže průhyby zahrnují i smykovou deformaci. U štíhlých prutů je rozdíl hluboko pod 1 %. Podrobnosti a řešená porovnání najdete v kapitole [Ověření výsledků ručně](/cs/guide/verification).
 
-### Kde najdu reakce?
+### Jak přesné jsou výsledky? Potřebuji víc prvků? {#how-accurate-are-the-results-do-i-need-more-elements}
 
-V zobrazení jako šipky s hodnotami (zapněte **Reakce** v nastavení zobrazení). Koncové síly prvků a posunutí uzlů jsou v záložce **Výsledky**.
+Při lineárním statickém výpočtu je nosníkový prvek pro všechny podporované typy zatížení přesný, takže na každý prut stačí jeden prvek. Další uzly potřebujete jen tam, kde chcete podporu, kloub, změnu průřezu nebo uzel, ke kterému připojíte zatížení.
 
-## Soubory a sdílení
+### Kde najdu reakce? {#where-are-the-reactions-listed}
 
-### Jak model sdílím?
+V zobrazení jako šipky s hodnotami (volba **Reakce** v možnostech zobrazení, ve výchozím stavu zapnutá). Najdete je také v souboru z **Výsledky → Exportovat CSV** a ve schránce po **Kopírovat**. Posunutí uzlů a koncové síly prvků jsou v záložce **Výsledky**.
 
-**Sdílet konstrukci** → **Kopírovat odkaz**. Odkaz obsahuje celý model. Příjemci dostanou vlastní upravitelnou kopii; živá spolupráce neexistuje.
+## Soubory a sdílení {#files-sharing}
 
-### Mohu model vložit na svůj web nebo do prezentace?
+### Jak model nasdílím? {#how-do-i-share-a-model}
 
-Ano – přidejte ke sdílenému odkazu `&viewer=1` a vložte ho do `<iframe>`. Viz [Vložení prohlížeče jen pro čtení](/cs/essentials/import-export#vlozeni-prohlizece-jen-pro-cteni).
+**Sdílet konstrukci** → **Kopírovat**. Odkaz obsahuje celý model. Každý příjemce dostane vlastní kopii, kterou může upravovat; společná práce v reálném čase možná není. Viz také [Výuka s EduBeamem](/cs/guide/teaching).
 
-### Mohu exportovat obrázky nebo tabulky?
+### Můžu model vložit na svůj web nebo do prezentace? {#can-i-embed-a-model-on-my-website-or-in-slides}
 
-Zatím ne. Pro obrázky použijte snímek obrazovky, pro čísla zkopírujte text tabulky. Hlasujte pro funkci na [GitHubu](https://github.com/janvorisek/edubeam/issues).
+Ano: přidejte ke sdílenému odkazu `&viewer=1` a vložte ho do `<iframe>`. Viz [Vložení prohlížeče](/cs/essentials/import-export#embed-a-read-only-viewer).
 
-### Mohu modely generovat programově?
+### Můžu exportovat obrázky nebo tabulky? {#can-i-export-images-or-tables}
 
-Ano. Soubor projektu je prostý JSON v jednotkách SI – viz [popis formátu](/cs/essentials/import-export#format-souboru-projektu) – a lze ho otevřít přes *Otevřít projekt* nebo přetažením.
+Ano. **☰ → Exportovat obrázek** (<kbd>Ctrl</kbd>+<kbd>P</kbd>) uloží výkres do PNG nebo SVG ve zvolené velikosti či měřítku. **Výsledky → Exportovat CSV** uloží obě tabulky výsledků a **Kopírovat** je zkopíruje do schránky, odkud je vložíte do tabulkového procesoru. Viz [Import, export a sdílení](/cs/essentials/import-export#export-an-image).
 
-## Podpora
+### Můžu modely generovat programově? {#can-i-generate-models-programmatically}
 
-### Jak nahlásím chybu nebo navrhnu funkci?
+Ano. Soubor projektu je obyčejný JSON v jednotkách SI (viz [popis formátu](/cs/essentials/import-export#project-file-format)) a otevřete ho přes *Otevřít projekt* nebo přetažením.
 
-Založte issue na [GitHubu](https://github.com/janvorisek/edubeam/issues) a přiložte sdílený odkaz nebo soubor projektu, který problém reprodukuje. Soukromá podpora: [support@edubeam.app](mailto:support@edubeam.app).
+## Podpora {#support}
+
+### Jak nahlásím chybu nebo navrhnu novou funkci? {#how-do-i-report-a-bug-or-request-a-feature}
+
+Založte issue na [GitHubu](https://github.com/janvorisek/edubeam/issues) a přiložte sdílený odkaz nebo soubor projektu, na kterém se problém projeví. Soukromá podpora: [support@edubeam.app](mailto:support@edubeam.app).

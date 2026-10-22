@@ -6,6 +6,7 @@ import { useViewerStore } from '../store/viewer';
 import { useRecentStructuresStore, type RecentStructureReason } from '../store/recentStructures';
 
 import { loadType } from './loadType';
+import { hasShortcutModifier } from './keyboard';
 import { ensureDimensionId, createDimensionId } from './id';
 import { deserializeModel, parseSerializedModel, serializeModel } from './serializeModel';
 import { deserializeShape, serializeShape } from './sectionProperties';
@@ -191,10 +192,7 @@ export const checkNumber = (e: KeyboardEvent) => {
   const isNumber = !isNaN(e.key as unknown as number);
 
   const isActionKey =
-    (e.ctrlKey && e.key === 'a') ||
-    (e.ctrlKey && e.key === 'c') ||
-    (e.ctrlKey && e.key === 'v') ||
-    (e.ctrlKey && e.key === 'x') ||
+    (hasShortcutModifier(e) && ['a', 'c', 'v', 'x'].includes(e.key)) ||
     e.key === 'Escape' ||
     e.key === 'Delete' ||
     e.key === 'Backspace' ||

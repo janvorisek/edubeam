@@ -1,0 +1,230 @@
+{
+ "edubeam": true,
+ "version": "1.3.1",
+ "domain": {
+  "materials": [
+   {
+    "label": "1",
+    "e": 210000000000.0,
+    "g": 81000000000.0,
+    "alpha": 1.2e-05,
+    "d": 7850
+   }
+  ],
+  "crossSections": [
+   {
+    "label": "1",
+    "a": 0.002,
+    "iy": 1e-06,
+    "h": 0.1,
+    "k": 1
+   }
+  ],
+  "nodes": [
+   {
+    "label": "1",
+    "coords": [
+     0,
+     0,
+     0
+    ],
+    "bcs": [
+     0,
+     2
+    ]
+   },
+   {
+    "label": "2",
+    "coords": [
+     4,
+     0,
+     0
+    ],
+    "bcs": []
+   },
+   {
+    "label": "3",
+    "coords": [
+     8,
+     0,
+     0
+    ],
+    "bcs": []
+   },
+   {
+    "label": "4",
+    "coords": [
+     12,
+     0,
+     0
+    ],
+    "bcs": [
+     2
+    ]
+   },
+   {
+    "label": "5",
+    "coords": [
+     4,
+     0,
+     -3
+    ],
+    "bcs": []
+   },
+   {
+    "label": "6",
+    "coords": [
+     8,
+     0,
+     -3
+    ],
+    "bcs": []
+   }
+  ],
+  "elements": [
+   {
+    "label": "1",
+    "nodes": [
+     "1",
+     "2"
+    ],
+    "mat": "1",
+    "cs": "1",
+    "hinges": [
+     true,
+     true
+    ]
+   },
+   {
+    "label": "2",
+    "nodes": [
+     "2",
+     "3"
+    ],
+    "mat": "1",
+    "cs": "1",
+    "hinges": [
+     true,
+     true
+    ]
+   },
+   {
+    "label": "3",
+    "nodes": [
+     "3",
+     "4"
+    ],
+    "mat": "1",
+    "cs": "1",
+    "hinges": [
+     true,
+     true
+    ]
+   },
+   {
+    "label": "4",
+    "nodes": [
+     "5",
+     "6"
+    ],
+    "mat": "1",
+    "cs": "1",
+    "hinges": [
+     true,
+     true
+    ]
+   },
+   {
+    "label": "5",
+    "nodes": [
+     "1",
+     "5"
+    ],
+    "mat": "1",
+    "cs": "1",
+    "hinges": [
+     true,
+     true
+    ]
+   },
+   {
+    "label": "6",
+    "nodes": [
+     "2",
+     "5"
+    ],
+    "mat": "1",
+    "cs": "1",
+    "hinges": [
+     true,
+     true
+    ]
+   },
+   {
+    "label": "7",
+    "nodes": [
+     "5",
+     "3"
+    ],
+    "mat": "1",
+    "cs": "1",
+    "hinges": [
+     true,
+     true
+    ]
+   },
+   {
+    "label": "8",
+    "nodes": [
+     "3",
+     "6"
+    ],
+    "mat": "1",
+    "cs": "1",
+    "hinges": [
+     true,
+     true
+    ]
+   },
+   {
+    "label": "9",
+    "nodes": [
+     "6",
+     "4"
+    ],
+    "mat": "1",
+    "cs": "1",
+    "hinges": [
+     true,
+     true
+    ]
+   }
+  ],
+  "loadCases": [
+   {
+    "label": "1",
+    "nodalLoads": [
+     {
+      "target": "2",
+      "values": {
+       "0": 0,
+       "2": 30000,
+       "4": 0
+      }
+     },
+     {
+      "target": "3",
+      "values": {
+       "0": 0,
+       "2": 30000,
+       "4": 0
+      }
+     }
+    ],
+    "elementLoads": [],
+    "prescribedBC": []
+   }
+  ]
+ },
+ "dimensions": []
+}

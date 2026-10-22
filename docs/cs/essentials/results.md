@@ -1,102 +1,108 @@
 # Výsledky a průběhy
 
-<Edubeam /> řeší model automaticky po každé změně (omezeno na několik výpočtů za sekundu), takže výsledky jsou vždy aktuální. Tlačítko *Spočítat* neexistuje. Pokud se nic nevykreslí, model zatím není řešitelný – viz [Řešení problémů](/cs/reference/troubleshooting).
+<Edubeam /> přepočítá model po každé změně (nejvýše několikrát za sekundu), takže výsledky máte vždy aktuální. Tlačítko *Spočítat* tu nenajdete. Když se nic nevykreslí, model zatím nelze vyřešit; důvod vám řekne hlášení vlevo nahoře v zobrazení (viz [Řešení problémů](/cs/reference/troubleshooting)).
 
-## Vrstvy v zobrazení
+Všechny obrázky na této stránce ukazují stejný model: [trojkloubový rám](/cs/tutorials/three-hinged-frame) se spojitým zatížením 10 kN/m.
 
-Zapínají se v **panelu nastavení zobrazení** (tlačítko ⚙ vpravo nahoře v zobrazení).
+## Vrstvy v zobrazení {#overlays-in-the-viewer}
+
+Vrstvy zapínáte a vypínáte v **možnostech zobrazení** vpravo nahoře v zobrazení (tlačítkem ⚙ je zobrazíte nebo skryjete).
 
 | Vrstva | Barva (výchozí) | Poznámka |
 | --- | --- | --- |
-| **Deformovaný tvar** | šedá | Zvětšený; měřítko zvoleno tak, aby největší posunutí odpovídalo hodnotě *Měřítko výsledků* v pixelech. |
-| **N (x)** – normálová síla | modrá | Tah kladný. Po délce prvku konstantní, pokud na něj nepůsobí osové spojité zatížení. |
-| **V<sub>z</sub> (x)** – posouvající síla | zelená | Lineární při rovnoměrném zatížení, kvadratická při lineárně proměnném, skok v místě osamělé síly. |
-| **M<sub>y</sub> (x)** – ohybový moment | červená | Kladný při tahu v dolních vláknech. Popisky na obou koncích, v místech osamělých sil a v každém lokálním extrému (kde V = 0). |
-| **Reakce** | fialová | Šipka a hodnota pro každý odebraný stupeň volnosti. |
+| **Deformovaný tvar** | šedá | Zvětšený: největší posunutí má na obrazovce tolik pixelů, kolik udává *Měřítko výsledků*. Ve výchozím stavu zapnutý. |
+| **N (x)**, normálová síla | modrá | Tah je kladný. Bez osového zatížení je po délce prvku konstantní. |
+| **V<sub>z</sub> (x)**, posouvající síla | zelená | Při rovnoměrném zatížení lineární, při lineárně proměnném kvadratická, v místě osamělé síly má skok. |
+| **M<sub>y</sub> (x)**, ohybový moment | červená | Kladný, když jsou tažená dolní vlákna. Hodnoty se vypisují na obou koncích, v místech osamělých sil a v každém lokálním extrému (kde V = 0). Ve výchozím stavu zapnutý. |
+| **Reakce** | fialová | Šipka a hodnota u každého podepřeného stupně volnosti. Ve výchozím stavu zapnuté. |
 
-Průběhy se vykreslují podél prvků s hodnotami v charakteristických bodech. Orientaci popisků i měřítko všech průběhů lze změnit v [Nastavení](/cs/essentials/units-settings#nastaveni-zobrazeni).
+Hodnoty se vypisují v charakteristických bodech každého průběhu. Orientaci popisků, velikost průběhů i barvy změníte v [Nastavení](/cs/essentials/units-settings#viewer-settings).
 
-### Normálová síla
+<div class="shots">
 
-<Figure>
-    <Structure :show-loads="true" show-normal-force :nodes="[{label: 'a', coords: [0,0,0], dofs: [0,2, 4]}, {label: 'b', coords: [10,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['a', 'b']}]" :nodal-loads="[{target: 'b', values: { 0: -100, 2: 0, 4: 0 }}]" />
-    <figcaption>Konzola tlačená vodorovnou silou na volném konci: N je konstantní a záporná</figcaption>
-</Figure>
+![Normálová síla N: oba sloupy jsou tlačené silou 40 kN, příčel silou 20 kN](/screenshots/cs/results-normal.webp)
 
-### Posouvající síla
+![Posouvající síla V: ve sloupech 20 kN, v příčli 40 kN v rozích a směrem ke kloubu klesá na nulu](/screenshots/cs/results-shear.webp)
 
-<Figure>
-  <Structure :show-loads="true" show-shear-force :nodes="[{label: 'a', coords: [0,0,0], dofs: [0,2, 4]}, {label: 'b', coords: [10,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['a', 'b']}]" :nodal-loads="[{target: 'b', values: { 0: 0, 2: 10, 4: 0 }}]" />
- <figcaption>Konzola se svislou silou na konci: V je konstantní</figcaption>
-</Figure>
+![Ohybový moment M: v obou rozích −80 kNm, v patkách a v kloubu nula](/screenshots/cs/results-moment.webp)
 
-### Ohybový moment
+![Deformovaný tvar (zvětšený): kloub C poklesne](/screenshots/cs/results-deformed.webp)
 
-<Figure>
-  <Structure :show-loads="true" show-moment :nodes="[{label: 'a', coords: [0,0,0], dofs: [0,2, 4]}, {label: 'b', coords: [10,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['a', 'b']}]" :nodal-loads="[{target: 'b', values: { 0: 0, 2: 10, 4: 0 }}]" />
- <figcaption>Tatáž konzola: M roste lineárně až na F·L ve vetknutí</figcaption>
-</Figure>
+</div>
 
-### Deformovaný tvar
+![Reakce: v každé kloubové podpoře 40 kN svisle a 20 kN vodorovně](/screenshots/cs/results-reactions.webp){.shot-lg}
 
-<Figure>
-  <Structure :show-loads="true" show-deformed-shape :nodes="[{label: 'a', coords: [0,0,0], dofs: [0,2, 4]}, {label: 'b', coords: [10,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['a', 'b']}]" :nodal-loads="[{target: 'b', values: { 0: 0, 2: 10, 4: 0 }}]" />
-  <figcaption>Deformovaný tvar (zvětšený) konzoly</figcaption>
-</Figure>
+### Jak číst znaménko {#reading-the-sign}
 
-### Reakce
+Znaménko čtěte z popisku hodnoty, ne podle toho, na kterou stranu prutu se průběh vykreslil. Záporný ohybový moment znamená tah v horních vláknech nosníku nebo na vnější straně rámového rohu.
 
-<Structure :show-loads="true" show-reactions :nodes="[{label: 'a', coords: [0,0,0], dofs: [0,2, 4]}, {label: 'b', coords: [10,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['a', 'b']}]" :nodal-loads="[{target: 'b', values: { 0: 0, 2: 10, 4: 0 }}]" />
+## Popisky po najetí myší {#hover-tooltips}
 
-## Popisky po najetí myší
+Nejrychleji odečtete hodnotu tak, že na objekt najedete myší:
 
-Najetí myší v zobrazení je nejrychlejší způsob, jak odečíst hodnotu:
+- **Uzel**: `ux`, `uz` a `φy` (posunutí v jednotce posunu, pootočení v radiánech).
+- **Prvek**: označení, průřez a materiál.
+- **Zatížení**: jednotlivé složky.
 
-- **Uzel** → `ux`, `uz`, `φy` (posunutí v jednotce délky, pootočení v radiánech).
-- **Prvek** → označení, průřez a materiál.
-- **Zatížení** → jeho složky.
+Na dotykové obrazovce na objekt klepněte. Stejné údaje se pak zobrazí v jeho panelu výběru.
 
-## Záložka Výsledky
+![Najetí myší na uzel 2 nosníku z Rychlého startu](/screenshots/cs/ui-hover.webp){.shot-sm}
 
-Záložka **Výsledky** ve spodní liště má dva pohledy:
+## Záložka Výsledky {#results-tab}
 
-### Výsledky v uzlech
+Záložka **Výsledky** ve spodní liště obsahuje dvě tabulky. Přepínáte mezi nimi tlačítky **Výsledky v uzlech** a **Výsledky na prvcích**.
 
-Řádek pro každý uzel s **Dx**, **Dz** (jednotka délky) a **Ry** (rad). Znaménka odpovídají globálním osám: kladné `Dz` je dolů, kladné `Ry` proti směru hodinových ručiček.
+### Výsledky v uzlech {#nodal-results}
 
-<figure>
+Každý uzel má jeden řádek s hodnotami **Dx**, **Dz** (v jednotce posunu) a **Ry** (rad). Znaménka odpovídají globálním osám: kladné `Dz` míří dolů a kladné `Ry` je pootočení proti směru hodinových ručiček (při pohledu na obrazovku).
 
-![Výsledky v uzlech](/results_nodes.png)
+![Výsledky v uzlech trojkloubového rámu (Formát čísel: Automatický)](/screenshots/cs/results-nodal.webp)
 
-</figure>
+### Výsledky na prvcích {#element-results}
 
-### Výsledky na prvcích
-
-Řádek pro každý prvek s **koncovými silami v lokálním souřadném systému prvku**:
+Každý prvek má jeden řádek s **koncovými silami v lokálním souřadném systému prvku**:
 
 | Sloupec | Význam |
 | --- | --- |
-| `X12`, `Z12`, `M12` | normálová síla, posouvající síla a moment působící na prvek v jeho **počátečním** uzlu |
+| `X12`, `Z12`, `M12` | normálová síla, posouvající síla a moment, které působí na prvek v jeho **počátečním** uzlu |
 | `X21`, `Z21`, `M21` | totéž v **koncovém** uzlu |
 
-Jsou to síly, kterými uzly působí na prvek (matice tuhosti prvku krát koncové posuny, minus ekvivalentní uzlové zatížení). U prostého nosníku 6 m s 12 kN/m dostanete `Z12 = Z21 = −36 kN`: obě podpory tlačí nosník vzhůru (záporné z). U konzoly vetknuté v počátečním uzlu se silou 18 kN dolů na konci: `Z12 = −18`, `M12 = +72 kNm`, `Z21 = +18`, `M21 = 0`.
+![Výsledky na prvcích trojkloubového rámu](/screenshots/cs/results-element.webp)
 
-<figure>
+Jde o síly, kterými uzly působí na prvek: matici tuhosti prvku vynásobenou jeho koncovými posunutími, od které se odečtou ekvivalentní uzlová zatížení. Řídí se lokálními osami, nikoli znaménkovou konvencí průběhů N-V-M:
 
-![Výsledky na prvcích](/results_elements.png)
+- Prostý nosník o rozpětí 6 m z [Rychlého startu](/cs/guide/quick-start): `Z12 = Z21 = −36 kN`. Obě podpory tlačí nosník nahoru, tedy ve směru −z.
+- Konzola vetknutá v počátečním uzlu, na volném konci síla 18 kN dolů: `Z12 = −18 kN`, `M12 = +72 kNm`, `Z21 = +18 kN`, `M21 = 0`.
+- Sloup 1 rámu (A dole, B nahoře): `X12 = +40 kN` tlačí do prvku ve směru lokální osy x, sloup je tedy tlačený silou 40 kN.
 
-</figure>
+### Export CSV a kopírování {#export-csv-and-copy}
 
-### Matice tuhosti
+**Exportovat CSV** stáhne soubor `edubeam-results.csv` s oběma tabulkami, připravený pro tabulkový procesor. Hodnoty jsou v jednotkách, které vidíte na obrazovce. Tabulka uzlů obsahuje navíc **reakce** `Rx`, `Rz`, `My`. **Kopírovat** uloží tytéž tabulky do schránky jako text oddělený tabulátory, který vložíte přímo do Excelu, LibreOffice nebo Tabulek Google. Koncové síly prvků se v exportu jmenují `N1 V1 M1 N2 V2 M2`.
 
-Volbou **Matice tuhosti** z kontextové nabídky prvku nebo z řádku tabulky otevřete plovoucí okno s maticí tuhosti prvku 6 × 6 v lokálních i globálních souřadnicích – užitečné při kontrole ruční sestavy v předmětech o deformační metodě. Vzorce jsou v [teoretickém manuálu](/cs/elements/beam).
+### Matice tuhosti {#stiffness-matrix}
 
-## Přesnost
+V panelu prvku nebo v jeho řádku tabulky zvolte **Matice tuhosti**. Otevře se okno s maticí tuhosti prvku 6 × 6 v globálních souřadnicích – hodí se pro kontrolu ručního sestavení v kurzu deformační metody. Vzorce najdete v [teoretickém manuálu](/cs/elements/beam).
 
-- Prutový prvek je pro lineární Timoshenkův model přesný při uzlovém, rovnoměrném, lineárně proměnném, osamělém i teplotním zatížení, takže výsledky **nezávisí** na počtu prvků.
-- Tabulky ukazují čtyři platné číslice; interní výpočet probíhá ve dvojité přesnosti.
-- Průhyby zahrnují **smykovou deformaci** (Timoshenko). U štíhlých prutů to oproti vzorcům Eulerova–Bernoulliho nosníku přidá zlomek procenta; u vysokých či krátkých prutů i několik procent. Chcete-li ji potlačit, nastavte smykový součinitel průřezu na velkou hodnotu.
+## Formát čísel {#number-format}
 
-## Výsledky do protokolu
+Výsledky se zobrazují s pěti platnými číslicemi. Jak se zapisují, určuje **Nastavení → Jazyk a prostředí → Formát čísel**:
 
-Export tabulek není k dispozici; označte text tabulky a zkopírujte ho, nebo pořiďte snímek zobrazení. K předání modelu použijte [Sdílet konstrukci](/cs/essentials/import-export).
+| Formát | 40 000 se zapíše jako | Vhodné pro |
+| --- | --- | --- |
+| **Vědecký** (výchozí) | 4 · 10⁴ | hodnoty, které se liší o mnoho řádů |
+| **Inženýrský** | 40 · 10³ | zápis odpovídající předponám kilo / mega |
+| **Automatický** | 40000 | běžná čísla ve výuce |
+
+Automatický formát zapisuje hodnoty od 0,001 do 100 000 jako obyčejná čísla, mimo tento rozsah používá mocniny deseti. Desetinný oddělovač závisí na zvoleném jazyce.
+
+## Přesnost {#precision-and-accuracy}
+
+- Pro lineární Timoshenkův model je nosníkový prvek přesný při uzlovém, rovnoměrném, lineárně proměnném, osamělém i teplotním zatížení. Výsledky proto **nezávisejí** na počtu prvků.
+- Výpočet probíhá ve dvojnásobné přesnosti. Nepatrné hodnoty jako `1,5 · 10⁻¹⁸` jsou zaokrouhlovací chyby, ve skutečnosti jde o nulu.
+- Průhyby zahrnují **smykovou deformaci**. U štíhlých prutů zvětší hodnotu podle Eulera–Bernoulliho o zlomek procenta, u vysokých nebo krátkých prutů i o několik procent. Pokud ji chcete potlačit, nastavte smykový součinitel průřezu na velkou hodnotu.
+
+## Výsledky ve zprávě {#results-in-a-report}
+
+- **☰ → Exportovat obrázek** (<kbd>Ctrl</kbd>+<kbd>P</kbd>) uloží výkres se zvolenými vrstvami jako PNG nebo SVG. Viz [Export obrázku](/cs/essentials/import-export#export-an-image).
+- Čísla získáte přes **Výsledky → Exportovat CSV** nebo **Kopírovat**.
+- Tlačítkem **Sdílet konstrukci** získáte odkaz, přes který čtenář otevře přímo model.

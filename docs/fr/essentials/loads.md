@@ -1,90 +1,112 @@
 # Charges
 
-Toutes les charges appartiennent à un **cas de charge unique** et agissent simultanément. Pour comparer des scénarios, enregistrez chacun comme fichier de projet ou lien distinct.
+Toutes les charges appartiennent à un **seul cas de charge** et agissent ensemble. Pour comparer des scénarios, enregistrez chacun dans un fichier de projet ou un lien de partage.
+
+![Tous les types de charge sur une même poutre continue : une force nodale, une charge uniforme, une charge trapézoïdale, une charge ponctuelle, une charge thermique et un tassement d’appui](/screenshots/fr/loads-overview.webp)
 
 <LoadShowcase />
 
-## La convention de signe en une ligne
+## La convention de signe en une ligne {#sign-convention-in-one-line}
 
-L’axe global **x** pointe vers la droite, l’axe global **z** pointe **vers le bas**. Un `Fz` ou `fz` positif en repère global est donc une charge dirigée vers le bas (type gravité) ; un moment `My` positif tourne dans le sens trigonométrique à l’écran. Détails dans [Repère et conventions de signe](/fr/elements/conventions).
+L’axe global **x** pointe vers la droite et l’axe global **z** vers le **bas**. Un `Fz` ou `fz` positif est donc une charge dirigée vers le bas, de type gravitaire, et un moment `My` positif tourne dans le sens antihoraire à l’écran. Les détails se trouvent dans [Repère et conventions de signe](/fr/elements/conventions). Avec les [axes y vers le haut](/fr/elements/conventions#y-up-axes), les noms et les signes verticaux s’inversent : la pesanteur est un `Fy` négatif.
 
-## Charges nodales
+## Charges nodales {#nodal-loads}
 
-Onglet *Charges* → **Ajouter une charge nodale**, ou clic sur un nœud → **Ajouter une charge**. Choisissez **Force/Moment** :
-
-| Champ | Signification | Unité |
-| --- | --- | --- |
-| `Fx` | force horizontale (+ → droite) | unité de force |
-| `Fz` | force verticale (+ → bas) | unité de force |
-| `My` | moment autour de y | unité de moment |
-
-Les composantes sont toujours en repère **global**. Un aperçu fléché dans la boîte de dialogue montre la direction et l’intensité résultantes. Plusieurs charges nodales sur un même nœud sont autorisées et s’additionnent simplement.
-
-### Déplacements imposés (tassements d’appui)
-
-Dans la même boîte, choisissez **Déplacement imposé** (ou clic sur un nœud appuyé → **Imposer un déplacement**). Les champs deviennent :
+Onglet *Charges* → **Ajouter une charge nodale**, ou cliquez sur un nœud → **Ajouter une charge**. Choisissez **Force/Moment** :
 
 | Champ | Signification | Unité |
 | --- | --- | --- |
-| `Dx` | déplacement horizontal imposé | unité de longueur |
-| `Dz` | déplacement vertical imposé (+ → bas) | unité de longueur |
+| `Fx` | force horizontale (positive vers la droite) | unité de force |
+| `Fz` | force verticale (positive vers le bas) | unité de force |
+| `My` | moment autour de y (positif dans le sens antihoraire) | unité de moment |
+
+![Ajouter une charge nodale. L’aperçu montre la direction pendant la saisie.](/screenshots/fr/loads-nodal.webp){.shot-md}
+
+Les composantes sont toujours exprimées dans le repère **global**. Un nœud peut porter plusieurs charges nodales ; elles s’additionnent et sont dessinées empilées.
+
+### Déplacements imposés (tassements d’appui) {#prescribed-displacements-support-settlements}
+
+Dans la même boîte de dialogue, choisissez **Déplacement imposé**, ou cliquez sur un nœud avec appui → **Imposer un déplacement**. Les champs deviennent :
+
+| Champ | Signification | Unité |
+| --- | --- | --- |
+| `Dx` | déplacement horizontal imposé | unité de déplacement |
+| `Dz` | déplacement vertical imposé (positif vers le bas) | unité de déplacement |
 | `Ry` | rotation imposée | rad |
 
-Une valeur ne peut être saisie que pour un DDL **bloqué** en ce nœud : seuls les appuis peuvent être déplacés. Chaque nœud admet un seul déplacement imposé ; modifiez-le plutôt que d’en ajouter un second. Dans une structure isostatique, un tassement produit des déplacements mais aucune sollicitation ; dans une structure hyperstatique, il produit les deux.
+Vous ne pouvez saisir une valeur que pour un DDL **bloqué** à ce nœud, car seuls les appuis peuvent être déplacés. Chaque nœud porte au plus un déplacement imposé ; modifiez-le plutôt que d’en ajouter un second. Dans une structure isostatique, un tassement produit des déplacements mais aucun effort interne ; dans une structure hyperstatique, il produit les deux.
 
-## Charges d’élément
+## Charges d’élément {#element-loads}
 
-Onglet *Charges* → **Ajouter une charge d’élément**, ou clic sur un élément → **Ajouter une charge**. Choisissez le **Type de charge** ; la boîte affiche un aperçu de la charge sur l’élément.
+Onglet *Charges* → **Ajouter une charge d’élément**, ou cliquez sur un élément → **Ajouter une charge**. Choisissez le **Type de charge** ; la boîte de dialogue affiche un aperçu de la charge sur l’élément pendant la saisie.
 
-### Charge uniformément répartie
+### Charge uniformément répartie {#uniformly-distributed-load}
 
 | Champ | Signification | Unité |
 | --- | --- | --- |
-| `fx` | charge linéique selon x | force / longueur |
-| `fz` | charge linéique selon z | force / longueur |
-| **LCS** | cochez pour interpréter `fx`, `fz` dans les axes locaux de l’élément | – |
+| `fx` | charge par unité de longueur selon x | force / longueur |
+| `fz` | charge par unité de longueur selon z | force / longueur |
+| **LCS** | cochée : `fx`, `fz` agissent selon les axes locaux de l’élément ; décochée : selon les axes globaux | – |
 
-Le cas le plus courant est une charge verticale gravitaire : `fz > 0`, LCS décoché. Sur une barre inclinée, une charge **perpendiculaire à la barre** (par ex. le vent sur un chevron) est `fz` avec LCS **coché** ; une charge verticale par mètre de *projection horizontale* n’est pas disponible directement : convertissez-la d’abord par mètre de longueur de barre.
+**LCS** est cochée par défaut. Sur un élément horizontal dessiné de gauche à droite, les axes locaux et globaux coïncident : cela ne change rien. Sur une barre inclinée, cela compte :
 
-### Charge trapézoïdale
+- une charge **perpendiculaire à la barre** (vent sur un arbalétrier) est un `fz` avec LCS **cochée** ;
+- une charge **verticale** par mètre de longueur de barre (poids propre) est un `fz` avec LCS **décochée** ;
+- une charge verticale par mètre de projection *horizontale* (neige) n’est pas disponible directement. Multipliez-la d’abord par $\cos\alpha$, où $\alpha$ est la pente de la barre, et saisissez-la comme charge verticale.
+
+### Charge trapézoïdale {#trapezoidal-load}
 
 | Champ | Signification |
 | --- | --- |
 | `f1x`, `f1z` | intensité au nœud **initial** |
 | `f2x`, `f2z` | intensité au nœud **final** |
 
-Les intensités varient linéairement entre les extrémités. Une charge triangulaire est simplement `f1z = 0`. Les charges trapézoïdales sont toujours dans le **repère local de l’élément** (la case LCS est verrouillée) ; pour les barres horizontales, z local et z global coïncident, cela n’a donc d’importance que pour les barres inclinées.
+L’intensité varie linéairement du début à la fin de l’élément. Une charge triangulaire a `f1z = 0`. Les charges trapézoïdales agissent toujours selon les **axes locaux de l’élément** (la case LCS est verrouillée) ; sur un élément horizontal, cela revient aux axes globaux.
 
-### Charge ponctuelle
+### Charge ponctuelle {#concentrated-load}
 
 Une force ou un moment ponctuel en un point quelconque **le long** d’un élément, sans nœud supplémentaire.
 
 | Champ | Signification |
 | --- | --- |
-| `Fx`, `Fz`, `My` | composantes de force / moment |
-| **Position de la charge depuis le nœud initial** | distance depuis le nœud initial, `0 ≤ a ≤ L` |
-| **LCS** | composantes en axes locaux |
+| `Fx`, `Fz`, `My` | composantes de force et de moment |
+| **Position de la charge depuis le nœud initial** | distance au nœud initial, `0 ≤ a ≤ L` |
+| **LCS** | composantes selon les axes locaux |
 
-Le diagramme d’effort tranchant présente un saut de `Fz` au point d’application et le diagramme des moments un point anguleux ; la valeur du moment y est étiquetée automatiquement.
+Le diagramme d’effort tranchant présente un saut de `Fz` au droit de la charge et le diagramme des moments y forme un angle ; la valeur du moment en ce point est étiquetée automatiquement. Un `My` ponctuel provoque au contraire un saut du diagramme des moments.
 
-### Charge thermique
+### Charge thermique {#temperature-load}
 
 | Champ | Signification |
 | --- | --- |
-| **ΔT<sub>c</sub>** – variation uniforme de température | variation uniforme sur toute la section → allongement $\alpha\,\Delta T_c\,L$ |
-| **ΔT<sub>b</sub> − ΔT<sub>t</sub>** – fibre inférieure moins supérieure | écart de température sur la hauteur → courbure $\alpha\,(\Delta T_b - \Delta T_t)/h$ |
+| **ΔT<sub>c</sub>**, variation uniforme de température | variation uniforme sur toute la section, qui produit un allongement $\alpha\,\Delta T_c\,L$ |
+| **ΔT<sub>b</sub> − ΔT<sub>t</sub>**, différence de température | fibre inférieure moins fibre supérieure, qui produit une courbure $\alpha\,(\Delta T_b - \Delta T_t)/h$ |
 
-Les charges thermiques utilisent le **α** du matériau et la **hauteur h** de la section. Un `ΔTb − ΔTt` positif (fibre inférieure plus chaude) fait bomber l’élément vers le haut. Dans une structure isostatique, la température ne produit que des déplacements ; ce sont les blocages (extrémités encastrées, continuité, barres surabondantes) qui la transforment en sollicitations.
+Les charges thermiques utilisent le **α** du matériau et la **hauteur h** de la section. Un `ΔTb − ΔTt` positif (plus chaud en bas) allonge la fibre inférieure : l’élément fléchit vers le bas comme une poutre sous charge gravitaire. Dans une structure isostatique, la température ne provoque que des déplacements ; les liaisons surabondantes (extrémités encastrées, continuité, barres surabondantes) la transforment en efforts internes.
 
-## Modifier et supprimer des charges
+<div class="shots">
 
-- Les charges apparaissent comme pastilles dans les tableaux *Nœuds* / *Éléments* et comme lignes dans l’onglet *Charges*, où les composantes (et la case LCS) se modifient sur place.
-- **Double-cliquez** sur une charge dans la vue, ou cliquez puis **Modifier la charge**, pour ouvrir la boîte d’édition.
-- Sélectionnez une charge et appuyez sur <kbd>Suppr</kbd>, ou utilisez l’icône corbeille.
-- Les charges rattachées à un nœud ou un élément sont supprimées avec lui et copiées avec lui lors du copier-coller.
+![Charge uniformément répartie](/screenshots/fr/loads-udl.webp)
 
-## Ce qui n’est pas disponible
+![Charge trapézoïdale](/screenshots/fr/loads-trapezoidal.webp)
 
-- **Cas et combinaisons de charges** : un seul cas.
-- **Poids propre** : saisissez-le comme charge uniformément répartie $f_z = \rho\,g\,A$ (par ex. IPE 200 : 7850 × 9,81 × 0,00285 ≈ 0,22 kN/m).
-- **Charges trapézoïdales en repère global** sur barres inclinées.
+![Charge ponctuelle](/screenshots/fr/loads-concentrated.webp)
+
+![Charge thermique](/screenshots/fr/loads-temperature.webp)
+
+</div>
+
+## Modifier et supprimer des charges {#editing-and-removing-loads}
+
+- Chaque charge est une ligne de l’onglet *Charges*, où vous pouvez modifier directement ses composantes et l’indicateur LCS. Les charges apparaissent aussi sous forme de pastilles dans les tableaux *Nœuds* et *Éléments*.
+- **Double-cliquez** sur une charge dans la vue, ou cliquez dessus et choisissez **Modifier la charge**, pour ouvrir la boîte de dialogue de modification.
+- Sélectionnez une charge et appuyez sur <kbd>Suppr</kbd>, ou utilisez le × du tableau.
+- Les charges attachées à un nœud ou à un élément sont supprimées avec lui, et copiées avec lui lors d’un copier-coller.
+
+![L’onglet Charges : une ligne par charge, avec ses composantes modifiables sur place](/screenshots/fr/loads-table.webp)
+
+## Ce qui n’est pas disponible {#what-is-not-available}
+
+- **Cas et combinaisons de charges.** Il n’y a qu’un seul cas de charge.
+- **Poids propre.** Saisissez-le comme charge uniforme avec LCS décochée : $f_z = \rho\,g\,A$. Pour un IPE 200, 7850 × 9,81 × 0,00285 ≈ 0,22 kN/m.
+- **Charges trapézoïdales en axes globaux** sur les barres inclinées.

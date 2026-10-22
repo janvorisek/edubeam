@@ -1,102 +1,108 @@
 # 结果与内力图
 
-<Edubeam /> 在每次更改后自动求解模型（限制为每秒几次），因此结果始终是最新的。没有*求解*按钮。如果什么都没有绘制出来，说明模型还无法求解——参见[故障排除](/zh/reference/troubleshooting)。
+<Edubeam /> 在每次修改后都会求解模型（最多每秒几次），因此结果始终是最新的。没有*求解*按钮。如果什么都没有绘制，说明模型暂时还无法求解；视图左上角的消息会说明原因（见[疑难解答](/zh/reference/troubleshooting)）。
 
-## 视图中的图层
+本页中的图片都来自同一个模型：承受 10 kN/m 荷载的[三铰刚架](/zh/tutorials/three-hinged-frame)。
 
-在**显示设置面板**（视图右上角的 ⚙ 按钮）中开关它们。
+## 视图中的结果图形 {#overlays-in-the-viewer}
 
-| 图层 | 颜色（默认） | 说明 |
+在视图右上角的**显示选项**中打开或关闭它们（⚙ 按钮用于显示或隐藏显示选项）。
+
+| 图形 | 颜色（默认） | 说明 |
 | --- | --- | --- |
-| **变形图** | 灰色 | 放大显示；按最大位移等于*结果缩放*像素数进行缩放。 |
-| **N (x)** – 轴力 | 蓝色 | 拉力为正。除非有轴向线荷载作用，否则在单元内为常量。 |
-| **V<sub>z</sub> (x)** – 剪力 | 绿色 | 均布荷载下线性，梯形荷载下二次，集中荷载处突变。 |
-| **M<sub>y</sub> (x)** – 弯矩 | 红色 | 下侧受拉为正（下缘纤维受拉）。在两端、集中荷载处以及每个局部极值处（V = 0 处）标注数值。 |
-| **支反力** | 紫色 | 每个被约束的自由度都有一个箭头和数值。 |
+| **变形图** | 灰色 | 经过放大：最大位移绘制为*结果缩放*像素长。默认开启。 |
+| **N (x)**，轴力 | 蓝色 | 受拉为正。除非单元上有轴向荷载，否则沿单元为常数。 |
+| **V<sub>z</sub> (x)**，剪力 | 绿色 | 均布荷载下为线性，梯形分布荷载下为二次曲线，集中荷载处发生突变。 |
+| **M<sub>y</sub> (x)**，弯矩 | 红色 | 正弯矩为正（下缘纤维受拉）。在两端、集中荷载处以及每个局部极值处（V = 0 处）标注数值。默认开启。 |
+| **支反力** | 紫色 | 每个受约束自由度都有一个箭头和一个数值。默认开启。 |
 
-内力图沿单元绘制，数值写在特征点处。标签方向和所有图形的比例可以在[设置](/zh/essentials/units-settings#视图设置)中更改。
+数值标注在每张内力图的特征点上。标签方向、图形大小和颜色可以在[设置](/zh/essentials/units-settings#viewer-settings)中修改。
 
-### 轴力
+<div class="shots">
 
-<Figure>
-    <Structure :show-loads="true" show-normal-force :nodes="[{label: 'a', coords: [0,0,0], dofs: [0,2, 4]}, {label: 'b', coords: [10,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['a', 'b']}]" :nodal-loads="[{target: 'b', values: { 0: -100, 2: 0, 4: 0 }}]" />
-    <figcaption>自由端受水平力压缩的悬臂梁：N 为常值且为负</figcaption>
-</Figure>
+![轴力 N：两根柱均承受 40 kN 压力，横梁承受 20 kN](/screenshots/zh/results-normal.webp)
 
-### 剪力
+![剪力 V：柱中为 20 kN；横梁中角点处为 40 kN，在铰处降为零](/screenshots/zh/results-shear.webp)
 
-<Figure>
-  <Structure :show-loads="true" show-shear-force :nodes="[{label: 'a', coords: [0,0,0], dofs: [0,2, 4]}, {label: 'b', coords: [10,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['a', 'b']}]" :nodal-loads="[{target: 'b', values: { 0: 0, 2: 10, 4: 0 }}]" />
- <figcaption>端部作用竖向集中荷载的悬臂梁：V 为常值</figcaption>
-</Figure>
+![弯矩 M：两个角点处为 −80 kNm，柱脚和铰处为零](/screenshots/zh/results-moment.webp)
 
-### 弯矩
+![变形图（经过放大）：C 处的铰下沉](/screenshots/zh/results-deformed.webp)
 
-<Figure>
-  <Structure :show-loads="true" show-moment :nodes="[{label: 'a', coords: [0,0,0], dofs: [0,2, 4]}, {label: 'b', coords: [10,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['a', 'b']}]" :nodal-loads="[{target: 'b', values: { 0: 0, 2: 10, 4: 0 }}]" />
- <figcaption>同一悬臂梁：M 线性增长，在固定端达到 F·L</figcaption>
-</Figure>
+</div>
 
-### 变形图
+![支反力：每个固定铰支座处竖向 40 kN、水平 20 kN](/screenshots/zh/results-reactions.webp){.shot-lg}
 
-<Figure>
-  <Structure :show-loads="true" show-deformed-shape :nodes="[{label: 'a', coords: [0,0,0], dofs: [0,2, 4]}, {label: 'b', coords: [10,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['a', 'b']}]" :nodal-loads="[{target: 'b', values: { 0: 0, 2: 10, 4: 0 }}]" />
-  <figcaption>悬臂梁的变形图（放大显示）</figcaption>
-</Figure>
+### 判读符号 {#reading-the-sign}
 
-### 支反力
+请根据标签读取数值的符号，而不是根据内力图画在杆件的哪一侧。负弯矩表示上缘受拉：对梁而言是上缘纤维受拉，对框架角点而言是外侧受拉。
 
-<Structure :show-loads="true" show-reactions :nodes="[{label: 'a', coords: [0,0,0], dofs: [0,2, 4]}, {label: 'b', coords: [10,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['a', 'b']}]" :nodal-loads="[{target: 'b', values: { 0: 0, 2: 10, 4: 0 }}]" />
+## 悬停提示 {#hover-tooltips}
 
-## 悬停提示
+指向对象是读取数值最快的方法：
 
-在视图中悬停是读取数值最快的方式：
+- **节点**：`ux`、`uz` 和 `φy`（位移以位移单位表示，转角以弧度表示）。
+- **单元**：其标签、截面和材料。
+- **荷载**：其分量。
 
-- **节点** → `ux`、`uz`、`φy`（位移以长度单位、转角以弧度表示）。
-- **单元** → 它的标签、截面和材料。
-- **荷载** → 它的分量。
+在触摸屏上改为轻点对象。相同的信息会出现在其选择面板中。
 
-## 结果标签页
+![指向快速入门中梁的节点 2](/screenshots/zh/ui-hover.webp){.shot-sm}
 
-底部栏的**结果**标签页有两种视图：
+## 结果标签页 {#results-tab}
 
-### 节点结果
+底部栏的**结果**标签页有两个表格，用**节点结果**和**单元结果**切换。
 
-每个节点一行，包含 **Dx**、**Dz**（长度单位）和 **Ry**（rad）。符号遵循整体坐标轴：正的 `Dz` 向下，正的 `Ry` 在屏幕上为逆时针。
+### 节点结果 {#nodal-results}
 
-<figure>
+每个节点一行，包含 **Dx**、**Dz**（位移单位）和 **Ry**（rad）。符号遵循整体坐标轴：正的 `Dz` 向下，正的 `Ry` 在屏幕上为逆时针。
 
-![节点结果](/results_nodes.png)
+![三铰刚架的节点结果（数字格式：自动）](/screenshots/zh/results-nodal.webp)
 
-</figure>
-
-### 单元结果
+### 单元结果 {#element-results}
 
 每个单元一行，给出**单元局部坐标系中的端力**：
 
 | 列 | 含义 |
 | --- | --- |
 | `X12`、`Z12`、`M12` | 在**起始**节点处作用于单元的轴力、剪力和弯矩 |
-| `X21`、`Z21`、`M21` | 在**终止**节点处的对应量 |
+| `X21`、`Z21`、`M21` | 在**终止**节点处的相应值 |
 
-这些是节点作用在单元上的力（单元刚度矩阵乘以端部位移，再减去等效节点荷载）。对于承受 12 kN/m 的 6 m 简支梁，你会得到 `Z12 = Z21 = −36 kN`：两个支座都向上（负 z 方向）推梁。对于起始节点固定、端部作用 18 kN 向下荷载的悬臂梁：`Z12 = −18`，`M12 = +72 kNm`，`Z21 = +18`，`M21 = 0`。
+![三铰刚架的单元结果](/screenshots/zh/results-element.webp)
 
-<figure>
+这些是节点作用在单元上的力：单元刚度矩阵乘以其端部位移，再减去等效节点荷载。它们遵循局部坐标轴，而不是内力图的 N-V-M 约定：
 
-![单元结果](/results_elements.png)
+- 对于[快速入门](/zh/guide/quick-start)中 6 m 的简支梁：`Z12 = Z21 = −36 kN`。两个支座都向上推梁，即 −z 方向。
+- 对于起始节点固定、自由端作用 18 kN 向下荷载的悬臂梁：`Z12 = −18 kN`，`M12 = +72 kNm`，`Z21 = +18 kN`，`M21 = 0`。
+- 对于框架的柱 1（A 在下，B 在上）：`X12 = +40 kN` 沿局部 x 轴推入单元，即 40 kN 的压力。
 
-</figure>
+### 导出 CSV 与复制 {#export-csv-and-copy}
 
-### 刚度矩阵
+**导出 CSV** 会下载包含两个表格的 `edubeam-results.csv`，使用屏幕上显示的单位，可直接用于电子表格。节点表格中还列出了**支反力** `Rx`、`Rz`、`My`。**复制**会把同样的表格以制表符分隔的文本放到剪贴板上，可以直接粘贴到 Excel、LibreOffice 或 Google Sheets 中。在导出文件中，单元端力命名为 `N1 V1 M1 N2 V2 M2`。
 
-从单元的弹出菜单或表格行中选择**刚度矩阵**，会打开一个浮动窗口，显示该单元在局部和整体坐标系下的 6 × 6 刚度矩阵——在矩阵位移法课程中检查手工组装时很有用。公式见[理论手册](/zh/elements/beam)。
+### 刚度矩阵 {#stiffness-matrix}
 
-## 精度与准确性
+从单元的面板或表格行中选择**刚度矩阵**，会打开一个窗口，显示单元在整体坐标系中的 6 × 6 刚度矩阵，便于在刚度法课程中核对手工组装的结果。公式见[理论手册](/zh/elements/beam)。
 
-- 对线性 Timoshenko 模型，梁单元在节点荷载、均布、梯形、集中和温度荷载下都是精确的，因此结果**不**依赖于单元数量。
-- 表格显示四位有效数字；内部计算为双精度。
-- 挠度包含**剪切变形**（Timoshenko）。对细长杆件，与 Euler–Bernoulli 公式相比这只增加百分之零点几；对深梁或短杆件可能达到百分之几。如果想抑制它，请把截面的剪切系数设置为一个很大的值。
+## 数字格式 {#number-format}
 
-## 把结果写入报告
+结果以五位有效数字显示。**设置 → 语言与区域 → 数字格式**决定它们的书写方式：
 
-没有表格导出功能；请选中表格文字并复制，或对视图截图。要把模型交给他人，请使用[分享模型](/zh/essentials/import-export)。
+| 格式 | 40 000 写作 | 适用于 |
+| --- | --- | --- |
+| **科学计数**（默认） | 4 · 10⁴ | 跨越多个数量级的数值 |
+| **工程计数** | 40 · 10³ | 与千、兆等词头相对应 |
+| **自动** | 40000 | 教学中的日常数值 |
+
+“自动”格式会把 0.001 到 100 000 之间的数值写成普通数字，超出此范围则改用 10 的幂。小数分隔符跟随语言。
+
+## 精度与准确性 {#precision-and-accuracy}
+
+- 在节点荷载、均布荷载、梯形分布荷载、集中荷载和温度荷载作用下，梁单元对线性 Timoshenko 模型是精确的，因此结果**不**依赖于单元数量。
+- 计算采用双精度。像 `1.5 · 10⁻¹⁸` 这样极小的数值是舍入误差，表示零。
+- 挠度包含**剪切变形**。对于细长杆件，它只在 Euler–Bernoulli 值的基础上增加不到百分之一；对于高跨比大或短的杆件，可能达到百分之几。把截面的剪切系数设为很大的值即可将其抑制。
+
+## 报告中的结果 {#results-in-a-report}
+
+- **☰ → 导出图像**（<kbd>Ctrl</kbd>+<kbd>P</kbd>）将图形连同你选择的结果图形保存为 PNG 或 SVG。见[导出图像](/zh/essentials/import-export#export-an-image)。
+- **结果 → 导出 CSV** 或**复制**给出具体数值。
+- **分享模型**给出一个链接，读者可以直接打开模型本身。

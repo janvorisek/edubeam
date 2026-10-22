@@ -1,96 +1,142 @@
 # Uživatelské rozhraní
 
-<Edubeam /> má tři oblasti. Jakmile víte, co kde najdete, dává zbytek dokumentace smysl.
+<Edubeam /> má tři hlavní části: nahoře **horní lištu**, uprostřed **zobrazení**, ve kterém kreslíte, a dole **spodní lištu** s tabulkou pro každý druh objektu. Když víte, co kde najdete, bude vám zbytek dokumentace dávat smysl.
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│ ☰  edubeam     🗑 Smazat konstrukci  🔗 Sdílet   Co je nového │  ← Horní lišta
-├──────────────────────────────────────────────────────────────┤
-│ Konstrukce | Nastavení                                       │  ← Záložky
-│ ↶ ↷                                        ⌖  ⤢  ⚙            │
-│                                                              │
-│                     plátno (model)              [přepínače   │  ← Zobrazení
-│                                                  zobrazení]  │
-│                                       G  S  m·kN·kNm·MPa     │
-├──────────────────────────────────────────────────────────────┤
-│ Uzly | Prvky | Zatížení | Materiály | Průřezy | Výsledky      │  ← Spodní lišta
-│ [Přidat uzel] [Přidat myší]         tabulka entit …          │
-└──────────────────────────────────────────────────────────────┘
-```
+![Části rozhraní, očíslované podle seznamu níže](/screenshots/cs/ui-overview.webp)
 
-## Horní lišta
+1. **Nabídka ☰**: otevírání, ukládání, sdílení a export; příklady a průvodci.
+2. **Tlačítka horní lišty**: Smazat konstrukci a Sdílet konstrukci.
+3. **Zpět / Znovu** u každé změny modelu.
+4. **Tlačítka zobrazení**: vystředění, přizpůsobení obrazovce a přepínač možností zobrazení.
+5. **Možnosti zobrazení**: volba, které výsledky a části modelu se vykreslí.
+6. **Mřížka, přichytávání, zaměřovací kříž a jednotky.**
+7. **Záložky spodní lišty**: Uzly, Prvky, Zatížení, Materiály, Průřezy, Výsledky.
+8. **Tabulka** otevřené záložky, ve které můžete upravit každou hodnotu.
+
+::: tip Projděte si prohlídku
+Volba **☰ → Provést aplikací** vás těmito částmi postupně provede přímo v aplikaci.
+:::
+
+![Provést aplikací, u kroku s možnostmi zobrazení](/screenshots/cs/tour.webp)
+
+## Horní lišta {#app-bar}
 
 | Ovládací prvek | Funkce |
 | --- | --- |
-| **☰ nabídka** | **Otevřít projekt**, **Uložit projekt**, **Sdílet konstrukci**, **Smazat konstrukci** a verze aplikace. |
-| **Smazat konstrukci** 🗑 | Po potvrzení smaže všechny uzly, prvky a zatížení. Dvě zaškrtávací políčka umožní smazat i materiály a průřezy. Nelze vrátit zpět. |
-| **Sdílet konstrukci** 🔗 | Otevře [dialog sdílení](/cs/essentials/import-export#sdileni-odkazem) s adresou URL, která obsahuje celý model. |
-| **Co je nového?** | Poznámky k vydání. |
-| **Dokumentace** / GitHub | Odkazy na tento web a na zdrojový kód. |
+| **Nabídka ☰** | Hlavní nabídka, viz níže. |
+| **Smazat konstrukci** | Po potvrzení smaže všechny uzly, prvky a zatížení. Pomocí dvou zaškrtávacích políček můžete smazat i materiály a průřezy. Smazaný model vrátíte klávesami <kbd>Ctrl</kbd>+<kbd>Z</kbd> a najdete ho také v Nedávných konstrukcích. |
+| **Sdílet konstrukci** | Otevře [dialog sdílení](/cs/essentials/import-export#share-a-link) s odkazem, který obsahuje celý model. |
+| **Co je nového?** | Poznámky k vydání. Po aktualizaci se jednou otevřou samy. |
+| **Dokumentace** / GitHub | Tato dokumentace a zdrojový kód. |
 
-V [režimu prohlížeče](/cs/essentials/import-export#vlozeni-prohlizece-jen-pro-cteni) je horní lišta skrytá.
+Na telefonu se do lišty vejde jen nabídka ☰ a Dokumentace, vše ostatní najdete v nabídce.
 
-## Zobrazení
+### Nabídka ☰ {#the-☰-menu}
 
-Plátno, na kterém kreslíte a prohlížíte model. Vše ostatní v aplikaci reaguje na to, co zde vyberete.
+![Nabídka ☰](/screenshots/cs/ui-app-menu.webp){.shot-xs}
 
-### Tlačítka na plátně
+| Položka | Funkce |
+| --- | --- |
+| **Otevřít projekt** / **Uložit projekt** | Otevře nebo stáhne soubor `project.json` (<kbd>Ctrl</kbd>+<kbd>O</kbd> / <kbd>Ctrl</kbd>+<kbd>S</kbd>). |
+| **Nedávné konstrukce** | Posledních 10 smazaných nebo nahrazených modelů, které můžete obnovit. |
+| **Exportovat obrázek** | Uloží výkres do PNG nebo SVG, případně ho zkopíruje (<kbd>Ctrl</kbd>+<kbd>P</kbd>). |
+| **Sdílet konstrukci** | Totéž co tlačítko v horní liště. |
+| **Příklady** | Galerie hotových modelů. |
+| **Nakreslit první nosník** | Řízená úloha o sedmi krocích. |
+| **Provést aplikací** | Prohlídka rozhraní. |
+| **Smazat konstrukci** | Totéž co tlačítko v horní liště. |
 
-- **Vlevo nahoře:** **Zpět** / **Znovu** (také <kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd>). Každá změna modelu – přidání, úprava, přetažení, smazání – jde vrátit.
-- **Vpravo nahoře:** **Vycentrovat** (<kbd>C</kbd>), **Přizpůsobit obrazovce** (<kbd>F</kbd>) a přepínač **nastavení zobrazení** ⚙.
-- **Vpravo dole:** **G** přepíná mřížku, **S** přichytávání k mřížce; **štítek jednotek** ukazuje aktivní jednotky a po kliknutí otevře nastavení.
+Dole v nabídce najdete verzi aplikace a datum jejího vydání.
 
-### Panel nastavení zobrazení
+## Zobrazení {#viewer}
 
-Otevřete tlačítkem ⚙. Dvě řady zaškrtávacích políček:
+Na plátně model kreslíte a prohlížíte. Zbytek aplikace reaguje na to, co na něm vyberete.
 
-- **Výsledky:** *Deformovaný tvar*, *N (x)*, *V<sub>z</sub> (x)*, *M<sub>y</sub> (x)*, *Reakce*.
+### Tlačítka na plátně {#buttons-on-the-canvas}
+
+- **Vlevo nahoře:** **Zpět** a **Znovu** (<kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd>). Vrátit můžete každou změnu modelu – přidání, úpravu, přetažení, smazání i vymazání celé konstrukce.
+- **Vpravo nahoře:** **Vystředit konstrukci** (<kbd>C</kbd>), **Přizpůsobit obrazovce** (<kbd>F</kbd>) a tlačítko ⚙, které zobrazí nebo skryje možnosti zobrazení. Na dotykových obrazovkách je zde také **Výběr obdélníkem**.
+- **Vpravo dole:** **G** zapíná a vypíná mřížku, **S** přichytávání k mřížce, tlačítko zaměřovacího kříže zobrazí polohu kurzoru na pravítkách a **štítek jednotek** otevře nastavení na stránce *Jazyk a prostředí*.
+
+### Možnosti zobrazení {#display-options}
+
+![Tlačítka zobrazení a možnosti zobrazení](/screenshots/cs/ui-display-settings.webp){.shot-lg}
+
+Panel je ve výchozím stavu otevřený a má dvě řady zaškrtávacích políček:
+
+- **Výsledky:** *Deformovaný tvar*, *N (x)*, *V<sub>z</sub> (x)*, *M<sub>y</sub> (x)*, *Reakce*. Na začátku jsou zaškrtnuté Deformovaný tvar, M a Reakce.
 - **Model:** *Podpory*, *Zatížení*, *Popisky uzlů*, *Popisky prvků*.
 
-**Všechna nastavení** otevře celý [dialog nastavení](/cs/essentials/units-settings).
+Tlačítko **Všechna nastavení** otevře kompletní [nastavení](/cs/essentials/units-settings) na stránce *Nastavení zobrazení*.
 
-### Pohyb po plátně
+### Pohyb po plátně {#navigating}
 
-| Akce | Myš / dotyk |
-| --- | --- |
-| Zoom | Kolečko myši (přibližuje ke kurzoru), <kbd>Ctrl</kbd>+<kbd>=</kbd> / <kbd>Ctrl</kbd>+<kbd>-</kbd>; na dotykové obrazovce roztažení prstů |
-| Posun | Tažení **prostředním nebo pravým** tlačítkem (lze změnit v *Nastavení → Ovládání & zkratky*); na dotykové obrazovce tažení jedním prstem |
-| Přizpůsobit / vycentrovat | <kbd>F</kbd> / <kbd>C</kbd> nebo tlačítka vpravo nahoře |
+| Akce | Myš | Dotyk |
+| --- | --- | --- |
+| Přiblížení | Kolečko myši (přibližuje ke kurzoru), <kbd>Ctrl</kbd>+<kbd>=</kbd> / <kbd>Ctrl</kbd>+<kbd>-</kbd> | Roztažení a sevření prstů |
+| Posun | Tažení **prostředním nebo pravým** tlačítkem (viz *Nastavení → Ovládání & zkratky*) | Tažení jedním prstem |
+| Přizpůsobit / vystředit | <kbd>F</kbd> / <kbd>C</kbd> nebo tlačítka vpravo nahoře | Tlačítka vpravo nahoře |
 
-### Výběr a úpravy
+### Výběr a úpravy {#selecting-and-editing}
 
-- **Kliknutím** vyberete uzel, prvek, zatížení nebo kótu. Spodní lišta přeskočí na odpovídající záložku a u výběru se objeví malá **kontextová nabídka** s akcemi pro daný objekt (např. *Přidat zatížení*, *Podepření uzlu*, *Upravit prvek*, *Matice tuhosti*, *Smazat*).
-- **Tažením po prázdném plátně** nakreslíte výběrový obdélník. Vybere se vše uvnitř – uzly, prvky, jejich zatížení a kóty. <kbd>Delete</kbd> vše smaže, <kbd>Ctrl</kbd>+<kbd>C</kbd> / <kbd>Ctrl</kbd>+<kbd>V</kbd> zkopíruje a vloží jinam.
-- **Tažením uzlu** jej přesunete. Se zapnutým přichytáváním padne na mřížku. Připojené prvky a jejich zatížení se přesunou s ním.
-- **Dvojklik na zatížení** otevře jeho úpravu.
-- **Najetí myší** zobrazí popisek: uzly ukážou posunutí a pootočení, prvky materiál a průřez, zatížení své složky.
-- **Pravé tlačítko na prázdném plátně** otevře nabídku plátna: *Přidat uzel*, *Přidat prvek*, *Přidat kótu*, *Upravit* (otevře tabulku aktuálního výběru), *Kopírovat*, *Vložit*, *Smazat*. Držte <kbd>Ctrl</kbd> při volbě *Přidat uzel* / *Přidat prvek*, chcete-li je umístit myší místo dialogu.
+**Kliknutím** vyberete uzel, prvek, zatížení nebo kótu. Vedle vybraného objektu se otevře panel s podrobnostmi a s akcemi, které se k němu hodí: přidat zatížení, nastavit podpory, upravit, zobrazit matici tuhosti, smazat. Když kliknete na uzel, přepne se navíc spodní lišta na záložku Uzly.
 
-Všechny zkratky jsou na stránce [Klávesnice a myš](/cs/reference/shortcuts).
+<div class="shots">
 
-### Upozornění
+![Uzel: přidat zatížení, nastavit podpory, předepsat posunutí](/screenshots/cs/ui-node-menu.webp)
 
-Vlevo nahoře v zobrazení se objeví hlášení, pokud něco není v pořádku: *Není definovaný žádný materiál* / *Není definovaný žádný průřez* (s tlačítkem **Přidat**) nebo *Model has N error(s)* s tlačítkem **Show details**, které vypíše všechny problémy. Viz [Řešení problémů](/cs/reference/troubleshooting).
+![Prvek: upravit, přidat zatížení, matice tuhosti](/screenshots/cs/ui-element-menu.webp)
 
-## Spodní lišta
+</div>
 
-Šest záložek, každá s počítadlem, lištou tlačítek a upravitelnou tabulkou. Tažením za oddělovač nad lištou změníte její výšku; tlačítkem vpravo ji minimalizujete.
+- **Tažením po prázdném plátně** nakreslíte výběrový obdélník. Vybere se vše, co leží uvnitř: uzly, prvky, jejich zatížení a kóty. Klávesou <kbd>Delete</kbd> výběr smažete, pomocí <kbd>Ctrl</kbd>+<kbd>C</kbd> / <kbd>Ctrl</kbd>+<kbd>V</kbd> ho zkopírujete jinam.
+- **Tažením uzlu** uzel přesunete. Když je zapnuté přichytávání, přichytí se k mřížce. Připojené prvky a jejich zatížení se posunou s ním.
+- **Dvojklikem na zatížení** otevřete jeho úpravu.
+- **Najetím myší** na libovolný objekt zobrazíte popisek: u uzlů posunutí a pootočení, u prvků materiál a průřez, u zatížení jejich hodnoty. Na dotykové obrazovce místo toho klepněte – stejné údaje se objeví v panelu výběru.
+
+![Najetí myší na uzel ukáže jeho posunutí a pootočení](/screenshots/cs/ui-hover.webp){.shot-sm}
+
+**Pravým tlačítkem na plátno** (nebo dlouhým podržením na dotykové obrazovce) otevřete nabídku plátna. Chcete-li uzel nebo prvek umístit myší, a ne v dialogu, podržte při volbě *Přidat uzel* nebo *Přidat prvek* klávesu <kbd>Ctrl</kbd>. Když nabídku otevřete nad prvkem, najdete v ní také *Okótovat prvek*.
+
+![Nabídka plátna](/screenshots/cs/ui-canvas-menu.webp){.shot-sm}
+
+Přehled všech zkratek najdete na stránce [Klávesnice, myš a dotyk](/cs/reference/shortcuts).
+
+### Když model nelze vypočítat {#when-the-model-cannot-be-solved}
+
+Vlevo nahoře v zobrazení se objeví hlášení:
+
+- *Není definovaný žádný materiál* / *Není definovaný žádný průřez* s tlačítkem **Přidat**.
+- Malý modrý štítek **Chybí podpory**, dokud model není dokončený.
+- **Červené hlášení**, pokud je v modelu chyba. Tlačítko **Zobrazit podrobnosti** vypíše všechny problémy.
+
+Pokud je konstrukce pohyblivá, EduBeam rozpohybuje její čárkovaný obrys a zakroužkuje uzly nebo klouby, které pohyb umožňují. Chcete-li pohyb vidět znovu, najeďte myší na hlášení; skrýt ho můžete tlačítkem s okem.
+
+![Rám s klouby v B a C je mechanismus: EduBeam ukáže, jak se pohybuje](/screenshots/cs/ui-mechanism.webp)
+
+![Zobrazit podrobnosti vypíše každý problém i s radou, jak ho opravit](/screenshots/cs/ui-diagnostics.webp){.shot-lg}
+
+Význam jednotlivých hlášení vysvětluje kapitola [Řešení problémů](/cs/reference/troubleshooting).
+
+## Spodní lišta {#bottom-bar}
+
+Spodní lišta má šest záložek, každou s řadou tlačítek a upravitelnou tabulkou. Na záložkách vidíte, kolik objektů daného druhu model obsahuje. Tlačítko **?** vpravo vysvětluje otevřenou záložku, podobně jako **?** u některých záhlaví sloupců. Výšku lišty změníte tažením pruhu se záložkami nahoru nebo dolů, tlačítkem vpravo ji minimalizujete.
 
 | Záložka | Tlačítka | Tabulka |
 | --- | --- | --- |
-| **Uzly** | Přidat uzel (dialog), Přidat myší | Označení, X, Z, políčka **Podepřené stupně volnosti**, zatížení v uzlu, smazat |
-| **Prvky** | Přidat prvek (dialog), Přidat myší | Označení, typ, počáteční/koncový uzel (+ *Přehodit pořadí uzlů*), materiál, průřez, **Koncové klouby**, zatížení na prvku, matice tuhosti, smazat |
-| **Zatížení** | Přidat uzlové zatížení, Přidat prvkové zatížení | Typ, působiště, upravitelné složky, smazat |
-| **Materiály** | Přidat materiál, Knihovna materiálů | Označení, E, G, α<sub>T</sub>, smazat |
-| **Průřezy** | Přidat průřez, Knihovna průřezů | Označení, A, I<sub>y</sub>, h, k, smazat |
-| **Výsledky** | Přepínač Výsledky v uzlech / Výsledky na prvcích | Posunutí a pootočení uzlů, nebo koncové síly prvků |
+| **Uzly** | Přidat uzel (dialog), Přidat uzel (myš) | Označení, souřadnice, **Podepřené stupně volnosti** (značka podpory, Dx, Dz, Ry, úhel podpory α), zatížení, úprava, smazání |
+| **Prvky** | Přidat prvek (dialog), Přidat prvek (myš) | Označení, typ, uzly (s tlačítkem pro prohození), materiál, průřez, **Koncové klouby**, zatížení, matice tuhosti, smazání |
+| **Zatížení** | Přidat uzlové zatížení, Přidat prvkové zatížení | Typ, působiště, upravitelné složky, úprava, smazání |
+| **Materiály** | Přidat materiál, Knihovna materiálů | Označení, E, G, α<sub>T</sub>, smazání |
+| **Průřezy** | Přidat průřez, Knihovna průřezů, Polygonální průřez | Tvar, označení, A, I<sub>y</sub>, h, k, úprava tvaru, smazání |
+| **Výsledky** | Výsledky v uzlech, Výsledky na prvcích, Exportovat CSV, Kopírovat | Posunutí a pootočení všech uzlů, nebo koncové síly všech prvků |
 
-Buňky se upravují přímo v tabulce – klikněte, napište, potvrďte <kbd>Enter</kbd> (nebo <kbd>Esc</kbd> pro opuštění buňky). Hodnoty se zobrazují a zadávají v [aktuálních jednotkách](/cs/essentials/units-settings).
+Buňky upravujete přímo: klikněte do buňky, napište hodnotu a stiskněte <kbd>Enter</kbd> (klávesou <kbd>Esc</kbd> buňku opustíte). Hodnoty se zobrazují i zadávají v [aktuálních jednotkách](/cs/essentials/units-settings).
 
-## Záložky nad zobrazením
+## Záložky nad zobrazením {#tabs-above-the-viewer}
 
-Záložka **Konstrukce** je vždy přítomná. Otevření nastavení přidá vedle ní zavíratelnou záložku **Nastavení**, takže můžete upravovat barvy či jednotky a přitom se dívat na model.
+Záložka **Konstrukce** zobrazuje plátno, záložka **Nastavení** otevře nastavení přes celou plochu. Můžete tak změnit barvy nebo jednotky a po přepnutí zpět hned vidět výsledek. Štítek jednotek a *Všechna nastavení* otevírají stejné nastavení jako dialog nad modelem.
 
-## Plovoucí okna
+## Plovoucí okna {#floating-windows}
 
-Některé akce otevřou přetahovatelná okna nad zobrazením: **Matice tuhosti** (z kontextové nabídky prvku nebo z řádku tabulky) ukazuje matici tuhosti prvku 6 × 6 v lokálních i globálních souřadnicích; **Upravit** z nabídky plátna otevře tabulku aktuálního výběru. Zavřete je křížkem.
+**Matice tuhosti** (z panelu prvku nebo z tabulky Prvky) otevře okno s maticí tuhosti prvku 6 × 6 v globálních souřadnicích. **Upravit** v nabídce plátna otevře tabulku s aktuálním výběrem. Okna přesouváte tažením za záhlaví a zavíráte křížkem ×.

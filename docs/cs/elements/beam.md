@@ -1,10 +1,10 @@
 # Prutový prvek (nosník)
 
-Jediným prvkem v <Edubeam /> je dvouuzlový **Timoshenkův nosník** v rovině x–z. Oproti klasickému Eulerovu–Bernoulliho nosníku zahrnuje vliv smykové deformace, který je podstatný u vysokých nebo krátkých prutů a u štíhlých prutů mizí. Znaménková konvence je shrnuta na stránce [konvence](/cs/elements/conventions).
+<Edubeam /> má jediný prvek: dvouuzlový **Timoshenkův nosník** v rovině x–z. Na rozdíl od klasického Eulerova–Bernoulliho nosníku zahrnuje vliv smykové deformace, který je podstatný u vysokých nebo krátkých prutů, zatímco u štíhlých prutů je zanedbatelný. Znaménkovou konvenci shrnuje stránka [konvence](/cs/elements/conventions).
 
 <TrussElement :moment="true" caption="Schéma rovinného Timoshenkova nosníku" />
 
-## Stupně volnosti
+## Stupně volnosti {#degrees-of-freedom}
 
 Rovinný Timoshenkův nosník má v každém uzlu tři stupně volnosti:
 
@@ -12,13 +12,13 @@ Rovinný Timoshenkův nosník má v každém uzlu tři stupně volnosti:
 - **Posunutí (Dz):** posun ve směru osy z.
 - **Pootočení (Ry):** pootočení kolem osy y.
 
-Zatížení se zadává ve směrech stupňů volnosti:
+Zatížení zadáváte ve směrech stupňů volnosti:
 
 - **Vodorovná síla (Fx):** síla ve směru osy x.
 - **Svislá síla (Fz):** síla ve směru osy z.
 - **Moment (My):** moment kolem osy y.
 
-## Lokální matice tuhosti
+## Lokální matice tuhosti {#local-stiffness-matrix}
 
 Matice tuhosti nosníku v lokálních souřadnicích je
 
@@ -46,17 +46,17 @@ $$
 \varphi = \frac{12\,E I_y}{k\,G\,A\,L^2}
 $$
 
-s $G$ smykovým modulem a $k$ **smykovým součinitelem** průřezu (účinná smyková plocha $kA$). Pro $\varphi \to 0$ (štíhlý prut nebo velmi velké $k$) matice přechází v matici tuhosti Eulerova–Bernoulliho nosníku.
+kde $G$ je modul pružnosti ve smyku a $k$ **smykový součinitel** průřezu (účinná smyková plocha je $kA$). Pro $\varphi \to 0$ (štíhlý prut nebo velmi velké $k$) přechází matice v matici tuhosti Eulerova–Bernoulliho nosníku.
 
-## Koncové klouby
+## Koncové klouby {#end-hinges}
 
-Kloub na konci prvku uvolní příslušný rotační stupeň volnosti: pootočení se z matice 6 × 6 vyloučí statickou kondenzací ($M = 0$ na daném konci) a prvek se sestavuje se zbývajícími stupni volnosti. Při uvolnění obou konců zůstanou jen osové členy a prvek se chová jako [příhradový prut](/cs/elements/truss).
+Kloub na konci prvku uvolní příslušné pootočení: to se z matice 6 × 6 vyloučí statickou kondenzací ($M = 0$ na daném konci) a do soustavy vstupují jen zbývající stupně volnosti. Když uvolníte oba konce, zůstanou jen osové členy a prvek se chová jako [příhradový prut](/cs/elements/truss).
 
-## Prvková zatížení
+## Prvková zatížení {#element-loads}
 
-Spojitá, osamělá i teplotní zatížení se převádějí na **ekvivalentní uzlové zatížení** $\mathbf{f}_{eq}$ (záporně vzaté primární koncové síly) a přičítají se ke globálnímu vektoru zatížení. Po řešení se vnitřní síly po délce prutu dopočítají z koncových posunů a z přesného partikulárního řešení pro dané prvkové zatížení, takže průběhy jsou po délce prutu přesné.
+Spojité, osamělé i teplotní zatížení se převádí na **ekvivalentní uzlové zatížení** $\mathbf{f}_{eq}$ (primární koncové síly s opačným znaménkem) a přičte se ke globálnímu vektoru zatížení. Po vyřešení se vnitřní síly po délce prutu dopočítají z koncových posunutí a z přesného partikulárního řešení pro dané prvkové zatížení. Průběhy jsou proto přesné po celé délce prutu.
 
-## Transformační matice
+## Transformační matice {#transformation-matrix}
 
 Transformační matice prvku $\mathbf{T}$ převádí lokální matici tuhosti do globálního souřadného systému.
 
@@ -71,7 +71,7 @@ $$
 \end{pmatrix}
 $$
 
-## Globální matice tuhosti
+## Globální matice tuhosti {#global-stiffness-matrix}
 
 Globální matice tuhosti $\mathbf{K_g}$ vznikne z transformační matice $\mathbf{T}$ a lokální matice tuhosti $\mathbf{K_l}$:
 

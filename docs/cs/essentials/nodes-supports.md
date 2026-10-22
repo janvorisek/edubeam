@@ -1,81 +1,91 @@
 # Uzly a podpory
 
-Uzly jsou body modelu. Prvky spojují uzly; podpory a uzlová zatížení se vážou k uzlům.
+Uzly jsou body modelu. Prvky uzly propojují a v uzlech se zadávají podpory a uzlová zatížení.
 
-## Souřadnice
+## Souřadnice {#coordinates}
 
-Každý uzel má souřadnice **X** a **Z** v aktuální jednotce délky. Osa x míří doprava a **osa z míří na obrazovce dolů** – sloup od země nahoru tedy vede z `Z = 0` do `Z = −3`, ne `+3`. Ukazatel os v rohu mřížky zobrazuje aktuální orientaci. Viz [Souřadný systém a znaménková konvence](/cs/elements/conventions).
+Každý uzel má souřadnice **X** a **Z** v aktuální jednotce délky. Osa x míří doprava a **osa z míří na obrazovce dolů**. Sloup, který vychází ze země, proto vede ze `Z = 0` do `Z = −3`, nikoli do `+3`. Orientaci os ukazuje symbol v rohu mřížky. Chcete-li, aby svislá osa mířila nahoru, přepněte v Nastavení na [osy s y nahoru](/cs/elements/conventions#y-up-axes).
 
-## Přidání uzlů
+## Přidání uzlů {#adding-nodes}
 
 | Způsob | Postup |
 | --- | --- |
-| **Dialog** | Záložka *Uzly* → **Přidat uzel**, nebo pravé tlačítko na plátně → *Přidat uzel*. Zadejte X a Z. |
-| **Myší** | Záložka *Uzly* → **Přidat myší** (nebo držte <kbd>Ctrl</kbd> při volbě *Přidat uzel* z nabídky plátna) a klikejte na plátno. Každé kliknutí přidá uzel; <kbd>Esc</kbd> režim ukončí. |
-| **Při kreslení prvků** | V režimu *Přidat prvek → Přidat myší* vytvoří kliknutí na prázdné plátno nový uzel a připojí ho. |
-| **Kopírování** | Vyberte uzly (a prvky), <kbd>Ctrl</kbd>+<kbd>C</kbd>, <kbd>Ctrl</kbd>+<kbd>V</kbd> a klikněte tam, kam má kopie přijít. |
+| **Dialog** | Záložka *Uzly* → první tlačítko **Přidat uzel**, nebo pravé tlačítko na plátně → *Přidat uzel*. Zadejte X a Z, případně podpory a úhel podpory. |
+| **Myší** | Záložka *Uzly* → druhé tlačítko **Přidat uzel** (ikona kurzoru), nebo při volbě *Přidat uzel* v nabídce plátna podržte <kbd>Ctrl</kbd>. Každým kliknutím na plátno přidáte uzel. Přidávání ukončíte klávesou <kbd>Esc</kbd> nebo tlačítkem **Zrušit**. |
+| **Při kreslení prvků** | Když kreslíte prvky myší, vytvoří kliknutí na prázdné plátno nový uzel a prvek se k němu připojí. |
+| **Kopírovat a vložit** | Vyberte uzly (a prvky), stiskněte <kbd>Ctrl</kbd>+<kbd>C</kbd> a <kbd>Ctrl</kbd>+<kbd>V</kbd> a pak klikněte tam, kam chcete kopii umístit, nebo zadejte posun Δx, Δz a stiskněte **Vložit**. |
 
-Označení se přidělují automaticky (`1`, `2`, …) a lze je v tabulce přejmenovat.
+<div class="shots">
 
-### Přichytávání
+![Dialog Přidat uzel](/screenshots/cs/qs-node.webp)
 
-Se zapnutým **Přichytávat k mřížce** (<kbd>S</kbd> nebo štítek **S**) padnou uzly umístěné či přetažené myší na násobky **kroku příchytu k mřížce** (výchozí `0,1 m`, změna v *Nastavení → Nastavení zobrazení → Mřížka*). Pro volné umístění přichytávání vypněte nebo přesné souřadnice dodatečně zadejte v tabulce.
+![V režimu myši nastavíte v liště nahoře podpory a úhel pro každý umístěný uzel](/screenshots/cs/nodes-add-banner.webp)
 
-### Umístění uzlu na existující prvek
+</div>
 
-Kliknete-li při přidávání uzlu blíže než ~0,1 m k prvku, EduBeam se zeptá, co máte na mysli:
+Označení se přidělují automaticky (`1`, `2`, … nebo navazují na vaše vlastní schéma, např. `A`, `B`) a v tabulce je můžete přejmenovat.
 
-- **Připojit ke konstrukci** – prvek se rozdělí na dva (`1a` a `1b`), klouby na vnějších koncích zůstanou zachovány a případné spojité zatížení se rozdělí mezi obě části. Nejrychlejší způsob, jak přidat vnitřní podporu nebo bod pro zatížení.
-- **Umístit samostatný uzel** – uzel se vytvoří na prvku, ale nepřipojí se k němu.
+### Přichytávání {#snapping}
 
-## Úprava uzlů
+Když je zapnuté **Přichytávat k mřížce** (<kbd>S</kbd> nebo přepínač **S**), přichytí se uzly, které umístíte nebo přetáhnete, k násobkům **kroku příchytu k mřížce**. Ve výchozím nastavení je krok 0,1 m, v amerických jednotkách 0,5 ft. Změníte ho v *Nastavení → Nastavení zobrazení → Mřížka*. Chcete-li uzly umísťovat volně, přichytávání vypněte, nebo přesné souřadnice zadejte dodatečně v tabulce.
 
-- **Tabulka:** označení, X a Z se upravují přímo.
-- **Tažení:** přesun uzlu v zobrazení (lze vrátit zpět). Na dotykové obrazovce uzel podržte a poté táhněte.
-- **Dialog Upravit uzel:** souřadnice, podepření a pootočení souřadného systému na jednom místě s živým náhledem značky podpory.
-- **Smazání:** ikona koše v tabulce, *Smazat* v kontextové nabídce uzlu nebo výběr a <kbd>Delete</kbd>. Smazání uzlu smaže i prvky a zatížení, které jsou k němu připojeny.
+### Umístění uzlu na existující prvek {#placing-a-node-on-an-existing-element}
 
-## Podpory
+Když při přidávání uzlu kliknete blízko prvku, EduBeam se zeptá, co chcete udělat:
 
-Podpora je jednoduše množina odebraných stupňů volnosti. Každý uzel má tři:
+- **Připojit ke konstrukci** rozdělí prvek na dva (`1a` a `1b`). Klouby na vnějších koncích zůstanou zachované, rovnoměrné i lichoběžníkové zatížení se rozdělí mezi obě části a osamělé síly a teplotní zatížení připadnou první části. Tak nejrychleji přidáte vnitřní podporu nebo bod, ve kterém chcete zadat zatížení.
+- **Umístit samostatný uzel** vytvoří uzel na prvku, ale nepřipojí ho k němu.
+
+## Úprava uzlů {#editing-nodes}
+
+- **Tabulka:** označení, X a Z upravíte přímo.
+- **Tažení:** uzel přesunete přímo v zobrazení, a to i na dotykové obrazovce – stačí ho stisknout a táhnout. Každý přesun můžete vrátit.
+- **Dialog Upravit uzel:** otevřete ho tužkou ve sloupci *Akce* tabulky. Obsahuje souřadnice, podpory a úhel podpory s náhledem značky podpory.
+- **Smazání:** × v tabulce, *Smazat* v panelu uzlu, nebo uzel vyberte a stiskněte <kbd>Delete</kbd>. Spolu s uzlem se smažou i prvky a zatížení, které jsou k němu připojené.
+
+## Podpory {#supports}
+
+Podpora určuje, které stupně volnosti uzlu jsou podepřené. Každý uzel má tři:
 
 | Stupeň volnosti | Význam |
 | --- | --- |
 | **Dx** | posun ve směru x (vodorovný) |
 | **Dz** | posun ve směru z (svislý) |
-| **Ry** | pootočení kolem osy y (v rovině konstrukce) |
+| **Ry** | pootočení kolem osy y (v rovině výkresu) |
 
-Zaškrtněte políčka ve sloupci **Podepřené stupně volnosti** záložky *Uzly*, v nabídce **Podepření uzlu** vybraného uzlu nebo v dialogu *Upravit uzel*. Značka v zobrazení odpovídá kombinaci:
+Nejrychleji podporu nastavíte **výběrem značky**. Značky najdete v panelu uzlu pod **Podepření uzlu**, v dialozích Přidat uzel a Upravit uzel a jako malou nabídku na začátku sloupce *Podepřené stupně volnosti* v tabulce Uzly. Zaškrtávacími políčky `Dx`, `Dz`, `Ry` nastavíte totéž po jednotlivých stupních volnosti.
 
-| Odebráno | Podpora | Značka |
-| --- | --- | --- |
-| Dx + Dz + Ry | Vetknutí | šrafovaný blok |
-| Dx + Dz | Pevný kloub (kloubová podpora) | trojúhelník |
-| Dz | Posuvný kloub (volný posun vodorovně) | trojúhelník na válečcích |
-| Dx | Posuvný kloub svislý (volný posun svisle) | otočený váleček |
-| Dz + Ry | Posuvné vetknutí (svislé vedení) | vetknutí na válečcích |
-| Dx + Ry | Posuvné vetknutí (vodorovné vedení) | otočené posuvné vetknutí |
-| Ry | Pouze bránění pootočení | rotační vetknutí |
-| nic | Volný uzel | — |
+![Podepření uzlu: vyberte značku nebo zaškrtněte stupně volnosti a nastavte úhel podpory](/screenshots/cs/nodes-support-picker.webp){.shot-lg}
 
-Pro každý odebraný stupeň volnosti se počítá – a vykresluje – reakce.
+| Podpora | Podepřeno | Pohyb | Reakce |
+| --- | --- | --- | --- |
+| **Volný** | nic | vše | žádné |
+| **Kloub** | Dx + Dz | pootočení | R<sub>x</sub>, R<sub>z</sub> |
+| **Posuvný kloub** | Dz | vodorovný posun, pootočení | R<sub>z</sub> |
+| **Svislý posuvný kloub** | Dx | svislý posun, pootočení | R<sub>x</sub> |
+| **Vetknutí** | Dx + Dz + Ry | nic | R<sub>x</sub>, R<sub>z</sub>, M |
+| **Posuvné vetknutí** | Dz + Ry | vodorovný posun | R<sub>z</sub>, M |
+| **Svislé posuvné vetknutí** | Dx + Ry | svislý posun | R<sub>x</sub>, M |
+| **Zamezené pootočení** | Ry | posun v obou směrech | M |
+
+V každém podepřeném stupni volnosti se spočítá a vykreslí reakce.
 
 ::: tip Styčníky příhradových konstrukcí
-Příhradové pruty jsou prutové prvky s uvolněnými **oběma koncovými klouby** (viz [Prvky](/cs/essentials/elements#koncove-klouby)). Ve styčníku příhradoviny je obvyklou volbou pevný kloub (Dx + Dz); v uzlu, kde jsou všechny připojené prvky kloubové, **neodebírejte Ry**, jinak by pootočení uzlu bylo nedefinované.
+Příhradové pruty jsou nosníkové prvky, které mají uvolněné oba **koncové klouby** (viz [Prvky](/cs/essentials/elements#end-hinges)). Příhradová konstrukce se obvykle podpírá kloubem (Dx + Dz). Uzel, ve kterém jsou všechny připojené prvky kloubové, nemá žádnou tuhost v pootočení. EduBeam takový uzel přijme a jeho pootočení uvede jako 0.
 :::
 
-### Šikmé podpory
+### Šikmé (natočené) podpory {#inclined-skewed-supports}
 
-Nastavte **Pootočení systému souřadnic** (ve stupních, −180…180) v kontextové nabídce uzlu nebo v dialogu *Upravit uzel*. Lokální osy uzlu se o tento úhel pootočí a podepřené stupně volnosti se vyhodnocují v pootočeném systému – posuvný kloub na svahu se sklonem 30° je tedy `Dz` s pootočením `30`. Značka podpory se pootočí a reakce se uvádí v pootočeném směru.
+Nastavte **Pootočení systému souřadnic** α ve stupních (−180…180). Najdete ho v panelu uzlu pod *Podepření uzlu*, v dialozích Přidat uzel a Upravit uzel a v poli α tabulky Uzly. Osy uzlu se pootočí o zadaný úhel a podepřené stupně volnosti pak působí v pootočených směrech. Posuvný kloub na svahu se sklonem 30° je tedy `Dz` s α = 30. Značka se natočí stejně a reakce se uvádí v pootočeném směru.
 
-### Stabilita
+### Stabilita {#stability}
 
-Řešič potřebuje celkem alespoň **tři odebrané stupně volnosti** a konstrukci bez mechanismu. Chybějící nebo nedostatečné podepření vyvolá chybu *Model needs at least 3 constrained DOFs…* nebo se prostě nezobrazí výsledky. Viz [Řešení problémů](/cs/reference/troubleshooting).
+Řešič potřebuje celkem alespoň **tři podepřené stupně volnosti** a podpory spolu s klouby musí konstrukci udržet. Dokud podpor není dost, ukazuje zobrazení modrý štítek *Chybí podpory*. Pokud je podpor dost, ale konstrukci neudrží (všechny jsou rovnoběžné nebo se protínají v jednom bodě), nebo pokud se pruty mohou v kloubech vzájemně pootáčet, červené hlášení problém pojmenuje a čárkovaný obrys ukáže, jak se konstrukce pohybuje. Viz [Řešení problémů](/cs/reference/troubleshooting).
 
-## Uzlová zatížení a poklesy podpor
+## Uzlová zatížení a poklesy podpor {#nodal-loads-and-settlements}
 
-Síly, momenty a předepsaná posunutí (poklesy podpor) působí v uzlech – viz [Zatížení](/cs/essentials/loads#uzlova-zatizeni).
+Síly, momenty a předepsaná posunutí (poklesy podpor) zadáváte v uzlech. Viz [Zatížení](/cs/essentials/loads#nodal-loads).
 
-## Kóty
+## Kóty {#dimension-lines}
 
-Pravé tlačítko na plátně → **Přidat kótu** nakreslí kótu mezi dvěma body. Koncové body se při tažení přichytí k blízkému uzlu; po výběru kóty použijte **Upravit** pro zadání souřadnic nebo **Převrátit kótu** pro popisek na druhé straně. Kóty jsou pouze grafické a ukládají se s projektem.
+Kótu mezi dvěma body nakreslíte pravým tlačítkem na plátně → **Přidat kótu**, prvek okótujete pravým tlačítkem na prvku → **Okótovat prvek**. Když koncové body kóty přetáhnete do blízkosti uzlů, přichytí se k nim. Po výběru kóty můžete tlačítkem **Upravit** zadat její souřadnice, nebo tlačítkem **Převrátit kótu** přesunout popisek na druhou stranu. Kóty slouží jen pro přehlednost výkresu. Ukládají se s projektem a přenášejí se i ve sdílených odkazech.

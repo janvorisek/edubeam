@@ -1,20 +1,27 @@
 # Beispiele
 
-Jede Karte unten ist ein lebendiges, gelöstes Modell. Klicken Sie darauf, um es in <Edubeam /> mit der vollständigen Eingabe zum Bearbeiten zu öffnen – dann ziehen Sie einen Knoten, ändern eine Last oder haken ein Gelenk an und sehen zu, wie die Diagramme folgen.
+Jede Karte unten ist ein lebendiges, berechnetes Modell. Klicken Sie darauf, um es in <Edubeam /> mit vollständiger Eingabe zum Bearbeiten zu öffnen – dann ziehen Sie einen Knoten, ändern eine Last oder haken ein Gelenk an und sehen zu, wie die Diagramme folgen.
 
 <br>
 
 <FeatureStructures />
 
-## Übungsvorschläge
+Dieselben Modelle finden Sie in der App unter **☰ → Beispiele**, und [run.edubeam.app/?panel=examples](https://run.edubeam.app/?panel=examples&lang=de){target="_blank"} öffnet diese Galerie direkt.
 
-- **Statisch unbestimmter Balken** – `Ry` an der Einspannung entfernen, sodass ein Einfeldträger entsteht. Um wie viel wächst das Feldmoment?
-- **Kragarm** – die Durchbiegung am Ende mit $FL^3/3EI$ vergleichen (siehe [Ergebnisse von Hand prüfen](/de/guide/verification)); dann im Reiter *Querschnitte* $I_y$ halbieren.
-- **Pratt-Fachwerk** – eine Diagonale entfernen. Steht das Fachwerk noch? Welche Stäbe tragen die größte Normalkraft?
-- **Dreifeldträger** – ein `Dz`-Lager an den Feldmittenknoten ergänzen; die Stützmomente beobachten.
-- **Rahmen** – beide Endgelenke des Riegels anhaken, um einen gelenkigen Riegel-Stützen-Anschluss zu modellieren, oder das rechte Lager vom Los- zum Festlager machen.
-- **Temperaturlast** – `Dx` an beiden Lagern halten und beobachten, wie eine Normalkraft entsteht.
+## Übungsvorschläge {#suggested-exercises}
 
-## Ein Beispiel beisteuern
+- **Statisch unbestimmter Träger**: Entfernen Sie den Haken bei `Ry` an der Einspannung, sodass ein Einfeldträger entsteht. Um wie viel wächst das Feldmoment?
+- **Kragträger**: Vergleichen Sie die Durchbiegung am Kragende mit $FL^3/3EI$ (siehe [Ergebnisse von Hand prüfen](/de/guide/verification)) und halbieren Sie dann $I_y$ im Reiter *Querschnitte*.
+- **Pratt-Fachwerk**: Die Knoten in diesem Beispiel sind biegesteif. Haken Sie bei jedem Stab beide Endgelenke an, um ein echtes Fachwerk zu erhalten, und vergleichen Sie die Normalkräfte. Entfernen Sie nun eine Diagonale: Steht das Fachwerk noch?
+- **Durchlaufträger über drei Felder**: Der Träger ist nur an seinen Enden gelagert. Haken Sie `Dz` an den inneren Knoten B und C an, um ihn zum Durchlaufträger zu machen, und beobachten Sie, wie über den Stützen die Stützmomente entstehen.
+- **Portalrahmen**: Haken Sie beide Endgelenke des Riegels an, um gelenkige Riegel-Stützen-Anschlüsse zu modellieren, oder machen Sie das rechte Lager vom Loslager zum Festlager.
+- **Temperaturlast**: Halten Sie `Dx` an beiden Lagern und beobachten Sie, wie eine Normalkraft entsteht.
 
-Sie haben ein gutes Lehrmodell? Teilen Sie den Link auf [GitHub Discussions](https://github.com/janvorisek/edubeam/discussions) oder [Twitter](https://twitter.com/EdubeamApp), und wir nehmen es in die Galerie auf.
+## Durchgerechnete Tutorials {#worked-tutorials}
+
+- [Dreigelenkrahmen](/de/tutorials/three-hinged-frame): Auflagerreaktionen, N, V und M von Hand geprüft.
+- [Ebenes Fachwerk](/de/tutorials/truss): Knotenpunktverfahren, Ritterschnitt und ein Nullstab.
+
+## Ein Beispiel beisteuern {#contribute-an-example}
+
+Sie haben ein gutes Lehrmodell? Teilen Sie es per Link auf [GitHub Discussions](https://github.com/janvorisek/edubeam/discussions) oder [Twitter](https://twitter.com/EdubeamApp), und wir nehmen es in die Galerie auf.

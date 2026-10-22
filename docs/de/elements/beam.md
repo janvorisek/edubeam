@@ -4,7 +4,7 @@ Das einzige Element in <Edubeam /> ist ein **Timoshenko-Balken** mit zwei Knoten
 
 <TrussElement :moment="true" caption="Schema des ebenen Timoshenko-Balkens" />
 
-## Freiheitsgrade
+## Freiheitsgrade {#degrees-of-freedom}
 
 Der ebene Timoshenko-Balken hat an jedem Knoten drei Freiheitsgrade:
 
@@ -18,7 +18,7 @@ Die Lasten werden in Richtung der Freiheitsgrade angegeben:
 - **Vertikalkraft (Fz):** Kraft entlang der z-Achse.
 - **Moment (My):** Moment um die y-Achse.
 
-## Lokale Steifigkeitsmatrix
+## Lokale Steifigkeitsmatrix {#local-stiffness-matrix}
 
 Die Steifigkeitsmatrix des Balkens in lokalen Koordinaten lautet
 
@@ -48,15 +48,15 @@ $$
 
 mit $G$ dem Schubmodul und $k$ dem **Schubkoeffizienten** des Querschnitts (wirksame Schubfläche $kA$). Für $\varphi \to 0$ (schlanker Stab oder sehr großes $k$) geht die Matrix in die Steifigkeitsmatrix des Euler-Bernoulli-Balkens über.
 
-## Endgelenke
+## Endgelenke {#end-hinges}
 
 Ein Gelenk am Elementende gibt den zugehörigen Drehfreiheitsgrad frei: die Verdrehung wird aus der 6 × 6-Matrix herauskondensiert (statische Kondensation, $M = 0$ an diesem Ende), und das Element wird mit den verbleibenden Freiheitsgraden assembliert. Sind beide Enden freigegeben, bleiben nur die Dehnterme übrig und das Element verhält sich wie ein [Fachwerkstab](/de/elements/truss).
 
-## Elementlasten
+## Elementlasten {#element-loads}
 
 Strecken-, Einzel- und Temperaturlasten werden in **äquivalente Knotenlasten** $\mathbf{f}_{eq}$ (das Negative der Volleinspannkräfte) umgerechnet und dem globalen Lastvektor hinzugefügt. Nach der Lösung werden die Schnittgrößen entlang des Elements aus den Stabendverschiebungen und der exakten Partikulärlösung der Elementlast zurückgerechnet, sodass die Verläufe entlang des Stabs exakt sind.
 
-## Transformationsmatrix
+## Transformationsmatrix {#transformation-matrix}
 
 Die Transformationsmatrix $\mathbf{T}$ des Elements überführt die lokale Steifigkeitsmatrix in das globale Koordinatensystem.
 
@@ -71,7 +71,7 @@ $$
 \end{pmatrix}
 $$
 
-## Globale Steifigkeitsmatrix
+## Globale Steifigkeitsmatrix {#global-stiffness-matrix}
 
 Die globale Steifigkeitsmatrix $\mathbf{K_g}$ ergibt sich aus der Transformationsmatrix $\mathbf{T}$ und der lokalen Steifigkeitsmatrix $\mathbf{K_l}$:
 

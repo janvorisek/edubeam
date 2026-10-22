@@ -141,4 +141,17 @@ describe('exportResults', () => {
     expect(loose.slice(3, 6)).toEqual([null, null, null]);
     expect(loose[1]).toBe(5);
   });
+
+  it('leaves the reactions of a supported node no element touches empty instead of throwing', () => {
+    const ls = buildSolved();
+    ls.domain.createNode('3', [5, 0, 0], [DofID.Dx, DofID.Dz]);
+    ls.solve();
+
+    const rows = buildNodeResultRows(ls, SI);
+    const loose = rows.find((row) => row[0] === '3');
+
+    expect(loose.slice(6)).toEqual([null, null, null]);
+    // The supports that do carry the structure still report theirs.
+    expect(rows.find((row) => row[0] === '1')[7]).toBeCloseTo(-1, 9);
+  });
 });

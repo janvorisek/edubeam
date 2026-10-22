@@ -1,65 +1,65 @@
-# Koordinatensystem & Vorzeichenkonvention
+# Koordinatensystem & Vorzeichenkonventionen
 
-Die meisten „falschen“ Ergebnisse in <Edubeam /> sind in Wirklichkeit eine Überraschung der Vorzeichenkonvention. Hier steht genau das, was der Solver verwendet.
+Die meisten „falschen“ Ergebnisse in <Edubeam /> sind in Wirklichkeit eine Überraschung bei der Vorzeichenkonvention. Hier steht genau das, was der Solver tatsächlich verwendet.
 
-## Globale Achsen
+## Globale Achsen {#global-axes}
 
 - **x** – horizontal, positiv nach **rechts**.
-- **z** – vertikal, positiv **nach unten** auf dem Bildschirm.
+- **z** – vertikal, auf dem Bildschirm positiv **nach unten**.
 - **y** – die Achse senkrecht zur Tragwerksebene (zeigt im Rechtssystem zum Betrachter). Verdrehungen und Momente drehen um y.
 
-Der Achsenindikator in der Ecke des Rasters zeigt x (rot) und z (grün). Ein Knoten am Kopf einer 3 m hohen Stütze hat also `Z = −3`, wenn der Fuß bei `Z = 0` liegt.
+Der Achsenindikator in der Ecke des Rasters zeigt x (rot) und z (grün). Ein Knoten am Kopf einer 3 m hohen Stütze hat also `Z = −3`, wenn der Fußpunkt bei `Z = 0` liegt.
 
-## Freiheitsgrade
+## Freiheitsgrade {#degrees-of-freedom}
 
-Jeder Knoten hat `Dx`, `Dz` (Verschiebungen) und `Ry` (Verdrehung). Positives `Dz` ist eine Verschiebung nach unten; positives `Ry` ist eine Verdrehung **gegen den Uhrzeigersinn** auf dem Bildschirm. Dieselben Vorzeichen gelten für vorgegebene Verschiebungen und für die Knotenergebnisse.
+Jeder Knoten hat `Dx`, `Dz` (Verschiebungen) und `Ry` (Verdrehung). Ein positives `Dz` ist eine Verschiebung nach unten; ein positives `Ry` ist eine Verdrehung **gegen den Uhrzeigersinn** auf dem Bildschirm. Dieselben Vorzeichen gelten für vorgegebene Verschiebungen und für die ausgegebenen Knotenergebnisse.
 
-## Lasten
+## Lasten {#loads}
 
 | Last | Positive Richtung |
 | --- | --- |
-| `Fx`, `fx`, `f1x`… | +x (rechts; bzw. lokale x-Achse des Elements bei aktivem LCS) |
-| `Fz`, `fz`, `f1z`… | +z (**nach unten**; bzw. lokale z-Achse bei aktivem LCS) |
+| `Fx`, `fx`, `f1x`… | +x (nach rechts; bzw. entlang der lokalen x-Achse des Elements, wenn LCS eingeschaltet ist) |
+| `Fz`, `fz`, `f1z`… | +z (**nach unten**; bzw. entlang der lokalen z-Achse, wenn LCS eingeschaltet ist) |
 | `My` | gegen den Uhrzeigersinn auf dem Bildschirm |
-| `ΔTs` | Erwärmung (Verlängerung) |
+| `ΔTc` | Erwärmung (Verlängerung) |
 | `ΔTb − ΔTt` | untere Faser wärmer als die obere |
 
-Eine Schwerkraftlast ist also ein **positives** `fz`, und ein Wind, der eine linke Stütze nach rechts drückt, ein positives `fx`.
+Eine Schwerkraftlast ist also ein **positives** `fz`, und eine Windlast, die eine linke Stütze nach rechts drückt, ein positives `fx`.
 
-## Lokale Achsen des Elements
+## Lokale Achsen des Elements {#element-local-axes}
 
-Lokal **x** verläuft vom Anfangs- zum Endknoten; lokal **z** steht senkrecht dazu und entsteht durch Drehen der globalen Achsen um den Stabwinkel $\alpha$. Bei einem horizontalen, von links nach rechts gezeichneten Element fallen lokale und globale Achsen zusammen. Mit **Knotenreihenfolge tauschen** in der Tabelle *Elemente* kehren Sie die Richtung um.
+Die lokale **x**-Achse verläuft vom Anfangsknoten zum Endknoten; die lokale **z**-Achse steht senkrecht dazu und ergibt sich durch Drehen der globalen Achsen um den Stabwinkel $\alpha$. Bei einem horizontalen, von links nach rechts gezeichneten Element fallen lokale und globale Achsen zusammen. Mit **Knotenreihenfolge tauschen** in der Tabelle *Elemente* kehren Sie die Richtung um.
 
-## Schnittgrößen
+## Schnittgrößen {#internal-forces}
 
 | Größe | Positiv bedeutet |
 | --- | --- |
 | **N** | Zug |
-| **V<sub>z</sub>** | die übliche Vorzeichenregel der Balkentheorie: beim Einfeldträger unter Schwerkraftlast ist V am linken Auflager positiv und am rechten negativ |
-| **M<sub>y</sub>** | **Zug in der unteren (+z) Faser**. Ein Einfeldträger unter Schwerkraftlast hat in Feldmitte ein positives Moment; ein Kragarm mit Einzellast am Ende hat an der Einspannung ein negatives Moment |
+| **V<sub>z</sub>** | die übliche Vorzeichenregel der Balkentheorie: Beim Einfeldträger unter Schwerkraftlast ist V am linken Auflager positiv und am rechten negativ |
+| **M<sub>y</sub>** | **Zug unten** – Zug in der unteren (+z) Faser. Ein Einfeldträger unter Schwerkraftlast hat in Feldmitte ein positives Moment; ein Kragträger mit Einzellast am Ende hat an der Einspannung ein negatives Moment (Zug oben) |
 
-## Stabendkräfte (Tabelle Elementergebnisse)
+## Stabendkräfte (Tabelle Elementergebnisse) {#end-forces-element-results-table}
 
-`X12, Z12, M12` wirken am Anfangsknoten auf das Element, `X21, Z21, M21` am Endknoten, im **lokalen** System, mit denselben positiven Richtungen wie die lokalen Achsen und `My`. Es sind die Kräfte, die die Knoten auf das Element ausüben, d. h. $\mathbf{f} = \mathbf{K}_l\,\mathbf{u}_l - \mathbf{f}_{eq}$, wobei $\mathbf{f}_{eq}$ die äquivalenten Knotenlasten der Elementlasten sind. Die Summe der Stabendkräfte aller in einem Knoten zusammentreffenden Elemente steht mit den Knotenlasten und Auflagerreaktionen dort im Gleichgewicht.
+`X12, Z12, M12` wirken am Anfangsknoten auf das Element, `X21, Z21, M21` am Endknoten, im **lokalen** System, mit denselben positiven Richtungen wie die lokalen Achsen und `My`. Es sind die Kräfte, die die Knoten auf das Element ausüben, d. h. $\mathbf{f} = \mathbf{K}_l\,\mathbf{u}_l - \mathbf{f}_{eq}$, wobei $\mathbf{f}_{eq}$ die äquivalenten Knotenlasten der Elementlasten sind. Die Summe der Stabendkräfte aller Elemente, die in einem Knoten zusammentreffen, steht mit den dortigen Knotenlasten und Auflagerreaktionen im Gleichgewicht.
 
-## Auflagerreaktionen
+## Auflagerreaktionen {#reactions}
 
-Für jeden gehaltenen Freiheitsgrad gibt es eine Reaktion; sie wird im Koordinatensystem des Knotens angegeben (gedreht um den LKS-Winkel des Knotens, falls gesetzt). Die Reaktionspfeile in der Ansicht zeigen in die Richtung, in der das Lager auf das Tragwerk wirkt.
+Für jeden gehaltenen Freiheitsgrad gibt es eine Auflagerreaktion; sie wird im Koordinatensystem des Knotens ausgegeben (gedreht um den Knoten-LKS-Winkel, falls einer gesetzt ist). Die Reaktionspfeile in der Ansicht zeigen in die Richtung, in der das Lager auf das Tragwerk drückt.
 
-## Y-Achse nach oben {#y-up-axes}
+## Achsen mit y nach oben {#y-up-axes}
 
-**Einstellungen → Koordinatensystem → x nach rechts, y nach oben** stellt alles, was Sie eingeben und ablesen, auf das Lehrbuchsystem um: **x** nach rechts, **y** nach oben und **z** zum Betrachter. Modell, gespeicherte Dateien und Zeichnung bleiben gleich; nur Zahlen und Bezeichnungen ändern sich:
+**Einstellungen → Koordinatensystem → x nach rechts, y nach oben** stellt alles, was Sie eingeben und ablesen, auf das Lehrbuchsystem um: **x** nach rechts, **y** nach oben und **z** zum Betrachter. Modell, gespeicherte Dateien und Zeichnungen bleiben gleich; nur Zahlen und Bezeichnungen ändern sich:
 
 | Größe | z nach unten (Standard) | y nach oben |
 | --- | --- | --- |
 | Vertikale Koordinate | `Z` | `Y`, umgekehrtes Vorzeichen |
-| Vertikale Lasten, Verschiebungen, Auflagerkräfte, Stabendkräfte | `Fz`, `fz`, `Dz`, `Z12`… | `Fy`, `fy`, `Dy`, `Y12`…, umgekehrtes Vorzeichen |
+| Vertikale Lasten, Verschiebungen, Auflagerreaktionen, Stabendkräfte | `Fz`, `fz`, `Dz`, `Z12`… | `Fy`, `fy`, `Dy`, `Y12`…, umgekehrtes Vorzeichen |
 | Verdrehungen und Momente | `Ry`, `My` | `Rz`, `Mz`, gleiches Vorzeichen (gegen den Uhrzeigersinn positiv) |
-| Auflagerwinkel α | im Uhrzeigersinn gemessen | gegen den Uhrzeigersinn gemessen, umgekehrtes Vorzeichen |
-| Schnittgrößen N, V, M | | unverändert, Verläufe werden gleich gezeichnet |
+| Lagerwinkel α | im Uhrzeigersinn gemessen | gegen den Uhrzeigersinn gemessen, umgekehrtes Vorzeichen |
+| Schnittgrößen N, V, M | | unverändert, Diagramme werden gleich gezeichnet |
 
-Eine Eigengewichtslast ist also ein **negatives** `fy`, und der Kopf einer 3 m hohen Stütze hat `Y = 3`.
+Eine Schwerkraftlast ist also ein **negatives** `fy`, und der Kopf einer 3 m hohen Stütze hat `Y = 3`.
 
-## Einheiten
+## Einheiten {#units}
 
-Der Solver arbeitet intern in SI (m, N, Pa, rad, K). Die Anzeigeeinheiten beeinflussen nur, was Sie eingeben und ablesen; ihr Wechsel verändert das Modell nie.
+Der Solver rechnet intern in SI (m, N, Pa, rad, K). Die Anzeigeeinheiten wirken sich nur darauf aus, was Sie eingeben und ablesen; ein Wechsel ändert das Modell nie.

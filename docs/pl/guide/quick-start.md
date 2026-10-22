@@ -1,112 +1,145 @@
 # Szybki start
 
-W około dziesięć minut zamodelujesz stalową belkę swobodnie podpartą obciążoną równomiernie, odczytasz reakcje podporowe, siłę poprzeczną i moment zginający, a następnie porównasz je ze wzorami z podręcznika.
+W około dziesięć minut zamodelujesz stalową belkę swobodnie podpartą obciążoną równomiernie, odczytasz reakcje, siłę tnącą i moment zginający, a następnie porównasz je ze wzorami z podręcznika.
 
 ::: tip Pracuj równolegle
-Otwórz [run.edubeam.app](https://run.edubeam.app/?lang=pl){target="_blank"} w drugiej karcie. Jeśli jakiś model jest już wczytany, użyj **Wyczyść model** (ikona kosza na pasku aplikacji), aby zacząć od zera — zaznacz *Usuń materiały* i *Usuń przekroje*, by wyczyścić wszystko.
+Otwórz [run.edubeam.app](https://run.edubeam.app/?lang=pl){target="_blank"} w drugiej karcie. Jeśli jakiś model jest już wczytany, użyj **Wyczyść model** na pasku aplikacji, aby zacząć od pustego modelu, i zaznacz *Usuń materiały* oraz *Usuń przekroje*, aby zacząć zupełnie od zera. Czyszczenie można cofnąć skrótem <kbd>Ctrl</kbd>+<kbd>Z</kbd>, a stary model pozostaje w **☰ → Ostatnie modele**.
+
+Wolisz uczyć się w praktyce, z podpowiedziami na ekranie? **☰ → Narysuj pierwszą belkę** przeprowadzi Cię myszą przez podobną belkę.
 :::
 
-## Zadanie
+## Zadanie {#the-problem}
 
 <ExampleStructure />
 
-Belka swobodnie podparta o rozpiętości 6 m (po lewej podpora przegubowa nieprzesuwna, po prawej przesuwna) przenosi obciążenie równomiernie rozłożone 12 kN/m. Materiał: stal, $E = 210\ \text{GPa}$, $G = 81\ \text{GPa}$. Przekrój IPE 200: $A = 28{,}5\ \text{cm}^2$, $I_y = 1943\ \text{cm}^4$, $h = 200\ \text{mm}$.
+Belka swobodnie podparta o rozpiętości 6 m (po lewej podpora przegubowa nieprzesuwna, po prawej przesuwna) przenosi obciążenie równomiernie rozłożone 12 kN/m. Materiał: stal, $E = 210\ \text{GPa}$, $G = 81\ \text{GPa}$. Przekrój: IPE 200, $A = 28{,}5\ \text{cm}^2$, $I_y = 1943\ \text{cm}^4$, $h = 200\ \text{mm}$.
 
-## 1. Sprawdź jednostki
+## 1. Sprawdź jednostki {#_1-check-the-units}
 
-Spójrz na plakietkę jednostek w prawym dolnym rogu widoku (np. `m · m² · kN · kNm · MPa`). W tych jednostkach wyświetlane są wszystkie pola wprowadzania i wyniki. Domyślnie są to metry, kN, kNm i MPa — i takie zakłada ten samouczek. Aby je zmienić, kliknij plakietkę lub otwórz **Ustawienia → Język i ustawienia regionalne**.
+Plakietka jednostek w prawym dolnym rogu widoku pokazuje jednostki, w których działają wszystkie pola wprowadzania i wyniki. Ten samouczek zakłada domyślne jednostki SI: metry, kN, kNm i MPa.
 
-## 2. Dodaj materiał i przekrój
+![Przełączniki siatki (G), przyciągania (S) i celownika oraz plakietka jednostek](/screenshots/pl/ui-grid-units.webp){.shot-sm}
 
-Element nie może istnieć bez materiału i przekroju, dlatego utwórz je najpierw.
+Jeśli widzisz `ft · kip · kip·ft · ksi`, kliknij plakietkę i wybierz **Układ jednostek → SI (metryczny)**.
+
+## 2. Dodaj materiał i przekrój {#_2-add-the-material-and-cross-section}
+
+Elementy potrzebują materiału i przekroju, dlatego utwórz je najpierw.
 
 1. Otwórz zakładkę **Materiały** na dolnym pasku i kliknij **Dodaj materiał**.
-2. Wpisz `E = 210000` MPa, `G = 81000` MPa, pozostaw gęstość i `α = 0,000012` 1/K. Kliknij **Dodaj materiał**.
-   *(Możesz też kliknąć **Biblioteka materiałów** i wybrać **Steel (S235)** — ma dokładnie te wartości.)*
+2. Wpisz `E = 210000` MPa i `G = 81000` MPa. Pozostaw gęstość i `α = 0,000012` 1/K. Kliknij **Dodaj materiał**.
+
+<div class="shots">
+
+![Dodaj materiał: wpisz E i G…](/screenshots/pl/qs-material.webp)
+
+![…albo wybierz Steel (S235) z Biblioteki materiałów](/screenshots/pl/qs-material-library.webp)
+
+</div>
+
 3. Otwórz zakładkę **Przekroje** i kliknij **Dodaj przekrój**.
-4. Wpisz `Pole = 0,00285` m², `Iy = 1,943e-5` m⁴, `Wysokość = 0,2` m, `Współczynnik ścinania = 1`. Kliknij **Dodaj przekrój**.
+4. Wpisz `Pole = 0,00285` m², `Iy = 1,943e-5` m⁴, `Wysokość = 0,2` m i `Współczynnik ścinania = 1`. Kliknij **Dodaj przekrój**.
+
+![Dodaj przekrój. Możesz też wybrać go z biblioteki albo narysować kształt wielokątny.](/screenshots/pl/qs-cross-section.webp){.shot-md}
 
 ::: details Dlaczego współczynnik ścinania ma znaczenie?
-EduBeam używa elementów belkowych Timoshenki, które uwzględniają odkształcenie postaciowe (od ścinania). `k` to współczynnik korekcyjny ścinania ($k \approx 0{,}83$ dla prostokąta, $\approx 0{,}4$–$0{,}5$ dla środnika dwuteownika, jeśli $A$ jest pełnym polem przekroju). Ustawienie `k = 1` przy pełnym polu nieco *zaniża* podatność na ścinanie; dla smukłej belki, takiej jak ta, różnica w ugięciu jest znacznie mniejsza niż 1 %. Wzór znajdziesz na stronie [teorii belki](/pl/elements/beam).
+EduBeam używa elementów belkowych Timoshenki, które uwzględniają odkształcenie postaciowe (od ścinania). `k` to współczynnik korekcyjny ścinania: $k \approx 0{,}83$ dla prostokąta i około $0{,}4$–$0{,}5$ dla dwuteownika, jeśli $A$ jest pełnym polem przekroju. Ustawienie `k = 1` przy pełnym polu nieco *zaniża* podatność na ścinanie. Dla smukłej belki, takiej jak ta, różnica w ugięciu jest znacznie mniejsza niż 1 %. Wzór znajdziesz na stronie [teorii belki](/pl/elements/beam).
 :::
 
-## 3. Dodaj węzły
+## 3. Dodaj węzły {#_3-add-the-nodes}
 
-1. Otwórz zakładkę **Węzły** i kliknij **Dodaj węzeł**. Wpisz `X = 0`, `Z = 0` i potwierdź. Węzeł otrzymuje etykietę `1`.
-2. Kliknij ponownie **Dodaj węzeł** z `X = 6`, `Z = 0`. To węzeł `2`.
+1. Otwórz zakładkę **Węzły**. Ma ona dwa przyciski **Dodaj węzeł**: pierwszy otwiera okno dialogowe, drugi (z ikoną kursora) wstawia węzły myszą. Kliknij pierwszy.
+2. Wpisz `X = 0`, `Z = 0` i kliknij **Dodaj węzeł**. Węzeł otrzymuje etykietę `1`.
+3. Dodaj drugi węzeł w `X = 6`, `Z = 0`. To węzeł `2`.
 
-Węzły można też stawiać myszą: wybierz **Dodaj myszą** (lub kliknij prawym przyciskiem na płótnie → *Dodaj węzeł* z wciśniętym <kbd>Ctrl</kbd>) i kliknij na siatce. Przy włączonym **Przyciągaj do siatki** (<kbd>S</kbd>) kliknięcia trafiają w wielokrotności 0,1 m.
+![Okno Dodaj węzeł pozwala od razu ustawić także podpory](/screenshots/pl/qs-node.webp){.shot-md}
 
-## 4. Połącz je elementem
+Jeśli zamiast tego użyjesz przycisku myszy, każde kliknięcie na płótnie wstawi węzeł. Przy włączonym **Przyciągaj do siatki** (<kbd>S</kbd>) kliknięcia trafiają w krok siatki (domyślnie 0,1 m).
 
-1. Otwórz zakładkę **Elementy** i kliknij **Dodaj element**.
-2. Wybierz **Węzeł początkowy** `1`, **Węzeł końcowy** `2`. Utworzony materiał i przekrój są już wybrane. Potwierdź.
+## 4. Połącz je elementem {#_4-connect-them-with-an-element}
 
-Między węzłami pojawia się czarna linia. Naciśnij <kbd>F</kbd>, aby dopasować konstrukcję do ekranu.
+1. Otwórz zakładkę **Elementy** i kliknij pierwszy przycisk **Dodaj element**.
+2. Wybierz **Węzeł początkowy** `1` i **Węzeł końcowy** `2`. Twój materiał i przekrój są już wybrane. Kliknij **Dodaj element**.
 
-## 5. Dodaj podpory
+![Dodaj element: dwa węzły końcowe, opcjonalne przeguby końcowe, materiał i przekrój](/screenshots/pl/qs-element.webp){.shot-md}
 
-W zakładce **Węzły** kolumna **Podparte stopnie swobody** ma trzy pola wyboru dla każdego węzła: `Dx`, `Dz`, `Ry`.
+Między węzłami pojawia się linia. Naciśnij <kbd>F</kbd>, aby dopasować ją do ekranu.
 
-- Węzeł `1`: zaznacz **Dx** i **Dz** → pojawia się symbol podpory przegubowej nieprzesuwnej.
-- Węzeł `2`: zaznacz tylko **Dz** → podpora przegubowa przesuwna.
+## 5. Dodaj podpory {#_5-add-the-supports}
 
-Te same pola wyboru znajdziesz po kliknięciu węzła w widoku i wybraniu **Podpory węzła**. Wszystkie typy podpór opisano na stronie [Węzły i podpory](/pl/essentials/nodes-supports).
+W zakładce **Węzły** kolumna **Podparte stopnie swobody** ma dla każdego węzła menu wyboru symbolu podpory i trzy pola wyboru: `Dx`, `Dz`, `Ry`.
 
-## 6. Dodaj obciążenie
+- Węzeł `1`: wybierz symbol **Przegub** albo zaznacz **Dx** i **Dz**.
+- Węzeł `2`: wybierz **Przegub przesuwny** albo zaznacz tylko **Dz**.
+
+![Podpory w tabeli Węzły: węzeł 1 podparty przegubowo nieprzesuwnie, węzeł 2 przesuwnie](/screenshots/pl/qs-supports.webp)
+
+Możesz też kliknąć węzeł w widoku i wybrać **Podpory węzła**. Wszystkie typy podpór opisano na stronie [Węzły i podpory](/pl/essentials/nodes-supports#supports).
+
+## 6. Dodaj obciążenie {#_6-add-the-load}
 
 1. Otwórz zakładkę **Obciążenia** i kliknij **Dodaj obciążenie elementu**.
 2. **Typ obciążenia**: *Obciążenie równomiernie rozłożone*. **Element**: `1`.
-3. Wpisz `fz = 12` kN/m i pozostaw `fx = 0`. Potwierdź.
+3. Wpisz `fz = 12` kN/m i pozostaw `fx = 0`. Kliknij **Dodaj obciążenie elementu**.
 
-Dodatnie `fz` działa w kierunku +z, czyli na ekranie **w dół** — dodatnia wartość to zatem obciążenie grawitacyjne. Zobacz [konwencje znaków](/pl/elements/conventions).
+![Okno dialogowe pokazuje podgląd obciążenia na elemencie](/screenshots/pl/qs-load.webp){.shot-md}
 
-## 7. Odczytaj wyniki
+Dodatnie `fz` działa w kierunku +z, czyli na ekranie **w dół**, więc dodatnia wartość to obciążenie grawitacyjne. Zobacz [konwencje znaków](/pl/elements/conventions).
 
-Rozwiązanie pojawia się w chwili dodania obciążenia. Otwórz panel ustawień widoku (przycisk koła zębatego w prawym górnym rogu widoku), aby włączać i wyłączać poszczególne warstwy:
+## 7. Odczytaj wyniki {#_7-read-the-results}
+
+Rozwiązanie pojawia się, gdy tylko dodasz obciążenie. Panel opcji wyświetlania w prawym górnym rogu widoku włącza i wyłącza poszczególne wykresy. **Kształt odkształcony**, **M<sub>y</sub>(x)** i **Reakcje** są domyślnie włączone. Zaznacz **V<sub>z</sub>(x)**, aby dodać siłę tnącą.
+
+![Siła tnąca (zielona), moment zginający (czerwony), reakcje (fioletowe) i kształt odkształcony](/screenshots/pl/qs-results.webp)
 
 | Warstwa | Co powinno być widoczne |
 | --- | --- |
 | **Reakcje** | Dwie strzałki skierowane w górę o wartości **36 kN** w węzłach 1 i 2. |
-| **V<sub>z</sub> (x)** | Prosta od **+36 kN** po lewej do **−36 kN** po prawej, przechodząca przez zero w środku rozpiętości. |
-| **M<sub>y</sub> (x)** | Parabola z ekstremum **54 kNm** w środku rozpiętości. |
-| **Kształt odkształcony** | Symetryczne ugięcie. Najedź na węzeł `1`, aby odczytać jego kąt obrotu: około **0,0265 rad**. |
+| **V<sub>z</sub>(x)** | Prosta od **+36 kN** po lewej do **−36 kN** po prawej, przechodząca przez zero w środku rozpiętości. |
+| **M<sub>y</sub>(x)** | Parabola z ekstremum **54 kNm** w środku rozpiętości. |
+| **Kształt odkształcony** | Symetryczne ugięcie. Najedź kursorem na węzeł `1`, aby odczytać jego kąt obrotu: **2,6469 · 10⁻² rad**. |
 
-Zakładka **Wyniki** na dolnym pasku podaje liczby: **Wyniki węzłowe** zawierają `Dx`, `Dz`, `Ry` dla każdego węzła, **Wyniki elementów** — siły końcowe każdego elementu w jego lokalnym układzie współrzędnych.
+Liczby podaje zakładka **Wyniki** na dolnym pasku. **Wyniki węzłowe** zawierają `Dx`, `Dz`, `Ry` dla każdego węzła. **Wyniki elementów** zawierają siły końcowe każdego elementu w jego lokalnym układzie współrzędnych.
 
-Jeśli wykresy są za duże lub za małe, przesuń suwak **Skala wyników** w **Ustawienia → Ustawienia widoku → Rozmiary**.
+Jeśli wykresy są za duże lub za małe, zmień **Skala wyników** w **Ustawienia → Ustawienia widoku → Rozmiary**.
 
-## 8. Sprawdź ręcznie
+## 8. Sprawdź ręcznie {#_8-check-by-hand}
 
 | Wielkość | Wzór | Wartość ręczna | EduBeam |
 | --- | --- | --- | --- |
 | Reakcja | $R = qL/2$ | 36 kN | 36 kN |
-| Maks. siła poprzeczna | $V = qL/2$ | 36 kN | 36 kN |
+| Maks. siła tnąca | $V = qL/2$ | 36 kN | 36 kN |
 | Maks. moment | $M = qL^2/8$ | 54 kNm | 54 kNm |
 | Kąt obrotu na podporze | $\varphi = qL^3/(24EI)$ | 0,02647 rad | 0,02647 rad |
-| Ugięcie w środku rozpiętości | $w = 5qL^4/(384EI)$ | 49,6 mm | 49,6 mm |
+| Ugięcie w środku rozpiętości (zginanie) | $w = 5qL^4/(384EI)$ | 49,63 mm | |
+| Ugięcie w środku rozpiętości (ścinanie) | $w_s = qL^2/(8kGA)$ | 0,23 mm | |
+| Ugięcie w środku rozpiętości (łącznie) | suma | 49,86 mm | 49,86 mm |
 
-Wszystko się zgadza. Więcej przepisów na sprawdzenie ręczne (wspornik, belka obustronnie utwierdzona, kratownica) znajdziesz na stronie [Sprawdzanie wyników ręcznie](/pl/guide/verification).
+W środku rozpiętości nie ma węzła, więc aby odczytać tam ugięcie, dodaj go: wybierz drugi przycisk **Dodaj węzeł**, kliknij na belce w `X = 3` i wybierz **Połącz z konstrukcją**. Belka zostaje podzielona na dwie części, a `Dz` nowego węzła w zakładce **Wyniki** wynosi 49,86 mm. Podział nie zmienia żadnego wyniku, ponieważ element jest dokładny.
 
-## 9. Eksperymentuj
+Wszystko się zgadza. Więcej przepisów na sprawdzenie ręczne (wspornik, belka obustronnie utwierdzona, kratownica, temperatura) znajdziesz na stronie [Sprawdzanie wyników ręcznie](/pl/guide/verification).
+
+## 9. Eksperymentuj {#_9-experiment}
 
 Tu EduBeam pokazuje swoją siłę. Wypróbuj każdą z poniższych zmian i obserwuj, jak aktualizują się wykresy:
 
 - **Przeciągnij węzeł 2** w prawo: moment rośnie z $L^2$.
-- **Zaznacz `Ry` w węźle 1**, aby go utwierdzić: moment przęsłowy maleje, a na podporze pojawia się moment ujemny (podporowy).
-- **Dodaj trzeci węzeł** w `X = 3`, klikając na belce w trybie *Dodaj myszą* — wybierz **Połącz z konstrukcją**, aby belka została podzielona — a następnie zaznacz jego `Dz`: powstaje belka ciągła dwuprzęsłowa.
-- **Zaznacz jeden z przegubów końcowych** elementu w zakładce Elementy, aby zwolnić moment na tym końcu.
+- **Zaznacz `Ry` w węźle 1**, aby go utwierdzić: moment w przęśle maleje, a na podporze pojawia się moment ujemny.
+- **Zaznacz `Dz` w węźle w środku rozpiętości**, który właśnie dodałeś, aby otrzymać belkę ciągłą dwuprzęsłową.
+- **Zaznacz przegub końcowy** elementu w zakładce Elementy, aby zwolnić moment na jednym końcu.
 - Naciśnij <kbd>Ctrl</kbd>+<kbd>Z</kbd>, aby cofnąć dowolny krok.
 
-## 10. Zapisz lub udostępnij
+## 10. Zapisz lub udostępnij {#_10-save-or-share}
 
-- **Udostępnij model** (pasek aplikacji) daje adres URL zawierający cały model — wklej go do e-maila, czatu lub prezentacji.
-- **Zapisz projekt** (menu ☰ lub <kbd>Ctrl</kbd>+<kbd>S</kbd>) pobiera plik `project.json`, który później otworzysz przez **Otwórz projekt** lub upuszczając go na okno aplikacji.
+- **Udostępnij model** (na pasku aplikacji lub w menu ☰) daje link zawierający cały model. Wklej go do e-maila, czatu lub prezentacji.
+- **☰ → Zapisz projekt** (<kbd>Ctrl</kbd>+<kbd>S</kbd>) pobiera plik `project.json`, który później otworzysz przez **Otwórz projekt** lub upuszczając go na okno aplikacji.
+- **☰ → Eksportuj obraz** (<kbd>Ctrl</kbd>+<kbd>P</kbd>) zapisuje rysunek jako PNG lub SVG do sprawozdania.
 
-Model jest też przechowywany w pamięci lokalnej przeglądarki, więc przeładowanie strony niczego nie traci. Zobacz [Import, eksport i udostępnianie](/pl/essentials/import-export).
+Model jest też przechowywany w przeglądarce, więc przeładowanie strony go nie usuwa. Zobacz [Import, eksport i udostępnianie](/pl/essentials/import-export).
 
-## Co dalej
+## Co dalej {#where-next}
 
-- [Przykłady](/pl/examples/) — gotowe ramy i kratownice otwierane jednym kliknięciem.
-- [Obciążenia](/pl/essentials/loads) — obciążenia trapezowe, skupione i termiczne, zadane przemieszczenia.
-- [Klawiatura i mysz](/pl/reference/shortcuts) — pracuj szybciej na płótnie.
+- [Samouczek: rama trójprzegubowa](/pl/tutorials/three-hinged-frame): rama z przegubem wewnętrznym, sprawdzona ręcznie.
+- [Przykłady](/pl/examples/): gotowe ramy i kratownice otwierane jednym kliknięciem.
+- [Obciążenia](/pl/essentials/loads): obciążenia trapezowe, skupione i termiczne, zadane przemieszczenia.
+- [Klawiatura, mysz i dotyk](/pl/reference/shortcuts): pracuj szybciej na płótnie.

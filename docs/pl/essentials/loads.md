@@ -2,89 +2,111 @@
 
 Wszystkie obciążenia należą do **jednego przypadku obciążenia** i działają jednocześnie. Aby porównać warianty, zapisz każdy jako plik projektu lub link do udostępnienia.
 
+![Wszystkie typy obciążeń na jednej belce ciągłej: siła węzłowa, obciążenie równomierne, obciążenie trapezowe, siła skupiona, obciążenie termiczne i osiadanie podpory](/screenshots/pl/loads-overview.webp)
+
 <LoadShowcase />
 
-## Konwencja znaków w jednym zdaniu
+## Konwencja znaków w jednym zdaniu {#sign-convention-in-one-line}
 
-Globalna oś **x** jest skierowana w prawo, globalna oś **z** — **w dół**. Dodatnie `Fz` lub `fz` w układzie globalnym to więc obciążenie skierowane w dół, grawitacyjne; dodatni moment `My` działa na ekranie przeciwnie do ruchu wskazówek zegara. Szczegóły na stronie [Układ współrzędnych i konwencje znaków](/pl/elements/conventions).
+Globalna oś **x** jest skierowana w prawo, a globalna oś **z** **w dół**. Dodatnie `Fz` lub `fz` to więc obciążenie skierowane w dół, typu grawitacyjnego, a dodatni moment `My` obraca na ekranie przeciwnie do ruchu wskazówek zegara. Szczegóły na stronie [Układ współrzędnych i konwencje znaków](/pl/elements/conventions). Przy [osi y w górę](/pl/elements/conventions#y-up-axes) nazwy i znaki wielkości pionowych się odwracają: obciążenie grawitacyjne to ujemne `Fy`.
 
-## Obciążenia węzłowe
+## Obciążenia węzłowe {#nodal-loads}
 
-Zakładka *Obciążenia* → **Dodaj obciążenie węzłowe** lub kliknij węzeł → **Dodaj obciążenie**. Wybierz **Siła/Moment**:
-
-| Pole | Znaczenie | Jednostka |
-| --- | --- | --- |
-| `Fx` | siła pozioma (+ → w prawo) | jednostka siły |
-| `Fz` | siła pionowa (+ → w dół) | jednostka siły |
-| `My` | moment względem osi y | jednostka momentu |
-
-Składowe są zawsze w **globalnym** układzie współrzędnych. Podgląd strzałki w oknie dialogowym pokazuje na żywo wypadkowy kierunek i wartość. W jednym węźle może być kilka obciążeń węzłowych — po prostu się sumują.
-
-### Zadane przemieszczenia (osiadania podpór)
-
-W tym samym oknie wybierz **Zadane przemieszczenie** (lub kliknij podparty węzeł → **Zadaj przemieszczenie**). Pola zmieniają się na:
+Zakładka *Obciążenia* → **Dodaj obciążenie węzłowe** albo kliknij węzeł → **Dodaj obciążenie**. Wybierz **Siła/Moment**:
 
 | Pole | Znaczenie | Jednostka |
 | --- | --- | --- |
-| `Dx` | wymuszone przemieszczenie poziome | jednostka długości |
-| `Dz` | wymuszone przemieszczenie pionowe (+ → w dół) | jednostka długości |
+| `Fx` | siła pozioma (dodatnia w prawo) | jednostka siły |
+| `Fz` | siła pionowa (dodatnia w dół) | jednostka siły |
+| `My` | moment względem osi y (dodatni przeciwnie do ruchu wskazówek zegara) | jednostka momentu |
+
+![Dodaj obciążenie węzłowe. Podgląd pokazuje kierunek już podczas wpisywania.](/screenshots/pl/loads-nodal.webp){.shot-md}
+
+Składowe są zawsze w **globalnym** układzie współrzędnych. Węzeł może mieć kilka obciążeń węzłowych; sumują się i są rysowane jedno nad drugim.
+
+### Zadane przemieszczenia (osiadania podpór) {#prescribed-displacements-support-settlements}
+
+W tym samym oknie wybierz **Zadane przemieszczenie** albo kliknij podparty węzeł → **Zadaj przemieszczenie**. Pola zmieniają się na:
+
+| Pole | Znaczenie | Jednostka |
+| --- | --- | --- |
+| `Dx` | wymuszone przemieszczenie poziome | jednostka przemieszczenia |
+| `Dz` | wymuszone przemieszczenie pionowe (dodatnie w dół) | jednostka przemieszczenia |
 | `Ry` | wymuszony obrót | rad |
 
-Wartość można wpisać tylko dla stopnia swobody, który jest w tym węźle **zablokowany** — przesuwać można tylko podpory. Każdy węzeł może mieć jedno zadane przemieszczenie; edytuj je zamiast dodawać drugie. W układzie statycznie wyznaczalnym osiadanie wywołuje przemieszczenia, ale nie siły przekrojowe; w układzie statycznie niewyznaczalnym — jedno i drugie.
+Wartość można wpisać tylko dla stopnia swobody, który jest w tym węźle **zablokowany**, ponieważ przesuwać można tylko podpory. Każdy węzeł ma najwyżej jedno zadane przemieszczenie; edytuj je zamiast dodawać drugie. W układzie statycznie wyznaczalnym osiadanie wywołuje przemieszczenia, ale nie siły przekrojowe; w układzie statycznie niewyznaczalnym wywołuje jedno i drugie.
 
-## Obciążenia elementów
+## Obciążenia elementów {#element-loads}
 
-Zakładka *Obciążenia* → **Dodaj obciążenie elementu** lub kliknij element → **Dodaj obciążenie**. Wybierz **Typ obciążenia**; okno pokazuje podgląd obciążenia na elemencie na żywo.
+Zakładka *Obciążenia* → **Dodaj obciążenie elementu** albo kliknij element → **Dodaj obciążenie**. Wybierz **Typ obciążenia**; okno już podczas wpisywania pokazuje podgląd obciążenia na elemencie.
 
-### Obciążenie równomiernie rozłożone
+### Obciążenie równomiernie rozłożone {#uniformly-distributed-load}
 
 | Pole | Znaczenie | Jednostka |
 | --- | --- | --- |
 | `fx` | obciążenie na jednostkę długości wzdłuż x | siła / długość |
 | `fz` | obciążenie na jednostkę długości wzdłuż z | siła / długość |
-| **LCS** | zaznacz, aby interpretować `fx`, `fz` w osiach lokalnych elementu | – |
+| **LCS** | zaznaczone: `fx`, `fz` działają wzdłuż osi lokalnych elementu; odznaczone: wzdłuż osi globalnych | – |
 
-Najczęstszy przypadek to pionowe obciążenie grawitacyjne: `fz > 0`, LCS wyłączone. Dla pręta nachylonego obciążenie **prostopadłe do pręta** (np. wiatr na krokiew) to `fz` z **włączonym** LCS; obciążenie pionowe na metr rzutu *poziomego* nie jest dostępne bezpośrednio — najpierw przelicz je na metr długości pręta.
+**LCS** jest domyślnie zaznaczone. Na elemencie poziomym narysowanym od lewej do prawej osie lokalne i globalne są takie same, więc nie ma to znaczenia. Na pręcie nachylonym ma:
 
-### Obciążenie trapezowe
+- obciążenie **prostopadłe do pręta** (wiatr na krokiew) to `fz` z **zaznaczonym** LCS;
+- obciążenie **pionowe** na metr długości pręta (ciężar własny) to `fz` z **odznaczonym** LCS;
+- obciążenie pionowe na metr rzutu *poziomego* (śnieg) nie jest dostępne bezpośrednio. Najpierw pomnóż je przez $\cos\alpha$, gdzie $\alpha$ to kąt nachylenia pręta, i wprowadź jako obciążenie pionowe.
+
+### Obciążenie trapezowe {#trapezoidal-load}
 
 | Pole | Znaczenie |
 | --- | --- |
 | `f1x`, `f1z` | intensywność w węźle **początkowym** |
 | `f2x`, `f2z` | intensywność w węźle **końcowym** |
 
-Intensywność zmienia się liniowo między końcami. Obciążenie trójkątne to po prostu `f1z = 0`. Obciążenia trapezowe są zawsze w **układzie lokalnym elementu** (pole LCS jest zablokowane jako włączone); dla elementów poziomych lokalna i globalna oś z pokrywają się, więc ma to znaczenie tylko dla prętów nachylonych.
+Intensywność zmienia się liniowo od początku do końca elementu. Obciążenie trójkątne ma `f1z = 0`. Obciążenia trapezowe działają zawsze wzdłuż **osi lokalnych elementu** (pole LCS jest zablokowane); na elemencie poziomym jest to to samo co układ globalny.
 
-### Obciążenie skupione
+### Obciążenie skupione {#concentrated-load}
 
-Siła lub moment skupiony w dowolnym miejscu **wzdłuż** elementu — bez dodatkowego węzła.
+Siła lub moment skupiony w dowolnym miejscu **wzdłuż** elementu, bez potrzeby dodawania węzła.
 
 | Pole | Znaczenie |
 | --- | --- |
-| `Fx`, `Fz`, `My` | składowe siły / momentu |
+| `Fx`, `Fz`, `My` | składowe siły i momentu |
 | **Pozycja obciążenia od węzła początkowego** | odległość od węzła początkowego, `0 ≤ a ≤ L` |
-| **LCS** | składowe w osiach lokalnych |
+| **LCS** | składowe wzdłuż osi lokalnych |
 
-Wykres sił poprzecznych ma skok o `Fz`, a wykres momentów załamanie w miejscu obciążenia; wartość momentu w tym punkcie jest opisywana automatycznie.
+Wykres sił tnących ma w miejscu obciążenia skok o `Fz`, a wykres momentów załamanie; wartość momentu w tym punkcie jest opisywana automatycznie. Skupiony moment `My` powoduje natomiast skok na wykresie momentów.
 
-### Obciążenie termiczne
+### Obciążenie termiczne {#temperature-load}
 
 | Pole | Znaczenie |
 | --- | --- |
-| **ΔT<sub>c</sub>** – osiowa zmiana temperatury | równomierna zmiana w całym przekroju → wydłużenie $\alpha\,\Delta T_c\,L$ |
-| **ΔT<sub>b</sub> − ΔT<sub>t</sub>** – dolne minus górne włókna | różnica temperatury na wysokości przekroju → krzywizna $\alpha\,(\Delta T_b - \Delta T_t)/h$ |
+| **ΔT<sub>c</sub>**, osiowa zmiana temperatury | równomierna zmiana w całym przekroju, dająca wydłużenie $\alpha\,\Delta T_c\,L$ |
+| **ΔT<sub>b</sub> − ΔT<sub>t</sub>**, różnica temperatur | włókna dolne minus górne, dająca krzywiznę $\alpha\,(\Delta T_b - \Delta T_t)/h$ |
 
-Obciążenia termiczne używają **α** materiału i **wysokości h** przekroju. Dodatnie `ΔTb − ΔTt` (dół cieplejszy) wygina element ku górze. W układzie statycznie wyznaczalnym temperatura wywołuje wyłącznie przemieszczenia; więzy (utwierdzone końce, ciągłość, pręty nadliczbowe) zamieniają je w siły przekrojowe.
+Obciążenia termiczne używają **α** materiału i **wysokości h** przekroju. Dodatnie `ΔTb − ΔTt` (dół cieplejszy) wydłuża dolne włókna, więc element ugina się jak belka pod obciążeniem grawitacyjnym. W układzie statycznie wyznaczalnym temperatura wywołuje wyłącznie przemieszczenia; więzy (utwierdzone końce, ciągłość, pręty nadliczbowe) zamieniają ją w siły przekrojowe.
 
-## Edycja i usuwanie obciążeń
+<div class="shots">
 
-- Obciążenia pojawiają się jako plakietki w tabelach *Węzły* / *Elementy* oraz jako wiersze w zakładce *Obciążenia*, gdzie składowe (i flagę LCS) edytuje się w miejscu.
-- **Kliknij dwukrotnie** obciążenie w widoku lub kliknij je i wybierz **Edytuj obciążenie**, aby otworzyć okno edycji.
-- Zaznacz obciążenie i naciśnij <kbd>Delete</kbd> albo użyj ikony kosza.
+![Obciążenie równomiernie rozłożone](/screenshots/pl/loads-udl.webp)
+
+![Obciążenie trapezowe](/screenshots/pl/loads-trapezoidal.webp)
+
+![Obciążenie skupione](/screenshots/pl/loads-concentrated.webp)
+
+![Obciążenie termiczne](/screenshots/pl/loads-temperature.webp)
+
+</div>
+
+## Edycja i usuwanie obciążeń {#editing-and-removing-loads}
+
+- Każde obciążenie to wiersz w zakładce *Obciążenia*, w którym możesz bezpośrednio edytować jego składowe i flagę LCS. Obciążenia pojawiają się też jako plakietki w tabelach *Węzły* i *Elementy*.
+- **Kliknij dwukrotnie** obciążenie w widoku albo kliknij je i wybierz **Edytuj obciążenie**, aby otworzyć okno edycji.
+- Zaznacz obciążenie i naciśnij <kbd>Delete</kbd> albo użyj × w tabeli.
 - Obciążenia przypisane do węzła lub elementu są usuwane razem z nim i kopiowane razem z nim przy kopiowaniu i wklejaniu.
 
-## Czego nie ma
+![Zakładka Obciążenia: jeden wiersz na obciążenie, ze składowymi edytowalnymi bezpośrednio](/screenshots/pl/loads-table.webp)
 
-- **Przypadków i kombinacji obciążeń** — tylko jeden przypadek.
-- **Ciężaru własnego** — wpisz go jako obciążenie równomiernie rozłożone: $f_z = \rho\,g\,A$ (np. IPE 200: 7850 × 9,81 × 0,00285 ≈ 0,22 kN/m).
-- **Obciążeń trapezowych w układzie globalnym** na prętach nachylonych.
+## Czego nie ma {#what-is-not-available}
+
+- **Przypadków i kombinacji obciążeń.** Jest jeden przypadek obciążenia.
+- **Ciężaru własnego.** Wprowadź go jako obciążenie równomierne z odznaczonym LCS: $f_z = \rho\,g\,A$. Dla IPE 200: 7850 × 9,81 × 0,00285 ≈ 0,22 kN/m.
+- **Obciążeń trapezowych w osiach globalnych** na prętach nachylonych.

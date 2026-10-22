@@ -4,7 +4,7 @@ Le seul élément d’<Edubeam /> est une **poutre de Timoshenko** à deux nœud
 
 <TrussElement :moment="true" caption="Schéma de la poutre de Timoshenko 2D" />
 
-## Degrés de liberté
+## Degrés de liberté {#degrees-of-freedom}
 
 La poutre de Timoshenko 2D possède trois degrés de liberté en chaque nœud :
 
@@ -18,7 +18,7 @@ Les charges sont définies dans la direction des degrés de liberté :
 - **Force verticale (Fz) :** force selon l’axe z.
 - **Moment (My) :** moment autour de l’axe y.
 
-## Matrice de rigidité locale
+## Matrice de rigidité locale {#local-stiffness-matrix}
 
 La matrice de rigidité de la poutre en repère local s’écrit
 
@@ -48,15 +48,15 @@ $$
 
 avec $G$ le module de cisaillement et $k$ le **coefficient de cisaillement** de la section (aire réduite $kA$). Pour $\varphi \to 0$ (barre élancée ou $k$ très grand), la matrice se réduit à celle de la poutre d’Euler–Bernoulli.
 
-## Rotules d’extrémité
+## Rotules d’extrémité {#end-hinges}
 
 Une rotule à une extrémité libère le degré de liberté de rotation correspondant : la rotation est condensée hors de la matrice 6 × 6 (condensation statique, $M = 0$ à cette extrémité) et l’élément est assemblé avec les degrés de liberté restants. Avec les deux extrémités libérées, seuls les termes axiaux subsistent et l’élément se comporte comme une [barre de treillis](/fr/elements/truss).
 
-## Charges d’élément
+## Charges d’élément {#element-loads}
 
 Charges réparties, ponctuelles et thermiques sont converties en **charges nodales équivalentes** $\mathbf{f}_{eq}$ (opposé des réactions d’encastrement parfait) et ajoutées au vecteur global des charges. Après résolution, les sollicitations le long de l’élément sont reconstruites à partir des déplacements d’extrémité et de la solution particulière exacte de la charge d’élément, si bien que les diagrammes sont exacts le long de la barre.
 
-## Matrice de passage
+## Matrice de passage {#transformation-matrix}
 
 La matrice de passage de l’élément, $\mathbf{T}$, transforme la matrice de rigidité locale dans le repère global.
 
@@ -71,7 +71,7 @@ $$
 \end{pmatrix}
 $$
 
-## Matrice de rigidité globale
+## Matrice de rigidité globale {#global-stiffness-matrix}
 
 La matrice de rigidité globale $\mathbf{K_g}$ s’obtient à partir de la matrice de passage $\mathbf{T}$ et de la matrice de rigidité locale $\mathbf{K_l}$ :
 

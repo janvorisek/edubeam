@@ -1,99 +1,103 @@
 # Häufig gestellte Fragen
 
-## Allgemein
+## Allgemein {#general}
 
-### Was ist EduBeam?
+### Was ist EduBeam? {#what-is-edubeam}
 
-Ein kostenloser, quelloffener, browserbasierter Solver für ebene Balken, Rahmen und Fachwerke – für Studierende, Lehrende und Ingenieure, die sofortige Rückmeldung wollen. Siehe [Einführung](/de/guide/introduction).
+Ein kostenloses, quelloffenes, browserbasiertes Berechnungsprogramm für ebene Balken, Rahmen und Fachwerke – für Studierende, Lehrende und Ingenieure, die sofortige Rückmeldung wollen. Siehe [Einführung](/de/guide/introduction).
 
-### Ist es wirklich kostenlos? Brauche ich ein Konto?
+### Ist es wirklich kostenlos? Brauche ich ein Konto? {#is-it-really-free-do-i-need-an-account}
 
-Ja, und nein. Öffnen Sie [run.edubeam.app](https://run.edubeam.app/?lang=de) und beginnen Sie zu modellieren. Keine Konten, keine Installation, keine Nutzungslimits. Der Quellcode liegt auf [GitHub](https://github.com/janvorisek/edubeam).
+Ja, und nein. Öffnen Sie [run.edubeam.app](https://run.edubeam.app/?lang=de) und beginnen Sie zu modellieren. Es gibt keine Konten, keine Installationsprogramme und keine Nutzungslimits. Der Quellcode liegt auf [GitHub](https://github.com/janvorisek/edubeam).
 
-### Welche Browser und Geräte funktionieren?
+### Welche Browser und Geräte funktionieren? {#which-browsers-and-devices-work}
 
-Jeder aktuelle Chrome, Edge, Firefox oder Safari. Tablets und Smartphones funktionieren (Tippen, Ziehen zum Verschieben, Pinch zum Zoomen, langes Drücken zum Verschieben eines Knotens), mit Maus und Tastatur geht das Modellieren aber deutlich schneller.
+Jeder aktuelle Chrome, Edge, Firefox oder Safari. Tablets und Smartphones funktionieren: Tippen zum Auswählen oder Setzen, einen Knoten ziehen, um ihn zu verschieben, an anderer Stelle ziehen, um die Ansicht zu verschieben, mit zwei Fingern zoomen und gedrückt halten für das Menü der Zeichenfläche. Mit Maus und Tastatur geht das Modellieren trotzdem schneller. Siehe [Tastatur, Maus & Touch](/de/reference/shortcuts#touch).
 
-### Kann ich es offline nutzen?
+### Ich habe mein Modell verloren. Kann ich es zurückholen? {#i-lost-my-model-can-i-get-it-back}
 
-EduBeam ist eine Progressive Web App: einmal geladen, funktioniert es auch ohne Verbindung, und der Browser bietet möglicherweise die Installation an. Steht eine neue Version bereit, fragt ein Dialog vor dem Update.
+Wahrscheinlich. Wenn Sie das Modell löschen oder einen Link, eine Datei oder ein Beispiel darüber öffnen, bleibt das alte unter **☰ → Zuletzt verwendete Modelle** erhalten (die letzten 10), und <kbd>Strg</kbd>+<kbd>Z</kbd> macht das Ersetzen rückgängig. Beides gibt es nur in Ihrem Browser.
 
-### Wo werden meine Daten gespeichert?
+### Kann ich es offline nutzen? {#can-i-use-it-offline}
 
-Nur in Ihrem Browser. Modelle werden nie an einen Server gesendet; der geteilte Link *ist* das Modell. Siehe [Import, Export & Teilen](/de/essentials/import-export).
+EduBeam ist eine Progressive Web App: Einmal geladen, funktioniert sie auch ohne Verbindung, und der Browser bietet unter Umständen an, sie zu installieren. Steht eine neue Version bereit, fragt ein Dialog vor dem Update.
 
-## Modellierung
+### Wo werden meine Daten gespeichert? {#where-is-my-data-stored}
 
-### Wie erzeuge ich eine Einspannung / ein Festlager / ein Loslager?
+Nur in Ihrem Browser. Modelle werden nie an einen Server gesendet; der Link *ist* das Modell. Siehe [Import, Export & Teilen](/de/essentials/import-export).
 
-Freiheitsgrade anhaken: **Dx + Dz + Ry** = Einspannung, **Dx + Dz** = Festlager, **Dz** = Loslager. Alle Kombinationen und ihre Symbole unter [Knoten & Lager](/de/essentials/nodes-supports#lager).
+## Modellierung {#modelling}
 
-### Wie modelliere ich ein Fachwerk?
+### Wie erzeuge ich eine Einspannung, ein Festlager oder ein Loslager? {#how-do-i-make-a-fixed-pinned-roller-support}
 
-Balkenelemente verwenden und bei jedem Stab im Reiter *Elemente* **beide Endgelenke** anhaken. Lasten in den Knoten aufbringen. Siehe [Elemente](/de/essentials/elements#endgelenke).
+Klicken Sie auf den Knoten, öffnen Sie **Knotenlagerung** und wählen Sie das Symbol: Festlager, Loslager, Einspannung, Parallelführung und weitere. Oder haken Sie die Freiheitsgrade an: **Dx + Dz + Ry** = Einspannung, **Dx + Dz** = Festlager, **Dz** = Loslager. Alle Kombinationen sind unter [Knoten & Lager](/de/essentials/nodes-supports#supports) aufgeführt.
 
-### Wie setze ich ein Gelenk in einen Rahmen?
+### Wie modelliere ich ein Fachwerk? {#how-do-i-make-a-truss}
 
-Das **Endgelenk** des Elements auf der Seite des Knotens anhaken, an der das Moment freigegeben werden soll. Ein Gelenk an *einem* Element gibt nur dieses Element frei.
+Verwenden Sie Balkenelemente und haken Sie im Reiter *Elemente* bei jedem Stab **beide Endgelenke** an, oder haken Sie vor dem Zeichnen der Stäbe mit der Maus im Banner *Gelenk am Anfang* und *Gelenk am Ende* an. Bringen Sie die Lasten in den Knoten auf. Das [Fachwerk-Tutorial](/de/tutorials/truss) führt Schritt für Schritt durch ein Beispiel.
 
-### Wie füge ich ein Lager oder eine Einzellast mitten im Balken ein?
+### Wie setze ich ein Gelenk in einen Rahmen? {#how-do-i-put-a-hinge-in-a-frame}
 
-Einen Knoten mit *Per Maus hinzufügen* auf den Balken setzen und **Mit Struktur verbinden** wählen – der Balken wird geteilt. Für eine Einzellast allein brauchen Sie nicht einmal einen Knoten: verwenden Sie die Elementlast **Einzellast** mit Lastposition.
+Haken Sie das **Endgelenk** des Elements auf der Seite des Knotens an, an der das Moment freigegeben werden soll. Ein Gelenk an *einem* Element eines Knotens gibt nur dieses Element frei.
 
-### Kann ich Eigengewicht ansetzen?
+### Wie füge ich ein Lager oder eine Einzellast mitten im Balken ein? {#how-do-i-add-a-support-or-a-point-load-in-the-middle-of-a-beam}
 
-Nicht automatisch. Geben Sie es als Gleichlast $f_z = \rho g A$ ein.
+Setzen Sie mit *Per Maus hinzufügen* einen Knoten auf den Balken und wählen Sie **Mit Struktur verbinden** – der Balken wird in zwei Elemente geteilt. Für eine Einzellast allein brauchen Sie nicht einmal einen Knoten: Verwenden Sie die Elementlast **Einzellast** mit einer Lastposition.
 
-### Kann ich schräge Lager modellieren?
+### Kann ich Eigengewicht ansetzen? {#can-i-apply-self-weight}
 
-Ja – setzen Sie am Knoten einen **Knoten-LKS-Winkel**; seine Freiheitsgrade werden dann im gedrehten System ausgewertet.
+Nicht automatisch. Geben Sie es als gleichmäßig verteilte Last $f_z = \rho g A$ ein.
 
-### Gibt es Lastfälle oder Kombinationen?
+### Kann ich schräge Lager modellieren? {#can-i-model-inclined-supports}
 
-Nein, nur ein Lastfall. Modellieren Sie jeden Fall getrennt und speichern oder teilen Sie ihn.
+Ja – legen Sie am Knoten einen **Knoten-LKS-Winkel** fest; seine Freiheitsgrade werden dann im gedrehten System ausgewertet.
 
-### Warum zeigen meine Lasten nach oben?
+### Gibt es Lastfälle oder Kombinationen? {#are-there-load-cases-or-combinations}
 
-Weil die globale z-Achse **nach unten** zeigt: positives `Fz` wirkt nach unten. Siehe [Vorzeichenkonvention](/de/elements/conventions).
+Nein, nur einen Lastfall. Modellieren Sie jeden Fall getrennt und speichern oder teilen Sie ihn.
 
-## Ergebnisse
+### Warum zeigen meine Lasten nach oben? {#why-do-my-loads-point-up}
 
-### Warum gibt es keine Schaltfläche „Berechnen“?
+Weil die globale z-Achse **nach unten** zeigt: Ein positives `Fz` wirkt nach unten. Siehe [Konventionen](/de/elements/conventions). Wenn Ihnen eine nach oben zeigende vertikale Achse lieber ist, wechseln Sie unter *Einstellungen → Sprache & Region → Koordinatensystem* zu y nach oben.
 
-Das Modell wird nach jeder Änderung automatisch gelöst. Erscheinen keine Ergebnisse, ist das Modell noch nicht lösbar – die [Fehlerbehebung](/de/reference/troubleshooting) sagt, was zu prüfen ist.
+## Ergebnisse {#results}
 
-### Warum weicht meine Durchbiegung leicht von der Formel ab?
+### Warum gibt es keine Schaltfläche „Berechnen“? {#why-is-there-no-solve-button}
 
-EduBeam verwendet Timoshenko-Balken, die Durchbiegungen enthalten also die Schubverformung. Bei schlanken Stäben liegt der Unterschied deutlich unter 1 %. Details und durchgerechnete Vergleiche unter [Ergebnisse von Hand prüfen](/de/guide/verification).
+Das Modell wird nach jeder Änderung automatisch berechnet. Erscheinen keine Ergebnisse, lässt sich das Modell noch nicht berechnen – die [Fehlerbehebung](/de/reference/troubleshooting) listet auf, was zu prüfen ist.
 
-### Wie genau sind die Ergebnisse? Brauche ich mehr Elemente?
+### Warum weicht meine Durchbiegung leicht von der Formel ab? {#why-does-my-deflection-differ-slightly-from-the-formula}
 
-Für die lineare Statik ist das Balkenelement unter den unterstützten Lasttypen exakt; ein Element je Stab genügt. Zusätzliche Knoten brauchen Sie nur für Lager, Gelenke, Querschnittswechsel oder Lastangriffspunkte.
+EduBeam verwendet Timoshenko-Balken, die Durchbiegungen enthalten also die Schubverformung. Bei schlanken Stäben liegt der Unterschied deutlich unter 1 %. Einzelheiten und durchgerechnete Vergleiche unter [Ergebnisse von Hand prüfen](/de/guide/verification).
 
-### Wo finde ich die Auflagerreaktionen?
+### Wie genau sind die Ergebnisse? Brauche ich mehr Elemente? {#how-accurate-are-the-results-do-i-need-more-elements}
 
-In der Ansicht als Pfeile mit Werten (**Auflagerreaktionen** im Anzeigepanel aktivieren). Stabendkräfte und Knotenverschiebungen stehen im Reiter **Ergebnisse**.
+Für die lineare Statik ist das Balkenelement unter den unterstützten Lastarten exakt, ein Element je Stab genügt also. Zusätzliche Knoten brauchen Sie nur dort, wo Sie ein Lager, ein Gelenk, einen Querschnittswechsel oder einen Knoten zum Anbringen einer Last wollen.
 
-## Dateien & Teilen
+### Wo stehen die Auflagerreaktionen? {#where-are-the-reactions-listed}
 
-### Wie teile ich ein Modell?
+In der Ansicht, als Pfeile mit Werten (**Auflagerreaktionen** in den Anzeigeoptionen, standardmäßig eingeschaltet). Sie stehen auch in der Datei aus **Ergebnisse → CSV exportieren** und in **Kopieren**. Knotenverschiebungen und Stabendkräfte finden Sie im Reiter **Ergebnisse**.
 
-**Modell teilen** → **Link kopieren**. Der Link enthält das gesamte Modell. Empfänger erhalten eine eigene bearbeitbare Kopie; eine Echtzeit-Zusammenarbeit gibt es nicht.
+## Dateien & Teilen {#files-sharing}
 
-### Kann ich ein Modell auf meiner Website oder in Folien einbetten?
+### Wie teile ich ein Modell? {#how-do-i-share-a-model}
 
-Ja – `&viewer=1` an einen geteilten Link anhängen und in ein `<iframe>` setzen. Siehe [Schreibgeschützten Viewer einbetten](/de/essentials/import-export#schreibgeschutzten-viewer-einbetten).
+**Modell teilen** → **Link kopieren**. Der Link enthält das ganze Modell. Empfänger erhalten eine eigene bearbeitbare Kopie; eine Live-Zusammenarbeit gibt es nicht. Siehe auch [Lehren mit EduBeam](/de/guide/teaching).
 
-### Kann ich Bilder oder Tabellen exportieren?
+### Kann ich ein Modell in meine Website oder in Folien einbetten? {#can-i-embed-a-model-on-my-website-or-in-slides}
 
-Noch nicht. Für Bilder einen Screenshot verwenden, für Zahlen den Tabellentext kopieren. Stimmen Sie auf [GitHub](https://github.com/janvorisek/edubeam/issues) für die Funktion ab.
+Ja: Hängen Sie `&viewer=1` an einen Link an und setzen Sie ihn in einen `<iframe>`. Siehe [Viewer einbetten](/de/essentials/import-export#embed-a-read-only-viewer).
 
-### Kann ich Modelle programmatisch erzeugen?
+### Kann ich Bilder oder Tabellen exportieren? {#can-i-export-images-or-tables}
 
-Ja. Die Projektdatei ist einfaches JSON in SI-Einheiten – siehe [Formatbeschreibung](/de/essentials/import-export#format-der-projektdatei) – und lässt sich mit *Projekt öffnen* oder per Drag & Drop laden.
+Ja. **☰ → Bild exportieren** (<kbd>Strg</kbd>+<kbd>P</kbd>) speichert die Zeichnung als PNG oder SVG in einer Größe oder einem Maßstab Ihrer Wahl. **Ergebnisse → CSV exportieren** speichert beide Ergebnistabellen, und **Kopieren** legt sie für eine Tabellenkalkulation in die Zwischenablage. Siehe [Import, Export & Teilen](/de/essentials/import-export#export-an-image).
 
-## Support
+### Kann ich Modelle per Programm erzeugen? {#can-i-generate-models-programmatically}
 
-### Wie melde ich einen Fehler oder schlage eine Funktion vor?
+Ja. Die Projektdatei ist einfaches JSON in SI-Einheiten – siehe die [Formatbeschreibung](/de/essentials/import-export#project-file-format) – und lässt sich mit *Projekt öffnen* oder per Drag & Drop öffnen.
 
-Eröffnen Sie ein Issue auf [GitHub](https://github.com/janvorisek/edubeam/issues) und hängen Sie einen geteilten Link oder eine Projektdatei an, die das Problem reproduziert. Privater Support: [support@edubeam.app](mailto:support@edubeam.app).
+## Support {#support}
+
+### Wie melde ich einen Fehler oder schlage eine Funktion vor? {#how-do-i-report-a-bug-or-request-a-feature}
+
+Eröffnen Sie ein Issue auf [GitHub](https://github.com/janvorisek/edubeam/issues) und hängen Sie einen Link oder eine Projektdatei an, mit der sich das Problem nachvollziehen lässt. Nichtöffentlicher Support: [support@edubeam.app](mailto:support@edubeam.app).

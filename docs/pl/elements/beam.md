@@ -4,7 +4,7 @@ Jedynym elementem w <Edubeam /> jest dwuwęzłowa **belka Timoshenki** w płaszc
 
 <TrussElement :moment="true" caption="Schemat płaskiej belki Timoshenki" />
 
-## Stopnie swobody
+## Stopnie swobody {#degrees-of-freedom}
 
 Płaska belka Timoshenki ma trzy stopnie swobody w każdym węźle:
 
@@ -18,7 +18,7 @@ Obciążenia zadaje się w kierunkach stopni swobody:
 - **Siła pionowa (Fz):** siła działająca wzdłuż osi Z.
 - **Moment (My):** moment działający wokół osi Y.
 
-## Lokalna macierz sztywności
+## Lokalna macierz sztywności {#local-stiffness-matrix}
 
 Macierz sztywności belki w układzie lokalnym ma postać:
 
@@ -48,15 +48,15 @@ $$
 
 przy czym $G$ to moduł Kirchhoffa (ścinania), a $k$ — **współczynnik ścinania** przekroju (efektywne pole ścinania $kA$). Dla $\varphi \to 0$ (belka smukła lub bardzo duże $k$) macierz redukuje się do macierzy sztywności belki Eulera–Bernoulliego.
 
-## Przeguby końcowe
+## Przeguby końcowe {#end-hinges}
 
 Przegub na końcu elementu zwalnia odpowiedni obrotowy stopień swobody: obrót jest wyeliminowany z macierzy 6 × 6 (kondensacja statyczna, $M = 0$ na tym końcu), a element jest agregowany z pozostałymi stopniami swobody. Przy zwolnieniu obu końców pozostają tylko człony osiowe i element zachowuje się jak [pręt kratownicy](/pl/elements/truss).
 
-## Obciążenia elementów
+## Obciążenia elementów {#element-loads}
 
 Obciążenia rozłożone, skupione i termiczne są zamieniane na **zastępcze obciążenia węzłowe** $\mathbf{f}_{eq}$ (siły utwierdzenia ze znakiem przeciwnym) i dodawane do globalnego wektora obciążeń. Po rozwiązaniu siły przekrojowe wzdłuż elementu są odtwarzane z przemieszczeń końcowych oraz dokładnego rozwiązania szczególnego dla obciążenia elementu, dlatego wykresy są dokładne na całej długości pręta.
 
-## Macierz transformacji
+## Macierz transformacji {#transformation-matrix}
 
 Macierz transformacji elementu $\mathbf{T}$ służy do przekształcenia lokalnej macierzy sztywności do globalnego układu współrzędnych.
 
@@ -71,7 +71,7 @@ $$
 \end{pmatrix}
 $$
 
-## Globalna macierz sztywności
+## Globalna macierz sztywności {#global-stiffness-matrix}
 
 Globalną macierz sztywności $\mathbf{K_g}$ otrzymuje się przez pomnożenie macierzy transformacji elementu $\mathbf{T}$ i lokalnej macierzy sztywności $\mathbf{K_l}$:
 

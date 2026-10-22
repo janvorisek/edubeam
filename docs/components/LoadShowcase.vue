@@ -2,6 +2,7 @@
 import { LinearStaticSolver, DofID, type Node, type Element, type NodalLoad, type BeamElementLoad } from 'ts-fem';
 import SVGElementViewer from '../../src/components/SVGElementViewer.vue';
 import { serializeModel } from '../../src/utils/serializeModel';
+import { useDocsText, type DocsStrings } from './docsText';
 
 type ViewerFlags = {
   showLoads: boolean;
@@ -14,8 +15,9 @@ type ViewerFlags = {
 
 type Sample = {
   id: string;
+  /** Key of the load type's name in the app's locale files. */
   title: string;
-  blurb: string;
+  blurb: keyof DocsStrings;
   solver: LinearStaticSolver;
   nodes: Node[];
   elements: Element[];
@@ -24,6 +26,8 @@ type Sample = {
   viewer: ViewerFlags;
   openUrl: string;
 };
+
+const { app, docs, appLocale, numberFormat } = useDocsText();
 
 const convertForce = (value: number) => value / 1000; // N → kN
 const convertMoment = (value: number) => value / 1000; // N·m → kN·m
@@ -93,28 +97,28 @@ const buildSamples = (): Sample[] =>
     > = {
       udl: {
         id: 'udl',
-        title: 'Uniform distributed load',
-        blurb: 'Pinned–roller span with 12 kN/m UDL for classic SFD/BMD envelopes.',
+        title: 'loadType.udl',
+        blurb: 'udlBlurb',
       },
       trapezoidal: {
         id: 'trapezoidal',
-        title: 'Trapezoidal line load',
-        blurb: 'Tapered load rising from 4 to 14 kN/m across the right span.',
+        title: 'loadType.trapezoidal',
+        blurb: 'trapezoidalBlurb',
       },
       concentrated: {
         id: 'concentrated',
-        title: 'Concentrated element load',
-        blurb: 'Single 18 kN downward load applied at midspan along the element axis.',
+        title: 'loadType.concentrated',
+        blurb: 'concentratedBlurb',
       },
       nodal: {
         id: 'nodal',
-        title: 'Nodal point load',
-        blurb: '20 kN nodal load at the interior support for reaction and deflection checks.',
+        title: 'loads.nodalLoad',
+        blurb: 'nodalBlurb',
       },
       temperature: {
         id: 'temperature',
-        title: 'Temperature gradient',
-        blurb: 'ΔT across the depth (top hotter than bottom) to show induced curvature.',
+        title: 'loadType.temperature',
+        blurb: 'temperatureBlurb',
       },
     };
 
@@ -181,18 +185,15 @@ const samples: Sample[] = import.meta.env.SSR ? [] : buildSamples();
     <section class="load-showcase">
       <header class="ls-header">
         <div>
-          <h3>Load type previews</h3>
-          <p class="lede">
-            See how common load types render in EduBeam. Each card is an interactive FEM preview and opens directly in
-            the app with the exact solver setup.
-          </p>
+          <h3>{{ docs('loadsTitle') }}</h3>
+          <p class="lede">{{ docs('loadsLede') }}</p>
         </div>
       </header>
 
       <div class="ls-grid">
         <article v-for="sample in samples" :key="sample.id" class="ls-card">
           <div class="ls-viewer-shell" aria-hidden="true">
-            <span class="ls-label">{{ sample.title }}</span>
+            <span class="ls-label">{{ app(sample.title) }}</span>
             <SVGElementViewer
               :id="`load-${sample.id}`"
               class="ls-viewer"
@@ -211,16 +212,18 @@ const samples: Sample[] = import.meta.env.SSR ? [] : buildSamples();
               :mobile-padding="18"
               :results-scale-px="42"
               :convert-force="convertForce"
+              :convert-force-distance="convertForce"
+              :number-format="numberFormat"
               :convert-moment="convertMoment"
               :zoom-enabled="false"
             />
           </div>
           <div class="ls-copy">
-            <p class="eyebrow">{{ sample.title }}</p>
-            <p class="description">{{ sample.blurb }}</p>
+            <p class="eyebrow">{{ app(sample.title) }}</p>
+            <p class="description">{{ docs(sample.blurb) }}</p>
           </div>
-          <a class="cta" :href="sample.openUrl" target="_blank" rel="noreferrer">
-            <span>Open in EduBeam</span>
+          <a class="cta" :href="`${sample.openUrl}&lang=${appLocale}`" target="_blank" rel="noreferrer">
+            <span>{{ docs('openInApp') }}</span>
             <span class="cta-arrow">→</span>
           </a>
         </article>

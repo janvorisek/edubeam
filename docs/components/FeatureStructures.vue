@@ -4,11 +4,10 @@ import SVGElementViewer from '../../src/components/SVGElementViewer.vue';
 import { serializeModel } from '../../src/utils/serializeModel';
 // Single source of truth, shared with the Examples panel inside the app.
 import { buildExampleSolver, examples, type ExampleViewerFlags } from '../../src/utils/examples';
+import { useDocsText } from './docsText';
 
 type Sample = {
   id: string;
-  title: string;
-  blurb: string;
   solver: ReturnType<typeof buildExampleSolver>;
   nodes: Node[];
   elements: Element[];
@@ -18,6 +17,9 @@ type Sample = {
   openUrl: string;
 };
 
+// Titles and blurbs live in the app's locale files, as the in-app Examples panel shows them.
+const { app, appLocale, numberFormat } = useDocsText();
+
 const convertForce = (value: number) => value / 1000; // N → kN
 const convertMoment = (value: number) => value / 1000; // N·m → kN·m
 
@@ -26,8 +28,6 @@ const samples: Sample[] = examples.map((example) => {
 
   return {
     id: example.id,
-    title: example.title,
-    blurb: example.blurb,
     viewer: example.viewer,
     solver,
     nodes: [...solver.domain.nodes.values()],
@@ -47,12 +47,12 @@ const samples: Sample[] = examples.map((example) => {
           v-for="sample in samples"
           :key="sample.id"
           class="fs-card"
-          :href="sample.openUrl"
+          :href="`${sample.openUrl}&lang=${appLocale}`"
           target="_blank"
           rel="noreferrer"
         >
           <div class="fs-viewer-shell" aria-hidden="true">
-            <span class="fs-label">{{ sample.title }}</span>
+            <span class="fs-label">{{ app(`examples.items.${sample.id}.title`) }}</span>
             <SVGElementViewer
               :id="sample.id"
               class="fs-viewer"
@@ -71,14 +71,16 @@ const samples: Sample[] = examples.map((example) => {
               :mobile-padding="6"
               :results-scale-px="32"
               :convert-force="convertForce"
+              :convert-force-distance="convertForce"
+              :number-format="numberFormat"
               :convert-moment="convertMoment"
               :zoom-enabled="false"
               :support-size="0.5"
             />
           </div>
           <div class="fs-copy">
-            <p class="eyebrow">{{ sample.title }}</p>
-            <p class="description">{{ sample.blurb }}</p>
+            <p class="eyebrow">{{ app(`examples.items.${sample.id}.title`) }}</p>
+            <p class="description">{{ app(`examples.items.${sample.id}.blurb`) }}</p>
           </div>
         </a>
       </div>

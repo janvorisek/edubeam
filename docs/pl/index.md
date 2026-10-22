@@ -1,14 +1,14 @@
 ---
+# https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
 hero:
   name: "EduBeam"
   text: "Darmowa analiza konstrukcji online"
-  tagline: "Narysuj belkę, dodaj obciążenie i obserwuj, jak wszystko przelicza się natychmiast — pełne wyniki MES w przeglądarce, bez instalacji i bez opłat."
+  tagline: Narysuj belkę, ramę lub kratownicę, dodaj obciążenia i obserwuj, jak wykresy zmieniają się podczas edycji. Pełne wyniki MES w przeglądarce, bez instalacji, bez konta i bez opłat.
   image:
-    src: /download.png
-    alt: Podgląd aplikacji EduBeam
-    link: https://run.edubeam.app/?lang=pl
+    src: /screenshots/pl/hero.webp
+    alt: Aplikacja EduBeam z rozwiązaną ramą
   actions:
     - theme: brand
       text: Uruchom aplikację
@@ -22,24 +22,54 @@ hero:
 
 features:
   - icon: ⚡
-    title: Natychmiastowa odpowiedź
-    details: Zmień rozpiętość, przeciągnij podporę albo zwiększ obciążenie i patrz, jak wykresy reagują od razu.
+    title: Wyniki już podczas rysowania
+    details: Nie ma przycisku „Oblicz”. Przeciągnij węzeł, zaznacz przegub lub zmień obciążenie, a N, V, M, reakcje i kształt odkształcony od razu za tym podążą.
+    link: /pl/essentials/results
+    linkText: Odczytywanie wyników
   - icon: 🧑‍🏫
-    title: Stworzony z myślą o zajęciach
-    details: Cofnij/ponów, podpowiedzi z wartościami po najechaniu, przeguby i podpory jako pola wyboru — mniej tłumaczenia, więcej eksperymentowania.
+    title: Stworzony do nauczania
+    details: Prowadzone pierwsze kroki, wartości po najechaniu kursorem, solver, który wyjaśnia, dlaczego konstrukcja jest mechanizmem, i linki do udostępniania, które można umieścić w materiałach do wykładu.
+    link: /pl/guide/teaching
+    linkText: Nauczanie z EduBeam
   - icon: 🌍
-    title: W Twoim języku
-    details: 11 języków interfejsu, jednostki metryczne lub imperialne wybierane niezależnie dla każdej wielkości.
+    title: Twój język, Twoje jednostki
+    details: 12 języków interfejsu, jednostki SI lub amerykańskie oraz wybór osi z w dół lub podręcznikowej osi y w górę.
+    link: /pl/essentials/units-settings
+    linkText: Jednostki i ustawienia
   - icon: 🔗
-    title: Modele do udostępniania
-    details: Skopiuj link zawierający cały model, zapisuj pliki JSON lub osadź widok tylko do odczytu w prezentacji czy na stronie WWW.
+    title: Udostępniaj, eksportuj, osadzaj
+    details: Wyślij cały model jako link, zapisz go jako plik, wyeksportuj rysunek jako PNG lub SVG, a tabele wyników jako CSV.
+    link: /pl/essentials/import-export
+    linkText: Pliki i udostępnianie
 ---
-## Dla kogo jest EduBeam?
 
-- **Studenci** sprawdzający obliczenia ręczne — zacznij od [10-minutowego szybkiego startu](/pl/guide/quick-start) i strony [Sprawdzanie wyników ręcznie](/pl/guide/verification).
-- **Wykładowcy** pokazujący na żywo podpory, przeguby, obciążenia i wykresy sił przekrojowych — w języku swoich studentów.
-- **Inżynierowie i hobbyści**, którzy chcą szybko sprawdzić płaski układ bez uruchamiania dużego pakietu obliczeniowego.
+## Zacznij tutaj {#start-here}
 
-Jeśli potrafisz przeciągnąć myszą, poradzisz sobie z <Edubeam />. 🙂
+<div class="start-grid">
+
+**Pierwszy raz w EduBeam?** Przejdź przez [10-minutowy szybki start](/pl/guide/quick-start). Krok po kroku zamodelujesz belkę swobodnie podpartą i sprawdzisz ręcznie każdy wynik.
+
+**Wiesz, co chcesz zbudować?** Przejdź do [samouczka](/pl/tutorials/three-hinged-frame) albo otwórz gotowy [przykład](/pl/examples/) i zmień go.
+
+**Prowadzisz zajęcia?** Zobacz [Nauczanie z EduBeam](/pl/guide/teaching): linki do udostępniania w zadaniach, osadzany podgląd do prezentacji i ćwiczenia.
+
+</div>
+
+<div class="shots">
+
+![Kratownica: siły osiowe, rozciąganie dodatnie](/screenshots/pl/tut-truss.webp)
+
+![Mechanizm pokazany wprost: EduBeam wyjaśnia, dlaczego nie da się go rozwiązać](/screenshots/pl/ui-mechanism.webp)
+
+</div>
+
+## Co można zamodelować {#what-you-can-model}
+
+- **Belki, ramy i kratownice** w płaszczyźnie: belki ciągłe, ramy portalowe, łuki trójprzegubowe, kratownice o węzłach przegubowych.
+- **Dowolne podpory**: przegubowe nieprzesuwne i przesuwne, utwierdzenia, utwierdzenia przesuwne, podpory ukośne i osiadania podpór.
+- **Obciążenia**: siły i momenty skupione, obciążenia liniowe równomierne i trapezowe, siły skupione w dowolnym miejscu pręta oraz temperatura.
+- **Dowolne przekroje**: z biblioteki (IPE, HEA, AISC W, HSS, prostokąty, rury) lub narysowane jako wielokąt, z automatycznie obliczonymi charakterystykami.
+
+Więcej znajdziesz we [Wprowadzeniu](/pl/guide/introduction).
 
 <ElementariumPromo />

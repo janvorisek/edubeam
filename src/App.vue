@@ -38,6 +38,7 @@ import Dialogs from '@/components/Dialogs.vue';
 import { useProjectStore } from './store/project';
 import { useAppStore } from './store/app';
 import { startFirstBeam } from './utils/startFirstBeam';
+import { hasShortcutModifier } from './utils/keyboard';
 
 import { VOnboardingWrapper, VOnboardingStep, useVOnboarding } from 'v-onboarding';
 import 'v-onboarding/dist/style.css';
@@ -129,37 +130,37 @@ const fixTourStepPosition = () => {
 
 onMounted(() => {
   document.addEventListener('keydown', function (e) {
-    if (e.ctrlKey && (e.key === '+' || e.key === '=' || e.key === '-')) {
+    if (hasShortcutModifier(e) && (e.key === '+' || e.key === '=' || e.key === '-')) {
       e.preventDefault();
     }
 
-    // If CTRL+Z undo
-    if (e.ctrlKey && !e.shiftKey && e.code === 'KeyZ') {
+    // Ctrl+Z (Cmd+Z on a Mac) undo
+    if (hasShortcutModifier(e) && !e.shiftKey && e.code === 'KeyZ') {
       e.preventDefault();
       undoModelChange();
     }
 
-    // If CTRL+SHIFT+Z redo
-    if (e.ctrlKey && e.shiftKey && e.code === 'KeyZ') {
+    // Ctrl+Shift+Z redo
+    if (hasShortcutModifier(e) && e.shiftKey && e.code === 'KeyZ') {
       e.preventDefault();
       redoModelChange();
     }
 
     // Print: the browser's print of the page is meaningless here; the image export is
     // what "print" means in this app.
-    if ((e.ctrlKey || e.metaKey) && e.code === 'KeyP') {
+    if (hasShortcutModifier(e) && e.code === 'KeyP') {
       e.preventDefault();
       openExportImage();
     }
 
     // Save project
-    if (e.ctrlKey && e.code === 'KeyS') {
+    if (hasShortcutModifier(e) && e.code === 'KeyS') {
       e.preventDefault();
       saveProject();
     }
 
     // Open project
-    if (e.ctrlKey && e.code === 'KeyO') {
+    if (hasShortcutModifier(e) && e.code === 'KeyO') {
       e.preventDefault();
       file.value.click();
     }
@@ -200,6 +201,11 @@ onMounted(() => {
   // they start with, not news, so the changelog waits for the next release.
   if (!appStore.onboardingFinished && currentAppVersion) appStore.lastSeenChangelogVersion = currentAppVersion;
 
+  // Before the model: a shared link opens in the language it asks for too.
+  if (lang && availableLocales.findIndex((l) => l.code === lang) >= 0) {
+    appStore.locale = lang;
+  }
+
   if (inViewerMode) {
     appStore.inViewerMode = true;
   } else if (panel === 'examples') {
@@ -229,10 +235,6 @@ onMounted(() => {
     window.history.pushState({}, '', url.split('?')[0]);
 
     return;
-  }
-
-  if (lang && availableLocales.findIndex((l) => l.code === lang) >= 0) {
-    appStore.locale = lang;
   }
 
   if (lang || panel) {

@@ -32,7 +32,7 @@ describe('docsUrl', () => {
   });
 
   it('falls back to English for untranslated locales', () => {
-    setLocale('th');
+    setLocale('xx');
     expect(docsUrl('/essentials/results')).toContain('https://edubeam.app/essentials/results.html');
   });
 });

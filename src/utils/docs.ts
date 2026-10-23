@@ -6,7 +6,7 @@ import { i18n } from '../plugins/i18n';
 export const DOCS_BASE = 'https://edubeam.app';
 
 /** Locales the documentation is translated to. Everything else falls back to English. */
-const DOCS_LOCALES = new Set(['cs', 'de', 'es', 'fr', 'hi', 'pl', 'pt', 'ru', 'uk', 'zh', 'tr']);
+const DOCS_LOCALES = new Set(['cs', 'de', 'es', 'fr', 'hi', 'pl', 'pt', 'ru', 'uk', 'zh', 'tr', 'th']);
 
 /** App locale codes that differ from the documentation ones. */
 const DOCS_LOCALE_ALIASES: Record<string, string> = { cn: 'zh' };

@@ -3,7 +3,7 @@ import markdownItKatex from 'markdown-it-katex';
 import implicitFigures from 'markdown-it-implicit-figures';
 import path from 'path';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
-import { cs, de, english, es, fr, hi, navFor, pl, pt, ru, sidebarFor, tr, uk, zh } from './navigation';
+import { cs, de, english, es, fr, hi, navFor, pl, pt, ru, sidebarFor, th, tr, uk, zh } from './navigation';
 
 const customElements = [
   'math',
@@ -235,6 +235,18 @@ export default defineConfig({
         sidebar: sidebarFor('/ru', ru),
       },
     },
+    th: {
+      label: 'ไทย',
+      lang: 'th',
+      description: 'วิเคราะห์โครงสร้างออนไลน์ฟรี – คาน โครงข้อแข็ง และโครงถักในระนาบ ได้ผลทันทีบนเบราว์เซอร์',
+      themeConfig: {
+        nav: navFor('/th', 'th', th),
+        outline: { label: 'ในหน้านี้' },
+        docFooter: { prev: 'หน้าก่อนหน้า', next: 'หน้าถัดไป' },
+        lastUpdated: { text: 'อัปเดตล่าสุด' },
+        sidebar: sidebarFor('/th', th),
+      },
+    },
     tr: {
       label: 'Türkçe',
       lang: 'tr',
@@ -369,6 +381,23 @@ export default defineConfig({
                   selectText: 'Выбрать',
                   navigateText: 'Перейти',
                   closeText: 'Закрыть',
+                },
+              },
+            },
+          },
+          th: {
+            translations: {
+              button: {
+                buttonText: 'ค้นหาในเอกสาร',
+                buttonAriaLabel: 'ค้นหาในเอกสาร',
+              },
+              modal: {
+                noResultsText: 'ไม่พบผลลัพธ์สำหรับ',
+                resetButtonTitle: 'ล้างคำค้นหา',
+                footer: {
+                  selectText: 'เลือก',
+                  navigateText: 'เลื่อน',
+                  closeText: 'ปิด',
                 },
               },
             },

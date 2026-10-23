@@ -36,6 +36,7 @@ const APP_LANGUAGE = {
   uk: 'uk',
   zh: 'cn',
   tr: 'tr',
+  th: 'th',
 };
 
 const args = process.argv.slice(2);

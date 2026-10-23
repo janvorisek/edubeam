@@ -8,7 +8,7 @@ import { i18n } from '../../src/plugins/i18n';
  * Whatever the app already says (load types, quantities, example titles) comes from the app's own
  * locale files, so the two never disagree. Only sentences the app has no use for are kept here.
  */
-type DocsLanguage = 'en' | 'cs' | 'de' | 'es' | 'fr' | 'hi' | 'pl' | 'pt' | 'ru' | 'uk' | 'zh' | 'tr';
+type DocsLanguage = 'en' | 'cs' | 'de' | 'es' | 'fr' | 'hi' | 'pl' | 'pt' | 'ru' | 'uk' | 'zh' | 'tr' | 'th';
 
 /** The app's locale for each docs language; the app says cn for zh. */
 const APP_LOCALE: Record<DocsLanguage, string> = {
@@ -24,6 +24,7 @@ const APP_LOCALE: Record<DocsLanguage, string> = {
   uk: 'uk',
   zh: 'cn',
   tr: 'tr',
+  th: 'th',
 };
 
 export interface DocsStrings {
@@ -242,6 +243,22 @@ const strings: Record<DocsLanguage, DocsStrings> = {
     promoAccent: "3B'ye taşıyın.",
     promoSubtitle: 'döşemeler, kabuklar ve çelik kontrolleri tarayıcınızda',
     promoCta: 'Ücretsiz deneyin',
+  },
+  th: {
+    loadsTitle: 'ตัวอย่างประเภทแรงกระทำ',
+    loadsLede:
+      'แรงกระทำประเภทที่ใช้บ่อยมีหน้าตาอย่างไรใน EduBeam การ์ดแต่ละใบคือโมเดลที่คำนวณแล้วและโต้ตอบได้ และเปิดในแอปได้ตรงตามที่ตั้งค่าไว้',
+    openInApp: 'เปิดใน EduBeam',
+    simplySupportedBeam: 'คานช่วงเดียวแบบรองรับธรรมดา',
+    udlBlurb: 'คานบนหมุดและล้อเลื่อนรับแรง 12 kN/m: แผนภาพแรงเฉือนและโมเมนต์ดัดแบบคลาสสิก',
+    trapezoidalBlurb: 'แรงกระจายที่เพิ่มจาก 4 เป็น 14 kN/m ตลอดช่วงด้านขวา',
+    concentratedBlurb: 'แรงจุดขนาด 18 kN ทิศลงที่กึ่งกลางช่วง โดยไม่ต้องเพิ่มโหนด',
+    nodalBlurb: 'แรง 20 kN ที่จุดรองรับภายใน สำหรับตรวจสอบแรงปฏิกิริยาและการโก่งตัว',
+    temperatureBlurb: 'ผลต่างอุณหภูมิตามความลึกของหน้าตัด (ด้านบนร้อนกว่าด้านล่าง) และความโค้งที่เกิดขึ้น',
+    promoTitle: 'ยกระดับโครงข้อแข็งของคุณ',
+    promoAccent: 'สู่ 3 มิติ',
+    promoSubtitle: 'แผ่นพื้น เปลือกบาง และการตรวจสอบเหล็กโครงสร้างบนเบราว์เซอร์',
+    promoCta: 'ลองใช้ฟรี',
   },
 };
 

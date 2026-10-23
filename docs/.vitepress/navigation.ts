@@ -328,7 +328,7 @@ export const hi: NavigationLabels = {
     threeHingedFrame: 'त्रि-हिंज फ्रेम',
     truss: 'समतल ट्रस',
     userInterface: 'यूज़र इंटरफ़ेस',
-    nodesSupports: 'नोड और आधार',
+    nodesSupports: 'नोड और सपोर्ट',
     elements: 'अवयव, सामग्री और अनुप्रस्थ काट',
     loads: 'भार',
     unitsSettings: 'इकाइयाँ और सेटिंग्स',

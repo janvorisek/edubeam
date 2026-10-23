@@ -9,7 +9,7 @@ import { i18n } from '../../src/plugins/i18n';
  * locale files, so the two never disagree. Only sentences the app has no use for are kept here.
  */
 type DocsLanguage =
-  'en' | 'cs' | 'de' | 'es' | 'fr' | 'hi' | 'pl' | 'pt' | 'ru' | 'uk' | 'zh' | 'tr' | 'th' | 'vi' | 'it' | 'id';
+  'en' | 'cs' | 'de' | 'es' | 'fr' | 'hi' | 'pl' | 'pt' | 'ru' | 'uk' | 'zh' | 'tr' | 'th' | 'vi' | 'it' | 'id' | 'ja';
 
 /** The app's locale for each docs language; the app says cn for zh. */
 const APP_LOCALE: Record<DocsLanguage, string> = {
@@ -29,6 +29,7 @@ const APP_LOCALE: Record<DocsLanguage, string> = {
   vi: 'vi',
   it: 'it',
   id: 'id',
+  ja: 'ja',
 };
 
 export interface DocsStrings {
@@ -314,6 +315,22 @@ const strings: Record<DocsLanguage, DocsStrings> = {
     promoAccent: 'ke 3D.',
     promoSubtitle: 'pelat, cangkang & pemeriksaan baja di browser Anda',
     promoCta: 'Coba gratis',
+  },
+  ja: {
+    loadsTitle: '荷重の種類のプレビュー',
+    loadsLede:
+      'EduBeam で代表的な荷重がどのように表示されるかを紹介します。各カードは解析済みのライブなモデルで、設定どおりの状態でアプリに開きます。',
+    openInApp: 'EduBeam で開く',
+    simplySupportedBeam: '単純梁',
+    udlBlurb: 'ピン–ローラー支持のスパンに 12 kN/m：おなじみのせん断力図と曲げモーメント図。',
+    trapezoidalBlurb: '右スパンで 4 kN/m から 14 kN/m まで増加する荷重。',
+    concentratedBlurb: 'スパン中央に下向き 18 kN の集中荷重を 1 つ。追加の節点は不要です。',
+    nodalBlurb: '中間支点に 20 kN の荷重。反力とたわみの確認に。',
+    temperatureBlurb: '断面の高さ方向の温度差（上側が下側より高温）と、それによって生じる曲率。',
+    promoTitle: 'あなたの骨組を',
+    promoAccent: '3D へ。',
+    promoSubtitle: 'スラブ、シェル、鋼構造の検定をブラウザで',
+    promoCta: '無料で試す',
   },
 };
 

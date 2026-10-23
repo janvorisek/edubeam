@@ -34,7 +34,7 @@ features:
     linkText: Enseñar con EduBeam
   - icon: 🌍
     title: Tu idioma, tus unidades
-    details: 16 idiomas de interfaz, unidades SI o estadounidenses y ejes con z hacia abajo o con y hacia arriba como en los libros de texto.
+    details: 17 idiomas de interfaz, unidades SI o estadounidenses y ejes con z hacia abajo o con y hacia arriba como en los libros de texto.
     link: /es/essentials/units-settings
     linkText: Unidades y ajustes
   - icon: 🔗

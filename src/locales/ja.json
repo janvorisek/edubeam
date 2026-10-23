@@ -1,0 +1,724 @@
+{
+  "tabView": {
+    "viewer": "ビューア",
+    "settings": "設定",
+    "results": "結果"
+  },
+  "common": {
+    "label": "ラベル",
+    "node": "節点",
+    "element": "要素",
+    "crossSection": "断面",
+    "material": "材料",
+    "settings": "設定",
+    "actions": "操作",
+    "coords": "座標",
+    "type": "種類",
+    "nodes": "節点",
+    "endHinges": "材端ヒンジ",
+    "massMatrix": "質量マトリクス",
+    "target": "対象",
+    "components": "成分",
+    "loadCase": "荷重ケース",
+    "loads": "荷重",
+    "clearMesh": "モデルをクリア",
+    "shareModel": "モデルを共有",
+    "documentation": "ドキュメント",
+    "addUsingDialog": "ダイアログで追加",
+    "addUsingMouse": "マウスで追加",
+    "edit": "編集",
+    "copy": "コピー",
+    "delete": "削除",
+    "stiffnessMatrix": "剛性マトリクス",
+    "normalForce": "軸力",
+    "shearForce": "せん断力",
+    "bendingMoment": "曲げモーメント",
+    "deformedShape": "変形図",
+    "reactions": "反力",
+    "elements": "要素",
+    "confirm": "確定",
+    "saveProject": "プロジェクトを保存",
+    "openProject": "プロジェクトを開く",
+    "lcs": "ローカル座標系",
+    "paste": "貼り付け",
+    "addNew": "新規追加",
+    "whatisnew": "更新情報",
+    "reverse_orientation": "寸法線を反転",
+    "undo": "元に戻す",
+    "redo": "やり直し",
+    "ok": "OK"
+  },
+  "nodes": {
+    "addNode": "節点を追加",
+    "editNode": "節点を編集",
+    "defineSupports": "支点条件",
+    "lcsAngle": "節点の LCS 角度"
+  },
+  "supports": {
+    "free": "自由",
+    "pin": "ピン",
+    "roller": "ローラー",
+    "verticalRoller": "鉛直ローラー",
+    "slider": "スライド固定",
+    "verticalSlider": "鉛直スライド固定",
+    "rotation": "回転のみ拘束",
+    "fixed": "固定",
+    "custom": "カスタム"
+  },
+  "elements": {
+    "addElement": "要素を追加",
+    "editElement": "要素を編集",
+    "swapNodeOrder": "節点を入れ替え",
+    "hingeStart": "始端ヒンジ",
+    "hingeEnd": "終端ヒンジ",
+    "hinge": "ヒンジ",
+    "from": "始端",
+    "to": "終端"
+  },
+  "loads": {
+    "addNodalLoad": "節点荷重を追加",
+    "addElementLoad": "要素荷重を追加",
+    "addLoad": "荷重を追加",
+    "nodalLoad": "節点荷重",
+    "elementLoad": "要素荷重",
+    "prescribedDisplacement": "強制変位",
+    "addPrescribedDisplacement": "強制変位を設定",
+    "UDL": "等分布",
+    "forceMoment": "力/モーメント",
+    "editLoad": "荷重を編集",
+    "loadPositionOnBeam": "始端節点からの荷重位置",
+    "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... 下縁と上縁の温度変化の差",
+    "temperatureBending": "ΔT<sub>c</sub> ... 材軸の温度変化",
+    "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
+    "temperatureDeltaTs": "ΔT<sub>c</sub>",
+    "temperatureDeltaTsNoHTML": "ΔTc",
+    "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
+  },
+  "tabs": {
+    "nodes": "節点",
+    "elements": "要素",
+    "loads": "荷重",
+    "materials": "材料",
+    "crossSections": "断面",
+    "results": "結果"
+  },
+  "crossSection": {
+    "area": "断面積",
+    "h": "高さ",
+    "iy": "Iy",
+    "k": "せん断補正係数",
+    "iz": "Iz",
+    "b": "幅",
+    "centroid": "図心",
+    "alpha": "主軸角",
+    "radiusOfGyration": "断面二次半径",
+    "polygonal": "多角形形状",
+    "derivedFromShape": "多角形形状から算出（形状を編集すると変更できます）"
+  },
+  "material": {
+    "e": "E",
+    "g": "G",
+    "density": "密度",
+    "alphaT": "α_T"
+  },
+  "settings": {
+    "results_scale": "結果の表示倍率",
+    "grid_snap_step": "グリッドのスナップ間隔",
+    "snap_to_grid": "グリッドにスナップ",
+    "show_crosshair": "クロスヘアを表示",
+    "model_checks": "モデルチェック",
+    "show_mechanisms": "不安定構造の動きを表示",
+    "animate_mechanisms": "動きをアニメーション表示",
+    "number_format": "数値の表示形式",
+    "number_format_description": "結果の数値の表記方法です。小数点記号は言語に従います。",
+    "number_format_auto": "自動",
+    "number_format_scientific": "指数表記（1.5 · 10⁴）",
+    "number_format_engineering": "工学表記（15 · 10³）",
+    "language": "言語",
+    "language_and_locale": "言語と地域",
+    "show_normal_force": "軸力を表示",
+    "show_shear_force": "せん断力を表示",
+    "show_bending_moment": "曲げモーメントを表示",
+    "show_deformed_shape": "変形図を表示",
+    "show_loads": "荷重を表示",
+    "units": {
+      "units": "単位",
+      "length": "長さ",
+      "mass": "質量",
+      "force": "力",
+      "moment": "モーメント",
+      "pressure": "応力",
+      "area": "面積",
+      "areaM2": "断面二次モーメント",
+      "system": "単位系",
+      "systemSI": "SI（メートル法）",
+      "systemUS": "米国慣用単位（ヤード・ポンド法）",
+      "systemCustom": "カスタム",
+      "temperature": "温度",
+      "sectionLength": "断面寸法",
+      "displacement": "変位"
+    },
+    "grid": "グリッド",
+    "show_grid": "グリッドを表示",
+    "mouse": {
+      "mouse": "マウス",
+      "pan_button": "パン操作",
+      "wheel": "マウスホイール",
+      "right_button": "右ボタン",
+      "all": "ホイールまたは右ボタン"
+    },
+    "colors": {
+      "colors": "色"
+    },
+    "results": {
+      "results": "結果"
+    },
+    "viewer_settings": "表示設定",
+    "controls_and_shortcuts": "操作とショートカット",
+    "language_and_locale_subtitle": "言語、地域、単位の設定",
+    "viewer_settings_subtitle": "表示倍率、色、グリッドなど",
+    "controls_and_shortcuts_subtitle": "キーボードとマウスの設定",
+    "viewer_preview": "表示プレビュー",
+    "language_description": "インターフェースの言語を選択します。",
+    "units_description": "使用する単位を選択します。",
+    "axisConvention": "座標系",
+    "axisConvention_description": "入力と結果で鉛直軸をどちら向きにするかを選びます。モデルと保存済みのファイルには影響しません。",
+    "axisConvention_zDown": "x 右向き、z 下向き",
+    "axisConvention_yUp": "x 右向き、y 上向き",
+    "reset_settings": "設定をリセット",
+    "sizes": {
+      "sizes": "サイズ",
+      "supportSize": "支点のサイズ"
+    },
+    "font_size": "文字サイズ",
+    "result_label_orientation": "結果ラベルの向き",
+    "result_label_orientation_axis": "図に垂直",
+    "result_label_orientation_horizontal": "常に水平",
+    "result_labels": "結果ラベル"
+  },
+  "sideSettings": {
+    "showDeformedShape": "変形図",
+    "supports": "支点",
+    "loads": "荷重",
+    "nodeLabels": "節点ラベル",
+    "elementLabels": "要素ラベル",
+    "more_settings": "その他の設定",
+    "showReactions": "反力"
+  },
+  "viewer": {
+    "toggleGrid": "グリッド表示の切替（G）",
+    "toggleSnap": "グリッドスナップの切替（S）",
+    "toggleCrosshair": "クロスヘア表示の切替",
+    "boxSelect": "矩形選択",
+    "centerContent": "中央に表示",
+    "fitContent": "画面に合わせる",
+    "holdCtrl": "Ctrl を押しながらマウスで追加"
+  },
+  "dofs": {
+    "bcs": "拘束自由度"
+  },
+  "results": {
+    "results": "結果",
+    "nodal_results": "節点結果",
+    "element_results": "要素結果",
+    "end_forces": "材端力（ローカル座標系）",
+    "exportCsv": "CSV をエクスポート",
+    "exportHint": "表示中の単位で 2 つの結果表をダウンロードします。表計算ソフトでそのまま使えます。",
+    "copied": "結果をクリップボードにコピーしました",
+    "copyFailed": "結果をクリップボードにコピーできませんでした。"
+  },
+  "materials": {
+    "addMaterial": "材料を追加",
+    "material_library": "材料ライブラリ",
+    "section_library": "断面ライブラリ"
+  },
+  "crossSections": {
+    "addCrossSection": "断面を追加",
+    "addPolygonal": "多角形断面"
+  },
+  "dialogs": {
+    "addNode": {
+      "addNewNode": "新しい節点を追加",
+      "coordinate_x": "X 座標",
+      "coordinate_z": "{v} 座標",
+      "addNode": "節点を追加"
+    },
+    "common": {
+      "cancel": "キャンセル",
+      "orChooseFromLibrary": "またはライブラリから選択"
+    },
+    "addElement": {
+      "fromNodeId": "始端節点",
+      "toNodeId": "終端節点",
+      "addElement": "要素を追加",
+      "addNewElement": "新しい要素を追加",
+      "material": "材料",
+      "crossSection": "断面"
+    },
+    "addNodalLoad": {
+      "addNewNodalLoad": "新しい節点荷重を追加",
+      "addNodalLoad": "節点荷重を追加"
+    },
+    "addElementLoad": {
+      "addNewElementLoad": "新しい要素荷重を追加",
+      "addElementLoad": "要素荷重を追加"
+    },
+    "addMaterial": {
+      "addNewMaterial": "新しい材料を追加",
+      "addMaterial": "材料を追加",
+      "E": "E - ヤング係数",
+      "G": "G - せん断弾性係数",
+      "density": "ρ - 密度",
+      "alphaT": "α - 線膨張係数"
+    },
+    "addCrossSection": {
+      "addNewCrossSection": "新しい断面を追加",
+      "addCrossSection": "断面を追加",
+      "orDefinePolygon": "または多角形形状を定義"
+    },
+    "editNodalLoad": {
+      "editNodalLoad": "節点荷重を編集"
+    },
+    "editElementLoad": {
+      "editElementLoad": "要素荷重を編集"
+    },
+    "update": {
+      "title": "アップデートがあります",
+      "update": "アップデート",
+      "text1": "アプリのリセットが必要なアップデートを配信しています。現在の作業内容は失われます。",
+      "text2": "現在の作業内容を残したい場合は、アップデートをキャンセルできます。"
+    },
+    "editNode": {
+      "editNode": "節点を編集"
+    },
+    "changelog": {
+      "title": "更新情報",
+      "description": "新機能、改善点、そして開発中の機能のプレビューです。",
+      "contributors": "このリリースの貢献者：{names}",
+      "comingSoon": "近日公開"
+    },
+    "polygonSection": {
+      "title": "新しい多角形断面",
+      "editTitle": "多角形断面を編集",
+      "preset": "プリセット",
+      "apply": "適用",
+      "snapStep": "スナップ間隔",
+      "centerAtCentroid": "図心を中心に配置",
+      "hint": "頂点はドラッグで移動、辺の中点をクリックで頂点を挿入、頂点をダブルクリックで削除できます。",
+      "outline": "外形",
+      "hole": "穴",
+      "addHole": "穴を追加",
+      "addVertex": "頂点を追加",
+      "removeContour": "穴を削除",
+      "properties": "断面性能",
+      "invalidShape": "形状は面積が正の単純な多角形にしてください。辺どうしが交差してはならず、穴は外形の内側に収まっている必要があります。",
+      "labelInUse": "このラベルは既に使われています",
+      "save": "保存",
+      "editShape": "多角形形状を編集",
+      "presets": {
+        "rectangle": "長方形",
+        "iSection": "I 形",
+        "tSection": "T 形",
+        "lSection": "L 形",
+        "channel": "溝形（U）",
+        "box": "角形中空",
+        "circle": "円形",
+        "pipe": "円形中空"
+      },
+      "params": {
+        "b": "幅 b",
+        "h": "高さ h",
+        "tw": "ウェブ厚 tw",
+        "tf": "フランジ厚 tf",
+        "t": "厚さ t",
+        "d": "直径 d",
+        "n": "分割数"
+      },
+      "vertices": "頂点",
+      "legendOutline": "外形",
+      "legendHole": "穴",
+      "legendPrincipal": "主軸と慣性楕円",
+      "legendCentroid": "図心",
+      "shape": "形状",
+      "noShape": "多角形形状なし",
+      "centroidal": "図心軸",
+      "centroidalNote": "断面二次モーメントはすべて図心を通る軸まわりの値です。I₁、I₂ は主断面二次モーメント、α は y 軸から 1 軸までの角度です。",
+      "outOfPlaneNote": "この断面は骨組の面に対して対称ではありません。2D 解析が厳密に成り立つのは、部材が全長にわたって面外方向（画面に垂直な方向）のたわみとねじれを拘束されている場合だけです。たとえば床スラブや密に配置したブレースによる拘束で、節点の支点だけでは不十分です。拘束のない部材は、荷重がせん断中心から外れて作用するためねじれも生じますが、このねじれはたわみに含まれていません。",
+      "outOfPlaneRestrained": "全長にわたり面外変形とねじれを拘束：{inertia}",
+      "outOfPlaneFree": "面外に自由にたわむ（ねじれは含まない）：{inertia}"
+    }
+  },
+  "tooltip": {
+    "materials": {},
+    "material": {
+      "alphaT": "線膨張係数は、温度の変化に伴って物体の寸法がどれだけ変化するかを表します。",
+      "e": "ヤング係数は、材軸方向に力を加えたときの引張・圧縮に対する剛性を表します。",
+      "g": "せん断弾性係数は、せん断応力による変形に対する抵抗を表す性質で、表面に平行に作用する力に対する材料の剛性を示します。",
+      "density": "密度は、物質の単位体積あたりに含まれる質量を表します。"
+    }
+  },
+  "footer": {
+    "reportIssue": "不具合を報告",
+    "requestFeature": "機能をリクエスト",
+    "released": "リリース日"
+  },
+  "sharing": {
+    "shareViaURL": "URL でモデルを共有",
+    "instructions": "フィールド内をクリックするとリンクがコピーされます。共同作業者に送ってください。",
+    "copyCue": "リンクをコピー",
+    "openLink": "リンクを開く",
+    "nativeShare": "システムの共有ダイアログで共有",
+    "linkCopied": "リンクをクリップボードにコピーしました",
+    "copyFailed": "自動でコピーできませんでした。キーボードショートカットを使ってください。",
+    "shortLink": "短いリンク",
+    "shortLinkHint": "長さは約半分です。古いバージョンの edubeam を使っている人は、アプリを更新しないと開けません。"
+  },
+  "tour": {
+    "menu": {
+      "title": "メニュー",
+      "description": "プロジェクトを開く・保存する・共有する、画像をエクスポートする、例題を読み込む、またはこのツアーや「はじめての梁」タスクをもう一度始めることができます。"
+    },
+    "undoRedo": {
+      "title": "元に戻す・やり直し",
+      "description": "変更履歴を前後に移動します。Ctrl+Z と Ctrl+Shift+Z でも同じ操作ができます。"
+    },
+    "viewerControls": {
+      "title": "ビューアのボタン",
+      "description": "ビューアのボタンで、構造物を中央に表示したり画面に合わせたりでき、表示する内容も選べます。"
+    },
+    "viewerSettings": {
+      "title": "表示オプションのカスタマイズ",
+      "description": "軸力、せん断力、曲げモーメント、変形図、またはそのすべてなど、表示する内容を選べます。"
+    },
+    "gridUnits": {
+      "title": "グリッド、スナップ、単位",
+      "description": "G でグリッドを表示し、S で新しい節点をグリッドにスナップします。単位をクリックすると、単位、言語、座標系を変更できます。"
+    },
+    "bottomBar": {
+      "title": "オブジェクトの追加・削除・変更",
+      "description": "構造物のあらゆる部分を手軽に変更できる中心的な場所です。節点、要素、荷重、材料、断面まで、すばやくまとめて編集できます。"
+    },
+    "help": {
+      "title": "ヘルプ",
+      "description": "? を押すと、開いているタブの説明が表示されます。列見出しの横の ? はその列を説明します。"
+    },
+    "previousButton": "戻る",
+    "nextButton": "次へ",
+    "finishButton": "完了",
+    "close": "ツアーを閉じる"
+  },
+  "firstBeam": {
+    "title": "はじめての梁",
+    "step": "ステップ {n}/{total}",
+    "close": "ガイドを閉じる",
+    "finish": "完了",
+    "next": "次へ",
+    "steps": {
+      "tool": {
+        "title": "描画ツールを選ぶ",
+        "body": "下の「{elementsTab}」タブで、カーソルアイコンの付いた「{addElement}」ボタンを押します。"
+      },
+      "draw": {
+        "title": "梁を描く",
+        "body": "梁の始点をクリックし、次に終点をクリックします。端点はグリッドにスナップします。"
+      },
+      "supports": {
+        "title": "支点を設ける",
+        "body": "左端をクリックし、「{defineSupports}」を開いて Dx と D{v} にチェックを入れるとピン支点になります。次に右端をクリックし、D{v} にチェックを入れるとローラー支点になります。"
+      },
+      "load": {
+        "title": "荷重をかける",
+        "body": "梁をクリックして「{addLoad}」を選び、f{v} に値を入力して確定します。"
+      },
+      "display": {
+        "title": "表示する内容を選ぶ",
+        "body": "右上の歯車アイコンで表示オプション（断面力、変形図、反力など）を開きます。今すぐ開いてみましょう。"
+      },
+      "fit": {
+        "title": "画面に合わせる",
+        "body": "右上のボタンで、モデルを画面に合わせたり中央に表示したりできます。今「画面に合わせる」を押してみましょう。図が画面の外にずれたときも、いつでも使えます。"
+      },
+      "results": {
+        "title": "結果を読む",
+        "body": "曲げモーメントと変形図が梁の上に描かれ、編集するたびに更新されます。すべての節点、要素、荷重は下の表にも一覧表示され、正確な値を入力できます。「{undo}」で前のモデルに戻せます。"
+      }
+    }
+  },
+  "welcome": {
+    "title": "<span class=\"edubeam\">edubeam</span> へようこそ！ 🚀",
+    "description": "梁、ラーメン、トラスをモデル化して、描きながら断面力を確認できます。",
+    "start": "どのように始めますか？",
+    "showAround": "ツアーを見る",
+    "showAroundHint": "ビューア、表示オプション、下部バーをざっと紹介します。",
+    "drawFirstBeam": "はじめての梁を描く",
+    "drawFirstBeamHint": "短いガイド付きタスクです。梁を描き、支点を設け、荷重をかけます。",
+    "openExample": "例題を開く",
+    "openExampleHint": "用意されたモデルから始めて、自由に変更できます。",
+    "skip": "今はスキップ"
+  },
+  "confirmation": {
+    "clearMesh": {
+      "message": "モデルをクリアしてもよろしいですか？Ctrl+Z で元に戻せるほか、「最近のモデル」にも残ります。",
+      "title": "モデルをクリアしますか？",
+      "materials": "材料を削除",
+      "crossSections": "断面を削除"
+    },
+    "resetSettings": {
+      "title": "設定をリセットしますか？",
+      "message": "すべての設定を初期値に戻してもよろしいですか？この操作は元に戻せません。"
+    },
+    "splitElementAndPlaceNode": {
+      "title": "節点配置の確認",
+      "message": "<p>梁 {label} の上に節点を配置しようとしています。</p><p class=\"mt-3\">要素を分割して節点を接続しますか？それとも、構造物に接続しない独立した節点として配置しますか？</p>",
+      "split": "構造物に接続"
+    },
+    "placeIndividualNode": "独立した節点を配置"
+  },
+  "selection": {
+    "node": "節点",
+    "element": "要素",
+    "dimension": "寸法線",
+    "nodal-load": "節点荷重",
+    "element-load": "要素荷重",
+    "prescribedbc-load": "強制変位"
+  },
+  "validators": {
+    "enterValue": "値を入力してください",
+    "invalidNumber": "無効な数値です",
+    "positiveNumber": "0 より大きい数値を入力してください",
+    "between": "{min} から {max} までの値を入力してください",
+    "sameNodes": "要素は異なる 2 つの節点を結ぶ必要があります",
+    "materialInUse": "この材料は要素 {elements} で使われています。削除する前に、これらの要素に別の材料を割り当ててください。",
+    "crossSectionInUse": "この断面は要素 {elements} で使われています。削除する前に、これらの要素に別の断面を割り当ててください。"
+  },
+  "solveDiagnostics": {
+    "summaryErrors": "モデルのエラー：{errors}",
+    "summaryWarnings": "モデルの警告：{warnings}",
+    "summaryIncomplete": "構造物の {count} つの部分に支点が必要です。",
+    "incompleteChip": "支点が必要",
+    "hideMotion": "動きを非表示",
+    "showMotion": "動きを表示",
+    "dismissWarnings": "これらの警告を非表示",
+    "collapseErrors": "このメッセージを縮小",
+    "showDetails": "詳細を表示",
+    "blockedTitle": "モデルを解析できません",
+    "blockedDescription": "モデルを解析する前に、以下のエラーを修正してください。",
+    "warningsTitle": "モデルの警告",
+    "warningsDescription": "モデルは解析されましたが、次の警告が検出されました。",
+    "incompleteTitle": "まだ解析できません",
+    "incompleteDescription": "構造物が固定されると結果が表示されます。キャンバス上の破線は、構造物がまだどのように動けるかを示しています。",
+    "errors": "エラー",
+    "warnings": "警告",
+    "incomplete": "未完了",
+    "issues": {
+      "elementNodeCount": "要素 {element} はちょうど 2 つの節点を参照する必要があります。",
+      "elementSameNode": "要素 {element} の両端が同じ節点を参照しています。",
+      "elementMissingNode": "要素 {element} が存在しない節点 {node} を参照しています。",
+      "elementMissingMaterial": "要素 {element} が存在しない材料 {material} を参照しています。",
+      "elementMissingCrossSection": "要素 {element} が存在しない断面 {crossSection} を参照しています。",
+      "nodalLoadMissingNode": "節点荷重 #{index} が存在しない節点 {node} を参照しています。",
+      "nodalLoadInvalid": "節点荷重 #{index} に無効な値が含まれています。",
+      "prescribedMissingNode": "強制変位 #{index} が存在しない節点 {node} を参照しています。",
+      "prescribedInvalid": "強制変位 #{index} に無効な値が含まれています。",
+      "elementLoadMissingElement": "要素荷重 #{index} が存在しない要素 {element} を参照しています。",
+      "supportedNodeNotConnected": "節点 {node} には支点がありますが、接続している要素がないため、この支点は何も負担しません。",
+      "nodeNotConnected": "節点 {node} はどの要素にも接続されていないため、ソルバーでは無視されます。",
+      "insufficientSupports": "2D 解析で安定するには、モデルに少なくとも 3 つの拘束自由度が必要です。",
+      "needsSupports": "構造物を解析するには支点が必要です。",
+      "partUnsupported": "構造物の独立した部分（節点 {nodes}）は拘束自由度が 3 つ未満のため、自由に動くことができます。",
+      "partNeedsSupports": "節点 {nodes} を含む部分に支点が必要です。",
+      "mechanism": "支点の数は足りていますが、構造物を固定できていません。構造物はまだ{motion}ことができます。すべての支点が平行な場合や、支点の作用線が 1 点で交わる場合は、構造物が自由に動けてしまいます。",
+      "mechanismShort": "支点が構造物を固定できていません。まだ{motion}ことができます。",
+      "partMechanism": "構造物の独立した部分（節点 {nodes}）は、支点の数は足りていますが固定できていません。この部分はまだ{motion}ことができます。すべての支点が平行な場合や、支点の作用線が 1 点で交わる場合は、構造物が自由に動けてしまいます。",
+      "partMechanismShort": "節点 {nodes} を含む部分が固定されていません。まだ{motion}ことができます。",
+      "hingeMechanism": "支点は構造物を固定していますが、まだ不安定構造（機構）です。部材が節点 {nodes} のヒンジまわりに回転できます。ヒンジを 1 つ外すか、動きを止める部材または支点を追加してください。",
+      "hingeMechanismShort": "節点 {nodes} のヒンジによって構造物が動けます。",
+      "motion": {
+        "horizontal": "水平にスライドする",
+        "vertical": "鉛直に移動する",
+        "rotation": "自由に回転する",
+        "mixed": "剛体として動く"
+      },
+      "unstable": "構造物が不安定です：{dofs} がほとんど抵抗なく動きます。支点または要素を追加するか、材端ヒンジを外すか、断面の剛性を確認してください。",
+      "unstableShort": "構造物が不安定です。ほとんど抵抗なく動きます。",
+      "unstableDof": {
+        "dx": "節点 {node} の水平方向（Dx）",
+        "dz": "節点 {node} の鉛直方向（D{v}）",
+        "ry": "節点 {node} の回転（R{r}）",
+        "other": "節点 {node} の自由度 {dof}"
+      },
+      "unstableMore": "{list} ほか {count} 件",
+      "singularMatrix": "構造物が不安定構造（機構）です：剛性マトリクスが特異です。各部分が少なくとも 3 つの拘束で固定されているか、また材端ヒンジによって部材が自由に回転できる状態になっていないかを確認してください。",
+      "singularMatrixShort": "構造物が不安定構造です。抵抗なく動くことができます。",
+      "solverFailed": "モデル内部の不整合により、ソルバーが失敗しました。モデルの参照と荷重を確認してください。"
+    }
+  },
+  "loadType": {
+    "loadType": "荷重の種類",
+    "concentrated": "集中荷重",
+    "trapezoidal": "台形分布荷重",
+    "udl": "等分布荷重",
+    "temperature": "温度荷重"
+  },
+  "dimensioning": {
+    "add_dimension": "寸法線を追加",
+    "add_along_element": "要素 {label} の寸法線"
+  },
+  "warnings": {
+    "noMaterialsDefined": "材料が定義されていません。",
+    "noCrossSectionsDefined": "断面が定義されていません。",
+    "importFailed": "ファイルをインポートできませんでした。ファイル形式を確認してください。",
+    "prescribedDisplacementExists": "この節点には既に強制変位が設定されています。先に削除してください。",
+    "addMaterialFirst": "先に材料を追加してください。",
+    "addCrossSectionFirst": "先に断面を追加してください。",
+    "selectMaterialAndCrossSection": "材料と断面を選択してください。",
+    "labelInUse": "ラベル {label} は既に使われています。",
+    "noMaterialOrCrossSection": "要素に材料または断面が指定されていません。",
+    "elementMissing": "要素 {label} はもう存在しません。"
+  },
+  "help": {
+    "aria": "ヘルプを表示",
+    "readMore": "ドキュメントで詳しく見る",
+    "troubleshooting": "トラブルシューティング",
+    "nodes": {
+      "title": "節点",
+      "body": "節点は構造物をつなぎ合わせる点です。座標、支点、ヒンジ、作用する荷重は節点ごとに設定します。"
+    },
+    "supports": {
+      "title": "支点",
+      "body": "自由度にチェックを入れると拘束されます。Dx と D{v} は並進を、R{r} は回転を拘束します。構造物には少なくとも 3 つの独立した拘束が必要です。"
+    },
+    "elements": {
+      "title": "要素",
+      "body": "要素は 2 つの節点を結び、材料と断面を持ちます。材端を解放すると、梁をヒンジ付きの部材やトラス材に変えられます。"
+    },
+    "loads": {
+      "title": "荷重",
+      "body": "荷重は節点に、または要素に沿って作用します。正の値はグローバル座標軸の向きに従い、z は下向きです。",
+      "bodyYUp": "荷重は節点に、または要素に沿って作用します。正の値はグローバル座標軸の向きに従い、y は上向きです。"
+    },
+    "nodalLoads": {
+      "title": "節点荷重",
+      "body": "節点荷重は、節点に力またはモーメントを直接加えます。支点沈下を与えたい場合は、代わりに強制変位を使います。"
+    },
+    "elementLoads": {
+      "title": "要素荷重",
+      "body": "要素荷重は部材に沿って作用します（等分布、台形分布、集中、温度）。グローバル座標系とローカル座標系のどちらでも指定できます。"
+    },
+    "materials": {
+      "title": "材料",
+      "body": "材料はヤング係数、せん断弾性係数、密度、線膨張係数を持ちます。通常の静的解析で影響するのは E と断面だけです。"
+    },
+    "crossSections": {
+      "title": "断面",
+      "body": "断面は、剛性の計算に使う断面積と断面二次モーメントを与えます。ライブラリから選ぶか、多角形を描いて自作できます。"
+    },
+    "hinges": {
+      "title": "材端ヒンジ",
+      "body": "チェックを入れると、要素のその端で曲げモーメントが解放されます。両端にチェックするとトラス材に、片端だけならラーメンの途中にピンを設けられます。"
+    },
+    "signConvention": {
+      "title": "符号規約",
+      "body": "グローバル z 軸は下向きなので、正の Fz や fz は下向きに作用し、My は反時計回りが正です。ローカル座標系に切り替えた荷重は、要素の向きに従います。",
+      "bodyYUp": "グローバル y 軸は上向きなので、正の Fy や fy は上向きに作用し、Mz は反時計回りが正です。ローカル座標系に切り替えた荷重は、要素の向きに従います。"
+    },
+    "results": {
+      "title": "結果",
+      "body": "モデルが解析されると、軸力、せん断力、曲げモーメント、変形図、反力が、図と表の両方で得られます。"
+    },
+    "diagrams": {
+      "title": "結果の表示",
+      "body": "これらのスイッチで、軸力、せん断力、曲げモーメント、変形図、反力をモデル上に描画します。N は引張を正、M{r} は下側引張を正とします。"
+    },
+    "endForces": {
+      "title": "材端力",
+      "body": "X12、Z12、M12 は始端節点に、X21、Z21、M21 は終端節点に作用します。いずれも、始端節点から終端節点へ向かう要素のローカル座標系で表します。"
+    },
+    "settings": {
+      "title": "単位と設定",
+      "body": "言語、単位、表示倍率、色、ショートカットはここで設定します。単位を変えると既存の値が換算されるだけで、モデルは変わりません。"
+    },
+    "sharing": {
+      "title": "保存と共有",
+      "body": "モデルをファイルとして保存したり、構造物全体を含むリンクをコピーしたり、読み取り専用のビューアを自分のページに埋め込んだりできます。"
+    }
+  },
+  "exportImage": {
+    "title": "画像をエクスポート",
+    "transparentBackground": "背景を透明にする",
+    "download": "PNG をダウンロード",
+    "downloadSvg": "SVG をダウンロード",
+    "copyToClipboard": "クリップボードにコピー",
+    "copied": "画像をクリップボードにコピーしました",
+    "exported": "画像をエクスポートしました",
+    "failed": "画像を描画できませんでした。",
+    "previewAlt": "エクスポート画像のプレビュー",
+    "instructions": "図は選んだサイズに合わせて改めてレイアウトされるため、線やラベルは実際の太さを保ちます。同じサイズなら構造物は常に同じように収まるので、M、N、V の図を並べてエクスポートするのに便利です。",
+    "width": "幅",
+    "height": "高さ",
+    "lockAspect": "縦横比を固定",
+    "fitPreview": "フィット",
+    "actualSize": "実際のサイズ",
+    "preview": "プレビュー",
+    "fitAll": "全体を収める",
+    "window": "範囲指定…",
+    "pickWindowHint": "図の上でドラッグして、エクスポートする範囲を指定します",
+    "dragEdge": "ドラッグしてこの辺を広げる・切り詰める",
+    "scale": "縮尺",
+    "scaleCaption": "モデルの 1 m は紙の上で {cm} cm です（96 DPI）。プレビュー上でスクロールすると拡大・縮小します。",
+    "doesNotFit": "このサイズではすべてが収まりません：図、荷重、ラベルが端から約 {px} px はみ出しています。図を小さくする（現在 {diagrams} px）か、キャンバスを大きくしてください。",
+    "shrinkDiagrams": "図を小さくする",
+    "enlargeCanvas": "キャンバスを大きくする",
+    "diagramHeight": "図の高さ",
+    "shrinkNotEnough": "図を小さくするだけでは足りません。荷重とラベルだけでもより広いスペースが必要です。代わりにキャンバスを大きくしてください。"
+  },
+  "examples": {
+    "title": "例題",
+    "instructions": "用意されたモデルを開いて試してみましょう。現在のモデルは置き換えられますが、Ctrl+Z で元に戻せます。",
+    "moreInDocs": "その他の例題と演習",
+    "items": {
+      "welcome": {
+        "title": "不静定梁",
+        "blurb": "10 kN/m の等分布荷重を受ける、長さ 3 m の固定–ローラーの不静定梁。"
+      },
+      "cantilever": {
+        "title": "片持ち梁",
+        "blurb": "18 kN の下向き節点荷重を受ける 4 m の片持ち梁。曲率と先端のたわみがよくわかります。"
+      },
+      "pratt": {
+        "title": "プラットトラス",
+        "blurb": "8 kN の節点荷重を受けるシンプルなプラットトラス。軸力の分布と変位を示します。"
+      },
+      "continuous": {
+        "title": "3 径間連続梁",
+        "blurb": "5+6+5 m の各スパンに等分布・集中・等分布荷重。曲率と支点の回転角を比較します。"
+      },
+      "portal": {
+        "title": "門形ラーメンの荷重ケース",
+        "blurb": "6 m の柱に載る 8 m の梁。屋根の等分布荷重と柱梁接合部の水平・鉛直荷重を受け、水平変位と曲げを確認します。"
+      },
+      "temperature": {
+        "title": "温度荷重",
+        "blurb": "一様および非一様な温度荷重を受ける 8 m の単純梁。"
+      }
+    }
+  },
+  "recentStructures": {
+    "title": "最近のモデル",
+    "instructions": "クリアまたは置き換えられた直近 {count} 件のモデルが、このブラウザに保存されます。復元すると現在のモデルが置き換えられますが、Ctrl+Z で元に戻せます。",
+    "empty": "まだ何もありません。モデルをクリアしたり、別のモデルを上書きで開いたりすると、ここに保存されます。",
+    "restore": "復元",
+    "remove": "削除",
+    "counts": "節点：{nodes} · 要素：{elements}",
+    "linkNotice": "共有されたモデルを開きました。以前のモデルは「最近のモデル」に保存されています。",
+    "show": "表示",
+    "reasons": {
+      "clear": "クリア済み",
+      "link": "共有リンクで置き換え",
+      "file": "開いたファイルで置き換え",
+      "example": "例題で置き換え",
+      "firstBeam": "「はじめての梁」タスクで置き換え",
+      "restore": "復元したモデルで置き換え"
+    }
+  }
+}

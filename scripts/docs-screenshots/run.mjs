@@ -40,6 +40,7 @@ const APP_LANGUAGE = {
   vi: 'vi',
   it: 'it',
   id: 'id',
+  ja: 'ja',
 };
 
 const args = process.argv.slice(2);

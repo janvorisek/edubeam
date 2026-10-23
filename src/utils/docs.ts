@@ -22,6 +22,7 @@ const DOCS_LOCALES = new Set([
   'vi',
   'it',
   'id',
+  'ja',
 ]);
 
 /** App locale codes that differ from the documentation ones. */

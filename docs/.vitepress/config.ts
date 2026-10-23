@@ -3,7 +3,27 @@ import { katex } from '@mdit/plugin-katex';
 import implicitFigures from 'markdown-it-implicit-figures';
 import path from 'path';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
-import { cs, de, english, es, fr, hi, id, it, navFor, pl, pt, ru, sidebarFor, th, tr, uk, vi, zh } from './navigation';
+import {
+  cs,
+  de,
+  english,
+  es,
+  fr,
+  hi,
+  id,
+  it,
+  ja,
+  navFor,
+  pl,
+  pt,
+  ru,
+  sidebarFor,
+  th,
+  tr,
+  uk,
+  vi,
+  zh,
+} from './navigation';
 
 const customElements = [
   'math',
@@ -379,6 +399,18 @@ export default defineConfig({
         sidebar: sidebarFor('/id', id),
       },
     },
+    ja: {
+      label: '日本語',
+      lang: 'ja',
+      description: '無料のオンライン 2D 構造解析。ブラウザで梁、ラーメン、トラスをすぐに解析できます。',
+      themeConfig: {
+        nav: navFor('/ja', 'ja', ja),
+        outline: { label: 'このページの内容' },
+        docFooter: { prev: '前のページ', next: '次のページ' },
+        lastUpdated: { text: '最終更新' },
+        sidebar: sidebarFor('/ja', ja),
+      },
+    },
   },
   themeConfig: {
     outline: 'deep',
@@ -586,6 +618,23 @@ export default defineConfig({
                   selectText: 'Pilih',
                   navigateText: 'Navigasi',
                   closeText: 'Tutup',
+                },
+              },
+            },
+          },
+          ja: {
+            translations: {
+              button: {
+                buttonText: 'ドキュメントを検索',
+                buttonAriaLabel: 'ドキュメントを検索',
+              },
+              modal: {
+                noResultsText: '一致する結果が見つかりません',
+                resetButtonTitle: '検索条件をクリア',
+                footer: {
+                  selectText: '選択',
+                  navigateText: '移動',
+                  closeText: '閉じる',
                 },
               },
             },

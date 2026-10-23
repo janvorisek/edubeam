@@ -34,7 +34,7 @@ features:
     linkText: Teaching with EduBeam
   - icon: 🌍
     title: Your language, your units
-    details: 16 interface languages, SI or US customary units, and a choice of z-down or textbook y-up axes.
+    details: 17 interface languages, SI or US customary units, and a choice of z-down or textbook y-up axes.
     link: /essentials/units-settings
     linkText: Units & settings
   - icon: 🔗

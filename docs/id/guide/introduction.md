@@ -78,7 +78,7 @@ Jika ada fitur yang Anda butuhkan, [buka issue](https://github.com/janvorisek/ed
 ## Untuk siapa? {#who-is-it-for}
 
 - **Mahasiswa** yang mempelajari mekanika teknik dan menginginkan umpan balik instan untuk perhitungan manual. Lihat [Memeriksa hasil secara manual](/id/guide/verification).
-- **Dosen** yang memperagakan secara langsung di proyektor bagaimana tumpuan, sendi, dan beban mengubah gaya dalam, dalam salah satu dari 16 bahasa. Lihat [Mengajar dengan EduBeam](/id/guide/teaching).
+- **Dosen** yang memperagakan secara langsung di proyektor bagaimana tumpuan, sendi, dan beban mengubah gaya dalam, dalam salah satu dari 17 bahasa. Lihat [Mengajar dengan EduBeam](/id/guide/teaching).
 - **Insinyur** yang ingin memeriksa cepat sebelum membuka program desktop yang lebih berat.
 
 ## Susunan panduan ini {#how-this-guide-is-organised}
@@ -95,7 +95,7 @@ Ikon **?** di aplikasi membuka halaman panduan yang sesuai dalam bahasa Anda.
 
 ## Bahasa {#languages}
 
-Antarmuka tersedia dalam English, Bahasa Indonesia, Čeština, Deutsch, Español, Français, Italiano, Polski, Português, Tiếng Việt, Русский, Türkçe, Українська, हिन्दी, ไทย dan 汉语. EduBeam memilih bahasa sesuai browser Anda. Ubah di **Pengaturan → Bahasa & Wilayah**, atau buka aplikasi dengan parameter `?lang=`, misalnya [run.edubeam.app/?lang=id](https://run.edubeam.app/?lang=id){target="_blank"}.
+Antarmuka tersedia dalam English, Bahasa Indonesia, Čeština, Deutsch, Español, Français, Italiano, Polski, Português, Tiếng Việt, Русский, Türkçe, Українська, हिन्दी, 日本語, ไทย dan 汉语. EduBeam memilih bahasa sesuai browser Anda. Ubah di **Pengaturan → Bahasa & Wilayah**, atau buka aplikasi dengan parameter `?lang=`, misalnya [run.edubeam.app/?lang=id](https://run.edubeam.app/?lang=id){target="_blank"}.
 
 ## Penulis & penghargaan {#authors-credits}
 

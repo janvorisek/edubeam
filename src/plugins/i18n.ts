@@ -19,6 +19,7 @@ export const availableLocales = [
   { code: 'vi', name: 'Tiếng Việt' },
   { code: 'it', name: 'Italiano' },
   { code: 'id', name: 'Bahasa Indonesia' },
+  { code: 'ja', name: '日本語' },
 ];
 
 // Create Vue I18n instance.

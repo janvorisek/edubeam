@@ -16,7 +16,7 @@ Ayarlar tarayıcınızda saklanır ve sayfa yenilendiğinde kaybolmaz. **Ayarlar
 
 ![Ayarlar → Dil ve bölge](/screenshots/tr/settings-language.webp)
 
-**Dil.** Arayüz 16 dilde kullanılabilir. Uygulamayı `?lang=<kod>` parametresiyle de açabilirsiniz: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`.
+**Dil.** Arayüz 17 dilde kullanılabilir. Uygulamayı `?lang=<kod>` parametresiyle de açabilirsiniz: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`.
 
 **Sayı biçimi.** Sonuç değerlerinin nasıl yazılacağı: *Otomatik*, *Bilimsel* (varsayılan) veya *Mühendislik*. Bkz. [Sayı biçimi](/tr/essentials/results#number-format).
 

@@ -85,7 +85,7 @@ El modo visor es para mirar, pero no está bloqueado: los visitantes pueden segu
 | --- | --- |
 | `model=<datos>` | Carga el modelo codificado y lo ajusta a la pantalla. |
 | `viewer=1` | Modo visor (ver arriba). |
-| `lang=<código>` | Cambia el idioma de la interfaz: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`. |
+| `lang=<código>` | Cambia el idioma de la interfaz: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`. |
 | `panel=examples` | Abre directamente la galería de ejemplos. |
 
 Después de leerlos, EduBeam elimina los parámetros de la barra de direcciones.

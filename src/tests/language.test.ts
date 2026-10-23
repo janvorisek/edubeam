@@ -48,7 +48,7 @@ describe('the language of a first visit', () => {
     expect(suggestLanguage(['zh'])).toBe('cn');
     expect(suggestLanguage(['zh-SG'])).toBe('cn');
     expect(suggestLanguage(['zh-TW'])).toBe('en');
-    expect(suggestLanguage(['zh-HK', 'ja'])).toBe('en');
+    expect(suggestLanguage(['zh-HK', 'ja'])).toBe('ja');
   });
 
   it('falls back to English', () => {

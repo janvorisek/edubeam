@@ -16,7 +16,7 @@ Ustawienia są przechowywane w przeglądarce i przetrwają przeładowanie strony
 
 ![Ustawienia → Język i ustawienia regionalne](/screenshots/pl/settings-language.webp)
 
-**Język.** 16 języków interfejsu. Aplikację można też otworzyć z parametrem `?lang=<kod>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`.
+**Język.** 17 języków interfejsu. Aplikację można też otworzyć z parametrem `?lang=<kod>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`.
 
 **Format liczb.** Sposób zapisu wyników: *Automatyczny*, *Naukowy* (domyślny) lub *Inżynierski*. Zobacz [Format liczb](/pl/essentials/results#number-format).
 

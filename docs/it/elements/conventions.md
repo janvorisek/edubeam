@@ -2,7 +2,7 @@
 description: "Convenzioni dei segni di EduBeam: assi globali x verso destra e z verso il basso, spostamenti, rotazioni e carichi positivi, assi locali dell'elemento, sollecitazioni e reazioni."
 ---
 
-# Sistema di riferimento e convenzioni dei segni
+# Sistema di coordinate e convenzioni dei segni
 
 La maggior parte dei risultati «sbagliati» in <Edubeam /> è in realtà una sorpresa legata alla convenzione dei segni. Tutto ciò che segue è esattamente quello che usa il solutore.
 
@@ -48,11 +48,11 @@ L'asse **x** locale va dal nodo iniziale al nodo finale; l'asse **z** locale è 
 
 ## Reazioni {#reactions}
 
-Esiste una reazione per ogni GdL vincolato, riportata nel sistema di riferimento del nodo (ruotato dell'angolo LCS nodale, se impostato). Le frecce delle reazioni nella vista puntano nel verso in cui il vincolo spinge sulla struttura.
+Esiste una reazione per ogni GdL vincolato, riportata nel sistema di coordinate del nodo (ruotato dell'angolo LCS nodale, se impostato). Le frecce delle reazioni nella vista puntano nel verso in cui il vincolo spinge sulla struttura.
 
 ## Assi con y verso l'alto {#y-up-axes}
 
-**Impostazioni → Sistema di riferimento → x a destra, y in alto** porta tutto ciò che digiti e leggi nel sistema dei manuali: **x** verso destra, **y** verso l'alto e **z** verso chi guarda. Il modello, i file salvati e i disegni restano gli stessi; cambiano solo numeri e nomi:
+**Impostazioni → Sistema di coordinate → x a destra, y in alto** porta tutto ciò che digiti e leggi nel sistema dei manuali: **x** verso destra, **y** verso l'alto e **z** verso chi guarda. Il modello, i file salvati e i disegni restano gli stessi; cambiano solo numeri e nomi:
 
 | Grandezza | z verso il basso (predefinito) | y verso l'alto |
 | --- | --- | --- |

@@ -50,7 +50,7 @@ Aggiungi un nodo sulla trave con *Aggiungi col mouse* e scegli **Collega alla st
 
 ### Posso applicare il peso proprio? {#can-i-apply-self-weight}
 
-Non automaticamente. Inseriscilo come carico uniformemente distribuito $f_z = \rho g A$.
+Non automaticamente. Inseriscilo come carico uniforme $f_z = \rho g A$.
 
 ### Posso modellare vincoli inclinati? {#can-i-model-inclined-supports}
 
@@ -62,7 +62,7 @@ No, c'è un solo caso di carico. Modella ogni caso separatamente e salvalo o con
 
 ### Perché i miei carichi puntano verso l'alto? {#why-do-my-loads-point-up}
 
-Perché l'asse z globale punta **verso il basso**: un `Fz` positivo è diretto verso il basso. Vedi le [convenzioni](/it/elements/conventions). Se preferisci un asse verticale rivolto verso l'alto, passa agli assi con y verso l'alto in *Impostazioni → Lingua e impostazioni locali → Sistema di riferimento*.
+Perché l'asse z globale punta **verso il basso**: un `Fz` positivo è diretto verso il basso. Vedi le [convenzioni](/it/elements/conventions). Se preferisci un asse verticale rivolto verso l'alto, passa agli assi con y verso l'alto in *Impostazioni → Lingua e impostazioni locali → Sistema di coordinate*.
 
 ## Risultati {#results}
 

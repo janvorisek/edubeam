@@ -83,7 +83,7 @@ Puoi anche fare clic su un nodo nella vista e scegliere **Vincoli del nodo**. [N
 ## 6. Aggiungi il carico {#_6-add-the-load}
 
 1. Apri la scheda **Carichi** e fai clic su **Aggiungi carico su elemento**.
-2. **Tipo di carico**: *Carico uniformemente distribuito*. **Elemento**: `1`.
+2. **Tipo di carico**: *Carico uniforme*. **Elemento**: `1`.
 3. Inserisci `fz = 12` kN/m e lascia `fx = 0`. Fai clic su **Aggiungi carico su elemento**.
 
 ![La finestra mostra un'anteprima del carico sull'elemento](/screenshots/it/qs-load.webp){.shot-md}
@@ -103,7 +103,7 @@ La soluzione compare non appena aggiungi il carico. Il pannello di visualizzazio
 | **M<sub>y</sub>(x)** | Una parabola con il massimo di **54 kNm** in mezzeria. |
 | **Deformata** | Un abbassamento simmetrico. Passa con il mouse sul nodo `1` per leggerne la rotazione: **2,6469 · 10⁻² rad**. |
 
-La scheda **Risultati** nella barra inferiore fornisce i valori numerici. **Risultati nodali** elenca `Dx`, `Dz`, `Ry` per ogni nodo. **Risultati degli elementi** elenca le forze di estremità di ogni elemento nel suo sistema di riferimento locale.
+La scheda **Risultati** nella barra inferiore fornisce i valori numerici. **Risultati nodali** elenca `Dx`, `Dz`, `Ry` per ogni nodo. **Risultati degli elementi** elenca le forze di estremità di ogni elemento nel suo sistema di coordinate locale.
 
 Se i diagrammi sembrano troppo grandi o troppo piccoli, cambia **Scala dei risultati** in **Impostazioni → Impostazioni della vista → Dimensioni**.
 

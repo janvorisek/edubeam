@@ -39,7 +39,7 @@
     "confirm": "Conferma",
     "saveProject": "Salva progetto",
     "openProject": "Apri progetto",
-    "lcs": "Sistema di riferimento locale",
+    "lcs": "Sistema di coordinate locale",
     "paste": "Incolla",
     "addNew": "Aggiungi",
     "whatisnew": "Novità",
@@ -181,7 +181,7 @@
     "viewer_preview": "Anteprima della vista",
     "language_description": "Scegli la lingua dell'interfaccia.",
     "units_description": "Scegli le unità di misura.",
-    "axisConvention": "Sistema di riferimento",
+    "axisConvention": "Sistema di coordinate",
     "axisConvention_description": "Verso dell'asse verticale nei dati di input e nei risultati. Il modello e i file salvati non cambiano.",
     "axisConvention_zDown": "x a destra, z in basso",
     "axisConvention_yUp": "x a destra, y in alto",
@@ -221,7 +221,7 @@
     "results": "Risultati",
     "nodal_results": "Risultati nodali",
     "element_results": "Risultati degli elementi",
-    "end_forces": "Forze di estremità (nel riferimento locale)",
+    "end_forces": "Forze di estremità (nel sistema di coordinate locale)",
     "exportCsv": "Esporta CSV",
     "exportHint": "Scarica entrambe le tabelle dei risultati nelle unità visualizzate, pronte per un foglio di calcolo.",
     "copied": "Risultati copiati negli appunti",
@@ -392,7 +392,7 @@
     },
     "gridUnits": {
       "title": "Griglia, snap e unità",
-      "description": "G mostra la griglia e S vi aggancia i nuovi nodi. Fai clic sulle unità per cambiare unità di misura, lingua o sistema di riferimento."
+      "description": "G mostra la griglia e S vi aggancia i nuovi nodi. Fai clic sulle unità per cambiare unità di misura, lingua o sistema di coordinate."
     },
     "bottomBar": {
       "title": "Aggiungi, rimuovi e modifica gli oggetti",
@@ -557,7 +557,7 @@
     "loadType": "Tipo di carico",
     "concentrated": "Carico concentrato",
     "trapezoidal": "Carico trapezoidale",
-    "udl": "Carico uniformemente distribuito",
+    "udl": "Carico uniforme",
     "temperature": "Carico termico"
   },
   "dimensioning": {

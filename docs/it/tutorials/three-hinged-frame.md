@@ -59,7 +59,7 @@ Basta incernierare la fine dell'elemento B–C: il momento in C è allora nullo,
 
 ## 4. Carico {#_4-load}
 
-*Carichi* → **Aggiungi carico su elemento** → *Carico uniformemente distribuito*, elemento B–C, `fz = 10` kN/m. Ripeti per l'elemento C–D. La trave è orizzontale, quindi qui la casella LCS non fa differenza.
+*Carichi* → **Aggiungi carico su elemento** → *Carico uniforme*, elemento B–C, `fz = 10` kN/m. Ripeti per l'elemento C–D. La trave è orizzontale, quindi qui la casella LCS non fa differenza.
 
 ## 5. Risultati {#_5-results}
 

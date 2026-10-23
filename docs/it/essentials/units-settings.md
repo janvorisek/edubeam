@@ -20,7 +20,7 @@ Le impostazioni sono salvate nel browser e restano dopo un ricaricamento. **Ripr
 
 **Formato dei numeri.** Come vengono scritti i risultati: *Automatico*, *Scientifico* (predefinito) o *Ingegneristico*. Vedi [Formato dei numeri](/it/essentials/results#number-format).
 
-**Sistema di riferimento.** *x a destra, z in basso* (predefinito) o *x a destra, y in alto*. L'opzione y verso l'alto inverte il segno dei valori verticali e degli angoli dei vincoli e rinomina gli assi in ogni input, tabella, tooltip ed esportazione. Il modello e i file salvati non cambiano. Vedi [Assi con y verso l'alto](/it/elements/conventions#y-up-axes).
+**Sistema di coordinate.** *x a destra, z in basso* (predefinito) o *x a destra, y in alto*. L'opzione y verso l'alto inverte il segno dei valori verticali e degli angoli dei vincoli e rinomina gli assi in ogni input, tabella, tooltip ed esportazione. Il modello e i file salvati non cambiano. Vedi [Assi con y verso l'alto](/it/elements/conventions#y-up-axes).
 
 ![Il telaio a tre cerniere con assi y verso l'alto: l'indicatore degli assi nell'angolo punta y verso l'alto](/screenshots/it/settings-y-up.webp){.shot-lg}
 

@@ -64,7 +64,7 @@ Una riga per nodo con **Dx**, **Dz** (unità di spostamento) e **Ry** (rad). I s
 
 ### Risultati degli elementi {#element-results}
 
-Una riga per elemento con le **forze di estremità nel sistema di riferimento locale dell'elemento**:
+Una riga per elemento con le **forze di estremità nel sistema di coordinate locale dell'elemento**:
 
 | Colonna | Significato |
 | --- | --- |

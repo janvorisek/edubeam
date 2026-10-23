@@ -62,7 +62,7 @@ I carichi distribuiti, concentrati e termici vengono convertiti in **carichi nod
 
 ## Matrice di trasformazione {#transformation-matrix}
 
-La matrice di trasformazione dell'elemento, $\mathbf{T}$, serve a trasformare la matrice di rigidezza locale nel sistema di riferimento globale.
+La matrice di trasformazione dell'elemento, $\mathbf{T}$, serve a trasformare la matrice di rigidezza locale nel sistema di coordinate globale.
 
 $$
 \mathbf{T} = \begin{pmatrix}

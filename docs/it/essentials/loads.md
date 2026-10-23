@@ -12,7 +12,7 @@ Tutti i carichi appartengono a un **unico caso di carico** e agiscono insieme. P
 
 ## La convenzione dei segni in una riga {#sign-convention-in-one-line}
 
-L'asse globale **x** punta a destra e l'asse globale **z** punta **verso il basso**. Un `Fz` o `fz` positivo è quindi un carico diretto verso il basso, di tipo gravitazionale, e un momento `My` positivo ruota in senso antiorario sullo schermo. I dettagli sono in [Sistema di riferimento e convenzioni dei segni](/it/elements/conventions). Con gli [assi y verso l'alto](/it/elements/conventions#y-up-axes) nomi e segni delle grandezze verticali si invertono: la gravità è un `Fy` negativo.
+L'asse globale **x** punta a destra e l'asse globale **z** punta **verso il basso**. Un `Fz` o `fz` positivo è quindi un carico diretto verso il basso, di tipo gravitazionale, e un momento `My` positivo ruota in senso antiorario sullo schermo. I dettagli sono in [Sistema di coordinate e convenzioni dei segni](/it/elements/conventions). Con gli [assi y verso l'alto](/it/elements/conventions#y-up-axes) nomi e segni delle grandezze verticali si invertono: la gravità è un `Fy` negativo.
 
 ## Carichi nodali {#nodal-loads}
 
@@ -26,7 +26,7 @@ Scheda *Carichi* → **Aggiungi carico nodale**, oppure fai clic su un nodo → 
 
 ![Aggiungi carico nodale. L'anteprima mostra il verso mentre digiti.](/screenshots/it/loads-nodal.webp){.shot-md}
 
-Le componenti sono sempre nel sistema di riferimento **globale**. Un nodo può portare più carichi nodali; si sommano e vengono disegnati uno sopra l'altro.
+Le componenti sono sempre nel sistema di coordinate **globale**. Un nodo può portare più carichi nodali; si sommano e vengono disegnati uno sopra l'altro.
 
 ### Spostamenti imposti (cedimenti vincolari) {#prescribed-displacements-support-settlements}
 
@@ -44,7 +44,7 @@ Puoi inserire un valore solo per un GdL **vincolato** in quel nodo, perché si p
 
 Scheda *Carichi* → **Aggiungi carico su elemento**, oppure fai clic su un elemento → **Aggiungi carico**. Scegli il **Tipo di carico**; la finestra mostra un'anteprima del carico sull'elemento mentre digiti.
 
-### Carico uniformemente distribuito {#uniformly-distributed-load}
+### Carico uniforme {#uniformly-distributed-load}
 
 | Campo | Significato | Unità |
 | --- | --- | --- |
@@ -90,7 +90,7 @@ I carichi termici usano l'**α** del materiale e l'**altezza h** della sezione. 
 
 <div class="shots">
 
-![Carico uniformemente distribuito](/screenshots/it/loads-udl.webp)
+![Carico uniforme](/screenshots/it/loads-udl.webp)
 
 ![Carico trapezoidale](/screenshots/it/loads-trapezoidal.webp)
 

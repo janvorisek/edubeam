@@ -708,7 +708,7 @@ export const it: NavigationLabels = {
     shortcuts: 'Tastiera, mouse e touch',
     troubleshooting: 'Risoluzione dei problemi',
     faq: 'Domande frequenti',
-    conventions: 'Sistema di riferimento e convenzioni dei segni',
+    conventions: 'Sistema di coordinate e convenzioni dei segni',
     beam: 'Elemento trave',
     trussElement: 'Elemento reticolare',
   },

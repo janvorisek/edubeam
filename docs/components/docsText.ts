@@ -347,7 +347,7 @@ const strings: Record<DocsLanguage, DocsStrings> = {
     temperatureBlurb: '断面の高さ方向の温度差（上側が下側より高温）と、それによって生じる曲率。',
     promoTitle: 'あなたの骨組を',
     promoAccent: '3D へ。',
-    promoSubtitle: 'スラブ、シェル、鋼構造の検定をブラウザで',
+    promoSubtitle: 'スラブ、シェル、鋼構造の断面検定をブラウザで',
     promoCta: '無料で試す',
   },
   ko: {

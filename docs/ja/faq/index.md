@@ -34,7 +34,7 @@ EduBeam はプログレッシブ Web アプリ（PWA）です。一度読み込�
 
 ### 固定・ピン・ローラー支点はどう作りますか？ {#how-do-i-make-a-fixed-pinned-roller-support}
 
-節点をクリックして**支点条件**を開き、ピン、ローラー、固定、スライド固定などの記号を選びます。または自由度にチェックを入れます：**Dx + Dz + Ry** = 固定、**Dx + Dz** = ピン、**Dz** = ローラー。すべての組み合わせは[節点と支点](/ja/essentials/nodes-supports#supports)に載っています。
+節点をクリックして**支点条件**を開き、ピン、ローラー、固定、ローラー（回転拘束）などの記号を選びます。または自由度にチェックを入れます：**Dx + Dz + Ry** = 固定、**Dx + Dz** = ピン、**Dz** = ローラー。すべての組み合わせは[節点と支点](/ja/essentials/nodes-supports#supports)に載っています。
 
 ### トラスはどう作りますか？ {#how-do-i-make-a-truss}
 
@@ -54,7 +54,7 @@ EduBeam はプログレッシブ Web アプリ（PWA）です。一度読み込�
 
 ### 傾斜支点はモデル化できますか？ {#can-i-model-inclined-supports}
 
-はい。節点に**節点の LCS 角度**を設定すると、その節点の自由度は回転した座標系で解釈されます。
+はい。節点に**節点座標系の角度**を設定すると、その節点の自由度は回転した座標系で解釈されます。
 
 ### 荷重ケースや荷重の組み合わせはありますか？ {#are-there-load-cases-or-combinations}
 
@@ -72,7 +72,7 @@ EduBeam はプログレッシブ Web アプリ（PWA）です。一度読み込�
 
 ### たわみが公式とわずかに異なるのはなぜですか？ {#why-does-my-deflection-differ-slightly-from-the-formula}
 
-EduBeam は Timoshenko 梁を使うので、たわみにせん断変形が含まれます。細長い部材では、その差は 1 % を大きく下回ります。詳しい説明と比較例は[手計算による結果の確認](/ja/guide/verification)にあります。
+EduBeam はティモシェンコ梁を使うので、たわみにせん断変形が含まれます。細長い部材では、その差は 1 % を大きく下回ります。詳しい説明と比較例は[手計算による結果の確認](/ja/guide/verification)にあります。
 
 ### 結果の精度は？要素を増やす必要はありますか？ {#how-accurate-are-the-results-do-i-need-more-elements}
 
@@ -86,7 +86,7 @@ EduBeam は Timoshenko 梁を使うので、たわみにせん断変形が含ま
 
 ### モデルを共有するには？ {#how-do-i-share-a-model}
 
-**モデルを共有** → **コピー**です。リンクにはモデル全体が含まれます。受け取った人はそれぞれ自分用の編集可能なコピーを得ます。リアルタイムの共同編集はできません。[EduBeam を使った授業](/ja/guide/teaching)もご覧ください。
+**モデルを共有** → **リンクをコピー**です。リンクにはモデル全体が含まれます。受け取った人はそれぞれ自分用の編集可能なコピーを得ます。リアルタイムの共同編集はできません。[EduBeam を使った授業](/ja/guide/teaching)もご覧ください。
 
 ### 自分の Web サイトやスライドにモデルを埋め込めますか？ {#can-i-embed-a-model-on-my-website-or-in-slides}
 

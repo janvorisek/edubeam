@@ -74,26 +74,3 @@ features:
 Докладніше — у [Вступі](/uk/guide/introduction).
 
 <ElementariumPromo />
-<script setup>
-import { VPTeamMembers } from 'vitepress/theme'
-
-const members = [
-  {
-    avatar: 'https://www.github.com/janvorisek.png',
-    name: 'Jan Voříšek',
-    title: 'Провідний розробник і дизайнер продукту',
-    links: [
-      { icon: 'github', link: 'https://github.com/janvorisek' },
-      { icon: 'twitter', link: 'https://twitter.com/janvorisekdev' },
-    ]
-  },
-  {
-    avatar: 'https://www.github.com/bpatzak.png',
-    name: 'Bořek Patzák',
-    title: 'Розв\'язувач МСЕ, автор первісного застосунку',
-    links: [
-      { icon: 'github', link: 'https://github.com/bpatzak' },
-    ]
-  }
-]
-</script>

@@ -2,6 +2,30 @@
 description: "Що таке EduBeam: безкоштовна програма МСЕ у браузері для плоских балок, рам і ферм. Що вона вміє і чого ні, для кого вона та як побудована документація."
 ---
 
+<script setup>
+import { VPTeamMembers } from 'vitepress/theme-without-fonts'
+
+const members = [
+  {
+    avatar: 'https://www.github.com/janvorisek.png',
+    name: 'Jan Voříšek',
+    title: 'Провідний розробник і дизайнер продукту',
+    links: [
+      { icon: 'github', link: 'https://github.com/janvorisek' },
+      { icon: 'twitter', link: 'https://twitter.com/janvorisekdev' },
+    ]
+  },
+  {
+    avatar: 'https://www.github.com/bpatzak.png',
+    name: 'Bořek Patzák',
+    title: 'Розв\'язувач МСЕ, автор первісного застосунку',
+    links: [
+      { icon: 'github', link: 'https://github.com/bpatzak' },
+    ]
+  }
+]
+</script>
+
 # Вступ
 
 <Edubeam /> — це безкоштовний браузерний інструмент для **розрахунку плоских (2D) стрижневих конструкцій**: балок, рам і ферм. Ви креслите конструкцію, додаєте опори й навантаження, а скінченноелементний розв'язувач перераховує все тієї ж миті, коли ви щось змінюєте. Немає кнопки *Розрахувати*, не потрібні ні встановлення, ні обліковий запис.

@@ -3,7 +3,7 @@ description: "Was EduBeam ist: kostenlose FEM-Berechnung ebener Stabwerke im Bro
 ---
 
 <script setup>
-import { VPTeamMembers } from 'vitepress/theme'
+import { VPTeamMembers } from 'vitepress/theme-without-fonts'
 
 const members = [
   {

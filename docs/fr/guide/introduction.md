@@ -3,7 +3,7 @@ description: "EduBeam, solveur éléments finis gratuit pour poutres, portiques 
 ---
 
 <script setup>
-import { VPTeamMembers } from 'vitepress/theme'
+import { VPTeamMembers } from 'vitepress/theme-without-fonts'
 
 const members = [
   {

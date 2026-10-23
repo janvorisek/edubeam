@@ -3,7 +3,7 @@ description: "O que é o EduBeam: um programa de elementos finitos gratuito, no 
 ---
 
 <script setup>
-import { VPTeamMembers } from 'vitepress/theme'
+import { VPTeamMembers } from 'vitepress/theme-without-fonts'
 
 const members = [
   {

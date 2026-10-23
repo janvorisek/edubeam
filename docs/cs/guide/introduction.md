@@ -3,7 +3,7 @@ description: "Co je EduBeam: bezplatný MKP program v prohlížeči pro rovinné
 ---
 
 <script setup>
-import { VPTeamMembers } from 'vitepress/theme'
+import { VPTeamMembers } from 'vitepress/theme-without-fonts'
 
 const members = [
   {

@@ -43,7 +43,12 @@
  *   in custom container, badges, etc.
  * -------------------------------------------------------------------------- */
 
-@import "https://fonts.googleapis.com/css?family=Barlow:300,400,500,700|Lobster&display=swap";
+/* Self-hosted, so the first paint does not wait on a stylesheet from another origin. */
+@import '@fontsource/barlow/300.css';
+@import '@fontsource/barlow/400.css';
+@import '@fontsource/barlow/500.css';
+@import '@fontsource/barlow/700.css';
+@import '@fontsource/lobster/400.css';
 @import url("../../../node_modules/katex/dist/katex.min.css");
 @import 'v-tweakpane/dist/v-tweakpane.css';
 

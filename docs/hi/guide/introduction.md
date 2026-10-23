@@ -3,7 +3,7 @@ description: "EduBeam क्या है: 2D बीम, फ्रेम और 
 ---
 
 <script setup>
-import { VPTeamMembers } from 'vitepress/theme'
+import { VPTeamMembers } from 'vitepress/theme-without-fonts'
 
 const members = [
   {

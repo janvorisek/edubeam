@@ -3,7 +3,7 @@ description: "Qué es EduBeam: un solver MEF gratuito en el navegador para vigas
 ---
 
 <script setup>
-import { VPTeamMembers } from 'vitepress/theme'
+import { VPTeamMembers } from 'vitepress/theme-without-fonts'
 
 const members = [
   {

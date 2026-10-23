@@ -3,7 +3,7 @@ description: "Что такое EduBeam: бесплатная программа
 ---
 
 <script setup>
-import { VPTeamMembers } from 'vitepress/theme'
+import { VPTeamMembers } from 'vitepress/theme-without-fonts'
 
 const members = [
   {

@@ -3,7 +3,7 @@ description: "Czym jest EduBeam: darmowy program MES w przeglądarce do płaskic
 ---
 
 <script setup>
-import { VPTeamMembers } from 'vitepress/theme'
+import { VPTeamMembers } from 'vitepress/theme-without-fonts'
 
 const members = [
   {

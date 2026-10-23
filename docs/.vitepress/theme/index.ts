@@ -1,7 +1,8 @@
 // https://vitepress.dev/guide/custom-theme
 import { defineAsyncComponent } from 'vue';
 import type { Theme } from 'vitepress';
-import DefaultTheme from 'vitepress/theme';
+// Without fonts: the docs set Barlow as the base font, so VitePress's Inter would only be downloaded.
+import DefaultTheme from 'vitepress/theme-without-fonts';
 import MyLayout from './MyLayout.vue';
 
 import './style.css';

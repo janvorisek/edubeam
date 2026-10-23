@@ -3,7 +3,7 @@ description: "What EduBeam is: a free, browser-based FEM solver for 2D beams, fr
 ---
 
 <script setup>
-import { VPTeamMembers } from 'vitepress/theme'
+import { VPTeamMembers } from 'vitepress/theme-without-fonts'
 
 const members = [
   {

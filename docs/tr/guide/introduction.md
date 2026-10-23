@@ -3,7 +3,7 @@ description: "EduBeam nedir: 2B kiriş, çerçeve ve kafes sistemler için taray
 ---
 
 <script setup>
-import { VPTeamMembers } from 'vitepress/theme'
+import { VPTeamMembers } from 'vitepress/theme-without-fonts'
 
 const members = [
   {

@@ -3,7 +3,7 @@ description: "EduBeam 是什么：一款免费的浏览器端有限元求解器�
 ---
 
 <script setup>
-import { VPTeamMembers } from 'vitepress/theme'
+import { VPTeamMembers } from 'vitepress/theme-without-fonts'
 
 const members = [
   {

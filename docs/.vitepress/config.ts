@@ -552,6 +552,9 @@ export default defineConfig({
       md.use(katex);
       md.use(implicitFigures, {
         figcaption: true,
+        // The plugin empties alt once the text becomes the caption; image search only reads alt.
+        keepAlt: true,
+        lazyLoading: true,
         copyAttrs: '^class$',
       });
     },

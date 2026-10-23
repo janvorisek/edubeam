@@ -2,7 +2,7 @@
 <script setup>
 import { computed, onMounted, watch } from 'vue';
 import { useData } from 'vitepress';
-import DefaultTheme from 'vitepress/theme';
+import DefaultTheme from 'vitepress/theme-without-fonts';
 
 const { Layout } = DefaultTheme;
 

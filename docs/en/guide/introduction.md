@@ -74,7 +74,7 @@ If a missing feature matters to you, [open an issue](https://github.com/janvoris
 ## Who is it for?
 
 - **Students** learning structural mechanics who want instant feedback on hand calculations. See [Checking results by hand](/guide/verification).
-- **Teachers** demonstrating how supports, hinges and loads change internal forces, live on a projector, in any of 12 languages. See [Teaching with EduBeam](/guide/teaching).
+- **Teachers** demonstrating how supports, hinges and loads change internal forces, live on a projector, in any of 13 languages. See [Teaching with EduBeam](/guide/teaching).
 - **Engineers** who want a quick sanity check before opening a heavier desktop package.
 
 ## How this guide is organised
@@ -91,7 +91,7 @@ The **?** icons in the app open the matching page of this guide in your language
 
 ## Languages
 
-The interface is available in English, Čeština, Deutsch, Español, Français, Polski, Português, Русский, Türkçe, Українська, ไทย and 汉语. EduBeam picks the language from your browser. Change it in **Settings → Language & Locale**, or open the app with a `?lang=` parameter, e.g. [run.edubeam.app/?lang=cs](https://run.edubeam.app/?lang=cs){target="_blank"}.
+The interface is available in English, Čeština, Deutsch, Español, Français, Polski, Português, Русский, Türkçe, Українська, हिन्दी, ไทย and 汉语. EduBeam picks the language from your browser. Change it in **Settings → Language & Locale**, or open the app with a `?lang=` parameter, e.g. [run.edubeam.app/?lang=cs](https://run.edubeam.app/?lang=cs){target="_blank"}.
 
 ## Authors & credits
 

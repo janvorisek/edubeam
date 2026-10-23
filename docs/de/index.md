@@ -33,7 +33,7 @@ features:
     linkText: Lehren mit EduBeam
   - icon: 🌍
     title: Ihre Sprache, Ihre Einheiten
-    details: 12 Oberflächensprachen, SI- oder US-Einheiten und wahlweise z nach unten oder die aus Lehrbüchern bekannte y-Achse nach oben.
+    details: 13 Oberflächensprachen, SI- oder US-Einheiten und wahlweise z nach unten oder die aus Lehrbüchern bekannte y-Achse nach oben.
     link: /de/essentials/units-settings
     linkText: Einheiten & Einstellungen
   - icon: 🔗

@@ -33,7 +33,7 @@ features:
     linkText: 用 EduBeam 教学
   - icon: 🌍
     title: 你的语言，你的单位
-    details: 12 种界面语言，国际单位制或美制单位，坐标轴可选 z 向下或教科书常用的 y 向上。
+    details: 13 种界面语言，国际单位制或美制单位，坐标轴可选 z 向下或教科书常用的 y 向上。
     link: /zh/essentials/units-settings
     linkText: 单位与设置
   - icon: 🔗

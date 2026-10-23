@@ -12,7 +12,7 @@ Settings are stored in your browser and survive reloads. **Reset settings** rest
 
 ![Settings → Language & Locale](/screenshots/settings-language.webp)
 
-**Language.** 12 interface languages. You can also open the app with `?lang=<code>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`.
+**Language.** 13 interface languages. You can also open the app with `?lang=<code>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`.
 
 **Number format.** How result values are written: *Automatic*, *Scientific* (default) or *Engineering*. See [Number format](/essentials/results#number-format).
 

@@ -7,12 +7,12 @@ hero:
   text: "निःशुल्क ऑनलाइन संरचनात्मक विश्लेषण"
   tagline: बीम, फ्रेम या ट्रस बनाइए, भार लगाइए और संपादन करते-करते आरेखों को बदलते देखिए। पूरे FEM परिणाम आपके ब्राउज़र में—न कोई इंस्टॉल, न कोई खाता, न कोई शुल्क।
   image:
-    src: /screenshots/hero.webp
+    src: /screenshots/hi/hero.webp
     alt: हल किए गए फ्रेम के साथ EduBeam ऐप
   actions:
     - theme: brand
       text: ऐप खोलें
-      link: https://run.edubeam.app/?lang=en
+      link: https://run.edubeam.app/?lang=hi
     - theme: alt
       text: मार्गदर्शिका पढ़ें
       link: /hi/guide/introduction
@@ -33,7 +33,7 @@ features:
     linkText: EduBeam के साथ पढ़ाना
   - icon: 🌍
     title: आपकी भाषा, आपकी इकाइयाँ
-    details: इंटरफ़ेस की 12 भाषाएँ, SI या US customary इकाइयाँ, और z-नीचे या पाठ्यपुस्तक वाले y-ऊपर अक्षों का विकल्प।
+    details: इंटरफ़ेस की 13 भाषाएँ, SI या US customary इकाइयाँ, और z-नीचे या पाठ्यपुस्तक वाले y-ऊपर अक्षों का विकल्प।
     link: /hi/essentials/units-settings
     linkText: इकाइयाँ और सेटिंग्स
   - icon: 🔗
@@ -57,9 +57,9 @@ features:
 
 <div class="shots">
 
-![एक ट्रस: अक्षीय बल, तनाव धनात्मक](/screenshots/tut-truss.webp)
+![एक ट्रस: अक्षीय बल, तनाव धनात्मक](/screenshots/hi/tut-truss.webp)
 
-![यंत्र (mechanism) को दृश्य बनाना: EduBeam दिखाता है कि इसे हल क्यों नहीं किया जा सकता](/screenshots/ui-mechanism.webp)
+![यंत्र (mechanism) को दृश्य बनाना: EduBeam दिखाता है कि इसे हल क्यों नहीं किया जा सकता](/screenshots/hi/ui-mechanism.webp)
 
 </div>
 

@@ -81,7 +81,7 @@ SVG 在任何尺寸下都保持清晰，并可用于 Word、Inkscape 以及 Over
 | --- | --- |
 | `model=<data>` | 加载编码的模型并使其适配屏幕。 |
 | `viewer=1` | 查看器模式（见上文）。 |
-| `lang=<code>` | 切换界面语言：`en`、`cs`、`de`、`fr`、`es`、`pt`、`pl`、`cn`、`th`、`uk`、`ru`、`tr`。 |
+| `lang=<code>` | 切换界面语言：`en`、`cs`、`de`、`fr`、`es`、`pt`、`pl`、`cn`、`th`、`uk`、`ru`、`tr`、`hi`。 |
 | `panel=examples` | 直接打开示例库。 |
 
 EduBeam 读取这些参数后，会把它们从地址栏中移除。

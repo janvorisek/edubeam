@@ -192,7 +192,7 @@ export default defineConfig({
       lang: 'hi',
       description: 'ब्राउज़र में निःशुल्क 2D संरचनात्मक विश्लेषण – बीम, फ्रेम और ट्रस के लिए तुरंत FEM परिणाम',
       themeConfig: {
-        nav: navFor('/hi', 'en', hi),
+        nav: navFor('/hi', 'hi', hi),
         outline: { label: 'इस पृष्ठ पर' },
         docFooter: { prev: 'पिछला पृष्ठ', next: 'अगला पृष्ठ' },
         lastUpdated: { text: 'अंतिम अद्यतन' },

@@ -10,14 +10,14 @@ import { i18n } from '../../src/plugins/i18n';
  */
 type DocsLanguage = 'en' | 'cs' | 'de' | 'es' | 'fr' | 'hi' | 'pl' | 'pt' | 'ru' | 'uk' | 'zh';
 
-/** The app's locale for each docs language; there is no Hindi app, and the app says cn for zh. */
+/** The app's locale for each docs language; the app says cn for zh. */
 const APP_LOCALE: Record<DocsLanguage, string> = {
   en: 'en',
   cs: 'cs',
   de: 'de',
   es: 'es',
   fr: 'fr',
-  hi: 'en',
+  hi: 'hi',
   pl: 'pl',
   pt: 'pt',
   ru: 'ru',

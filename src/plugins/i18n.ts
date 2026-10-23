@@ -15,6 +15,7 @@ export const availableLocales = [
   { code: 'uk', name: 'Українська' },
   { code: 'ru', name: 'Русский' },
   { code: 'tr', name: 'Türkçe' },
+  { code: 'hi', name: 'हिन्दी' },
 ];
 
 // Create Vue I18n instance.
@@ -32,7 +33,8 @@ export const languageTag = (locale: string) => (locale === 'cn' ? 'zh-Hans' : lo
 // Set new locale.
 export async function setLocale(locale: string) {
   // Add Vuetify translations.
-  const vuetifyMessages = locale === 'cn' ? vloc.zhHans : vloc[locale];
+  // Vuetify has no Hindi, and its English is only loaded once English is picked, so fall back explicitly.
+  const vuetifyMessages = (locale === 'cn' ? vloc.zhHans : vloc[locale]) ?? vloc.en;
   i18n.global.setLocaleMessage(locale, { ...i18n.global.getLocaleMessage(locale), $vuetify: { ...vuetifyMessages } });
 
   // Set locale.

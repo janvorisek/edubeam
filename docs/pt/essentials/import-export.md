@@ -81,7 +81,7 @@ O modo de visualização serve para olhar, mas não é bloqueado: os visitantes 
 | --- | --- |
 | `model=<dados>` | Carrega o modelo codificado e o ajusta à tela. |
 | `viewer=1` | Modo de visualização (veja acima). |
-| `lang=<código>` | Troca o idioma da interface: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`. |
+| `lang=<código>` | Troca o idioma da interface: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`. |
 | `panel=examples` | Abre a galeria de exemplos imediatamente. |
 
 Depois de lê-los, o EduBeam remove os parâmetros da barra de endereço.

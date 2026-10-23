@@ -54,7 +54,7 @@ Sekarang Anda memiliki lima joint dan empat elemen. Gambar di sini memberi label
 ![Tabel Elemen: sendi berada di ujung akhir elemen 2, di joint C](/screenshots/id/elements-table.webp)
 
 ::: tip Satu sendi, bukan dua
-Memberi sendi pada ujung akhir elemen B–C sudah cukup: momen di C menjadi nol, karena C–D tidak dapat menyalurkan momen ke joint yang hanya dipegang kaku olehnya sendiri. Centang juga awal C–D dan tidak ada yang berubah. Tetapi jika Anda juga mencentang sendi di B, portal menjadi mekanisme. Cobalah: EduBeam menunjukkan bagaimana portal bergerak.
+Memberi sendi pada ujung akhir elemen B–C sudah cukup: momen di C menjadi nol, karena C–D adalah satu-satunya batang yang tersambung kaku ke joint itu, sehingga momennya tidak dapat diteruskan ke mana pun. Centang juga awal C–D dan tidak ada yang berubah. Tetapi jika Anda juga mencentang sendi di B, portal menjadi mekanisme. Cobalah: EduBeam menunjukkan bagaimana portal bergerak.
 :::
 
 ## 4. Beban {#_4-load}

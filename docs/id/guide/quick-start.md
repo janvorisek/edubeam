@@ -47,7 +47,7 @@ Elemen memerlukan material dan penampang, jadi buat keduanya terlebih dahulu.
 ![Tambah penampang. Atau pilih dari pustaka, atau gambar bentuk poligon.](/screenshots/id/qs-cross-section.webp){.shot-md}
 
 ::: details Mengapa koefisien geser berpengaruh?
-EduBeam memakai elemen balok Timoshenko, yang memperhitungkan deformasi geser. `k` adalah faktor koreksi geser: $k \approx 0{,}83$ untuk persegi panjang, dan sekitar $0{,}4$–$0{,}5$ untuk profil I bila $A$ adalah luas penuh. Memakai `k = 1` dengan luas penuh sedikit *meremehkan* kelenturan geser. Untuk balok langsing seperti ini, selisih lendutannya jauh di bawah 1 %. Rumusnya ada di [halaman teori balok](/id/elements/beam).
+EduBeam memakai elemen balok Timoshenko, yang memperhitungkan deformasi geser. `k` adalah faktor koreksi geser: $k \approx 0{,}83$ untuk persegi panjang, dan sekitar $0{,}4$–$0{,}5$ untuk profil I bila $A$ adalah luas penuh. Memakai `k = 1` dengan luas penuh sedikit *menaksir terlalu rendah* kelenturan geser. Untuk balok langsing seperti ini, selisih lendutannya jauh di bawah 1 %. Rumusnya ada di [halaman teori balok](/id/elements/beam).
 :::
 
 ## 3. Tambahkan joint {#_3-add-the-nodes}

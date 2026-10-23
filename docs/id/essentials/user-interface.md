@@ -4,7 +4,7 @@ description: "Tur antarmuka EduBeam: menu utama, tampilan dan opsi tampilannya, 
 
 # Antarmuka pengguna
 
-<Edubeam /> memiliki tiga area: **bilah aplikasi** di atas, **tampilan** di tengah tempat Anda menggambar, dan **bilah bawah** dengan tabel untuk setiap jenis objek. Pahami apa yang ada di mana, dan bagian lain panduan ini akan mudah diikuti.
+<Edubeam /> memiliki tiga area: **bilah aplikasi** di atas, **tampilan** di tengah tempat Anda menggambar, dan **bilah bawah** dengan tabel untuk setiap jenis objek. Setelah Anda tahu letak setiap bagian, panduan selanjutnya akan mudah diikuti.
 
 ![Bagian-bagian antarmuka, bernomor sesuai daftar di bawah](/screenshots/id/ui-overview.webp)
 

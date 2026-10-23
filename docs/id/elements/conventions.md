@@ -4,7 +4,7 @@ description: "Konvensi tanda EduBeam: sumbu global x ke kanan dan z ke bawah, pe
 
 # Sistem koordinat & konvensi tanda
 
-Sebagian besar hasil yang "salah" di <Edubeam /> sebenarnya adalah kejutan konvensi tanda. Semua yang dijelaskan di bawah adalah yang benar-benar dipakai solver.
+Sebagian besar hasil yang "salah" di <Edubeam /> sebenarnya hanya akibat konvensi tanda yang belum dipahami. Semua yang dijelaskan di bawah adalah konvensi yang benar-benar dipakai solver.
 
 ## Sumbu global {#global-axes}
 

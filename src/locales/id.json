@@ -206,9 +206,9 @@
     "showReactions": "Reaksi"
   },
   "viewer": {
-    "toggleGrid": "Grid aktif/nonaktif (G)",
-    "toggleSnap": "Snap ke grid aktif/nonaktif (S)",
-    "toggleCrosshair": "Crosshair aktif/nonaktif",
+    "toggleGrid": "Tampilkan/sembunyikan grid (G)",
+    "toggleSnap": "Aktifkan/nonaktifkan snap ke grid (S)",
+    "toggleCrosshair": "Tampilkan/sembunyikan crosshair",
     "boxSelect": "Pilih dengan kotak",
     "centerContent": "Pusatkan model",
     "fitContent": "Sesuaikan dengan layar",
@@ -392,11 +392,11 @@
     },
     "gridUnits": {
       "title": "Grid, snap, dan satuan",
-      "description": "G menampilkan grid dan S membuat joint baru menempel ke grid. Klik satuan untuk mengubahnya, mengganti bahasa, atau sistem koordinat."
+      "description": "G menampilkan grid dan S membuat joint baru menempel ke grid. Klik satuan untuk mengubah satuan, bahasa, atau sistem koordinat."
     },
     "bottomBar": {
       "title": "Tambah, hapus & ubah objek",
-      "description": "Pusat untuk mengubah setiap bagian struktur Anda dengan mudah. Dari joint hingga elemen, beban, material, dan penampang, semua perubahan cepat dan menyeluruh dilakukan di sini."
+      "description": "Di sini Anda mengubah setiap bagian struktur dengan cepat dan lengkap, dari joint dan elemen hingga beban, material, dan penampang."
     },
     "help": {
       "title": "Bantuan",
@@ -436,7 +436,7 @@
       },
       "fit": {
         "title": "Sesuaikan dengan layar",
-        "body": "Tombol di kanan atas menyesuaikan model dengan layar atau memusatkannya. Tekan sesuaikan dengan layar sekarang, dan lagi setiap kali gambar bergeser keluar dari pandangan."
+        "body": "Tombol di kanan atas menyesuaikan model dengan layar atau memusatkannya. Tekan Sesuaikan dengan layar sekarang, dan tekan lagi setiap kali gambar bergeser keluar dari layar."
       },
       "results": {
         "title": "Baca hasilnya",
@@ -662,7 +662,7 @@
     "preview": "Pratinjau",
     "fitAll": "Semua",
     "window": "Jendela…",
-    "pickWindowHint": "Seret persegi panjang di atas gambar yang akan diekspor",
+    "pickWindowHint": "Seret persegi panjang di atas bagian gambar yang akan diekspor",
     "dragEdge": "Seret untuk memperluas atau memotong sisi ini",
     "scale": "Skala",
     "scaleCaption": "1 m pada model = {cm} cm di kertas (96 DPI). Gulir di atas pratinjau untuk zoom.",

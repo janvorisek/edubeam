@@ -17,7 +17,8 @@
           :label="$t('settings.language')"
         >
           <template #item="{ item, props }">
-            <v-list-item v-bind="props" color="primary">
+            <!-- Each name in its own language, or the browser shapes हिन्दी with the page's font fallback. -->
+            <v-list-item v-bind="props" color="primary" :lang="languageTag(item.raw.code)">
               <template #prepend>
                 <img :src="getImageUrl(item.raw.code)" class="mr-3" height="24" />
               </template>
@@ -156,7 +157,7 @@
 
 <script lang="ts" setup>
 import { useAppStore } from '@/store/app';
-import { availableLocales } from '../../plugins/i18n';
+import { availableLocales, languageTag } from '../../plugins/i18n';
 import { formatMeasureAsHTML } from '../../SVGUtils';
 import AxisConventionPicker from './AxisConventionPicker.vue';
 

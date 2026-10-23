@@ -1,3 +1,7 @@
+---
+description: "Yaklaşık on dakikada düzgün yayılı yüklü, basit mesnetli bir çelik kirişi modelleyin; mesnet tepkilerini, kesme kuvvetini ve eğilme momentini okuyup elle kontrol edin."
+---
+
 # Hızlı başlangıç
 
 Yaklaşık on dakikada düzgün yayılı yük altındaki basit mesnetli bir çelik kirişi modelleyecek, mesnet tepkilerini, kesme kuvvetini ve eğilme momentini okuyacak ve bunları ders kitabı formülleriyle karşılaştıracaksınız.

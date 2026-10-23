@@ -1,3 +1,7 @@
+---
+description: "EduBeam sonuçlarının kapalı form çözümlerle kontrolü: basit mesnetli, konsol ve ankastre kirişler, iki çubuklu kafes sistem, sıcaklık farkı ve öngörülen yer değiştirme."
+---
+
 # Sonuçların elle kontrolü
 
 <Edubeam />, her mühendisin edinmesi gereken alışkanlığı kazanmak için iyi bir ortamdır: kabaca kendiniz bulamadığınız bir sayıya asla güvenmeyin. Bu sayfada klasik durumlar için kapalı formüller ve uygulamanın bu durumlarda verdiği sonuçlar yer alıyor; böylece her modeli kendiniz kurup karşılaştırabilirsiniz.

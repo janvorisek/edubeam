@@ -1,3 +1,7 @@
+---
+description: "Průběhy normálových a posouvajících sil a ohybových momentů, reakce a deformovaný tvar, hodnoty po najetí myší, tabulky výsledků, export CSV a matice tuhosti."
+---
+
 # Výsledky a průběhy
 
 <Edubeam /> přepočítá model po každé změně (nejvýše několikrát za sekundu), takže výsledky máte vždy aktuální. Tlačítko *Spočítat* tu nenajdete. Když se nic nevykreslí, model zatím nelze vyřešit; důvod vám řekne hlášení vlevo nahoře v zobrazení (viz [Řešení problémů](/cs/reference/troubleshooting)).

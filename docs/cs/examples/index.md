@@ -1,3 +1,7 @@
+---
+description: "Hotové vyřešené modely nosníků, rámů a příhradových konstrukcí, které se v EduBeamu otevřou jedním kliknutím, a k tomu náměty na cvičení a řešené návody."
+---
+
 # Příklady
 
 Každá karta níže je živý, vyřešený model. Po kliknutí se otevře v aplikaci <Edubeam /> s kompletním zadáním, připravený k úpravám. Pak stačí přetáhnout uzel, změnit zatížení nebo zaškrtnout kloub a sledovat, jak průběhy reagují.

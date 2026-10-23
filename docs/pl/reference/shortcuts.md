@@ -1,3 +1,7 @@
+---
+description: "Wszystkie skróty klawiszowe, akcje myszy i gesty dotykowe w EduBeam do rysowania, zaznaczania, przesuwania i powiększania widoku oraz obsługa paneli obiektów."
+---
+
 # Klawiatura, mysz i dotyk
 
 Skróty klawiaturowe działają, gdy widok jest aktywny. Są ignorowane podczas wpisywania w komórce tabeli lub w oknie dialogowym; najpierw kliknij płótno.

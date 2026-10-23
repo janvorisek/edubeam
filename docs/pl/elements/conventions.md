@@ -1,3 +1,7 @@
+---
+description: "Konwencje znaków w EduBeam: osie globalne x w prawo i z w dół, dodatnie przemieszczenia, obroty i obciążenia, osie lokalne elementu, siły przekrojowe i reakcje."
+---
+
 # Układ współrzędnych i konwencje znaków
 
 Większość „błędnych” wyników w <Edubeam /> to w rzeczywistości niespodzianka wynikająca z konwencji znaków. Wszystko poniżej to dokładnie to, czego używa solver.

@@ -1,3 +1,7 @@
+---
+description: "EduBeam en cours : liens de partage dans les supports et devoirs, visionneuse intégrable pour diapositives, exercices autovérifiables et ordinateurs de TP."
+---
+
 # Enseigner avec EduBeam
 
 <Edubeam /> est né dans un amphithéâtre, et c’est toujours là qu’il donne le meilleur de lui-même : un modèle au vidéoprojecteur qui réagit dès que vous le modifiez, et le même modèle sur l’ordinateur de chaque étudiant grâce à un lien. Cette page rassemble ce que les enseignants utilisent le plus.

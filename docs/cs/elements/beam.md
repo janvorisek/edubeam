@@ -1,3 +1,7 @@
+---
+description: "Rovinný Timoshenkův prutový prvek v EduBeamu: stupně volnosti, lokální matice tuhosti se smykovou deformací, koncové klouby, prvková zatížení a transformace."
+---
+
 # Prutový prvek (nosník)
 
 <Edubeam /> má jediný prvek: dvouuzlový **Timoshenkův nosník** v rovině x–z. Na rozdíl od klasického Eulerova–Bernoulliho nosníku zahrnuje vliv smykové deformace, který je podstatný u vysokých nebo krátkých prutů, zatímco u štíhlých prutů je zanedbatelný. Znaménkovou konvenci shrnuje stránka [konvence](/cs/elements/conventions).

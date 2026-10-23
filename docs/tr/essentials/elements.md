@@ -1,3 +1,7 @@
+---
+description: "EduBeam'de kiriş elemanları ekleyin, uç mafsallarını ve eleman yönünü ayarlayın; malzemeleri ve özel çokgen kesitler dahil kesitleri tanımlayın."
+---
+
 # Elemanlar, malzemeler ve kesitler
 
 ## Kiriş elemanı {#the-beam-element}

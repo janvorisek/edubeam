@@ -1,4 +1,5 @@
 ---
+description: "Análisis estructural 2D gratuito en tu navegador. Dibuja vigas, pórticos y celosías, añade cargas y obtén al instante N, V, M, reacciones y la deformada."
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
 

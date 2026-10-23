@@ -1,3 +1,7 @@
+---
+description: "Ready-made, solved models of beams, frames and trusses that open in EduBeam with one click, plus suggested exercises and worked tutorials."
+---
+
 # Examples
 
 Every card below is a live, solved model. Click one to open it in <Edubeam /> with the full setup ready to edit—then drag a node, change a load or tick a hinge and watch the diagrams follow.

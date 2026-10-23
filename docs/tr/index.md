@@ -1,4 +1,5 @@
 ---
+description: "Tarayıcınızda ücretsiz 2B yapı analizi. Kiriş, çerçeve ve kafes sistemleri çizin, yükleri ekleyin; N, V, M diyagramlarını, mesnet tepkilerini ve sehimleri anında görün."
 layout: home
 
 hero:

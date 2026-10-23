@@ -1,4 +1,5 @@
 ---
+description: "Free 2D structural analysis in your browser. Draw beams, frames and trusses, add loads and get N, V, M diagrams, reactions and deflections instantly."
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
 

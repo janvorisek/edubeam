@@ -1,3 +1,7 @@
+---
+description: "Añade elementos viga, define rótulas de extremo y orientación del elemento, y crea materiales y secciones en EduBeam, incluidas secciones poligonales propias."
+---
+
 # Elementos, materiales y secciones
 
 ## El elemento viga {#the-beam-element}

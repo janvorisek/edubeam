@@ -1,3 +1,7 @@
+---
+description: "Volba jazyka, jednotek SI nebo amerických, formátu čísel, os y nahoru nebo z dolů, nastavení zobrazení a ovládání. A co EduBeam ukládá ve vašem prohlížeči."
+---
+
 # Jednotky a nastavení
 
 Nastavení otevřete třemi způsoby:

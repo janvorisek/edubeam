@@ -1,4 +1,5 @@
 ---
+description: "Calcul de structures 2D gratuit dans le navigateur. Dessinez poutres, portiques et treillis, chargez-les et obtenez aussitôt N, V, M, réactions et déformée."
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
 

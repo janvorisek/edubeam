@@ -1,3 +1,7 @@
+---
+description: "Model a simply supported steel beam under a uniform load in about ten minutes, read the reactions, shear force and bending moment, and check them by hand."
+---
+
 # Quick start
 
 In about ten minutes you will model a simply supported steel beam under a uniform load, read the reactions, shear force and bending moment, and check them against the textbook formulas.

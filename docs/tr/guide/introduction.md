@@ -1,3 +1,7 @@
+---
+description: "EduBeam nedir: 2B kiriş, çerçeve ve kafes sistemler için tarayıcıda çalışan ücretsiz bir sonlu elemanlar programı. Neler yapıp yapmadığı, kimler için olduğu ve kılavuzun düzeni."
+---
+
 <script setup>
 import { VPTeamMembers } from 'vitepress/theme'
 

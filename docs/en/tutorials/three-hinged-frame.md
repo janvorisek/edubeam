@@ -1,3 +1,7 @@
+---
+description: "Step-by-step tutorial: model a three-hinged frame under a uniform load in EduBeam, then check the reactions and bending moments by hand. About 15 minutes."
+---
+
 # Tutorial: three-hinged frame
 
 A three-hinged frame is statically determinate: three equilibrium equations plus the condition $M = 0$ at the hinge give all four support reactions. That makes it a perfect model for checking every number EduBeam draws. Allow about 15 minutes.

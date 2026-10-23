@@ -1,3 +1,7 @@
+---
+description: "Za zhruba deset minut vymodelujete prostý ocelový nosník se spojitým rovnoměrným zatížením, odečtete reakce, posouvající síly a ohybové momenty a ověříte je ručně."
+---
+
 # Rychlý start
 
 Za zhruba deset minut vymodelujete prostý ocelový nosník se spojitým rovnoměrným zatížením, odečtete reakce, posouvající síly a ohybové momenty a ověříte je učebnicovými vzorci.

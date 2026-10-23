@@ -1,3 +1,7 @@
+---
+description: "Dili, SI veya ABD birimlerini, sayı biçimini, y yukarı ya da z aşağı eksenleri, görüntüleyici ve kontrol ayarlarını seçin; EduBeam'in tarayıcınızda neler sakladığını görün."
+---
+
 # Birimler ve ayarlar
 
 Ayarlara üç yoldan ulaşabilirsiniz:

@@ -1,3 +1,7 @@
+---
+description: "Projekte speichern und öffnen, Modelle per Link teilen, Bilder und Ergebnisse exportieren, Viewer einbetten und URL-Parameter nutzen. Alles bleibt im Browser."
+---
+
 # Import, Export & Teilen
 
 Alles in <Edubeam /> geschieht in Ihrem Browser. Nichts wird auf einen Server hochgeladen: Ein Link enthält buchstäblich das Modell.

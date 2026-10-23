@@ -1,3 +1,7 @@
+---
+description: "Elige idioma, unidades SI o estadounidenses, formato numérico, ejes con y hacia arriba o z hacia abajo, ajustes del visor y controles, y qué guarda EduBeam."
+---
+
 # Unidades y ajustes
 
 Hay tres formas de llegar a la configuración:

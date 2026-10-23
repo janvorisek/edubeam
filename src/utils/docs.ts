@@ -3,7 +3,7 @@ import { i18n } from '../plugins/i18n';
 /**
  * Documentation site (VitePress). The app itself lives on run.edubeam.app.
  */
-export const DOCS_BASE = 'https://edubeam.app';
+export const DOCS_BASE = 'https://www.edubeam.app';
 
 /** Locales the documentation is translated to. Everything else falls back to English. */
 const DOCS_LOCALES = new Set(['cs', 'de', 'es', 'fr', 'hi', 'pl', 'pt', 'ru', 'uk', 'zh', 'tr', 'th']);
@@ -24,10 +24,8 @@ export function docsUrl(path: string, campaign = 'help') {
   const prefix = DOCS_LOCALES.has(docsLocale) ? `/${docsLocale}` : '';
 
   const [pathname, hash] = path.split('#');
-  // The docs are built without `cleanUrls`, so pages are served with the extension.
-  const page = pathname.endsWith('.html') || pathname.endsWith('/') ? pathname : `${pathname}.html`;
 
-  const url = new URL(`${DOCS_BASE}${prefix}${page}`);
+  const url = new URL(`${DOCS_BASE}${prefix}${pathname}`);
   url.searchParams.set('utm_source', 'edubeam-app');
   url.searchParams.set('utm_medium', 'help');
   url.searchParams.set('utm_campaign', campaign);

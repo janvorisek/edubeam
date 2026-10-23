@@ -1,3 +1,7 @@
+---
+description: "EduBeam kafes çubuklarını iki ucu mafsallı kirişler olarak nasıl modeller: serbestlik dereceleri, yerel ve genel rijitlik matrisleri ile dönüşüm matrisi."
+---
+
 # Kafes çubuğu
 
 Kafes çubuğu yalnızca eksenel kuvvet taşır. <Edubeam /> ayrı bir kafes elemanı türü içermez: kafes çubuğu, **iki uç mafsalı da** işaretlenmiş bir [kiriş elemanıdır](/tr/elements/beam). Kondensasyon eğilme terimlerini çıkarır ve geriye yalnızca aşağıdaki eksenel rijitlik kalır.

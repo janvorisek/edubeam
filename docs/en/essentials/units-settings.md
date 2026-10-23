@@ -1,3 +1,7 @@
+---
+description: "Choose the language, SI or US customary units, number format, y-up or z-down axes, viewer and control settings, and see what EduBeam stores in your browser."
+---
+
 # Units & settings
 
 There are three ways into the settings:

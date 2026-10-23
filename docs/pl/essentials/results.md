@@ -1,3 +1,7 @@
+---
+description: "Wykresy sił normalnych, sił tnących i momentów zginających, reakcje i kształt odkształcony, wartości po najechaniu, tabele wyników, eksport CSV i macierz sztywności."
+---
+
 # Wyniki i wykresy
 
 <Edubeam /> rozwiązuje model po każdej zmianie, najwyżej kilka razy na sekundę, więc wyniki są zawsze aktualne. Nie ma przycisku *Oblicz*. Jeśli nic nie jest rysowane, modelu nie da się jeszcze rozwiązać; komunikat w lewym górnym rogu widoku mówi dlaczego (zobacz [Rozwiązywanie problemów](/pl/reference/troubleshooting)).

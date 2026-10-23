@@ -1,3 +1,7 @@
+---
+description: "Uložení a otevření projektu, sdílení modelu odkazem, export obrázků a výsledků, vložení živého prohlížeče a parametry URL. Vše zůstává ve vašem prohlížeči."
+---
+
 # Import, export a sdílení
 
 V aplikaci EduBeam se vše odehrává ve vašem prohlížeči. Nic se nenahrává na server – sdílený odkaz model doslova obsahuje.

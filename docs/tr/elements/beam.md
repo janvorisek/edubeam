@@ -1,3 +1,7 @@
+---
+description: "EduBeam'deki 2B Timoshenko kiriş elemanı: serbestlik dereceleri, kayma şekil değiştirmesini içeren yerel rijitlik matrisi, uç mafsalları, eleman yükleri ve dönüşüm matrisi."
+---
+
 # Kiriş elemanı
 
 <Edubeam /> yalnızca tek bir eleman türü kullanır: x–z düzleminde iki düğümlü bir **Timoshenko kirişi**. Klasik Euler–Bernoulli kirişinden farkı kayma şekil değiştirmesini de hesaba katmasıdır; bu etki yüksek kesitli veya kısa çubuklarda önemlidir, narin çubuklarda ise ihmal edilebilir. İşaret kabulleri [koordinat sistemi ve işaret kabulü](/tr/elements/conventions) sayfasında özetlenmiştir.

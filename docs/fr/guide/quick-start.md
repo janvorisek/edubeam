@@ -1,3 +1,7 @@
+---
+description: "En dix minutes, modélisez une poutre en acier sur deux appuis sous charge uniforme, lisez réactions, effort tranchant et moment fléchissant, et vérifiez-les."
+---
+
 # Démarrage rapide
 
 En une dizaine de minutes, vous allez modéliser une poutre en acier sur deux appuis soumise à une charge uniforme, lire les réactions, l’effort tranchant et le moment fléchissant, puis les comparer aux formules des manuels.

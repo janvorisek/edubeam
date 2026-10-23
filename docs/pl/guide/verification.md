@@ -1,3 +1,7 @@
+---
+description: "Sprawdź wyniki EduBeam ręcznie: belka swobodnie podparta i utwierdzona, wspornik, kratownica z dwóch prętów, gradient temperatury i zadane przemieszczenie."
+---
+
 # Sprawdzanie wyników ręcznie
 
 <Edubeam /> to dobre miejsce, by ćwiczyć nawyk potrzebny każdemu inżynierowi: nigdy nie ufaj liczbie, której nie potrafisz choćby w przybliżeniu odtworzyć. Ta strona podaje wzory zamknięte dla klasycznych przypadków i pokazuje, co dla nich zwraca aplikacja, abyś mógł zbudować każdy model samodzielnie i porównać wyniki.

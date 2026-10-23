@@ -1,3 +1,7 @@
+---
+description: "Přidávání prutových prvků, koncové klouby a orientace prvku, definice materiálů a průřezů v EduBeamu včetně vlastních polygonálních průřezů."
+---
+
 # Prvky, materiály a průřezy
 
 ## Prutový prvek {#the-beam-element}

@@ -1,3 +1,7 @@
+---
+description: "Diagramas de esforço normal, cortante e momento fletor, reações e forma deformada, valores ao passar o mouse, tabelas de resultados, exportação CSV e matriz de rigidez."
+---
+
 # Resultados e diagramas
 
 <Edubeam /> resolve o modelo após cada alteração, no máximo algumas vezes por segundo, então os resultados estão sempre atualizados. Não há botão *Calcular*. Se nada for desenhado, o modelo ainda não pode ser resolvido; a mensagem no canto superior esquerdo da visualização diz por quê (veja [Solução de problemas](/pt/reference/troubleshooting)).

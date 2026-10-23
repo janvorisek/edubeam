@@ -1,3 +1,7 @@
+---
+description: "Todos os atalhos de teclado, ações do mouse e gestos de toque do EduBeam para desenhar, selecionar, fazer panorâmica e zoom, além dos controles dos painéis dos objetos."
+---
+
 # Teclado, mouse e toque
 
 Os atalhos de teclado funcionam enquanto a visualização tem o foco. Eles são ignorados enquanto você digita em uma célula de tabela ou em um diálogo; clique na tela primeiro.

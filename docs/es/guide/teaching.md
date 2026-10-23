@@ -1,3 +1,7 @@
+---
+description: "EduBeam en clase: enlaces para compartir en apuntes y ejercicios, visor incrustable para diapositivas, ejercicios autocomprobables y ordenadores de laboratorio."
+---
+
 # Enseñar con EduBeam
 
 <Edubeam /> nació en un aula, y ahí sigue funcionando mejor: un modelo en el proyector que reacciona en cuanto lo cambias, y el mismo modelo en el portátil de cada estudiante gracias a un enlace. Esta página reúne lo que más usan los docentes.

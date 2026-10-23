@@ -1,3 +1,7 @@
+---
+description: "Proje dosyalarını kaydedin ve açın, modeli bağlantıyla paylaşın, görüntü ve sonuçları dışa aktarın, görüntüleyici gömün, URL parametreleri kullanın. Her şey tarayıcınızda kalır."
+---
+
 # İçe aktarma, dışa aktarma ve paylaşım
 
 EduBeam'de her şey tarayıcınızda gerçekleşir. Hiçbir şey bir sunucuya yüklenmez: paylaşım bağlantısı modelin kendisini içerir.

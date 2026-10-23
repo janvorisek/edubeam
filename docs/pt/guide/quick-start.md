@@ -1,3 +1,7 @@
+---
+description: "Em cerca de dez minutos, modele uma viga biapoiada de aço com carga uniforme, leia as reações, o esforço cortante e o momento fletor e confira tudo à mão."
+---
+
 # Início rápido
 
 Em cerca de dez minutos você vai modelar uma viga biapoiada de aço com carga uniforme, ler as reações, o esforço cortante e o momento fletor, e conferi-los com as fórmulas dos livros.

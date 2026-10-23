@@ -1,3 +1,7 @@
+---
+description: "Enregistrer et ouvrir un projet, partager un lien, exporter images et résultats, intégrer une visionneuse, paramètres d’URL. Tout reste dans votre navigateur."
+---
+
 # Import, export et partage
 
 Dans <Edubeam />, tout se passe dans votre navigateur. Rien n’est envoyé à un serveur : un lien de partage contient littéralement le modèle.

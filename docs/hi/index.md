@@ -1,4 +1,5 @@
 ---
+description: "आपके ब्राउज़र में निःशुल्क 2D संरचनात्मक विश्लेषण। बीम, फ्रेम और ट्रस बनाइए, भार लगाइए और तुरंत N, V, M आरेख, प्रतिक्रियाएँ और विक्षेप पाइए।"
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
 

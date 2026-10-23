@@ -1,3 +1,7 @@
+---
+description: "Přidávání a úprava uzlů, přichytávání k mřížce, umístění uzlu na prvek, vetknutí, pevné a posuvné klouby, šikmé podpory, poklesy podpor a kóty."
+---
+
 # Uzly a podpory
 
 Uzly jsou body modelu. Prvky uzly propojují a v uzlech se zadávají podpory a uzlová zatížení.

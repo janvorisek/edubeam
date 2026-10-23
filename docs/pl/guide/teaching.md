@@ -1,3 +1,7 @@
+---
+description: "EduBeam na zajęciach: linki do modeli w materiałach i zadaniach, tryb podglądu do osadzenia w prezentacji, zadania do samodzielnego sprawdzenia i komputery w laboratorium."
+---
+
 # Nauczanie z EduBeam
 
 <Edubeam /> narodził się w sali wykładowej i tam wciąż sprawdza się najlepiej: model na projektorze, który reaguje w chwili, gdy go zmieniasz, i ten sam model na laptopie każdego studenta dzięki linkowi. Ta strona zbiera to, z czego prowadzący korzystają najczęściej.

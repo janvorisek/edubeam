@@ -1,3 +1,7 @@
+---
+description: "Adım adım eğitim: EduBeam'de düzgün yayılı yüklü üç mafsallı bir çerçeve modelleyin, mesnet tepkilerini ve eğilme momentlerini elle kontrol edin. Yaklaşık 15 dakika."
+---
+
 # Eğitim: üç mafsallı çerçeve
 
 Üç mafsallı çerçeve izostatiktir: üç denge denklemi ve mafsaldaki $M = 0$ koşulu, dört mesnet tepkisinin tamamını verir. Bu yüzden EduBeam'in çizdiği her sayıyı kontrol etmek için mükemmel bir modeldir. Yaklaşık 15 dakika ayırın.

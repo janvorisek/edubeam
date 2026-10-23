@@ -1,3 +1,7 @@
+---
+description: "Düğüm ekleyin ve düzenleyin, ızgaraya yaslayın, elemanlara düğüm yerleştirin; ankastre, mafsallı, kayıcı ve eğik mesnetleri, mesnet çökmelerini ve ölçü çizgilerini tanımlayın."
+---
+
 # Düğümler ve mesnetler
 
 Düğümler modelin noktalarıdır. Elemanlar düğümleri birbirine bağlar; mesnetler ve düğüm yükleri de düğümlere tanımlanır.

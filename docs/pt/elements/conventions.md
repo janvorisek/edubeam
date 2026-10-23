@@ -1,3 +1,7 @@
+---
+description: "Convenções de sinais do EduBeam: eixos globais x para a direita e z para baixo, deslocamentos, rotações e cargas positivos, eixos locais, esforços internos e reações."
+---
+
 # Sistema de coordenadas e convenções de sinais
 
 A maioria dos resultados “errados” no <Edubeam /> é, na verdade, uma surpresa da convenção de sinais. Tudo o que segue é o que o solver realmente usa.

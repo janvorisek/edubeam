@@ -1,3 +1,7 @@
+---
+description: "EduBeam-Ergebnisse von Hand prüfen: Einfeldträger, Kragträger, eingespannte Träger, Zweistab-Fachwerk, Temperaturgradient und vorgegebene Verschiebung."
+---
+
 # Ergebnisse von Hand prüfen
 
 <Edubeam /> ist ein guter Ort, um die Gewohnheit zu üben, die jede Ingenieurin und jeder Ingenieur braucht: keiner Zahl trauen, die man nicht wenigstens überschlägig nachvollziehen kann. Diese Seite enthält geschlossene Formeln für die klassischen Fälle und zeigt, was die App dafür ausgibt – so können Sie jedes Modell selbst aufbauen und vergleichen.

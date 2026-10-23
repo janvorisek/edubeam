@@ -1,3 +1,7 @@
+---
+description: "Élément poutre de Timoshenko 2D d’EduBeam : degrés de liberté, rigidité locale avec cisaillement, rotules d’extrémité, charges d’élément et matrice de passage."
+---
+
 # Élément poutre
 
 Le seul élément d’<Edubeam /> est une **poutre de Timoshenko** à deux nœuds dans le plan x–z. Par rapport à la poutre classique d’Euler–Bernoulli, elle ajoute la déformation de cisaillement, importante pour les barres hautes ou courtes et négligeable pour les barres élancées. Les conventions de signe sont résumées sur la page [Conventions](/fr/elements/conventions).

@@ -1,3 +1,7 @@
+---
+description: "Atajos de teclado, acciones del ratón y gestos táctiles de EduBeam para dibujar, seleccionar, desplazar la vista y hacer zoom, y los paneles de objeto."
+---
+
 # Teclado, ratón y pantalla táctil
 
 Los atajos de teclado funcionan cuando el visor tiene el foco. Se ignoran mientras escribes en una celda de una tabla o en un diálogo; haz clic primero en el lienzo.

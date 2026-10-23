@@ -1,3 +1,7 @@
+---
+description: "Tek tıkla EduBeam'de açılan hazır, çözülmüş kiriş, çerçeve ve kafes sistem modelleri; ayrıca önerilen alıştırmalar ve adım adım çözümlü eğitimler."
+---
+
 # Örnekler
 
 Aşağıdaki her kart canlı, çözülmüş bir modeldir. Birine tıkladığınızda model, düzenlemeye hazır tüm kurulumuyla <Edubeam /> uygulamasında açılır; ardından bir düğümü sürükleyin, bir yükü değiştirin veya bir mafsalı işaretleyin ve diyagramların nasıl değiştiğini izleyin.

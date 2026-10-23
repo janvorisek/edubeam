@@ -1,3 +1,7 @@
+---
+description: "Read normal force, shear force and bending moment diagrams, reactions and the deformed shape, hover values, result tables, CSV export and the stiffness matrix."
+---
+
 # Results & diagrams
 
 <Edubeam /> solves the model after every change, a few times per second at most, so the results are always current. There is no *Solve* button. If nothing is drawn, the model cannot be solved yet; the message at the top left of the viewer says why (see [Troubleshooting](/reference/troubleshooting)).

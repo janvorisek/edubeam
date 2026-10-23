@@ -1,3 +1,7 @@
+---
+description: "EduBeam, solveur éléments finis gratuit pour poutres, portiques et treillis 2D dans le navigateur : ce qu’il fait ou non, pour qui, et l’organisation du guide."
+---
+
 <script setup>
 import { VPTeamMembers } from 'vitepress/theme'
 

@@ -1,3 +1,7 @@
+---
+description: "Conventions de signe d’EduBeam : x vers la droite et z vers le bas, déplacements, rotations et charges positifs, axes locaux, efforts internes et réactions."
+---
+
 # Repère et conventions de signe
 
 La plupart des résultats « faux » dans <Edubeam /> sont en réalité une surprise de convention de signe. Tout ce qui suit est exactement ce qu’utilise le solveur.

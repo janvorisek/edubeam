@@ -1,3 +1,7 @@
+---
+description: "Zapis i otwieranie projektów, udostępnianie modelu linkiem, eksport obrazów i wyników, osadzanie podglądu na żywo i parametry URL. Wszystko zostaje w przeglądarce."
+---
+
 # Import, eksport i udostępnianie
 
 Wszystko w <Edubeam /> dzieje się w Twojej przeglądarce. Nic nie jest wysyłane na serwer: link do udostępniania dosłownie zawiera model.

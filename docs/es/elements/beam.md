@@ -1,3 +1,7 @@
+---
+description: "El elemento viga de Timoshenko 2D de EduBeam: grados de libertad, rigidez local con deformación por cortante, rótulas de extremo, cargas y transformación."
+---
+
 # Elemento viga
 
 El único elemento de <Edubeam /> es una **viga de Timoshenko** de dos nodos en el plano x–z. Frente a la viga clásica de Euler–Bernoulli añade la deformación por cortante, relevante en barras de gran canto o cortas y despreciable en las esbeltas. El convenio de signos se resume en la página de [convenio de signos](/es/elements/conventions).

@@ -1,3 +1,7 @@
+---
+description: "Das ebene Timoshenko-Balkenelement in EduBeam: Freiheitsgrade, lokale Steifigkeitsmatrix mit Schubverformung, Endgelenke, Elementlasten und Transformation."
+---
+
 # Balkenelement
 
 Das einzige Element in <Edubeam /> ist ein **Timoshenko-Balken** mit zwei Knoten in der x–z-Ebene. Gegenüber dem klassischen Euler-Bernoulli-Balken berücksichtigt er die Schubverformung, die bei hohen oder kurzen Stäben eine Rolle spielt und bei schlanken Stäben verschwindet. Die Vorzeichenkonvention ist auf der Seite [Konventionen](/de/elements/conventions) zusammengefasst.

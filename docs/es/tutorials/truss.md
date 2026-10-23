@@ -1,3 +1,7 @@
+---
+description: "Tutorial paso a paso: crea una celosía plana en EduBeam y comprueba sus esfuerzos con el método de los nudos y el método de las secciones. Unos 15 minutos."
+---
+
 # Tutorial: celosía plana
 
 Este tutorial construye una pequeña celosía isostática, comprueba los esfuerzos en sus barras con el método de los nudos y el método de las secciones, y encuentra una barra de esfuerzo nulo. Calcula unos 15 minutos.

@@ -1,3 +1,7 @@
+---
+description: "Normal kuvvet, kesme kuvveti ve eğilme momenti diyagramları, mesnet tepkileri ve deforme şekil; üzerine gelince görünen değerler, sonuç tabloları, CSV ve rijitlik matrisi."
+---
+
 # Sonuçlar ve diyagramlar
 
 <Edubeam />, modeli her değişiklikten sonra (en fazla saniyede birkaç kez) yeniden çözer; böylece sonuçlar her zaman günceldir. *Çöz* düğmesi yoktur. Hiçbir şey çizilmiyorsa model henüz çözülemiyor demektir; nedenini görüntüleyicinin sol üstündeki mesaj söyler (bkz. [Sorun giderme](/tr/reference/troubleshooting)).

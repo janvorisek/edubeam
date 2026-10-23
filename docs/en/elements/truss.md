@@ -1,3 +1,7 @@
+---
+description: "How EduBeam models truss bars as beams with both ends hinged: degrees of freedom, the local and global stiffness matrix and the transformation matrix."
+---
+
 # Truss Element
 
 A truss element carries axial force only. In <Edubeam /> there is no separate truss element type: a truss bar is a [beam element](/elements/beam) with **both end hinges** ticked, which condenses out the bending terms and leaves the axial stiffness below.

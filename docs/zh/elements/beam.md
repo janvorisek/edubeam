@@ -1,3 +1,7 @@
+---
+description: "EduBeam 中的二维 Timoshenko 梁单元：自由度、考虑剪切变形的局部刚度矩阵、端部铰接、单元荷载和坐标转换。"
+---
+
 # 梁单元
 
 <Edubeam /> 中唯一的单元是位于 x–z 平面内的两节点 **Timoshenko 梁**。与经典的 Euler–Bernoulli 梁相比，它增加了剪切变形，这对高跨比大或较短的杆件很重要，而对细长杆件则几乎消失。符号约定汇总在[符号约定](/zh/elements/conventions)页面中。

@@ -1,3 +1,7 @@
+---
+description: "Płaski element belkowy Timoshenki w EduBeam: stopnie swobody, lokalna macierz sztywności z odkształceniem postaciowym, przeguby końcowe, obciążenia i transformacja."
+---
+
 # Element belkowy
 
 Jedynym elementem w <Edubeam /> jest dwuwęzłowa **belka Timoshenki** w płaszczyźnie x–z. W porównaniu z klasyczną belką Eulera–Bernoulliego uwzględnia ona odkształcenie postaciowe od ścinania, które ma znaczenie dla prętów wysokich lub krótkich, a zanika dla smukłych. Konwencje znaków zebrano na stronie [konwencje](/pl/elements/conventions).

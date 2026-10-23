@@ -1,3 +1,7 @@
+---
+description: "Forças e momentos nodais, recalques de apoio, cargas uniformes, trapezoidais e concentradas nos elementos e cargas térmicas, com a convenção de sinais de cada uma."
+---
+
 # Cargas
 
 Todas as cargas pertencem a um **único caso de carga** e atuam juntas. Para comparar cenários, salve cada um como arquivo de projeto ou link de compartilhamento.

@@ -1,3 +1,7 @@
+---
+description: "Modèles de poutres, portiques et treillis déjà calculés, à ouvrir dans EduBeam en un clic, avec des exercices proposés et des tutoriels résolus."
+---
+
 # Exemples
 
 Chaque carte ci-dessous est un modèle vivant, déjà calculé. Cliquez sur l’une d’elles pour l’ouvrir dans <Edubeam /> avec toutes les données prêtes à être modifiées, puis déplacez un nœud, changez une charge ou cochez une rotule et regardez les diagrammes suivre.

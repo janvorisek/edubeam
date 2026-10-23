@@ -1,3 +1,7 @@
+---
+description: "Was EduBeam ist: kostenlose FEM-Berechnung ebener Stabwerke im Browser. Was es kann und nicht kann, für wen es gedacht ist und wie die Anleitung aufgebaut ist."
+---
+
 <script setup>
 import { VPTeamMembers } from 'vitepress/theme'
 

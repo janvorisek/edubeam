@@ -1,3 +1,7 @@
+---
+description: "Çizim, seçim, görünümü kaydırma ve yakınlaştırma için tüm EduBeam klavye kısayolları, fare işlemleri ve dokunmatik hareketler; ayrıca nesne paneli kontrolleri."
+---
+
 # Klavye, fare ve dokunmatik
 
 Klavye kısayolları, odak görüntüleyicideyken çalışır. Bir tablo hücresine veya bir pencereye yazarken dikkate alınmazlar; önce tuvale tıklayın.

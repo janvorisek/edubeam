@@ -1,3 +1,7 @@
+---
+description: "Step-by-step tutorial: build a plane truss in EduBeam and check its bar forces with the method of joints and the method of sections. About 15 minutes."
+---
+
 # Tutorial: plane truss
 
 This tutorial builds a small statically determinate truss, checks its bar forces with the method of joints and the method of sections, and finds a zero-force member. Allow about 15 minutes.

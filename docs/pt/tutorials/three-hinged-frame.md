@@ -1,3 +1,7 @@
+---
+description: "Tutorial passo a passo: modele no EduBeam um pórtico triarticulado com carga uniforme e confira à mão as reações e os momentos fletores. Cerca de 15 minutos."
+---
+
 # Tutorial: pórtico triarticulado
 
 Um pórtico triarticulado é isostático: as três equações de equilíbrio mais a condição $M = 0$ na rótula fornecem as quatro reações de apoio. Isso o torna um modelo perfeito para conferir cada número que o EduBeam desenha. Reserve cerca de 15 minutos.

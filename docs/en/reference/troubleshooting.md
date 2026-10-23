@@ -1,3 +1,7 @@
+---
+description: "Why no results are drawn and how to fix it: missing supports, mechanisms, solver messages, errors and warnings, results that look wrong, and reporting a bug."
+---
+
 # Troubleshooting
 
 ## No results are drawn

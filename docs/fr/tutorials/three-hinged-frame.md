@@ -1,3 +1,7 @@
+---
+description: "Tutoriel pas à pas : modélisez un portique à trois articulations sous charge uniforme, puis vérifiez à la main réactions et moments. Environ 15 minutes."
+---
+
 # Tutoriel : portique à trois articulations
 
 Un portique à trois articulations est isostatique : les trois équations d’équilibre plus la condition $M = 0$ à la rotule donnent les quatre réactions d’appui. C’est donc un modèle idéal pour vérifier chaque nombre qu’EduBeam affiche. Comptez environ 15 minutes.

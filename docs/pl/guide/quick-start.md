@@ -1,3 +1,7 @@
+---
+description: "W około dziesięć minut zamodelujesz stalową belkę swobodnie podpartą obciążoną równomiernie, odczytasz reakcje, siłę tnącą i moment zginający i sprawdzisz je ręcznie."
+---
+
 # Szybki start
 
 W około dziesięć minut zamodelujesz stalową belkę swobodnie podpartą obciążoną równomiernie, odczytasz reakcje, siłę tnącą i moment zginający, a następnie porównasz je ze wzorami z podręcznika.

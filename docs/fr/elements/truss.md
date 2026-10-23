@@ -1,3 +1,7 @@
+---
+description: "Comment EduBeam modélise une barre de treillis comme une poutre à deux rotules d’extrémité : degrés de liberté, rigidité locale et globale, matrice de passage."
+---
+
 # Barre de treillis
 
 Une barre de treillis ne transmet que l’effort normal. Dans <Edubeam />, il n’existe pas de type d’élément treillis distinct : une barre de treillis est un [élément poutre](/fr/elements/beam) dont **les deux rotules d’extrémité** sont cochées, ce qui condense les termes de flexion et ne laisse que la rigidité axiale ci-dessous.

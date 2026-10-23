@@ -1,3 +1,7 @@
+---
+description: "EduBeam derste ve ödevlerde: ders notlarında paylaşım bağlantıları, gömülebilir görüntüleyici, öğrencilerin kendi kontrol ettiği ödevler ve laboratuvar bilgisayarları."
+---
+
 # EduBeam ile öğretim
 
 <Edubeam /> bir derslikte doğdu ve hâlâ en iyi orada işe yarıyor: projeksiyondaki model her değişikliğe anında tepki verir, bir bağlantı sayesinde aynı model her öğrencinin dizüstü bilgisayarında da açılır. Bu sayfada öğretim elemanlarının en sık kullandığı özellikleri bulabilirsiniz.

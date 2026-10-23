@@ -1,4 +1,5 @@
 ---
+description: "Análise estrutural 2D gratuita no navegador. Desenhe vigas, pórticos e treliças, aplique cargas e veja na hora os diagramas N, V e M, as reações e os deslocamentos."
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
 

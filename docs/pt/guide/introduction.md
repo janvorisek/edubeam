@@ -1,3 +1,7 @@
+---
+description: "O que é o EduBeam: um programa de elementos finitos gratuito, no navegador, para vigas, pórticos e treliças 2D. O que ele faz e não faz, para quem é e como o guia se organiza."
+---
+
 <script setup>
 import { VPTeamMembers } from 'vitepress/theme'
 

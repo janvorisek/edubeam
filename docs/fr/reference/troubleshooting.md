@@ -1,3 +1,7 @@
+---
+description: "Aucun résultat dessiné ? Causes et remèdes : appuis manquants, mécanismes, messages du solveur, erreurs et avertissements, résultats douteux, signaler un bogue."
+---
+
 # Dépannage
 
 ## Aucun résultat n’est dessiné {#no-results-are-drawn}

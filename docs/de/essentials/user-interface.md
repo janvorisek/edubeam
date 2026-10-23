@@ -1,3 +1,7 @@
+---
+description: "Rundgang durch die Oberfläche von EduBeam: Menü, Ansicht und Anzeigeoptionen, Navigieren und Auswählen, Reiter, untere Leiste und schwebende Fenster."
+---
+
 # Benutzeroberfläche
 
 <Edubeam /> besteht aus drei Bereichen: der **Kopfleiste** oben, der **Ansicht** in der Mitte, in der Sie zeichnen, und der **unteren Leiste** mit einer Tabelle für jede Objektart. Wer weiß, was wo liegt, versteht auch den Rest dieser Anleitung.

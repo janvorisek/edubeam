@@ -1,3 +1,7 @@
+---
+description: "Dlaczego nie widać wyników i jak to naprawić: brakujące podpory, mechanizmy, komunikaty solvera, błędy i ostrzeżenia, podejrzane wyniki oraz zgłaszanie błędów."
+---
+
 # Rozwiązywanie problemów
 
 ## Nie widać żadnych wyników {#no-results-are-drawn}

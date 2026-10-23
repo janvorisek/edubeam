@@ -1,3 +1,7 @@
+---
+description: "Ajoutez des éléments poutres, réglez rotules d’extrémité et orientation, puis définissez matériaux et sections dans EduBeam, y compris des sections polygonales."
+---
+
 # Éléments, matériaux et sections
 
 ## L’élément poutre {#the-beam-element}

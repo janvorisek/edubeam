@@ -1,3 +1,7 @@
+---
+description: "Co je EduBeam: bezplatný MKP program v prohlížeči pro rovinné nosníky, rámy a příhradové konstrukce. Co umí a neumí, pro koho je určen a jak je dokumentace uspořádána."
+---
+
 <script setup>
 import { VPTeamMembers } from 'vitepress/theme'
 

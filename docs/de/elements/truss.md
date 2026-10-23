@@ -1,3 +1,7 @@
+---
+description: "Wie EduBeam Fachwerkstäbe als Balken mit zwei Endgelenken abbildet: Freiheitsgrade, lokale und globale Steifigkeitsmatrix sowie die Transformationsmatrix."
+---
+
 # Fachwerkstab
 
 Ein Fachwerkstab überträgt nur Normalkraft. In <Edubeam /> gibt es keinen eigenen Fachwerk-Elementtyp: ein Fachwerkstab ist ein [Balkenelement](/de/elements/beam) mit **beiden Endgelenken** angehakt, wodurch die Biegeterme herauskondensiert werden und die unten stehende Dehnsteifigkeit übrig bleibt.

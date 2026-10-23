@@ -1,3 +1,7 @@
+---
+description: "Czym jest EduBeam: darmowy program MES w przeglądarce do płaskich belek, ram i kratownic. Co potrafi, czego nie, dla kogo jest i jak zorganizowana jest dokumentacja."
+---
+
 <script setup>
 import { VPTeamMembers } from 'vitepress/theme'
 

@@ -1,3 +1,7 @@
+---
+description: "In zehn Minuten einen Einfeldträger aus Stahl unter Gleichlast modellieren, Auflagerreaktionen, Querkraft und Biegemoment ablesen und von Hand prüfen."
+---
+
 # Schnellstart
 
 In etwa zehn Minuten modellieren Sie einen Einfeldträger aus Stahl unter Gleichlast, lesen Auflagerreaktionen, Querkraft und Biegemoment ab und vergleichen sie mit den Lehrbuchformeln.

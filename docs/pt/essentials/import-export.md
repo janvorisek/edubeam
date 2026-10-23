@@ -1,3 +1,7 @@
+---
+description: "Salve e abra arquivos de projeto, compartilhe um modelo por link, exporte imagens e resultados, incorpore um visualizador e use parâmetros de URL. Tudo fica no seu navegador."
+---
+
 # Importar, exportar e compartilhar
 
 Tudo no <Edubeam /> acontece no seu navegador. Nada é enviado a um servidor: um link de compartilhamento contém literalmente o modelo.

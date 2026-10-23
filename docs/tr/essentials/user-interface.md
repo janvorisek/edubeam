@@ -1,3 +1,7 @@
+---
+description: "EduBeam arayüzünde bir tur: ana menü, görüntüleyici ve görünüm seçenekleri, gezinme ve seçme, sekmeler, alt çubuk ve kayan pencereler."
+---
+
 # Kullanıcı arayüzü
 
 <Edubeam /> üç bölümden oluşur: üstte **üst çubuk**, ortada çizim yaptığınız **görüntüleyici** ve altta her nesne türü için bir tablo bulunan **alt çubuk**. Neyin nerede olduğunu öğrendiğinizde kılavuzun geri kalanı da kolayca anlaşılır.

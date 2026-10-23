@@ -1,3 +1,7 @@
+---
+description: "Fertige, berechnete Modelle von Balken, Rahmen und Fachwerken, die sich mit einem Klick in EduBeam öffnen, dazu Übungsvorschläge und durchgerechnete Tutorials."
+---
+
 # Beispiele
 
 Jede Karte unten ist ein lebendiges, berechnetes Modell. Klicken Sie darauf, um es in <Edubeam /> mit vollständiger Eingabe zum Bearbeiten zu öffnen – dann ziehen Sie einen Knoten, ändern eine Last oder haken ein Gelenk an und sehen zu, wie die Diagramme folgen.

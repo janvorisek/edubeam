@@ -1,3 +1,7 @@
+---
+description: "Adım adım eğitim: EduBeam'de düzlem bir kafes sistem kurun ve çubuk kuvvetlerini düğüm noktası yöntemi ve kesim (Ritter) yöntemiyle kontrol edin. Yaklaşık 15 dakika."
+---
+
 # Eğitim: düzlem kafes sistem
 
 Bu eğitimde küçük, izostatik bir kafes sistem kuracak, çubuk kuvvetlerini düğüm noktası yöntemi ve kesim (Ritter) yöntemiyle kontrol edecek ve bir sıfır kuvvetli çubuk bulacaksınız. Yaklaşık 15 dakika ayırın.

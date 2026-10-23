@@ -1,3 +1,7 @@
+---
+description: "Neden hiçbir sonuç çizilmiyor ve nasıl düzeltilir: eksik mesnetler, mekanizmalar, çözücü mesajları, hatalar ve uyarılar, yanlış görünen sonuçlar ve hata bildirme."
+---
+
 # Sorun giderme
 
 ## Hiçbir sonuç çizilmiyor {#no-results-are-drawn}

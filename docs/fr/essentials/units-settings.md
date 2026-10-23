@@ -1,3 +1,7 @@
+---
+description: "Langue, unités SI ou américaines, format des nombres, axes y vers le haut ou z vers le bas, affichage et commandes, et ce qu’EduBeam stocke dans le navigateur."
+---
+
 # Unités et paramètres
 
 Il existe trois façons d’accéder aux paramètres :

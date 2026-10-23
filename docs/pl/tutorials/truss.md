@@ -1,3 +1,7 @@
+---
+description: "Samouczek krok po kroku: zbuduj w EduBeam kratownicę płaską i sprawdź siły w prętach metodą równoważenia węzłów oraz metodą Rittera. Około 15 minut."
+---
+
 # Samouczek: kratownica płaska
 
 W tym samouczku zbudujesz małą statycznie wyznaczalną kratownicę, sprawdzisz siły w prętach metodą równoważenia węzłów i metodą Rittera oraz znajdziesz pręt zerowy. Zarezerwuj około 15 minut.

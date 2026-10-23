@@ -1,4 +1,5 @@
 ---
+description: "免费的在线二维结构分析，直接在浏览器中运行。绘制梁、框架和桁架，施加荷载，即刻得到轴力、剪力和弯矩图，以及支反力和变形。"
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
 

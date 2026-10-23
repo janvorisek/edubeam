@@ -1,4 +1,5 @@
 ---
+description: "Kostenlose Stabwerksberechnung im Browser: Balken, Rahmen und Fachwerke zeichnen, Lasten setzen und sofort N, V, M, Auflagerreaktionen und Verformungen sehen."
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
 

@@ -1,3 +1,7 @@
+---
+description: "EduBeam क्या है: 2D बीम, फ्रेम और ट्रस के लिए निःशुल्क, ब्राउज़र-आधारित FEM सॉल्वर। यह क्या कर सकता है, क्या नहीं, किसके लिए है और मार्गदर्शिका कैसे व्यवस्थित है।"
+---
+
 <script setup>
 import { VPTeamMembers } from 'vitepress/theme'
 

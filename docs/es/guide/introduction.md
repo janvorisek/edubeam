@@ -1,3 +1,7 @@
+---
+description: "Qué es EduBeam: un solver MEF gratuito en el navegador para vigas, pórticos y celosías 2D. Qué hace y qué no, para quién es y cómo se organiza esta guía."
+---
+
 <script setup>
 import { VPTeamMembers } from 'vitepress/theme'
 

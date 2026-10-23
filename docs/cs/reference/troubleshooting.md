@@ -1,3 +1,7 @@
+---
+description: "Proč se nevykreslují výsledky a jak to napravit: chybějící podpory, mechanismy, hlášení řešiče, chyby a varování, výsledky, které vypadají špatně, a nahlášení chyby."
+---
+
 # Řešení problémů
 
 ## Nevykreslují se žádné výsledky {#no-results-are-drawn}

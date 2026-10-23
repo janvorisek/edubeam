@@ -1,3 +1,7 @@
+---
+description: "The 2D Timoshenko beam element in EduBeam: degrees of freedom, local stiffness matrix with shear deformation, end hinges, element loads and transformation."
+---
+
 # Beam Element
 
 The only element in <Edubeam /> is a two-node **Timoshenko beam** in the x–z plane. Compared with the classic Euler–Bernoulli beam it adds shear deformation, which matters for deep or short members and disappears for slender ones. Sign conventions are summarised on the [conventions](/elements/conventions) page.

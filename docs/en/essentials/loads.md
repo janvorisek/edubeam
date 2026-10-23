@@ -1,3 +1,7 @@
+---
+description: "Nodal forces and moments, support settlements, uniform, trapezoidal and concentrated element loads, and temperature loads, with the sign convention for each."
+---
+
 # Loads
 
 All loads live in a **single load case** and act together. To compare scenarios, save each one as a project file or share link.

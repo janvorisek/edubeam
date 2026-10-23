@@ -1,3 +1,7 @@
+---
+description: "EduBeam 是什么：一款免费的浏览器端有限元求解器，用于二维梁、框架和桁架。介绍它能做什么、暂不支持什么、适合哪些人，以及本指南的结构。"
+---
+
 <script setup>
 import { VPTeamMembers } from 'vitepress/theme'
 

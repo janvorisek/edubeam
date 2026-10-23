@@ -1,3 +1,7 @@
+---
+description: "EduBeam hakkında sık sorulan sorular: ücret ve hesap, tarayıcılar ve cihazlar, kaybolan bir modeli geri alma, çevrimdışı kullanım, verilerin saklanması ve modelleme ipuçları."
+---
+
 # Sıkça sorulan sorular
 
 ## Genel {#general}

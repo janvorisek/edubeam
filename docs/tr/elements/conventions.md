@@ -1,3 +1,7 @@
+---
+description: "EduBeam işaret kabulleri: x sağa ve z aşağı genel eksenler, pozitif yer değiştirmeler, dönmeler ve yükler, elemanın yerel eksenleri, iç kuvvetler ve mesnet tepkileri."
+---
+
 # Koordinat sistemi ve işaret kabulü
 
 <Edubeam /> ile elde edilen "yanlış" sonuçların çoğu aslında beklenmedik bir işaret kabulünden kaynaklanır. Aşağıda anlatılanların tamamı çözücünün gerçekte kullandığı kabullerdir.

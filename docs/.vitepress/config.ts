@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitepress';
+import { defineConfig, type HeadConfig, type TransformContext } from 'vitepress';
 import { katex } from '@mdit/plugin-katex';
 import implicitFigures from 'markdown-it-implicit-figures';
 import path from 'path';
@@ -93,18 +93,100 @@ const customElements = [
   'annotation-xml',
 ];
 
+const SITE_URL = 'https://www.edubeam.app';
+
+/** Public URL of a page from its (rewritten) path, as served with `cleanUrls`. */
+function pageUrl(relativePath: string): string {
+  return `${SITE_URL}/${relativePath.replace(/(^|\/)index\.md$/, '$1').replace(/\.md$/, '')}`;
+}
+
+/**
+ * Canonical URL, hreflang alternates, Open Graph / Twitter cards and, on home pages, structured data.
+ * The sitemap already lists the alternates; repeating them in the page head covers crawlers that
+ * never read the sitemap, and link previews in LMSs and chat apps read the Open Graph tags.
+ */
+function seoHead({ pageData, siteConfig, siteData, title, description }: TransformContext): HeadConfig[] {
+  if (pageData.isNotFound) return [];
+
+  const locales = siteData.locales;
+  const localeOf = (page: string) => {
+    const dir = page.split('/')[0];
+    return dir in locales && dir !== 'root' ? dir : 'root';
+  };
+  const locale = localeOf(pageData.relativePath);
+  const key = locale === 'root' ? pageData.relativePath : pageData.relativePath.slice(locale.length + 1);
+  const lang = locales[locale].lang ?? 'en';
+  const url = pageUrl(pageData.relativePath);
+
+  const pages = new Set(siteConfig.pages.map((page) => siteConfig.rewrites.map[page] ?? page));
+  const alternates = Object.keys(locales)
+    .map((loc) => ({ loc, page: loc === 'root' ? key : `${loc}/${key}` }))
+    .filter(({ page }) => pages.has(page));
+
+  const head: HeadConfig[] = [['link', { rel: 'canonical', href: url }]];
+  if (alternates.length > 1) {
+    for (const { loc, page } of alternates) {
+      head.push(['link', { rel: 'alternate', hreflang: locales[loc].lang ?? 'en', href: pageUrl(page) }]);
+    }
+    if (alternates.some(({ loc }) => loc === 'root')) {
+      head.push(['link', { rel: 'alternate', hreflang: 'x-default', href: pageUrl(key) }]);
+    }
+  }
+
+  head.push(
+    ['meta', { property: 'og:type', content: 'website' }],
+    ['meta', { property: 'og:site_name', content: 'EduBeam' }],
+    ['meta', { property: 'og:title', content: title }],
+    ['meta', { property: 'og:description', content: description }],
+    ['meta', { property: 'og:url', content: url }],
+    ['meta', { property: 'og:locale', content: lang.replace('-', '_') }],
+    ['meta', { property: 'og:image', content: `${SITE_URL}/og-image.png` }],
+    ['meta', { property: 'og:image:width', content: '1200' }],
+    ['meta', { property: 'og:image:height', content: '630' }],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+    ['meta', { name: 'twitter:site', content: '@EdubeamApp' }]
+  );
+
+  if (pageData.frontmatter.layout === 'home') {
+    const app = {
+      '@context': 'https://schema.org',
+      '@type': 'WebApplication',
+      name: 'EduBeam',
+      url: 'https://run.edubeam.app',
+      applicationCategory: 'EducationalApplication',
+      operatingSystem: 'Any (web browser)',
+      isAccessibleForFree: true,
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+      inLanguage: lang,
+      description,
+    };
+    head.push(['script', { type: 'application/ld+json' }, JSON.stringify(app)]);
+  }
+
+  return head;
+}
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'EduBeam',
-  description: 'Learn, Contribute, Excel in Structural Analysis!',
+  description: 'Free 2D structural analysis online – beams, frames and trusses solved instantly in your browser.',
   // English lives in en/ beside the other languages but is served from the root, as it always was.
   rewrites: {
     'en/:rest*': ':rest*',
   },
   sitemap: {
-    hostname: 'https://www.edubeam.app',
+    hostname: SITE_URL,
+    // English is served from the root, so it is also the page for languages we don't have.
+    transformItems: (items) =>
+      items.map((item) => {
+        const links = item.links ?? [];
+        const english = links.find((link) => link.lang === 'en');
+        return english ? { ...item, links: [...links, { lang: 'x-default', url: english.url }] } : item;
+      }),
   },
-  //cleanUrls: true,
+  // Cloudflare Pages serves `page.html` at `/page` and redirects the `.html` form there, so every
+  // link and sitemap entry should already use the clean form. Old `.html` links keep working.
+  cleanUrls: true,
   lastUpdated: true,
   locales: {
     root: {
@@ -430,15 +512,20 @@ export default defineConfig({
       { icon: 'twitter', link: 'https://twitter.com/EdubeamApp' },
     ],
   },
-  // VitePress renders hero `name` and `text` as adjacent <span>s inside one <h1> with no
-  // whitespace between them, so search engines read "EduBeamFree structural analysis online".
-  // Append a space to the name; `.VPHero .name { white-space: normal }` collapses it visually.
   transformPageData(pageData) {
     const hero = pageData.frontmatter.hero;
+    // VitePress renders hero `name` and `text` as adjacent <span>s inside one <h1> with no
+    // whitespace between them, so search engines read "EduBeamFree structural analysis online".
+    // Append a space to the name; `.VPHero .name { white-space: normal }` collapses it visually.
     if (hero?.name && hero.text && !hero.name.endsWith(' ')) {
       hero.name += ' ';
     }
+    // Home pages have no heading of their own, so their <title> would be a bare "EduBeam".
+    if (hero?.text && !pageData.title) {
+      pageData.title = hero.text;
+    }
   },
+  transformHead: seoHead,
   head: [
     ['link', { rel: 'icon', href: '/logo.png' }],
     [

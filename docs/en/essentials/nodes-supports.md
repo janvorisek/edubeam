@@ -1,3 +1,7 @@
+---
+description: "Add and edit nodes, snap to the grid, place nodes on elements, and define fixed, pinned, roller and inclined supports, settlements and dimension lines."
+---
+
 # Nodes & supports
 
 Nodes are the points of the model. Elements connect nodes, and supports and nodal loads are attached to nodes.

@@ -1,3 +1,7 @@
+---
+description: "Sprache, SI- oder US-Einheiten, Zahlenformat, Achsen mit y nach oben oder z nach unten, Anzeige und Steuerung sowie was EduBeam im Browser speichert."
+---
+
 # Einheiten & Einstellungen
 
 Es gibt drei Wege zu den Einstellungen:

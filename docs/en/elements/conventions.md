@@ -1,3 +1,7 @@
+---
+description: "EduBeam sign conventions: x-right and z-down global axes, positive displacements, rotations and loads, element local axes, internal forces and reactions."
+---
+
 # Coordinate system & sign conventions
 
 Most "wrong" results in <Edubeam /> are really a sign-convention surprise. Everything below is what the solver actually uses.

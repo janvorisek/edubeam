@@ -1,3 +1,7 @@
+---
+description: "Escolha o idioma, unidades SI ou americanas, o formato numérico, eixos com y para cima ou z para baixo e as configurações de visualização, e veja o que fica no navegador."
+---
+
 # Unidades e configurações
 
 Há três caminhos para as configurações:

@@ -1,3 +1,7 @@
+---
+description: "Comprueba EduBeam a mano: viga biapoyada, voladizo, viga biempotrada y empotrada-apoyada, celosía de dos barras, gradiente térmico y desplazamiento impuesto."
+---
+
 # Comprobar resultados a mano
 
 <Edubeam /> es un buen lugar para practicar el hábito que todo ingeniero necesita: no fiarse nunca de un número que no se puede reproducir, al menos aproximadamente. Esta página da fórmulas cerradas para los casos clásicos y muestra lo que la aplicación devuelve para ellos, de modo que puedas construir cada modelo y comparar.

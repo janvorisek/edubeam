@@ -1,3 +1,7 @@
+---
+description: "Düğüm kuvvetleri ve momentleri, mesnet çökmeleri, düzgün yayılı, trapez yayılı ve tekil eleman yükleri ile sıcaklık yüklemeleri; her biri için işaret kabulüyle birlikte."
+---
+
 # Yükler
 
 Tüm yükler **tek bir yükleme durumunda** yer alır ve birlikte etkir. Farklı senaryoları karşılaştırmak için her birini ayrı bir proje dosyası ya da paylaşım bağlantısı olarak kaydedin.

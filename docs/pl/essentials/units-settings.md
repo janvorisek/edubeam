@@ -1,3 +1,7 @@
+---
+description: "Wybór języka, jednostek SI lub amerykańskich, formatu liczb, osi y w górę lub z w dół, ustawień widoku i sterowania. Oraz co EduBeam przechowuje w przeglądarce."
+---
+
 # Jednostki i ustawienia
 
 Do ustawień można dostać się na trzy sposoby:

@@ -1,3 +1,7 @@
+---
+description: "Všechny klávesové zkratky, akce myši a dotyková gesta v EduBeamu pro kreslení, výběr, posun a přiblížení zobrazení a ovládání panelů objektů."
+---
+
 # Klávesnice, myš a dotyk
 
 Klávesové zkratky fungují, jen když má fokus zobrazení. Při psaní do buňky tabulky nebo do dialogu je aplikace ignoruje, proto nejprve klikněte na plátno.

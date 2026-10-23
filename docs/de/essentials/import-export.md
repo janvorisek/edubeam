@@ -85,7 +85,7 @@ Der Viewer-Modus ist zum Anschauen gedacht, aber nicht gesperrt: Besucher könne
 | --- | --- |
 | `model=<data>` | Lädt das kodierte Modell und passt es an den Bildschirm an. |
 | `viewer=1` | Viewer-Modus (siehe oben). |
-| `lang=<code>` | Schaltet die Oberflächensprache um: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`. |
+| `lang=<code>` | Schaltet die Oberflächensprache um: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`, `ko`. |
 | `panel=examples` | Öffnet sofort die Beispielgalerie. |
 
 Nach dem Auslesen entfernt EduBeam die Parameter aus der Adresszeile.

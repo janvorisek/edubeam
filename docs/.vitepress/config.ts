@@ -13,6 +13,7 @@ import {
   id,
   it,
   ja,
+  ko,
   navFor,
   pl,
   pt,
@@ -411,6 +412,18 @@ export default defineConfig({
         sidebar: sidebarFor('/ja', ja),
       },
     },
+    ko: {
+      label: '한국어',
+      lang: 'ko',
+      description: '무료 온라인 2D 구조 해석 – 보, 라멘, 트러스를 브라우저에서 바로 해석합니다.',
+      themeConfig: {
+        nav: navFor('/ko', 'ko', ko),
+        outline: { label: '이 페이지의 내용' },
+        docFooter: { prev: '이전 페이지', next: '다음 페이지' },
+        lastUpdated: { text: '마지막 업데이트' },
+        sidebar: sidebarFor('/ko', ko),
+      },
+    },
   },
   themeConfig: {
     outline: 'deep',
@@ -635,6 +648,23 @@ export default defineConfig({
                   selectText: '選択',
                   navigateText: '移動',
                   closeText: '閉じる',
+                },
+              },
+            },
+          },
+          ko: {
+            translations: {
+              button: {
+                buttonText: '문서 검색',
+                buttonAriaLabel: '문서 검색',
+              },
+              modal: {
+                noResultsText: '검색 결과 없음',
+                resetButtonTitle: '검색어 지우기',
+                footer: {
+                  selectText: '선택',
+                  navigateText: '이동',
+                  closeText: '닫기',
                 },
               },
             },

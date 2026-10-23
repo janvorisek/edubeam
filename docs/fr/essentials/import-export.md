@@ -85,7 +85,7 @@ Le mode visionneuse est fait pour regarder, mais il n’est pas verrouillé : le
 | --- | --- |
 | `model=<data>` | Charge le modèle encodé et l’ajuste à l’écran. |
 | `viewer=1` | Mode visionneuse (voir ci-dessus). |
-| `lang=<code>` | Change la langue de l’interface : `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`. |
+| `lang=<code>` | Change la langue de l’interface : `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`, `ko`. |
 | `panel=examples` | Ouvre directement la galerie d’exemples. |
 
 Après les avoir lus, EduBeam retire les paramètres de la barre d’adresse.

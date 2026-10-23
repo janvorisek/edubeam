@@ -85,7 +85,7 @@ La modalità visualizzatore serve per guardare, ma non è bloccata: i visitatori
 | --- | --- |
 | `model=<data>` | Carica il modello codificato e lo adatta allo schermo. |
 | `viewer=1` | Modalità visualizzatore (vedi sopra). |
-| `lang=<code>` | Cambia la lingua dell'interfaccia: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`. |
+| `lang=<code>` | Cambia la lingua dell'interfaccia: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`, `ko`. |
 | `panel=examples` | Apre subito la galleria degli esempi. |
 
 Dopo averli letti, EduBeam rimuove i parametri dalla barra degli indirizzi.

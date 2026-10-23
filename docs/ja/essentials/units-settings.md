@@ -16,7 +16,7 @@ description: "言語、SI 単位または米国慣用単位、数値の表示形
 
 ![設定 → 言語と地域](/screenshots/ja/settings-language.webp)
 
-**言語。** インターフェースは 17 の言語で利用できます。`?lang=<code>` を付けてアプリを開くこともできます：`en`、`cs`、`de`、`fr`、`es`、`pt`、`pl`、`cn`、`th`、`uk`、`ru`、`tr`、`hi`、`vi`、`it`、`id`、`ja`。
+**言語。** インターフェースは 18 の言語で利用できます。`?lang=<code>` を付けてアプリを開くこともできます：`en`、`cs`、`de`、`fr`、`es`、`pt`、`pl`、`cn`、`th`、`uk`、`ru`、`tr`、`hi`、`vi`、`it`、`id`、`ja`、`ko`。
 
 **数値の表示形式。** 結果の数値の表記方法です：*自動*、*指数表記*（初期値）、*工学表記*。[数値の表示形式](/ja/essentials/results#number-format)をご覧ください。
 

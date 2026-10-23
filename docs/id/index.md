@@ -33,7 +33,7 @@ features:
     linkText: Mengajar dengan EduBeam
   - icon: 🌍
     title: Bahasa Anda, satuan Anda
-    details: 17 bahasa antarmuka, satuan SI atau US customary, dan pilihan sumbu z ke bawah atau sumbu y ke atas seperti di buku teks.
+    details: 18 bahasa antarmuka, satuan SI atau US customary, dan pilihan sumbu z ke bawah atau sumbu y ke atas seperti di buku teks.
     link: /id/essentials/units-settings
     linkText: Satuan & pengaturan
   - icon: 🔗

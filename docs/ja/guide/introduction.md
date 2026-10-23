@@ -78,7 +78,7 @@ const members = [
 ## 対象ユーザー {#who-is-it-for}
 
 - 構造力学を学び、手計算の結果をすぐに確かめたい**学生**。[手計算による結果の確認](/ja/guide/verification)をご覧ください。
-- 支点、ヒンジ、荷重によって断面力がどう変わるかを、プロジェクターでその場で、17 の言語のいずれかで見せたい**教員**。[EduBeam を使った授業](/ja/guide/teaching)をご覧ください。
+- 支点、ヒンジ、荷重によって断面力がどう変わるかを、プロジェクターでその場で、18 の言語のいずれかで見せたい**教員**。[EduBeam を使った授業](/ja/guide/teaching)をご覧ください。
 - 重いデスクトップソフトを開く前に、手早く妥当性を確かめたい**技術者**。
 
 ## このガイドの構成 {#how-this-guide-is-organised}
@@ -95,7 +95,7 @@ const members = [
 
 ## 言語 {#languages}
 
-インターフェースは English、Bahasa Indonesia、Čeština、Deutsch、Español、Français、Italiano、Polski、Português、Tiếng Việt、Русский、Türkçe、Українська、हिन्दी、日本語、ไทย、汉语で利用できます。EduBeam はブラウザの言語に合わせて表示言語を選びます。**設定 → 言語と地域**で変更するか、`?lang=` パラメーターを付けてアプリを開いてください。例：[run.edubeam.app/?lang=ja](https://run.edubeam.app/?lang=ja){target="_blank"}。
+インターフェースは English、Bahasa Indonesia、Čeština、Deutsch、Español、Français、Italiano、Polski、Português、Tiếng Việt、Русский、Türkçe、Українська、हिन्दी、日本語、한국어、ไทย、汉语で利用できます。EduBeam はブラウザの言語に合わせて表示言語を選びます。**設定 → 言語と地域**で変更するか、`?lang=` パラメーターを付けてアプリを開いてください。例：[run.edubeam.app/?lang=ja](https://run.edubeam.app/?lang=ja){target="_blank"}。
 
 ## 作者とクレジット {#authors-credits}
 

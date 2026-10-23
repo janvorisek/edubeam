@@ -85,7 +85,7 @@ Mode penampil ditujukan untuk melihat, tetapi tidak dikunci: pengunjung tetap da
 | --- | --- |
 | `model=<data>` | Memuat model yang disandikan dan menyesuaikannya dengan layar. |
 | `viewer=1` | Mode penampil (lihat di atas). |
-| `lang=<code>` | Mengganti bahasa antarmuka: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`. |
+| `lang=<code>` | Mengganti bahasa antarmuka: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`, `ko`. |
 | `panel=examples` | Langsung membuka galeri contoh. |
 
 Setelah membacanya, EduBeam menghapus parameter tersebut dari bilah alamat.

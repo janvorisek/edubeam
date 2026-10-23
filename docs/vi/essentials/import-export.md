@@ -85,7 +85,7 @@ Chế độ xem dùng để xem, nhưng không bị khóa: người xem vẫn c�
 | --- | --- |
 | `model=<data>` | Tải mô hình đã mã hóa và thu vừa màn hình. |
 | `viewer=1` | Chế độ xem (xem ở trên). |
-| `lang=<code>` | Đổi ngôn ngữ giao diện: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`. |
+| `lang=<code>` | Đổi ngôn ngữ giao diện: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`, `ko`. |
 | `panel=examples` | Mở ngay thư viện ví dụ. |
 
 Sau khi đọc các tham số, EduBeam xóa chúng khỏi thanh địa chỉ.

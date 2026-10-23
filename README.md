@@ -142,7 +142,7 @@ You don't have to write code to help. Bug reports, example models, docs fixes an
 - **Want to send code?** Branch from `dev`, run `npm run test:run` and `npm run lint`, then open a pull request against `dev`. Small, focused PRs are the easiest to review, and before/after screenshots help if you've changed the UI.
 - **Speak another language?** The app strings are in [`src/locales/`](src/locales). [`en.json`](src/locales/en.json) is the source, and the docs are in [`docs/<lang>/`](docs). You can fix a translation or start a new language.
 
-edubeam currently speaks English, Czech, German, Spanish, French, Polish, Portuguese, Russian, Ukrainian, Chinese, Thai, Turkish, Hindi, Vietnamese, Italian, Indonesian and Japanese. Thanks to everyone who helped get it there! ❤️
+edubeam currently speaks English, Czech, German, Spanish, French, Polish, Portuguese, Russian, Ukrainian, Chinese, Thai, Turkish, Hindi, Vietnamese, Italian, Indonesian, Japanese and Korean. Thanks to everyone who helped get it there! ❤️
 
 ## License
 

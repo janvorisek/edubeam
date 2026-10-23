@@ -16,7 +16,7 @@ Pengaturan disimpan di browser Anda dan tetap ada setelah halaman dimuat ulang. 
 
 ![Pengaturan → Bahasa & Wilayah](/screenshots/id/settings-language.webp)
 
-**Bahasa.** 17 bahasa antarmuka. Anda juga dapat membuka aplikasi dengan `?lang=<code>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`.
+**Bahasa.** 18 bahasa antarmuka. Anda juga dapat membuka aplikasi dengan `?lang=<code>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`, `ko`.
 
 **Format angka.** Cara nilai hasil ditulis: *Otomatis*, *Ilmiah* (bawaan), atau *Teknik*. Lihat [Format angka](/id/essentials/results#number-format).
 

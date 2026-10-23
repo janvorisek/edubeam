@@ -1,0 +1,724 @@
+{
+  "tabView": {
+    "viewer": "뷰어",
+    "settings": "설정",
+    "results": "결과"
+  },
+  "common": {
+    "label": "이름",
+    "node": "절점",
+    "element": "요소",
+    "crossSection": "단면",
+    "material": "재료",
+    "settings": "설정",
+    "actions": "작업",
+    "coords": "좌표",
+    "type": "유형",
+    "nodes": "절점",
+    "endHinges": "단부 힌지",
+    "massMatrix": "질량 행렬",
+    "target": "대상",
+    "components": "성분",
+    "loadCase": "하중 케이스",
+    "loads": "하중",
+    "clearMesh": "구조물 지우기",
+    "shareModel": "모델 공유",
+    "documentation": "사용 설명서",
+    "addUsingDialog": "대화 상자로 추가",
+    "addUsingMouse": "마우스로 추가",
+    "edit": "편집",
+    "copy": "복사",
+    "delete": "삭제",
+    "stiffnessMatrix": "강성 행렬",
+    "normalForce": "축력",
+    "shearForce": "전단력",
+    "bendingMoment": "휨모멘트",
+    "deformedShape": "변형 형상",
+    "reactions": "반력",
+    "elements": "요소",
+    "confirm": "확인",
+    "saveProject": "프로젝트 저장",
+    "openProject": "프로젝트 열기",
+    "lcs": "국부 좌표계",
+    "paste": "붙여넣기",
+    "addNew": "새로 추가",
+    "whatisnew": "새로운 기능",
+    "reverse_orientation": "치수 뒤집기",
+    "undo": "실행 취소",
+    "redo": "다시 실행",
+    "ok": "확인"
+  },
+  "nodes": {
+    "addNode": "절점 추가",
+    "editNode": "절점 편집",
+    "defineSupports": "지점 조건",
+    "lcsAngle": "절점 좌표계 각도"
+  },
+  "supports": {
+    "free": "자유",
+    "pin": "힌지",
+    "roller": "롤러",
+    "verticalRoller": "수직 롤러",
+    "slider": "슬라이더",
+    "verticalSlider": "수직 슬라이더",
+    "rotation": "회전만 구속",
+    "fixed": "고정",
+    "custom": "사용자 정의"
+  },
+  "elements": {
+    "addElement": "요소 추가",
+    "editElement": "요소 편집",
+    "swapNodeOrder": "절점 교환",
+    "hingeStart": "시작단 힌지",
+    "hingeEnd": "끝단 힌지",
+    "hinge": "힌지",
+    "from": "시작",
+    "to": "끝"
+  },
+  "loads": {
+    "addNodalLoad": "절점 하중 추가",
+    "addElementLoad": "요소 하중 추가",
+    "addLoad": "하중 추가",
+    "nodalLoad": "절점 하중",
+    "elementLoad": "요소 하중",
+    "prescribedDisplacement": "강제 변위",
+    "addPrescribedDisplacement": "강제 변위 지정",
+    "UDL": "등분포하중",
+    "forceMoment": "힘/모멘트",
+    "editLoad": "하중 편집",
+    "loadPositionOnBeam": "시작 절점 기준 하중 위치",
+    "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... 하연 온도 변화에서 상연 온도 변화를 뺀 값",
+    "temperatureBending": "ΔT<sub>c</sub> ... 축방향 온도 변화",
+    "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
+    "temperatureDeltaTs": "ΔT<sub>c</sub>",
+    "temperatureDeltaTsNoHTML": "ΔTc",
+    "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
+  },
+  "tabs": {
+    "nodes": "절점",
+    "elements": "요소",
+    "loads": "하중",
+    "materials": "재료",
+    "crossSections": "단면",
+    "results": "결과"
+  },
+  "crossSection": {
+    "area": "단면적",
+    "h": "높이",
+    "iy": "Iy",
+    "k": "전단 보정계수",
+    "iz": "Iz",
+    "b": "폭",
+    "centroid": "도심",
+    "alpha": "주축 각도",
+    "radiusOfGyration": "회전반경",
+    "polygonal": "다각형 형상",
+    "derivedFromShape": "다각형 형상에서 계산된 값입니다 – 바꾸려면 형상을 편집하십시오"
+  },
+  "material": {
+    "e": "E",
+    "g": "G",
+    "density": "밀도",
+    "alphaT": "α_T"
+  },
+  "settings": {
+    "results_scale": "결과 배율",
+    "grid_snap_step": "그리드 스냅 간격",
+    "snap_to_grid": "그리드 스냅",
+    "show_crosshair": "십자선 표시",
+    "model_checks": "모델 검사",
+    "show_mechanisms": "불안정 구조물의 움직임 표시",
+    "animate_mechanisms": "움직임 애니메이션",
+    "number_format": "숫자 형식",
+    "number_format_description": "결과 값을 표기하는 방식입니다. 소수점 기호는 언어 설정을 따릅니다.",
+    "number_format_auto": "자동",
+    "number_format_scientific": "과학적 표기 (1.5 · 10⁴)",
+    "number_format_engineering": "공학적 표기 (15 · 10³)",
+    "language": "언어",
+    "language_and_locale": "언어 및 지역",
+    "show_normal_force": "축력 표시",
+    "show_shear_force": "전단력 표시",
+    "show_bending_moment": "휨모멘트 표시",
+    "show_deformed_shape": "변형 형상 표시",
+    "show_loads": "하중 표시",
+    "units": {
+      "units": "단위",
+      "length": "길이",
+      "mass": "질량",
+      "force": "힘",
+      "moment": "휨모멘트",
+      "pressure": "응력",
+      "area": "면적",
+      "areaM2": "단면2차모멘트",
+      "system": "단위계",
+      "systemSI": "SI (미터법)",
+      "systemUS": "미국 단위 (야드파운드법)",
+      "systemCustom": "사용자 정의",
+      "temperature": "온도",
+      "sectionLength": "단면 치수",
+      "displacement": "변위"
+    },
+    "grid": "그리드",
+    "show_grid": "그리드 표시",
+    "mouse": {
+      "mouse": "마우스",
+      "pan_button": "화면 이동 버튼",
+      "wheel": "마우스 휠",
+      "right_button": "오른쪽 버튼",
+      "all": "마우스 휠 또는 오른쪽 버튼"
+    },
+    "colors": {
+      "colors": "색상"
+    },
+    "results": {
+      "results": "결과"
+    },
+    "viewer_settings": "뷰어 설정",
+    "controls_and_shortcuts": "조작 및 단축키",
+    "language_and_locale_subtitle": "언어, 지역화 및 단위 설정",
+    "viewer_settings_subtitle": "배율, 색상, 그리드 등",
+    "controls_and_shortcuts_subtitle": "키보드 및 마우스 설정",
+    "viewer_preview": "뷰어 미리보기",
+    "language_description": "인터페이스에 사용할 언어를 선택합니다.",
+    "units_description": "사용할 측정 단위를 선택합니다.",
+    "axisConvention": "좌표계",
+    "axisConvention_description": "입력값과 결과에서 연직축이 향하는 방향입니다. 모델과 저장된 파일에는 영향을 주지 않습니다.",
+    "axisConvention_zDown": "x 오른쪽, z 아래",
+    "axisConvention_yUp": "x 오른쪽, y 위",
+    "reset_settings": "설정 초기화",
+    "sizes": {
+      "sizes": "크기",
+      "supportSize": "지점 크기"
+    },
+    "font_size": "글꼴 크기",
+    "result_label_orientation": "결과 값 방향",
+    "result_label_orientation_axis": "다이어그램에 수직",
+    "result_label_orientation_horizontal": "항상 수평",
+    "result_labels": "결과 값 표시"
+  },
+  "sideSettings": {
+    "showDeformedShape": "변형 형상",
+    "supports": "지점",
+    "loads": "하중",
+    "nodeLabels": "절점 이름",
+    "elementLabels": "요소 이름",
+    "more_settings": "설정 더 보기",
+    "showReactions": "반력"
+  },
+  "viewer": {
+    "toggleGrid": "그리드 켜기/끄기 (G)",
+    "toggleSnap": "그리드 스냅 켜기/끄기 (S)",
+    "toggleCrosshair": "십자선 켜기/끄기",
+    "boxSelect": "영역 선택",
+    "centerContent": "가운데 맞춤",
+    "fitContent": "화면에 맞추기",
+    "holdCtrl": "Ctrl 키를 누른 채 마우스로 추가"
+  },
+  "dofs": {
+    "bcs": "구속 자유도"
+  },
+  "results": {
+    "results": "결과",
+    "nodal_results": "절점 결과",
+    "element_results": "요소 결과",
+    "end_forces": "단부력 (국부 좌표계 기준)",
+    "exportCsv": "CSV 내보내기",
+    "exportHint": "두 결과 표를 화면에 표시된 단위로 내려받아 스프레드시트에서 바로 쓸 수 있습니다.",
+    "copied": "결과를 클립보드에 복사했습니다",
+    "copyFailed": "결과를 클립보드에 복사할 수 없습니다."
+  },
+  "materials": {
+    "addMaterial": "재료 추가",
+    "material_library": "재료 라이브러리",
+    "section_library": "단면 라이브러리"
+  },
+  "crossSections": {
+    "addCrossSection": "단면 추가",
+    "addPolygonal": "다각형 단면"
+  },
+  "dialogs": {
+    "addNode": {
+      "addNewNode": "새 절점 추가",
+      "coordinate_x": "X 좌표",
+      "coordinate_z": "{v} 좌표",
+      "addNode": "절점 추가"
+    },
+    "common": {
+      "cancel": "취소",
+      "orChooseFromLibrary": "또는 라이브러리에서 선택"
+    },
+    "addElement": {
+      "fromNodeId": "시작 절점",
+      "toNodeId": "끝 절점",
+      "addElement": "요소 추가",
+      "addNewElement": "새 요소 추가",
+      "material": "재료",
+      "crossSection": "단면"
+    },
+    "addNodalLoad": {
+      "addNewNodalLoad": "새 절점 하중 추가",
+      "addNodalLoad": "절점 하중 추가"
+    },
+    "addElementLoad": {
+      "addNewElementLoad": "새 요소 하중 추가",
+      "addElementLoad": "요소 하중 추가"
+    },
+    "addMaterial": {
+      "addNewMaterial": "새 재료 추가",
+      "addMaterial": "재료 추가",
+      "E": "E - 탄성계수",
+      "G": "G - 전단탄성계수",
+      "density": "ρ - 밀도",
+      "alphaT": "α - 열팽창계수"
+    },
+    "addCrossSection": {
+      "addNewCrossSection": "새 단면 추가",
+      "addCrossSection": "단면 추가",
+      "orDefinePolygon": "또는 다각형 형상 정의"
+    },
+    "editNodalLoad": {
+      "editNodalLoad": "절점 하중 편집"
+    },
+    "editElementLoad": {
+      "editElementLoad": "요소 하중 편집"
+    },
+    "update": {
+      "title": "업데이트 가능",
+      "update": "업데이트",
+      "text1": "앱을 초기화해야 하는 업데이트를 배포하고 있습니다. 진행 중인 작업은 모두 사라집니다.",
+      "text2": "현재 작업을 유지하려면 업데이트를 취소할 수 있습니다."
+    },
+    "editNode": {
+      "editNode": "절점 편집"
+    },
+    "changelog": {
+      "title": "새로운 기능",
+      "description": "새로운 기능과 개선 사항, 그리고 준비 중인 기능을 미리 소개합니다.",
+      "contributors": "이번 릴리스 기여자: {names}",
+      "comingSoon": "출시 예정"
+    },
+    "polygonSection": {
+      "title": "새 다각형 단면",
+      "editTitle": "다각형 단면 편집",
+      "preset": "프리셋",
+      "apply": "적용",
+      "snapStep": "스냅 간격",
+      "centerAtCentroid": "도심을 원점으로",
+      "hint": "꼭짓점을 끌어 이동하고, 변의 중점을 클릭해 꼭짓점을 추가하고, 꼭짓점을 더블클릭해 삭제합니다.",
+      "outline": "외곽선",
+      "hole": "구멍",
+      "addHole": "구멍 추가",
+      "addVertex": "꼭짓점 추가",
+      "removeContour": "구멍 삭제",
+      "properties": "단면 특성",
+      "invalidShape": "형상은 면적이 양수인 단순 다각형이어야 합니다. 변이 서로 교차하면 안 되며, 구멍은 외곽선 안에 있어야 합니다.",
+      "labelInUse": "이미 사용 중인 이름",
+      "save": "저장",
+      "editShape": "다각형 형상 편집",
+      "presets": {
+        "rectangle": "직사각형",
+        "iSection": "I형 단면",
+        "tSection": "T형 단면",
+        "lSection": "L형 단면",
+        "channel": "ㄷ형 (U)",
+        "box": "각형 중공",
+        "circle": "원형",
+        "pipe": "원형 중공"
+      },
+      "params": {
+        "b": "폭 b",
+        "h": "높이 h",
+        "tw": "웨브 tw",
+        "tf": "플랜지 tf",
+        "t": "두께 t",
+        "d": "지름 d",
+        "n": "분할 수"
+      },
+      "vertices": "꼭짓점",
+      "legendOutline": "외곽선",
+      "legendHole": "구멍",
+      "legendPrincipal": "주축 및 관성 타원",
+      "legendCentroid": "도심",
+      "shape": "형상",
+      "noShape": "다각형 형상 없음",
+      "centroidal": "도심축",
+      "centroidalNote": "모든 단면2차모멘트는 도심을 지나는 축에 대한 값입니다. I₁, I₂는 주단면2차모멘트이며, α는 y축에서 1축까지의 각도입니다.",
+      "outOfPlaneNote": "이 단면은 골조 평면에 대해 대칭이 아닙니다. 2D 해석은 부재가 전체 길이에 걸쳐 횡방향 처짐(화면 밖 방향)과 비틀림에 대해 구속된 경우에만 정확합니다. 예를 들어 슬래브나 촘촘한 가새가 이런 구속을 제공합니다. 절점의 지점만으로는 충분하지 않습니다. 구속되지 않은 부재는 하중이 전단중심을 벗어나 작용하므로 비틀리기도 하며, 이 비틀림은 처짐에 포함되지 않습니다.",
+      "outOfPlaneRestrained": "전체 길이에 걸쳐 횡방향 변위와 비틀림 구속: {inertia}",
+      "outOfPlaneFree": "횡방향 처짐 자유 (비틀림은 여전히 미포함): {inertia}"
+    }
+  },
+  "tooltip": {
+    "materials": {},
+    "material": {
+      "alphaT": "열팽창계수는 온도가 변할 때 물체의 크기가 얼마나 변하는지를 나타냅니다.",
+      "e": "탄성계수(영 계수)는 길이 방향으로 힘이 작용할 때의 인장 또는 압축 강성을 나타냅니다.",
+      "g": "전단탄성계수는 전단응력에 의한 변형에 저항하는 정도를 나타내는 성질로, 표면에 평행하게 작용하는 힘에 대한 재료의 강성을 의미합니다.",
+      "density": "밀도는 물질의 단위 부피에 들어 있는 질량을 나타냅니다."
+    }
+  },
+  "footer": {
+    "reportIssue": "문제 신고",
+    "requestFeature": "기능 요청",
+    "released": "출시"
+  },
+  "sharing": {
+    "shareViaURL": "URL로 모델 공유",
+    "instructions": "필드 안을 아무 곳이나 클릭하면 링크가 복사됩니다. 복사한 링크를 공동 작업자에게 보내십시오.",
+    "copyCue": "링크 복사",
+    "openLink": "링크 열기",
+    "nativeShare": "시스템 공유 창으로 공유",
+    "linkCopied": "링크를 클립보드에 복사했습니다",
+    "copyFailed": "자동으로 복사하지 못했습니다. 키보드 단축키를 사용하십시오.",
+    "shortLink": "짧은 링크",
+    "shortLinkHint": "길이가 약 절반입니다. 이전 버전의 edubeam을 쓰는 사람은 앱을 업데이트해야 열 수 있습니다."
+  },
+  "tour": {
+    "menu": {
+      "title": "메뉴",
+      "description": "프로젝트를 열고 저장하고 공유하거나, 이미지를 내보내거나, 예제를 불러오거나, 이 둘러보기나 첫 번째 보 과제를 다시 시작할 수 있습니다."
+    },
+    "undoRedo": {
+      "title": "실행 취소 및 다시 실행",
+      "description": "변경 내용을 한 단계씩 되돌리거나 다시 적용합니다. Ctrl+Z와 Ctrl+Shift+Z도 같은 기능을 합니다."
+    },
+    "viewerControls": {
+      "title": "뷰어 버튼",
+      "description": "뷰어 버튼으로 구조물을 화면 가운데에 놓거나 화면에 맞추고, 표시할 항목을 선택할 수 있습니다."
+    },
+    "viewerSettings": {
+      "title": "표시 옵션 설정",
+      "description": "축력, 전단력, 휨모멘트, 변형 형상 중 원하는 것을 표시하거나 모두 함께 표시할 수 있습니다."
+    },
+    "gridUnits": {
+      "title": "그리드, 스냅 및 단위",
+      "description": "G 키로 그리드를 표시하고 S 키로 새 절점을 그리드에 스냅합니다. 단위를 클릭하면 단위, 언어 또는 좌표계를 바꿀 수 있습니다."
+    },
+    "bottomBar": {
+      "title": "객체 추가, 삭제 및 수정",
+      "description": "구조물의 모든 부분을 손쉽게 바꿀 수 있는 중심 공간입니다. 절점부터 요소, 하중, 재료, 단면까지 빠르고 폭넓게 수정할 수 있습니다."
+    },
+    "help": {
+      "title": "도움말",
+      "description": "? 버튼은 현재 열린 탭을 설명합니다. 열 제목 옆의 ?는 해당 열을 설명합니다."
+    },
+    "previousButton": "이전",
+    "nextButton": "다음",
+    "finishButton": "완료",
+    "close": "둘러보기 닫기"
+  },
+  "firstBeam": {
+    "title": "첫 번째 보",
+    "step": "{total}단계 중 {n}단계",
+    "close": "가이드 닫기",
+    "finish": "완료",
+    "next": "다음",
+    "steps": {
+      "tool": {
+        "title": "그리기 도구 선택",
+        "body": "아래 {elementsTab} 탭에서 커서 아이콘이 있는 {addElement} 버튼을 누릅니다."
+      },
+      "draw": {
+        "title": "보 그리기",
+        "body": "보가 시작하는 점을 클릭한 다음 끝나는 점을 클릭합니다. 양 끝은 그리드에 스냅됩니다."
+      },
+      "supports": {
+        "title": "지점 설정",
+        "body": "왼쪽 끝을 클릭하고 {defineSupports}을(를) 열어 Dx와 D{v}를 체크하면 힌지 지점이 됩니다. 그런 다음 오른쪽 끝을 클릭하고 D{v}를 체크하면 롤러 지점이 됩니다."
+      },
+      "load": {
+        "title": "하중 가하기",
+        "body": "보를 클릭하고 {addLoad}을(를) 선택한 다음 f{v}에 값을 입력하고 확인합니다."
+      },
+      "display": {
+        "title": "표시 항목 선택",
+        "body": "오른쪽 위의 톱니바퀴를 누르면 표시 옵션이 열립니다. 부재력, 변형 형상, 반력 등을 표시할 수 있습니다. 지금 열어 보십시오."
+      },
+      "fit": {
+        "title": "화면에 맞추기",
+        "body": "오른쪽 위의 버튼으로 모델을 화면에 맞추거나 가운데에 놓을 수 있습니다. 지금 화면에 맞추기를 누르고, 그림이 화면 밖으로 벗어날 때마다 다시 누르십시오."
+      },
+      "results": {
+        "title": "결과 확인",
+        "body": "휨모멘트와 변형 형상이 보 위에 그려지며 편집할 때마다 갱신됩니다. 모든 절점, 요소, 하중은 아래 표에도 나열되어 있어 정확한 값을 입력할 수 있습니다. {undo}을(를) 누르면 이전 모델로 돌아갑니다."
+      }
+    }
+  },
+  "welcome": {
+    "title": "<span class=\"edubeam\">edubeam</span>에 오신 것을 환영합니다! 🚀",
+    "description": "보, 라멘, 트러스를 모델링하면 그리는 동안 부재력을 바로 볼 수 있습니다.",
+    "start": "어떻게 시작하시겠습니까?",
+    "showAround": "둘러보기",
+    "showAroundHint": "뷰어, 표시 옵션, 하단 바를 간단히 살펴봅니다.",
+    "drawFirstBeam": "첫 번째 보 그리기",
+    "drawFirstBeamHint": "보를 그리고 지점과 하중을 설정하는 짧은 안내 과제입니다.",
+    "openExample": "예제 열기",
+    "openExampleHint": "미리 만들어진 모델에서 시작해 수정해 봅니다.",
+    "skip": "나중에 하기"
+  },
+  "confirmation": {
+    "clearMesh": {
+      "message": "구조물을 지우시겠습니까? Ctrl+Z로 되돌릴 수 있으며, 최근 구조물에도 보관됩니다.",
+      "title": "구조물을 지우시겠습니까?",
+      "materials": "재료 삭제",
+      "crossSections": "단면 삭제"
+    },
+    "resetSettings": {
+      "title": "설정을 초기화하시겠습니까?",
+      "message": "모든 설정을 기본값으로 초기화하시겠습니까? 이 작업은 되돌릴 수 없습니다."
+    },
+    "splitElementAndPlaceNode": {
+      "title": "절점 배치 확인",
+      "message": "<p>보 {label} 위에 절점을 배치하려는 것 같습니다.</p><p class=\"mt-3\">요소를 분할하여 절점을 연결하시겠습니까, 아니면 구조물에 연결하지 않고 절점만 배치하시겠습니까?</p>",
+      "split": "구조물에 연결"
+    },
+    "placeIndividualNode": "독립 절점으로 배치"
+  },
+  "selection": {
+    "node": "절점",
+    "element": "요소",
+    "dimension": "치수선",
+    "nodal-load": "절점 하중",
+    "element-load": "요소 하중",
+    "prescribedbc-load": "강제 변위"
+  },
+  "validators": {
+    "enterValue": "값을 입력하십시오",
+    "invalidNumber": "잘못된 숫자",
+    "positiveNumber": "0보다 큰 수를 입력하십시오",
+    "between": "{min}~{max} 범위의 값을 입력하십시오",
+    "sameNodes": "요소는 서로 다른 두 절점을 연결해야 합니다",
+    "materialInUse": "이 재료는 요소 {elements}에서 사용 중입니다. 삭제하기 전에 해당 요소에 다른 재료를 지정하십시오.",
+    "crossSectionInUse": "이 단면은 요소 {elements}에서 사용 중입니다. 삭제하기 전에 해당 요소에 다른 단면을 지정하십시오."
+  },
+  "solveDiagnostics": {
+    "summaryErrors": "모델 오류: {errors}",
+    "summaryWarnings": "모델 경고: {warnings}",
+    "summaryIncomplete": "구조물 중 {count}개 부분에 지점이 필요합니다.",
+    "incompleteChip": "지점 필요",
+    "hideMotion": "움직임 숨기기",
+    "showMotion": "움직임 표시",
+    "dismissWarnings": "이 경고 숨기기",
+    "collapseErrors": "이 메시지 접기",
+    "showDetails": "자세히 보기",
+    "blockedTitle": "모델을 해석할 수 없습니다",
+    "blockedDescription": "모델을 해석하기 전에 나열된 오류를 수정하십시오.",
+    "warningsTitle": "모델 경고",
+    "warningsDescription": "모델을 해석했지만 다음 경고가 발견되었습니다.",
+    "incompleteTitle": "아직 해석할 수 없습니다",
+    "incompleteDescription": "구조물이 제자리에 고정되면 결과가 표시됩니다. 캔버스의 점선 윤곽은 구조물이 아직 어떻게 움직일 수 있는지 보여 줍니다.",
+    "errors": "오류",
+    "warnings": "경고",
+    "incomplete": "아직 필요",
+    "issues": {
+      "elementNodeCount": "요소 {element}은(는) 정확히 2개의 절점을 참조해야 합니다.",
+      "elementSameNode": "요소 {element}의 양 끝이 같은 절점을 참조합니다.",
+      "elementMissingNode": "요소 {element}에서 참조하는 절점 {node}이(가) 없습니다.",
+      "elementMissingMaterial": "요소 {element}에서 참조하는 재료 {material}이(가) 없습니다.",
+      "elementMissingCrossSection": "요소 {element}에서 참조하는 단면 {crossSection}이(가) 없습니다.",
+      "nodalLoadMissingNode": "절점 하중 #{index}에서 참조하는 절점 {node}이(가) 없습니다.",
+      "nodalLoadInvalid": "절점 하중 #{index}에 잘못된 값이 있습니다.",
+      "prescribedMissingNode": "강제 변위 #{index}에서 참조하는 절점 {node}이(가) 없습니다.",
+      "prescribedInvalid": "강제 변위 #{index}에 잘못된 값이 있습니다.",
+      "elementLoadMissingElement": "요소 하중 #{index}에서 참조하는 요소 {element}이(가) 없습니다.",
+      "supportedNodeNotConnected": "절점 {node}에 지점이 있지만 연결된 요소가 없어 지점이 아무것도 지지하지 않습니다.",
+      "nodeNotConnected": "절점 {node}은(는) 어떤 요소에도 연결되어 있지 않아 해석에서 무시됩니다.",
+      "insufficientSupports": "2D 해석에서 안정하려면 모델에 구속된 자유도가 3개 이상 필요합니다.",
+      "needsSupports": "구조물을 해석하려면 먼저 지점이 필요합니다.",
+      "partUnsupported": "구조물의 분리된 부분(절점 {nodes})은 구속된 자유도가 3개 미만이어서 자유롭게 움직일 수 있습니다.",
+      "partNeedsSupports": "절점 {nodes}을(를) 포함하는 부분에 지점이 필요합니다.",
+      "mechanism": "지점 수는 충분하지만 구조물을 고정하지 못합니다. 구조물이 여전히 {motion} 수 있습니다. 지점이 모두 평행하거나 지점 반력의 작용선이 한 점에서 만나면 구조물이 자유롭게 움직입니다.",
+      "mechanismShort": "지점이 구조물을 고정하지 못합니다. 구조물이 여전히 {motion} 수 있습니다.",
+      "partMechanism": "구조물의 분리된 부분(절점 {nodes})은 지점 수는 충분하지만 고정되지 않습니다. 여전히 {motion} 수 있습니다. 지점이 모두 평행하거나 지점 반력의 작용선이 한 점에서 만나면 구조물이 자유롭게 움직입니다.",
+      "partMechanismShort": "절점 {nodes}을(를) 포함하는 부분이 고정되지 않습니다. 여전히 {motion} 수 있습니다.",
+      "hingeMechanism": "지점은 구조물을 고정하지만, 구조물은 여전히 메커니즘입니다. 절점 {nodes}의 힌지를 중심으로 부재가 회전할 수 있습니다. 힌지를 제거하거나, 움직임을 막는 부재나 지점을 추가하십시오.",
+      "hingeMechanismShort": "절점 {nodes}의 힌지 때문에 구조물이 움직일 수 있습니다.",
+      "motion": {
+        "horizontal": "수평으로 미끄러질",
+        "vertical": "연직으로 움직일",
+        "rotation": "자유롭게 회전할",
+        "mixed": "강체로 움직일"
+      },
+      "unstable": "구조물이 불안정합니다. 다음 자유도가 거의 저항 없이 움직입니다: {dofs}. 지점이나 요소를 추가하거나, 단부 힌지를 제거하거나, 단면 강성을 확인하십시오.",
+      "unstableShort": "구조물이 불안정합니다. 거의 저항 없이 움직입니다.",
+      "unstableDof": {
+        "dx": "절점 {node}의 수평 방향(Dx)",
+        "dz": "절점 {node}의 연직 방향(D{v})",
+        "ry": "절점 {node}의 회전(R{r})",
+        "other": "절점 {node}의 자유도 {dof}"
+      },
+      "unstableMore": "{list} 외 {count}개",
+      "singularMatrix": "구조물이 메커니즘입니다. 강성 행렬이 특이 행렬입니다. 모든 부분이 3개 이상의 구속으로 고정되어 있는지, 단부 힌지 때문에 부재가 자유롭게 회전하지 않는지 확인하십시오.",
+      "singularMatrixShort": "구조물이 메커니즘입니다. 저항 없이 움직일 수 있습니다.",
+      "solverFailed": "모델 내부의 불일치로 해석에 실패했습니다. 모델의 참조와 하중을 검토하십시오."
+    }
+  },
+  "loadType": {
+    "loadType": "하중 유형",
+    "concentrated": "집중하중",
+    "trapezoidal": "사다리꼴 분포하중",
+    "udl": "등분포하중",
+    "temperature": "온도 하중"
+  },
+  "dimensioning": {
+    "add_dimension": "치수 추가",
+    "add_along_element": "요소 {label}에 치수 추가"
+  },
+  "warnings": {
+    "noMaterialsDefined": "정의된 재료가 없습니다.",
+    "noCrossSectionsDefined": "정의된 단면이 없습니다.",
+    "importFailed": "파일을 가져올 수 없습니다. 파일 형식을 확인하십시오.",
+    "prescribedDisplacementExists": "이 절점에는 이미 강제 변위가 있습니다. 먼저 삭제하십시오.",
+    "addMaterialFirst": "먼저 재료를 추가하십시오.",
+    "addCrossSectionFirst": "먼저 단면을 추가하십시오.",
+    "selectMaterialAndCrossSection": "재료와 단면을 선택하십시오.",
+    "labelInUse": "이름 {label}은(는) 이미 사용 중입니다.",
+    "noMaterialOrCrossSection": "요소에 재료 또는 단면이 지정되지 않았습니다.",
+    "elementMissing": "요소 {label}이(가) 더 이상 존재하지 않습니다."
+  },
+  "help": {
+    "aria": "도움말 보기",
+    "readMore": "사용 설명서에서 자세히 보기",
+    "troubleshooting": "문제 해결",
+    "nodes": {
+      "title": "절점",
+      "body": "절점은 구조물을 하나로 연결하는 점입니다. 좌표, 지점, 힌지, 절점에 작용하는 하중은 절점별로 설정합니다."
+    },
+    "supports": {
+      "title": "지점",
+      "body": "자유도를 체크하면 그 자유도가 구속됩니다. Dx와 D{v}는 이동을, R{r}은(는) 회전을 막습니다. 구조물에는 서로 독립된 구속이 3개 이상 필요합니다."
+    },
+    "elements": {
+      "title": "요소",
+      "body": "요소는 두 절점을 연결하며 재료와 단면을 가집니다. 단부를 해제하면 보가 힌지 부재나 트러스 부재가 됩니다."
+    },
+    "loads": {
+      "title": "하중",
+      "body": "하중은 절점에 작용하거나 요소를 따라 작용합니다. 양의 값은 전체 좌표축 방향을 따르며, z축은 아래를 향합니다.",
+      "bodyYUp": "하중은 절점에 작용하거나 요소를 따라 작용합니다. 양의 값은 전체 좌표축 방향을 따르며, y축은 위를 향합니다."
+    },
+    "nodalLoads": {
+      "title": "절점 하중",
+      "body": "절점 하중은 절점에 힘이나 모멘트를 직접 가합니다. 대신 강제 변위로 지점 침하를 줄 수도 있습니다."
+    },
+    "elementLoads": {
+      "title": "요소 하중",
+      "body": "요소 하중은 부재를 따라 작용하며 등분포, 사다리꼴, 집중, 온도 하중이 있습니다. 전체 좌표계나 국부 좌표계로 지정할 수 있습니다."
+    },
+    "materials": {
+      "title": "재료",
+      "body": "재료에는 탄성계수, 전단탄성계수, 밀도, 열팽창계수가 있습니다. 일반적인 정적 해석에는 E와 단면만 영향을 줍니다."
+    },
+    "crossSections": {
+      "title": "단면",
+      "body": "단면은 강성 계산에 쓰이는 단면적과 단면2차모멘트를 제공합니다. 라이브러리에서 고르거나 직접 다각형을 그릴 수 있습니다."
+    },
+    "hinges": {
+      "title": "단부 힌지",
+      "body": "체크하면 요소의 그 끝에서 휨모멘트가 해제됩니다. 양쪽 끝을 체크하면 트러스 부재가 되고, 한쪽 끝만 체크하면 라멘 안에 힌지가 생깁니다."
+    },
+    "signConvention": {
+      "title": "부호 규약",
+      "body": "전체 z축은 아래를 향하므로 양의 Fz나 fz는 아래로 당기고, My는 반시계 방향이 양수입니다. 국부 좌표계로 바꾼 하중은 요소를 따릅니다.",
+      "bodyYUp": "전체 y축은 위를 향하므로 양의 Fy나 fy는 위로 밀고, Mz는 반시계 방향이 양수입니다. 국부 좌표계로 바꾼 하중은 요소를 따릅니다."
+    },
+    "results": {
+      "title": "결과",
+      "body": "모델이 해석되면 축력, 전단력, 휨모멘트, 변형 형상, 반력을 다이어그램과 표로 모두 볼 수 있습니다."
+    },
+    "diagrams": {
+      "title": "결과 표시",
+      "body": "이 스위치로 모델 위에 축력, 전단력, 휨모멘트, 변형 형상, 반력을 그립니다. N은 인장일 때 양수이고, M{r}은(는) 하연이 인장일 때(아래로 처지는 휨) 양수입니다."
+    },
+    "endForces": {
+      "title": "단부력",
+      "body": "X12, Z12, M12는 시작 절점에, X21, Z21, M21은 끝 절점에 작용하며, 항상 시작 절점에서 끝 절점으로 향하는 요소의 국부 좌표계 기준입니다."
+    },
+    "settings": {
+      "title": "단위 및 설정",
+      "body": "언어, 단위, 뷰어 배율, 색상, 단축키를 여기에서 설정합니다. 단위를 바꾸면 기존 값이 변환될 뿐 모델은 바뀌지 않습니다."
+    },
+    "sharing": {
+      "title": "저장 및 공유",
+      "body": "모델을 파일로 저장하거나, 구조물 전체가 담긴 링크를 복사하거나, 읽기 전용 뷰어를 내 웹 페이지에 삽입할 수 있습니다."
+    }
+  },
+  "exportImage": {
+    "title": "이미지 내보내기",
+    "transparentBackground": "투명 배경",
+    "download": "PNG 다운로드",
+    "downloadSvg": "SVG 다운로드",
+    "copyToClipboard": "클립보드에 복사",
+    "copied": "이미지를 클립보드에 복사했습니다",
+    "exported": "이미지를 내보냈습니다",
+    "failed": "이미지를 렌더링할 수 없습니다.",
+    "previewAlt": "내보낼 이미지 미리보기",
+    "instructions": "선택한 크기에 맞춰 그림을 새로 배치하므로 선과 레이블이 실제 두께를 유지합니다. 같은 크기에서는 구조물이 항상 같은 방식으로 배치되므로 M, N, V를 나란히 내보낼 때 편리합니다.",
+    "width": "너비",
+    "height": "높이",
+    "lockAspect": "가로세로 비율 유지",
+    "fitPreview": "맞춤",
+    "actualSize": "실제 크기",
+    "preview": "미리보기",
+    "fitAll": "전체 맞춤",
+    "window": "영역…",
+    "pickWindowHint": "내보낼 영역을 그림 위에 사각형으로 드래그하십시오",
+    "dragEdge": "드래그하여 이쪽을 넓히거나 잘라 냅니다",
+    "scale": "축척",
+    "scaleCaption": "모델의 1 m는 종이에서 {cm} cm입니다(96 DPI). 미리보기 위에서 스크롤하면 확대/축소됩니다.",
+    "doesNotFit": "이 크기에는 모두 들어가지 않습니다. 다이어그램, 하중, 레이블이 가장자리 밖으로 약 {px} px 벗어납니다. 다이어그램을 줄이거나(현재 {diagrams} px) 캔버스를 키우십시오.",
+    "shrinkDiagrams": "다이어그램 축소",
+    "enlargeCanvas": "캔버스 확대",
+    "diagramHeight": "다이어그램 높이",
+    "shrinkNotEnough": "다이어그램을 줄이는 것만으로는 부족합니다. 하중과 레이블만으로도 더 많은 공간이 필요합니다. 대신 캔버스를 키우십시오."
+  },
+  "examples": {
+    "title": "예제",
+    "instructions": "미리 만들어진 모델을 열어 살펴보십시오. 현재 모델이 대체되며, Ctrl+Z로 원래 모델을 되돌릴 수 있습니다.",
+    "moreInDocs": "더 많은 예제와 연습 문제",
+    "items": {
+      "welcome": {
+        "title": "부정정보",
+        "blurb": "10 kN/m 등분포하중을 받는 경간 3 m의 고정–롤러 부정정보입니다."
+      },
+      "cantilever": {
+        "title": "캔틸레버",
+        "blurb": "아래 방향 18 kN 절점 하중을 받는 4 m 캔틸레버로, 곡률과 자유단 처짐을 보여 줍니다."
+      },
+      "pratt": {
+        "title": "프랫 트러스",
+        "blurb": "8 kN 절점 하중을 받는 단순한 프랫 트러스로, 축력 분포와 변위를 보여 줍니다."
+      },
+      "continuous": {
+        "title": "3경간 연속보",
+        "blurb": "5+6+5 m 경간에 등분포 + 집중 + 등분포 하중을 가해 곡률과 지점 회전각을 비교합니다."
+      },
+      "portal": {
+        "title": "문형 라멘 하중 케이스",
+        "blurb": "6 m 기둥 위의 8 m 보에 지붕 등분포하중과 모서리의 수평 + 연직 하중을 가해 횡변위와 휨을 검토합니다."
+      },
+      "temperature": {
+        "title": "온도 하중",
+        "blurb": "균일 및 불균일 온도 하중을 받는 경간 8 m 단순보입니다."
+      }
+    }
+  },
+  "recentStructures": {
+    "title": "최근 구조물",
+    "instructions": "지우거나 대체한 최근 {count}개 구조물이 이 브라우저에 보관됩니다. 하나를 복원하면 현재 구조물이 대체되며, Ctrl+Z로 되돌릴 수 있습니다.",
+    "empty": "아직 아무것도 없습니다. 구조물을 지우거나 그 위에 다른 구조물을 열면 여기에 보관됩니다.",
+    "restore": "복원",
+    "remove": "삭제",
+    "counts": "절점: {nodes} · 요소: {elements}",
+    "linkNotice": "공유된 구조물을 열었습니다. 이전 구조물은 최근 구조물에 보관되어 있습니다.",
+    "show": "보기",
+    "reasons": {
+      "clear": "지움",
+      "link": "공유 링크로 대체됨",
+      "file": "연 파일로 대체됨",
+      "example": "예제로 대체됨",
+      "firstBeam": "첫 번째 보 과제로 대체됨",
+      "restore": "복원한 구조물로 대체됨"
+    }
+  }
+}

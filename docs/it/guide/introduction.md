@@ -78,7 +78,7 @@ Se ti manca una funzione importante, [apri una issue](https://github.com/janvori
 ## A chi si rivolge? {#who-is-it-for}
 
 - **Studenti** di Scienza delle costruzioni che vogliono un riscontro immediato sui calcoli a mano. Vedi [Verificare i risultati a mano](/it/guide/verification).
-- **Docenti** che mostrano dal vivo, al proiettore, come vincoli, cerniere e carichi cambiano le sollecitazioni, in una qualsiasi delle 17 lingue. Vedi [Insegnare con EduBeam](/it/guide/teaching).
+- **Docenti** che mostrano dal vivo, al proiettore, come vincoli, cerniere e carichi cambiano le sollecitazioni, in una qualsiasi delle 18 lingue. Vedi [Insegnare con EduBeam](/it/guide/teaching).
 - **Ingegneri** che vogliono un rapido controllo di plausibilità prima di aprire un software desktop più pesante.
 
 ## Come è organizzata questa guida {#how-this-guide-is-organised}
@@ -95,7 +95,7 @@ Le icone **?** nell'app aprono la pagina corrispondente di questa guida nella tu
 
 ## Lingue {#languages}
 
-L'interfaccia è disponibile in English, Bahasa Indonesia, Čeština, Deutsch, Español, Français, Italiano, Polski, Português, Tiếng Việt, Русский, Türkçe, Українська, हिन्दी, 日本語, ไทย e 汉语. EduBeam sceglie la lingua in base al browser. Puoi cambiarla in **Impostazioni → Lingua e impostazioni locali**, oppure aprire l'app con un parametro `?lang=`, ad esempio [run.edubeam.app/?lang=it](https://run.edubeam.app/?lang=it){target="_blank"}.
+L'interfaccia è disponibile in English, Bahasa Indonesia, Čeština, Deutsch, Español, Français, Italiano, Polski, Português, Tiếng Việt, Русский, Türkçe, Українська, हिन्दी, 日本語, 한국어, ไทย e 汉语. EduBeam sceglie la lingua in base al browser. Puoi cambiarla in **Impostazioni → Lingua e impostazioni locali**, oppure aprire l'app con un parametro `?lang=`, ad esempio [run.edubeam.app/?lang=it](https://run.edubeam.app/?lang=it){target="_blank"}.
 
 ## Autori e riconoscimenti {#authors-credits}
 

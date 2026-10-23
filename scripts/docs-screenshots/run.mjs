@@ -41,6 +41,7 @@ const APP_LANGUAGE = {
   it: 'it',
   id: 'id',
   ja: 'ja',
+  ko: 'ko',
 };
 
 const args = process.argv.slice(2);

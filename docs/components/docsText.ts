@@ -9,7 +9,24 @@ import { i18n } from '../../src/plugins/i18n';
  * locale files, so the two never disagree. Only sentences the app has no use for are kept here.
  */
 type DocsLanguage =
-  'en' | 'cs' | 'de' | 'es' | 'fr' | 'hi' | 'pl' | 'pt' | 'ru' | 'uk' | 'zh' | 'tr' | 'th' | 'vi' | 'it' | 'id' | 'ja';
+  | 'en'
+  | 'cs'
+  | 'de'
+  | 'es'
+  | 'fr'
+  | 'hi'
+  | 'pl'
+  | 'pt'
+  | 'ru'
+  | 'uk'
+  | 'zh'
+  | 'tr'
+  | 'th'
+  | 'vi'
+  | 'it'
+  | 'id'
+  | 'ja'
+  | 'ko';
 
 /** The app's locale for each docs language; the app says cn for zh. */
 const APP_LOCALE: Record<DocsLanguage, string> = {
@@ -30,6 +47,7 @@ const APP_LOCALE: Record<DocsLanguage, string> = {
   it: 'it',
   id: 'id',
   ja: 'ja',
+  ko: 'ko',
 };
 
 export interface DocsStrings {
@@ -331,6 +349,22 @@ const strings: Record<DocsLanguage, DocsStrings> = {
     promoAccent: '3D へ。',
     promoSubtitle: 'スラブ、シェル、鋼構造の検定をブラウザで',
     promoCta: '無料で試す',
+  },
+  ko: {
+    loadsTitle: '하중 유형 미리보기',
+    loadsLede:
+      '자주 쓰는 하중 유형이 EduBeam에서 어떻게 보이는지 확인하십시오. 각 카드는 해석이 끝난 실시간 모델이며, 설정된 그대로 앱에서 열립니다.',
+    openInApp: 'EduBeam에서 열기',
+    simplySupportedBeam: '단순보',
+    udlBlurb: '12 kN/m를 받는 힌지–롤러 보: 전형적인 전단력도와 휨모멘트도.',
+    trapezoidalBlurb: '오른쪽 경간에서 4 kN/m부터 14 kN/m까지 증가하는 하중.',
+    concentratedBlurb: '절점을 추가하지 않고 경간 중앙에 가한 아래 방향 18 kN 집중하중 하나.',
+    nodalBlurb: '내부 지점에 가한 20 kN 하중으로 반력과 처짐을 확인합니다.',
+    temperatureBlurb: '단면 높이에 따른 온도 차(상연이 하연보다 따뜻함)와 그로 인한 곡률.',
+    promoTitle: '골조 해석을',
+    promoAccent: '3D로.',
+    promoSubtitle: '슬래브, 쉘, 강구조 검토까지 브라우저에서',
+    promoCta: '무료로 사용해 보기',
   },
 };
 

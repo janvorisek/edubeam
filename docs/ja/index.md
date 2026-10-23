@@ -34,7 +34,7 @@ features:
     linkText: EduBeam を使った授業
   - icon: 🌍
     title: あなたの言語、あなたの単位
-    details: 17 のインターフェース言語、SI 単位または米国慣用単位、そして z 下向きか教科書どおりの y 上向きかを選べる座標軸。
+    details: 18 のインターフェース言語、SI 単位または米国慣用単位、そして z 下向きか教科書どおりの y 上向きかを選べる座標軸。
     link: /ja/essentials/units-settings
     linkText: 単位と設定
   - icon: 🔗

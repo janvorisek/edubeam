@@ -85,7 +85,7 @@ SVG はどのサイズでも鮮明で、Word、Inkscape、Overleaf 上の LaTeX 
 | --- | --- |
 | `model=<data>` | エンコードされたモデルを読み込み、画面に合わせて表示します。 |
 | `viewer=1` | ビューアモード（上記を参照）。 |
-| `lang=<code>` | インターフェースの言語を切り替えます：`en`、`cs`、`de`、`fr`、`es`、`pt`、`pl`、`cn`、`th`、`uk`、`ru`、`tr`、`hi`、`vi`、`it`、`id`、`ja`。 |
+| `lang=<code>` | インターフェースの言語を切り替えます：`en`、`cs`、`de`、`fr`、`es`、`pt`、`pl`、`cn`、`th`、`uk`、`ru`、`tr`、`hi`、`vi`、`it`、`id`、`ja`、`ko`。 |
 | `panel=examples` | 例題ギャラリーをすぐに開きます。 |
 
 EduBeam はパラメーターを読み取ったあと、アドレスバーから削除します。

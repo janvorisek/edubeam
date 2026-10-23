@@ -16,7 +16,7 @@ Le impostazioni sono salvate nel browser e restano dopo un ricaricamento. **Ripr
 
 ![Impostazioni → Lingua e impostazioni locali](/screenshots/it/settings-language.webp)
 
-**Lingua.** 17 lingue dell'interfaccia. Puoi anche aprire l'app con `?lang=<code>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`.
+**Lingua.** 18 lingue dell'interfaccia. Puoi anche aprire l'app con `?lang=<code>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`, `ko`.
 
 **Formato dei numeri.** Come vengono scritti i risultati: *Automatico*, *Scientifico* (predefinito) o *Ingegneristico*. Vedi [Formato dei numeri](/it/essentials/results#number-format).
 

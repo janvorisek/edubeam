@@ -16,7 +16,7 @@ As configurações ficam salvas no navegador e sobrevivem a recarregamentos. **R
 
 ![Configurações → Idioma e localidade](/screenshots/pt/settings-language.webp)
 
-**Idioma.** 17 idiomas de interface. Você também pode abrir o aplicativo com `?lang=<código>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`.
+**Idioma.** 18 idiomas de interface. Você também pode abrir o aplicativo com `?lang=<código>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`, `ko`.
 
 **Formato numérico.** Como os valores dos resultados são escritos: *Automático*, *Científico* (padrão) ou *Engenharia*. Veja [Formato numérico](/pt/essentials/results#number-format).
 

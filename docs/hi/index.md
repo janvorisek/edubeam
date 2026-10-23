@@ -34,7 +34,7 @@ features:
     linkText: EduBeam के साथ पढ़ाना
   - icon: 🌍
     title: आपकी भाषा, आपकी इकाइयाँ
-    details: इंटरफ़ेस की 17 भाषाएँ, SI या US customary इकाइयाँ, और z-नीचे या पाठ्यपुस्तक वाले y-ऊपर अक्षों का विकल्प।
+    details: इंटरफ़ेस की 18 भाषाएँ, SI या US customary इकाइयाँ, और z-नीचे या पाठ्यपुस्तक वाले y-ऊपर अक्षों का विकल्प।
     link: /hi/essentials/units-settings
     linkText: इकाइयाँ और सेटिंग्स
   - icon: 🔗

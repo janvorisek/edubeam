@@ -178,6 +178,7 @@ import Vietnamese from 'language-icons/icons/vi.svg';
 import Italian from 'language-icons/icons/it.svg';
 import Indonesian from 'language-icons/icons/id.svg';
 import Japanese from 'language-icons/icons/ja.svg';
+import Korean from 'language-icons/icons/ko.svg';
 import ThaiFlag from '../../assets/th-flag.svg';
 import { computed } from 'vue';
 import { momentLabel, unitText, type ForceUnit, type LengthUnit, type TemperatureUnit } from '@/utils/unitConversions';
@@ -202,6 +203,7 @@ const flags = {
   it: Italian,
   id: Indonesian,
   ja: Japanese,
+  ko: Korean,
 };
 
 function getImageUrl(name) {

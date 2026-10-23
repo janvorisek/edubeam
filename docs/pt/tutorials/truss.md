@@ -1,3 +1,7 @@
+---
+description: "Tutorial passo a passo: monte uma treliça plana no EduBeam e confira os esforços nas barras pelo método dos nós e pelo método das seções. Cerca de 15 minutos."
+---
+
 # Tutorial: treliça plana
 
 Este tutorial monta uma pequena treliça isostática, confere os esforços nas barras com o método dos nós e o método das seções e encontra uma barra de esforço nulo. Reserve cerca de 15 minutos.

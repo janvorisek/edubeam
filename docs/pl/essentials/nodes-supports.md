@@ -1,3 +1,7 @@
+---
+description: "Dodawanie i edycja węzłów, przyciąganie do siatki, węzły na elementach, utwierdzenia, podpory przegubowe nieprzesuwne, przesuwne i ukośne, osiadania oraz linie wymiarowe."
+---
+
 # Węzły i podpory
 
 Węzły to punkty modelu. Elementy łączą węzły, a podpory i obciążenia węzłowe są przypisane do węzłów.

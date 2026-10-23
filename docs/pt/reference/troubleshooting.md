@@ -1,3 +1,7 @@
+---
+description: "Por que nenhum resultado é desenhado e como resolver: apoios faltando, mecanismos, mensagens do solver, erros e avisos, resultados que parecem errados e como relatar um erro."
+---
+
 # Solução de problemas
 
 ## Nenhum resultado é desenhado {#no-results-are-drawn}

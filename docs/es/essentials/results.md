@@ -1,3 +1,7 @@
+---
+description: "Diagramas de axil, cortante y momento flector, reacciones y deformada, valores al pasar el ratón, tablas de resultados, exportación CSV y matriz de rigidez."
+---
+
 # Resultados y diagramas
 
 <Edubeam /> resuelve el modelo tras cada cambio, como mucho unas pocas veces por segundo, así que los resultados están siempre al día. No hay botón *Calcular*. Si no se dibuja nada, el modelo todavía no se puede resolver; el mensaje de arriba a la izquierda del visor explica por qué (consulta [Solución de problemas](/es/reference/troubleshooting)).

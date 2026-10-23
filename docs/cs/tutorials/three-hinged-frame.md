@@ -1,3 +1,7 @@
+---
+description: "Návod krok za krokem: vymodelujte v EduBeamu trojkloubový rám se spojitým rovnoměrným zatížením a ověřte ručně reakce a ohybové momenty. Asi 15 minut."
+---
+
 # Návod: trojkloubový rám
 
 Trojkloubový rám je staticky určitý: ze tří podmínek rovnováhy a podmínky $M = 0$ v kloubu získáte všechny čtyři složky reakcí. Proto se skvěle hodí k ověření každého čísla, které EduBeam vykreslí. Počítejte asi s 15 minutami.

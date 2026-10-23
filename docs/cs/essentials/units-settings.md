@@ -1,3 +1,7 @@
+---
+description: "Volba jazyka, jednotek SI nebo amerických, formátu čísel, os y nahoru nebo z dolů, nastavení zobrazení a ovládání. A co EduBeam ukládá ve vašem prohlížeči."
+---
+
 # Jednotky a nastavení
 
 Nastavení otevřete třemi způsoby:
@@ -12,7 +16,7 @@ Nastavení se ukládá v prohlížeči, takže vydrží i obnovení stránky. Tl
 
 ![Nastavení → Jazyk a prostředí](/screenshots/cs/settings-language.webp)
 
-**Jazyk.** Rozhraní je k dispozici ve 12 jazycích. Aplikaci můžete otevřít také s parametrem `?lang=<kód>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`.
+**Jazyk.** Rozhraní je k dispozici ve 18 jazycích. Aplikaci můžete otevřít také s parametrem `?lang=<kód>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`, `ko`.
 
 **Formát čísel.** Určuje, jak se zapisují výsledky: *Automatický*, *Vědecký* (výchozí) nebo *Inženýrský*. Viz [Formát čísel](/cs/essentials/results#number-format).
 

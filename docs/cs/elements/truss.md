@@ -1,3 +1,7 @@
+---
+description: "Jak EduBeam modeluje příhradové pruty jako prutové prvky s klouby na obou koncích: stupně volnosti, lokální a globální matice tuhosti a transformační matice."
+---
+
 # Příhradový prut
 
 Příhradový prut přenáší pouze normálovou sílu. <Edubeam /> nemá samostatný typ příhradového prvku: příhradový prut je [prutový prvek](/cs/elements/beam) se zaškrtnutými **oběma koncovými klouby**. Kondenzace pak odstraní ohybové členy a zůstane jen osová tuhost uvedená níže.
@@ -18,9 +22,9 @@ Lokální matice tuhosti příhradového prutu je
 $$
 \mathbf{K_l} =
 \begin{pmatrix}
-   \frac{EA}{L} & 0 & -\frac{EA}{L} & 0 \\[2ex]
+   \dfrac{EA}{L} & 0 & -\dfrac{EA}{L} & 0 \\[2ex]
    0 & 0 & 0 & 0 \\[1ex]
-   -\frac{EA}{L} & 0 & \frac{EA}{L} & 0 \\[2ex]
+   -\dfrac{EA}{L} & 0 & \dfrac{EA}{L} & 0 \\[2ex]
    0 & 0 & 0 & 0
 \end{pmatrix}
 $$

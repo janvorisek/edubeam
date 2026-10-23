@@ -1,3 +1,7 @@
+---
+description: "Use o EduBeam em aulas e exercícios: links em notas de aula e slides, um modo de visualização incorporável, exercícios autoconferíveis e uso em laboratórios."
+---
+
 # Ensinar com o EduBeam
 
 O <Edubeam /> nasceu em uma sala de aula, e é lá que ele ainda funciona melhor: um modelo no projetor que reage no instante em que você o altera, e o mesmo modelo no notebook de cada aluno por meio de um link. Esta página reúne o que os professores mais usam.

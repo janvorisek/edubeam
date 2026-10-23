@@ -1,3 +1,7 @@
+---
+description: "EduBeam 如何把桁架杆建模为两端铰接、弯曲项被凝聚掉的梁单元：自由度、局部与整体刚度矩阵以及坐标转换矩阵。"
+---
+
 # 桁架单元
 
 桁架单元只承受轴力。<Edubeam /> 中没有单独的桁架单元类型：桁架杆就是勾选了**两端端部铰接**的[梁单元](/zh/elements/beam)，弯曲项被凝聚掉，只留下下面的轴向刚度。
@@ -18,9 +22,9 @@
 $$
 \mathbf{K_l} =
 \begin{pmatrix}
-   \frac{EA}{L} & 0 & -\frac{EA}{L} & 0 \\[2ex]
+   \dfrac{EA}{L} & 0 & -\dfrac{EA}{L} & 0 \\[2ex]
    0 & 0 & 0 & 0 \\[1ex]
-   -\frac{EA}{L} & 0 & \frac{EA}{L} & 0 \\[2ex]
+   -\dfrac{EA}{L} & 0 & \dfrac{EA}{L} & 0 \\[2ex]
    0 & 0 & 0 & 0
 \end{pmatrix}
 $$

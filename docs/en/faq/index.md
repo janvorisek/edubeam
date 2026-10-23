@@ -1,3 +1,7 @@
+---
+description: "Answers to common questions about EduBeam: cost and accounts, browsers and devices, recovering a lost model, offline use, data storage and modelling tips."
+---
+
 # Frequently asked questions
 
 ## General

@@ -1,3 +1,7 @@
+---
+description: "Knoten setzen und bearbeiten, am Raster fangen, auf Elemente setzen, Einspannungen, Fest-, Los- und schräge Lager, Auflagersenkungen und Bemaßungslinien."
+---
+
 # Knoten & Lager
 
 Knoten sind die Punkte des Modells. Elemente verbinden Knoten, und Lager sowie Knotenlasten greifen an Knoten an.

@@ -369,7 +369,9 @@
     "openLink": "打开链接",
     "nativeShare": "通过系统分享对话框",
     "linkCopied": "链接已复制到剪贴板",
-    "copyFailed": "无法自动复制，请使用键盘快捷键。"
+    "copyFailed": "无法自动复制，请使用键盘快捷键。",
+    "shortLink": "更短的链接",
+    "shortLinkHint": "长度约为一半。使用旧版 edubeam 的用户需要先更新应用才能打开。"
   },
   "tour": {
     "menu": {

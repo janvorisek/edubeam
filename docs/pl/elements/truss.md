@@ -1,3 +1,7 @@
+---
+description: "Jak EduBeam modeluje pręty kratownicy jako belki z przegubami na obu końcach: stopnie swobody, lokalna i globalna macierz sztywności oraz macierz transformacji."
+---
+
 # Element kratownicy
 
 Element kratownicy przenosi wyłącznie siłę podłużną. W <Edubeam /> nie ma osobnego typu elementu kratownicowego: pręt kratownicy to [element belkowy](/pl/elements/beam) z zaznaczonymi **oboma przegubami końcowymi**, co eliminuje człony giętne i pozostawia poniższą sztywność podłużną.
@@ -18,9 +22,9 @@ Lokalna macierz sztywności elementu kratownicy ma postać:
 $$
 \mathbf{K_l} =
 \begin{pmatrix}
-   \frac{EA}{L} & 0 & -\frac{EA}{L} & 0 \\[2ex]
+   \dfrac{EA}{L} & 0 & -\dfrac{EA}{L} & 0 \\[2ex]
    0 & 0 & 0 & 0 \\[1ex]
-   -\frac{EA}{L} & 0 & \frac{EA}{L} & 0 \\[2ex]
+   -\dfrac{EA}{L} & 0 & \dfrac{EA}{L} & 0 \\[2ex]
    0 & 0 & 0 & 0
 \end{pmatrix}
 $$

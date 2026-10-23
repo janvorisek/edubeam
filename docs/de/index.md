@@ -1,4 +1,5 @@
 ---
+description: "Kostenlose Stabwerksberechnung im Browser: Balken, Rahmen und Fachwerke zeichnen, Lasten setzen und sofort N, V, M, Auflagerreaktionen und Verformungen sehen."
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
@@ -33,7 +34,7 @@ features:
     linkText: Lehren mit EduBeam
   - icon: 🌍
     title: Ihre Sprache, Ihre Einheiten
-    details: 12 Oberflächensprachen, SI- oder US-Einheiten und wahlweise z nach unten oder die aus Lehrbüchern bekannte y-Achse nach oben.
+    details: 18 Oberflächensprachen, SI- oder US-Einheiten und wahlweise z nach unten oder die aus Lehrbüchern bekannte y-Achse nach oben.
     link: /de/essentials/units-settings
     linkText: Einheiten & Einstellungen
   - icon: 🔗

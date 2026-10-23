@@ -1,3 +1,7 @@
+---
+description: "Questions fréquentes sur EduBeam : gratuité et compte, navigateurs et appareils, modèle perdu, hors ligne, stockage des données et conseils de modélisation."
+---
+
 # Foire aux questions
 
 ## Généralités {#general}

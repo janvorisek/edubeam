@@ -1,5 +1,9 @@
+---
+description: "EduBeam 是什么：一款免费的浏览器端有限元求解器，用于二维梁、框架和桁架。介绍它能做什么、暂不支持什么、适合哪些人，以及本指南的结构。"
+---
+
 <script setup>
-import { VPTeamMembers } from 'vitepress/theme'
+import { VPTeamMembers } from 'vitepress/theme-without-fonts'
 
 const members = [
   {
@@ -74,7 +78,7 @@ const members = [
 ## 适合哪些人？ {#who-is-it-for}
 
 - 学习结构力学、希望手算结果立即得到反馈的**学生**。请看[手算校核结果](/zh/guide/verification)。
-- 在投影仪上用 12 种语言中的任意一种，实时演示支座、铰和荷载如何改变内力的**教师**。请看[用 EduBeam 教学](/zh/guide/teaching)。
+- 在投影仪上用 18 种语言中的任意一种，实时演示支座、铰和荷载如何改变内力的**教师**。请看[用 EduBeam 教学](/zh/guide/teaching)。
 - 在打开更重型的桌面软件之前，想快速做一次合理性校核的**工程师**。
 
 ## 本指南的结构 {#how-this-guide-is-organised}
@@ -91,7 +95,7 @@ const members = [
 
 ## 语言 {#languages}
 
-界面提供 English、Čeština、Deutsch、Español、Français、Polski、Português、Русский、Türkçe、Українська、ไทย 和汉语。EduBeam 会根据浏览器选择语言。可在**设置 → 语言与区域**中更改，或用 `?lang=` 参数打开应用，例如 [run.edubeam.app/?lang=cn](https://run.edubeam.app/?lang=cn){target="_blank"}。
+界面提供 English、Bahasa Indonesia、Čeština、Deutsch、Español、Français、Italiano、Polski、Português、Tiếng Việt、Русский、Türkçe、Українська、हिन्दी、日本語、한국어、ไทย 和汉语。EduBeam 会根据浏览器选择语言。可在**设置 → 语言与区域**中更改，或用 `?lang=` 参数打开应用，例如 [run.edubeam.app/?lang=cn](https://run.edubeam.app/?lang=cn){target="_blank"}。
 
 ## 作者与致谢 {#authors-credits}
 

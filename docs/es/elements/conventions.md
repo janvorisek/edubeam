@@ -1,3 +1,7 @@
+---
+description: "Convenio de signos de EduBeam: ejes globales x a la derecha y z hacia abajo, desplazamientos, giros y cargas positivos, ejes locales, esfuerzos y reacciones."
+---
+
 # Sistema de coordenadas y convenio de signos
 
 La mayoría de los resultados «erróneos» en <Edubeam /> son en realidad una sorpresa del convenio de signos. Lo que sigue es exactamente lo que usa el solver.

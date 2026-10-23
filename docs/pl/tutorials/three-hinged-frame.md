@@ -1,3 +1,7 @@
+---
+description: "Samouczek krok po kroku: zamodeluj w EduBeam ramę trójprzegubową z obciążeniem równomiernym i sprawdź ręcznie reakcje oraz momenty zginające. Około 15 minut."
+---
+
 # Samouczek: rama trójprzegubowa
 
 Rama trójprzegubowa jest statycznie wyznaczalna: trzy równania równowagi oraz warunek $M = 0$ w przegubie dają wszystkie cztery reakcje podporowe. Dzięki temu to idealny model do sprawdzenia każdej liczby, którą rysuje EduBeam. Zarezerwuj około 15 minut.

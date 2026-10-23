@@ -1,3 +1,7 @@
+---
+description: "Closed-form checks of EduBeam results: simply supported, cantilever, fixed and propped beams, a two-bar truss, a temperature gradient and a prescribed displacement."
+---
+
 # Checking results by hand
 
 <Edubeam /> is a good place to practise the habit every engineer needs: never trust a number you cannot roughly reproduce. This page gives closed-form formulas for the classic cases and shows what the app reports for them, so you can build each model yourself and compare.

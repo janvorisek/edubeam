@@ -1,4 +1,5 @@
 ---
+description: "Безкоштовний розрахунок 2D-конструкцій у браузері. Накресліть балку, раму чи ферму, прикладіть навантаження й одразу отримайте епюри N, V, M, реакції та прогини."
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
@@ -33,7 +34,7 @@ features:
     linkText: Навчання з EduBeam
   - icon: 🌍
     title: Ваша мова, ваші одиниці
-    details: 12 мов інтерфейсу, одиниці SI або американські, а також вибір осей — z донизу або «підручникові» y вгору.
+    details: 18 мов інтерфейсу, одиниці SI або американські, а також вибір осей — z донизу або «підручникові» y вгору.
     link: /uk/essentials/units-settings
     linkText: Одиниці та налаштування
   - icon: 🔗
@@ -73,26 +74,3 @@ features:
 Докладніше — у [Вступі](/uk/guide/introduction).
 
 <ElementariumPromo />
-<script setup>
-import { VPTeamMembers } from 'vitepress/theme'
-
-const members = [
-  {
-    avatar: 'https://www.github.com/janvorisek.png',
-    name: 'Jan Voříšek',
-    title: 'Провідний розробник і дизайнер продукту',
-    links: [
-      { icon: 'github', link: 'https://github.com/janvorisek' },
-      { icon: 'twitter', link: 'https://twitter.com/janvorisekdev' },
-    ]
-  },
-  {
-    avatar: 'https://www.github.com/bpatzak.png',
-    name: 'Bořek Patzák',
-    title: 'Розв\'язувач МСЕ, автор первісного застосунку',
-    links: [
-      { icon: 'github', link: 'https://github.com/bpatzak' },
-    ]
-  }
-]
-</script>

@@ -1,3 +1,7 @@
+---
+description: "All EduBeam keyboard shortcuts, mouse actions and touch gestures for drawing, selecting, panning and zooming, plus the object panel controls."
+---
+
 # Keyboard, mouse & touch
 
 Keyboard shortcuts work while the viewer has focus. They are ignored while you are typing in a table cell or a dialog; click the canvas first.

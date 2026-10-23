@@ -1,3 +1,7 @@
+---
+description: "Znaménková konvence EduBeamu: globální osy x doprava a z dolů, kladná posunutí, pootočení a zatížení, lokální osy prvku, vnitřní síly a reakce."
+---
+
 # Souřadný systém a znaménková konvence
 
 Za většinou „špatných“ výsledků v EduBeamu stojí ve skutečnosti nečekaná znaménková konvence. Vše, co je popsáno níže, přesně odpovídá tomu, co používá řešič.

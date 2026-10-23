@@ -1,3 +1,7 @@
+---
+description: "Añade y edita nodos, ajuste a la cuadrícula, nodos sobre elementos, empotramientos, articulaciones, rodillos, apoyos inclinados, asientos y líneas de cota."
+---
+
 # Nodos y apoyos
 
 Los nodos son los puntos del modelo. Los elementos conectan nodos, y los apoyos y las cargas nodales se aplican en los nodos.

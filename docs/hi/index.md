@@ -1,4 +1,5 @@
 ---
+description: "आपके ब्राउज़र में निःशुल्क 2D संरचनात्मक विश्लेषण। बीम, फ्रेम और ट्रस बनाइए, भार लगाइए और तुरंत N, V, M आरेख, प्रतिक्रियाएँ और विक्षेप पाइए।"
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
@@ -7,12 +8,12 @@ hero:
   text: "निःशुल्क ऑनलाइन संरचनात्मक विश्लेषण"
   tagline: बीम, फ्रेम या ट्रस बनाइए, भार लगाइए और संपादन करते-करते आरेखों को बदलते देखिए। पूरे FEM परिणाम आपके ब्राउज़र में—न कोई इंस्टॉल, न कोई खाता, न कोई शुल्क।
   image:
-    src: /screenshots/hero.webp
+    src: /screenshots/hi/hero.webp
     alt: हल किए गए फ्रेम के साथ EduBeam ऐप
   actions:
     - theme: brand
       text: ऐप खोलें
-      link: https://run.edubeam.app/?lang=en
+      link: https://run.edubeam.app/?lang=hi
     - theme: alt
       text: मार्गदर्शिका पढ़ें
       link: /hi/guide/introduction
@@ -23,7 +24,7 @@ hero:
 features:
   - icon: ⚡
     title: बनाते ही परिणाम
-    details: कोई Solve बटन नहीं है। नोड खींचिए, हिंज पर टिक कीजिए या भार बदलिए—N, V, M, प्रतिक्रियाएँ और विरूपित आकृति तुरंत साथ-साथ बदलती हैं।
+    details: कोई Solve बटन नहीं है। नोड खींचिए, हिंज पर टिक कीजिए या भार बदलिए—N, V, M, प्रतिक्रियाएँ और विरूपित आकार तुरंत साथ-साथ बदलते हैं।
     link: /hi/essentials/results
     linkText: परिणाम पढ़ना
   - icon: 🧑‍🏫
@@ -33,7 +34,7 @@ features:
     linkText: EduBeam के साथ पढ़ाना
   - icon: 🌍
     title: आपकी भाषा, आपकी इकाइयाँ
-    details: इंटरफ़ेस की 12 भाषाएँ, SI या US customary इकाइयाँ, और z-नीचे या पाठ्यपुस्तक वाले y-ऊपर अक्षों का विकल्प।
+    details: इंटरफ़ेस की 18 भाषाएँ, SI या US customary इकाइयाँ, और z-नीचे या पाठ्यपुस्तक वाले y-ऊपर अक्षों का विकल्प।
     link: /hi/essentials/units-settings
     linkText: इकाइयाँ और सेटिंग्स
   - icon: 🔗
@@ -57,16 +58,16 @@ features:
 
 <div class="shots">
 
-![एक ट्रस: अक्षीय बल, तनाव धनात्मक](/screenshots/tut-truss.webp)
+![एक ट्रस: अक्षीय बल, तनाव धनात्मक](/screenshots/hi/tut-truss.webp)
 
-![यंत्र (mechanism) को दृश्य बनाना: EduBeam दिखाता है कि इसे हल क्यों नहीं किया जा सकता](/screenshots/ui-mechanism.webp)
+![यंत्र (mechanism) को दृश्य बनाना: EduBeam दिखाता है कि इसे हल क्यों नहीं किया जा सकता](/screenshots/hi/ui-mechanism.webp)
 
 </div>
 
 ## आप क्या मॉडल कर सकते हैं {#what-you-can-model}
 
 - समतल में **बीम, फ्रेम और ट्रस**: सतत बीम, पोर्टल फ्रेम, त्रि-हिंज (three-hinged) मेहराब, कीलित जोड़ वाले ट्रस।
-- **कोई भी आधार**: कीलकित (pin), रोलर, जड़ित (fixed), स्लाइडर, घुमाए हुए आधार, और आधार निपात (support settlements)।
+- **कोई भी सपोर्ट**: पिन, रोलर, फिक्स्ड, स्लाइडर, घुमाए हुए सपोर्ट, और सपोर्ट निपात (support settlements)।
 - **भार**: संकेंद्रित बल और आघूर्ण, समान और समलम्बी (trapezoidal) रेखीय भार, सदस्य पर कहीं भी संकेंद्रित भार, और तापमान।
 - **कोई भी अनुप्रस्थ काट**: लाइब्रेरी से (IPE, HEA, AISC W, HSS, आयत, ट्यूब) या बहुभुज के रूप में बनाया हुआ, जिसके गुणधर्म आपके लिए परिकलित किए जाते हैं।
 

@@ -369,7 +369,9 @@
     "openLink": "Otwórz link",
     "nativeShare": "Udostępnij przez systemowe okno dialogowe",
     "linkCopied": "Link skopiowany do schowka",
-    "copyFailed": "Nie udało się skopiować automatycznie. Użyj skrótów klawiaturowych."
+    "copyFailed": "Nie udało się skopiować automatycznie. Użyj skrótów klawiaturowych.",
+    "shortLink": "Krótszy link",
+    "shortLinkHint": "Mniej więcej o połowę krótszy. Osoby ze starszą wersją edubeam muszą najpierw zaktualizować aplikację, aby go otworzyć."
   },
   "tour": {
     "menu": {

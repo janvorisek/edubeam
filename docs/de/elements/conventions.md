@@ -1,3 +1,7 @@
+---
+description: "Vorzeichenkonventionen in EduBeam: x nach rechts und z nach unten, positive Verschiebungen, Verdrehungen und Lasten, lokale Achsen, Schnittgrößen, Reaktionen."
+---
+
 # Koordinatensystem & Vorzeichenkonventionen
 
 Die meisten „falschen“ Ergebnisse in <Edubeam /> sind in Wirklichkeit eine Überraschung bei der Vorzeichenkonvention. Hier steht genau das, was der Solver tatsächlich verwendet.

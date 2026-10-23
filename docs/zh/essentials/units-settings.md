@@ -1,3 +1,7 @@
+---
+description: "选择语言、国际单位制或美制单位、数字格式、y 向上或 z 向下坐标轴、视图与控制设置，并了解 EduBeam 在浏览器中保存了哪些内容。"
+---
+
 # 单位与设置
 
 有三种方式进入设置：
@@ -12,7 +16,7 @@
 
 ![设置 → 语言与区域](/screenshots/zh/settings-language.webp)
 
-**语言。** 12 种界面语言。也可以用 `?lang=<code>` 打开应用：`en`、`cs`、`de`、`fr`、`es`、`pt`、`pl`、`cn`、`th`、`uk`、`ru`、`tr`。
+**语言。** 18 种界面语言。也可以用 `?lang=<code>` 打开应用：`en`、`cs`、`de`、`fr`、`es`、`pt`、`pl`、`cn`、`th`、`uk`、`ru`、`tr`、`hi`、`vi`、`it`、`id`、`ja`、`ko`。
 
 **数字格式。** 结果数值的书写方式：*自动*、*科学计数*（默认）或*工程计数*。见[数字格式](/zh/essentials/results#number-format)。
 

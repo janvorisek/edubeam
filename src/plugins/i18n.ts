@@ -15,6 +15,12 @@ export const availableLocales = [
   { code: 'uk', name: 'Українська' },
   { code: 'ru', name: 'Русский' },
   { code: 'tr', name: 'Türkçe' },
+  { code: 'hi', name: 'हिन्दी' },
+  { code: 'vi', name: 'Tiếng Việt' },
+  { code: 'it', name: 'Italiano' },
+  { code: 'id', name: 'Bahasa Indonesia' },
+  { code: 'ja', name: '日本語' },
+  { code: 'ko', name: '한국어' },
 ];
 
 // Create Vue I18n instance.
@@ -26,11 +32,20 @@ export const i18n = createI18n({
   messages: messages,
 });
 
+/** The BCP 47 tag of an app locale. `cn` is not one, but `?lang=cn` links are out there, so it stays. */
+export const languageTag = (locale: string) => (locale === 'cn' ? 'zh-Hans' : locale);
+
 // Set new locale.
 export async function setLocale(locale: string) {
   // Add Vuetify translations.
-  i18n.global.setLocaleMessage(locale, { ...i18n.global.getLocaleMessage(locale), $vuetify: { ...vloc[locale] } });
+  // Vuetify has no Hindi, and its English is only loaded once English is picked, so fall back explicitly.
+  const vuetifyMessages = (locale === 'cn' ? vloc.zhHans : vloc[locale]) ?? vloc.en;
+  i18n.global.setLocaleMessage(locale, { ...i18n.global.getLocaleMessage(locale), $vuetify: { ...vuetifyMessages } });
 
   // Set locale.
   i18n.global.locale.value = locale;
+
+  // Browsers pick the font by the page language: without it, Chinese and Japanese text shared the
+  // same Han glyphs, and screen readers read every language with an English voice.
+  document.documentElement.lang = languageTag(locale);
 }

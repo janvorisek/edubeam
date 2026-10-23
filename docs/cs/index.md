@@ -1,4 +1,5 @@
 ---
+description: "Statický výpočet 2D konstrukcí zdarma v prohlížeči. Nakreslete nosník, rám nebo příhradovou konstrukci, zadejte zatížení a hned uvidíte průběhy N, V, M, reakce a průhyby."
 layout: home
 
 hero:
@@ -32,7 +33,7 @@ features:
     linkText: Výuka s EduBeamem
   - icon: 🌍
     title: Váš jazyk, vaše jednotky
-    details: 12 jazyků rozhraní, jednotky SI nebo americké (US customary) a na výběr osa z mířící dolů, nebo učebnicová osa y nahoru.
+    details: 18 jazyků rozhraní, jednotky SI nebo americké (US customary) a na výběr osa z mířící dolů, nebo učebnicová osa y nahoru.
     link: /cs/essentials/units-settings
     linkText: Jednotky a nastavení
   - icon: 🔗

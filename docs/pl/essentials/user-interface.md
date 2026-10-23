@@ -1,3 +1,7 @@
+---
+description: "Przewodnik po interfejsie EduBeam: menu główne, widok i opcje wyświetlania, nawigacja i zaznaczanie, zakładki, dolny pasek i okna pływające."
+---
+
 # Interfejs użytkownika
 
 <Edubeam /> ma trzy strefy: **pasek aplikacji** u góry, **widok** pośrodku, w którym rysujesz, oraz **dolny pasek** z tabelą dla każdego rodzaju obiektów. Gdy wiesz, co gdzie się znajduje, reszta dokumentacji stanie się zrozumiała.

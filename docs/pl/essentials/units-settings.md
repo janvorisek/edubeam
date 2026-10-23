@@ -1,3 +1,7 @@
+---
+description: "Wybór języka, jednostek SI lub amerykańskich, formatu liczb, osi y w górę lub z w dół, ustawień widoku i sterowania. Oraz co EduBeam przechowuje w przeglądarce."
+---
+
 # Jednostki i ustawienia
 
 Do ustawień można dostać się na trzy sposoby:
@@ -12,7 +16,7 @@ Ustawienia są przechowywane w przeglądarce i przetrwają przeładowanie strony
 
 ![Ustawienia → Język i ustawienia regionalne](/screenshots/pl/settings-language.webp)
 
-**Język.** 12 języków interfejsu. Aplikację można też otworzyć z parametrem `?lang=<kod>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`.
+**Język.** 18 języków interfejsu. Aplikację można też otworzyć z parametrem `?lang=<kod>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`, `ko`.
 
 **Format liczb.** Sposób zapisu wyników: *Automatyczny*, *Naukowy* (domyślny) lub *Inżynierski*. Zobacz [Format liczb](/pl/essentials/results#number-format).
 

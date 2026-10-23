@@ -1,3 +1,7 @@
+---
+description: "Uložení a otevření projektu, sdílení modelu odkazem, export obrázků a výsledků, vložení živého prohlížeče a parametry URL. Vše zůstává ve vašem prohlížeči."
+---
+
 # Import, export a sdílení
 
 V aplikaci EduBeam se vše odehrává ve vašem prohlížeči. Nic se nenahrává na server – sdílený odkaz model doslova obsahuje.
@@ -24,6 +28,7 @@ Soubory projektů ze všech dřívějších verzí EduBeamu otevřete i v aktuá
 - **Kopírovat** zkopíruje odkaz do schránky. Stejně funguje kliknutí do pole.
 - **Otevřít odkaz** ho otevře v nové záložce, abyste si ověřili, co uvidí příjemce.
 - **Sdílet přes systémové dialogové okno** předá odkaz do nabídky sdílení vašeho zařízení, pokud to prohlížeč umí.
+- **Kratší odkaz** zapíše tentýž model zhruba na polovinu znaků. Kopie <Edubeam />, která se neaktualizovala od října 2026, ho přečte až po aktualizaci, takže když musí odkaz hned fungovat všude, nechte ho vypnutý.
 
 Odkaz má tvar `https://run.edubeam.app/?model=…` a obsahuje celý zakódovaný model. Kdo ho otevře, dostane vlastní kopii, kterou může upravovat; úpravy se zpět **nesynchronizují**, takže po změně modelu pošlete nový odkaz. Z velmi velkých modelů vznikají velmi dlouhé odkazy; takové modely raději sdílejte jako soubor JSON.
 
@@ -80,7 +85,7 @@ Režim prohlížeče slouží k prohlížení, ale není uzamčený: návštěvn
 | --- | --- |
 | `model=<data>` | Načte zakódovaný model a přizpůsobí ho obrazovce. |
 | `viewer=1` | Režim prohlížeče (viz výše). |
-| `lang=<kód>` | Přepne jazyk rozhraní: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`. |
+| `lang=<kód>` | Přepne jazyk rozhraní: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`, `ko`. |
 | `panel=examples` | Rovnou otevře galerii příkladů. |
 
 Jakmile EduBeam parametry přečte, z adresního řádku je odstraní.

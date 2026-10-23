@@ -1,3 +1,7 @@
+---
+description: "Schritt für Schritt: einen Dreigelenkrahmen unter Gleichlast in EduBeam modellieren und Auflagerreaktionen und Biegemomente von Hand prüfen. Etwa 15 Minuten."
+---
+
 # Tutorial: Dreigelenkrahmen
 
 Ein Dreigelenkrahmen ist statisch bestimmt: Drei Gleichgewichtsbedingungen und die Bedingung $M = 0$ im Gelenk liefern alle vier Auflagerreaktionen. Damit ist er ideal, um jede Zahl zu prüfen, die EduBeam zeichnet. Planen Sie etwa 15 Minuten ein.

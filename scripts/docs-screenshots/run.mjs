@@ -29,18 +29,26 @@ const APP_LANGUAGE = {
   de: 'de',
   es: 'es',
   fr: 'fr',
+  hi: 'hi',
   pl: 'pl',
   pt: 'pt',
   ru: 'ru',
   uk: 'uk',
   zh: 'cn',
+  tr: 'tr',
+  th: 'th',
+  vi: 'vi',
+  it: 'it',
+  id: 'id',
+  ja: 'ja',
+  ko: 'ko',
 };
 
 const args = process.argv.slice(2);
 const langAt = args.indexOf('--lang');
 const langArg = langAt >= 0 ? args.splice(langAt, 2)[1] : 'en';
 if (langArg !== 'all' && !(langArg in APP_LANGUAGE)) {
-  throw new Error(`--lang takes ${Object.keys(APP_LANGUAGE).join(', ')} or all (Hindi docs use the English shots)`);
+  throw new Error(`--lang takes ${Object.keys(APP_LANGUAGE).join(', ')} or all`);
 }
 const missingAt = args.indexOf('--missing');
 const onlyMissing = missingAt >= 0;

@@ -1,3 +1,7 @@
+---
+description: "Ajouter et modifier des nœuds, magnétisme de la grille, nœuds sur un élément, encastrements, rotules, appuis simples et inclinés, tassements et lignes de cote."
+---
+
 # Nœuds et appuis
 
 Les nœuds sont les points du modèle. Les éléments relient les nœuds, et les appuis et les charges nodales s’appliquent aux nœuds.

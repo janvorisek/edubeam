@@ -17,7 +17,8 @@
           :label="$t('settings.language')"
         >
           <template #item="{ item, props }">
-            <v-list-item v-bind="props" color="primary">
+            <!-- Each name in its own language, or the browser shapes हिन्दी with the page's font fallback. -->
+            <v-list-item v-bind="props" color="primary" :lang="languageTag(item.raw.code)">
               <template #prepend>
                 <img :src="getImageUrl(item.raw.code)" class="mr-3" height="24" />
               </template>
@@ -156,7 +157,7 @@
 
 <script lang="ts" setup>
 import { useAppStore } from '@/store/app';
-import { availableLocales } from '../../plugins/i18n';
+import { availableLocales, languageTag } from '../../plugins/i18n';
 import { formatMeasureAsHTML } from '../../SVGUtils';
 import AxisConventionPicker from './AxisConventionPicker.vue';
 
@@ -173,6 +174,12 @@ import Polish from 'language-icons/icons/pl.svg';
 import Ukrainian from 'language-icons/icons/uk.svg';
 import Russian from 'language-icons/icons/ru.svg';
 import Turkish from 'language-icons/icons/tr.svg';
+import Hindi from 'language-icons/icons/hi.svg';
+import Vietnamese from 'language-icons/icons/vi.svg';
+import Italian from 'language-icons/icons/it.svg';
+import Indonesian from 'language-icons/icons/id.svg';
+import Japanese from 'language-icons/icons/ja.svg';
+import Korean from 'language-icons/icons/ko.svg';
 import ThaiFlag from '../../assets/th-flag.svg';
 import { computed } from 'vue';
 import { momentLabel, unitText, type ForceUnit, type LengthUnit, type TemperatureUnit } from '@/utils/unitConversions';
@@ -192,6 +199,12 @@ const flags = {
   uk: Ukrainian,
   ru: Russian,
   tr: Turkish,
+  hi: Hindi,
+  vi: Vietnamese,
+  it: Italian,
+  id: Indonesian,
+  ja: Japanese,
+  ko: Korean,
 };
 
 function getImageUrl(name) {

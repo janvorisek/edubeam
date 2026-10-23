@@ -1,3 +1,7 @@
+---
+description: "EduBeam ve výuce: odkazy na modely ve skriptech a zadáních, režim prohlížeče pro vložení do prezentací, zadání, která si studenti zkontrolují sami, a počítače v učebnách."
+---
+
 # Výuka s EduBeamem
 
 <Edubeam /> vznikl v posluchárně a tam se mu také daří nejlépe: model na projektoru reaguje na každou změnu a díky odkazu má tentýž model každý student ve svém notebooku. Na této stránce najdete to, co vyučující používají nejčastěji.

@@ -1,3 +1,7 @@
+---
+description: "Dodawanie elementów belkowych, przeguby końcowe i kierunek elementu oraz definiowanie materiałów i przekrojów w EduBeam, w tym własnych przekrojów wielokątnych."
+---
+
 # Elementy, materiały i przekroje
 
 ## Element belkowy {#the-beam-element}

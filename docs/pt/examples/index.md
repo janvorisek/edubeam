@@ -1,3 +1,7 @@
+---
+description: "Modelos prontos e resolvidos de vigas, pórticos e treliças que abrem no EduBeam com um clique, além de exercícios sugeridos e tutoriais resolvidos passo a passo."
+---
+
 # Exemplos
 
 Cada cartão abaixo é um modelo vivo e resolvido. Clique em um para abri-lo no <Edubeam /> com toda a configuração pronta para editar — depois arraste um nó, mude uma carga ou marque uma rótula e veja os diagramas acompanharem.

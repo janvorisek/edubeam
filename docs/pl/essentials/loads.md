@@ -1,3 +1,7 @@
+---
+description: "Siły i momenty węzłowe, osiadania podpór, obciążenia elementów równomierne, trapezowe i skupione oraz obciążenie termiczne, każde z opisem konwencji znaków."
+---
+
 # Obciążenia
 
 Wszystkie obciążenia należą do **jednego przypadku obciążenia** i działają jednocześnie. Aby porównać warianty, zapisz każdy jako plik projektu lub link do udostępnienia.

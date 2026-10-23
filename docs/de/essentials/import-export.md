@@ -1,3 +1,7 @@
+---
+description: "Projekte speichern und öffnen, Modelle per Link teilen, Bilder und Ergebnisse exportieren, Viewer einbetten und URL-Parameter nutzen. Alles bleibt im Browser."
+---
+
 # Import, Export & Teilen
 
 Alles in <Edubeam /> geschieht in Ihrem Browser. Nichts wird auf einen Server hochgeladen: Ein Link enthält buchstäblich das Modell.
@@ -24,6 +28,7 @@ Projektdateien aus allen früheren Versionen von EduBeam lassen sich in der aktu
 - **Link kopieren** kopiert den Link in die Zwischenablage. Ein Klick in das Feld bewirkt dasselbe.
 - **Link öffnen** öffnet ihn in einem neuen Tab, sodass Sie prüfen können, was der Empfänger sehen wird.
 - **Über Systemdialog teilen** übergibt den Link an die Teilen-Funktion Ihres Geräts, sofern der Browser das unterstützt.
+- **Kürzerer Link** schreibt dasselbe Modell in etwa der Hälfte der Zeichen. Eine Kopie von <Edubeam />, die seit Oktober 2026 nicht aktualisiert wurde, kann ihn erst nach dem Update lesen. Lassen Sie die Option also aus, wenn ein Link sofort überall funktionieren muss.
 
 Der Link hat die Form `https://run.edubeam.app/?model=…` und kodiert das gesamte Modell. Wer ihn öffnet, erhält eine eigene Kopie zum Bearbeiten; Änderungen werden **nicht** zurücksynchronisiert, senden Sie also einen neuen Link, wenn sich das Modell ändert. Sehr große Modelle ergeben sehr lange Links; teilen Sie in diesem Fall besser die JSON-Datei.
 
@@ -80,7 +85,7 @@ Der Viewer-Modus ist zum Anschauen gedacht, aber nicht gesperrt: Besucher könne
 | --- | --- |
 | `model=<data>` | Lädt das kodierte Modell und passt es an den Bildschirm an. |
 | `viewer=1` | Viewer-Modus (siehe oben). |
-| `lang=<code>` | Schaltet die Oberflächensprache um: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`. |
+| `lang=<code>` | Schaltet die Oberflächensprache um: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`, `ko`. |
 | `panel=examples` | Öffnet sofort die Beispielgalerie. |
 
 Nach dem Auslesen entfernt EduBeam die Parameter aus der Adresszeile.

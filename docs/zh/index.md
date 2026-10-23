@@ -1,4 +1,5 @@
 ---
+description: "免费的在线二维结构分析，直接在浏览器中运行。绘制梁、框架和桁架，施加荷载，即刻得到轴力、剪力和弯矩图，以及支反力和变形。"
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
@@ -33,7 +34,7 @@ features:
     linkText: 用 EduBeam 教学
   - icon: 🌍
     title: 你的语言，你的单位
-    details: 12 种界面语言，国际单位制或美制单位，坐标轴可选 z 向下或教科书常用的 y 向上。
+    details: 18 种界面语言，国际单位制或美制单位，坐标轴可选 z 向下或教科书常用的 y 向上。
     link: /zh/essentials/units-settings
     linkText: 单位与设置
   - icon: 🔗

@@ -1,33 +1,37 @@
+---
+description: "चरण-दर-चरण ट्यूटोरियल: EduBeam में समान भार के अधीन त्रि-हिंज फ्रेम का मॉडल बनाइए, फिर प्रतिक्रियाएँ और बंकन आघूर्ण हाथ से जाँचिए। लगभग 15 मिनट।"
+---
+
 # ट्यूटोरियल: त्रि-हिंज फ्रेम
 
-त्रि-हिंज फ्रेम (three-hinged frame) स्थैतिकतः निर्धार्य होता है: संतुलन के तीन समीकरण और हिंज पर $M = 0$ की शर्त मिलकर चारों आधार प्रतिक्रियाएँ दे देते हैं। इसलिए EduBeam द्वारा बनाई गई हर संख्या को जाँचने के लिए यह आदर्श मॉडल है। लगभग 15 मिनट का समय रखें।
+त्रि-हिंज फ्रेम (three-hinged frame) स्थैतिकतः निर्धार्य होता है: संतुलन के तीन समीकरण और हिंज पर $M = 0$ की शर्त मिलकर चारों सपोर्ट प्रतिक्रियाएँ दे देते हैं। इसलिए EduBeam द्वारा बनाई गई हर संख्या को जाँचने के लिए यह आदर्श मॉडल है। लगभग 15 मिनट का समय रखें।
 
-![तैयार फ्रेम: बंकन आघूर्ण और प्रतिक्रियाएँ](/screenshots/tut-frame-moment.webp)
+![तैयार फ्रेम: बंकन आघूर्ण और प्रतिक्रियाएँ](/screenshots/hi/tut-frame-moment.webp)
 
-यदि आप केवल इसे खंगालना चाहते हैं, तो [तैयार मॉडल खोलें](https://run.edubeam.app/?model=eyJuIjpbWyJBIixbMCwwLDBdLFswLDJdLG51bGxdLFsiQiIsWzAsMCwtNF0sW10sbnVsbF0sWyJDIixbNCwwLC00XSxbXSxudWxsXSxbIkQiLFs4LDAsLTRdLFtdLG51bGxdLFsiRSIsWzgsMCwwXSxbMCwyXSxudWxsXV0sImUiOltbIjEiLFsiQSIsIkIiXSwiMSIsIjEiLFtmYWxzZSxmYWxzZV1dLFsiMiIsWyJCIiwiQyJdLCIxIiwiMSIsW2ZhbHNlLHRydWVdXSxbIjMiLFsiQyIsIkQiXSwiMSIsIjEiLFtmYWxzZSxmYWxzZV1dLFsiNCIsWyJEIiwiRSJdLCIxIiwiMSIsW2ZhbHNlLGZhbHNlXV1dLCJtIjpbWyIxIiw3ODUwLDIxMDAwMDAwMDAwMCw4MTAwMDAwMDAwMCwwLjAwMDAxMl1dLCJjcyI6W1siMSIsMC4wMDUzOCwwLjAwMDA4MzU2LDAuMywxXV0sImVsIjpbWyIyIixbMCwxMDAwMF0sZmFsc2VdLFsiMyIsWzAsMTAwMDBdLGZhbHNlXV0sImQiOltdfQ%3D%3D&lang=en){target="_blank"}।
+यदि आप केवल इसे खंगालना चाहते हैं, तो [तैयार मॉडल खोलें](https://run.edubeam.app/?model=eyJuIjpbWyJBIixbMCwwLDBdLFswLDJdLG51bGxdLFsiQiIsWzAsMCwtNF0sW10sbnVsbF0sWyJDIixbNCwwLC00XSxbXSxudWxsXSxbIkQiLFs4LDAsLTRdLFtdLG51bGxdLFsiRSIsWzgsMCwwXSxbMCwyXSxudWxsXV0sImUiOltbIjEiLFsiQSIsIkIiXSwiMSIsIjEiLFtmYWxzZSxmYWxzZV1dLFsiMiIsWyJCIiwiQyJdLCIxIiwiMSIsW2ZhbHNlLHRydWVdXSxbIjMiLFsiQyIsIkQiXSwiMSIsIjEiLFtmYWxzZSxmYWxzZV1dLFsiNCIsWyJEIiwiRSJdLCIxIiwiMSIsW2ZhbHNlLGZhbHNlXV1dLCJtIjpbWyIxIiw3ODUwLDIxMDAwMDAwMDAwMCw4MTAwMDAwMDAwMCwwLjAwMDAxMl1dLCJjcyI6W1siMSIsMC4wMDUzOCwwLjAwMDA4MzU2LDAuMywxXV0sImVsIjpbWyIyIixbMCwxMDAwMF0sZmFsc2VdLFsiMyIsWzAsMTAwMDBdLGZhbHNlXV0sImQiOltdfQ%3D%3D&lang=hi){target="_blank"}।
 
 ## समस्या {#the-problem}
 
-- 4 m के दो स्तंभ, अपने आधारों A और E पर कीलकित, 8 m की दूरी पर।
+- 4 m के दो स्तंभ, 8 m की दूरी पर, जिनके निचले सिरों A और E पर पिन सपोर्ट हैं।
 - ऊपर एक क्षैतिज बीम B–D, मध्य-स्पैन C पर एक हिंज के साथ।
-- पूरे बीम पर $q = 10$ kN/m का समान वितरित भार।
+- पूरे बीम पर $q = 10$ kN/m का समान रूप से वितरित भार।
 - इस्पात ($E = 210$ GPa, $G = 81$ GPa), IPE 300 ($A = 53.8$ cm², $I_y = 8356$ cm⁴, $h = 300$ mm)।
 
-| नोड | X [m] | Z [m] | आधार |
+| नोड | X [m] | Z [m] | सपोर्ट |
 | --- | --- | --- | --- |
-| A | 0 | 0 | कीलकित (pin) |
+| A | 0 | 0 | पिन |
 | B | 0 | −4 | |
 | C | 4 | −4 | (बीम में हिंज) |
 | D | 8 | −4 | |
-| E | 8 | 0 | कीलकित (pin) |
+| E | 8 | 0 | पिन |
 
 याद रखें कि **z नीचे की ओर है**, इसलिए स्तंभों का शीर्ष `Z = −4` पर है।
 
 ## 1. सामग्री और अनुप्रस्थ काट {#_1-material-and-section}
 
-1. **Clear mesh** (*Delete materials* और *Delete cross sections* पर टिक करें)।
-2. *Materials* → **Material library** → **Steel (S235)**।
-3. *Cross sections* → **Add cross section**: `Area = 0.00538`, `Iy = 8.356e-5`, `Height = 0.3`, `Shear coefficient = 1`।
+1. **मेश साफ़ करें** (*सामग्री हटाएँ* और *अनुप्रस्थ काट हटाएँ* पर टिक करें)।
+2. *सामग्री* → **सामग्री लाइब्रेरी** → **Steel (S235)**।
+3. *अनुप्रस्थ काट* → **अनुप्रस्थ काट जोड़ें**: `क्षेत्रफल = 0.00538`, `Iy = 8.356e-5`, `ऊँचाई = 0.3`, `अपरूपण संशोधन गुणांक = 1`।
 
 अनुप्रस्थ काट केवल विस्थापनों को प्रभावित करता है। यह फ्रेम निर्धार्य है, इसलिए इसके आंतरिक बल $E$, $A$ या $I$ पर बिल्कुल निर्भर नहीं करते।
 
@@ -35,19 +39,19 @@
 
 सबसे तेज़ तरीका माउस से एक पॉलीलाइन है:
 
-1. सुनिश्चित करें कि **Snap to grid** चालू है (**S** चिप)।
-2. *Elements* टैब → दूसरा **Add element** बटन (कर्सर आइकन)।
+1. सुनिश्चित करें कि **ग्रिड पर स्नैप** चालू है (**S** चिप)।
+2. *अवयव* टैब → दूसरा **अवयव जोड़ें** बटन (कर्सर आइकन)।
 3. (0, 0) पर क्लिक करें, फिर (0, −4), (4, −4), (8, −4) और (8, 0) पर। बिंदु खोजने के लिए रूलर और क्रॉसहेयर देखें। हर क्लिक एक नोड जोड़ता है और उसे पिछले नोड से जोड़ देता है।
 4. समाप्त करने के लिए <kbd>Esc</kbd> दबाएँ, फिर फ्रेम को स्क्रीन पर फिट करने के लिए <kbd>F</kbd>।
 
-अब आपके पास पाँच नोड और चार अवयव हैं। यहाँ के चित्रों में नोडों के लेबल A–E हैं; चाहें तो *Nodes* तालिका में अपने नोडों का नाम बदलें, या 1–5 रहने दें। तालिका में निर्देशांक जाँचें और जो ग्रिड से चूक गए हों, उन्हें ठीक करें।
+अब आपके पास पाँच नोड और चार अवयव हैं। यहाँ के चित्रों में नोडों के लेबल A–E हैं; चाहें तो *नोड* तालिका में अपने नोडों का नाम बदलें, या 1–5 रहने दें। तालिका में निर्देशांक जाँचें और जो ग्रिड से चूक गए हों, उन्हें ठीक करें।
 
-## 3. आधार और हिंज {#_3-supports-and-the-hinge}
+## 3. सपोर्ट और हिंज {#_3-supports-and-the-hinge}
 
-1. नोड A पर क्लिक करें, **Node supports** खोलें और **pin** चुनें। नोड E के लिए भी यही करें।
-2. *Elements* तालिका में B से C तक वाला अवयव खोजें और उसके **अंत** (end) वाले हिंज पर टिक करें (*End hinges* में दूसरा बॉक्स)।
+1. नोड A पर क्लिक करें, **नोड के सपोर्ट** खोलें और **पिन** चुनें। नोड E के लिए भी यही करें।
+2. *अवयव* तालिका में B से C तक वाला अवयव खोजें और उसके **अंत** (end) वाले हिंज पर टिक करें (*सिरे के हिंज* में दूसरा बॉक्स)।
 
-![Elements तालिका: हिंज अवयव 2 के अंत में, नोड C पर है](/screenshots/elements-table.webp)
+![अवयव तालिका: हिंज अवयव 2 के अंत में, नोड C पर है](/screenshots/hi/elements-table.webp)
 
 ::: tip एक हिंज, दो नहीं
 अवयव B–C के अंत को हिंज करना पर्याप्त है: तब C पर आघूर्ण शून्य होता है, क्योंकि C–D ऐसे नोड में आघूर्ण नहीं पहुँचा सकता जिसे केवल वही दृढ़ता से पकड़े हुए है। C–D के आरंभ पर भी टिक करें, तो कुछ नहीं बदलता। लेकिन B पर भी हिंज टिक करें, तो फ्रेम एक यंत्र (mechanism) बन जाता है। आज़माकर देखें: EduBeam आपको दिखाता है कि वह कैसे हिलता है।
@@ -55,27 +59,27 @@
 
 ## 4. भार {#_4-load}
 
-*Loads* → **Add element load** → *Uniformly distributed load*, अवयव B–C, `fz = 10` kN/m। अवयव C–D के लिए दोहराएँ। बीम क्षैतिज है, इसलिए यहाँ LCS बॉक्स से कोई अंतर नहीं पड़ता।
+*भार* → **अवयव भार जोड़ें** → *समान रूप से वितरित भार*, अवयव B–C, `fz = 10` kN/m। अवयव C–D के लिए दोहराएँ। बीम क्षैतिज है, इसलिए यहाँ LCS बॉक्स से कोई अंतर नहीं पड़ता।
 
 ## 5. परिणाम {#_5-results}
 
-प्रदर्शन विकल्प विरूपित आकृति, बंकन आघूर्ण और प्रतिक्रियाओं के चालू रहने के साथ शुरू होते हैं। बाकी देखने के लिए **N (x)** और **V<sub>z</sub> (x)** पर टिक करें।
+प्रदर्शन विकल्प विरूपित आकार, बंकन आघूर्ण और प्रतिक्रियाओं के चालू रहने के साथ शुरू होते हैं। बाकी देखने के लिए **N (x)** और **V<sub>z</sub> (x)** पर टिक करें।
 
 <div class="shots">
 
-![बंकन आघूर्ण और प्रतिक्रियाएँ](/screenshots/tut-frame-moment.webp)
+![बंकन आघूर्ण और प्रतिक्रियाएँ](/screenshots/hi/tut-frame-moment.webp)
 
-![अक्षीय बल](/screenshots/tut-frame-normal.webp)
+![अक्षीय बल](/screenshots/hi/tut-frame-normal.webp)
 
-![अपरूपण बल](/screenshots/results-shear.webp)
+![अपरूपण बल](/screenshots/hi/results-shear.webp)
 
-![विरूपित आकृति](/screenshots/results-deformed.webp)
+![विरूपित आकार](/screenshots/hi/results-deformed.webp)
 
 </div>
 
 ## 6. हाथ से जाँचें {#_6-check-by-hand}
 
-**ऊर्ध्वाधर प्रतिक्रियाएँ।** सममिति से हर आधार आधा भार लेता है:
+**ऊर्ध्वाधर प्रतिक्रियाएँ।** सममिति से हर सपोर्ट आधा भार लेता है:
 
 $$V_A = V_E = \frac{q \cdot 8}{2} = 40\ \text{kN}$$
 
@@ -83,7 +87,7 @@ $$V_A = V_E = \frac{q \cdot 8}{2} = 40\ \text{kN}$$
 
 $$V_A \cdot 4 - H_A \cdot 4 - q \cdot 4 \cdot 2 = 0 \quad\Rightarrow\quad H_A = \frac{160 - 80}{4} = 20\ \text{kN}$$
 
-दोनों आधार 20 kN से भीतर की ओर धकेलते हैं; यही क्षैतिज धक्का (thrust) त्रि-हिंज फ्रेम को कुशल बनाता है।
+दोनों सपोर्ट 20 kN से भीतर की ओर धकेलते हैं; यही क्षैतिज धक्का (thrust) त्रि-हिंज फ्रेम को कुशल बनाता है।
 
 **आंतरिक बल।**
 
@@ -104,11 +108,11 @@ $$V_A \cdot 4 - H_A \cdot 4 - q \cdot 4 \cdot 2 = 0 \quad\Rightarrow\quad H_A = 
 
 बीम में $M(x) = -80 + 40x - 5x^2$ kNm (x, B से), जो हिंज पर शून्य है और कभी धनात्मक नहीं होता: पूरा बीम होगिंग में है। अपरूपण $V(x) = 40 - 10x$ ठीक C पर शून्य हो जाता है, इसलिए आघूर्ण का चरम मान भी हिंज पर ही है।
 
-**विस्थापन।** हिंज C 43.1 mm नीचे धँसता है (*Results → Nodal results*, C का `Dz`)। यह चारों सदस्यों के बंकन से आता है और आभासी कार्य के सिद्धांत (principle of virtual work) के लिए एक अच्छा अभ्यास है।
+**विस्थापन।** हिंज C 43.1 mm नीचे धँसता है (*परिणाम → नोडल परिणाम*, C का `Dz`)। यह चारों सदस्यों के बंकन से आता है और आभासी कार्य के सिद्धांत (principle of virtual work) के लिए एक अच्छा अभ्यास है।
 
 ## 7. प्रयोग करें {#_7-experiment}
 
 - C पर **हिंज अनटिक करें**। फ्रेम एक बार अनिर्धार्य (once indeterminate) हो जाता है; कोनों के आघूर्ण घटते हैं और मध्य-स्पैन पर सैगिंग आघूर्ण प्रकट होता है। अब अनुप्रस्थ काट मायने रखता है: अधिक कठोर बीम आज़माएँ।
-- **आधारों को जड़ित करें** (**fixed** आधार चुनें)। A और E पर आघूर्ण प्रकट होते हैं।
-- **एक क्षैतिज भार जोड़ें**: B पर नोडीय भार `Fx = 10` kN। फ्रेम पार्श्व रूप से डोलता है (sway), और प्रतिक्रियाएँ अब सममित नहीं रहतीं। उन्हें उन्हीं तीन समीकरणों और $M_C = 0$ से जाँचें।
+- **सपोर्टों को फिक्स्ड करें** (**फिक्स्ड** चुनें)। A और E पर आघूर्ण प्रकट होते हैं।
+- **एक क्षैतिज भार जोड़ें**: B पर नोडल भार `Fx = 10` kN। फ्रेम पार्श्व रूप से डोलता है (sway), और प्रतिक्रियाएँ अब सममित नहीं रहतीं। उन्हें उन्हीं तीन समीकरणों और $M_C = 0$ से जाँचें।
 - B पर भी **हिंज टिक करें**। फ्रेम अब एक यंत्र है, और EduBeam एनिमेशन से दिखाता है कि वह कैसे हिल सकता है।

@@ -20,7 +20,7 @@
           {{ $t('sharing.instructions') }}
         </p>
         <v-textarea
-          v-model="val"
+          :model-value="val"
           readonly
           no-resize
           variant="outlined"
@@ -51,6 +51,16 @@
           tabindex="-1"
           readonly
         ></textarea>
+        <v-switch
+          v-model="appStore.shortShareLinks"
+          :label="$t('sharing.shortLink')"
+          :hint="$t('sharing.shortLinkHint')"
+          persistent-hint
+          color="primary"
+          density="compact"
+          inset
+          class="mt-3"
+        />
       </v-card-text>
       <v-divider />
       <v-card-actions class="share-actions d-flex flex-wrap">
@@ -78,14 +88,30 @@
 
 <script setup lang="ts">
 import HelpTip from '../HelpTip.vue';
-import { onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { closeModal } from 'jenesius-vue-modal';
 import { serializeModel } from '@/utils';
+import { toShareParam } from '@/utils/serializeModel';
+import { useAppStore } from '@/store/app';
 import { useProjectStore } from '@/store/project';
 import { deviceHasHover } from '@/utils/pointer';
 
 const open = ref(true);
-const val = ref('');
+const appStore = useAppStore();
+const projectStore = useProjectStore();
+
+// The model as it was when the dialog opened; the switch only changes how it is written.
+const model = serializeModel(projectStore.solver, projectStore.dimensions);
+
+const val = computed(() => {
+  const modelURL = new URL(window.location.href);
+  // Plain is the format every copy of the app reads, so it is also the fallback.
+  const param = (appStore.shortShareLinks && toShareParam(model)) || model;
+  modelURL.searchParams.set('model', param);
+
+  return modelURL.toString();
+});
+
 const clipboardHelper = ref<HTMLTextAreaElement | null>(null);
 
 type FeedbackType = 'success' | 'error';
@@ -97,16 +123,6 @@ const feedbackMessage = ref<FeedbackMessage>('sharing.linkCopied');
 
 const canUseNativeShare =
   typeof window !== 'undefined' && typeof navigator !== 'undefined' && typeof navigator.share === 'function';
-
-const shareMesh = () => {
-  const projectStore = useProjectStore();
-  const hash = serializeModel(projectStore.solver, projectStore.dimensions);
-
-  const modelURL = new URL(window.location as unknown as URL);
-  modelURL.searchParams.set('model', hash);
-
-  val.value = modelURL.toString();
-};
 
 const showFeedback = (message: FeedbackMessage, type: FeedbackType) => {
   feedbackMessage.value = message;
@@ -159,10 +175,6 @@ const shareViaSystem = async () => {
     showFeedback('sharing.copyFailed', 'error');
   }
 };
-
-onMounted(() => {
-  shareMesh();
-});
 </script>
 
 <style lang="scss">

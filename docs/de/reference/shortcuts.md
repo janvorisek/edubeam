@@ -1,3 +1,7 @@
+---
+description: "Alle Tastenkürzel, Mausaktionen und Touch-Gesten in EduBeam zum Zeichnen, Auswählen, Verschieben und Zoomen der Ansicht sowie die Bedienung der Objektpanels."
+---
+
 # Tastatur, Maus & Touch
 
 Tastenkürzel funktionieren, solange die Ansicht den Fokus hat. Während Sie in einer Tabellenzelle oder einem Dialog tippen, werden sie ignoriert; klicken Sie zuerst auf die Zeichenfläche.

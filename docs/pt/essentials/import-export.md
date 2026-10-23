@@ -1,3 +1,7 @@
+---
+description: "Salve e abra arquivos de projeto, compartilhe um modelo por link, exporte imagens e resultados, incorpore um visualizador e use parâmetros de URL. Tudo fica no seu navegador."
+---
+
 # Importar, exportar e compartilhar
 
 Tudo no <Edubeam /> acontece no seu navegador. Nada é enviado a um servidor: um link de compartilhamento contém literalmente o modelo.
@@ -24,6 +28,7 @@ Arquivos de projeto de todas as versões anteriores do EduBeam abrem na versão 
 - **Copiar** copia o link para a área de transferência. Clicar dentro do campo faz o mesmo.
 - **Abrir link** abre o link em uma nova aba, para que você confira o que o destinatário verá.
 - **Compartilhar via diálogo do sistema** entrega o link ao menu de compartilhamento do seu dispositivo, quando o navegador permite.
+- **Link mais curto** grava o mesmo modelo em cerca de metade dos caracteres. Uma cópia do <Edubeam /> que não é atualizada desde outubro de 2026 só consegue lê-lo depois de atualizar, então deixe a opção desligada quando o link precisar abrir em qualquer lugar logo de cara.
 
 O link tem a forma `https://run.edubeam.app/?model=…` e codifica o modelo inteiro. Quem o abre recebe uma cópia própria para editar; as edições **não** são sincronizadas de volta, então envie um novo link quando o modelo mudar. Modelos muito grandes geram links muito longos; nesses casos, compartilhe o arquivo JSON.
 
@@ -80,7 +85,7 @@ O modo de visualização serve para olhar, mas não é bloqueado: os visitantes 
 | --- | --- |
 | `model=<dados>` | Carrega o modelo codificado e o ajusta à tela. |
 | `viewer=1` | Modo de visualização (veja acima). |
-| `lang=<código>` | Troca o idioma da interface: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`. |
+| `lang=<código>` | Troca o idioma da interface: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`, `ko`. |
 | `panel=examples` | Abre a galeria de exemplos imediatamente. |
 
 Depois de lê-los, o EduBeam remove os parâmetros da barra de endereço.

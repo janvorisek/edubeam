@@ -1,3 +1,7 @@
+---
+description: "Recorrido por la interfaz de EduBeam: menú principal, visor y opciones de visualización, navegación y selección, pestañas, barra inferior y ventanas flotantes."
+---
+
 # Interfaz de usuario
 
 <Edubeam /> tiene tres zonas: la **barra superior**, el **visor** en el centro, donde dibujas, y la **barra inferior**, con una tabla para cada tipo de objeto. Cuando sabes qué hay en cada sitio, el resto de la guía cobra sentido.

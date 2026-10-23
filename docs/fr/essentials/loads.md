@@ -1,3 +1,7 @@
+---
+description: "Forces et moments nodaux, tassements d’appui, charges d’élément uniformes, trapézoïdales et ponctuelles, charges thermiques, avec leur convention de signe."
+---
+
 # Charges
 
 Toutes les charges appartiennent à un **seul cas de charge** et agissent ensemble. Pour comparer des scénarios, enregistrez chacun dans un fichier de projet ou un lien de partage.

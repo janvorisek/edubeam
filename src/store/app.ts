@@ -263,6 +263,12 @@ export const useAppStore = defineStore(
 
     const panButton = ref(-1);
 
+    /**
+     * Share links in the compressed format. Off unless chosen: a copy of the app cached from before
+     * that format cannot read it until it updates, and opens its own model instead.
+     */
+    const shortShareLinks = ref(false);
+
     // Everything the settings dialog edits except the language, which is a person's choice rather
     // than a preference to fall back from.
     const resetSettings = () => {
@@ -304,6 +310,7 @@ export const useAppStore = defineStore(
       resetSettings,
 
       panButton,
+      shortShareLinks,
 
       // Convert units
       convertLength,
@@ -362,6 +369,7 @@ export const useAppStore = defineStore(
         'units.Angle',
         'momentUnits',
         'axisConvention',
+        'shortShareLinks',
       ],
       debug: true,
       afterHydrate: ({ store }) => store.sanitizeUnits(),

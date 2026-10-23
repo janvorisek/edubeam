@@ -1,3 +1,7 @@
+---
+description: "¿No se dibujan resultados? Causas y soluciones: apoyos que faltan, mecanismos, mensajes del solver, errores y advertencias, resultados extraños, cómo informar."
+---
+
 # Solución de problemas
 
 ## No se dibujan resultados {#no-results-are-drawn}

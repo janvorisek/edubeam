@@ -1,3 +1,7 @@
+---
+description: "A tour of the EduBeam interface: the main menu, the viewer and its display options, navigating and selecting, the tabs, the bottom bar and floating windows."
+---
+
 # User interface
 
 <Edubeam /> has three zones: the **app bar** at the top, the **viewer** in the middle where you draw, and the **bottom bar** with a table for every kind of object. Learn what lives where and the rest of the guide will make sense.

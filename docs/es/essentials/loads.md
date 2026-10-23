@@ -1,3 +1,7 @@
+---
+description: "Fuerzas y momentos nodales, asientos de apoyo, cargas uniformes, trapezoidales y concentradas en elementos y cargas térmicas, con su convenio de signos."
+---
+
 # Cargas
 
 Todas las cargas pertenecen a un **único caso de carga** y actúan simultáneamente. Para comparar escenarios, guarda cada uno como archivo de proyecto o como enlace para compartir.

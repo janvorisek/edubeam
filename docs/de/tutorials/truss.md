@@ -1,3 +1,7 @@
+---
+description: "Schritt für Schritt: ein ebenes Fachwerk in EduBeam aufbauen und die Stabkräfte mit dem Knotenpunktverfahren und dem Ritterschnitt prüfen. Etwa 15 Minuten."
+---
+
 # Tutorial: ebenes Fachwerk
 
 In diesem Tutorial bauen Sie ein kleines statisch bestimmtes Fachwerk, prüfen seine Stabkräfte mit dem Knotenpunktverfahren und dem Ritterschnitt und finden einen Nullstab. Planen Sie etwa 15 Minuten ein.

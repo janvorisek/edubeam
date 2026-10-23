@@ -1,3 +1,7 @@
+---
+description: "Zapis i otwieranie projektów, udostępnianie modelu linkiem, eksport obrazów i wyników, osadzanie podglądu na żywo i parametry URL. Wszystko zostaje w przeglądarce."
+---
+
 # Import, eksport i udostępnianie
 
 Wszystko w <Edubeam /> dzieje się w Twojej przeglądarce. Nic nie jest wysyłane na serwer: link do udostępniania dosłownie zawiera model.
@@ -24,6 +28,7 @@ Pliki projektów ze wszystkich wcześniejszych wersji EduBeam otwierają się w 
 - **Kopiuj** kopiuje link do schowka. To samo robi kliknięcie w pole.
 - **Otwórz link** otwiera go w nowej karcie, abyś mógł sprawdzić, co zobaczy odbiorca.
 - **Udostępnij przez systemowe okno dialogowe** przekazuje link do systemowego menu udostępniania urządzenia, jeśli przeglądarka to obsługuje.
+- **Krótszy link** zapisuje ten sam model w mniej więcej połowie znaków. Kopia <Edubeam />, która nie była aktualizowana od października 2026, odczyta go dopiero po aktualizacji, więc zostaw tę opcję wyłączoną, gdy link ma od razu działać wszędzie.
 
 Link ma postać `https://run.edubeam.app/?model=…` i koduje cały model. Każdy, kto go otworzy, dostaje własną kopię do edycji; zmiany **nie** są synchronizowane z powrotem, więc gdy model się zmieni, wyślij nowy link. Bardzo duże modele dają bardzo długie linki; w takim przypadku udostępnij plik JSON.
 
@@ -80,7 +85,7 @@ Tryb podglądu służy do oglądania, ale nie jest zablokowany: odwiedzający mo
 | --- | --- |
 | `model=<data>` | Wczytuje zakodowany model i dopasowuje go do ekranu. |
 | `viewer=1` | Tryb podglądu (zobacz wyżej). |
-| `lang=<code>` | Przełącza język interfejsu: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`. |
+| `lang=<code>` | Przełącza język interfejsu: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`, `ko`. |
 | `panel=examples` | Od razu otwiera galerię przykładów. |
 
 Po ich odczytaniu EduBeam usuwa parametry z paska adresu.

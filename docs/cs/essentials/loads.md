@@ -1,3 +1,7 @@
+---
+description: "Uzlové síly a momenty, poklesy podpor, spojité rovnoměrné, lichoběžníkové a osamělé zatížení prvků i změna teploty, vždy s příslušnou znaménkovou konvencí."
+---
+
 # Zatížení
 
 Všechna zatížení patří do **jediného zatěžovacího stavu** a působí současně. Různé varianty zatížení porovnáte tak, že každou uložíte jako samostatný soubor projektu nebo sdílený odkaz.

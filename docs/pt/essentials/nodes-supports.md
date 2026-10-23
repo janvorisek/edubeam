@@ -1,3 +1,7 @@
+---
+description: "Adicione e edite nós, use o encaixe na grade, posicione nós sobre elementos e defina engastes, apoios fixos, móveis e inclinados, recalques e linhas de cota."
+---
+
 # Nós e apoios
 
 Os nós são os pontos do modelo. Os elementos ligam nós, e os apoios e as cargas nodais são aplicados nos nós.

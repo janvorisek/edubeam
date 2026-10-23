@@ -1,3 +1,7 @@
+---
+description: "Enregistrer et ouvrir un projet, partager un lien, exporter images et résultats, intégrer une visionneuse, paramètres d’URL. Tout reste dans votre navigateur."
+---
+
 # Import, export et partage
 
 Dans <Edubeam />, tout se passe dans votre navigateur. Rien n’est envoyé à un serveur : un lien de partage contient littéralement le modèle.
@@ -24,6 +28,7 @@ Les fichiers de projet de toutes les versions antérieures d’EduBeam s’ouvre
 - **Copier** copie le lien dans le presse-papiers. Cliquer dans le champ fait de même.
 - **Ouvrir le lien** l’ouvre dans un nouvel onglet, pour que vous puissiez vérifier ce que verra le destinataire.
 - **Partager via la boîte de dialogue système** transmet le lien au menu de partage de votre appareil, si le navigateur le permet.
+- **Lien plus court** écrit le même modèle en deux fois moins de caractères environ. Une copie de <Edubeam /> qui n’a pas été mise à jour depuis octobre 2026 ne peut pas le lire avant sa mise à jour : laissez l’option désactivée quand un lien doit s’ouvrir partout tout de suite.
 
 Le lien a la forme `https://run.edubeam.app/?model=…` et encode tout le modèle. Quiconque l’ouvre obtient sa propre copie à modifier ; les modifications ne sont **pas** synchronisées en retour : envoyez un nouveau lien quand le modèle change. Les très gros modèles produisent des liens très longs ; pour ceux-là, partagez plutôt le fichier JSON.
 
@@ -80,7 +85,7 @@ Le mode visionneuse est fait pour regarder, mais il n’est pas verrouillé : le
 | --- | --- |
 | `model=<data>` | Charge le modèle encodé et l’ajuste à l’écran. |
 | `viewer=1` | Mode visionneuse (voir ci-dessus). |
-| `lang=<code>` | Change la langue de l’interface : `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`. |
+| `lang=<code>` | Change la langue de l’interface : `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`, `ko`. |
 | `panel=examples` | Ouvre directement la galerie d’exemples. |
 
 Après les avoir lus, EduBeam retire les paramètres de la barre d’adresse.

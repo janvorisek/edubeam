@@ -1,0 +1,724 @@
+{
+  "tabView": {
+    "viewer": "Tampilan",
+    "settings": "Pengaturan",
+    "results": "Hasil"
+  },
+  "common": {
+    "label": "Label",
+    "node": "Joint",
+    "element": "Elemen",
+    "crossSection": "Penampang",
+    "material": "Material",
+    "settings": "Pengaturan",
+    "actions": "Aksi",
+    "coords": "Koordinat",
+    "type": "Tipe",
+    "nodes": "Joint",
+    "endHinges": "Sendi ujung",
+    "massMatrix": "Matriks massa",
+    "target": "Bekerja pada",
+    "components": "Komponen",
+    "loadCase": "Kasus beban",
+    "loads": "Beban",
+    "clearMesh": "Hapus model",
+    "shareModel": "Bagikan model",
+    "documentation": "Dokumentasi",
+    "addUsingDialog": "Tambah lewat dialog",
+    "addUsingMouse": "Tambah dengan mouse",
+    "edit": "Edit",
+    "copy": "Salin",
+    "delete": "Hapus",
+    "stiffnessMatrix": "Matriks kekakuan",
+    "normalForce": "Gaya normal",
+    "shearForce": "Gaya geser",
+    "bendingMoment": "Momen lentur",
+    "deformedShape": "Bentuk deformasi",
+    "reactions": "Reaksi",
+    "elements": "Elemen",
+    "confirm": "Konfirmasi",
+    "saveProject": "Simpan proyek",
+    "openProject": "Buka proyek",
+    "lcs": "Sistem koordinat lokal",
+    "paste": "Tempel",
+    "addNew": "Tambah baru",
+    "whatisnew": "Apa yang baru?",
+    "reverse_orientation": "Balik dimensi",
+    "undo": "Urungkan",
+    "redo": "Ulangi",
+    "ok": "OK"
+  },
+  "nodes": {
+    "addNode": "Tambah joint",
+    "editNode": "Edit joint",
+    "defineSupports": "Tumpuan joint",
+    "lcsAngle": "Sudut LCS joint"
+  },
+  "supports": {
+    "free": "Bebas",
+    "pin": "Sendi",
+    "roller": "Rol",
+    "verticalRoller": "Rol vertikal",
+    "slider": "Jepit geser",
+    "verticalSlider": "Jepit geser vertikal",
+    "rotation": "Hanya rotasi ditahan",
+    "fixed": "Jepit",
+    "custom": "Kustom"
+  },
+  "elements": {
+    "addElement": "Tambah elemen",
+    "editElement": "Edit elemen",
+    "swapNodeOrder": "Tukar joint",
+    "hingeStart": "Sendi awal",
+    "hingeEnd": "Sendi akhir",
+    "hinge": "Sendi",
+    "from": "Dari",
+    "to": "Ke"
+  },
+  "loads": {
+    "addNodalLoad": "Tambah beban joint",
+    "addElementLoad": "Tambah beban elemen",
+    "addLoad": "Tambah beban",
+    "nodalLoad": "Beban joint",
+    "elementLoad": "Beban elemen",
+    "prescribedDisplacement": "Perpindahan tumpuan",
+    "addPrescribedDisplacement": "Tetapkan perpindahan",
+    "UDL": "Merata",
+    "forceMoment": "Gaya/Momen",
+    "editLoad": "Edit beban",
+    "loadPositionOnBeam": "Posisi beban dari joint awal",
+    "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Perubahan suhu serat bawah dikurangi serat atas",
+    "temperatureBending": "ΔT<sub>c</sub> ... Perubahan suhu aksial",
+    "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
+    "temperatureDeltaTs": "ΔT<sub>c</sub>",
+    "temperatureDeltaTsNoHTML": "ΔTc",
+    "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
+  },
+  "tabs": {
+    "nodes": "Joint",
+    "elements": "Elemen",
+    "loads": "Beban",
+    "materials": "Material",
+    "crossSections": "Penampang",
+    "results": "Hasil"
+  },
+  "crossSection": {
+    "area": "Luas",
+    "h": "Tinggi",
+    "iy": "Iy",
+    "k": "Koefisien geser",
+    "iz": "Iz",
+    "b": "Lebar",
+    "centroid": "Titik berat",
+    "alpha": "Sudut sumbu utama",
+    "radiusOfGyration": "Jari-jari girasi",
+    "polygonal": "Bentuk poligon",
+    "derivedFromShape": "Diturunkan dari bentuk poligon – edit bentuknya untuk mengubahnya"
+  },
+  "material": {
+    "e": "E",
+    "g": "G",
+    "density": "Massa jenis",
+    "alphaT": "α_T"
+  },
+  "settings": {
+    "results_scale": "Skala hasil",
+    "grid_snap_step": "Jarak snap grid",
+    "snap_to_grid": "Snap ke grid",
+    "show_crosshair": "Tampilkan crosshair",
+    "model_checks": "Pemeriksaan model",
+    "show_mechanisms": "Tunjukkan bagaimana struktur tidak stabil dapat bergerak",
+    "animate_mechanisms": "Animasikan gerakannya",
+    "number_format": "Format angka",
+    "number_format_description": "Cara nilai hasil ditulis; pemisah desimal mengikuti bahasa.",
+    "number_format_auto": "Otomatis",
+    "number_format_scientific": "Ilmiah (1,5 · 10⁴)",
+    "number_format_engineering": "Teknik (15 · 10³)",
+    "language": "Bahasa",
+    "language_and_locale": "Bahasa & Wilayah",
+    "show_normal_force": "Tampilkan gaya normal",
+    "show_shear_force": "Tampilkan gaya geser",
+    "show_bending_moment": "Tampilkan momen lentur",
+    "show_deformed_shape": "Tampilkan bentuk deformasi",
+    "show_loads": "Tampilkan beban",
+    "units": {
+      "units": "Satuan",
+      "length": "Panjang",
+      "mass": "Massa",
+      "force": "Gaya",
+      "moment": "Momen lentur",
+      "pressure": "Tekanan",
+      "area": "Luas",
+      "areaM2": "Momen inersia",
+      "system": "Sistem satuan",
+      "systemSI": "SI (metrik)",
+      "systemUS": "US customary (imperial)",
+      "systemCustom": "Kustom",
+      "temperature": "Suhu",
+      "sectionLength": "Dimensi penampang",
+      "displacement": "Perpindahan"
+    },
+    "grid": "Grid",
+    "show_grid": "Tampilkan grid",
+    "mouse": {
+      "mouse": "Mouse",
+      "pan_button": "Geser tampilan dengan",
+      "wheel": "Roda mouse",
+      "right_button": "Tombol kanan",
+      "all": "Roda mouse atau tombol kanan"
+    },
+    "colors": {
+      "colors": "Warna"
+    },
+    "results": {
+      "results": "Hasil"
+    },
+    "viewer_settings": "Pengaturan tampilan",
+    "controls_and_shortcuts": "Kontrol & Pintasan",
+    "language_and_locale_subtitle": "Pengaturan bahasa, lokalisasi, dan satuan",
+    "viewer_settings_subtitle": "Skala, warna, grid, dan lainnya",
+    "controls_and_shortcuts_subtitle": "Pengaturan keyboard dan mouse",
+    "viewer_preview": "Pratinjau tampilan",
+    "language_description": "Pilih bahasa antarmuka yang Anda inginkan.",
+    "units_description": "Pilih satuan ukur yang Anda inginkan.",
+    "axisConvention": "Sistem koordinat",
+    "axisConvention_description": "Arah sumbu vertikal pada input dan hasil. Model dan file yang disimpan tidak terpengaruh.",
+    "axisConvention_zDown": "x ke kanan, z ke bawah",
+    "axisConvention_yUp": "x ke kanan, y ke atas",
+    "reset_settings": "Reset pengaturan",
+    "sizes": {
+      "sizes": "Ukuran",
+      "supportSize": "Ukuran tumpuan"
+    },
+    "font_size": "Ukuran huruf",
+    "result_label_orientation": "Orientasi label hasil",
+    "result_label_orientation_axis": "Tegak lurus diagram",
+    "result_label_orientation_horizontal": "Selalu horizontal",
+    "result_labels": "Label hasil"
+  },
+  "sideSettings": {
+    "showDeformedShape": "Bentuk deformasi",
+    "supports": "Tumpuan",
+    "loads": "Beban",
+    "nodeLabels": "Label joint",
+    "elementLabels": "Label elemen",
+    "more_settings": "Pengaturan lain",
+    "showReactions": "Reaksi"
+  },
+  "viewer": {
+    "toggleGrid": "Tampilkan/sembunyikan grid (G)",
+    "toggleSnap": "Aktifkan/nonaktifkan snap ke grid (S)",
+    "toggleCrosshair": "Tampilkan/sembunyikan crosshair",
+    "boxSelect": "Pilih dengan kotak",
+    "centerContent": "Pusatkan model",
+    "fitContent": "Sesuaikan dengan layar",
+    "holdCtrl": "Tahan Ctrl untuk menambah dengan mouse"
+  },
+  "dofs": {
+    "bcs": "DOF yang ditahan"
+  },
+  "results": {
+    "results": "Hasil",
+    "nodal_results": "Hasil joint",
+    "element_results": "Hasil elemen",
+    "end_forces": "Gaya ujung (dalam sistem koordinat lokal)",
+    "exportCsv": "Ekspor CSV",
+    "exportHint": "Unduh kedua tabel hasil dalam satuan yang ditampilkan, siap dibuka di spreadsheet.",
+    "copied": "Hasil disalin ke clipboard",
+    "copyFailed": "Hasil tidak dapat disalin ke clipboard."
+  },
+  "materials": {
+    "addMaterial": "Tambah material",
+    "material_library": "Pustaka material",
+    "section_library": "Pustaka penampang"
+  },
+  "crossSections": {
+    "addCrossSection": "Tambah penampang",
+    "addPolygonal": "Penampang poligon"
+  },
+  "dialogs": {
+    "addNode": {
+      "addNewNode": "Tambah joint baru",
+      "coordinate_x": "Koordinat X",
+      "coordinate_z": "Koordinat {v}",
+      "addNode": "Tambah joint"
+    },
+    "common": {
+      "cancel": "Batal",
+      "orChooseFromLibrary": "Atau pilih dari pustaka"
+    },
+    "addElement": {
+      "fromNodeId": "Joint awal",
+      "toNodeId": "Joint akhir",
+      "addElement": "Tambah elemen",
+      "addNewElement": "Tambah elemen baru",
+      "material": "Material",
+      "crossSection": "Penampang"
+    },
+    "addNodalLoad": {
+      "addNewNodalLoad": "Tambah beban joint baru",
+      "addNodalLoad": "Tambah beban joint"
+    },
+    "addElementLoad": {
+      "addNewElementLoad": "Tambah beban elemen baru",
+      "addElementLoad": "Tambah beban elemen"
+    },
+    "addMaterial": {
+      "addNewMaterial": "Tambah material baru",
+      "addMaterial": "Tambah material",
+      "E": "E - Modulus elastisitas (Young)",
+      "G": "G - Modulus geser",
+      "density": "ρ - massa jenis",
+      "alphaT": "α - Koefisien muai panas"
+    },
+    "addCrossSection": {
+      "addNewCrossSection": "Tambah penampang baru",
+      "addCrossSection": "Tambah penampang",
+      "orDefinePolygon": "Atau definisikan bentuk poligon"
+    },
+    "editNodalLoad": {
+      "editNodalLoad": "Edit beban joint"
+    },
+    "editElementLoad": {
+      "editElementLoad": "Edit beban elemen"
+    },
+    "update": {
+      "title": "Pembaruan tersedia",
+      "update": "Perbarui",
+      "text1": "Kami sedang merilis pembaruan yang mengharuskan aplikasi direset. Artinya, semua pekerjaan yang belum disimpan akan hilang.",
+      "text2": "Jika ingin mempertahankan pekerjaan Anda saat ini, Anda dapat membatalkan pembaruan."
+    },
+    "editNode": {
+      "editNode": "Edit joint"
+    },
+    "changelog": {
+      "title": "Apa yang baru?",
+      "description": "Fitur baru, perbaikan, dan bocoran hal yang sedang kami kerjakan.",
+      "contributors": "Kontributor rilis ini: {names}",
+      "comingSoon": "Segera hadir"
+    },
+    "polygonSection": {
+      "title": "Penampang poligon baru",
+      "editTitle": "Edit penampang poligon",
+      "preset": "Preset",
+      "apply": "Terapkan",
+      "snapStep": "Jarak snap",
+      "centerAtCentroid": "Pusatkan di titik berat",
+      "hint": "Seret titik sudut untuk memindahkannya, klik titik tengah sisi untuk menyisipkan titik sudut, klik ganda titik sudut untuk menghapusnya.",
+      "outline": "Kontur luar",
+      "hole": "Lubang",
+      "addHole": "Tambah lubang",
+      "addVertex": "Tambah titik sudut",
+      "removeContour": "Hapus lubang",
+      "properties": "Properti penampang",
+      "invalidShape": "Bentuk harus berupa poligon sederhana dengan luas positif: tanpa sisi yang bersilangan, dan lubang harus tetap berada di dalam kontur luar.",
+      "labelInUse": "Label sudah digunakan",
+      "save": "Simpan",
+      "editShape": "Edit bentuk poligon",
+      "presets": {
+        "rectangle": "Persegi panjang",
+        "iSection": "Profil I",
+        "tSection": "Profil T",
+        "lSection": "Profil L",
+        "channel": "Kanal (U)",
+        "box": "Persegi berongga",
+        "circle": "Lingkaran",
+        "pipe": "Pipa"
+      },
+      "params": {
+        "b": "Lebar b",
+        "h": "Tinggi h",
+        "tw": "Badan tw",
+        "tf": "Sayap tf",
+        "t": "Tebal t",
+        "d": "Diameter d",
+        "n": "Segmen"
+      },
+      "vertices": "Titik sudut",
+      "legendOutline": "Kontur luar",
+      "legendHole": "Lubang",
+      "legendPrincipal": "Sumbu utama & elips inersia",
+      "legendCentroid": "Titik berat",
+      "shape": "Bentuk",
+      "noShape": "Tidak ada bentuk poligon",
+      "centroidal": "terhadap titik berat",
+      "centroidalNote": "Semua momen inersia dihitung terhadap sumbu yang melalui titik berat; I₁, I₂ adalah nilai utama dan α adalah sudut dari sumbu y ke sumbu 1.",
+      "outOfPlaneNote": "Penampang ini tidak simetris terhadap bidang portal. Analisis 2D hanya eksak jika batang ditahan terhadap lendutan ke samping (keluar dari layar) dan terhadap puntir di sepanjang batang, misalnya oleh pelat atau bresing yang rapat; tumpuan di joint saja tidak cukup. Batang yang bebas juga akan terpuntir karena beban bekerja di luar pusat gesernya, dan puntir itu tidak diperhitungkan dalam lendutan.",
+      "outOfPlaneRestrained": "Ditahan ke samping dan terhadap puntir di sepanjang batang: {inertia}",
+      "outOfPlaneFree": "Bebas melendut ke samping (puntir tetap tidak diperhitungkan): {inertia}"
+    }
+  },
+  "tooltip": {
+    "materials": {},
+    "material": {
+      "alphaT": "Koefisien muai panas menyatakan seberapa besar ukuran benda berubah akibat perubahan suhu.",
+      "e": "Modulus elastisitas (Young) mengukur kekakuan tarik atau tekan bila gaya bekerja searah panjang batang.",
+      "g": "Modulus geser adalah sifat yang mengukur ketahanan terhadap deformasi akibat tegangan geser, yaitu kekakuan material terhadap gaya yang bekerja sejajar permukaannya.",
+      "density": "Massa jenis adalah ukuran seberapa banyak massa yang terkandung dalam volume tertentu suatu zat. "
+    }
+  },
+  "footer": {
+    "reportIssue": "Laporkan masalah",
+    "requestFeature": "Usulkan fitur",
+    "released": "dirilis"
+  },
+  "sharing": {
+    "shareViaURL": "Bagikan model lewat URL",
+    "instructions": "Klik di mana saja di dalam kolom untuk menyalin tautan, lalu kirimkan ke rekan Anda.",
+    "copyCue": "Salin tautan",
+    "openLink": "Buka tautan",
+    "nativeShare": "Bagikan lewat dialog sistem",
+    "linkCopied": "Tautan disalin ke clipboard",
+    "copyFailed": "Tidak dapat menyalin otomatis. Gunakan pintasan keyboard.",
+    "shortLink": "Tautan lebih pendek",
+    "shortLinkHint": "Kira-kira setengah panjangnya. Siapa pun yang memakai versi edubeam yang lebih lama harus memperbarui aplikasi sebelum tautan bisa dibuka."
+  },
+  "tour": {
+    "menu": {
+      "title": "Menu",
+      "description": "Buka, simpan, dan bagikan proyek, ekspor gambar, muat contoh, atau mulai lagi tur ini atau tugas balok pertama."
+    },
+    "undoRedo": {
+      "title": "Urungkan dan ulangi",
+      "description": "Mundur dan maju melalui perubahan Anda. Ctrl+Z dan Ctrl+Shift+Z melakukan hal yang sama."
+    },
+    "viewerControls": {
+      "title": "Tombol tampilan",
+      "description": "Dengan tombol tampilan Anda dapat memusatkan struktur atau menyesuaikannya dengan layar, dan memilih apa yang ditampilkan."
+    },
+    "viewerSettings": {
+      "title": "Atur opsi tampilan",
+      "description": "Pilih apa yang ditampilkan – gaya normal, gaya geser, momen lentur, bentuk deformasi, atau semuanya sekaligus."
+    },
+    "gridUnits": {
+      "title": "Grid, snap, dan satuan",
+      "description": "G menampilkan grid dan S membuat joint baru menempel ke grid. Klik satuan untuk mengubah satuan, bahasa, atau sistem koordinat."
+    },
+    "bottomBar": {
+      "title": "Tambah, hapus & ubah objek",
+      "description": "Di sini Anda mengubah setiap bagian struktur dengan cepat dan lengkap, dari joint dan elemen hingga beban, material, dan penampang."
+    },
+    "help": {
+      "title": "Bantuan",
+      "description": "Tanda ? menjelaskan tab yang sedang terbuka. Tanda ? di samping judul kolom menjelaskan kolom tersebut."
+    },
+    "previousButton": "Sebelumnya",
+    "nextButton": "Berikutnya",
+    "finishButton": "Selesai",
+    "close": "Tutup tur"
+  },
+  "firstBeam": {
+    "title": "Balok pertama Anda",
+    "step": "Langkah {n} dari {total}",
+    "close": "Tutup panduan",
+    "finish": "Selesai",
+    "next": "Berikutnya",
+    "steps": {
+      "tool": {
+        "title": "Pilih alat gambar",
+        "body": "Di tab {elementsTab} di bawah, tekan tombol {addElement} dengan ikon kursor."
+      },
+      "draw": {
+        "title": "Gambar balok",
+        "body": "Klik titik awal balok, lalu titik akhirnya. Ujung-ujungnya menempel ke grid."
+      },
+      "supports": {
+        "title": "Beri tumpuan",
+        "body": "Klik ujung kiri, buka {defineSupports}, lalu centang Dx dan D{v} untuk tumpuan sendi. Kemudian klik ujung kanan dan centang D{v} untuk tumpuan rol."
+      },
+      "load": {
+        "title": "Beri beban",
+        "body": "Klik balok, pilih {addLoad}, masukkan nilai f{v}, lalu konfirmasi."
+      },
+      "display": {
+        "title": "Pilih yang ditampilkan",
+        "body": "Ikon roda gigi di kanan atas membuka opsi tampilan: gaya dalam, bentuk deformasi, reaksi, dan lainnya. Buka sekarang."
+      },
+      "fit": {
+        "title": "Sesuaikan dengan layar",
+        "body": "Tombol di kanan atas menyesuaikan model dengan layar atau memusatkannya. Tekan Sesuaikan dengan layar sekarang, dan tekan lagi setiap kali gambar bergeser keluar dari layar."
+      },
+      "results": {
+        "title": "Baca hasilnya",
+        "body": "Momen lentur dan bentuk deformasi digambar pada balok dan diperbarui saat Anda mengedit. Setiap joint, elemen, dan beban juga tercantum di tabel di bawah, tempat Anda dapat mengetik nilai yang tepat. {undo} mengembalikan model Anda sebelumnya."
+      }
+    }
+  },
+  "welcome": {
+    "title": "Selamat datang di <span class=\"edubeam\">edubeam</span>! 🚀",
+    "description": "Modelkan balok, portal, dan rangka batang, lalu lihat gaya dalamnya sambil menggambar.",
+    "start": "Bagaimana Anda ingin memulai?",
+    "showAround": "Ajak saya berkeliling",
+    "showAroundHint": "Sekilas tentang tampilan, opsi tampilan, dan bilah bawah.",
+    "drawFirstBeam": "Gambar balok pertama Anda",
+    "drawFirstBeamHint": "Tugas singkat terpandu: gambar balok, beri tumpuan, dan beri beban.",
+    "openExample": "Buka contoh",
+    "openExampleHint": "Mulai dari model siap pakai lalu ubah.",
+    "skip": "Lewati dulu"
+  },
+  "confirmation": {
+    "clearMesh": {
+      "message": "Yakin ingin menghapus model? Ctrl+Z akan mengembalikannya, dan model tetap tersimpan di Struktur terbaru.",
+      "title": "Hapus model?",
+      "materials": "Hapus material",
+      "crossSections": "Hapus penampang"
+    },
+    "resetSettings": {
+      "title": "Reset pengaturan?",
+      "message": "Yakin ingin mengembalikan semua pengaturan ke bawaan? Tindakan ini tidak dapat diurungkan."
+    },
+    "splitElementAndPlaceNode": {
+      "title": "Konfirmasi penempatan joint",
+      "message": "<p>Sepertinya Anda menempatkan joint pada balok {label}.</p><p class=\"mt-3\">Apakah Anda ingin membagi elemen dan menyambungkan joint, atau menempatkan joint tanpa tersambung ke struktur?</p>",
+      "split": "Sambungkan ke struktur"
+    },
+    "placeIndividualNode": "Tempatkan joint terpisah"
+  },
+  "selection": {
+    "node": "Joint",
+    "element": "Elemen",
+    "dimension": "Garis dimensi",
+    "nodal-load": "Beban joint",
+    "element-load": "Beban elemen",
+    "prescribedbc-load": "Perpindahan tumpuan"
+  },
+  "validators": {
+    "enterValue": "Masukkan nilai",
+    "invalidNumber": "Angka tidak valid",
+    "positiveNumber": "Masukkan angka lebih dari nol",
+    "between": "Masukkan nilai antara {min} dan {max}",
+    "sameNodes": "Elemen harus menghubungkan dua joint yang berbeda",
+    "materialInUse": "Material digunakan oleh elemen {elements}. Ganti material elemen tersebut sebelum menghapusnya.",
+    "crossSectionInUse": "Penampang digunakan oleh elemen {elements}. Ganti penampang elemen tersebut sebelum menghapusnya."
+  },
+  "solveDiagnostics": {
+    "summaryErrors": "Kesalahan pada model: {errors}",
+    "summaryWarnings": "Peringatan pada model: {warnings}",
+    "summaryIncomplete": "{count} bagian struktur memerlukan tumpuan.",
+    "incompleteChip": "Perlu tumpuan",
+    "hideMotion": "Sembunyikan gerakan",
+    "showMotion": "Tampilkan gerakan",
+    "dismissWarnings": "Sembunyikan peringatan ini",
+    "collapseErrors": "Perkecil pesan ini",
+    "showDetails": "Tampilkan detail",
+    "blockedTitle": "Model tidak dapat dihitung",
+    "blockedDescription": "Perbaiki kesalahan yang tercantum sebelum menghitung model.",
+    "warningsTitle": "Peringatan model",
+    "warningsDescription": "Model telah dihitung, tetapi peringatan berikut terdeteksi.",
+    "incompleteTitle": "Belum siap dihitung",
+    "incompleteDescription": "Hasil muncul setelah struktur tertahan di tempatnya. Garis putus-putus di kanvas menunjukkan bagaimana struktur masih dapat bergerak.",
+    "errors": "Kesalahan",
+    "warnings": "Peringatan",
+    "incomplete": "Masih diperlukan",
+    "issues": {
+      "elementNodeCount": "Elemen {element} harus merujuk tepat 2 joint.",
+      "elementSameNode": "Elemen {element} merujuk joint yang sama di kedua ujungnya.",
+      "elementMissingNode": "Elemen {element} merujuk joint {node} yang tidak ada.",
+      "elementMissingMaterial": "Elemen {element} merujuk material {material} yang tidak ada.",
+      "elementMissingCrossSection": "Elemen {element} merujuk penampang {crossSection} yang tidak ada.",
+      "nodalLoadMissingNode": "Beban joint #{index} merujuk joint {node} yang tidak ada.",
+      "nodalLoadInvalid": "Beban joint #{index} berisi nilai yang tidak valid.",
+      "prescribedMissingNode": "Perpindahan tumpuan #{index} merujuk joint {node} yang tidak ada.",
+      "prescribedInvalid": "Perpindahan tumpuan #{index} berisi nilai yang tidak valid.",
+      "elementLoadMissingElement": "Beban elemen #{index} merujuk elemen {element} yang tidak ada.",
+      "supportedNodeNotConnected": "Joint {node} diberi tumpuan tetapi tidak ada elemen yang tersambung, sehingga tumpuannya tidak memikul apa pun.",
+      "nodeNotConnected": "Joint {node} tidak tersambung ke elemen mana pun dan diabaikan oleh solver.",
+      "insufficientSupports": "Model memerlukan setidaknya 3 DOF yang ditahan agar stabil dalam analisis 2D.",
+      "needsSupports": "Struktur memerlukan tumpuan sebelum dapat dihitung.",
+      "partUnsupported": "Bagian struktur yang terpisah (joint {nodes}) memiliki kurang dari 3 DOF yang ditahan dan dapat bergerak bebas.",
+      "partNeedsSupports": "Bagian dengan joint {nodes} memerlukan tumpuan.",
+      "mechanism": "Jumlah tumpuan struktur sudah cukup, tetapi tumpuan tidak menahannya: struktur masih dapat {motion}. Tumpuan yang semuanya sejajar, atau yang garis kerjanya bertemu di satu titik, membuat struktur bebas bergerak.",
+      "mechanismShort": "Tumpuan tidak menahan struktur: struktur masih dapat {motion}.",
+      "partMechanism": "Bagian struktur yang terpisah (joint {nodes}) memiliki cukup tumpuan, tetapi tumpuan tidak menahannya: bagian itu masih dapat {motion}. Tumpuan yang semuanya sejajar, atau yang garis kerjanya bertemu di satu titik, membuat struktur bebas bergerak.",
+      "partMechanismShort": "Bagian dengan joint {nodes} tidak tertahan: bagian itu masih dapat {motion}.",
+      "hingeMechanism": "Tumpuan menahan struktur, tetapi struktur masih merupakan mekanisme: batangnya dapat berputar pada sendi di joint {nodes}. Hapus sebuah sendi, atau tambahkan batang atau tumpuan yang menghentikan gerakan itu.",
+      "hingeMechanismShort": "Sendi di joint {nodes} membuat struktur dapat bergerak.",
+      "motion": {
+        "horizontal": "bergeser horizontal",
+        "vertical": "bergerak vertikal",
+        "rotation": "berputar bebas",
+        "mixed": "bergerak sebagai benda kaku"
+      },
+      "unstable": "Struktur tidak stabil: {dofs} bergerak praktis tanpa hambatan. Tambahkan tumpuan atau elemen, hapus sendi ujung, atau periksa kekakuan penampang.",
+      "unstableShort": "Struktur tidak stabil: struktur bergerak hampir tanpa hambatan.",
+      "unstableDof": {
+        "dx": "joint {node} secara horizontal (Dx)",
+        "dz": "joint {node} secara vertikal (D{v})",
+        "ry": "joint {node} dalam rotasi (R{r})",
+        "other": "joint {node} pada DOF {dof}"
+      },
+      "unstableMore": "{list} dan {count} lainnya",
+      "singularMatrix": "Struktur adalah mekanisme: matriks kekakuan singular. Pastikan setiap bagian ditahan oleh setidaknya 3 kekangan dan sendi ujung tidak membuat batang bebas berputar.",
+      "singularMatrixShort": "Struktur adalah mekanisme: struktur dapat bergerak tanpa hambatan.",
+      "solverFailed": "Solver gagal karena ada ketidakkonsistenan internal pada model. Periksa rujukan dan beban pada model."
+    }
+  },
+  "loadType": {
+    "loadType": "Tipe beban",
+    "concentrated": "Beban terpusat",
+    "trapezoidal": "Beban trapesium",
+    "udl": "Beban merata",
+    "temperature": "Beban suhu"
+  },
+  "dimensioning": {
+    "add_dimension": "Tambah dimensi",
+    "add_along_element": "Dimensi elemen {label}"
+  },
+  "warnings": {
+    "noMaterialsDefined": "Belum ada material yang didefinisikan.",
+    "noCrossSectionsDefined": "Belum ada penampang yang didefinisikan.",
+    "importFailed": "File tidak dapat diimpor. Periksa format file.",
+    "prescribedDisplacementExists": "Perpindahan tumpuan sudah ada untuk joint ini. Hapus terlebih dahulu.",
+    "addMaterialFirst": "Tambahkan material terlebih dahulu.",
+    "addCrossSectionFirst": "Tambahkan penampang terlebih dahulu.",
+    "selectMaterialAndCrossSection": "Pilih material dan penampang.",
+    "labelInUse": "Label {label} sudah digunakan.",
+    "noMaterialOrCrossSection": "Elemen tidak memiliki material atau penampang.",
+    "elementMissing": "Elemen {label} sudah tidak ada."
+  },
+  "help": {
+    "aria": "Tampilkan bantuan",
+    "readMore": "Baca di dokumentasi",
+    "troubleshooting": "Pemecahan masalah",
+    "nodes": {
+      "title": "Joint",
+      "body": "Joint adalah titik yang menyatukan struktur. Koordinat, tumpuan, sendi, dan beban yang bekerja padanya diatur per joint."
+    },
+    "supports": {
+      "title": "Tumpuan",
+      "body": "Centang derajat kebebasan untuk menahannya: Dx dan D{v} menahan translasi, R{r} menahan rotasi. Struktur memerlukan setidaknya tiga kekangan yang saling bebas."
+    },
+    "elements": {
+      "title": "Elemen",
+      "body": "Elemen menghubungkan dua joint dan memiliki material serta penampang. Lepaskan ujungnya untuk mengubah balok menjadi batang bersendi atau batang rangka."
+    },
+    "loads": {
+      "title": "Beban",
+      "body": "Beban bekerja pada joint atau di sepanjang elemen. Nilai positif mengikuti sumbu global, dengan z mengarah ke bawah.",
+      "bodyYUp": "Beban bekerja pada joint atau di sepanjang elemen. Nilai positif mengikuti sumbu global, dengan y mengarah ke atas."
+    },
+    "nodalLoads": {
+      "title": "Beban joint",
+      "body": "Beban joint memberikan gaya atau momen langsung pada joint. Dengan perpindahan tumpuan Anda dapat memberikan penurunan tumpuan."
+    },
+    "elementLoads": {
+      "title": "Beban elemen",
+      "body": "Beban elemen bekerja di sepanjang batang: merata, trapesium, terpusat, atau suhu. Beban dapat diberikan dalam sumbu global atau lokal."
+    },
+    "materials": {
+      "title": "Material",
+      "body": "Material memiliki modulus elastisitas, modulus geser, massa jenis, dan koefisien muai panas. Untuk analisis statis biasa, hanya E dan penampang yang berpengaruh."
+    },
+    "crossSections": {
+      "title": "Penampang",
+      "body": "Penampang memberikan luas dan momen inersia yang digunakan untuk kekakuan. Pilih dari pustaka atau gambar poligon sendiri."
+    },
+    "hinges": {
+      "title": "Sendi ujung",
+      "body": "Kotak yang dicentang melepas momen lentur di ujung elemen tersebut. Centang kedua ujung untuk membuat batang rangka, satu ujung untuk menyisipkan sendi di dalam portal."
+    },
+    "signConvention": {
+      "title": "Konvensi tanda",
+      "body": "Sumbu z global mengarah ke bawah, sehingga Fz atau fz positif menarik ke bawah dan My positif berlawanan arah jarum jam. Beban yang dialihkan ke sistem lokal mengikuti elemen.",
+      "bodyYUp": "Sumbu y global mengarah ke atas, sehingga Fy atau fy positif mendorong ke atas dan Mz positif berlawanan arah jarum jam. Beban yang dialihkan ke sistem lokal mengikuti elemen."
+    },
+    "results": {
+      "title": "Hasil",
+      "body": "Setelah model terhitung, Anda mendapatkan gaya normal, gaya geser, momen lentur, bentuk deformasi, dan reaksi, baik sebagai diagram maupun tabel."
+    },
+    "diagrams": {
+      "title": "Lapisan hasil",
+      "body": "Sakelar ini menggambar gaya normal, gaya geser, momen lentur, bentuk deformasi, dan reaksi di atas model. N positif untuk tarik, M{r} positif bila balok melendut ke bawah (serat bawah tertarik)."
+    },
+    "endForces": {
+      "title": "Gaya ujung",
+      "body": "X12, Z12, dan M12 bekerja di joint awal, X21, Z21, dan M21 di joint akhir, selalu dalam sistem lokal elemen yang mengarah dari joint awal ke joint akhirnya."
+    },
+    "settings": {
+      "title": "Satuan & pengaturan",
+      "body": "Bahasa, satuan, skala tampilan, warna, dan pintasan ada di sini. Satuan mengonversi nilai yang ada, tetapi tidak pernah mengubah model."
+    },
+    "sharing": {
+      "title": "Menyimpan & berbagi",
+      "body": "Simpan model sebagai file, salin tautan yang memuat seluruh struktur, atau sematkan penampil hanya-baca di halaman Anda sendiri."
+    }
+  },
+  "exportImage": {
+    "title": "Ekspor gambar",
+    "transparentBackground": "Latar belakang transparan",
+    "download": "Unduh PNG",
+    "downloadSvg": "Unduh SVG",
+    "copyToClipboard": "Salin ke clipboard",
+    "copied": "Gambar disalin ke clipboard",
+    "exported": "Gambar diekspor",
+    "failed": "Gambar tidak dapat dirender.",
+    "previewAlt": "Pratinjau gambar yang diekspor",
+    "instructions": "Gambar disusun ulang untuk ukuran yang Anda pilih, sehingga garis dan label tetap pada ketebalan sebenarnya. Ukuran yang sama selalu membingkai struktur dengan cara yang sama — praktis untuk mengekspor M, N, dan V berdampingan.",
+    "width": "Lebar",
+    "height": "Tinggi",
+    "lockAspect": "Pertahankan rasio aspek",
+    "fitPreview": "Sesuaikan",
+    "actualSize": "Ukuran asli",
+    "preview": "Pratinjau",
+    "fitAll": "Semua",
+    "window": "Jendela…",
+    "pickWindowHint": "Seret persegi panjang di atas bagian gambar yang akan diekspor",
+    "dragEdge": "Seret untuk memperluas atau memotong sisi ini",
+    "scale": "Skala",
+    "scaleCaption": "1 m pada model = {cm} cm di kertas (96 DPI). Gulir di atas pratinjau untuk zoom.",
+    "doesNotFit": "Tidak semuanya muat pada ukuran ini: diagram, beban, dan label melewati tepi sekitar {px} px. Perkecil diagram (saat ini {diagrams} px) atau perbesar kanvas.",
+    "shrinkDiagrams": "Perkecil diagram",
+    "enlargeCanvas": "Perbesar kanvas",
+    "diagramHeight": "Tinggi diagram",
+    "shrinkNotEnough": "Memperkecil diagram saja tidak cukup — beban dan label sendiri sudah memerlukan ruang lebih. Perbesar kanvas."
+  },
+  "examples": {
+    "title": "Contoh",
+    "instructions": "Buka model siap pakai untuk dipelajari. Model ini menggantikan model saat ini, dan Ctrl+Z mengembalikan model Anda.",
+    "moreInDocs": "Contoh dan latihan lainnya",
+    "items": {
+      "welcome": {
+        "title": "Balok statis tak tentu",
+        "blurb": "Balok jepit–rol statis tak tentu sepanjang 3 m dengan beban merata 10 kN/m."
+      },
+      "cantilever": {
+        "title": "Kantilever",
+        "blurb": "Kantilever 4 m yang memikul beban joint 18 kN ke bawah, menyoroti kelengkungan dan lendutan ujung."
+      },
+      "pratt": {
+        "title": "Rangka batang Pratt",
+        "blurb": "Rangka batang Pratt sederhana dengan beban joint 8 kN yang menunjukkan distribusi gaya aksial dan perpindahan."
+      },
+      "continuous": {
+        "title": "Balok menerus tiga bentang",
+        "blurb": "Bentang 5+6+5 m dengan beban merata + terpusat + merata untuk membandingkan kelengkungan dan rotasi tumpuan."
+      },
+      "portal": {
+        "title": "Kasus beban portal",
+        "blurb": "Balok 8 m di atas kolom 6 m dengan beban merata atap serta beban lateral + vertikal di sudut portal untuk memeriksa goyangan dan lentur."
+      },
+      "temperature": {
+        "title": "Beban suhu",
+        "blurb": "Balok sederhana 8 m dengan beban suhu merata dan tidak merata."
+      }
+    }
+  },
+  "recentStructures": {
+    "title": "Struktur terbaru",
+    "instructions": "{count} struktur terakhir yang dihapus atau diganti disimpan di browser ini. Memulihkan salah satunya akan menggantikan struktur saat ini, dan Ctrl+Z mengembalikannya.",
+    "empty": "Belum ada apa-apa. Saat Anda menghapus struktur atau membuka struktur lain di atasnya, struktur itu disimpan di sini.",
+    "restore": "Pulihkan",
+    "remove": "Hapus",
+    "counts": "Joint: {nodes} · Elemen: {elements}",
+    "linkNotice": "Struktur yang dibagikan telah dibuka. Struktur Anda sebelumnya disimpan di Struktur terbaru.",
+    "show": "Tampilkan",
+    "reasons": {
+      "clear": "Dihapus",
+      "link": "Diganti oleh tautan berbagi",
+      "file": "Diganti oleh file yang dibuka",
+      "example": "Diganti oleh contoh",
+      "firstBeam": "Diganti oleh tugas balok pertama",
+      "restore": "Diganti oleh struktur yang dipulihkan"
+    }
+  }
+}

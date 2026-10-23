@@ -1,3 +1,7 @@
+---
+description: "Návod krok za krokem: sestavte v EduBeamu rovinnou příhradovou konstrukci a ověřte síly v prutech metodou styčných bodů a průsečnou metodou. Asi 15 minut."
+---
+
 # Návod: rovinná příhradová konstrukce
 
 V tomto návodu sestavíte malou staticky určitou příhradovou konstrukci, ověříte síly v prutech metodou styčných bodů a průsečnou metodou a najdete nulový prut. Počítejte asi s 15 minutami.

@@ -1,3 +1,7 @@
+---
+description: "Modela en unos diez minutos una viga biapoyada de acero con carga uniforme, lee las reacciones, el cortante y el momento flector, y compruébalos a mano."
+---
+
 # Inicio rápido
 
 En unos diez minutos modelarás una viga biapoyada de acero con carga uniforme, leerás las reacciones, el esfuerzo cortante y el momento flector, y los contrastarás con las fórmulas de los libros de texto.

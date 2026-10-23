@@ -1,9 +1,30 @@
-import { defineConfig } from 'vitepress';
-import markdownItKatex from 'markdown-it-katex';
+import { defineConfig, type HeadConfig, type TransformContext } from 'vitepress';
+import { katex } from '@mdit/plugin-katex';
 import implicitFigures from 'markdown-it-implicit-figures';
 import path from 'path';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
-import { cs, de, english, es, fr, hi, navFor, pl, pt, ru, sidebarFor, uk, zh } from './navigation';
+import {
+  cs,
+  de,
+  english,
+  es,
+  fr,
+  hi,
+  id,
+  it,
+  ja,
+  ko,
+  navFor,
+  pl,
+  pt,
+  ru,
+  sidebarFor,
+  th,
+  tr,
+  uk,
+  vi,
+  zh,
+} from './navigation';
 
 const customElements = [
   'math',
@@ -93,18 +114,100 @@ const customElements = [
   'annotation-xml',
 ];
 
+const SITE_URL = 'https://www.edubeam.app';
+
+/** Public URL of a page from its (rewritten) path, as served with `cleanUrls`. */
+function pageUrl(relativePath: string): string {
+  return `${SITE_URL}/${relativePath.replace(/(^|\/)index\.md$/, '$1').replace(/\.md$/, '')}`;
+}
+
+/**
+ * Canonical URL, hreflang alternates, Open Graph / Twitter cards and, on home pages, structured data.
+ * The sitemap already lists the alternates; repeating them in the page head covers crawlers that
+ * never read the sitemap, and link previews in LMSs and chat apps read the Open Graph tags.
+ */
+function seoHead({ pageData, siteConfig, siteData, title, description }: TransformContext): HeadConfig[] {
+  if (pageData.isNotFound) return [];
+
+  const locales = siteData.locales;
+  const localeOf = (page: string) => {
+    const dir = page.split('/')[0];
+    return dir in locales && dir !== 'root' ? dir : 'root';
+  };
+  const locale = localeOf(pageData.relativePath);
+  const key = locale === 'root' ? pageData.relativePath : pageData.relativePath.slice(locale.length + 1);
+  const lang = locales[locale].lang ?? 'en';
+  const url = pageUrl(pageData.relativePath);
+
+  const pages = new Set(siteConfig.pages.map((page) => siteConfig.rewrites.map[page] ?? page));
+  const alternates = Object.keys(locales)
+    .map((loc) => ({ loc, page: loc === 'root' ? key : `${loc}/${key}` }))
+    .filter(({ page }) => pages.has(page));
+
+  const head: HeadConfig[] = [['link', { rel: 'canonical', href: url }]];
+  if (alternates.length > 1) {
+    for (const { loc, page } of alternates) {
+      head.push(['link', { rel: 'alternate', hreflang: locales[loc].lang ?? 'en', href: pageUrl(page) }]);
+    }
+    if (alternates.some(({ loc }) => loc === 'root')) {
+      head.push(['link', { rel: 'alternate', hreflang: 'x-default', href: pageUrl(key) }]);
+    }
+  }
+
+  head.push(
+    ['meta', { property: 'og:type', content: 'website' }],
+    ['meta', { property: 'og:site_name', content: 'EduBeam' }],
+    ['meta', { property: 'og:title', content: title }],
+    ['meta', { property: 'og:description', content: description }],
+    ['meta', { property: 'og:url', content: url }],
+    ['meta', { property: 'og:locale', content: lang.replace('-', '_') }],
+    ['meta', { property: 'og:image', content: `${SITE_URL}/og-image.png` }],
+    ['meta', { property: 'og:image:width', content: '1200' }],
+    ['meta', { property: 'og:image:height', content: '630' }],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+    ['meta', { name: 'twitter:site', content: '@EdubeamApp' }]
+  );
+
+  if (pageData.frontmatter.layout === 'home') {
+    const app = {
+      '@context': 'https://schema.org',
+      '@type': 'WebApplication',
+      name: 'EduBeam',
+      url: 'https://run.edubeam.app',
+      applicationCategory: 'EducationalApplication',
+      operatingSystem: 'Any (web browser)',
+      isAccessibleForFree: true,
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+      inLanguage: lang,
+      description,
+    };
+    head.push(['script', { type: 'application/ld+json' }, JSON.stringify(app)]);
+  }
+
+  return head;
+}
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'EduBeam',
-  description: 'Learn, Contribute, Excel in Structural Analysis!',
+  description: 'Free 2D structural analysis online – beams, frames and trusses solved instantly in your browser.',
   // English lives in en/ beside the other languages but is served from the root, as it always was.
   rewrites: {
     'en/:rest*': ':rest*',
   },
   sitemap: {
-    hostname: 'https://www.edubeam.app',
+    hostname: SITE_URL,
+    // English is served from the root, so it is also the page for languages we don't have.
+    transformItems: (items) =>
+      items.map((item) => {
+        const links = item.links ?? [];
+        const english = links.find((link) => link.lang === 'en');
+        return english ? { ...item, links: [...links, { lang: 'x-default', url: english.url }] } : item;
+      }),
   },
-  //cleanUrls: true,
+  // Cloudflare Pages serves `page.html` at `/page` and redirects the `.html` form there, so every
+  // link and sitemap entry should already use the clean form. Old `.html` links keep working.
+  cleanUrls: true,
   lastUpdated: true,
   locales: {
     root: {
@@ -192,7 +295,7 @@ export default defineConfig({
       lang: 'hi',
       description: 'ब्राउज़र में निःशुल्क 2D संरचनात्मक विश्लेषण – बीम, फ्रेम और ट्रस के लिए तुरंत FEM परिणाम',
       themeConfig: {
-        nav: navFor('/hi', 'en', hi),
+        nav: navFor('/hi', 'hi', hi),
         outline: { label: 'इस पृष्ठ पर' },
         docFooter: { prev: 'पिछला पृष्ठ', next: 'अगला पृष्ठ' },
         lastUpdated: { text: 'अंतिम अद्यतन' },
@@ -233,6 +336,92 @@ export default defineConfig({
         docFooter: { prev: 'Предыдущая страница', next: 'Следующая страница' },
         lastUpdated: { text: 'Последнее обновление' },
         sidebar: sidebarFor('/ru', ru),
+      },
+    },
+    th: {
+      label: 'ไทย',
+      lang: 'th',
+      description: 'วิเคราะห์โครงสร้างออนไลน์ฟรี – คาน โครงข้อแข็ง และโครงถักในระนาบ ได้ผลทันทีบนเบราว์เซอร์',
+      themeConfig: {
+        nav: navFor('/th', 'th', th),
+        outline: { label: 'ในหน้านี้' },
+        docFooter: { prev: 'หน้าก่อนหน้า', next: 'หน้าถัดไป' },
+        lastUpdated: { text: 'อัปเดตล่าสุด' },
+        sidebar: sidebarFor('/th', th),
+      },
+    },
+    tr: {
+      label: 'Türkçe',
+      lang: 'tr',
+      description: 'Çevrim içi yapı analizi – düzlem kirişler, çerçeveler ve kafes sistemler doğrudan tarayıcıda.',
+      themeConfig: {
+        nav: navFor('/tr', 'tr', tr),
+        outline: { label: 'Bu sayfada' },
+        docFooter: { prev: 'Önceki sayfa', next: 'Sonraki sayfa' },
+        lastUpdated: { text: 'Son güncelleme' },
+        sidebar: sidebarFor('/tr', tr),
+      },
+    },
+    vi: {
+      label: 'Tiếng Việt',
+      lang: 'vi',
+      description:
+        'Phân tích kết cấu trực tuyến miễn phí – dầm, khung và dàn phẳng, có kết quả tức thì ngay trên trình duyệt.',
+      themeConfig: {
+        nav: navFor('/vi', 'vi', vi),
+        outline: { label: 'Trên trang này' },
+        docFooter: { prev: 'Trang trước', next: 'Trang sau' },
+        lastUpdated: { text: 'Cập nhật lần cuối' },
+        sidebar: sidebarFor('/vi', vi),
+      },
+    },
+    it: {
+      label: 'Italiano',
+      lang: 'it',
+      description:
+        "Analisi strutturale 2D gratuita online – travi, telai e travature reticolari risolti all'istante nel browser.",
+      themeConfig: {
+        nav: navFor('/it', 'it', it),
+        outline: { label: 'In questa pagina' },
+        docFooter: { prev: 'Pagina precedente', next: 'Pagina successiva' },
+        lastUpdated: { text: 'Ultimo aggiornamento' },
+        sidebar: sidebarFor('/it', it),
+      },
+    },
+    id: {
+      label: 'Bahasa Indonesia',
+      lang: 'id',
+      description: 'Analisis struktur online gratis – balok, portal, dan rangka batang 2D langsung di browser.',
+      themeConfig: {
+        nav: navFor('/id', 'id', id),
+        outline: { label: 'Di halaman ini' },
+        docFooter: { prev: 'Sebelumnya', next: 'Berikutnya' },
+        lastUpdated: { text: 'Terakhir diperbarui' },
+        sidebar: sidebarFor('/id', id),
+      },
+    },
+    ja: {
+      label: '日本語',
+      lang: 'ja',
+      description: '無料のオンライン 2D 構造解析。ブラウザで梁、ラーメン、トラスをすぐに解析できます。',
+      themeConfig: {
+        nav: navFor('/ja', 'ja', ja),
+        outline: { label: 'このページの内容' },
+        docFooter: { prev: '前のページ', next: '次のページ' },
+        lastUpdated: { text: '最終更新' },
+        sidebar: sidebarFor('/ja', ja),
+      },
+    },
+    ko: {
+      label: '한국어',
+      lang: 'ko',
+      description: '무료 온라인 2D 구조 해석 – 보, 라멘, 트러스를 브라우저에서 바로 해석합니다.',
+      themeConfig: {
+        nav: navFor('/ko', 'ko', ko),
+        outline: { label: '이 페이지의 내용' },
+        docFooter: { prev: '이전 페이지', next: '다음 페이지' },
+        lastUpdated: { text: '마지막 업데이트' },
+        sidebar: sidebarFor('/ko', ko),
       },
     },
   },
@@ -310,54 +499,173 @@ export default defineConfig({
               },
             },
           },
-        },
-        pl: {
-          translations: {
-            button: {
-              buttonText: 'Szukaj w dokumentacji',
-              buttonAriaLabel: 'Szukaj w dokumentacji',
-            },
-            modal: {
-              noResultsText: 'Brak wyników dla zapytania',
-              resetButtonTitle: 'Wyczyść zapytanie',
-              footer: {
-                selectText: 'Wybierz',
-                navigateText: 'Nawiguj',
-                closeText: 'Zamknij',
+          pl: {
+            translations: {
+              button: {
+                buttonText: 'Szukaj w dokumentacji',
+                buttonAriaLabel: 'Szukaj w dokumentacji',
+              },
+              modal: {
+                noResultsText: 'Brak wyników dla zapytania',
+                resetButtonTitle: 'Wyczyść zapytanie',
+                footer: {
+                  selectText: 'Wybierz',
+                  navigateText: 'Nawiguj',
+                  closeText: 'Zamknij',
+                },
               },
             },
           },
-        },
-        uk: {
-          translations: {
-            button: {
-              buttonText: 'Пошук у документації',
-              buttonAriaLabel: 'Пошук у документації',
-            },
-            modal: {
-              noResultsText: 'Нічого не знайдено за запитом',
-              resetButtonTitle: 'Очистити запит',
-              footer: {
-                selectText: 'Обрати',
-                navigateText: 'Перейти',
-                closeText: 'Закрити',
+          uk: {
+            translations: {
+              button: {
+                buttonText: 'Пошук у документації',
+                buttonAriaLabel: 'Пошук у документації',
+              },
+              modal: {
+                noResultsText: 'Нічого не знайдено за запитом',
+                resetButtonTitle: 'Очистити запит',
+                footer: {
+                  selectText: 'Обрати',
+                  navigateText: 'Перейти',
+                  closeText: 'Закрити',
+                },
               },
             },
           },
-        },
-        ru: {
-          translations: {
-            button: {
-              buttonText: 'Поиск по документации',
-              buttonAriaLabel: 'Поиск по документации',
+          ru: {
+            translations: {
+              button: {
+                buttonText: 'Поиск по документации',
+                buttonAriaLabel: 'Поиск по документации',
+              },
+              modal: {
+                noResultsText: 'Ничего не найдено по запросу',
+                resetButtonTitle: 'Очистить запрос',
+                footer: {
+                  selectText: 'Выбрать',
+                  navigateText: 'Перейти',
+                  closeText: 'Закрыть',
+                },
+              },
             },
-            modal: {
-              noResultsText: 'Ничего не найдено по запросу',
-              resetButtonTitle: 'Очистить запрос',
-              footer: {
-                selectText: 'Выбрать',
-                navigateText: 'Перейти',
-                closeText: 'Закрыть',
+          },
+          th: {
+            translations: {
+              button: {
+                buttonText: 'ค้นหาในเอกสาร',
+                buttonAriaLabel: 'ค้นหาในเอกสาร',
+              },
+              modal: {
+                noResultsText: 'ไม่พบผลลัพธ์สำหรับ',
+                resetButtonTitle: 'ล้างคำค้นหา',
+                footer: {
+                  selectText: 'เลือก',
+                  navigateText: 'เลื่อน',
+                  closeText: 'ปิด',
+                },
+              },
+            },
+          },
+          tr: {
+            translations: {
+              button: {
+                buttonText: 'Dokümantasyonda ara',
+                buttonAriaLabel: 'Dokümantasyonda ara',
+              },
+              modal: {
+                noResultsText: 'Sonuç bulunamadı:',
+                resetButtonTitle: 'Aramayı temizle',
+                footer: {
+                  selectText: 'Seç',
+                  navigateText: 'Gezin',
+                  closeText: 'Kapat',
+                },
+              },
+            },
+          },
+          vi: {
+            translations: {
+              button: {
+                buttonText: 'Tìm trong tài liệu',
+                buttonAriaLabel: 'Tìm trong tài liệu',
+              },
+              modal: {
+                noResultsText: 'Không tìm thấy kết quả cho',
+                resetButtonTitle: 'Xóa nội dung tìm kiếm',
+                footer: {
+                  selectText: 'Chọn',
+                  navigateText: 'Di chuyển',
+                  closeText: 'Đóng',
+                },
+              },
+            },
+          },
+          it: {
+            translations: {
+              button: {
+                buttonText: 'Cerca',
+                buttonAriaLabel: 'Cerca nella documentazione',
+              },
+              modal: {
+                noResultsText: 'Nessun risultato per',
+                resetButtonTitle: 'Cancella la ricerca',
+                footer: {
+                  selectText: 'Seleziona',
+                  navigateText: 'Naviga',
+                  closeText: 'Chiudi',
+                },
+              },
+            },
+          },
+          id: {
+            translations: {
+              button: {
+                buttonText: 'Cari di dokumentasi',
+                buttonAriaLabel: 'Cari di dokumentasi',
+              },
+              modal: {
+                noResultsText: 'Tidak ada hasil untuk',
+                resetButtonTitle: 'Hapus kata pencarian',
+                footer: {
+                  selectText: 'Pilih',
+                  navigateText: 'Navigasi',
+                  closeText: 'Tutup',
+                },
+              },
+            },
+          },
+          ja: {
+            translations: {
+              button: {
+                buttonText: 'ドキュメントを検索',
+                buttonAriaLabel: 'ドキュメントを検索',
+              },
+              modal: {
+                noResultsText: '一致する結果が見つかりません',
+                resetButtonTitle: '検索条件をクリア',
+                footer: {
+                  selectText: '選択',
+                  navigateText: '移動',
+                  closeText: '閉じる',
+                },
+              },
+            },
+          },
+          ko: {
+            translations: {
+              button: {
+                buttonText: '문서 검색',
+                buttonAriaLabel: '문서 검색',
+              },
+              modal: {
+                noResultsText: '검색 결과 없음',
+                resetButtonTitle: '검색어 지우기',
+                footer: {
+                  selectText: '선택',
+                  navigateText: '이동',
+                  closeText: '닫기',
+                },
               },
             },
           },
@@ -372,15 +680,20 @@ export default defineConfig({
       { icon: 'twitter', link: 'https://twitter.com/EdubeamApp' },
     ],
   },
-  // VitePress renders hero `name` and `text` as adjacent <span>s inside one <h1> with no
-  // whitespace between them, so search engines read "EduBeamFree structural analysis online".
-  // Append a space to the name; `.VPHero .name { white-space: normal }` collapses it visually.
   transformPageData(pageData) {
     const hero = pageData.frontmatter.hero;
+    // VitePress renders hero `name` and `text` as adjacent <span>s inside one <h1> with no
+    // whitespace between them, so search engines read "EduBeamFree structural analysis online".
+    // Append a space to the name; `.VPHero .name { white-space: normal }` collapses it visually.
     if (hero?.name && hero.text && !hero.name.endsWith(' ')) {
       hero.name += ' ';
     }
+    // Home pages have no heading of their own, so their <title> would be a bare "EduBeam".
+    if (hero?.text && !pageData.title) {
+      pageData.title = hero.text;
+    }
   },
+  transformHead: seoHead,
   head: [
     ['link', { rel: 'icon', href: '/logo.png' }],
     [
@@ -404,9 +717,12 @@ export default defineConfig({
       md.core.ruler.before('normalize', 'edubeam-logo', (state) => {
         state.src = state.src.replaceAll('<Edubeam />', '<span class="edubeam">EduBeam</span>');
       });
-      md.use(markdownItKatex);
+      md.use(katex);
       md.use(implicitFigures, {
         figcaption: true,
+        // The plugin empties alt once the text becomes the caption; image search only reads alt.
+        keepAlt: true,
+        lazyLoading: true,
         copyAttrs: '^class$',
       });
     },

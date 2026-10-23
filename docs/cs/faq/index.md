@@ -1,3 +1,7 @@
+---
+description: "Odpovědi na časté otázky o EduBeamu: cena a účet, prohlížeče a zařízení, obnovení ztraceného modelu, práce offline, kde jsou uložená data a tipy k modelování."
+---
+
 # Často kladené otázky
 
 ## Obecné {#general}

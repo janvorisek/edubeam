@@ -8,21 +8,46 @@ import { i18n } from '../../src/plugins/i18n';
  * Whatever the app already says (load types, quantities, example titles) comes from the app's own
  * locale files, so the two never disagree. Only sentences the app has no use for are kept here.
  */
-type DocsLanguage = 'en' | 'cs' | 'de' | 'es' | 'fr' | 'hi' | 'pl' | 'pt' | 'ru' | 'uk' | 'zh';
+type DocsLanguage =
+  | 'en'
+  | 'cs'
+  | 'de'
+  | 'es'
+  | 'fr'
+  | 'hi'
+  | 'pl'
+  | 'pt'
+  | 'ru'
+  | 'uk'
+  | 'zh'
+  | 'tr'
+  | 'th'
+  | 'vi'
+  | 'it'
+  | 'id'
+  | 'ja'
+  | 'ko';
 
-/** The app's locale for each docs language; there is no Hindi app, and the app says cn for zh. */
+/** The app's locale for each docs language; the app says cn for zh. */
 const APP_LOCALE: Record<DocsLanguage, string> = {
   en: 'en',
   cs: 'cs',
   de: 'de',
   es: 'es',
   fr: 'fr',
-  hi: 'en',
+  hi: 'hi',
   pl: 'pl',
   pt: 'pt',
   ru: 'ru',
   uk: 'uk',
   zh: 'cn',
+  tr: 'tr',
+  th: 'th',
+  vi: 'vi',
+  it: 'it',
+  id: 'id',
+  ja: 'ja',
+  ko: 'ko',
 };
 
 export interface DocsStrings {
@@ -133,10 +158,10 @@ const strings: Record<DocsLanguage, DocsStrings> = {
       'EduBeam में सामान्य भार प्रकार ऐसे दिखते हैं। हर कार्ड एक हल किया हुआ जीवंत मॉडल है और ऐप में ठीक वैसे ही खुलता है जैसा वह बना है।',
     openInApp: 'EduBeam में खोलें',
     simplySupportedBeam: 'सरल आलंबित बीम',
-    udlBlurb: 'कीलकित और रोलर आधार पर 12 kN/m भार: अपरूपण बल और बंकन आघूर्ण के पारंपरिक आरेख।',
+    udlBlurb: 'पिन और रोलर सपोर्ट पर 12 kN/m भार: अपरूपण बल और बंकन आघूर्ण के पारंपरिक आरेख।',
     trapezoidalBlurb: 'दाएँ स्पैन पर 4 से 14 kN/m तक बढ़ता हुआ भार।',
     concentratedBlurb: 'स्पैन के मध्य में नीचे की ओर 18 kN का एकल भार, बिना अतिरिक्त नोड के।',
-    nodalBlurb: 'प्रतिक्रियाओं और विक्षेपों की जाँच के लिए आंतरिक आधार पर 20 kN भार।',
+    nodalBlurb: 'प्रतिक्रियाओं और विक्षेपों की जाँच के लिए आंतरिक सपोर्ट पर 20 kN भार।',
     temperatureBlurb: 'गहराई के आर-पार तापमान का अंतर (ऊपर नीचे से अधिक गर्म) और उससे उत्पन्न वक्रता।',
     promoTitle: 'अपने फ्रेम',
     promoAccent: '3D में ले जाएँ।',
@@ -223,6 +248,123 @@ const strings: Record<DocsLanguage, DocsStrings> = {
     promoAccent: '带入 3D。',
     promoSubtitle: '在浏览器中完成楼板、壳体和钢结构验算',
     promoCta: '免费试用',
+  },
+  tr: {
+    loadsTitle: 'Yük türlerine ön bakış',
+    loadsLede:
+      "Yaygın yük türleri EduBeam'de böyle görünür. Her kart çözülmüş, canlı bir modeldir ve uygulamada tam olarak kurulduğu gibi açılır.",
+    openInApp: "EduBeam'de aç",
+    simplySupportedBeam: 'Basit mesnetli kiriş',
+    udlBlurb:
+      'Mafsallı ve kayıcı mesnetli kiriş, 12 kN/m yük altında: klasik kesme kuvveti ve eğilme momenti diyagramları.',
+    trapezoidalBlurb: "Sağ açıklık boyunca 4 kN/m'den 14 kN/m'ye artan bir yük.",
+    concentratedBlurb: "Açıklık ortasında aşağı yönlü tek bir 18 kN'lik yük, ek düğüm gerekmeden.",
+    nodalBlurb: "Mesnet tepkilerini ve sehimleri kontrol etmek için ara mesnete etkiyen 20 kN'lik yük.",
+    temperatureBlurb:
+      'Kesit yüksekliği boyunca sıcaklık farkı (üst taraf alttan daha sıcak) ve bunun oluşturduğu eğrilik.',
+    promoTitle: 'Çerçevelerinizi',
+    promoAccent: "3B'ye taşıyın.",
+    promoSubtitle: 'döşemeler, kabuklar ve çelik kontrolleri tarayıcınızda',
+    promoCta: 'Ücretsiz deneyin',
+  },
+  th: {
+    loadsTitle: 'ตัวอย่างประเภทแรงกระทำ',
+    loadsLede:
+      'แรงกระทำประเภทที่ใช้บ่อยมีหน้าตาอย่างไรใน EduBeam การ์ดแต่ละใบคือโมเดลที่คำนวณแล้วและโต้ตอบได้ และเปิดในแอปได้ตรงตามที่ตั้งค่าไว้',
+    openInApp: 'เปิดใน EduBeam',
+    simplySupportedBeam: 'คานช่วงเดียวแบบรองรับธรรมดา',
+    udlBlurb: 'คานบนหมุดและล้อเลื่อนรับแรง 12 kN/m: แผนภาพแรงเฉือนและโมเมนต์ดัดแบบคลาสสิก',
+    trapezoidalBlurb: 'แรงแผ่กระจายที่เพิ่มจาก 4 เป็น 14 kN/m ตลอดช่วงด้านขวา',
+    concentratedBlurb: 'แรงกระทำเป็นจุดขนาด 18 kN ทิศลงที่กึ่งกลางช่วง โดยไม่ต้องเพิ่มโหนด',
+    nodalBlurb: 'แรง 20 kN ที่จุดรองรับภายใน สำหรับตรวจสอบแรงปฏิกิริยาและการโก่งตัว',
+    temperatureBlurb: 'ผลต่างอุณหภูมิตามความลึกของหน้าตัด (ด้านบนร้อนกว่าด้านล่าง) และความโค้งที่เกิดขึ้น',
+    promoTitle: 'ยกระดับโครงข้อแข็งของคุณ',
+    promoAccent: 'สู่ 3 มิติ',
+    promoSubtitle: 'แผ่นพื้น เปลือกบาง และการตรวจสอบเหล็กโครงสร้างบนเบราว์เซอร์',
+    promoCta: 'ลองใช้ฟรี',
+  },
+  vi: {
+    loadsTitle: 'Xem trước các loại tải trọng',
+    loadsLede:
+      'Các loại tải trọng thông dụng trông như thế nào trong EduBeam. Mỗi thẻ là một mô hình đã giải, tương tác được, và mở trong ứng dụng đúng như đã thiết lập.',
+    openInApp: 'Mở trong EduBeam',
+    simplySupportedBeam: 'Dầm đơn giản',
+    udlBlurb: 'Nhịp gối cố định – gối di động chịu 12 kN/m: biểu đồ lực cắt và mô men kinh điển.',
+    trapezoidalBlurb: 'Tải tăng từ 4 đến 14 kN/m trên nhịp bên phải.',
+    concentratedBlurb: 'Một tải tập trung 18 kN hướng xuống tại giữa nhịp, không cần thêm nút.',
+    nodalBlurb: 'Tải 20 kN tại gối tựa giữa, để kiểm tra phản lực và độ võng.',
+    temperatureBlurb:
+      'Chênh lệch nhiệt độ theo chiều cao tiết diện (thớ trên nóng hơn thớ dưới) và độ cong mà nó gây ra.',
+    promoTitle: 'Đưa khung của bạn',
+    promoAccent: 'lên 3D.',
+    promoSubtitle: 'bản sàn, vỏ mỏng và kiểm tra kết cấu thép ngay trên trình duyệt',
+    promoCta: 'Dùng thử miễn phí',
+  },
+  it: {
+    loadsTitle: 'Anteprima dei tipi di carico',
+    loadsLede:
+      "Come appaiono in EduBeam i tipi di carico più comuni. Ogni scheda è un modello risolto e interattivo e si apre nell'app esattamente come è impostato.",
+    openInApp: 'Apri in EduBeam',
+    simplySupportedBeam: 'Trave semplicemente appoggiata',
+    udlBlurb: 'Campata cerniera–carrello con 12 kN/m: i classici diagrammi di taglio e momento.',
+    trapezoidalBlurb: 'Un carico che cresce da 4 a 14 kN/m sulla campata destra.',
+    concentratedBlurb: 'Un unico carico di 18 kN verso il basso in mezzeria, senza nodi aggiuntivi.',
+    nodalBlurb: "Un carico di 20 kN sull'appoggio intermedio, per controllare reazioni e frecce.",
+    temperatureBlurb:
+      "Una differenza di temperatura lungo l'altezza della sezione (fibre superiori più calde di quelle inferiori) e la curvatura che provoca.",
+    promoTitle: 'Porta i tuoi telai',
+    promoAccent: 'in 3D.',
+    promoSubtitle: "solai, gusci e verifiche dell'acciaio nel browser",
+    promoCta: 'Provalo gratis',
+  },
+  id: {
+    loadsTitle: 'Pratinjau tipe beban',
+    loadsLede:
+      'Seperti apa tipe beban umum di EduBeam. Setiap kartu adalah model hidup yang sudah dihitung dan terbuka di aplikasi persis seperti yang diatur.',
+    openInApp: 'Buka di EduBeam',
+    simplySupportedBeam: 'Balok sederhana',
+    udlBlurb: 'Bentang sendi–rol dengan beban 12 kN/m: diagram gaya geser dan momen lentur klasik.',
+    trapezoidalBlurb: 'Beban yang naik dari 4 hingga 14 kN/m di sepanjang bentang kanan.',
+    concentratedBlurb: 'Satu beban 18 kN ke bawah di tengah bentang, tanpa joint tambahan.',
+    nodalBlurb: 'Beban 20 kN di tumpuan tengah, untuk memeriksa reaksi dan lendutan.',
+    temperatureBlurb:
+      'Perbedaan suhu sepanjang tinggi penampang (atas lebih panas daripada bawah) dan kelengkungan yang ditimbulkannya.',
+    promoTitle: 'Bawa portal Anda',
+    promoAccent: 'ke 3D.',
+    promoSubtitle: 'pelat, cangkang & pemeriksaan baja di browser Anda',
+    promoCta: 'Coba gratis',
+  },
+  ja: {
+    loadsTitle: '荷重の種類のプレビュー',
+    loadsLede:
+      'EduBeam で代表的な荷重がどのように表示されるかを紹介します。各カードは解析済みのライブなモデルで、設定どおりの状態でアプリに開きます。',
+    openInApp: 'EduBeam で開く',
+    simplySupportedBeam: '単純梁',
+    udlBlurb: 'ピン–ローラー支持のスパンに 12 kN/m：おなじみのせん断力図と曲げモーメント図。',
+    trapezoidalBlurb: '右スパンで 4 kN/m から 14 kN/m まで増加する荷重。',
+    concentratedBlurb: 'スパン中央に下向き 18 kN の集中荷重を 1 つ。追加の節点は不要です。',
+    nodalBlurb: '中間支点に 20 kN の荷重。反力とたわみの確認に。',
+    temperatureBlurb: '断面の高さ方向の温度差（上側が下側より高温）と、それによって生じる曲率。',
+    promoTitle: 'あなたの骨組を',
+    promoAccent: '3D へ。',
+    promoSubtitle: 'スラブ、シェル、鋼構造の断面検定をブラウザで',
+    promoCta: '無料で試す',
+  },
+  ko: {
+    loadsTitle: '하중 유형 미리보기',
+    loadsLede:
+      '자주 쓰는 하중 유형이 EduBeam에서 어떻게 보이는지 확인하세요. 각 카드는 해석이 끝난 실시간 모델이며, 설정된 그대로 앱에서 열립니다.',
+    openInApp: 'EduBeam에서 열기',
+    simplySupportedBeam: '단순보',
+    udlBlurb: '12 kN/m를 받는 힌지–롤러 보: 전형적인 전단력도와 휨모멘트도.',
+    trapezoidalBlurb: '오른쪽 경간에서 4 kN/m부터 14 kN/m까지 증가하는 하중.',
+    concentratedBlurb: '절점을 추가하지 않고 경간 중앙에 가한 아래 방향 18 kN 집중하중 하나.',
+    nodalBlurb: '내부 지점에 가한 20 kN 하중으로 반력과 처짐을 확인합니다.',
+    temperatureBlurb: '단면 높이에 따른 온도차(상연이 하연보다 따뜻함)와 그로 인한 곡률.',
+    promoTitle: '골조 해석을',
+    promoAccent: '3D로.',
+    promoSubtitle: '슬래브, 쉘, 강구조 검토까지 브라우저에서',
+    promoCta: '무료로 사용해 보기',
   },
 };
 

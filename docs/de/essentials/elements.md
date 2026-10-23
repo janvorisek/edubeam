@@ -1,3 +1,7 @@
+---
+description: "Balkenelemente hinzufügen, Endgelenke und Elementrichtung festlegen sowie Materialien und Querschnitte definieren, auch eigene polygonale Querschnitte."
+---
+
 # Elemente, Materialien & Querschnitte
 
 ## Das Balkenelement {#the-beam-element}

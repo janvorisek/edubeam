@@ -1,3 +1,7 @@
+---
+description: "Normalkraft-, Querkraft- und Momentenverläufe, Auflagerreaktionen und Verformungsfigur ablesen: Tooltips, Ergebnistabellen, CSV-Export und Steifigkeitsmatrix."
+---
+
 # Ergebnisse & Diagramme
 
 <Edubeam /> berechnet das Modell nach jeder Änderung neu, höchstens einige Male pro Sekunde; die Ergebnisse sind also immer aktuell. Es gibt keine Schaltfläche *Berechnen*. Wird nichts gezeichnet, lässt sich das Modell noch nicht berechnen; die Meldung oben links in der Ansicht sagt, warum (siehe [Fehlerbehebung](/de/reference/troubleshooting)).

@@ -1,3 +1,7 @@
+---
+description: "Modelos resueltos de vigas, pórticos y celosías listos para abrir en EduBeam con un clic, además de ejercicios propuestos y tutoriales resueltos paso a paso."
+---
+
 # Ejemplos
 
 Cada tarjeta de abajo es un modelo vivo y resuelto. Haz clic en una para abrirla en <Edubeam /> con toda la configuración lista para editar; luego arrastra un nodo, cambia una carga o marca una rótula y observa cómo te siguen los diagramas.

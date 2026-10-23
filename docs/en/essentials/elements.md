@@ -1,3 +1,7 @@
+---
+description: "Add beam elements, set end hinges and element direction, and define materials and cross sections in EduBeam, including custom polygonal sections."
+---
+
 # Elements, materials & sections
 
 ## The beam element

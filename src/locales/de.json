@@ -369,7 +369,9 @@
     "openLink": "Link öffnen",
     "nativeShare": "Über Systemdialog teilen",
     "linkCopied": "Link in die Zwischenablage kopiert",
-    "copyFailed": "Automatisches Kopieren war nicht möglich. Bitte verwenden Sie Ihre Tastenkürzel."
+    "copyFailed": "Automatisches Kopieren war nicht möglich. Bitte verwenden Sie Ihre Tastenkürzel.",
+    "shortLink": "Kürzerer Link",
+    "shortLinkHint": "Etwa halb so lang. Wer eine ältere Version von edubeam nutzt, muss die App vor dem Öffnen aktualisieren."
   },
   "tour": {
     "menu": {

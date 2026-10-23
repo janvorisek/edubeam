@@ -1,4 +1,5 @@
 ---
+description: "Análisis estructural 2D gratuito en tu navegador. Dibuja vigas, pórticos y celosías, añade cargas y obtén al instante N, V, M, reacciones y la deformada."
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
@@ -33,7 +34,7 @@ features:
     linkText: Enseñar con EduBeam
   - icon: 🌍
     title: Tu idioma, tus unidades
-    details: 12 idiomas de interfaz, unidades SI o estadounidenses y ejes con z hacia abajo o con y hacia arriba como en los libros de texto.
+    details: 18 idiomas de interfaz, unidades SI o estadounidenses y ejes con z hacia abajo o con y hacia arriba como en los libros de texto.
     link: /es/essentials/units-settings
     linkText: Unidades y ajustes
   - icon: 🔗

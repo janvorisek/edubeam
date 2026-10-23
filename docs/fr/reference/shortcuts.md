@@ -1,3 +1,7 @@
+---
+description: "Raccourcis clavier, actions de souris et gestes tactiles d’EduBeam pour dessiner, sélectionner, déplacer la vue et zoomer, et les panneaux des objets."
+---
+
 # Clavier, souris et tactile
 
 Les raccourcis clavier fonctionnent lorsque la vue a le focus. Ils sont ignorés pendant la saisie dans une cellule de tableau ou une boîte de dialogue ; cliquez d’abord sur la zone de dessin.

@@ -1,3 +1,7 @@
+---
+description: "Vérifier EduBeam à la main : poutre sur deux appuis, console, bi-encastrée, encastrée-appuyée, treillis à deux barres, gradient thermique et déplacement imposé."
+---
+
 # Vérifier les résultats à la main
 
 <Edubeam /> est un bon endroit pour prendre l’habitude dont tout ingénieur a besoin : ne jamais faire confiance à un nombre que l’on ne sait pas retrouver, au moins approximativement. Cette page donne des formules analytiques pour les cas classiques et indique ce que l’application renvoie, pour que vous puissiez construire chaque modèle vous-même et comparer.

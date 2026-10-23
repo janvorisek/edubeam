@@ -1,3 +1,7 @@
+---
+description: "Escolha o idioma, unidades SI ou americanas, o formato numérico, eixos com y para cima ou z para baixo e as configurações de visualização, e veja o que fica no navegador."
+---
+
 # Unidades e configurações
 
 Há três caminhos para as configurações:
@@ -12,7 +16,7 @@ As configurações ficam salvas no navegador e sobrevivem a recarregamentos. **R
 
 ![Configurações → Idioma e localidade](/screenshots/pt/settings-language.webp)
 
-**Idioma.** 12 idiomas de interface. Você também pode abrir o aplicativo com `?lang=<código>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`.
+**Idioma.** 18 idiomas de interface. Você também pode abrir o aplicativo com `?lang=<código>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`, `ko`.
 
 **Formato numérico.** Como os valores dos resultados são escritos: *Automático*, *Científico* (padrão) ou *Engenharia*. Veja [Formato numérico](/pt/essentials/results#number-format).
 

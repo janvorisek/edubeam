@@ -1,3 +1,7 @@
+---
+description: "Sprache, SI- oder US-Einheiten, Zahlenformat, Achsen mit y nach oben oder z nach unten, Anzeige und Steuerung sowie was EduBeam im Browser speichert."
+---
+
 # Einheiten & Einstellungen
 
 Es gibt drei Wege zu den Einstellungen:
@@ -12,7 +16,7 @@ Einstellungen werden in Ihrem Browser gespeichert und überstehen ein Neuladen. 
 
 ![Einstellungen → Sprache & Region](/screenshots/de/settings-language.webp)
 
-**Sprache.** 12 Oberflächensprachen. Sie können die App auch mit `?lang=<code>` öffnen: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`.
+**Sprache.** 18 Oberflächensprachen. Sie können die App auch mit `?lang=<code>` öffnen: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`, `ko`.
 
 **Zahlenformat.** Wie Ergebniswerte geschrieben werden: *Automatisch*, *Wissenschaftlich* (Standard) oder *Technisch*. Siehe [Zahlenformat](/de/essentials/results#number-format).
 

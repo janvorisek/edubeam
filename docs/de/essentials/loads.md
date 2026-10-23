@@ -1,3 +1,7 @@
+---
+description: "Knotenkräfte und -momente, Auflagersenkungen, Gleich-, Trapez- und Einzellasten auf Elementen sowie Temperaturlasten, jeweils mit ihrer Vorzeichenkonvention."
+---
+
 # Lasten
 
 Alle Lasten liegen in einem **einzigen Lastfall** und wirken gleichzeitig. Um Szenarien zu vergleichen, speichern Sie jedes als eigene Projektdatei oder eigenen Link.

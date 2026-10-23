@@ -1,5 +1,9 @@
+---
+description: "EduBeam, solveur éléments finis gratuit pour poutres, portiques et treillis 2D dans le navigateur : ce qu’il fait ou non, pour qui, et l’organisation du guide."
+---
+
 <script setup>
-import { VPTeamMembers } from 'vitepress/theme'
+import { VPTeamMembers } from 'vitepress/theme-without-fonts'
 
 const members = [
   {
@@ -74,7 +78,7 @@ Si une fonctionnalité manquante vous importe, [ouvrez un ticket](https://github
 ## À qui s’adresse-t-il ? {#who-is-it-for}
 
 - Aux **étudiants** en mécanique des structures qui veulent un retour immédiat sur leurs calculs à la main. Voir [Vérifier les résultats à la main](/fr/guide/verification).
-- Aux **enseignants** qui montrent comment appuis, rotules et charges modifient les efforts internes, en direct au vidéoprojecteur, dans l’une des 12 langues. Voir [Enseigner avec EduBeam](/fr/guide/teaching).
+- Aux **enseignants** qui montrent comment appuis, rotules et charges modifient les efforts internes, en direct au vidéoprojecteur, dans l’une des 18 langues. Voir [Enseigner avec EduBeam](/fr/guide/teaching).
 - Aux **ingénieurs** qui veulent une vérification rapide avant d’ouvrir un logiciel de bureau plus lourd.
 
 ## Organisation de ce guide {#how-this-guide-is-organised}
@@ -91,7 +95,7 @@ Les icônes **?** de l’application ouvrent la page correspondante de ce guide 
 
 ## Langues {#languages}
 
-L’interface est disponible en English, Čeština, Deutsch, Español, Français, Polski, Português, Русский, Türkçe, Українська, ไทย et 汉语. EduBeam choisit la langue d’après votre navigateur. Changez-la dans **Paramètres → Langue et paramètres régionaux**, ou ouvrez l’application avec un paramètre `?lang=`, par exemple [run.edubeam.app/?lang=fr](https://run.edubeam.app/?lang=fr){target="_blank"}.
+L’interface est disponible en English, Bahasa Indonesia, Čeština, Deutsch, Español, Français, Italiano, Polski, Português, Tiếng Việt, Русский, Türkçe, Українська, हिन्दी, 日本語, 한국어, ไทย et 汉语. EduBeam choisit la langue d’après votre navigateur. Changez-la dans **Paramètres → Langue et paramètres régionaux**, ou ouvrez l’application avec un paramètre `?lang=`, par exemple [run.edubeam.app/?lang=fr](https://run.edubeam.app/?lang=fr){target="_blank"}.
 
 ## Auteurs et remerciements {#authors-credits}
 

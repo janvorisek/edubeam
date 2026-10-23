@@ -1,5 +1,9 @@
+---
+description: "Qué es EduBeam: un solver MEF gratuito en el navegador para vigas, pórticos y celosías 2D. Qué hace y qué no, para quién es y cómo se organiza esta guía."
+---
+
 <script setup>
-import { VPTeamMembers } from 'vitepress/theme'
+import { VPTeamMembers } from 'vitepress/theme-without-fonts'
 
 const members = [
   {
@@ -74,7 +78,7 @@ Si echas en falta una función importante para ti, [abre una incidencia](https:/
 ## ¿Para quién es? {#who-is-it-for}
 
 - **Estudiantes** de mecánica de estructuras que quieren una respuesta inmediata a sus cálculos a mano. Consulta [Comprobar resultados a mano](/es/guide/verification).
-- **Docentes** que muestran en directo, con el proyector y en cualquiera de los 12 idiomas, cómo los apoyos, las rótulas y las cargas cambian los esfuerzos. Consulta [Enseñar con EduBeam](/es/guide/teaching).
+- **Docentes** que muestran en directo, con el proyector y en cualquiera de los 18 idiomas, cómo los apoyos, las rótulas y las cargas cambian los esfuerzos. Consulta [Enseñar con EduBeam](/es/guide/teaching).
 - **Ingenieros** que quieren una comprobación rápida antes de abrir un programa de escritorio más pesado.
 
 ## Cómo está organizada esta guía {#how-this-guide-is-organised}
@@ -91,7 +95,7 @@ Los iconos **?** de la aplicación abren la página correspondiente de esta guí
 
 ## Idiomas {#languages}
 
-La interfaz está disponible en English, Čeština, Deutsch, Español, Français, Polski, Português, Русский, Türkçe, Українська, ไทย y 汉语. EduBeam elige el idioma según tu navegador. Cámbialo en **Configuración → Idioma y configuración regional**, o abre la aplicación con el parámetro `?lang=`, p. ej. [run.edubeam.app/?lang=cs](https://run.edubeam.app/?lang=cs){target="_blank"}.
+La interfaz está disponible en English, Bahasa Indonesia, Čeština, Deutsch, Español, Français, Italiano, Polski, Português, Tiếng Việt, Русский, Türkçe, Українська, हिन्दी, 日本語, 한국어, ไทย y 汉语. EduBeam elige el idioma según tu navegador. Cámbialo en **Configuración → Idioma y configuración regional**, o abre la aplicación con el parámetro `?lang=`, p. ej. [run.edubeam.app/?lang=cs](https://run.edubeam.app/?lang=cs){target="_blank"}.
 
 ## Autores y agradecimientos {#authors-credits}
 

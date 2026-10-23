@@ -1,3 +1,7 @@
+---
+description: "Prohlídka rozhraní EduBeamu: hlavní nabídka, zobrazení a jeho možnosti, pohyb po plátně a výběr, záložky, spodní lišta a plovoucí okna."
+---
+
 # Uživatelské rozhraní
 
 <Edubeam /> má tři hlavní části: nahoře **horní lištu**, uprostřed **zobrazení**, ve kterém kreslíte, a dole **spodní lištu** s tabulkou pro každý druh objektu. Když víte, co kde najdete, bude vám zbytek dokumentace dávat smysl.

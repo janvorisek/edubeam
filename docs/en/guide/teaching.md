@@ -1,3 +1,7 @@
+---
+description: "Use EduBeam in lectures and assignments: share links in lecture notes, an embeddable viewer mode, self-checking exercises and use on lab computers."
+---
+
 # Teaching with EduBeam
 
 <Edubeam /> started in a lecture hall, and that is still where it works best: a model on the projector that reacts the moment you change it, and the same model on every student's laptop through a link. This page collects what teachers use most.

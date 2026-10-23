@@ -1,3 +1,7 @@
+---
+description: "EduBeam in Vorlesung und Übung: Links in Vorlesungsunterlagen, ein einbettbarer Viewer für Folien, Aufgaben zur Selbstkontrolle und der Einsatz im PC-Pool."
+---
+
 # Lehren mit EduBeam
 
 <Edubeam /> ist in einem Hörsaal entstanden, und dort funktioniert es noch immer am besten: ein Modell am Beamer, das in dem Moment reagiert, in dem Sie es ändern, und dasselbe Modell per Link auf dem Laptop jeder Studentin und jedes Studenten. Diese Seite fasst zusammen, was Lehrende am häufigsten nutzen.

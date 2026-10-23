@@ -1,3 +1,7 @@
+---
+description: "Resultados do EduBeam conferidos com fórmulas analíticas: vigas biapoiada, em balanço e engastadas, treliça de duas barras, gradiente térmico e deslocamento prescrito."
+---
+
 # Conferir resultados à mão
 
 <Edubeam /> é um bom lugar para praticar o hábito de que todo engenheiro precisa: nunca confiar em um número que você não consegue reproduzir, ao menos aproximadamente. Esta página traz fórmulas fechadas para os casos clássicos e mostra o que o aplicativo informa para eles, para que você monte cada modelo e compare.

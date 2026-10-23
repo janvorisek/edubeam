@@ -1,3 +1,7 @@
+---
+description: "Langue, unités SI ou américaines, format des nombres, axes y vers le haut ou z vers le bas, affichage et commandes, et ce qu’EduBeam stocke dans le navigateur."
+---
+
 # Unités et paramètres
 
 Il existe trois façons d’accéder aux paramètres :
@@ -12,7 +16,7 @@ Les paramètres sont stockés dans votre navigateur et survivent aux rechargemen
 
 ![Paramètres → Langue et paramètres régionaux](/screenshots/fr/settings-language.webp)
 
-**Langue.** 12 langues d’interface. Vous pouvez aussi ouvrir l’application avec `?lang=<code>` : `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`.
+**Langue.** 18 langues d’interface. Vous pouvez aussi ouvrir l’application avec `?lang=<code>` : `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`, `ko`.
 
 **Format des nombres.** La façon dont les valeurs des résultats sont écrites : *Automatique*, *Scientifique* (par défaut) ou *Ingénierie*. Voir [Format des nombres](/fr/essentials/results#number-format).
 

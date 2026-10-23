@@ -1,4 +1,5 @@
 ---
+description: "Free 2D structural analysis in your browser. Draw beams, frames and trusses, add loads and get N, V, M diagrams, reactions and deflections instantly."
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
@@ -33,7 +34,7 @@ features:
     linkText: Teaching with EduBeam
   - icon: 🌍
     title: Your language, your units
-    details: 12 interface languages, SI or US customary units, and a choice of z-down or textbook y-up axes.
+    details: 18 interface languages, SI or US customary units, and a choice of z-down or textbook y-up axes.
     link: /essentials/units-settings
     linkText: Units & settings
   - icon: 🔗

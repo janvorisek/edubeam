@@ -1,3 +1,7 @@
+---
+description: "Diagrammes d’effort normal, tranchant et moment fléchissant, réactions, déformée, infobulles, tableaux de résultats, export CSV et matrice de rigidité."
+---
+
 # Résultats et diagrammes
 
 <Edubeam /> calcule le modèle après chaque modification, au plus quelques fois par seconde : les résultats sont donc toujours à jour. Il n’y a pas de bouton *Calculer*. Si rien n’est dessiné, c’est que le modèle ne peut pas encore être calculé ; le message en haut à gauche de la vue indique pourquoi (voir le [Dépannage](/fr/reference/troubleshooting)).

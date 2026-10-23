@@ -1,3 +1,7 @@
+---
+description: "Tutoriel pas à pas : construisez un treillis plan et vérifiez les efforts dans les barres par la méthode des nœuds et celle des sections. Environ 15 minutes."
+---
+
 # Tutoriel : treillis plan
 
 Ce tutoriel construit un petit treillis isostatique, vérifie les efforts dans ses barres par la méthode des nœuds et la méthode des sections (méthode de Ritter), et met en évidence une barre à effort nul. Comptez environ 15 minutes.

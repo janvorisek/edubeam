@@ -11,29 +11,29 @@ afterEach(() => setLocale('en'));
 describe('docsUrl', () => {
   it('points at the English docs and tags the campaign', () => {
     expect(docsUrl('/essentials/loads', 'loads')).toBe(
-      'https://edubeam.app/essentials/loads.html?utm_source=edubeam-app&utm_medium=help&utm_campaign=loads'
+      'https://www.edubeam.app/essentials/loads?utm_source=edubeam-app&utm_medium=help&utm_campaign=loads'
     );
   });
 
   it('keeps the anchor after the query', () => {
     expect(docsUrl('/essentials/loads#nodal-loads', 'nodalLoads')).toBe(
-      'https://edubeam.app/essentials/loads.html?utm_source=edubeam-app&utm_medium=help&utm_campaign=nodalLoads#nodal-loads'
+      'https://www.edubeam.app/essentials/loads?utm_source=edubeam-app&utm_medium=help&utm_campaign=nodalLoads#nodal-loads'
     );
   });
 
   it('prefixes locales the docs are translated to', () => {
     setLocale('cs');
-    expect(docsUrl('/essentials/results')).toContain('https://edubeam.app/cs/essentials/results.html');
+    expect(docsUrl('/essentials/results')).toContain('https://www.edubeam.app/cs/essentials/results?');
   });
 
   it('maps app locale codes that differ from the docs ones', () => {
     setLocale('cn');
-    expect(docsUrl('/essentials/results')).toContain('https://edubeam.app/zh/essentials/results.html');
+    expect(docsUrl('/essentials/results')).toContain('https://www.edubeam.app/zh/essentials/results?');
   });
 
   it('falls back to English for untranslated locales', () => {
-    setLocale('th');
-    expect(docsUrl('/essentials/results')).toContain('https://edubeam.app/essentials/results.html');
+    setLocale('xx');
+    expect(docsUrl('/essentials/results')).toContain('https://www.edubeam.app/essentials/results?');
   });
 });
 

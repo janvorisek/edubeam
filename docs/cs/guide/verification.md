@@ -1,3 +1,7 @@
+---
+description: "Ruční ověření výsledků EduBeamu: prostý nosník, konzola, oboustranně a jednostranně vetknutý nosník, dvouprutová soustava, nerovnoměrné oteplení a předepsané posunutí."
+---
+
 # Ověření výsledků ručně
 
 <Edubeam /> je ideální místo, kde si osvojit návyk, bez kterého se žádný inženýr neobejde: nevěřit číslu, které nedokážete aspoň přibližně ověřit. Na této stránce najdete vzorce v uzavřeném tvaru pro klasické případy spolu s hodnotami, které hlásí aplikace. Každý model si tak můžete sestavit sami a výsledky porovnat.

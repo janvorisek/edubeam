@@ -1,5 +1,9 @@
+---
+description: "O que é o EduBeam: um programa de elementos finitos gratuito, no navegador, para vigas, pórticos e treliças 2D. O que ele faz e não faz, para quem é e como o guia se organiza."
+---
+
 <script setup>
-import { VPTeamMembers } from 'vitepress/theme'
+import { VPTeamMembers } from 'vitepress/theme-without-fonts'
 
 const members = [
   {
@@ -74,7 +78,7 @@ Se um recurso que falta é importante para você, [abra uma issue](https://githu
 ## Para quem é? {#who-is-it-for}
 
 - **Estudantes** de mecânica das estruturas que querem um retorno imediato sobre seus cálculos manuais. Veja [Conferir resultados à mão](/pt/guide/verification).
-- **Professores** que mostram, ao vivo no projetor e em qualquer um dos 12 idiomas, como apoios, rótulas e cargas alteram os esforços internos. Veja [Ensinar com o EduBeam](/pt/guide/teaching).
+- **Professores** que mostram, ao vivo no projetor e em qualquer um dos 18 idiomas, como apoios, rótulas e cargas alteram os esforços internos. Veja [Ensinar com o EduBeam](/pt/guide/teaching).
 - **Engenheiros** que querem uma verificação rápida antes de abrir um programa de desktop mais pesado.
 
 ## Como este guia está organizado {#how-this-guide-is-organised}
@@ -91,7 +95,7 @@ Os ícones **?** do aplicativo abrem a página correspondente deste guia no seu 
 
 ## Idiomas {#languages}
 
-A interface está disponível em English, Čeština, Deutsch, Español, Français, Polski, Português, Русский, Türkçe, Українська, ไทย e 汉语. O EduBeam escolhe o idioma pelo navegador. Altere-o em **Configurações → Idioma e localidade** ou abra o aplicativo com o parâmetro `?lang=`, por exemplo [run.edubeam.app/?lang=pt](https://run.edubeam.app/?lang=pt){target="_blank"}.
+A interface está disponível em English, Bahasa Indonesia, Čeština, Deutsch, Español, Français, Italiano, Polski, Português, Tiếng Việt, Русский, Türkçe, Українська, हिन्दी, 日本語, 한국어, ไทย e 汉语. O EduBeam escolhe o idioma pelo navegador. Altere-o em **Configurações → Idioma e localidade** ou abra o aplicativo com o parâmetro `?lang=`, por exemplo [run.edubeam.app/?lang=pt](https://run.edubeam.app/?lang=pt){target="_blank"}.
 
 ## Autores e créditos {#authors-credits}
 

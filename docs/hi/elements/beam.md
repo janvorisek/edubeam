@@ -1,3 +1,7 @@
+---
+description: "EduBeam का 2D Timoshenko बीम अवयव: स्वातंत्र्य-कोटियाँ, अपरूपण विरूपण सहित स्थानीय कठोरता मैट्रिक्स, सिरे के हिंज, अवयव भार और रूपांतरण मैट्रिक्स।"
+---
+
 # बीम अवयव
 
 <Edubeam /> में एकमात्र अवयव x–z समतल में दो नोडों वाला **Timoshenko बीम** है। क्लासिक Euler–Bernoulli बीम की तुलना में यह अपरूपण विरूपण जोड़ता है, जो गहरे या छोटे सदस्यों के लिए मायने रखता है और पतले सदस्यों के लिए लुप्त हो जाता है। चिह्न परिपाटी का सारांश [परिपाटी](/hi/elements/conventions) पृष्ठ पर है।
@@ -25,12 +29,12 @@
 $$
 \mathbf{K_l} =
 \begin{pmatrix}
-  \frac{EA}{L} & 0 & 0 & -\frac{EA}{L} & 0 & 0 & \\[2ex]
-  0 & \frac{12 EI_y}{ L^3 (1+\varphi)} & \frac{-6 EI_y}{L^2 (1+\varphi)} & 0 & \frac{-12  EI_y}{L^3 (1+\varphi)} & \frac{-6  EI_y}{L^2 (1+\varphi)} &\\[3ex]
-  0 & \frac{-6  EI_y}{L^2 (1+\varphi)} & \frac{(4 + \varphi)  EI_y}{L  (1+\varphi)} & 0 & \frac{6  EI_y}{L^2 (1+\varphi)} & \frac{(2 - \varphi) EI_y}{L (1+\varphi)} &\\[2ex]
-  -\frac{EA}{L} & 0 & 0 & \frac{EA}{L} & 0 & 0 &\\[2ex]
-  0 & \frac{-12  EI_y}{L^3 (1+\varphi)} & \frac{6  EI_y}{L^2 (1+\varphi)} & 0 & \frac{12  EI_y}{ L^3  (1+\varphi)} & \frac{6  EI_y}{L^2 (1+\varphi)} &\\[3ex]
-  0 & \frac{-6  EI_y}{L^2 (1+\varphi)} & \frac{(2 - \varphi) EI_y}{L (1+\varphi)} & 0 & \frac{6  EI_y}{L^2 (1+\varphi)} & \frac{(4 + \varphi)  EI_y}{L  (1+\varphi)}
+  \dfrac{EA}{L} & 0 & 0 & -\dfrac{EA}{L} & 0 & 0 & \\[2ex]
+  0 & \dfrac{12 EI_y}{ L^3 (1+\varphi)} & \dfrac{-6 EI_y}{L^2 (1+\varphi)} & 0 & \dfrac{-12  EI_y}{L^3 (1+\varphi)} & \dfrac{-6  EI_y}{L^2 (1+\varphi)} &\\[3ex]
+  0 & \dfrac{-6  EI_y}{L^2 (1+\varphi)} & \dfrac{(4 + \varphi)  EI_y}{L  (1+\varphi)} & 0 & \dfrac{6  EI_y}{L^2 (1+\varphi)} & \dfrac{(2 - \varphi) EI_y}{L (1+\varphi)} &\\[2ex]
+  -\dfrac{EA}{L} & 0 & 0 & \dfrac{EA}{L} & 0 & 0 &\\[2ex]
+  0 & \dfrac{-12  EI_y}{L^3 (1+\varphi)} & \dfrac{6  EI_y}{L^2 (1+\varphi)} & 0 & \dfrac{12  EI_y}{ L^3  (1+\varphi)} & \dfrac{6  EI_y}{L^2 (1+\varphi)} &\\[3ex]
+  0 & \dfrac{-6  EI_y}{L^2 (1+\varphi)} & \dfrac{(2 - \varphi) EI_y}{L (1+\varphi)} & 0 & \dfrac{6  EI_y}{L^2 (1+\varphi)} & \dfrac{(4 + \varphi)  EI_y}{L  (1+\varphi)}
 \end{pmatrix}
 $$
 
@@ -46,7 +50,7 @@ $$
 \varphi = \frac{12\,E I_y}{k\,G\,A\,L^2}
 $$
 
-जहाँ $G$ अपरूपण मापांक है और $k$ अनुप्रस्थ काट का **अपरूपण गुणांक** (प्रभावी अपरूपण क्षेत्रफल $kA$)। $\varphi \to 0$ के लिए (पतला बीम, या बहुत बड़ा $k$) मैट्रिक्स Euler–Bernoulli बीम कठोरता में बदल जाता है।
+जहाँ $G$ अपरूपण मापांक है और $k$ अनुप्रस्थ काट का **अपरूपण संशोधन गुणांक** (प्रभावी अपरूपण क्षेत्रफल $kA$)। $\varphi \to 0$ के लिए (पतला बीम, या बहुत बड़ा $k$) मैट्रिक्स Euler–Bernoulli बीम कठोरता में बदल जाता है।
 
 ## सिरे के हिंज {#end-hinges}
 
@@ -54,7 +58,7 @@ $$
 
 ## अवयव भार {#element-loads}
 
-वितरित, संकेंद्रित और तापीय भारों को **समतुल्य नोडीय भारों** $\mathbf{f}_{eq}$ (जड़ित-सिरा बलों / fixed-end forces का ऋणात्मक) में परिवर्तित करके वैश्विक भार सदिश में जोड़ा जाता है। हल के बाद, अवयव के साथ आंतरिक बल सिरों के विस्थापनों और अवयव भार के सटीक विशेष हल (particular solution) से पुनः प्राप्त किए जाते हैं, इसलिए आरेख सदस्य के साथ-साथ सटीक होते हैं।
+वितरित, संकेंद्रित और तापीय भारों को **समतुल्य नोडल भारों** $\mathbf{f}_{eq}$ (फिक्स्ड-सिरा बलों / fixed-end forces का ऋणात्मक) में परिवर्तित करके वैश्विक भार सदिश में जोड़ा जाता है। हल के बाद, अवयव के साथ आंतरिक बल सिरों के विस्थापनों और अवयव भार के सटीक विशेष हल (particular solution) से पुनः प्राप्त किए जाते हैं, इसलिए आरेख सदस्य के साथ-साथ सटीक होते हैं।
 
 ## रूपांतरण मैट्रिक्स {#transformation-matrix}
 

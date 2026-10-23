@@ -1,0 +1,724 @@
+{
+  "tabView": {
+    "viewer": "Mô hình",
+    "settings": "Cài đặt",
+    "results": "Kết quả"
+  },
+  "common": {
+    "label": "Nhãn",
+    "node": "Nút",
+    "element": "Phần tử",
+    "crossSection": "Tiết diện",
+    "material": "Vật liệu",
+    "settings": "Cài đặt",
+    "actions": "Thao tác",
+    "coords": "Tọa độ",
+    "type": "Loại",
+    "nodes": "Nút",
+    "endHinges": "Khớp đầu thanh",
+    "massMatrix": "Ma trận khối lượng",
+    "target": "Đối tượng",
+    "components": "Thành phần",
+    "loadCase": "Trường hợp tải",
+    "loads": "Tải trọng",
+    "clearMesh": "Xóa kết cấu",
+    "shareModel": "Chia sẻ mô hình",
+    "documentation": "Tài liệu",
+    "addUsingDialog": "Thêm bằng hộp thoại",
+    "addUsingMouse": "Thêm bằng chuột",
+    "edit": "Sửa",
+    "copy": "Sao chép",
+    "delete": "Xóa",
+    "stiffnessMatrix": "Ma trận độ cứng",
+    "normalForce": "Lực dọc",
+    "shearForce": "Lực cắt",
+    "bendingMoment": "Mô men uốn",
+    "deformedShape": "Sơ đồ biến dạng",
+    "reactions": "Phản lực",
+    "elements": "Phần tử",
+    "confirm": "Xác nhận",
+    "saveProject": "Lưu dự án",
+    "openProject": "Mở dự án",
+    "lcs": "Hệ tọa độ địa phương",
+    "paste": "Dán",
+    "addNew": "Thêm mới",
+    "whatisnew": "Có gì mới?",
+    "reverse_orientation": "Lật kích thước",
+    "undo": "Hoàn tác",
+    "redo": "Làm lại",
+    "ok": "OK"
+  },
+  "nodes": {
+    "addNode": "Thêm nút",
+    "editNode": "Sửa nút",
+    "defineSupports": "Gối tựa tại nút",
+    "lcsAngle": "Góc LCS của nút"
+  },
+  "supports": {
+    "free": "Tự do",
+    "pin": "Gối cố định",
+    "roller": "Gối di động",
+    "verticalRoller": "Gối di động đứng",
+    "slider": "Ngàm trượt",
+    "verticalSlider": "Ngàm trượt đứng",
+    "rotation": "Chỉ chặn xoay",
+    "fixed": "Ngàm",
+    "custom": "Tùy chỉnh"
+  },
+  "elements": {
+    "addElement": "Thêm phần tử",
+    "editElement": "Sửa phần tử",
+    "swapNodeOrder": "Đổi thứ tự nút",
+    "hingeStart": "Khớp đầu",
+    "hingeEnd": "Khớp cuối",
+    "hinge": "Khớp",
+    "from": "Từ",
+    "to": "Đến"
+  },
+  "loads": {
+    "addNodalLoad": "Thêm tải nút",
+    "addElementLoad": "Thêm tải phần tử",
+    "addLoad": "Thêm tải trọng",
+    "nodalLoad": "Tải trọng nút",
+    "elementLoad": "Tải trọng phần tử",
+    "prescribedDisplacement": "Chuyển vị cưỡng bức",
+    "addPrescribedDisplacement": "Chuyển vị cưỡng bức",
+    "UDL": "Phân bố đều",
+    "forceMoment": "Lực/Mô men",
+    "editLoad": "Sửa tải trọng",
+    "loadPositionOnBeam": "Vị trí tải tính từ nút đầu",
+    "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Chênh lệch nhiệt độ thớ dưới trừ thớ trên",
+    "temperatureBending": "ΔT<sub>c</sub> ... Thay đổi nhiệt độ dọc trục",
+    "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
+    "temperatureDeltaTs": "ΔT<sub>c</sub>",
+    "temperatureDeltaTsNoHTML": "ΔTc",
+    "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
+  },
+  "tabs": {
+    "nodes": "Nút",
+    "elements": "Phần tử",
+    "loads": "Tải trọng",
+    "materials": "Vật liệu",
+    "crossSections": "Tiết diện",
+    "results": "Kết quả"
+  },
+  "crossSection": {
+    "area": "Diện tích",
+    "h": "Chiều cao",
+    "iy": "Iy",
+    "k": "Hệ số hiệu chỉnh cắt",
+    "iz": "Iz",
+    "b": "Chiều rộng",
+    "centroid": "Trọng tâm",
+    "alpha": "Góc trục chính",
+    "radiusOfGyration": "Bán kính quán tính",
+    "polygonal": "Hình đa giác",
+    "derivedFromShape": "Tính từ hình đa giác – sửa hình để thay đổi"
+  },
+  "material": {
+    "e": "E",
+    "g": "G",
+    "density": "Khối lượng riêng",
+    "alphaT": "α_T"
+  },
+  "settings": {
+    "results_scale": "Tỷ lệ kết quả",
+    "grid_snap_step": "Bước bắt dính lưới",
+    "snap_to_grid": "Bắt dính lưới",
+    "show_crosshair": "Hiện dấu thập",
+    "model_checks": "Kiểm tra mô hình",
+    "show_mechanisms": "Hiện cách kết cấu không ổn định có thể chuyển động",
+    "animate_mechanisms": "Tạo hoạt ảnh chuyển động",
+    "number_format": "Định dạng số",
+    "number_format_description": "Cách ghi giá trị kết quả; dấu thập phân theo ngôn ngữ.",
+    "number_format_auto": "Tự động",
+    "number_format_scientific": "Khoa học (1,5 · 10⁴)",
+    "number_format_engineering": "Kỹ thuật (15 · 10³)",
+    "language": "Ngôn ngữ",
+    "language_and_locale": "Ngôn ngữ và khu vực",
+    "show_normal_force": "Hiện lực dọc",
+    "show_shear_force": "Hiện lực cắt",
+    "show_bending_moment": "Hiện mô men uốn",
+    "show_deformed_shape": "Hiện biến dạng",
+    "show_loads": "Hiện tải trọng",
+    "units": {
+      "units": "Đơn vị",
+      "length": "Chiều dài",
+      "mass": "Khối lượng",
+      "force": "Lực",
+      "moment": "Mô men uốn",
+      "pressure": "Ứng suất",
+      "area": "Diện tích",
+      "areaM2": "Mô men quán tính",
+      "system": "Hệ đơn vị",
+      "systemSI": "SI (hệ mét)",
+      "systemUS": "Hệ Mỹ (imperial)",
+      "systemCustom": "Tùy chỉnh",
+      "temperature": "Nhiệt độ",
+      "sectionLength": "Kích thước tiết diện",
+      "displacement": "Chuyển vị"
+    },
+    "grid": "Lưới",
+    "show_grid": "Hiện lưới",
+    "mouse": {
+      "mouse": "Chuột",
+      "pan_button": "Kéo màn hình bằng",
+      "wheel": "Con lăn chuột",
+      "right_button": "Nút phải",
+      "all": "Con lăn hoặc nút phải"
+    },
+    "colors": {
+      "colors": "Màu sắc"
+    },
+    "results": {
+      "results": "Kết quả"
+    },
+    "viewer_settings": "Cài đặt hiển thị",
+    "controls_and_shortcuts": "Điều khiển và phím tắt",
+    "language_and_locale_subtitle": "Cài đặt ngôn ngữ, khu vực và đơn vị",
+    "viewer_settings_subtitle": "Tỷ lệ, màu sắc, lưới và các tùy chọn khác",
+    "controls_and_shortcuts_subtitle": "Cài đặt bàn phím và chuột",
+    "viewer_preview": "Xem trước hiển thị",
+    "language_description": "Chọn ngôn ngữ giao diện bạn muốn dùng.",
+    "units_description": "Chọn đơn vị đo bạn muốn dùng.",
+    "axisConvention": "Hệ tọa độ",
+    "axisConvention_description": "Chiều của trục đứng khi nhập liệu và trong kết quả. Mô hình và tệp đã lưu không bị ảnh hưởng.",
+    "axisConvention_zDown": "x sang phải, z xuống dưới",
+    "axisConvention_yUp": "x sang phải, y lên trên",
+    "reset_settings": "Đặt lại cài đặt",
+    "sizes": {
+      "sizes": "Kích cỡ",
+      "supportSize": "Kích cỡ gối tựa"
+    },
+    "font_size": "Cỡ chữ",
+    "result_label_orientation": "Hướng nhãn kết quả",
+    "result_label_orientation_axis": "Vuông góc với biểu đồ",
+    "result_label_orientation_horizontal": "Luôn nằm ngang",
+    "result_labels": "Nhãn kết quả"
+  },
+  "sideSettings": {
+    "showDeformedShape": "Biến dạng",
+    "supports": "Gối tựa",
+    "loads": "Tải trọng",
+    "nodeLabels": "Nhãn nút",
+    "elementLabels": "Nhãn phần tử",
+    "more_settings": "Thêm cài đặt",
+    "showReactions": "Phản lực"
+  },
+  "viewer": {
+    "toggleGrid": "Bật/tắt lưới (G)",
+    "toggleSnap": "Bật/tắt bắt dính lưới (S)",
+    "toggleCrosshair": "Bật/tắt dấu thập",
+    "boxSelect": "Chọn bằng khung",
+    "centerContent": "Căn giữa",
+    "fitContent": "Vừa màn hình",
+    "holdCtrl": "Giữ Ctrl để thêm bằng chuột"
+  },
+  "dofs": {
+    "bcs": "Bậc tự do bị chặn"
+  },
+  "results": {
+    "results": "Kết quả",
+    "nodal_results": "Kết quả tại nút",
+    "element_results": "Kết quả phần tử",
+    "end_forces": "Nội lực đầu phần tử (trong hệ tọa độ địa phương)",
+    "exportCsv": "Xuất CSV",
+    "exportHint": "Tải xuống cả hai bảng kết quả theo đơn vị đang hiển thị, sẵn sàng cho bảng tính.",
+    "copied": "Đã sao chép kết quả vào bộ nhớ tạm",
+    "copyFailed": "Không thể sao chép kết quả vào bộ nhớ tạm."
+  },
+  "materials": {
+    "addMaterial": "Thêm vật liệu",
+    "material_library": "Thư viện vật liệu",
+    "section_library": "Thư viện tiết diện"
+  },
+  "crossSections": {
+    "addCrossSection": "Thêm tiết diện",
+    "addPolygonal": "Tiết diện đa giác"
+  },
+  "dialogs": {
+    "addNode": {
+      "addNewNode": "Thêm nút mới",
+      "coordinate_x": "Tọa độ X",
+      "coordinate_z": "Tọa độ {v}",
+      "addNode": "Thêm nút"
+    },
+    "common": {
+      "cancel": "Hủy",
+      "orChooseFromLibrary": "Hoặc chọn từ thư viện"
+    },
+    "addElement": {
+      "fromNodeId": "Nút đầu",
+      "toNodeId": "Nút cuối",
+      "addElement": "Thêm phần tử",
+      "addNewElement": "Thêm phần tử mới",
+      "material": "Vật liệu",
+      "crossSection": "Tiết diện"
+    },
+    "addNodalLoad": {
+      "addNewNodalLoad": "Thêm tải trọng nút mới",
+      "addNodalLoad": "Thêm tải nút"
+    },
+    "addElementLoad": {
+      "addNewElementLoad": "Thêm tải trọng phần tử mới",
+      "addElementLoad": "Thêm tải phần tử"
+    },
+    "addMaterial": {
+      "addNewMaterial": "Thêm vật liệu mới",
+      "addMaterial": "Thêm vật liệu",
+      "E": "E - Mô đun đàn hồi",
+      "G": "G - Mô đun trượt",
+      "density": "ρ - khối lượng riêng",
+      "alphaT": "α - Hệ số dãn dài do nhiệt"
+    },
+    "addCrossSection": {
+      "addNewCrossSection": "Thêm tiết diện mới",
+      "addCrossSection": "Thêm tiết diện",
+      "orDefinePolygon": "Hoặc vẽ hình đa giác"
+    },
+    "editNodalLoad": {
+      "editNodalLoad": "Sửa tải trọng nút"
+    },
+    "editElementLoad": {
+      "editElementLoad": "Sửa tải trọng phần tử"
+    },
+    "update": {
+      "title": "Có bản cập nhật",
+      "update": "Cập nhật",
+      "text1": "Chúng tôi đang phát hành một bản cập nhật cần khởi động lại ứng dụng. Mọi thay đổi chưa lưu sẽ bị mất.",
+      "text2": "Nếu muốn giữ lại công việc hiện tại, bạn có thể hủy cập nhật."
+    },
+    "editNode": {
+      "editNode": "Sửa nút"
+    },
+    "changelog": {
+      "title": "Có gì mới?",
+      "description": "Tính năng mới, cải tiến và những gì chúng tôi đang phát triển.",
+      "contributors": "Những người đóng góp cho phiên bản này: {names}",
+      "comingSoon": "Sắp ra mắt"
+    },
+    "polygonSection": {
+      "title": "Tiết diện đa giác mới",
+      "editTitle": "Sửa tiết diện đa giác",
+      "preset": "Mẫu có sẵn",
+      "apply": "Áp dụng",
+      "snapStep": "Bước bắt dính",
+      "centerAtCentroid": "Đặt tâm tại trọng tâm",
+      "hint": "Kéo đỉnh để di chuyển, nhấp vào trung điểm cạnh để chèn đỉnh, nhấp đúp vào đỉnh để xóa.",
+      "outline": "Đường bao",
+      "hole": "Lỗ rỗng",
+      "addHole": "Thêm lỗ rỗng",
+      "addVertex": "Thêm đỉnh",
+      "removeContour": "Xóa lỗ rỗng",
+      "properties": "Đặc trưng tiết diện",
+      "invalidShape": "Hình phải là đa giác đơn có diện tích dương: các cạnh không được cắt nhau và lỗ rỗng phải nằm trong đường bao.",
+      "labelInUse": "Nhãn đã được dùng",
+      "save": "Lưu",
+      "editShape": "Sửa hình đa giác",
+      "presets": {
+        "rectangle": "Chữ nhật",
+        "iSection": "Chữ I",
+        "tSection": "Chữ T",
+        "lSection": "Chữ L",
+        "channel": "Chữ U (C)",
+        "box": "Hộp chữ nhật",
+        "circle": "Tròn",
+        "pipe": "Ống tròn"
+      },
+      "params": {
+        "b": "Rộng b",
+        "h": "Cao h",
+        "tw": "Bản bụng tw",
+        "tf": "Bản cánh tf",
+        "t": "Dày t",
+        "d": "Đường kính d",
+        "n": "Số đoạn"
+      },
+      "vertices": "Đỉnh",
+      "legendOutline": "Đường bao",
+      "legendHole": "Lỗ rỗng",
+      "legendPrincipal": "Trục chính và elip quán tính",
+      "legendCentroid": "Trọng tâm",
+      "shape": "Hình dạng",
+      "noShape": "Không có hình đa giác",
+      "centroidal": "trung tâm",
+      "centroidalNote": "Mọi mô men quán tính đều lấy đối với các trục đi qua trọng tâm; I₁, I₂ là các giá trị chính và α là góc từ trục y đến trục 1.",
+      "outOfPlaneNote": "Tiết diện này không đối xứng qua mặt phẳng khung. Phân tích 2D chỉ chính xác khi thanh được giữ chống chuyển vị ngang (ra khỏi màn hình) và chống xoắn trên toàn bộ chiều dài, ví dụ bởi bản sàn hoặc hệ giằng dày; chỉ có gối tựa tại các nút là chưa đủ. Thanh tự do còn bị xoắn vì tải trọng đặt lệch tâm cắt, và độ xoắn đó không được tính vào chuyển vị.",
+      "outOfPlaneRestrained": "Được giữ ngang và chống xoắn dọc theo chiều dài: {inertia}",
+      "outOfPlaneFree": "Tự do chuyển vị ngang (vẫn chưa tính xoắn): {inertia}"
+    }
+  },
+  "tooltip": {
+    "materials": {},
+    "material": {
+      "alphaT": "Hệ số dãn dài do nhiệt cho biết kích thước của vật thay đổi thế nào khi nhiệt độ thay đổi.",
+      "e": "Mô đun đàn hồi đặc trưng cho độ cứng khi kéo hoặc nén lúc lực tác dụng dọc theo chiều dài.",
+      "g": "Mô đun trượt là đặc trưng đo khả năng chống biến dạng dưới ứng suất tiếp, cho biết độ cứng của vật liệu khi chịu lực tác dụng song song với bề mặt.",
+      "density": "Khối lượng riêng cho biết lượng khối lượng chứa trong một đơn vị thể tích của chất. "
+    }
+  },
+  "footer": {
+    "reportIssue": "Báo lỗi",
+    "requestFeature": "Đề xuất tính năng",
+    "released": "phát hành"
+  },
+  "sharing": {
+    "shareViaURL": "Chia sẻ mô hình qua URL",
+    "instructions": "Nhấp vào bất kỳ đâu trong ô để sao chép liên kết, rồi gửi cho cộng sự của bạn.",
+    "copyCue": "Sao chép liên kết",
+    "openLink": "Mở liên kết",
+    "nativeShare": "Chia sẻ qua hộp thoại hệ thống",
+    "linkCopied": "Đã sao chép liên kết vào bộ nhớ tạm",
+    "copyFailed": "Không thể tự động sao chép. Vui lòng dùng phím tắt.",
+    "shortLink": "Liên kết ngắn hơn",
+    "shortLinkHint": "Ngắn bằng khoảng một nửa. Ai đang dùng phiên bản edubeam cũ hơn phải cập nhật ứng dụng thì mới mở được."
+  },
+  "tour": {
+    "menu": {
+      "title": "Menu",
+      "description": "Mở, lưu và chia sẻ dự án, xuất hình ảnh, mở một ví dụ, hoặc bắt đầu lại phần hướng dẫn này hay bài “Dầm đầu tiên”."
+    },
+    "undoRedo": {
+      "title": "Hoàn tác và làm lại",
+      "description": "Hoàn tác hoặc làm lại các thay đổi của bạn. Ctrl+Z và Ctrl+Shift+Z có tác dụng tương tự."
+    },
+    "viewerControls": {
+      "title": "Nút điều khiển hiển thị",
+      "description": "Các nút điều khiển hiển thị dùng để căn giữa kết cấu hoặc thu vừa màn hình, và để chọn những gì được hiển thị."
+    },
+    "viewerSettings": {
+      "title": "Tùy chỉnh hiển thị",
+      "description": "Chọn những gì cần hiển thị – lực dọc, lực cắt, mô men uốn, sơ đồ biến dạng, hoặc tất cả cùng lúc."
+    },
+    "gridUnits": {
+      "title": "Lưới, bắt dính và đơn vị",
+      "description": "G hiện lưới và S bắt dính các nút mới vào lưới. Nhấp vào đơn vị để đổi đơn vị, ngôn ngữ hoặc hệ tọa độ."
+    },
+    "bottomBar": {
+      "title": "Thêm, xóa và sửa đối tượng",
+      "description": "Trung tâm nơi bạn có thể dễ dàng thay đổi mọi khía cạnh của kết cấu. Từ nút, phần tử, tải trọng, vật liệu đến tiết diện, đây là nơi để thay đổi nhanh chóng và toàn diện."
+    },
+    "help": {
+      "title": "Trợ giúp",
+      "description": "Nút ? giải thích thẻ bạn đang mở. Nút ? cạnh tiêu đề cột giải thích cột đó."
+    },
+    "previousButton": "Trước",
+    "nextButton": "Tiếp",
+    "finishButton": "Hoàn tất",
+    "close": "Đóng hướng dẫn"
+  },
+  "firstBeam": {
+    "title": "Dầm đầu tiên của bạn",
+    "step": "Bước {n} / {total}",
+    "close": "Đóng hướng dẫn",
+    "finish": "Xong",
+    "next": "Tiếp",
+    "steps": {
+      "tool": {
+        "title": "Chọn công cụ vẽ",
+        "body": "Trong thẻ {elementsTab} bên dưới, nhấn nút {addElement} có biểu tượng con trỏ."
+      },
+      "draw": {
+        "title": "Vẽ dầm",
+        "body": "Nhấp vào điểm đầu của dầm, rồi vào điểm cuối. Hai đầu dầm tự bắt dính vào lưới."
+      },
+      "supports": {
+        "title": "Đặt gối tựa",
+        "body": "Nhấp vào đầu trái, mở {defineSupports} và đánh dấu Dx và D{v} để có gối cố định. Sau đó nhấp vào đầu phải và đánh dấu D{v} để có gối di động."
+      },
+      "load": {
+        "title": "Đặt tải trọng",
+        "body": "Nhấp vào dầm, chọn {addLoad}, nhập giá trị vào f{v} và xác nhận."
+      },
+      "display": {
+        "title": "Chọn nội dung hiển thị",
+        "body": "Bánh răng ở góc trên bên phải mở các tùy chọn hiển thị: nội lực, sơ đồ biến dạng, phản lực và các mục khác. Hãy mở nó ngay bây giờ."
+      },
+      "fit": {
+        "title": "Thu vừa màn hình",
+        "body": "Các nút ở góc trên bên phải thu mô hình vừa màn hình hoặc căn giữa nó. Hãy nhấn nút vừa màn hình ngay bây giờ, và nhấn lại mỗi khi hình vẽ trôi ra khỏi tầm nhìn."
+      },
+      "results": {
+        "title": "Đọc kết quả",
+        "body": "Biểu đồ mô men uốn và sơ đồ biến dạng được vẽ trên dầm và cập nhật ngay khi bạn chỉnh sửa. Mọi nút, phần tử và tải trọng cũng được liệt kê trong các bảng bên dưới, nơi bạn có thể nhập giá trị chính xác. {undo} đưa bạn trở lại mô hình trước đó."
+      }
+    }
+  },
+  "welcome": {
+    "title": "Chào mừng đến với <span class=\"edubeam\">edubeam</span>! 🚀",
+    "description": "Mô hình hóa dầm, khung và dàn, và xem nội lực ngay khi bạn vẽ.",
+    "start": "Bạn muốn bắt đầu thế nào?",
+    "showAround": "Xem giới thiệu",
+    "showAroundHint": "Xem nhanh vùng hiển thị, các tùy chọn hiển thị và thanh công cụ dưới cùng.",
+    "drawFirstBeam": "Vẽ dầm đầu tiên",
+    "drawFirstBeamHint": "Bài hướng dẫn ngắn: vẽ dầm, đặt gối tựa và đặt tải trọng.",
+    "openExample": "Mở một ví dụ",
+    "openExampleHint": "Bắt đầu từ một mô hình có sẵn rồi chỉnh sửa.",
+    "skip": "Để sau"
+  },
+  "confirmation": {
+    "clearMesh": {
+      "message": "Bạn có chắc muốn xóa kết cấu? Ctrl+Z sẽ khôi phục nó, và nó vẫn được giữ trong Kết cấu gần đây.",
+      "title": "Xóa kết cấu?",
+      "materials": "Xóa vật liệu",
+      "crossSections": "Xóa tiết diện"
+    },
+    "resetSettings": {
+      "title": "Đặt lại cài đặt?",
+      "message": "Bạn có chắc muốn đặt lại mọi cài đặt về mặc định? Thao tác này không thể hoàn tác."
+    },
+    "splitElementAndPlaceNode": {
+      "title": "Xác nhận đặt nút",
+      "message": "<p>Có vẻ bạn đang đặt một nút lên dầm {label}.</p><p class=\"mt-3\">Bạn muốn chia phần tử và nối nút vào, hay đặt nút lên kết cấu mà không nối?</p>",
+      "split": "Nối vào kết cấu"
+    },
+    "placeIndividualNode": "Đặt nút riêng lẻ"
+  },
+  "selection": {
+    "node": "Nút",
+    "element": "Phần tử",
+    "dimension": "Đường kích thước",
+    "nodal-load": "Tải trọng nút",
+    "element-load": "Tải trọng phần tử",
+    "prescribedbc-load": "Chuyển vị cưỡng bức"
+  },
+  "validators": {
+    "enterValue": "Nhập một giá trị",
+    "invalidNumber": "Số không hợp lệ",
+    "positiveNumber": "Nhập một số lớn hơn 0",
+    "between": "Nhập giá trị từ {min} đến {max}",
+    "sameNodes": "Phần tử phải nối hai nút khác nhau",
+    "materialInUse": "Vật liệu đang được dùng bởi phần tử {elements}. Hãy gán lại cho chúng trước khi xóa.",
+    "crossSectionInUse": "Tiết diện đang được dùng bởi phần tử {elements}. Hãy gán lại cho chúng trước khi xóa."
+  },
+  "solveDiagnostics": {
+    "summaryErrors": "Lỗi trong mô hình: {errors}",
+    "summaryWarnings": "Cảnh báo trong mô hình: {warnings}",
+    "summaryIncomplete": "{count} phần của kết cấu cần gối tựa.",
+    "incompleteChip": "Cần gối tựa",
+    "hideMotion": "Ẩn chuyển động",
+    "showMotion": "Hiện chuyển động",
+    "dismissWarnings": "Ẩn các cảnh báo này",
+    "collapseErrors": "Thu nhỏ thông báo này",
+    "showDetails": "Hiện chi tiết",
+    "blockedTitle": "Không thể giải mô hình",
+    "blockedDescription": "Hãy sửa các lỗi được liệt kê trước khi giải mô hình.",
+    "warningsTitle": "Cảnh báo mô hình",
+    "warningsDescription": "Mô hình đã được giải, nhưng phát hiện các cảnh báo sau.",
+    "incompleteTitle": "Chưa thể giải",
+    "incompleteDescription": "Kết quả sẽ hiện khi kết cấu được giữ cố định. Đường nét đứt trên khung vẽ cho thấy kết cấu vẫn có thể chuyển động thế nào.",
+    "errors": "Lỗi",
+    "warnings": "Cảnh báo",
+    "incomplete": "Còn thiếu",
+    "issues": {
+      "elementNodeCount": "Phần tử {element} phải tham chiếu đúng 2 nút.",
+      "elementSameNode": "Phần tử {element} tham chiếu cùng một nút ở cả hai đầu.",
+      "elementMissingNode": "Phần tử {element} tham chiếu nút {node} không tồn tại.",
+      "elementMissingMaterial": "Phần tử {element} tham chiếu vật liệu {material} không tồn tại.",
+      "elementMissingCrossSection": "Phần tử {element} tham chiếu tiết diện {crossSection} không tồn tại.",
+      "nodalLoadMissingNode": "Tải trọng nút #{index} tham chiếu nút {node} không tồn tại.",
+      "nodalLoadInvalid": "Tải trọng nút #{index} chứa giá trị không hợp lệ.",
+      "prescribedMissingNode": "Chuyển vị cưỡng bức #{index} tham chiếu nút {node} không tồn tại.",
+      "prescribedInvalid": "Chuyển vị cưỡng bức #{index} chứa giá trị không hợp lệ.",
+      "elementLoadMissingElement": "Tải trọng phần tử #{index} tham chiếu phần tử {element} không tồn tại.",
+      "supportedNodeNotConnected": "Nút {node} có gối tựa nhưng không có phần tử nào nối vào, nên gối tựa không chịu lực gì.",
+      "nodeNotConnected": "Nút {node} không nối với phần tử nào và bị bộ giải bỏ qua.",
+      "insufficientSupports": "Mô hình cần ít nhất 3 bậc tự do bị chặn để ổn định trong phân tích 2D.",
+      "needsSupports": "Kết cấu cần gối tựa trước khi có thể giải.",
+      "partUnsupported": "Một phần riêng của kết cấu (nút {nodes}) có ít hơn 3 bậc tự do bị chặn và có thể chuyển động tự do.",
+      "partNeedsSupports": "Phần có nút {nodes} cần gối tựa.",
+      "mechanism": "Kết cấu có đủ gối tựa nhưng chúng không giữ được nó: kết cấu vẫn có thể {motion}. Nếu các gối tựa đều song song với nhau, hoặc có đường tác dụng đồng quy tại một điểm, kết cấu vẫn chuyển động tự do được.",
+      "mechanismShort": "Các gối tựa không giữ được kết cấu: nó vẫn có thể {motion}.",
+      "partMechanism": "Một phần riêng của kết cấu (nút {nodes}) có đủ gối tựa nhưng chúng không giữ được nó: phần đó vẫn có thể {motion}. Nếu các gối tựa đều song song với nhau, hoặc có đường tác dụng đồng quy tại một điểm, kết cấu vẫn chuyển động tự do được.",
+      "partMechanismShort": "Phần có nút {nodes} không được giữ: nó vẫn có thể {motion}.",
+      "hingeMechanism": "Các gối tựa giữ được kết cấu, nhưng nó vẫn là hệ biến hình: các thanh có thể xoay quanh khớp tại nút {nodes}. Hãy bỏ một khớp, hoặc thêm một thanh hay một gối tựa để ngăn chuyển động.",
+      "hingeMechanismShort": "Khớp tại nút {nodes} cho phép kết cấu chuyển động.",
+      "motion": {
+        "horizontal": "trượt theo phương ngang",
+        "vertical": "chuyển động theo phương đứng",
+        "rotation": "xoay tự do",
+        "mixed": "chuyển động như vật rắn"
+      },
+      "unstable": "Kết cấu không ổn định: {dofs} chuyển động gần như không có sức cản. Hãy thêm gối tựa hoặc phần tử, bỏ một khớp đầu thanh, hoặc kiểm tra độ cứng tiết diện.",
+      "unstableShort": "Kết cấu không ổn định: nó chuyển động gần như không có sức cản.",
+      "unstableDof": {
+        "dx": "nút {node} theo phương ngang (Dx)",
+        "dz": "nút {node} theo phương đứng (D{v})",
+        "ry": "nút {node} theo góc xoay (R{r})",
+        "other": "nút {node} theo bậc tự do {dof}"
+      },
+      "unstableMore": "{list} và {count} mục khác",
+      "singularMatrix": "Kết cấu là hệ biến hình: ma trận độ cứng suy biến. Hãy kiểm tra để mỗi phần được giữ bởi ít nhất 3 liên kết và các khớp đầu thanh không để thanh nào xoay tự do.",
+      "singularMatrixShort": "Kết cấu là hệ biến hình: nó có thể chuyển động không có sức cản.",
+      "solverFailed": "Bộ giải thất bại do mô hình không nhất quán bên trong. Vui lòng kiểm tra các tham chiếu và tải trọng của mô hình."
+    }
+  },
+  "loadType": {
+    "loadType": "Loại tải trọng",
+    "concentrated": "Tải tập trung",
+    "trapezoidal": "Tải hình thang",
+    "udl": "Tải phân bố đều",
+    "temperature": "Tải nhiệt độ"
+  },
+  "dimensioning": {
+    "add_dimension": "Thêm kích thước",
+    "add_along_element": "Ghi kích thước phần tử {label}"
+  },
+  "warnings": {
+    "noMaterialsDefined": "Chưa có vật liệu nào.",
+    "noCrossSectionsDefined": "Chưa có tiết diện nào.",
+    "importFailed": "Không thể nhập tệp. Vui lòng kiểm tra định dạng tệp.",
+    "prescribedDisplacementExists": "Nút này đã có chuyển vị cưỡng bức. Vui lòng xóa nó trước.",
+    "addMaterialFirst": "Vui lòng thêm vật liệu trước.",
+    "addCrossSectionFirst": "Vui lòng thêm tiết diện trước.",
+    "selectMaterialAndCrossSection": "Vui lòng chọn vật liệu và tiết diện.",
+    "labelInUse": "Nhãn {label} đã được dùng.",
+    "noMaterialOrCrossSection": "Phần tử chưa có vật liệu hoặc tiết diện.",
+    "elementMissing": "Phần tử {label} không còn tồn tại."
+  },
+  "help": {
+    "aria": "Hiện trợ giúp",
+    "readMore": "Đọc thêm trong tài liệu",
+    "troubleshooting": "Khắc phục sự cố",
+    "nodes": {
+      "title": "Nút",
+      "body": "Nút là các điểm liên kết kết cấu với nhau. Tọa độ, gối tựa, khớp và tải trọng tác dụng được đặt riêng cho từng nút."
+    },
+    "supports": {
+      "title": "Gối tựa",
+      "body": "Đánh dấu một bậc tự do để chặn nó: Dx và D{v} chặn chuyển vị thẳng, R{r} chặn góc xoay. Kết cấu cần ít nhất ba liên kết độc lập."
+    },
+    "elements": {
+      "title": "Phần tử",
+      "body": "Phần tử nối hai nút và mang một vật liệu và một tiết diện. Giải phóng một đầu để biến dầm thành thanh có khớp hoặc thanh dàn."
+    },
+    "loads": {
+      "title": "Tải trọng",
+      "body": "Tải trọng tác dụng lên nút hoặc dọc theo phần tử. Giá trị dương theo chiều các trục tổng thể, với z hướng xuống.",
+      "bodyYUp": "Tải trọng tác dụng lên nút hoặc dọc theo phần tử. Giá trị dương theo chiều các trục tổng thể, với y hướng lên."
+    },
+    "nodalLoads": {
+      "title": "Tải trọng nút",
+      "body": "Tải trọng nút đặt lực hoặc mô men trực tiếp vào nút. Còn chuyển vị cưỡng bức cho phép bạn đặt độ lún gối tựa."
+    },
+    "elementLoads": {
+      "title": "Tải trọng phần tử",
+      "body": "Tải trọng phần tử tác dụng dọc theo thanh: phân bố đều, hình thang, tập trung hoặc nhiệt độ. Có thể nhập theo hệ trục tổng thể hoặc địa phương."
+    },
+    "materials": {
+      "title": "Vật liệu",
+      "body": "Vật liệu gồm mô đun đàn hồi, mô đun trượt, khối lượng riêng và hệ số dãn dài do nhiệt. Với phân tích tĩnh thông thường, chỉ E và tiết diện là quan trọng."
+    },
+    "crossSections": {
+      "title": "Tiết diện",
+      "body": "Tiết diện cung cấp diện tích và mô men quán tính dùng để tính độ cứng. Chọn từ thư viện hoặc tự vẽ đa giác."
+    },
+    "hinges": {
+      "title": "Khớp đầu thanh",
+      "body": "Ô được đánh dấu giải phóng mô men uốn tại đầu đó của phần tử. Đánh dấu cả hai đầu để có thanh dàn, một đầu để đặt khớp bên trong khung."
+    },
+    "signConvention": {
+      "title": "Quy ước dấu",
+      "body": "Trục z tổng thể hướng xuống, nên Fz hoặc fz dương kéo xuống dưới và My dương ngược chiều kim đồng hồ. Tải trọng nhập theo hệ địa phương thì lấy chiều theo phần tử.",
+      "bodyYUp": "Trục y tổng thể hướng lên, nên Fy hoặc fy dương đẩy lên trên và Mz dương ngược chiều kim đồng hồ. Tải trọng nhập theo hệ địa phương thì lấy chiều theo phần tử."
+    },
+    "results": {
+      "title": "Kết quả",
+      "body": "Khi mô hình được giải, bạn có lực dọc, lực cắt, mô men uốn, sơ đồ biến dạng và phản lực, ở dạng biểu đồ và bảng."
+    },
+    "diagrams": {
+      "title": "Hiển thị kết quả",
+      "body": "Các công tắc này vẽ lực dọc, lực cắt, mô men uốn, sơ đồ biến dạng và phản lực lên mô hình. N dương khi kéo, M{r} dương khi căng thớ dưới."
+    },
+    "endForces": {
+      "title": "Nội lực đầu phần tử",
+      "body": "X12, Z12 và M12 tác dụng tại nút đầu, X21, Z21 và M21 tại nút cuối, luôn trong hệ địa phương của phần tử, hướng từ nút đầu đến nút cuối."
+    },
+    "settings": {
+      "title": "Đơn vị và cài đặt",
+      "body": "Ngôn ngữ, đơn vị, tỷ lệ hiển thị, màu sắc và phím tắt nằm ở đây. Đơn vị chỉ quy đổi các giá trị hiện có, không bao giờ thay đổi mô hình."
+    },
+    "sharing": {
+      "title": "Lưu và chia sẻ",
+      "body": "Lưu mô hình thành tệp, sao chép liên kết chứa toàn bộ kết cấu, hoặc nhúng trình xem chỉ đọc vào trang của riêng bạn."
+    }
+  },
+  "exportImage": {
+    "title": "Xuất hình ảnh",
+    "transparentBackground": "Nền trong suốt",
+    "download": "Tải PNG",
+    "downloadSvg": "Tải SVG",
+    "copyToClipboard": "Sao chép vào bộ nhớ tạm",
+    "copied": "Đã sao chép hình ảnh vào bộ nhớ tạm",
+    "exported": "Đã xuất hình ảnh",
+    "failed": "Không thể kết xuất hình ảnh.",
+    "previewAlt": "Xem trước hình ảnh xuất",
+    "instructions": "Hình vẽ được bố trí lại theo kích thước bạn chọn, nên nét vẽ và nhãn giữ đúng độ dày thực. Cùng một kích thước luôn đóng khung kết cấu theo cùng một cách — tiện cho việc xuất M, N và V đặt cạnh nhau.",
+    "width": "Chiều rộng",
+    "height": "Chiều cao",
+    "lockAspect": "Giữ tỷ lệ khung hình",
+    "fitPreview": "Vừa khung",
+    "actualSize": "Kích thước thực",
+    "preview": "Xem trước",
+    "fitAll": "Toàn bộ",
+    "window": "Vùng chọn…",
+    "pickWindowHint": "Kéo một hình chữ nhật trên hình vẽ để xuất",
+    "dragEdge": "Kéo để mở rộng hoặc cắt bớt cạnh này",
+    "scale": "Tỷ lệ",
+    "scaleCaption": "1 m của mô hình bằng {cm} cm trên giấy (96 DPI). Cuộn chuột trên bản xem trước để thu phóng.",
+    "doesNotFit": "Kích thước này không chứa hết: biểu đồ, tải trọng và nhãn vượt quá mép khoảng {px} px. Thu nhỏ biểu đồ (hiện {diagrams} px) hoặc mở rộng khung vẽ.",
+    "shrinkDiagrams": "Thu nhỏ biểu đồ",
+    "enlargeCanvas": "Mở rộng khung vẽ",
+    "diagramHeight": "Chiều cao biểu đồ",
+    "shrinkNotEnough": "Thu nhỏ biểu đồ ở đây là chưa đủ — riêng tải trọng và nhãn đã cần thêm chỗ. Hãy mở rộng khung vẽ."
+  },
+  "examples": {
+    "title": "Ví dụ",
+    "instructions": "Mở một mô hình có sẵn để khám phá. Nó sẽ thay thế mô hình hiện tại, và Ctrl+Z sẽ khôi phục mô hình của bạn.",
+    "moreInDocs": "Thêm ví dụ và bài tập",
+    "items": {
+      "welcome": {
+        "title": "Dầm siêu tĩnh",
+        "blurb": "Dầm siêu tĩnh 3 m, một đầu ngàm một đầu gối di động, chịu tải phân bố đều 10 kN/m."
+      },
+      "cantilever": {
+        "title": "Dầm công xôn",
+        "blurb": "Dầm công xôn 4 m chịu tải trọng nút 18 kN hướng xuống, làm rõ độ cong và độ võng đầu tự do."
+      },
+      "pratt": {
+        "title": "Dàn Pratt",
+        "blurb": "Dàn Pratt đơn giản chịu tải 8 kN tại các mắt dàn, cho thấy phân bố lực dọc và chuyển vị."
+      },
+      "continuous": {
+        "title": "Dầm liên tục ba nhịp",
+        "blurb": "Các nhịp 5+6+5 m với tải phân bố đều + tập trung + phân bố đều để so sánh độ cong và góc xoay tại gối."
+      },
+      "portal": {
+        "title": "Khung cổng",
+        "blurb": "Dầm 8 m trên cột 6 m chịu tải phân bố đều trên mái và tải ngang + đứng tại nút góc để kiểm tra chuyển vị ngang và uốn."
+      },
+      "temperature": {
+        "title": "Tải nhiệt độ",
+        "blurb": "Dầm đơn giản 8 m chịu tải nhiệt độ đều và không đều."
+      }
+    }
+  },
+  "recentStructures": {
+    "title": "Kết cấu gần đây",
+    "instructions": "{count} kết cấu gần nhất đã bị xóa hoặc thay thế được giữ trong trình duyệt này. Khôi phục một kết cấu sẽ thay thế kết cấu hiện tại, và Ctrl+Z sẽ đưa nó trở lại.",
+    "empty": "Chưa có gì ở đây. Khi bạn xóa một kết cấu hoặc mở kết cấu khác đè lên, nó sẽ được giữ ở đây.",
+    "restore": "Khôi phục",
+    "remove": "Gỡ bỏ",
+    "counts": "Nút: {nodes} · Phần tử: {elements}",
+    "linkNotice": "Đã mở một kết cấu được chia sẻ. Kết cấu trước đó của bạn được giữ trong Kết cấu gần đây.",
+    "show": "Hiện",
+    "reasons": {
+      "clear": "Đã xóa",
+      "link": "Bị thay bởi liên kết chia sẻ",
+      "file": "Bị thay bởi tệp đã mở",
+      "example": "Bị thay bởi một ví dụ",
+      "firstBeam": "Bị thay bởi bài “Dầm đầu tiên”",
+      "restore": "Bị thay bởi kết cấu được khôi phục"
+    }
+  }
+}

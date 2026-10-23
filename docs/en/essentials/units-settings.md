@@ -1,3 +1,7 @@
+---
+description: "Choose the language, SI or US customary units, number format, y-up or z-down axes, viewer and control settings, and see what EduBeam stores in your browser."
+---
+
 # Units & settings
 
 There are three ways into the settings:
@@ -12,7 +16,7 @@ Settings are stored in your browser and survive reloads. **Reset settings** rest
 
 ![Settings → Language & Locale](/screenshots/settings-language.webp)
 
-**Language.** 12 interface languages. You can also open the app with `?lang=<code>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`.
+**Language.** 18 interface languages. You can also open the app with `?lang=<code>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`, `ja`, `ko`.
 
 **Number format.** How result values are written: *Automatic*, *Scientific* (default) or *Engineering*. See [Number format](/essentials/results#number-format).
 

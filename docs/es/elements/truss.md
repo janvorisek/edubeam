@@ -1,3 +1,7 @@
+---
+description: "Cómo modela EduBeam las barras de celosía como vigas con ambas rótulas de extremo: grados de libertad, rigidez local y global y matriz de transformación."
+---
+
 # Barra de celosía
 
 Una barra de celosía solo transmite esfuerzo axil. En <Edubeam /> no existe un tipo de elemento de celosía independiente: una barra de celosía es un [elemento viga](/es/elements/beam) con **las dos rótulas de extremo** marcadas, lo que condensa los términos de flexión y deja la rigidez axil que sigue.
@@ -18,9 +22,9 @@ La matriz de rigidez local de una barra de celosía es
 $$
 \mathbf{K_l} =
 \begin{pmatrix}
-   \frac{EA}{L} & 0 & -\frac{EA}{L} & 0 \\[2ex]
+   \dfrac{EA}{L} & 0 & -\dfrac{EA}{L} & 0 \\[2ex]
    0 & 0 & 0 & 0 \\[1ex]
-   -\frac{EA}{L} & 0 & \frac{EA}{L} & 0 \\[2ex]
+   -\dfrac{EA}{L} & 0 & \dfrac{EA}{L} & 0 \\[2ex]
    0 & 0 & 0 & 0
 \end{pmatrix}
 $$

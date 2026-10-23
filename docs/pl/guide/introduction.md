@@ -1,5 +1,9 @@
+---
+description: "Czym jest EduBeam: darmowy program MES w przeglądarce do płaskich belek, ram i kratownic. Co potrafi, czego nie, dla kogo jest i jak zorganizowana jest dokumentacja."
+---
+
 <script setup>
-import { VPTeamMembers } from 'vitepress/theme'
+import { VPTeamMembers } from 'vitepress/theme-without-fonts'
 
 const members = [
   {
@@ -74,7 +78,7 @@ Jeśli brakuje Ci jakiejś funkcji, [zgłoś to na GitHubie](https://github.com/
 ## Dla kogo jest ta aplikacja? {#who-is-it-for}
 
 - **Studenci** uczący się mechaniki budowli, którzy chcą od razu sprawdzić obliczenia ręczne. Zobacz [Sprawdzanie wyników ręcznie](/pl/guide/verification).
-- **Wykładowcy** pokazujący na żywo, na projektorze, jak podpory, przeguby i obciążenia zmieniają siły przekrojowe, w dowolnym z 12 języków. Zobacz [Nauczanie z EduBeam](/pl/guide/teaching).
+- **Wykładowcy** pokazujący na żywo, na projektorze, jak podpory, przeguby i obciążenia zmieniają siły przekrojowe, w dowolnym z 18 języków. Zobacz [Nauczanie z EduBeam](/pl/guide/teaching).
 - **Inżynierowie**, którzy chcą szybko sprawdzić rząd wielkości, zanim otworzą cięższy program biurkowy.
 
 ## Jak zorganizowana jest dokumentacja {#how-this-guide-is-organised}
@@ -91,7 +95,7 @@ Ikony **?** w aplikacji otwierają odpowiednią stronę tej dokumentacji w Twoim
 
 ## Języki {#languages}
 
-Interfejs jest dostępny w językach: English, Čeština, Deutsch, Español, Français, Polski, Português, Русский, Türkçe, Українська, ไทย i 汉语. EduBeam dobiera język na podstawie ustawień przeglądarki. Możesz go zmienić w **Ustawienia → Język i ustawienia regionalne** lub otworzyć aplikację z parametrem `?lang=`, np. [run.edubeam.app/?lang=pl](https://run.edubeam.app/?lang=pl){target="_blank"}.
+Interfejs jest dostępny w językach: English, Bahasa Indonesia, Čeština, Deutsch, Español, Français, Italiano, Polski, Português, Tiếng Việt, Русский, Türkçe, Українська, हिन्दी, 日本語, 한국어, ไทย i 汉语. EduBeam dobiera język na podstawie ustawień przeglądarki. Możesz go zmienić w **Ustawienia → Język i ustawienia regionalne** lub otworzyć aplikację z parametrem `?lang=`, np. [run.edubeam.app/?lang=pl](https://run.edubeam.app/?lang=pl){target="_blank"}.
 
 ## Autorzy i podziękowania {#authors-credits}
 

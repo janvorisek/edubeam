@@ -1,3 +1,7 @@
+---
+description: "Preguntas frecuentes sobre EduBeam: coste y cuentas, navegadores y dispositivos, recuperar un modelo perdido, uso sin conexión, datos y consejos de modelado."
+---
+
 # Preguntas frecuentes
 
 ## General {#general}

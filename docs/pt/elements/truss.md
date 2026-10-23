@@ -1,3 +1,7 @@
+---
+description: "Como o EduBeam modela barras de treliça como vigas com as duas extremidades rotuladas: graus de liberdade, matrizes de rigidez local e global e matriz de transformação."
+---
+
 # Elemento de treliça
 
 Uma barra de treliça transmite apenas esforço normal. No <Edubeam /> não existe um tipo de elemento de treliça separado: uma barra de treliça é um [elemento de viga](/pt/elements/beam) com **as duas rótulas de extremidade** marcadas, o que condensa os termos de flexão e deixa a rigidez axial abaixo.
@@ -18,9 +22,9 @@ A matriz de rigidez local de uma barra de treliça é
 $$
 \mathbf{K_l} =
 \begin{pmatrix}
-   \frac{EA}{L} & 0 & -\frac{EA}{L} & 0 \\[2ex]
+   \dfrac{EA}{L} & 0 & -\dfrac{EA}{L} & 0 \\[2ex]
    0 & 0 & 0 & 0 \\[1ex]
-   -\frac{EA}{L} & 0 & \frac{EA}{L} & 0 \\[2ex]
+   -\dfrac{EA}{L} & 0 & \dfrac{EA}{L} & 0 \\[2ex]
    0 & 0 & 0 & 0
 \end{pmatrix}
 $$

@@ -1,3 +1,7 @@
+---
+description: "Gotowe, rozwiązane modele belek, ram i kratownic, które otwierają się w EduBeam jednym kliknięciem, a także proponowane ćwiczenia i rozwiązane samouczki."
+---
+
 # Przykłady
 
 Każda karta poniżej to żywy, rozwiązany model. Kliknij jedną z nich, aby otworzyć ją w <Edubeam /> z pełną konfiguracją gotową do edycji — a potem przeciągnij węzeł, zmień obciążenie lub zaznacz przegub i obserwuj, jak wykresy podążają za zmianami.

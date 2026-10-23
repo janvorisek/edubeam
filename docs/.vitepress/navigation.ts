@@ -616,7 +616,7 @@ export const th: NavigationLabels = {
     truss: 'โครงถักในระนาบ',
     userInterface: 'ส่วนติดต่อผู้ใช้',
     nodesSupports: 'โหนดและจุดรองรับ',
-    elements: 'องค์ประกอบ วัสดุ และหน้าตัด',
+    elements: 'เอลิเมนต์ วัสดุ และหน้าตัด',
     loads: 'แรงกระทำ',
     unitsSettings: 'หน่วยและการตั้งค่า',
     resultsDiagrams: 'ผลลัพธ์และแผนภาพ',
@@ -627,8 +627,8 @@ export const th: NavigationLabels = {
     troubleshooting: 'การแก้ปัญหา',
     faq: 'คำถามที่พบบ่อย',
     conventions: 'ระบบพิกัดและข้อตกลงเรื่องเครื่องหมาย',
-    beam: 'องค์ประกอบคาน',
-    trussElement: 'องค์ประกอบโครงถัก',
+    beam: 'เอลิเมนต์คาน',
+    trussElement: 'เอลิเมนต์โครงถัก',
   },
 };
 

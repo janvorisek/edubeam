@@ -63,7 +63,7 @@ description: "ステップごとのチュートリアル：等分布荷重を受
 
 ## 5. 結果 {#_5-results}
 
-表示オプションでは、初期状態で変形図、曲げモーメント、反力がオンになっています。残りを見るには **N (x)** と **V<sub>z</sub> (x)** にチェックを入れます。
+表示オプションでは、初期状態で変位図、曲げモーメント、反力がオンになっています。残りを見るには **N (x)** と **V<sub>z</sub> (x)** にチェックを入れます。
 
 <div class="shots">
 
@@ -73,7 +73,7 @@ description: "ステップごとのチュートリアル：等分布荷重を受
 
 ![せん断力](/screenshots/ja/results-shear.webp)
 
-![変形図](/screenshots/ja/results-deformed.webp)
+![変位図](/screenshots/ja/results-deformed.webp)
 
 </div>
 

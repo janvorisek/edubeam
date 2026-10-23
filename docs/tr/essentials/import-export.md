@@ -85,7 +85,7 @@ Görüntüleyici modu incelemek içindir, ancak kilitli değildir: ziyaretçiler
 | --- | --- |
 | `model=<data>` | Kodlanmış modeli yükler ve ekrana sığdırır. |
 | `viewer=1` | Görüntüleyici modu (yukarıya bakın). |
-| `lang=<kod>` | Arayüz dilini değiştirir: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`. |
+| `lang=<kod>` | Arayüz dilini değiştirir: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`. |
 | `panel=examples` | Örnek galerisini hemen açar. |
 
 EduBeam parametreleri okuduktan sonra onları adres çubuğundan kaldırır.

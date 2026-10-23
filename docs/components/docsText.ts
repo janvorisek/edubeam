@@ -8,7 +8,8 @@ import { i18n } from '../../src/plugins/i18n';
  * Whatever the app already says (load types, quantities, example titles) comes from the app's own
  * locale files, so the two never disagree. Only sentences the app has no use for are kept here.
  */
-type DocsLanguage = 'en' | 'cs' | 'de' | 'es' | 'fr' | 'hi' | 'pl' | 'pt' | 'ru' | 'uk' | 'zh' | 'tr' | 'th' | 'vi';
+type DocsLanguage =
+  'en' | 'cs' | 'de' | 'es' | 'fr' | 'hi' | 'pl' | 'pt' | 'ru' | 'uk' | 'zh' | 'tr' | 'th' | 'vi' | 'it';
 
 /** The app's locale for each docs language; the app says cn for zh. */
 const APP_LOCALE: Record<DocsLanguage, string> = {
@@ -26,6 +27,7 @@ const APP_LOCALE: Record<DocsLanguage, string> = {
   tr: 'tr',
   th: 'th',
   vi: 'vi',
+  it: 'it',
 };
 
 export interface DocsStrings {
@@ -277,6 +279,23 @@ const strings: Record<DocsLanguage, DocsStrings> = {
     promoAccent: 'lên 3D.',
     promoSubtitle: 'bản sàn, vỏ mỏng và kiểm tra kết cấu thép ngay trên trình duyệt',
     promoCta: 'Dùng thử miễn phí',
+  },
+  it: {
+    loadsTitle: 'Anteprima dei tipi di carico',
+    loadsLede:
+      "Come appaiono in EduBeam i tipi di carico più comuni. Ogni scheda è un modello risolto e interattivo e si apre nell'app esattamente come è impostato.",
+    openInApp: 'Apri in EduBeam',
+    simplySupportedBeam: 'Trave semplicemente appoggiata',
+    udlBlurb: 'Campata cerniera–carrello con 12 kN/m: i classici diagrammi di taglio e momento.',
+    trapezoidalBlurb: 'Un carico che cresce da 4 a 14 kN/m sulla campata destra.',
+    concentratedBlurb: 'Un unico carico di 18 kN verso il basso in mezzeria, senza nodi aggiuntivi.',
+    nodalBlurb: "Un carico di 20 kN sull'appoggio intermedio, per controllare reazioni e frecce.",
+    temperatureBlurb:
+      "Una differenza di temperatura lungo l'altezza della sezione (sopra più caldo che sotto) e la curvatura che provoca.",
+    promoTitle: 'Porta i tuoi telai',
+    promoAccent: 'in 3D.',
+    promoSubtitle: "solai, gusci e verifiche dell'acciaio nel browser",
+    promoCta: 'Provalo gratis',
   },
 };
 

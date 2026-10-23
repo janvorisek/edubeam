@@ -78,7 +78,7 @@ Chybí vám nějaká funkce? [Založte issue](https://github.com/janvorisek/edub
 ## Pro koho je EduBeam určen {#who-is-it-for}
 
 - **Studenti** stavební mechaniky, kteří chtějí okamžitou zpětnou vazbu ke svým ručním výpočtům. Viz [Ověření výsledků ručně](/cs/guide/verification).
-- **Vyučující**, kteří na projektoru živě ukazují, jak podpory, klouby a zatížení mění vnitřní síly – v kterémkoli z 14 jazyků. Viz [Výuka s EduBeamem](/cs/guide/teaching).
+- **Vyučující**, kteří na projektoru živě ukazují, jak podpory, klouby a zatížení mění vnitřní síly – v kterémkoli z 15 jazyků. Viz [Výuka s EduBeamem](/cs/guide/teaching).
 - **Inženýři**, kteří potřebují něco rychle ověřit, než otevřou robustní desktopový program.
 
 ## Uspořádání dokumentace {#how-this-guide-is-organised}
@@ -95,7 +95,7 @@ Ikony **?** v aplikaci otevírají příslušnou stránku této dokumentace ve v
 
 ## Jazyky {#languages}
 
-Rozhraní je k dispozici v těchto jazycích: English, Čeština, Deutsch, Español, Français, Polski, Português, Tiếng Việt, Русский, Türkçe, Українська, हिन्दी, ไทย a 汉语. EduBeam se řídí jazykem prohlížeče. Změnit ho můžete v **Nastavení → Jazyk a prostředí**, nebo aplikaci otevřete s parametrem `?lang=`, např. [run.edubeam.app/?lang=cs](https://run.edubeam.app/?lang=cs){target="_blank"}.
+Rozhraní je k dispozici v těchto jazycích: English, Čeština, Deutsch, Español, Français, Italiano, Polski, Português, Tiếng Việt, Русский, Türkçe, Українська, हिन्दी, ไทย a 汉语. EduBeam se řídí jazykem prohlížeče. Změnit ho můžete v **Nastavení → Jazyk a prostředí**, nebo aplikaci otevřete s parametrem `?lang=`, např. [run.edubeam.app/?lang=cs](https://run.edubeam.app/?lang=cs){target="_blank"}.
 
 ## Autoři a poděkování {#authors-credits}
 

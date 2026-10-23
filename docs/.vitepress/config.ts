@@ -3,7 +3,7 @@ import { katex } from '@mdit/plugin-katex';
 import implicitFigures from 'markdown-it-implicit-figures';
 import path from 'path';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
-import { cs, de, english, es, fr, hi, navFor, pl, pt, ru, sidebarFor, th, tr, uk, vi, zh } from './navigation';
+import { cs, de, english, es, fr, hi, it, navFor, pl, pt, ru, sidebarFor, th, tr, uk, vi, zh } from './navigation';
 
 const customElements = [
   'math',
@@ -354,6 +354,19 @@ export default defineConfig({
         sidebar: sidebarFor('/vi', vi),
       },
     },
+    it: {
+      label: 'Italiano',
+      lang: 'it',
+      description:
+        "Analisi strutturale 2D gratuita online – travi, telai e travature reticolari risolti all'istante nel browser.",
+      themeConfig: {
+        nav: navFor('/it', 'it', it),
+        outline: { label: 'In questa pagina' },
+        docFooter: { prev: 'Pagina precedente', next: 'Pagina successiva' },
+        lastUpdated: { text: 'Ultimo aggiornamento' },
+        sidebar: sidebarFor('/it', it),
+      },
+    },
   },
   themeConfig: {
     outline: 'deep',
@@ -527,6 +540,23 @@ export default defineConfig({
                   selectText: 'Chọn',
                   navigateText: 'Di chuyển',
                   closeText: 'Đóng',
+                },
+              },
+            },
+          },
+          it: {
+            translations: {
+              button: {
+                buttonText: 'Cerca',
+                buttonAriaLabel: 'Cerca nella documentazione',
+              },
+              modal: {
+                noResultsText: 'Nessun risultato per',
+                resetButtonTitle: 'Cancella la ricerca',
+                footer: {
+                  selectText: 'Seleziona',
+                  navigateText: 'Naviga',
+                  closeText: 'Chiudi',
                 },
               },
             },

@@ -16,7 +16,7 @@ La configuración se guarda en el navegador y sobrevive a las recargas. **Restab
 
 ![Configuración → Idioma y configuración regional](/screenshots/es/settings-language.webp)
 
-**Idioma.** 14 idiomas de interfaz. También puedes abrir la aplicación con `?lang=<código>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`.
+**Idioma.** 15 idiomas de interfaz. También puedes abrir la aplicación con `?lang=<código>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`.
 
 **Formato numérico.** Cómo se escriben los resultados: *Automático*, *Científico* (predeterminado) o *Ingeniería*. Consulta [Formato numérico](/es/essentials/results#number-format).
 

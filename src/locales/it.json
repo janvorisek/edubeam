@@ -1,0 +1,724 @@
+{
+  "tabView": {
+    "viewer": "Vista",
+    "settings": "Impostazioni",
+    "results": "Risultati"
+  },
+  "common": {
+    "label": "Etichetta",
+    "node": "Nodo",
+    "element": "Elemento",
+    "crossSection": "Sezione",
+    "material": "Materiale",
+    "settings": "Impostazioni",
+    "actions": "Azioni",
+    "coords": "Coordinate",
+    "type": "Tipo",
+    "nodes": "Nodi",
+    "endHinges": "Cerniere di estremità",
+    "massMatrix": "Matrice di massa",
+    "target": "Applicato a",
+    "components": "Componenti",
+    "loadCase": "Caso di carico",
+    "loads": "Carichi",
+    "clearMesh": "Cancella struttura",
+    "shareModel": "Condividi modello",
+    "documentation": "Documentazione",
+    "addUsingDialog": "Aggiungi da finestra",
+    "addUsingMouse": "Aggiungi col mouse",
+    "edit": "Modifica",
+    "copy": "Copia",
+    "delete": "Elimina",
+    "stiffnessMatrix": "Matrice di rigidezza",
+    "normalForce": "Sforzo normale",
+    "shearForce": "Taglio",
+    "bendingMoment": "Momento flettente",
+    "deformedShape": "Deformata",
+    "reactions": "Reazioni",
+    "elements": "Elementi",
+    "confirm": "Conferma",
+    "saveProject": "Salva progetto",
+    "openProject": "Apri progetto",
+    "lcs": "Sistema di riferimento locale",
+    "paste": "Incolla",
+    "addNew": "Aggiungi",
+    "whatisnew": "Novità",
+    "reverse_orientation": "Inverti quota",
+    "undo": "Annulla",
+    "redo": "Ripeti",
+    "ok": "OK"
+  },
+  "nodes": {
+    "addNode": "Aggiungi nodo",
+    "editNode": "Modifica nodo",
+    "defineSupports": "Vincoli del nodo",
+    "lcsAngle": "Angolo LCS nodale"
+  },
+  "supports": {
+    "free": "Libero",
+    "pin": "Cerniera",
+    "roller": "Carrello",
+    "verticalRoller": "Carrello verticale",
+    "slider": "Pattino",
+    "verticalSlider": "Pattino verticale",
+    "rotation": "Solo rotazione bloccata",
+    "fixed": "Incastro",
+    "custom": "Personalizzato"
+  },
+  "elements": {
+    "addElement": "Aggiungi elemento",
+    "editElement": "Modifica elemento",
+    "swapNodeOrder": "Scambia nodi",
+    "hingeStart": "Cerniera iniziale",
+    "hingeEnd": "Cerniera finale",
+    "hinge": "Cerniera",
+    "from": "Da",
+    "to": "A"
+  },
+  "loads": {
+    "addNodalLoad": "Aggiungi carico nodale",
+    "addElementLoad": "Aggiungi carico su elemento",
+    "addLoad": "Aggiungi carico",
+    "nodalLoad": "Carico nodale",
+    "elementLoad": "Carico su elemento",
+    "prescribedDisplacement": "Spostamento imposto",
+    "addPrescribedDisplacement": "Imponi spostamento",
+    "UDL": "Carico uniforme",
+    "forceMoment": "Forza/Momento",
+    "editLoad": "Modifica carico",
+    "loadPositionOnBeam": "Posizione del carico dal nodo iniziale",
+    "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Variazione di temperatura delle fibre inferiori meno quella delle superiori",
+    "temperatureBending": "ΔT<sub>c</sub> ... Variazione di temperatura assiale",
+    "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
+    "temperatureDeltaTs": "ΔT<sub>c</sub>",
+    "temperatureDeltaTsNoHTML": "ΔTc",
+    "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
+  },
+  "tabs": {
+    "nodes": "Nodi",
+    "elements": "Elementi",
+    "loads": "Carichi",
+    "materials": "Materiali",
+    "crossSections": "Sezioni",
+    "results": "Risultati"
+  },
+  "crossSection": {
+    "area": "Area",
+    "h": "Altezza",
+    "iy": "Iy",
+    "k": "Fattore di taglio",
+    "iz": "Iz",
+    "b": "Larghezza",
+    "centroid": "Baricentro",
+    "alpha": "Angolo degli assi principali",
+    "radiusOfGyration": "Raggio d'inerzia",
+    "polygonal": "Forma poligonale",
+    "derivedFromShape": "Ricavato dalla forma poligonale – modifica la forma per cambiarlo"
+  },
+  "material": {
+    "e": "E",
+    "g": "G",
+    "density": "Densità",
+    "alphaT": "α_T"
+  },
+  "settings": {
+    "results_scale": "Scala dei risultati",
+    "grid_snap_step": "Passo dello snap",
+    "snap_to_grid": "Snap alla griglia",
+    "show_crosshair": "Mostra mirino",
+    "model_checks": "Controlli del modello",
+    "show_mechanisms": "Mostra come può muoversi una struttura labile",
+    "animate_mechanisms": "Anima il movimento",
+    "number_format": "Formato dei numeri",
+    "number_format_description": "Come vengono scritti i risultati; il separatore decimale segue la lingua.",
+    "number_format_auto": "Automatico",
+    "number_format_scientific": "Scientifico (1,5 · 10⁴)",
+    "number_format_engineering": "Ingegneristico (15 · 10³)",
+    "language": "Lingua",
+    "language_and_locale": "Lingua e impostazioni locali",
+    "show_normal_force": "Mostra sforzo normale",
+    "show_shear_force": "Mostra taglio",
+    "show_bending_moment": "Mostra momento flettente",
+    "show_deformed_shape": "Mostra deformata",
+    "show_loads": "Mostra carichi",
+    "units": {
+      "units": "Unità",
+      "length": "Lunghezza",
+      "mass": "Massa",
+      "force": "Forza",
+      "moment": "Momento flettente",
+      "pressure": "Pressione",
+      "area": "Area",
+      "areaM2": "Momento d'inerzia",
+      "system": "Sistema di unità",
+      "systemSI": "SI (metrico)",
+      "systemUS": "USA (imperiale)",
+      "systemCustom": "Personalizzato",
+      "temperature": "Temperatura",
+      "sectionLength": "Dimensioni della sezione",
+      "displacement": "Spostamento"
+    },
+    "grid": "Griglia",
+    "show_grid": "Mostra griglia",
+    "mouse": {
+      "mouse": "Mouse",
+      "pan_button": "Sposta la vista con",
+      "wheel": "Rotellina del mouse",
+      "right_button": "Tasto destro",
+      "all": "Rotellina o tasto destro"
+    },
+    "colors": {
+      "colors": "Colori"
+    },
+    "results": {
+      "results": "Risultati"
+    },
+    "viewer_settings": "Impostazioni della vista",
+    "controls_and_shortcuts": "Comandi e scorciatoie",
+    "language_and_locale_subtitle": "Lingua, localizzazione e unità di misura",
+    "viewer_settings_subtitle": "Scala, colori, griglia e altro",
+    "controls_and_shortcuts_subtitle": "Impostazioni di tastiera e mouse",
+    "viewer_preview": "Anteprima della vista",
+    "language_description": "Scegli la lingua dell'interfaccia.",
+    "units_description": "Scegli le unità di misura.",
+    "axisConvention": "Sistema di riferimento",
+    "axisConvention_description": "Verso dell'asse verticale nei dati di input e nei risultati. Il modello e i file salvati non cambiano.",
+    "axisConvention_zDown": "x a destra, z in basso",
+    "axisConvention_yUp": "x a destra, y in alto",
+    "reset_settings": "Ripristina impostazioni",
+    "sizes": {
+      "sizes": "Dimensioni",
+      "supportSize": "Dimensione dei vincoli"
+    },
+    "font_size": "Dimensione del carattere",
+    "result_label_orientation": "Orientamento delle etichette dei risultati",
+    "result_label_orientation_axis": "Perpendicolari al diagramma",
+    "result_label_orientation_horizontal": "Sempre orizzontali",
+    "result_labels": "Etichette dei risultati"
+  },
+  "sideSettings": {
+    "showDeformedShape": "Deformata",
+    "supports": "Vincoli",
+    "loads": "Carichi",
+    "nodeLabels": "Etichette dei nodi",
+    "elementLabels": "Etichette degli elementi",
+    "more_settings": "Altre impostazioni",
+    "showReactions": "Reazioni"
+  },
+  "viewer": {
+    "toggleGrid": "Mostra/nascondi griglia (G)",
+    "toggleSnap": "Attiva/disattiva snap alla griglia (S)",
+    "toggleCrosshair": "Mostra/nascondi mirino",
+    "boxSelect": "Selezione con riquadro",
+    "centerContent": "Centra il contenuto",
+    "fitContent": "Adatta allo schermo",
+    "holdCtrl": "Tieni premuto Ctrl per aggiungere col mouse"
+  },
+  "dofs": {
+    "bcs": "GdL vincolati"
+  },
+  "results": {
+    "results": "Risultati",
+    "nodal_results": "Risultati nodali",
+    "element_results": "Risultati degli elementi",
+    "end_forces": "Forze di estremità (nel sistema di riferimento locale)",
+    "exportCsv": "Esporta CSV",
+    "exportHint": "Scarica entrambe le tabelle dei risultati nelle unità visualizzate, pronte per un foglio di calcolo.",
+    "copied": "Risultati copiati negli appunti",
+    "copyFailed": "Impossibile copiare i risultati negli appunti."
+  },
+  "materials": {
+    "addMaterial": "Aggiungi materiale",
+    "material_library": "Libreria materiali",
+    "section_library": "Libreria sezioni"
+  },
+  "crossSections": {
+    "addCrossSection": "Aggiungi sezione",
+    "addPolygonal": "Sezione poligonale"
+  },
+  "dialogs": {
+    "addNode": {
+      "addNewNode": "Aggiungi nuovo nodo",
+      "coordinate_x": "Coordinata X",
+      "coordinate_z": "Coordinata {v}",
+      "addNode": "Aggiungi nodo"
+    },
+    "common": {
+      "cancel": "Annulla",
+      "orChooseFromLibrary": "Oppure scegli dalla libreria"
+    },
+    "addElement": {
+      "fromNodeId": "Nodo iniziale",
+      "toNodeId": "Nodo finale",
+      "addElement": "Aggiungi elemento",
+      "addNewElement": "Aggiungi nuovo elemento",
+      "material": "Materiale",
+      "crossSection": "Sezione"
+    },
+    "addNodalLoad": {
+      "addNewNodalLoad": "Aggiungi nuovo carico nodale",
+      "addNodalLoad": "Aggiungi carico nodale"
+    },
+    "addElementLoad": {
+      "addNewElementLoad": "Aggiungi nuovo carico su elemento",
+      "addElementLoad": "Aggiungi carico su elemento"
+    },
+    "addMaterial": {
+      "addNewMaterial": "Aggiungi nuovo materiale",
+      "addMaterial": "Aggiungi materiale",
+      "E": "E - Modulo di Young",
+      "G": "G - Modulo di taglio",
+      "density": "ρ - densità",
+      "alphaT": "α - Coefficiente di dilatazione termica"
+    },
+    "addCrossSection": {
+      "addNewCrossSection": "Aggiungi nuova sezione",
+      "addCrossSection": "Aggiungi sezione",
+      "orDefinePolygon": "Oppure definisci una forma poligonale"
+    },
+    "editNodalLoad": {
+      "editNodalLoad": "Modifica carico nodale"
+    },
+    "editElementLoad": {
+      "editElementLoad": "Modifica carico su elemento"
+    },
+    "update": {
+      "title": "Aggiornamento disponibile",
+      "update": "Aggiorna",
+      "text1": "Stiamo rilasciando un aggiornamento che richiede di reimpostare l'app. Tutti i progressi andranno persi.",
+      "text2": "Se vuoi conservare il lavoro attuale, puoi annullare l'aggiornamento."
+    },
+    "editNode": {
+      "editNode": "Modifica nodo"
+    },
+    "changelog": {
+      "title": "Novità",
+      "description": "Nuove funzionalità, miglioramenti e anteprime di ciò a cui stiamo lavorando.",
+      "contributors": "Hanno contribuito a questa versione: {names}",
+      "comingSoon": "Prossimamente"
+    },
+    "polygonSection": {
+      "title": "Nuova sezione poligonale",
+      "editTitle": "Modifica sezione poligonale",
+      "preset": "Forma predefinita",
+      "apply": "Applica",
+      "snapStep": "Passo dello snap",
+      "centerAtCentroid": "Centra sul baricentro",
+      "hint": "Trascina i vertici per spostarli, fai clic sul punto medio di un lato per inserire un vertice, fai doppio clic su un vertice per rimuoverlo.",
+      "outline": "Contorno",
+      "hole": "Foro",
+      "addHole": "Aggiungi foro",
+      "addVertex": "Aggiungi vertice",
+      "removeContour": "Rimuovi foro",
+      "properties": "Proprietà della sezione",
+      "invalidShape": "La forma deve essere un poligono semplice con area positiva: i lati non devono incrociarsi e i fori devono restare dentro il contorno.",
+      "labelInUse": "Etichetta già in uso",
+      "save": "Salva",
+      "editShape": "Modifica forma poligonale",
+      "presets": {
+        "rectangle": "Rettangolo",
+        "iSection": "Sezione a I",
+        "tSection": "Sezione a T",
+        "lSection": "Sezione a L",
+        "channel": "Sezione a U",
+        "box": "Rettangolare cava",
+        "circle": "Cerchio",
+        "pipe": "Circolare cava"
+      },
+      "params": {
+        "b": "Larghezza b",
+        "h": "Altezza h",
+        "tw": "Anima tw",
+        "tf": "Ala tf",
+        "t": "Spessore t",
+        "d": "Diametro d",
+        "n": "Segmenti"
+      },
+      "vertices": "Vertici",
+      "legendOutline": "Contorno",
+      "legendHole": "Foro",
+      "legendPrincipal": "Assi principali ed ellisse d'inerzia",
+      "legendCentroid": "Baricentro",
+      "shape": "Forma",
+      "noShape": "Nessuna forma poligonale",
+      "centroidal": "baricentrico",
+      "centroidalNote": "Tutti i momenti d'inerzia sono calcolati rispetto ad assi passanti per il baricentro; I₁, I₂ sono i valori principali e α è l'angolo dall'asse y all'asse 1.",
+      "outOfPlaneNote": "Questa sezione non è simmetrica rispetto al piano del telaio. Un'analisi 2D è esatta solo se l'asta è trattenuta contro l'inflessione laterale (fuori dallo schermo) e la torsione lungo tutta la sua lunghezza, per esempio da un solaio o da controventi ravvicinati; i soli vincoli nei nodi non bastano. Un'asta libera si torce anche perché i carichi agiscono fuori dal suo centro di taglio, e questa torsione non è inclusa negli spostamenti.",
+      "outOfPlaneRestrained": "Trattenuta lateralmente e contro la torsione lungo la lunghezza: {inertia}",
+      "outOfPlaneFree": "Libera di inflettersi lateralmente (torsione comunque esclusa): {inertia}"
+    }
+  },
+  "tooltip": {
+    "materials": {},
+    "material": {
+      "alphaT": "Il coefficiente di dilatazione termica descrive come variano le dimensioni di un corpo al variare della temperatura.",
+      "e": "Il modulo di Young misura la rigidezza a trazione o compressione quando la forza è applicata lungo l'asse.",
+      "g": "Il modulo di taglio misura la resistenza alla deformazione sotto tensioni tangenziali, cioè la rigidezza del materiale rispetto a forze applicate parallelamente alla sua superficie.",
+      "density": "La densità indica quanta massa è contenuta in un dato volume di una sostanza. "
+    }
+  },
+  "footer": {
+    "reportIssue": "Segnala un problema",
+    "requestFeature": "Richiedi una funzione",
+    "released": "rilasciata il"
+  },
+  "sharing": {
+    "shareViaURL": "Condividi il modello tramite URL",
+    "instructions": "Fai clic in un punto qualsiasi del campo per copiare il link, poi invialo ai tuoi collaboratori.",
+    "copyCue": "Copia link",
+    "openLink": "Apri link",
+    "nativeShare": "Condividi tramite il sistema",
+    "linkCopied": "Link copiato negli appunti",
+    "copyFailed": "Impossibile copiare automaticamente. Usa le scorciatoie da tastiera.",
+    "shortLink": "Link più corto",
+    "shortLinkHint": "Lungo circa la metà. Chi usa una versione precedente di edubeam deve aggiornare l'app prima di poterlo aprire."
+  },
+  "tour": {
+    "menu": {
+      "title": "Menu",
+      "description": "Apri, salva e condividi i tuoi progetti, esporta un'immagine, carica un esempio, oppure riavvia questo tour o l'esercizio della prima trave."
+    },
+    "undoRedo": {
+      "title": "Annulla e ripeti",
+      "description": "Torna indietro e avanti tra le modifiche. Ctrl+Z e Ctrl+Shift+Z fanno lo stesso."
+    },
+    "viewerControls": {
+      "title": "Pulsanti della vista",
+      "description": "Con i comandi della vista puoi centrare la struttura o adattarla allo schermo e scegliere cosa visualizzare."
+    },
+    "viewerSettings": {
+      "title": "Personalizza la visualizzazione",
+      "description": "Scegli cosa mostrare: sforzo normale, taglio, momento flettente, deformata o tutto insieme."
+    },
+    "gridUnits": {
+      "title": "Griglia, snap e unità",
+      "description": "G mostra la griglia e S vi aggancia i nuovi nodi. Fai clic sulle unità per cambiarle, insieme alla lingua o al sistema di riferimento."
+    },
+    "bottomBar": {
+      "title": "Aggiungi, rimuovi e modifica gli oggetti",
+      "description": "Il centro di comando da cui modifichi ogni aspetto della struttura. Nodi, elementi, carichi, materiali e sezioni: è qui che fai modifiche rapide e complete."
+    },
+    "help": {
+      "title": "Aiuto",
+      "description": "Il ? spiega la scheda aperta. Il ? accanto all'intestazione di una colonna spiega quella colonna."
+    },
+    "previousButton": "Indietro",
+    "nextButton": "Avanti",
+    "finishButton": "Fine",
+    "close": "Chiudi il tour"
+  },
+  "firstBeam": {
+    "title": "La tua prima trave",
+    "step": "Passo {n} di {total}",
+    "close": "Chiudi la guida",
+    "finish": "Fatto",
+    "next": "Avanti",
+    "steps": {
+      "tool": {
+        "title": "Scegli lo strumento di disegno",
+        "body": "Nella scheda {elementsTab} qui sotto, premi il pulsante {addElement} con l'icona del cursore."
+      },
+      "draw": {
+        "title": "Disegna la trave",
+        "body": "Fai clic dove inizia la trave, poi dove finisce. Le estremità si agganciano alla griglia."
+      },
+      "supports": {
+        "title": "Vincolala",
+        "body": "Fai clic sull'estremità sinistra, apri {defineSupports} e spunta Dx e D{v} per una cerniera. Poi fai clic sull'estremità destra e spunta D{v} per un carrello."
+      },
+      "load": {
+        "title": "Caricala",
+        "body": "Fai clic sulla trave, scegli {addLoad}, inserisci un valore in f{v} e conferma."
+      },
+      "display": {
+        "title": "Scegli cosa mostrare",
+        "body": "L'ingranaggio in alto a destra apre le opzioni di visualizzazione: sollecitazioni, deformata, reazioni e altro. Aprilo ora."
+      },
+      "fit": {
+        "title": "Adattala allo schermo",
+        "body": "I pulsanti in alto a destra adattano il modello allo schermo o lo centrano. Premi ora Adatta allo schermo, e di nuovo ogni volta che il disegno esce dalla vista."
+      },
+      "results": {
+        "title": "Leggi i risultati",
+        "body": "Il momento flettente e la deformata sono disegnati sulla trave e si aggiornano mentre modifichi. Ogni nodo, elemento e carico è elencato anche nelle tabelle qui sotto, dove puoi inserire valori esatti. {undo} riporta il modello che avevi prima."
+      }
+    }
+  },
+  "welcome": {
+    "title": "Benvenuti in <span class=\"edubeam\">edubeam</span>! 🚀",
+    "description": "Modella travi, telai e travature reticolari e guarda le sollecitazioni mentre disegni.",
+    "start": "Come vuoi iniziare?",
+    "showAround": "Fammi fare un giro",
+    "showAroundHint": "Una rapida panoramica della vista, delle opzioni di visualizzazione e della barra inferiore.",
+    "drawFirstBeam": "Disegna la tua prima trave",
+    "drawFirstBeamHint": "Un breve esercizio guidato: disegna una trave, vincolala e caricala.",
+    "openExample": "Apri un esempio",
+    "openExampleHint": "Parti da un modello già pronto e modificalo.",
+    "skip": "Salta per ora"
+  },
+  "confirmation": {
+    "clearMesh": {
+      "message": "Vuoi davvero cancellare la struttura? Ctrl+Z la ripristina, e resta comunque in Strutture recenti.",
+      "title": "Cancellare la struttura?",
+      "materials": "Elimina materiali",
+      "crossSections": "Elimina sezioni"
+    },
+    "resetSettings": {
+      "title": "Ripristinare le impostazioni?",
+      "message": "Vuoi davvero ripristinare tutte le impostazioni predefinite? L'operazione non può essere annullata."
+    },
+    "splitElementAndPlaceNode": {
+      "title": "Conferma posizionamento nodo",
+      "message": "<p>Stai posizionando un nodo sulla trave {label}.</p><p class=\"mt-3\">Vuoi dividere l'elemento e collegare il nodo, oppure posizionare il nodo sulla struttura senza collegarlo?</p>",
+      "split": "Collega alla struttura"
+    },
+    "placeIndividualNode": "Posiziona nodo isolato"
+  },
+  "selection": {
+    "node": "Nodo",
+    "element": "Elemento",
+    "dimension": "Quota",
+    "nodal-load": "Carico nodale",
+    "element-load": "Carico su elemento",
+    "prescribedbc-load": "Spostamento imposto"
+  },
+  "validators": {
+    "enterValue": "Inserisci un valore",
+    "invalidNumber": "Numero non valido",
+    "positiveNumber": "Inserisci un numero maggiore di zero",
+    "between": "Inserisci un valore tra {min} e {max}",
+    "sameNodes": "Un elemento deve collegare due nodi diversi",
+    "materialInUse": "Il materiale è usato dagli elementi {elements}. Riassegnali prima di eliminarlo.",
+    "crossSectionInUse": "La sezione è usata dagli elementi {elements}. Riassegnali prima di eliminarla."
+  },
+  "solveDiagnostics": {
+    "summaryErrors": "Errori nel modello: {errors}",
+    "summaryWarnings": "Avvisi nel modello: {warnings}",
+    "summaryIncomplete": "{count} parti della struttura vanno vincolate.",
+    "incompleteChip": "Servono vincoli",
+    "hideMotion": "Nascondi il movimento",
+    "showMotion": "Mostra il movimento",
+    "dismissWarnings": "Nascondi questi avvisi",
+    "collapseErrors": "Riduci questo messaggio",
+    "showDetails": "Mostra dettagli",
+    "blockedTitle": "Impossibile risolvere il modello",
+    "blockedDescription": "Correggi gli errori elencati prima di risolvere il modello.",
+    "warningsTitle": "Avvisi del modello",
+    "warningsDescription": "Il modello è stato risolto, ma sono stati rilevati i seguenti avvisi.",
+    "incompleteTitle": "Non ancora pronto per il calcolo",
+    "incompleteDescription": "I risultati compaiono quando la struttura è vincolata. Il contorno tratteggiato nell'area di disegno mostra come può ancora muoversi.",
+    "errors": "Errori",
+    "warnings": "Avvisi",
+    "incomplete": "Ancora da fare",
+    "issues": {
+      "elementNodeCount": "L'elemento {element} deve riferirsi esattamente a 2 nodi.",
+      "elementSameNode": "L'elemento {element} si riferisce allo stesso nodo a entrambe le estremità.",
+      "elementMissingNode": "L'elemento {element} si riferisce al nodo inesistente {node}.",
+      "elementMissingMaterial": "L'elemento {element} si riferisce al materiale inesistente {material}.",
+      "elementMissingCrossSection": "L'elemento {element} si riferisce alla sezione inesistente {crossSection}.",
+      "nodalLoadMissingNode": "Il carico nodale #{index} si riferisce al nodo inesistente {node}.",
+      "nodalLoadInvalid": "Il carico nodale #{index} contiene valori non validi.",
+      "prescribedMissingNode": "Lo spostamento imposto #{index} si riferisce al nodo inesistente {node}.",
+      "prescribedInvalid": "Lo spostamento imposto #{index} contiene valori non validi.",
+      "elementLoadMissingElement": "Il carico su elemento #{index} si riferisce all'elemento inesistente {element}.",
+      "supportedNodeNotConnected": "Il nodo {node} è vincolato ma nessun elemento vi è collegato, quindi il vincolo non porta nulla.",
+      "nodeNotConnected": "Il nodo {node} non è collegato a nessun elemento e il solutore lo ignora.",
+      "insufficientSupports": "Per essere stabile in un'analisi 2D, il modello richiede almeno 3 GdL vincolati.",
+      "needsSupports": "La struttura va vincolata prima di poter essere risolta.",
+      "partUnsupported": "Una parte separata della struttura (nodi {nodes}) ha meno di 3 GdL vincolati e può muoversi liberamente.",
+      "partNeedsSupports": "La parte con i nodi {nodes} va vincolata.",
+      "mechanism": "La struttura ha abbastanza vincoli, ma questi non la trattengono: può ancora {motion}. Vincoli tutti paralleli, o le cui rette d'azione passano per uno stesso punto, lasciano la struttura libera di muoversi.",
+      "mechanismShort": "I vincoli non trattengono la struttura: può ancora {motion}.",
+      "partMechanism": "Una parte separata della struttura (nodi {nodes}) ha abbastanza vincoli, ma questi non la trattengono: può ancora {motion}. Vincoli tutti paralleli, o le cui rette d'azione passano per uno stesso punto, lasciano la struttura libera di muoversi.",
+      "partMechanismShort": "La parte con i nodi {nodes} non è trattenuta: può ancora {motion}.",
+      "hingeMechanism": "I vincoli trattengono la struttura, ma questa è ancora un meccanismo: le sue aste possono ruotare attorno alle cerniere nel nodo {nodes}. Rimuovi una cerniera, oppure aggiungi un'asta o un vincolo che impedisca il moto.",
+      "hingeMechanismShort": "Le cerniere nel nodo {nodes} permettono alla struttura di muoversi.",
+      "motion": {
+        "horizontal": "scorrere orizzontalmente",
+        "vertical": "muoversi verticalmente",
+        "rotation": "ruotare liberamente",
+        "mixed": "muoversi come un corpo rigido"
+      },
+      "unstable": "La struttura è labile: {dofs} si muove praticamente senza resistenza. Aggiungi un vincolo o un elemento, rimuovi una cerniera di estremità, oppure controlla la rigidezza della sezione.",
+      "unstableShort": "La struttura è labile: si muove quasi senza resistenza.",
+      "unstableDof": {
+        "dx": "il nodo {node} in orizzontale (Dx)",
+        "dz": "il nodo {node} in verticale (D{v})",
+        "ry": "il nodo {node} in rotazione (R{r})",
+        "other": "il nodo {node} nel GdL {dof}"
+      },
+      "unstableMore": "{list} e altri {count}",
+      "singularMatrix": "La struttura è un meccanismo: la matrice di rigidezza è singolare. Verifica che ogni parte sia trattenuta da almeno 3 vincoli e che le cerniere di estremità non lascino un'asta libera di ruotare.",
+      "singularMatrixShort": "La struttura è un meccanismo: può muoversi senza resistenza.",
+      "solverFailed": "Il solutore si è interrotto per un'incoerenza interna del modello. Controlla i riferimenti e i carichi del modello."
+    }
+  },
+  "loadType": {
+    "loadType": "Tipo di carico",
+    "concentrated": "Carico concentrato",
+    "trapezoidal": "Carico trapezoidale",
+    "udl": "Carico uniformemente distribuito",
+    "temperature": "Carico termico"
+  },
+  "dimensioning": {
+    "add_dimension": "Aggiungi quota",
+    "add_along_element": "Quota l'elemento {label}"
+  },
+  "warnings": {
+    "noMaterialsDefined": "Nessun materiale definito.",
+    "noCrossSectionsDefined": "Nessuna sezione definita.",
+    "importFailed": "Impossibile importare il file. Controlla il formato del file.",
+    "prescribedDisplacementExists": "Per questo nodo esiste già uno spostamento imposto. Rimuovilo prima.",
+    "addMaterialFirst": "Aggiungi prima un materiale.",
+    "addCrossSectionFirst": "Aggiungi prima una sezione.",
+    "selectMaterialAndCrossSection": "Seleziona un materiale e una sezione.",
+    "labelInUse": "L'etichetta {label} è già in uso.",
+    "noMaterialOrCrossSection": "L'elemento non specifica il materiale o la sezione.",
+    "elementMissing": "L'elemento {label} non esiste più."
+  },
+  "help": {
+    "aria": "Mostra aiuto",
+    "readMore": "Leggi di più nella documentazione",
+    "troubleshooting": "Risoluzione dei problemi",
+    "nodes": {
+      "title": "Nodi",
+      "body": "I nodi sono i punti che tengono insieme la struttura. Coordinate, vincoli, cerniere e carichi applicati si impostano nodo per nodo."
+    },
+    "supports": {
+      "title": "Vincoli",
+      "body": "Spunta un grado di libertà per bloccarlo: Dx e D{v} bloccano la traslazione, R{r} blocca la rotazione. Una struttura richiede almeno tre vincoli indipendenti."
+    },
+    "elements": {
+      "title": "Elementi",
+      "body": "Gli elementi collegano due nodi e hanno un materiale e una sezione. Svincola un'estremità per trasformare una trave in un'asta incernierata o reticolare."
+    },
+    "loads": {
+      "title": "Carichi",
+      "body": "I carichi agiscono sui nodi o lungo gli elementi. I valori positivi seguono gli assi globali, con z rivolto verso il basso.",
+      "bodyYUp": "I carichi agiscono sui nodi o lungo gli elementi. I valori positivi seguono gli assi globali, con y rivolto verso l'alto."
+    },
+    "nodalLoads": {
+      "title": "Carichi nodali",
+      "body": "Un carico nodale applica una forza o un momento direttamente a un nodo. Con gli spostamenti imposti puoi invece assegnare un cedimento vincolare."
+    },
+    "elementLoads": {
+      "title": "Carichi su elemento",
+      "body": "I carichi su elemento agiscono lungo un'asta: uniformi, trapezoidali, concentrati o termici. Puoi assegnarli negli assi globali o locali."
+    },
+    "materials": {
+      "title": "Materiali",
+      "body": "Un materiale ha modulo di Young, modulo di taglio, densità e dilatazione termica. Per una semplice analisi statica contano solo E e la sezione."
+    },
+    "crossSections": {
+      "title": "Sezioni",
+      "body": "Una sezione fornisce l'area e il momento d'inerzia usati per la rigidezza. Sceglila dalla libreria o disegna il tuo poligono."
+    },
+    "hinges": {
+      "title": "Cerniere di estremità",
+      "body": "Una casella spuntata svincola il momento flettente a quell'estremità dell'elemento. Spunta entrambe le estremità per ottenere un'asta reticolare, una sola per inserire una cerniera in un telaio."
+    },
+    "signConvention": {
+      "title": "Convenzione dei segni",
+      "body": "L'asse z globale punta verso il basso, quindi Fz o fz positivi tirano verso il basso e My è positivo in senso antiorario. I carichi passati al sistema locale seguono invece l'elemento.",
+      "bodyYUp": "L'asse y globale punta verso l'alto, quindi Fy o fy positivi spingono verso l'alto e Mz è positivo in senso antiorario. I carichi passati al sistema locale seguono invece l'elemento."
+    },
+    "results": {
+      "title": "Risultati",
+      "body": "Quando il modello è risolto ottieni sforzo normale, taglio, momento flettente, deformata e reazioni, sia come diagrammi sia come tabelle."
+    },
+    "diagrams": {
+      "title": "Diagrammi dei risultati",
+      "body": "Questi interruttori disegnano sul modello sforzo normale, taglio, momento flettente, deformata e reazioni. N è positivo a trazione, M{r} è positivo quando tende le fibre inferiori."
+    },
+    "endForces": {
+      "title": "Forze di estremità",
+      "body": "X12, Z12 e M12 agiscono nel nodo iniziale, X21, Z21 e M21 nel nodo finale, sempre nel sistema locale dell'elemento, orientato dal nodo iniziale a quello finale."
+    },
+    "settings": {
+      "title": "Unità e impostazioni",
+      "body": "Qui trovi lingua, unità, scala della vista, colori e scorciatoie. Le unità convertono i valori esistenti, non cambiano mai il modello."
+    },
+    "sharing": {
+      "title": "Salvataggio e condivisione",
+      "body": "Salva il modello come file, copia un link che contiene l'intera struttura, o incorpora un visualizzatore di sola lettura nella tua pagina."
+    }
+  },
+  "exportImage": {
+    "title": "Esporta immagine",
+    "transparentBackground": "Sfondo trasparente",
+    "download": "Scarica PNG",
+    "downloadSvg": "Scarica SVG",
+    "copyToClipboard": "Copia negli appunti",
+    "copied": "Immagine copiata negli appunti",
+    "exported": "Immagine esportata",
+    "failed": "Impossibile generare l'immagine.",
+    "previewAlt": "Anteprima dell'immagine esportata",
+    "instructions": "Il disegno viene impaginato da capo per la dimensione scelta, così linee ed etichette mantengono il loro spessore reale. La stessa dimensione inquadra sempre la struttura allo stesso modo: comodo per esportare M, N e V affiancati.",
+    "width": "Larghezza",
+    "height": "Altezza",
+    "lockAspect": "Mantieni proporzioni",
+    "fitPreview": "Adatta",
+    "actualSize": "Dimensioni reali",
+    "preview": "Anteprima",
+    "fitAll": "Adatta tutto",
+    "window": "Finestra…",
+    "pickWindowHint": "Trascina un rettangolo sul disegno da esportare",
+    "dragEdge": "Trascina per estendere o ritagliare questo lato",
+    "scale": "Scala",
+    "scaleCaption": "1 m del modello corrisponde a {cm} cm su carta (96 DPI). Scorri sull'anteprima per lo zoom.",
+    "doesNotFit": "Non tutto entra in questa dimensione: diagrammi, carichi ed etichette sporgono di circa {px} px oltre il bordo. Riduci i diagrammi (ora {diagrams} px) o ingrandisci l'area di disegno.",
+    "shrinkDiagrams": "Riduci diagrammi",
+    "enlargeCanvas": "Ingrandisci l'area",
+    "diagramHeight": "Altezza dei diagrammi",
+    "shrinkNotEnough": "Qui ridurre i diagrammi non basta: già i carichi e le etichette richiedono più spazio. Ingrandisci invece l'area di disegno."
+  },
+  "examples": {
+    "title": "Esempi",
+    "instructions": "Apri un modello già pronto da esplorare. Sostituisce quello attuale, e Ctrl+Z riporta il tuo.",
+    "moreInDocs": "Altri esempi ed esercizi",
+    "items": {
+      "welcome": {
+        "title": "Trave iperstatica",
+        "blurb": "Trave iperstatica di 3 m, incastro–carrello, con carico uniforme di 10 kN/m."
+      },
+      "cantilever": {
+        "title": "Mensola",
+        "blurb": "Mensola di 4 m con un carico nodale di 18 kN verso il basso, per evidenziare curvatura e freccia all'estremità."
+      },
+      "pratt": {
+        "title": "Travatura Pratt",
+        "blurb": "Semplice travatura reticolare Pratt con carichi nodali di 8 kN: distribuzione degli sforzi normali e spostamenti."
+      },
+      "continuous": {
+        "title": "Trave continua a tre campate",
+        "blurb": "Campate di 5+6+5 m con carico uniforme + concentrato + uniforme, per confrontare la curvatura e le rotazioni agli appoggi."
+      },
+      "portal": {
+        "title": "Portale: caso di carico",
+        "blurb": "Trave di 8 m su colonne di 6 m con carico uniforme in copertura e carichi orizzontale + verticale ai nodi d'angolo, per verificare spostamenti laterali e flessione."
+      },
+      "temperature": {
+        "title": "Carico termico",
+        "blurb": "Trave semplicemente appoggiata di 8 m con carico termico uniforme e non uniforme."
+      }
+    }
+  },
+  "recentStructures": {
+    "title": "Strutture recenti",
+    "instructions": "Le ultime {count} strutture cancellate o sostituite sono conservate in questo browser. Ripristinarne una sostituisce la struttura attuale, e Ctrl+Z la riporta indietro.",
+    "empty": "Ancora niente qui. Quando cancelli una struttura o ne apri un'altra al suo posto, viene conservata qui.",
+    "restore": "Ripristina",
+    "remove": "Rimuovi",
+    "counts": "Nodi: {nodes} · Elementi: {elements}",
+    "linkNotice": "Hai aperto una struttura condivisa. Quella precedente è conservata in Strutture recenti.",
+    "show": "Mostra",
+    "reasons": {
+      "clear": "Cancellata",
+      "link": "Sostituita da un link condiviso",
+      "file": "Sostituita da un file aperto",
+      "example": "Sostituita da un esempio",
+      "firstBeam": "Sostituita dall'esercizio della prima trave",
+      "restore": "Sostituita da una struttura ripristinata"
+    }
+  }
+}

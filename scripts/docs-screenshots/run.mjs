@@ -37,6 +37,7 @@ const APP_LANGUAGE = {
   zh: 'cn',
   tr: 'tr',
   th: 'th',
+  vi: 'vi',
 };
 
 const args = process.argv.slice(2);

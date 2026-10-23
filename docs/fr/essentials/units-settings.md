@@ -16,7 +16,7 @@ Les paramètres sont stockés dans votre navigateur et survivent aux rechargemen
 
 ![Paramètres → Langue et paramètres régionaux](/screenshots/fr/settings-language.webp)
 
-**Langue.** 13 langues d’interface. Vous pouvez aussi ouvrir l’application avec `?lang=<code>` : `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`.
+**Langue.** 14 langues d’interface. Vous pouvez aussi ouvrir l’application avec `?lang=<code>` : `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`.
 
 **Format des nombres.** La façon dont les valeurs des résultats sont écrites : *Automatique*, *Scientifique* (par défaut) ou *Ingénierie*. Voir [Format des nombres](/fr/essentials/results#number-format).
 

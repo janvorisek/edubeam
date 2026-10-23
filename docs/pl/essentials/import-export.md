@@ -85,7 +85,7 @@ Tryb podglądu służy do oglądania, ale nie jest zablokowany: odwiedzający mo
 | --- | --- |
 | `model=<data>` | Wczytuje zakodowany model i dopasowuje go do ekranu. |
 | `viewer=1` | Tryb podglądu (zobacz wyżej). |
-| `lang=<code>` | Przełącza język interfejsu: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`. |
+| `lang=<code>` | Przełącza język interfejsu: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`. |
 | `panel=examples` | Od razu otwiera galerię przykładów. |
 
 Po ich odczytaniu EduBeam usuwa parametry z paska adresu.

@@ -8,7 +8,7 @@ import { i18n } from '../../src/plugins/i18n';
  * Whatever the app already says (load types, quantities, example titles) comes from the app's own
  * locale files, so the two never disagree. Only sentences the app has no use for are kept here.
  */
-type DocsLanguage = 'en' | 'cs' | 'de' | 'es' | 'fr' | 'hi' | 'pl' | 'pt' | 'ru' | 'uk' | 'zh' | 'tr' | 'th';
+type DocsLanguage = 'en' | 'cs' | 'de' | 'es' | 'fr' | 'hi' | 'pl' | 'pt' | 'ru' | 'uk' | 'zh' | 'tr' | 'th' | 'vi';
 
 /** The app's locale for each docs language; the app says cn for zh. */
 const APP_LOCALE: Record<DocsLanguage, string> = {
@@ -25,6 +25,7 @@ const APP_LOCALE: Record<DocsLanguage, string> = {
   zh: 'cn',
   tr: 'tr',
   th: 'th',
+  vi: 'vi',
 };
 
 export interface DocsStrings {
@@ -259,6 +260,23 @@ const strings: Record<DocsLanguage, DocsStrings> = {
     promoAccent: 'สู่ 3 มิติ',
     promoSubtitle: 'แผ่นพื้น เปลือกบาง และการตรวจสอบเหล็กโครงสร้างบนเบราว์เซอร์',
     promoCta: 'ลองใช้ฟรี',
+  },
+  vi: {
+    loadsTitle: 'Xem trước các loại tải trọng',
+    loadsLede:
+      'Các loại tải trọng thông dụng trông như thế nào trong EduBeam. Mỗi thẻ là một mô hình đã giải, tương tác được, và mở trong ứng dụng đúng như đã thiết lập.',
+    openInApp: 'Mở trong EduBeam',
+    simplySupportedBeam: 'Dầm đơn giản',
+    udlBlurb: 'Nhịp gối cố định – gối di động chịu 12 kN/m: biểu đồ lực cắt và mô men kinh điển.',
+    trapezoidalBlurb: 'Tải tăng từ 4 đến 14 kN/m trên nhịp bên phải.',
+    concentratedBlurb: 'Một tải tập trung 18 kN hướng xuống tại giữa nhịp, không cần thêm nút.',
+    nodalBlurb: 'Tải 20 kN tại gối tựa giữa, để kiểm tra phản lực và độ võng.',
+    temperatureBlurb:
+      'Chênh lệch nhiệt độ theo chiều cao tiết diện (thớ trên nóng hơn thớ dưới) và độ cong mà nó gây ra.',
+    promoTitle: 'Đưa khung của bạn',
+    promoAccent: 'lên 3D.',
+    promoSubtitle: 'bản sàn, vỏ mỏng và kiểm tra kết cấu thép ngay trên trình duyệt',
+    promoCta: 'Dùng thử miễn phí',
   },
 };
 

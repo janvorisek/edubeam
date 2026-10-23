@@ -78,7 +78,7 @@ Si une fonctionnalité manquante vous importe, [ouvrez un ticket](https://github
 ## À qui s’adresse-t-il ? {#who-is-it-for}
 
 - Aux **étudiants** en mécanique des structures qui veulent un retour immédiat sur leurs calculs à la main. Voir [Vérifier les résultats à la main](/fr/guide/verification).
-- Aux **enseignants** qui montrent comment appuis, rotules et charges modifient les efforts internes, en direct au vidéoprojecteur, dans l’une des 13 langues. Voir [Enseigner avec EduBeam](/fr/guide/teaching).
+- Aux **enseignants** qui montrent comment appuis, rotules et charges modifient les efforts internes, en direct au vidéoprojecteur, dans l’une des 14 langues. Voir [Enseigner avec EduBeam](/fr/guide/teaching).
 - Aux **ingénieurs** qui veulent une vérification rapide avant d’ouvrir un logiciel de bureau plus lourd.
 
 ## Organisation de ce guide {#how-this-guide-is-organised}
@@ -95,7 +95,7 @@ Les icônes **?** de l’application ouvrent la page correspondante de ce guide 
 
 ## Langues {#languages}
 
-L’interface est disponible en English, Čeština, Deutsch, Español, Français, Polski, Português, Русский, Türkçe, Українська, हिन्दी, ไทย et 汉语. EduBeam choisit la langue d’après votre navigateur. Changez-la dans **Paramètres → Langue et paramètres régionaux**, ou ouvrez l’application avec un paramètre `?lang=`, par exemple [run.edubeam.app/?lang=fr](https://run.edubeam.app/?lang=fr){target="_blank"}.
+L’interface est disponible en English, Čeština, Deutsch, Español, Français, Polski, Português, Tiếng Việt, Русский, Türkçe, Українська, हिन्दी, ไทย et 汉语. EduBeam choisit la langue d’après votre navigateur. Changez-la dans **Paramètres → Langue et paramètres régionaux**, ou ouvrez l’application avec un paramètre `?lang=`, par exemple [run.edubeam.app/?lang=fr](https://run.edubeam.app/?lang=fr){target="_blank"}.
 
 ## Auteurs et remerciements {#authors-credits}
 

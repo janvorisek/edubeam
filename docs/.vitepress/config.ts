@@ -3,7 +3,7 @@ import { katex } from '@mdit/plugin-katex';
 import implicitFigures from 'markdown-it-implicit-figures';
 import path from 'path';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
-import { cs, de, english, es, fr, hi, navFor, pl, pt, ru, sidebarFor, th, tr, uk, zh } from './navigation';
+import { cs, de, english, es, fr, hi, navFor, pl, pt, ru, sidebarFor, th, tr, uk, vi, zh } from './navigation';
 
 const customElements = [
   'math',
@@ -341,6 +341,19 @@ export default defineConfig({
         sidebar: sidebarFor('/tr', tr),
       },
     },
+    vi: {
+      label: 'Tiếng Việt',
+      lang: 'vi',
+      description:
+        'Phân tích kết cấu trực tuyến miễn phí – dầm, khung và dàn phẳng, có kết quả tức thì ngay trên trình duyệt.',
+      themeConfig: {
+        nav: navFor('/vi', 'vi', vi),
+        outline: { label: 'Trên trang này' },
+        docFooter: { prev: 'Trang trước', next: 'Trang sau' },
+        lastUpdated: { text: 'Cập nhật lần cuối' },
+        sidebar: sidebarFor('/vi', vi),
+      },
+    },
   },
   themeConfig: {
     outline: 'deep',
@@ -497,6 +510,23 @@ export default defineConfig({
                   selectText: 'Seç',
                   navigateText: 'Gezin',
                   closeText: 'Kapat',
+                },
+              },
+            },
+          },
+          vi: {
+            translations: {
+              button: {
+                buttonText: 'Tìm trong tài liệu',
+                buttonAriaLabel: 'Tìm trong tài liệu',
+              },
+              modal: {
+                noResultsText: 'Không tìm thấy kết quả cho',
+                resetButtonTitle: 'Xóa nội dung tìm kiếm',
+                footer: {
+                  selectText: 'Chọn',
+                  navigateText: 'Di chuyển',
+                  closeText: 'Đóng',
                 },
               },
             },

@@ -16,7 +16,7 @@ Einstellungen werden in Ihrem Browser gespeichert und überstehen ein Neuladen. 
 
 ![Einstellungen → Sprache & Region](/screenshots/de/settings-language.webp)
 
-**Sprache.** 13 Oberflächensprachen. Sie können die App auch mit `?lang=<code>` öffnen: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`.
+**Sprache.** 14 Oberflächensprachen. Sie können die App auch mit `?lang=<code>` öffnen: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`.
 
 **Zahlenformat.** Wie Ergebniswerte geschrieben werden: *Automatisch*, *Wissenschaftlich* (Standard) oder *Technisch*. Siehe [Zahlenformat](/de/essentials/results#number-format).
 

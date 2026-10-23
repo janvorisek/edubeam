@@ -85,7 +85,7 @@ Režim prohlížeče slouží k prohlížení, ale není uzamčený: návštěvn
 | --- | --- |
 | `model=<data>` | Načte zakódovaný model a přizpůsobí ho obrazovce. |
 | `viewer=1` | Režim prohlížeče (viz výše). |
-| `lang=<kód>` | Přepne jazyk rozhraní: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`. |
+| `lang=<kód>` | Přepne jazyk rozhraní: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`. |
 | `panel=examples` | Rovnou otevře galerii příkladů. |
 
 Jakmile EduBeam parametry přečte, z adresního řádku je odstraní.

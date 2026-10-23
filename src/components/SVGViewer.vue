@@ -125,6 +125,16 @@ const layoutStore = useLayoutStore();
 
 const resolvedResultLabelMode = computed(() => props.resultLabelMode ?? viewerStore.resultLabelMode);
 
+/**
+ * Elements the drawing can place: `projectStore.beams`, which leaves out one naming a node that is
+ * gone. A load on any other element, or a copy of one, has no geometry to be drawn on.
+ */
+const drawableBeamLabels = computed(() => new Set(projectStore.beams.map((beam) => beam.label)));
+const pastePreviewBeams = computed(() => {
+  const copied = new Set(useClipboardStore().elements);
+  return projectStore.beams.filter((beam) => copied.has(beam.label));
+});
+
 const panZoom = ref<InstanceType<typeof SvgPanZoom> | null>(null);
 const grid = ref<InstanceType<typeof SvgGrid> | null>(null);
 const crosshair = ref<InstanceType<typeof Crosshair> | null>(null);
@@ -2893,61 +2903,65 @@ defineExpose({ centerContent, fitContent });
           <g>
             <g v-if="!isZooming && useViewerStore().showLoads" data-fit-ignore="loads">
               <template v-for="(eload, index) in useProjectStore().solver.loadCases[0].elementLoadList">
-                <SVGElementLoad
-                  v-if="eload instanceof BeamElementUniformEdgeLoad || eload instanceof BeamElementTrapezoidalEdgeLoad"
-                  :key="`element-udl-${index}`"
-                  :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
-                  :data-element-load-id="index"
-                  :eload="eload"
-                  :scale="scale"
-                  :convert-force-distance="appStore.convertForceDistance"
-                  :font-size="viewerStore.fontSize"
-                  :number-format="appStore.numberFormatter"
-                  @mousemove="onElementLoadHover($event, eload)"
-                  @mouseleave="hideTooltip"
-                  @pointerup="onElementLoadClick($event, index)"
-                  @dblclick="
-                    openModal(EditElementLoadDialog, { index });
-                    projectStore.clearSelection();
-                  "
-                />
-                <SVGElementTemperatureLoad
-                  v-else-if="loadType(eload) === 'temperature'"
-                  :key="`element-temperature-${index}`"
-                  :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
-                  :data-element-load-id="index"
-                  :eload="eload"
-                  :scale="scale"
-                  :convert-temperature="appStore.convertTemperature"
-                  :font-size="viewerStore.fontSize"
-                  :number-format="appStore.numberFormatter"
-                  @mousemove="onElementLoadHover($event, eload)"
-                  @mouseleave="hideTooltip"
-                  @pointerup="onElementLoadClick($event, index)"
-                  @dblclick="
-                    openModal(EditElementLoadDialog, { index });
-                    projectStore.clearSelection();
-                  "
-                />
-                <SVGElementConcentratedLoad
-                  v-else-if="eload instanceof BeamConcentratedLoad"
-                  :key="`element-cl-${index}`"
-                  :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
-                  :data-element-load-id="index"
-                  :eload="eload"
-                  :scale="scale"
-                  :convert-force="appStore.convertForce"
-                  :convert-moment="appStore.convertMoment"
-                  :font-size="viewerStore.fontSize"
-                  :number-format="appStore.numberFormatter"
-                  @mousemove="onElementLoadHover($event, eload)"
-                  @mouseleave="hideTooltip"
-                  @pointerup="onElementLoadClick($event, index)"
-                  @dblclick="
-                    openModal(EditElementLoadDialog, { index });
-                    projectStore.clearSelection();
-                  "
-                />
+                <template v-if="drawableBeamLabels.has(String(eload.target))">
+                  <SVGElementLoad
+                    v-if="
+                      eload instanceof BeamElementUniformEdgeLoad || eload instanceof BeamElementTrapezoidalEdgeLoad
+                    "
+                    :key="`element-udl-${index}`"
+                    :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
+                    :data-element-load-id="index"
+                    :eload="eload"
+                    :scale="scale"
+                    :convert-force-distance="appStore.convertForceDistance"
+                    :font-size="viewerStore.fontSize"
+                    :number-format="appStore.numberFormatter"
+                    @mousemove="onElementLoadHover($event, eload)"
+                    @mouseleave="hideTooltip"
+                    @pointerup="onElementLoadClick($event, index)"
+                    @dblclick="
+                      openModal(EditElementLoadDialog, { index });
+                      projectStore.clearSelection();
+                    "
+                  />
+                  <SVGElementTemperatureLoad
+                    v-else-if="loadType(eload) === 'temperature'"
+                    :key="`element-temperature-${index}`"
+                    :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
+                    :data-element-load-id="index"
+                    :eload="eload"
+                    :scale="scale"
+                    :convert-temperature="appStore.convertTemperature"
+                    :font-size="viewerStore.fontSize"
+                    :number-format="appStore.numberFormatter"
+                    @mousemove="onElementLoadHover($event, eload)"
+                    @mouseleave="hideTooltip"
+                    @pointerup="onElementLoadClick($event, index)"
+                    @dblclick="
+                      openModal(EditElementLoadDialog, { index });
+                      projectStore.clearSelection();
+                    "
+                  />
+                  <SVGElementConcentratedLoad
+                    v-else-if="eload instanceof BeamConcentratedLoad"
+                    :key="`element-cl-${index}`"
+                    :class="{ selected: projectStore.selection2.elementLoads.includes(index) }"
+                    :data-element-load-id="index"
+                    :eload="eload"
+                    :scale="scale"
+                    :convert-force="appStore.convertForce"
+                    :convert-moment="appStore.convertMoment"
+                    :font-size="viewerStore.fontSize"
+                    :number-format="appStore.numberFormatter"
+                    @mousemove="onElementLoadHover($event, eload)"
+                    @mouseleave="hideTooltip"
+                    @pointerup="onElementLoadClick($event, index)"
+                    @dblclick="
+                      openModal(EditElementLoadDialog, { index });
+                      projectStore.clearSelection();
+                    "
+                  />
+                </template>
               </template>
             </g>
           </g>
@@ -3117,9 +3131,9 @@ defineExpose({ centerContent, fitContent });
           <g v-if="appStore.mouseMode === MouseMode.PASTE_CLIPBOARD" ref="pasteLayer">
             <g>
               <SVGElement
-                v-for="(element, index) in useClipboardStore().elements"
+                v-for="(element, index) in pastePreviewBeams"
                 :key="`element-${index}`"
-                :element="projectStore.solver.domain.elements.get(element) as Beam2D"
+                :element="element"
                 :scale="scale"
                 :show-deformed-shape="false"
                 :show-normal-force="false"

@@ -58,11 +58,11 @@ Eleman ucundaki bir mafsal, o uçtaki dönme serbestlik derecesini serbest bıra
 
 ## Eleman yükleri {#element-loads}
 
-Yayılı, tekil ve sıcaklık yükleri **eşdeğer düğüm yüklerine** $\mathbf{f}_{eq}$ (ankastrelik uç kuvvetlerinin ters işaretlisi) dönüştürülür ve genel yük vektörüne eklenir. Çözümden sonra eleman boyunca iç kuvvetler, uç yer değiştirmelerinden ve eleman yükünün kesin özel çözümünden elde edilir; bu sayede diyagramlar çubuk boyunca kesindir.
+Yayılı, tekil ve sıcaklık yükleri **eşdeğer düğüm yüklerine** $\mathbf{f}_{eq}$ (ankastrelik uç kuvvetlerinin ters işaretlisi) dönüştürülür ve global yük vektörüne eklenir. Çözümden sonra eleman boyunca iç kuvvetler, uç yer değiştirmelerinden ve eleman yükünün kesin özel çözümünden elde edilir; bu sayede diyagramlar çubuk boyunca kesindir.
 
 ## Dönüşüm matrisi {#transformation-matrix}
 
-Eleman dönüşüm matrisi $\mathbf{T}$, yerel rijitlik matrisini genel koordinat sistemine dönüştürmek için kullanılır.
+Eleman dönüşüm matrisi $\mathbf{T}$, yerel rijitlik matrisini global koordinat sistemine dönüştürmek için kullanılır.
 
 $$
 \mathbf{T} = \begin{pmatrix}
@@ -75,9 +75,9 @@ $$
 \end{pmatrix}
 $$
 
-## Genel rijitlik matrisi {#global-stiffness-matrix}
+## Global rijitlik matrisi {#global-stiffness-matrix}
 
-Genel rijitlik matrisi $\mathbf{K_g}$, eleman dönüşüm matrisi $\mathbf{T}$ ile yerel rijitlik matrisi $\mathbf{K_l}$'nin çarpılmasıyla elde edilir:
+Global rijitlik matrisi $\mathbf{K_g}$, eleman dönüşüm matrisi $\mathbf{T}$ ile yerel rijitlik matrisi $\mathbf{K_l}$'nin çarpılmasıyla elde edilir:
 
 $$
 \mathbf{K_g} = \mathbf{T}^\mathsf{T} \cdot \mathbf{K_l} \cdot \mathbf{T}

@@ -56,7 +56,7 @@
   },
   "supports": {
     "free": "Serbest",
-    "pin": "Mafsal",
+    "pin": "Mafsallı mesnet",
     "roller": "Kayıcı mesnet",
     "verticalRoller": "Düşey kayıcı mesnet",
     "slider": "Kayar ankastre",
@@ -68,7 +68,7 @@
   "elements": {
     "addElement": "Eleman ekle",
     "editElement": "Elemanı düzenle",
-    "swapNodeOrder": "Düğümleri yer değiştir",
+    "swapNodeOrder": "Düğüm sırasını ters çevir",
     "hingeStart": "Başlangıç mafsalı",
     "hingeEnd": "Bitiş mafsalı",
     "hinge": "Mafsal",
@@ -82,7 +82,7 @@
     "nodalLoad": "Düğüm yükü",
     "elementLoad": "Eleman yükü",
     "prescribedDisplacement": "Öngörülen yer değiştirme",
-    "addPrescribedDisplacement": "Yer değiştirme öngör",
+    "addPrescribedDisplacement": "Yer değiştirme tanımla",
     "UDL": "Yayılı yük",
     "forceMoment": "Kuvvet/Moment",
     "editLoad": "Yükü düzenle",
@@ -124,7 +124,7 @@
   "settings": {
     "results_scale": "Sonuç ölçeği",
     "grid_snap_step": "Izgara adımı",
-    "snap_to_grid": "Izgaraya yasla",
+    "snap_to_grid": "Izgaraya yakala",
     "show_crosshair": "Artı imlecini göster",
     "model_checks": "Model denetimi",
     "show_mechanisms": "Kararsız yapının nasıl hareket edebileceğini göster",
@@ -162,7 +162,7 @@
     "show_grid": "Izgarayı göster",
     "mouse": {
       "mouse": "Fare",
-      "pan_button": "Kaydırma",
+      "pan_button": "Kaydırma tuşu",
       "wheel": "Fare tekerleği",
       "right_button": "Sağ tuş",
       "all": "Fare tekerleği veya sağ tuş"
@@ -207,7 +207,7 @@
   },
   "viewer": {
     "toggleGrid": "Izgarayı aç/kapat (G)",
-    "toggleSnap": "Izgaraya yaslamayı aç/kapat (S)",
+    "toggleSnap": "Izgaraya yakalamayı aç/kapat (S)",
     "toggleCrosshair": "Artı imlecini aç/kapat",
     "boxSelect": "Dikdörtgenle seç",
     "centerContent": "Modeli ortala",
@@ -293,7 +293,7 @@
     },
     "changelog": {
       "title": "Yenilikler",
-      "description": "Yeni özellikler, iyileştirmeler ve üzerinde çalıştığımız şeylerden ilk bakış.",
+      "description": "Yeni özellikler, iyileştirmeler ve üzerinde çalıştıklarımıza ilk bakış.",
       "contributors": "Bu sürüme katkıda bulunanlar: {names}",
       "comingSoon": "Yakında"
     },
@@ -302,7 +302,7 @@
       "editTitle": "Çokgen kesiti düzenle",
       "preset": "Hazır şekil",
       "apply": "Uygula",
-      "snapStep": "Yaslama adımı",
+      "snapStep": "Yakalama adımı",
       "centerAtCentroid": "Ağırlık merkezine ortala",
       "hint": "Köşeleri taşımak için sürükleyin, köşe eklemek için bir kenarın orta noktasına tıklayın, köşeyi silmek için üzerine çift tıklayın.",
       "outline": "Dış kontur",
@@ -343,7 +343,7 @@
       "noShape": "Çokgen kesit yok",
       "centroidal": "ağırlık merkezine göre",
       "centroidalNote": "Tüm atalet momentleri ağırlık merkezinden geçen eksenlere göre hesaplanır; I₁ ve I₂ asal atalet momentleri, α ise y ekseninden 1 eksenine olan açıdır.",
-      "outOfPlaneNote": "Kesit çerçeve düzlemine göre simetrik değildir. 2B analiz yalnızca eleman tüm boyu boyunca yanal yer değiştirmeye (ekranın dışına) ve burulmaya karşı tutulduğunda, örneğin bir döşeme veya sık aralıklı çaprazlarla, kesindir; yalnızca düğümlerdeki mesnetler yeterli değildir. Serbest bir eleman, yükler kayma merkezinden geçmediği için ayrıca burulur ve bu burulma yer değiştirmelere dahil edilmez.",
+      "outOfPlaneNote": "Kesit çerçeve düzlemine göre simetrik değildir. 2B analiz ancak eleman tüm boyu boyunca yanal yer değiştirmeye (ekran düzleminin dışına) ve burulmaya karşı tutulursa kesindir; örneğin bir döşemeyle veya sık aralıklı çaprazlarla. Yalnızca düğümlerdeki mesnetler yeterli değildir. Serbest bir eleman, yükler kayma merkezinden geçmediği için ayrıca burulur ve bu burulma yer değiştirmelere dahil edilmez.",
       "outOfPlaneRestrained": "Tüm boyu boyunca yanal olarak ve burulmaya karşı tutulu: {inertia}",
       "outOfPlaneFree": "Yanal yönde serbest (burulma yine dahil değil): {inertia}"
     }
@@ -415,16 +415,16 @@
     "next": "İleri",
     "steps": {
       "tool": {
-        "title": "Aracı seçin",
+        "title": "Çizim aracını seçin",
         "body": "Aşağıdaki {elementsTab} sekmesinde imleç simgeli {addElement} düğmesine basın."
       },
       "draw": {
         "title": "Kirişi çizin",
-        "body": "Kirişin başladığı yere, sonra bittiği yere tıklayın. Uçlar ızgaraya yapışır."
+        "body": "Kirişin başladığı yere, sonra bittiği yere tıklayın. Uçlar ızgaraya yakalanır."
       },
       "supports": {
         "title": "Mesnetleyin",
-        "body": "Sol uca tıklayın, {defineSupports} menüsünü açın ve sabit mesnet için Dx ile D{v} seçeneklerini işaretleyin. Ardından sağ uca tıklayın ve kayıcı mesnet için D{v} seçeneğini işaretleyin."
+        "body": "Sol uca tıklayın, {defineSupports} menüsünü açın ve mafsallı mesnet için Dx ile D{v} seçeneklerini işaretleyin. Ardından sağ uca tıklayın ve kayıcı mesnet için D{v} seçeneğini işaretleyin."
       },
       "load": {
         "title": "Yükleyin",
@@ -432,7 +432,7 @@
       },
       "display": {
         "title": "Neyin gösterileceğini seçin",
-        "body": "Sağ üstteki dişli görüntüleme seçeneklerini açar: iç kuvvetler, deforme şekil, mesnet tepkileri ve daha fazlası. Şimdi açın."
+        "body": "Sağ üstteki dişli simgesi görünüm seçeneklerini açar: iç kuvvetler, deforme şekil, mesnet tepkileri ve daha fazlası. Şimdi açın."
       },
       "fit": {
         "title": "Ekrana sığdırın",
@@ -440,7 +440,7 @@
       },
       "results": {
         "title": "Sonuçları okuyun",
-        "body": "Eğilme momenti ve deforme şekil kirişin üzerinde çizilidir ve her düzenlemede güncellenir. Tüm düğümler, elemanlar ve yükler aşağıdaki tablolarda da listelenir; orada tam değerler girebilirsiniz. {undo} önceki modelinizi geri getirir."
+        "body": "Eğilme momenti ve deforme şekil kirişin üzerinde çizilidir ve her düzenlemede güncellenir. Tüm düğümler, elemanlar ve yükler aşağıdaki tablolarda da listelenir; orada tam değerler girebilirsiniz. {undo} ile önceki modelinize dönebilirsiniz."
       }
     }
   },
@@ -449,9 +449,9 @@
     "description": "Kiriş, çerçeve ve kafes sistemleri modelleyin, iç kuvvetleri çizerken görün.",
     "start": "Nasıl başlamak istersiniz?",
     "showAround": "Beni gezdir",
-    "showAroundHint": "Görüntüleyiciye, görünüm seçeneklerine ve alt çubuğa kısa bir bakış.",
+    "showAroundHint": "Görüntüleyiciye, görünüm seçeneklerine ve alt panele kısa bir bakış.",
     "drawFirstBeam": "İlk kirişinizi çizin",
-    "drawFirstBeamHint": "Kısa bir rehber: bir kiriş çizin, mesnetleyin ve yükleyin.",
+    "drawFirstBeamHint": "Kısa, rehberli bir görev: bir kiriş çizin, mesnetleyin ve yükleyin.",
     "openExample": "Bir örnek açın",
     "openExampleHint": "Hazır bir modelle başlayıp onu değiştirin.",
     "skip": "Şimdilik geç"
@@ -523,23 +523,23 @@
       "elementLoadMissingElement": "Eleman yükü #{index}, mevcut olmayan {element} elemanına etkiyor.",
       "supportedNodeNotConnected": "{node} düğümü mesnetli, ancak hiçbir elemana bağlı değil; bu nedenle mesnet hiçbir yük taşımıyor.",
       "nodeNotConnected": "{node} düğümü hiçbir elemana bağlı değil ve çözümde dikkate alınmıyor.",
-      "insufficientSupports": "Düzlem analizde modelin stabil olması için en az 3 serbestlik derecesinin tutulu olması gerekir.",
+      "insufficientSupports": "2B analizde modelin kararlı olması için en az 3 serbestlik derecesinin tutulu olması gerekir.",
       "needsSupports": "Yapının çözülebilmesi için mesnet gerekiyor.",
-      "partUnsupported": "Yapının ayrık bir parçasında (düğümler {nodes}) 3'ten az tutulu serbestlik derecesi var ve bu parça serbestçe hareket edebiliyor.",
+      "partUnsupported": "Yapının ayrık bir parçasında (düğüm: {nodes}) 3'ten az tutulu serbestlik derecesi var ve bu parça serbestçe hareket edebiliyor.",
       "partNeedsSupports": "{nodes} düğümlü parçanın mesnete ihtiyacı var.",
-      "mechanism": "Yapıda yeterli sayıda mesnet var, ancak bu mesnetler yapıyı tutmuyor: yapı hâlâ {motion}. Mesnet doğrultularının tümü paralelse veya tek bir noktada kesişiyorsa sistem labildir.",
+      "mechanism": "Yapıda yeterli sayıda mesnet var, ancak bu mesnetler yapıyı tutmuyor: yapı hâlâ {motion}. Mesnetlerin tümü paralelse veya tesir çizgileri tek bir noktada kesişiyorsa yapı serbestçe hareket edebilir.",
       "mechanismShort": "Mesnetler yapıyı tutmuyor: yapı hâlâ {motion}.",
-      "partMechanism": "Yapının ayrık bir parçasında (düğümler {nodes}) yeterli sayıda mesnet var, ancak bu mesnetler parçayı tutmuyor: parça hâlâ {motion}. Mesnet doğrultularının tümü paralelse veya tek bir noktada kesişiyorsa sistem labildir.",
+      "partMechanism": "Yapının ayrık bir parçasında (düğüm: {nodes}) yeterli sayıda mesnet var, ancak bu mesnetler parçayı tutmuyor: parça hâlâ {motion}. Mesnetlerin tümü paralelse veya tesir çizgileri tek bir noktada kesişiyorsa yapı serbestçe hareket edebilir.",
       "partMechanismShort": "{nodes} düğümlü parça tutulmuyor: hâlâ {motion}.",
-      "hingeMechanism": "Mesnetler yapıyı tutuyor, ancak yapı yine de bir mekanizma: çubukları {nodes} düğümündeki mafsallar etrafında dönebiliyor. Bir mafsalı kaldırın ya da hareketi durduracak bir çubuk veya mesnet ekleyin.",
-      "hingeMechanismShort": "{nodes} düğümündeki mafsallar yapının hareket etmesine izin veriyor.",
+      "hingeMechanism": "Mesnetler yapıyı tutuyor, ancak yapı yine de bir mekanizma: çubukları mafsallar etrafında dönebiliyor (düğüm: {nodes}). Bir mafsalı kaldırın ya da hareketi durduracak bir çubuk veya mesnet ekleyin.",
+      "hingeMechanismShort": "Mafsallar yapının hareket etmesine izin veriyor (düğüm: {nodes}).",
       "motion": {
         "horizontal": "yatay doğrultuda kayabiliyor",
         "vertical": "düşey doğrultuda hareket edebiliyor",
         "rotation": "serbestçe dönebiliyor",
         "mixed": "rijit cisim olarak hareket edebiliyor"
       },
-      "unstable": "Yapı labil: {dofs} pratikte hiçbir dirençle karşılaşmıyor. Bir mesnet veya eleman ekleyin, bir uç mafsalını kaldırın ya da kesit rijitliğini kontrol edin.",
+      "unstable": "Yapı kararsız: {dofs} pratikte hiçbir dirençle karşılaşmıyor. Bir mesnet veya eleman ekleyin, bir uç mafsalını kaldırın ya da kesit rijitliğini kontrol edin.",
       "unstableShort": "Yapı kararsız: neredeyse hiç direnç göstermeden hareket ediyor.",
       "unstableDof": {
         "dx": "{node} düğümünün yatay yer değiştirmesi (Dx)",
@@ -556,7 +556,7 @@
   "loadType": {
     "loadType": "Yük türü",
     "concentrated": "Tekil yük",
-    "trapezoidal": "Trapez yayılı yük",
+    "trapezoidal": "Trapez yük",
     "udl": "Düzgün yayılı yük",
     "temperature": "Sıcaklık yüklemesi"
   },
@@ -594,8 +594,8 @@
     },
     "loads": {
       "title": "Yükler",
-      "body": "Yükler düğümlere veya elemanlar boyunca etkir. Pozitif değerler genel eksenlerin yönündedir; z ekseni aşağı doğrudur.",
-      "bodyYUp": "Yükler düğümlere veya elemanlar boyunca etkir. Pozitif değerler genel eksenlerin yönündedir; y ekseni yukarı doğrudur."
+      "body": "Yükler düğümlere veya elemanlar boyunca etkir. Pozitif değerler global eksenlerin yönündedir; z ekseni aşağı doğrudur.",
+      "bodyYUp": "Yükler düğümlere veya elemanlar boyunca etkir. Pozitif değerler global eksenlerin yönündedir; y ekseni yukarı doğrudur."
     },
     "nodalLoads": {
       "title": "Düğüm yükleri",
@@ -603,7 +603,7 @@
     },
     "elementLoads": {
       "title": "Eleman yükleri",
-      "body": "Eleman yükleri çubuk boyunca etkir: düzgün yayılı, trapez, tekil veya sıcaklık yüklemesi. Genel ya da yerel eksenlerde tanımlanabilirler."
+      "body": "Eleman yükleri çubuk boyunca etkir: düzgün yayılı, trapez, tekil veya sıcaklık yüklemesi. Global ya da yerel eksenlerde tanımlanabilirler."
     },
     "materials": {
       "title": "Malzemeler",
@@ -619,8 +619,8 @@
     },
     "signConvention": {
       "title": "İşaret kabulü",
-      "body": "Genel z ekseni aşağı doğrudur; bu nedenle pozitif Fz veya fz aşağı doğru etkir, My ise saat yönünün tersine pozitiftir. Yerel eksenlere alınan yükler elemanın doğrultusunu izler.",
-      "bodyYUp": "Genel y ekseni yukarı doğrudur; bu nedenle pozitif Fy veya fy yukarı doğru etkir, Mz ise saat yönünün tersine pozitiftir. Yerel eksenlere alınan yükler elemanın doğrultusunu izler."
+      "body": "Global z ekseni aşağı doğrudur; bu nedenle pozitif Fz veya fz aşağı doğru etkir, My ise saat yönünün tersine pozitiftir. Yerel eksenlere alınan yükler elemanın doğrultusunu izler.",
+      "bodyYUp": "Global y ekseni yukarı doğrudur; bu nedenle pozitif Fy veya fy yukarı doğru etkir, Mz ise saat yönünün tersine pozitiftir. Yerel eksenlere alınan yükler elemanın doğrultusunu izler."
     },
     "results": {
       "title": "Sonuçlar",

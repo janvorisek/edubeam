@@ -53,7 +53,7 @@ Ayarların yanındaki **Görüntüleyici önizlemesi**, her değişikliğe anın
 
 **Izgara**
 - **Izgarayı göster** (<kbd>G</kbd>) ızgarayı ve cetvelleri çizer.
-- **Izgaraya yasla** (<kbd>S</kbd>) yerleştirdiğiniz veya sürüklediğiniz düğümleri ızgara adımına yaslar.
+- **Izgaraya yakala** (<kbd>S</kbd>) yerleştirdiğiniz veya sürüklediğiniz düğümleri ızgara adımına yakalar.
 - **Artı imlecini göster** imlecin konumunu cetveller üzerinde işaretler, böylece koordinatlarını okuyabilirsiniz (yalnızca fareyle).
 - **Izgara adımı**, uzunluk birimindeki aralıktır: varsayılan 0,1 m, ABD birimlerinde 0,5 ft. Metrik ve ABD birimleri arasında geçiş yaptığınızda varsayılan değerde kalmış bir adım diğer sistemin varsayılanına geçer; kendi belirlediğiniz adım korunur.
 
@@ -71,7 +71,7 @@ Ayarların yanındaki **Görüntüleyici önizlemesi**, her değişikliğe anın
 
 ## Kontroller ve kısayollar {#controls-shortcuts}
 
-**Kaydırma**, tuvali hangi fare tuşuyla kaydıracağınızı belirler: *Fare tekerleği veya sağ tuş* (varsayılan), *Fare tekerleği* veya *Sağ tuş*. Kısayolların tam listesi [Klavye, fare ve dokunmatik](/tr/reference/shortcuts) sayfasındadır.
+**Kaydırma tuşu**, tuvali hangi fare tuşuyla kaydıracağınızı belirler: *Fare tekerleği veya sağ tuş* (varsayılan), *Fare tekerleği* veya *Sağ tuş*. Kısayolların tam listesi [Klavye, fare ve dokunmatik](/tr/reference/shortcuts) sayfasındadır.
 
 ## Tarayıcınızda neler saklanır {#what-is-stored-in-your-browser}
 

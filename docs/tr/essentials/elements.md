@@ -33,7 +33,7 @@ Her elemanın bir malzemesi ve bir kesiti olmalıdır. Modelde hiç yoksa görü
 - tekil yüklerde *Yükün başlangıç düğümüne uzaklığı*,
 - sonuç tablosunda çubuk uç kuvvetlerinin sırası (başlangıçta `X12, Z12, M12`, bitişte `X21, Z21, M21`).
 
-Bir elemanın yönünü ters çevirmek için *Elemanlar* tablosunda iki düğüm arasındaki yer değiştirme düğmesini kullanın.
+Bir elemanın yönünü ters çevirmek için *Elemanlar* tablosunda iki düğüm arasındaki **Düğüm sırasını ters çevir** düğmesini kullanın.
 
 ### Uç mafsalları {#end-hinges}
 
@@ -50,7 +50,7 @@ Bir düğümde iki eleman birleşiyor ve yalnızca birinde mafsal varsa, diğeri
 
 ### Düzenleme ve silme {#editing-and-deleting}
 
-Bir elemana tıklayıp panelini kullanın (**Elemanı düzenle**, **Yük ekle**, **Rijitlik matrisi**, **Sil**) ya da elemanı *Elemanlar* tablosunda düzenleyin. Bir elemanı silmek yüklerini de siler. **Rijitlik matrisi**, elemanın genel koordinatlardaki 6 × 6 rijitlik matrisini (N/m, N ve N·m) bir pencerede açar; varsa uç mafsalları matrise önceden kondanse edilmiştir. Elle yapılan birleştirmeyi kontrol etmek için kullanışlıdır.
+Bir elemana tıklayıp panelini kullanın (**Elemanı düzenle**, **Yük ekle**, **Rijitlik matrisi**, **Sil**) ya da elemanı *Elemanlar* tablosunda düzenleyin. Bir elemanı silmek yüklerini de siler. **Rijitlik matrisi**, elemanın global koordinatlardaki 6 × 6 rijitlik matrisini (N/m, N ve N·m) bir pencerede açar; varsa uç mafsalları matrise önceden kondanse edilmiştir. Elle yapılan birleştirmeyi kontrol etmek için kullanışlıdır.
 
 ## Malzemeler {#materials}
 
@@ -104,7 +104,7 @@ Elemanların hâlâ kullandığı bir malzeme silinemez; önce bu elemanlara ba�
 ![I kesit hazır şekliyle, asal eksenleri ve atalet elipsiyle çokgen kesit düzenleyicisi](/screenshots/tr/sections-polygon.webp)
 
 - **Başlayın:** boyutlarıyla birlikte bir hazır şekil (dikdörtgen, I, T, L, U, dikdörtgen veya dairesel kutu kesit, daire) seçin ve **Uygula**'ya basın.
-- **Düzenleyin:** köşeleri sürükleyin (**Yaslama adımı**na yaslanırlar), köşe eklemek için bir kenarın orta noktasına tıklayın, köşeyi silmek için üzerine çift tıklayın ya da koordinatları köşe tablosuna yazın. **Boşluk ekle** bir iç kontur ekler. **Ağırlık merkezine ortala** şekli, ağırlık merkezi orijine gelecek biçimde taşır.
+- **Düzenleyin:** köşeleri sürükleyin (**Yakalama adımı**na yakalanırlar), köşe eklemek için bir kenarın orta noktasına tıklayın, köşeyi silmek için üzerine çift tıklayın ya da koordinatları köşe tablosuna yazın. **Boşluk ekle** bir iç kontur ekler. **Ağırlık merkezine ortala** şekli, ağırlık merkezi orijine gelecek biçimde taşır.
 - **Okuyun:** alan $A$, ağırlık merkezi, ağırlık merkezine göre atalet momentleri $I_y$, $I_z$, $I_{yz}$, asal eksen açısı $\alpha$ ($y$'den 1 eksenine) ile asal atalet momentleri $I_1$, $I_2$ ve atalet yarıçapları. Çizimde atalet elipsi de gösterilir.
 
 Kaydettiğinizde $A$, $I_y$ ve $h$ şekilden doldurulur. Tabloda salt okunur görünürler; şekli yeniden düzenlemek için *İşlemler* sütunundaki çokgen düğmesini kullanın. Kayma düzeltme katsayısı $k$'yi yine siz girersiniz. Kesit koordinatları yereldir ve sağ el kuralına uyar: $x$ ekrandan dışarı, $y$ sola, $z$ aşağı doğrudur.

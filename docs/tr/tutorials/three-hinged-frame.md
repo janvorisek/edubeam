@@ -12,18 +12,18 @@ Modeli yalnızca incelemek mi istiyorsunuz? [Hazır modeli açın](https://run.e
 
 ## Problem {#the-problem}
 
-- Ayakları A ve E noktalarında sabit mesnetli, aralarında 8 m bulunan, 4 m yüksekliğinde iki kolon.
+- Ayakları A ve E noktalarında mafsallı mesnetli, aralarında 8 m bulunan, 4 m yüksekliğinde iki kolon.
 - Kolonların üstünde, açıklık ortasındaki C noktasında mafsallı yatay bir B–D kirişi.
 - Kirişin tamamında $q = 10$ kN/m'lik düzgün yayılı yük.
 - Çelik ($E = 210$ GPa, $G = 81$ GPa), IPE 300 ($A = 53{,}8$ cm², $I_y = 8356$ cm⁴, $h = 300$ mm).
 
 | Düğüm | X [m] | Z [m] | Mesnet |
 | --- | --- | --- | --- |
-| A | 0 | 0 | sabit mesnet |
+| A | 0 | 0 | mafsallı mesnet |
 | B | 0 | −4 | |
 | C | 4 | −4 | (kirişteki mafsal) |
 | D | 8 | −4 | |
-| E | 8 | 0 | sabit mesnet |
+| E | 8 | 0 | mafsallı mesnet |
 
 **z ekseninin aşağı doğru** olduğunu unutmayın; bu yüzden kolonların üst ucu `Z = −4`'tedir.
 
@@ -39,7 +39,7 @@ Kesit yalnızca yer değiştirmeleri etkiler. Bu çerçeve izostatik olduğundan
 
 En hızlı yol, fareyle tek bir çoklu çizgi çizmektir:
 
-1. **Izgaraya yasla**'nın açık olduğundan emin olun (**S** düğmesi).
+1. **Izgaraya yakala**'nın açık olduğundan emin olun (**S** düğmesi).
 2. *Elemanlar* sekmesi → ikinci **Eleman ekle** düğmesi (imleç simgeli).
 3. Sırasıyla (0, 0), (0, −4), (4, −4), (8, −4) ve (8, 0) noktalarına tıklayın. Noktaları bulmak için cetvellerden ve artı imlecinden yararlanın. Her tıklama bir düğüm ekler ve onu bir öncekine bağlar.
 4. Bitirmek için <kbd>Esc</kbd>'ye, ardından çerçeveyi ekrana sığdırmak için <kbd>F</kbd>'ye basın.
@@ -48,7 +48,7 @@ Artık beş düğümünüz ve dört elemanınız var. Buradaki resimlerde düğ�
 
 ## 3. Mesnetler ve mafsal {#_3-supports-and-the-hinge}
 
-1. A düğümüne tıklayın, **Düğüm mesnetleri**'ni açın ve **Mafsal**'ı seçin. Aynısını E düğümü için yapın.
+1. A düğümüne tıklayın, **Düğüm mesnetleri**'ni açın ve **Mafsallı mesnet**'i seçin. Aynısını E düğümü için yapın.
 2. *Elemanlar* tablosunda B'den C'ye giden elemanı bulun ve **bitiş** mafsalını işaretleyin (*Uç mafsalları* sütunundaki ikinci kutu).
 
 ![Elemanlar tablosu: mafsal, 2 numaralı elemanın ucunda, C düğümünde](/screenshots/tr/elements-table.webp)
@@ -104,7 +104,7 @@ $$V_A \cdot 4 - H_A \cdot 4 - q \cdot 4 \cdot 2 = 0 \quad\Rightarrow\quad H_A = 
 | Kirişte C'deki kesme kuvveti | $V_A - 4q$ | 0 | 0 |
 | Kirişte D'deki kesme kuvveti | $V_A - 8q$ | −40 kN | −40 kN |
 
-İki kolon aynı kuvveti taşıdığı hâlde kesme kuvvetlerinin işaretleri zıttır, çünkü her elemanın yerel eksenleri kendi yönünü izler: A–B yukarı, D–E aşağı doğru çizilmiştir. Kolonlardan birinin düğümlerini yer değiştirirseniz işareti de değişir.
+İki kolon aynı kuvveti taşıdığı hâlde kesme kuvvetlerinin işaretleri zıttır, çünkü her elemanın yerel eksenleri kendi yönünü izler: A–B yukarı, D–E aşağı doğru çizilmiştir. Kolonlardan birinin düğüm sırasını ters çevirirseniz işareti de değişir.
 
 Kirişte $M(x) = -80 + 40x - 5x^2$ kNm'dir (x, B'den ölçülür). Moment mafsalda sıfırdır ve hiçbir yerde pozitif değildir: kirişin tamamı negatif moment altındadır (üst lifler çekmede). Kesme kuvveti $V(x) = 40 - 10x$ tam C'de sıfıra iner, dolayısıyla momentin ekstremumu da mafsaldadır.
 

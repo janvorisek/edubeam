@@ -1,5 +1,5 @@
 ---
-description: "EduBeam kafes çubuklarını iki ucu mafsallı kirişler olarak nasıl modeller: serbestlik dereceleri, yerel ve genel rijitlik matrisleri ile dönüşüm matrisi."
+description: "EduBeam kafes çubuklarını iki ucu mafsallı kirişler olarak nasıl modeller: serbestlik dereceleri, yerel ve global rijitlik matrisleri ile dönüşüm matrisi."
 ---
 
 # Kafes çubuğu
@@ -37,7 +37,7 @@ Burada:
 
 ## Dönüşüm matrisi {#transformation-matrix}
 
-Eleman dönüşüm matrisi $\mathbf{T}$, yerel rijitlik matrisini genel koordinat sistemine dönüştürmek için kullanılır.
+Eleman dönüşüm matrisi $\mathbf{T}$, yerel rijitlik matrisini global koordinat sistemine dönüştürmek için kullanılır.
 
 $$
 \mathbf{T} = \begin{pmatrix}
@@ -48,9 +48,9 @@ $$
 \end{pmatrix}
 $$
 
-## Genel rijitlik matrisi {#global-stiffness-matrix}
+## Global rijitlik matrisi {#global-stiffness-matrix}
 
-Genel rijitlik matrisi $\mathbf{K_g}$, eleman dönüşüm matrisi $\mathbf{T}$ ile yerel rijitlik matrisi $\mathbf{K_l}$'nin çarpılmasıyla elde edilir:
+Global rijitlik matrisi $\mathbf{K_g}$, eleman dönüşüm matrisi $\mathbf{T}$ ile yerel rijitlik matrisi $\mathbf{K_l}$'nin çarpılmasıyla elde edilir:
 
 $$
 \mathbf{K_g} = \mathbf{T}^\mathsf{T} \cdot \mathbf{K_l} \cdot \mathbf{T}

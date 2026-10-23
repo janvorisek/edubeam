@@ -16,13 +16,13 @@ Modeli yalnızca incelemek mi istiyorsunuz? [Hazır modeli açın](https://run.e
 
 - Her biri 4 m'lik üç göze bölünmüş 12 m'lik açıklık, yükseklik 3 m.
 - Alt başlık düğümleri 1–4, üst başlık düğümleri 5 ve 6.
-- 1 düğümünde sabit mesnet, 4 düğümünde kayıcı mesnet.
+- 1 düğümünde mafsallı mesnet, 4 düğümünde kayıcı mesnet.
 - Alt başlığın 2 ve 3 düğümlerinde 30'ar kN'lik iki yük.
 - $A = 20$ cm² alanlı çelik çubuklar.
 
 | Düğüm | X [m] | Z [m] | Mesnet | Yük |
 | --- | --- | --- | --- | --- |
-| 1 | 0 | 0 | sabit mesnet | |
+| 1 | 0 | 0 | mafsallı mesnet | |
 | 2 | 4 | 0 | | `Fz = 30` kN |
 | 3 | 8 | 0 | | `Fz = 30` kN |
 | 4 | 12 | 0 | kayıcı mesnet | |
@@ -53,7 +53,7 @@ EduBeam'de bir kafes çubuğu, **her iki uç mafsalı** işaretlenmiş bir kiri�
 
 ## 3. Mesnetler ve yükler {#_3-supports-and-loads}
 
-1. (0, 0) noktasındaki düğüme tıklayın → **Düğüm mesnetleri** → **Mafsal**. (12, 0) noktasındaki düğüme tıklayın → **Kayıcı mesnet**.
+1. (0, 0) noktasındaki düğüme tıklayın → **Düğüm mesnetleri** → **Mafsallı mesnet**. (12, 0) noktasındaki düğüme tıklayın → **Kayıcı mesnet**.
 2. (4, 0) noktasındaki düğüme tıklayın → **Yük ekle** → `Fz = 30` kN. Aynısını (8, 0) için yapın.
 
 Pozitif `Fz` aşağı doğrudur. Kafes sistemin düğümleri serbestçe dönebilir; EduBeam, bağlanan tüm çubukların mafsallı olduğu düğümleri kabul eder ve bunların dönmesini 0 olarak verir.
@@ -66,7 +66,7 @@ Görünüm seçeneklerinde **Deforme şekil** ve **M<sub>y</sub> (x)** seçenekl
 
 ## 5. Elle kontrol edin {#_5-check-by-hand}
 
-**Mesnet tepkileri.** Yükler simetrik olduğundan $R_1 = R_4 = 30$ kN (yukarı doğru) olur ve sabit mesnetteki yatay tepki sıfırdır.
+**Mesnet tepkileri.** Yükler simetrik olduğundan $R_1 = R_4 = 30$ kN (yukarı doğru) olur ve mafsallı mesnetteki yatay tepki sıfırdır.
 
 **1 düğümü** (düğüm noktası yöntemi). 1–5 uç diyagonali 5 m uzunluğundadır ($\sin\alpha = 3/5$, $\cos\alpha = 4/5$):
 
@@ -94,4 +94,4 @@ $$\sum F_z:\ N_{15} \cdot \tfrac{3}{5} = -30 \Rightarrow N_{15} = -50\ \text{kN}
 - **Bir yükü taşıyın.** 30 kN'lik iki yükü de 2 düğümüne koyun. Orta diyagonal artık kuvvet taşır: hangi işaretle ve neden?
 - **Orta diyagonali silin.** Kafes sistem bir mekanizmaya dönüşür; EduBeam soruna yol açan mafsalları daire içine alır ve gözün nasıl kaydığını gösterir.
 - **Tüm mafsalların işaretini kaldırın.** Kafes sistem rijit düğümlü bir çerçeveye dönüşür. **M<sub>y</sub> (x)** seçeneğini işaretleyin: eğilme momentleri normal kuvvetlerin yanında çok küçüktür; mafsallı düğüm idealleştirmesinin işe yaramasının nedeni budur.
-- **İki mesneti de sabit mesnet yapın.** Fazladan bir mesnet tepkisi sistemi hiperstatik yapar ve alt başlık kuvvetleri artık çubuk alanlarına bağlı olur.
+- **İki mesneti de mafsallı mesnet yapın.** Fazladan bir mesnet tepkisi sistemi hiperstatik yapar ve alt başlık kuvvetleri artık çubuk alanlarına bağlı olur.

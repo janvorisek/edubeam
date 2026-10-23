@@ -1,12 +1,12 @@
 ---
-description: "EduBeam işaret kabulleri: x sağa ve z aşağı genel eksenler, pozitif yer değiştirmeler, dönmeler ve yükler, elemanın yerel eksenleri, iç kuvvetler ve mesnet tepkileri."
+description: "EduBeam işaret kabulleri: x sağa ve z aşağı global eksenler, pozitif yer değiştirmeler, dönmeler ve yükler, elemanın yerel eksenleri, iç kuvvetler ve mesnet tepkileri."
 ---
 
 # Koordinat sistemi ve işaret kabulü
 
 <Edubeam /> ile elde edilen "yanlış" sonuçların çoğu aslında beklenmedik bir işaret kabulünden kaynaklanır. Aşağıda anlatılanların tamamı çözücünün gerçekte kullandığı kabullerdir.
 
-## Genel eksenler {#global-axes}
+## Global eksenler {#global-axes}
 
 - **x**: yatay eksen, pozitif yönü **sağa** doğru.
 - **z**: düşey eksen, pozitif yönü ekranda **aşağı** doğru.
@@ -32,7 +32,7 @@ Yani yer çekimi yükü **pozitif** bir `fz`, sol kolonu sağa doğru iten rüzg
 
 ## Elemanın yerel eksenleri {#element-local-axes}
 
-Yerel **x** ekseni başlangıç düğümünden bitiş düğümüne doğru uzanır; yerel **z** ekseni ona diktir. Her ikisi de genel eksenlerin eleman açısı $\alpha$ kadar döndürülmesiyle elde edilir. Soldan sağa çizilmiş yatay bir elemanda yerel ve genel eksenler çakışır. Elemanın yönünü ters çevirmek için *Elemanlar* tablosundaki **Düğümleri yer değiştir** düğmesini kullanın.
+Yerel **x** ekseni başlangıç düğümünden bitiş düğümüne doğru uzanır; yerel **z** ekseni ona diktir. Her ikisi de global eksenlerin eleman açısı $\alpha$ kadar döndürülmesiyle elde edilir. Soldan sağa çizilmiş yatay bir elemanda yerel ve global eksenler çakışır. Elemanın yönünü ters çevirmek için *Elemanlar* tablosundaki **Düğüm sırasını ters çevir** düğmesini kullanın.
 
 ## İç kuvvetler {#internal-forces}
 

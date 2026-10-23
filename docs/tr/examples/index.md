@@ -18,7 +18,7 @@ Aynı modeller uygulamada **☰ → Örnekler** altında da bulunur; [run.edubea
 - **Konsol kiriş**: uç sehimini $FL^3/3EI$ ile karşılaştırın ([Sonuçların elle kontrolü](/tr/guide/verification) sayfasına bakın), ardından *Kesitler* sekmesinde $I_y$'yi yarıya indirin.
 - **Pratt kafes kirişi**: bu örnekte düğüm noktaları rijittir. Gerçek bir kafes sistem elde etmek için her çubukta iki uç mafsalını da işaretleyin ve çubuk kuvvetlerini karşılaştırın. Şimdi bir diyagonali kaldırın: kafes sistem hâlâ ayakta duruyor mu?
 - **Üç açıklıklı sürekli kiriş**: kiriş yalnızca uçlarından mesnetlidir. Sürekli kiriş elde etmek için iç düğümler B ve C'de `Dz`'yi işaretleyin ve mesnetlerin üzerinde negatif momentlerin nasıl oluştuğunu izleyin.
-- **Portal çerçeve**: kiriş-kolon birleşimlerini mafsallı modellemek için kirişin iki uç mafsalını da işaretleyin ya da sağ mesneti kayıcı mesnet yerine sabit mesnet yapın.
+- **Portal çerçeve**: kiriş-kolon birleşimlerini mafsallı modellemek için kirişin iki uç mafsalını da işaretleyin ya da sağ mesneti kayıcı mesnet yerine mafsallı mesnet yapın.
 - **Sıcaklık yüklemesi**: iki mesnette de `Dx`'i tutun ve normal kuvvetin nasıl oluştuğunu izleyin.
 
 ## Çözümlü eğitimler {#worked-tutorials}

@@ -256,7 +256,7 @@ const strings: Record<DocsLanguage, DocsStrings> = {
     openInApp: "EduBeam'de aç",
     simplySupportedBeam: 'Basit mesnetli kiriş',
     udlBlurb:
-      'Sabit ve kayıcı mesnetli kiriş, 12 kN/m yük altında: klasik kesme kuvveti ve eğilme momenti diyagramları.',
+      'Mafsallı ve kayıcı mesnetli kiriş, 12 kN/m yük altında: klasik kesme kuvveti ve eğilme momenti diyagramları.',
     trapezoidalBlurb: "Sağ açıklık boyunca 4 kN/m'den 14 kN/m'ye artan bir yük.",
     concentratedBlurb: "Açıklık ortasında aşağı yönlü tek bir 18 kN'lik yük, ek düğüm gerekmeden.",
     nodalBlurb: "Mesnet tepkilerini ve sehimleri kontrol etmek için ara mesnete etkiyen 20 kN'lik yük.",

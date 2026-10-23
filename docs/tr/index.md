@@ -66,8 +66,8 @@ features:
 ## Neleri modelleyebilirsiniz? {#what-you-can-model}
 
 - Düzlemde **kirişler, çerçeveler ve kafes sistemler**: sürekli kirişler, portal çerçeveler, üç mafsallı kemerler, mafsal düğümlü kafes sistemler.
-- **Her tür mesnet**: sabit mesnet, kayıcı mesnet, ankastre mesnet, kayar ankastre, eğik mesnetler ve mesnet çökmeleri.
-- **Yükler**: tekil kuvvetler ve momentler, düzgün ve trapez yayılı yükler, çubuk üzerinde herhangi bir noktaya etkiyen tekil yükler ve sıcaklık yüklemesi.
+- **Her tür mesnet**: mafsallı mesnet, kayıcı mesnet, ankastre mesnet, kayar ankastre, eğik mesnetler ve mesnet çökmeleri.
+- **Yükler**: tekil kuvvetler ve momentler, düzgün yayılı ve trapez yükler, çubuk üzerinde herhangi bir noktaya etkiyen tekil yükler ve sıcaklık yüklemesi.
 - **Her tür kesit**: kütüphaneden (IPE, HEA, AISC W, HSS, dikdörtgenler, borular) seçin ya da çokgen olarak çizin; kesit özellikleri sizin için hesaplanır.
 
 Ayrıntılar için [Giriş](/tr/guide/introduction) sayfasına bakın.

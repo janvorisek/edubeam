@@ -7,7 +7,7 @@ description: "Yaklaşık on dakikada düzgün yayılı yüklü, basit mesnetli b
 Yaklaşık on dakikada düzgün yayılı yük altındaki basit mesnetli bir çelik kirişi modelleyecek, mesnet tepkilerini, kesme kuvvetini ve eğilme momentini okuyacak ve bunları ders kitabı formülleriyle karşılaştıracaksınız.
 
 ::: tip Birlikte uygulayın
-[run.edubeam.app](https://run.edubeam.app/?lang=tr){target="_blank"} adresini ikinci bir sekmede açın. Orada zaten bir model varsa boş bir sayfayla başlamak için üst çubuktaki **Modeli temizle** düğmesini kullanın; tamamen sıfırdan başlamak için *Malzemeleri sil* ve *Kesitleri sil* seçeneklerini de işaretleyin. Temizleme işlemini <kbd>Ctrl</kbd>+<kbd>Z</kbd> ile geri alabilirsiniz; eski model de **☰ → Son modeller** listesinde kalır.
+[run.edubeam.app](https://run.edubeam.app/?lang=tr){target="_blank"} adresini ikinci bir sekmede açın. Orada zaten bir model varsa boş bir sayfayla başlamak için üst araç çubuğundaki **Modeli temizle** düğmesini kullanın; tamamen sıfırdan başlamak için *Malzemeleri sil* ve *Kesitleri sil* seçeneklerini de işaretleyin. Temizleme işlemini <kbd>Ctrl</kbd>+<kbd>Z</kbd> ile geri alabilirsiniz; eski model de **☰ → Son modeller** listesinde kalır.
 
 Ekrandaki ipuçlarıyla uygulayarak öğrenmeyi mi tercih edersiniz? **☰ → İlk kirişinizi çizin** benzer bir kirişi fareyle adım adım çizdirir.
 :::
@@ -16,13 +16,13 @@ Ekrandaki ipuçlarıyla uygulayarak öğrenmeyi mi tercih edersiniz? **☰ → �
 
 <ExampleStructure />
 
-6 m açıklıklı basit mesnetli bir kiriş (solda sabit mesnet, sağda kayıcı mesnet) 12 kN/m'lik düzgün yayılı yük taşıyor. Malzeme: çelik, $E = 210\ \text{GPa}$, $G = 81\ \text{GPa}$. Kesit: IPE 200, $A = 28{,}5\ \text{cm}^2$, $I_y = 1943\ \text{cm}^4$, $h = 200\ \text{mm}$.
+6 m açıklıklı basit mesnetli bir kiriş (solda mafsallı mesnet, sağda kayıcı mesnet) 12 kN/m'lik düzgün yayılı yük taşıyor. Malzeme: çelik, $E = 210\ \text{GPa}$, $G = 81\ \text{GPa}$. Kesit: IPE 200, $A = 28{,}5\ \text{cm}^2$, $I_y = 1943\ \text{cm}^4$, $h = 200\ \text{mm}$.
 
 ## 1. Birimleri kontrol edin {#_1-check-the-units}
 
 Görüntüleyicinin sağ alt köşesindeki birim göstergesi, tüm giriş alanlarının ve sonuçların hangi birimleri kullandığını gösterir. Bu eğitim varsayılan SI birimlerini esas alır: metre, kN, kNm ve MPa.
 
-![Izgara (G), yaslama (S) ve artı imleci düğmeleri ile birim göstergesi](/screenshots/tr/ui-grid-units.webp){.shot-sm}
+![Izgara (G), yakalama (S) ve artı imleci düğmeleri ile birim göstergesi](/screenshots/tr/ui-grid-units.webp){.shot-sm}
 
 `ft · kip · kip·ft · ksi` görüyorsanız göstergeye tıklayın ve **Birim sistemi → SI (metrik)** seçeneğini seçin.
 
@@ -30,7 +30,7 @@ Görüntüleyicinin sağ alt köşesindeki birim göstergesi, tüm giriş alanla
 
 Elemanlar bir malzemeye ve bir kesite ihtiyaç duyar, bu yüzden önce bunları oluşturun.
 
-1. Alt çubuktaki **Malzemeler** sekmesini açın ve **Malzeme ekle** düğmesine tıklayın.
+1. Alt paneldeki **Malzemeler** sekmesini açın ve **Malzeme ekle** düğmesine tıklayın.
 2. `E = 210000` MPa ve `G = 81000` MPa girin. Yoğunluğu ve `α = 0,000012` 1/K değerini olduğu gibi bırakın. **Malzeme ekle** düğmesine tıklayın.
 
 <div class="shots">
@@ -58,7 +58,7 @@ EduBeam, kayma şekil değiştirmesini hesaba katan Timoshenko kiriş elemanlar�
 
 ![Düğüm ekle penceresinde mesnetleri de hemen tanımlayabilirsiniz](/screenshots/tr/qs-node.webp){.shot-md}
 
-Fare düğmesini kullanırsanız tuvale her tıklamanızda bir düğüm yerleşir. **Izgaraya yasla** açıkken (<kbd>S</kbd>) tıklamalar ızgara adımına (varsayılan 0,1 m) yaslanır.
+Fare düğmesini kullanırsanız tuvale her tıklamanızda bir düğüm yerleşir. **Izgaraya yakala** açıkken (<kbd>S</kbd>) tıklamalar ızgara adımına (varsayılan 0,1 m) yakalanır.
 
 ## 4. Düğümleri bir elemanla birleştirin {#_4-connect-them-with-an-element}
 
@@ -73,10 +73,10 @@ Düğümler arasında bir çizgi belirir. Modeli ekrana sığdırmak için <kbd>
 
 **Düğümler** sekmesinde, **Tutulu serbestlik dereceleri** sütununda her düğüm için bir mesnet sembolü seçici ve üç onay kutusu bulunur: `Dx`, `Dz`, `Ry`.
 
-- `1` numaralı düğüm: **Mafsal** sembolünü seçin veya **Dx** ve **Dz** kutularını işaretleyin.
+- `1` numaralı düğüm: **Mafsallı mesnet** sembolünü seçin veya **Dx** ve **Dz** kutularını işaretleyin.
 - `2` numaralı düğüm: **Kayıcı mesnet** sembolünü seçin veya yalnızca **Dz** kutusunu işaretleyin.
 
-![Düğümler tablosunda mesnetler: 1 numaralı düğüm sabit mesnetli, 2 numaralı düğüm kayıcı mesnetli](/screenshots/tr/qs-supports.webp)
+![Düğümler tablosunda mesnetler: 1 numaralı düğüm mafsallı mesnetli, 2 numaralı düğüm kayıcı mesnetli](/screenshots/tr/qs-supports.webp)
 
 Görüntüleyicide bir düğüme tıklayıp **Düğüm mesnetleri** seçeneğini de seçebilirsiniz. Tüm mesnet türleri [Düğümler ve mesnetler](/tr/essentials/nodes-supports#supports) sayfasında listelenmiştir.
 
@@ -103,7 +103,7 @@ Pozitif `fz` +z yönünü, yani ekranda **aşağıyı** gösterir; dolayısıyla
 | **M<sub>y</sub>(x)** | Açıklık ortasında **54 kNm**'lik en büyük değere ulaşan bir parabol. |
 | **Deforme şekil** | Simetrik bir sehim. Dönmesini okumak için imleci `1` numaralı düğümün üzerine getirin: **2,6469 · 10⁻² rad**. |
 
-Sayısal değerler alt çubuktaki **Sonuçlar** sekmesindedir. **Düğüm sonuçları** her düğüm için `Dx`, `Dz`, `Ry` değerlerini listeler. **Eleman sonuçları** her elemanın uç kuvvetlerini kendi yerel koordinat sisteminde listeler.
+Sayısal değerler alt paneldeki **Sonuçlar** sekmesindedir. **Düğüm sonuçları** her düğüm için `Dx`, `Dz`, `Ry` değerlerini listeler. **Eleman sonuçları** her elemanın uç kuvvetlerini kendi yerel koordinat sisteminde listeler.
 
 Diyagramlar çok büyük veya çok küçük görünüyorsa **Ayarlar → Görüntüleyici ayarları → Boyutlar** altındaki **Sonuç ölçeği** değerini değiştirin.
 
@@ -135,7 +135,7 @@ EduBeam'in asıl gücü burada ortaya çıkar. Aşağıdakilerin her birini dene
 
 ## 10. Kaydedin veya paylaşın {#_10-save-or-share}
 
-- **Modeli paylaş** (üst çubukta veya ☰ menüsünde) size modelin tamamını içeren bir bağlantı verir. Bağlantıyı bir e-postaya, sohbete veya sunumunuza yapıştırın.
+- **Modeli paylaş** (üst araç çubuğunda veya ☰ menüsünde) size modelin tamamını içeren bir bağlantı verir. Bağlantıyı bir e-postaya, sohbete veya sunumunuza yapıştırın.
 - **☰ → Projeyi kaydet** (<kbd>Ctrl</kbd>+<kbd>S</kbd>) bir `project.json` dosyası indirir; bu dosyayı daha sonra **Proje aç** ile veya uygulamanın üzerine sürükleyip bırakarak açabilirsiniz.
 - **☰ → Görüntüyü dışa aktar** (<kbd>Ctrl</kbd>+<kbd>P</kbd>) çizimi bir rapor için PNG veya SVG olarak kaydeder.
 
@@ -145,5 +145,5 @@ Modeliniz tarayıcıda da saklanır, bu yüzden sayfayı yenilediğinizde kaybol
 
 - [Üç mafsallı çerçeve eğitimi](/tr/tutorials/three-hinged-frame): iç mafsallı, elle kontrol edilmiş bir çerçeve.
 - [Örnekler](/tr/examples/): hazır çerçeveleri ve kafes sistemleri tek tıkla açın.
-- [Yükler](/tr/essentials/loads): trapez yayılı, tekil ve sıcaklık yükleri, öngörülen yer değiştirmeler.
+- [Yükler](/tr/essentials/loads): trapez, tekil ve sıcaklık yükleri, öngörülen yer değiştirmeler.
 - [Klavye, fare ve dokunmatik](/tr/reference/shortcuts): tuvalde daha hızlı çalışın.

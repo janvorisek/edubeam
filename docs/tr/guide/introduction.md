@@ -40,8 +40,8 @@ Uygulamayı ilk açtığınızda bir karşılama penceresi nasıl başlamak iste
 
 ![Karşılama penceresi](/screenshots/tr/welcome.webp){.shot-lg}
 
-- **Beni gezdir** menüyü, geri al ve yinele düğmelerini, görüntüleyici düğmelerini, görünüm seçeneklerini, ızgarayı ve birimleri ve alt çubuğu tek tek tanıtır.
-- **İlk kirişinizi çizin** yedi adımlı, rehberli bir görevdir. Fareyle bir kiriş çizer, mesnetler, yükler ve sonuçları okursunuz. Köşedeki küçük bir kart size sıradaki adımı söyler.
+- **Beni gezdir** menüyü, geri al ve yinele düğmelerini, görüntüleyici düğmelerini, görünüm seçeneklerini, ızgarayı ve birimleri ve alt paneli tek tek tanıtır.
+- **İlk kirişinizi çizin** yedi adımlı, rehberli bir görevdir. Fareyle bir kiriş çizer, onu mesnetler ve yükler, ardından sonuçları okursunuz. Köşedeki küçük bir kart size sıradaki adımı söyler.
 - **Bir örnek açın** hazır modellerin bulunduğu galeriyi açar.
 
 Üçü de **☰ menüsünde** de bulunur, böylece onlara istediğiniz zaman geri dönebilirsiniz.
@@ -53,8 +53,8 @@ Uygulamayı ilk açtığınızda bir karşılama penceresi nasıl başlamak iste
 | Alan | Olanaklar |
 | --- | --- |
 | **Yapılar** | Düğümlerden ve 2B Timoshenko kiriş elemanlarından oluşan düzlem (x–z) kirişler, sürekli kirişler, çerçeveler ve kafes sistemler. Uç mafsalları herhangi bir çubuğu kafes çubuğuna dönüştürür. |
-| **Mesnetler** | Sabit mesnet, kayıcı mesnet, ankastre mesnet, kayar ankastre ve tutulu `Dx`, `Dz`, `Ry` serbestlik derecelerinin diğer tüm kombinasyonları; hepsi sembolüyle seçilir. Düğüm açısıyla eğik mesnetler. Mesnet çökmeleri. |
-| **Yükler** | Düğüm kuvvetleri ve momentleri, öngörülen yer değiştirmeler, düzgün ve trapez yayılı yükler, çubuk boyunca tekil kuvvetler ve momentler, düzgün veya kesit yüksekliği boyunca değişen sıcaklık. |
+| **Mesnetler** | Mafsallı mesnet, kayıcı mesnet, ankastre mesnet, kayar ankastre ve tutulu `Dx`, `Dz`, `Ry` serbestlik derecelerinin diğer tüm kombinasyonları; hepsi sembolüyle seçilir. Düğüm açısıyla eğik mesnetler. Mesnet çökmeleri. |
+| **Yükler** | Düğüm kuvvetleri ve momentleri, öngörülen yer değiştirmeler, düzgün yayılı ve trapez yükler, çubuk boyunca tekil kuvvetler ve momentler, düzgün veya kesit yüksekliği boyunca değişen sıcaklık. |
 | **Kesitler** | Malzeme ve kesit kütüphaneleri (Avrupa ve ABD) ve her şekil için $A$, $I_y$, $I_z$, $I_{yz}$, asal eksenleri ve atalet yarıçaplarını hesaplayan bir çokgen düzenleyici. |
 | **Sonuçlar** | Deforme şekil, normal kuvvet **N**, kesme kuvveti **V**, eğilme momenti **M**, mesnet tepkileri, düğüm yer değiştirmeleri, çubuk uç kuvvetleri ve eleman rijitlik matrisleri. |
 | **Analiz** | Tek yükleme durumuyla doğrusal statik analiz. Sonuçlar doğrusal model için kesindir, bu yüzden ağı sıklaştırmaya gerek yoktur. Bir yapı çözülemediğinde EduBeam nedenini söyler ve yapının nasıl hareket edebildiğini canlandırarak gösterir. |

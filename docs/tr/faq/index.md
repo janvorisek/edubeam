@@ -32,9 +32,9 @@ Yalnızca tarayıcınızda. Modeller hiçbir zaman bir sunucuya gönderilmez; pa
 
 ## Modelleme {#modelling}
 
-### Ankastre, sabit veya kayıcı mesneti nasıl tanımlarım? {#how-do-i-make-a-fixed-pinned-roller-support}
+### Ankastre, mafsallı veya kayıcı mesneti nasıl tanımlarım? {#how-do-i-make-a-fixed-pinned-roller-support}
 
-Düğüme tıklayın, **Düğüm mesnetleri**'ni açın ve sembolü seçin: mafsal, kayıcı mesnet, ankastre, kayar ankastre ve diğerleri. Ya da serbestlik derecelerini işaretleyin: **Dx + Dz + Ry** = ankastre, **Dx + Dz** = sabit mesnet, **Dz** = kayıcı mesnet. Tüm kombinasyonlar [Düğümler ve mesnetler](/tr/essentials/nodes-supports#supports) sayfasında listelenir.
+Düğüme tıklayın, **Düğüm mesnetleri**'ni açın ve sembolü seçin: mafsallı mesnet, kayıcı mesnet, ankastre, kayar ankastre ve diğerleri. Ya da serbestlik derecelerini işaretleyin: **Dx + Dz + Ry** = ankastre, **Dx + Dz** = mafsallı mesnet, **Dz** = kayıcı mesnet. Tüm kombinasyonlar [Düğümler ve mesnetler](/tr/essentials/nodes-supports#supports) sayfasında listelenir.
 
 ### Kafes sistemi nasıl oluştururum? {#how-do-i-make-a-truss}
 
@@ -62,7 +62,7 @@ Hayır, yalnızca bir yükleme durumu vardır. Her durumu ayrı modelleyin ve ay
 
 ### Yüklerim neden yukarıyı gösteriyor? {#why-do-my-loads-point-up}
 
-Çünkü genel z ekseni **aşağı** doğrudur: pozitif `Fz` aşağı doğru etkir. [İşaret kabulü](/tr/elements/conventions) sayfasına bakın. Yukarı doğru bir düşey eksen tercih ediyorsanız *Ayarlar → Dil ve bölge → Koordinat sistemi* bölümünden y yukarı eksenlere geçin.
+Çünkü global z ekseni **aşağı** doğrudur: pozitif `Fz` aşağı doğru etkir. [İşaret kabulü](/tr/elements/conventions) sayfasına bakın. Yukarı doğru bir düşey eksen tercih ediyorsanız *Ayarlar → Dil ve bölge → Koordinat sistemi* bölümünden y yukarı eksenlere geçin.
 
 ## Sonuçlar {#results}
 

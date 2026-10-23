@@ -16,7 +16,7 @@ Diyagramları görüntüleyicinin sağ üstündeki **görünüm seçeneklerinden
 | --- | --- | --- |
 | **Deforme şekil** | gri | Büyütülmüş çizilir: en büyük yer değiştirme, *Sonuç ölçeği* kadar piksel uzunluğunda gösterilir. Varsayılan olarak açıktır. |
 | **N (x)**, normal kuvvet | mavi | Çekme pozitiftir. Elemana eksenel yük etkimiyorsa eleman boyunca sabittir. |
-| **V<sub>z</sub> (x)**, kesme kuvveti | yeşil | Düzgün yayılı yük altında doğrusal, trapez yayılı yük altında ikinci derecedendir; tekil yükte sıçrama yapar. |
+| **V<sub>z</sub> (x)**, kesme kuvveti | yeşil | Düzgün yayılı yük altında doğrusal, trapez yük altında ikinci derecedendir; tekil yükte sıçrama yapar. |
 | **M<sub>y</sub> (x)**, eğilme momenti | kırmızı | Alt lifleri çektiğinde pozitiftir. Değerler iki uçta, tekil yüklerde ve her yerel ekstremumda (V = 0 olan yerde) yazılır. Varsayılan olarak açıktır. |
 | **Mesnet tepkileri** | mor | Her tutulu serbestlik derecesi için bir ok ve bir değer. Varsayılan olarak açıktır. |
 
@@ -34,7 +34,7 @@ Değerler her diyagramın karakteristik noktalarına yazılır. Etiketlerin yön
 
 </div>
 
-![Mesnet tepkileri: her sabit mesnette 40 kN düşey ve 20 kN yatay](/screenshots/tr/results-reactions.webp){.shot-lg}
+![Mesnet tepkileri: her mafsallı mesnette 40 kN düşey ve 20 kN yatay](/screenshots/tr/results-reactions.webp){.shot-lg}
 
 ### İşaretin okunması {#reading-the-sign}
 
@@ -54,11 +54,11 @@ Dokunmatik ekranda nesneye dokunun. Aynı bilgiler nesnenin seçim panelinde gö
 
 ## Sonuçlar sekmesi {#results-tab}
 
-Alt çubuktaki **Sonuçlar** sekmesinde iki tablo vardır; **Düğüm sonuçları** ve **Eleman sonuçları** ile aralarında geçiş yaparsınız.
+Alt paneldeki **Sonuçlar** sekmesinde iki tablo vardır; **Düğüm sonuçları** ve **Eleman sonuçları** ile aralarında geçiş yaparsınız.
 
 ### Düğüm sonuçları {#nodal-results}
 
-Her düğüm için bir satırda **Dx**, **Dz** (yer değiştirme biriminde) ve **Ry** (rad) yer alır. İşaretler genel eksenleri izler: pozitif `Dz` aşağı doğrudur, pozitif `Ry` ise ekranda saat yönünün tersinedir.
+Her düğüm için bir satırda **Dx**, **Dz** (yer değiştirme biriminde) ve **Ry** (rad) yer alır. İşaretler global eksenleri izler: pozitif `Dz` aşağı doğrudur, pozitif `Ry` ise ekranda saat yönünün tersinedir.
 
 ![Üç mafsallı çerçevenin düğüm sonuçları (Sayı biçimi: Otomatik)](/screenshots/tr/results-nodal.webp)
 
@@ -85,7 +85,7 @@ Bunlar düğümlerin elemana uyguladığı kuvvetlerdir: eleman rijitlik matrisi
 
 ### Rijitlik matrisi {#stiffness-matrix}
 
-Bir elemanın panelinden veya tablo satırından **Rijitlik matrisi** seçeneğini seçtiğinizde, elemanın genel koordinatlardaki 6 × 6 rijitlik matrisini gösteren bir pencere açılır. Rijitlik (deplasman) yöntemi derslerinde elle yapılan birleştirmeyi kontrol etmek için kullanışlıdır. Formüller [teori kılavuzunda](/tr/elements/beam) yer alır.
+Bir elemanın panelinden veya tablo satırından **Rijitlik matrisi** seçeneğini seçtiğinizde, elemanın global koordinatlardaki 6 × 6 rijitlik matrisini gösteren bir pencere açılır. Rijitlik (deplasman) yöntemi derslerinde elle yapılan birleştirmeyi kontrol etmek için kullanışlıdır. Formüller [teori kılavuzunda](/tr/elements/beam) yer alır.
 
 ## Sayı biçimi {#number-format}
 
@@ -101,7 +101,7 @@ Otomatik biçim, 0,001 ile 100 000 arasındaki değerleri düz sayı olarak yaza
 
 ## Hassasiyet ve doğruluk {#precision-and-accuracy}
 
-- Kiriş elemanı; düğüm, düzgün yayılı, trapez yayılı, tekil ve sıcaklık yüklemeleri altında doğrusal Timoshenko modeli için kesin sonuç verir. Bu nedenle sonuçlar eleman sayısına **bağlı değildir**.
+- Kiriş elemanı; düğüm, düzgün yayılı, trapez, tekil ve sıcaklık yüklemeleri altında doğrusal Timoshenko modeli için kesin sonuç verir. Bu nedenle sonuçlar eleman sayısına **bağlı değildir**.
 - Hesap çift duyarlıkla yapılır. `1,5 · 10⁻¹⁸` gibi çok küçük değerler yuvarlama hatasıdır ve sıfır anlamına gelir.
 - Sehimler **kayma şekil değiştirmesini** içerir. Narin çubuklarda bu, Euler–Bernoulli değerine yüzde birin altında bir katkı yapar; yüksek veya kısa çubuklarda birkaç yüzdeye ulaşabilir. Bu etkiyi bastırmak için kesitin kayma düzeltme katsayısını büyük bir değere ayarlayın.
 

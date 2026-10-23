@@ -21,7 +21,7 @@ EduBeam'in önceki tüm sürümlerinde kaydedilen proje dosyaları güncel sür�
 
 ## Bağlantıyla paylaşma {#share-a-link}
 
-**Modeli paylaş** (üst çubukta veya ☰ menüsünde) *Modeli bağlantıyla paylaş* penceresini açar:
+**Modeli paylaş** (üst araç çubuğunda veya ☰ menüsünde) *Modeli bağlantıyla paylaş* penceresini açar:
 
 ![Paylaşım penceresi](/screenshots/tr/share.webp){.shot-lg}
 
@@ -69,7 +69,7 @@ Liste yalnızca bu tarayıcıda saklanır.
 
 ## Görüntüleyici gömme {#embed-a-read-only-viewer}
 
-Modeli **görüntüleyici modunda** açmak için paylaşım bağlantısına `&viewer=1` ekleyin. Üst çubuk, alt çubuk, sekmeler, geri al ve yinele, ızgara düğmeleri ve eksen göstergesi gizlenir; geriye tuval, sığdırma ve ortalama düğmeleri ve görünüm seçenekleri kalır. Ders notlarına veya bir web sayfasına canlı, yakınlaştırılabilir bir model gömmek için bu URL'yi bir `<iframe>` içine koyun:
+Modeli **görüntüleyici modunda** açmak için paylaşım bağlantısına `&viewer=1` ekleyin. Üst araç çubuğu, alt panel, sekmeler, geri al ve yinele, ızgara düğmeleri ve eksen göstergesi gizlenir; geriye tuval, sığdırma ve ortalama düğmeleri ve görünüm seçenekleri kalır. Ders notlarına veya bir web sayfasına canlı, yakınlaştırılabilir bir model gömmek için bu URL'yi bir `<iframe>` içine koyun:
 
 ```html
 <iframe src="https://run.edubeam.app/?viewer=1&model=…" width="100%" height="400"></iframe>

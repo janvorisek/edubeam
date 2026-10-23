@@ -1,18 +1,18 @@
 ---
-description: "Düğüm kuvvetleri ve momentleri, mesnet çökmeleri, düzgün yayılı, trapez yayılı ve tekil eleman yükleri ile sıcaklık yüklemeleri; her biri için işaret kabulüyle birlikte."
+description: "Düğüm kuvvetleri ve momentleri, mesnet çökmeleri, düzgün yayılı, trapez ve tekil eleman yükleri ile sıcaklık yüklemeleri; her biri için işaret kabulüyle birlikte."
 ---
 
 # Yükler
 
 Tüm yükler **tek bir yükleme durumunda** yer alır ve birlikte etkir. Farklı senaryoları karşılaştırmak için her birini ayrı bir proje dosyası ya da paylaşım bağlantısı olarak kaydedin.
 
-![Tek bir sürekli kirişte tüm yük türleri: düğüm kuvveti, düzgün yayılı yük, trapez yayılı yük, tekil yük, sıcaklık yüklemesi ve mesnet çökmesi](/screenshots/tr/loads-overview.webp)
+![Tek bir sürekli kirişte tüm yük türleri: düğüm kuvveti, düzgün yayılı yük, trapez yük, tekil yük, sıcaklık yüklemesi ve mesnet çökmesi](/screenshots/tr/loads-overview.webp)
 
 <LoadShowcase />
 
 ## Tek cümlede işaret kabulü {#sign-convention-in-one-line}
 
-Genel **x** ekseni sağa, genel **z** ekseni **aşağı** doğrudur. Bu nedenle pozitif `Fz` veya `fz` aşağı doğru, yerçekimi gibi etkiyen bir yüktür; pozitif `My` momenti ise ekranda saat yönünün tersine döndürür. Ayrıntılar [Koordinat sistemi ve işaret kabulü](/tr/elements/conventions) sayfasındadır. [y yukarı eksenlerde](/tr/elements/conventions#y-up-axes) düşey büyüklüklerin adları ve işaretleri değişir: yerçekimi yükü negatif bir `Fy` olur.
+Global **x** ekseni sağa, global **z** ekseni **aşağı** doğrudur. Bu nedenle pozitif `Fz` veya `fz` aşağı doğru, yerçekimi gibi etkiyen bir yüktür; pozitif `My` momenti ise ekranda saat yönünün tersine döndürür. Ayrıntılar [Koordinat sistemi ve işaret kabulü](/tr/elements/conventions) sayfasındadır. [y yukarı eksenlerde](/tr/elements/conventions#y-up-axes) düşey büyüklüklerin adları ve işaretleri değişir: yerçekimi yükü negatif bir `Fy` olur.
 
 ## Düğüm yükleri {#nodal-loads}
 
@@ -26,11 +26,11 @@ Genel **x** ekseni sağa, genel **z** ekseni **aşağı** doğrudur. Bu nedenle 
 
 ![Düğüm yükü ekle. Önizleme, siz yazarken yükün yönünü gösterir.](/screenshots/tr/loads-nodal.webp){.shot-md}
 
-Bileşenler her zaman **genel** koordinat sistemindedir. Bir düğüme birden fazla düğüm yükü etkiyebilir; bunlar toplanır ve üst üste çizilir.
+Bileşenler her zaman **global** koordinat sistemindedir. Bir düğüme birden fazla düğüm yükü etkiyebilir; bunlar toplanır ve üst üste çizilir.
 
 ### Öngörülen yer değiştirmeler (mesnet çökmeleri) {#prescribed-displacements-support-settlements}
 
-Aynı pencerede **Öngörülen yer değiştirme**'yi seçin ya da mesnetli bir düğüme tıklayın → **Yer değiştirme öngör**. Alanlar şöyle değişir:
+Aynı pencerede **Öngörülen yer değiştirme**'yi seçin ya da mesnetli bir düğüme tıklayın → **Yer değiştirme tanımla**. Alanlar şöyle değişir:
 
 | Alan | Anlamı | Birim |
 | --- | --- | --- |
@@ -50,22 +50,22 @@ Yalnızca o düğümde **tutulu** olan bir serbestlik derecesine değer girebili
 | --- | --- | --- |
 | `fx` | x doğrultusunda birim boydaki yük | kuvvet / uzunluk |
 | `fz` | z doğrultusunda birim boydaki yük | kuvvet / uzunluk |
-| **LCS** | işaretli: `fx`, `fz` elemanın yerel eksenleri doğrultusunda etkir; işaretsiz: genel eksenler doğrultusunda | – |
+| **LCS** | işaretli: `fx`, `fz` elemanın yerel eksenleri doğrultusunda etkir; işaretsiz: global eksenler doğrultusunda | – |
 
-**LCS** varsayılan olarak işaretlidir. Soldan sağa çizilmiş yatay bir elemanda yerel ve genel eksenler aynıdır, bu yüzden fark etmez. Eğik bir çubukta ise fark eder:
+**LCS** varsayılan olarak işaretlidir. Soldan sağa çizilmiş yatay bir elemanda yerel ve global eksenler aynıdır, bu yüzden fark etmez. Eğik bir çubukta ise fark eder:
 
 - **çubuğa dik** bir yük (mertek üzerindeki rüzgâr) LCS **işaretliyken** `fz`'dir;
 - çubuk boyunun metresi başına **düşey** bir yük (zati ağırlık) LCS **işaretsizken** `fz`'dir;
 - *yatay izdüşümün* metresi başına düşey bir yük (kar) doğrudan girilemez. Önce $\cos\alpha$ ile çarpın ($\alpha$ çubuğun eğimidir) ve düşey yük olarak girin.
 
-### Trapez yayılı yük {#trapezoidal-load}
+### Trapez yük {#trapezoidal-load}
 
 | Alan | Anlamı |
 | --- | --- |
 | `f1x`, `f1z` | **başlangıç** düğümündeki yük şiddeti |
 | `f2x`, `f2z` | **bitiş** düğümündeki yük şiddeti |
 
-Yük şiddeti elemanın başından sonuna doğrusal olarak değişir. Üçgen yük için `f1z = 0` girin. Trapez yükler her zaman **elemanın yerel eksenleri** doğrultusunda etkir (LCS kutusu kilitlidir); yatay bir elemanda bu, genel eksenlerle aynıdır.
+Yük şiddeti elemanın başından sonuna doğrusal olarak değişir. Üçgen yük için `f1z = 0` girin. Trapez yükler her zaman **elemanın yerel eksenleri** doğrultusunda etkir (LCS kutusu kilitlidir); yatay bir elemanda bu, global eksenlerle aynıdır.
 
 ### Tekil yük {#concentrated-load}
 
@@ -92,7 +92,7 @@ Sıcaklık yüklemeleri malzemenin **α** değerini ve kesitin **yüksekliği h*
 
 ![Düzgün yayılı yük](/screenshots/tr/loads-udl.webp)
 
-![Trapez yayılı yük](/screenshots/tr/loads-trapezoidal.webp)
+![Trapez yük](/screenshots/tr/loads-trapezoidal.webp)
 
 ![Tekil yük](/screenshots/tr/loads-concentrated.webp)
 
@@ -113,4 +113,4 @@ Sıcaklık yüklemeleri malzemenin **α** değerini ve kesitin **yüksekliği h*
 
 - **Yükleme durumları ve kombinasyonları.** Tek bir yükleme durumu vardır.
 - **Zati ağırlık.** LCS işaretsiz bir düzgün yayılı yük olarak girin: $f_z = \rho\,g\,A$. Bir IPE 200 için 7850 × 9,81 × 0,00285 ≈ 0,22 kN/m.
-- Eğik çubuklarda **genel eksenlerde trapez yükler**.
+- Eğik çubuklarda **global eksenlerde trapez yükler**.

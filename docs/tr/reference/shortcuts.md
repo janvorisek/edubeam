@@ -24,7 +24,7 @@ Klavye kısayolları, odak görüntüleyicideyken çalışır. Bir tablo hücres
 | <kbd>F</kbd> | Modeli ekrana sığdır |
 | <kbd>C</kbd> | Modeli ortala |
 | <kbd>G</kbd> | Izgarayı aç/kapat |
-| <kbd>S</kbd> | Izgaraya yaslamayı aç/kapat |
+| <kbd>S</kbd> | Izgaraya yakalamayı aç/kapat |
 | <kbd>Ctrl</kbd>+<kbd>=</kbd> / <kbd>Ctrl</kbd>+<kbd>-</kbd> | Yakınlaştır / uzaklaştır |
 
 Mac'te <kbd>Ctrl</kbd> yazan yerlerde <kbd>Cmd</kbd> kullanın.
@@ -35,7 +35,7 @@ Mac'te <kbd>Ctrl</kbd> yazan yerlerde <kbd>Cmd</kbd> kullanın.
 | --- | --- |
 | Tıklama | Bir düğümü, elemanı, yükü veya ölçü çizgisini seçer ve panelini açar |
 | Boş tuvalde sürükleme | Seçim dikdörtgeni |
-| Düğümü sürükleme | Düğümü taşır (yaslama açıksa ızgaraya yaslanır) |
+| Düğümü sürükleme | Düğümü taşır (yakalama açıksa ızgaraya yakalanır) |
 | Fare modunda tıklama | Bir düğüm yerleştirir ya da bir eleman zincirini başlatır veya sürdürür |
 | Yüke çift tıklama | Yükü düzenler |
 | Sağ tıklama | Tuval menüsü: Düğüm ekle, Eleman ekle, Ölçü ekle, Elemanı ölçülendir (bir elemanın üzerindeyken), Düzenle, Kopyala, Yapıştır, Sil |
@@ -64,7 +64,7 @@ Bir nesneye tıklamak, yanında ayrıntılarını ve şu işlemleri içeren bir 
 
 | Nesne | İşlemler |
 | --- | --- |
-| Düğüm | Yük ekle · Düğüm mesnetleri (mesnet sembolü, Dx / Dz / Ry, düğüm yerel eksen açısı) · Yer değiştirme öngör (mesnetli bir düğümde) · Sil |
+| Düğüm | Yük ekle · Düğüm mesnetleri (mesnet sembolü, Dx / Dz / Ry, düğüm yerel eksen açısı) · Yer değiştirme tanımla (mesnetli bir düğümde) · Sil |
 | Eleman | Elemanı düzenle (düğümler ve mafsallar, malzeme, kesit) · Yük ekle · Rijitlik matrisi · Sil |
 | Düğüm veya eleman yükü | Yükü düzenle · Sil |
 | Ölçü çizgisi | Düzenle (koordinatlar) · Ölçü çizgisini ters çevir · Sil |

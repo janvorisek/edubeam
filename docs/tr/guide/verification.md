@@ -82,7 +82,7 @@ Uygulama yerel ekstremum değerini otomatik olarak etiketler; böylece hem değe
 
 ## İki çubuklu kafes sistem {#two-bar-truss}
 
-`(0, 0)` ve `(4, 0)` noktalarındaki sabit mesnetlerden çıkan iki çubuk `(2, −2)` noktasında birleşir (tepe noktası 2 m yukarıda). İki çubukta da iki **uç mafsalı** işaretlidir; tepe noktasına düşey $F = 20$ kN yük etkir (aşağı doğru, yani `Fz = 20`).
+`(0, 0)` ve `(4, 0)` noktalarındaki mafsallı mesnetlerden çıkan iki çubuk `(2, −2)` noktasında birleşir (tepe noktası 2 m yukarıda). İki çubukta da iki **uç mafsalı** işaretlidir; tepe noktasına düşey $F = 20$ kN yük etkir (aşağı doğru, yani `Fz = 20`).
 
 Her çubuk 45° eğimlidir ve boyu $L = 2\sqrt{2}$ m'dir. Simetriden dolayı her biri şu kuvveti taşır:
 
@@ -102,7 +102,7 @@ Açıklık ortası sehimi $\kappa L^2 / 8 = -4{,}8$ mm'dir (yukarı doğru). Şi
 
 ## Öngörülen yer değiştirme {#prescribed-displacement}
 
-[Bir ucu ankastre diğer ucu kayıcı mesnetli kirişi](#propped-cantilever-uniform-load) yükü kaldırarak alın ve kayıcı mesnette `Dz = 10 mm` yer değiştirme öngörün (mesnet çökmesi). Bir konsolun ucunu $w$ kadar aşağı itmek için gereken tepki $R = 3EIw/L^3 = 0{,}567$ kN, ankastrelik momenti ise $RL = 3{,}40$ kNm'dir. Düzgün yayılı yükü geri eklediğinizde sonuçlar doğrusal olarak süperpoze olur.
+[Bir ucu ankastre diğer ucu kayıcı mesnetli kirişi](#propped-cantilever-uniform-load) yükü kaldırarak alın ve kayıcı mesnette `Dz = 10 mm` yer değiştirme tanımlayın (mesnet çökmesi). Bir konsolun ucunu $w$ kadar aşağı itmek için gereken tepki $R = 3EIw/L^3 = 0{,}567$ kN, ankastrelik momenti ise $RL = 3{,}40$ kNm'dir. Düzgün yayılı yükü geri eklediğinizde sonuçlar doğrusal olarak süperpoze olur.
 
 ## Kendi kontrolleriniz için ipuçları {#tips-for-your-own-checks}
 

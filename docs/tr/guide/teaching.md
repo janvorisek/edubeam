@@ -11,7 +11,7 @@ description: "EduBeam derste ve ödevlerde: ders notlarında paylaşım bağlant
 - **Arka sıralardan da okunabilir olsun.** *Ayarlar → Görüntüleyici ayarları* bölümünde **Yazı boyutu**'nu 18–20 px'e, **Mesnet boyutu**'nu %130–150'ye çıkarın. Diyagramlar büyük ekranda sönük kalıyorsa **Sonuç ölçeği**'ni artırın.
 - **Her seferinde tek bir şey gösterin.** Görünüm seçeneklerinde o an anlattığınız büyüklük dışındaki her şeyin işaretini kaldırın, diğerlerini sonra tek tek ekleyin.
 - **Modeli canlı değiştirin.** Bir mesneti sürükleyin, `Ry` kutusunu işaretleyin, bir mafsal ekleyin. Öğrenciler neden ile sonucu aynı anda görür; <kbd>Ctrl</kbd>+<kbd>Z</kbd> ile istediğiniz an geri dönersiniz.
-- **Mekanizmaları çözücü anlatsın.** Bir mafsalı fazladan serbest bırakın: EduBeam mekanizmanın kesikli çizgili şeklini hareket ettirir ve soruna yol açan mafsalları daire içine alır. Stabiliteyi tartışmak için iyi bir fırsat.
+- **Mekanizmaları çözücü anlatsın.** Bir mafsalı fazladan serbest bırakın: EduBeam mekanizmanın kesikli çizgili şeklini hareket ettirir ve soruna yol açan mafsalları daire içine alır. Kararlılığı tartışmak için iyi bir fırsat.
 - **Öğrencilerin dilini ve eksenlerini kullanın.** Ders notlarınıza uyacak şekilde arayüz dilini, SI veya ABD birimlerini ve z aşağı ya da y yukarı eksen düzenini seçin.
 
 ![Görünür hâle gelen bir mekanizma: B ve C'deki mafsallar çerçevenin yanal ötelenmesine izin veriyor](/screenshots/tr/ui-mechanism.webp)
@@ -42,7 +42,7 @@ Kullanışlı bağlantı türleri:
 EduBeam, yöntemi ele vermeden öğrencilere el hesapları için anında geri bildirim sağlar:
 
 - Mesnet tepkilerini, iç kuvvetleri ve bir yer değiştirmeyi elle hesaplatın, ardından öğrencilerin modeli kurup sonuçları karşılaştırmasını isteyin. Hazır formüller [Sonuçların elle kontrolü](/tr/guide/verification) sayfasında.
-- Bir sonucun *neden* farklı çıktığını sorun: kayma deformasyonu, eksik bir mafsal, genel yerine yerel eksenlerde tanımlanmış bir yük.
+- Bir sonucun *neden* farklı çıktığını sorun: kayma deformasyonu, eksik bir mafsal, global yerine yerel eksenlerde tanımlanmış bir yük.
 - Öğrencilerden hesaplarının yanında bir paylaşım bağlantısı veya bir `project.json` dosyası teslim etmelerini isteyin. Açtığınızda tam olarak neyi modellediklerini görürsünüz.
 - Raporlar için öğrenciler çizimi **SVG** (Word'de ve LaTeX'te keskin görünür), sonuçları ise **CSV** olarak dışa aktarabilir.
 

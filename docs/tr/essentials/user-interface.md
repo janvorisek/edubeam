@@ -1,20 +1,20 @@
 ---
-description: "EduBeam arayüzünde bir tur: ana menü, görüntüleyici ve görünüm seçenekleri, gezinme ve seçme, sekmeler, alt çubuk ve kayan pencereler."
+description: "EduBeam arayüzünde bir tur: ana menü, görüntüleyici ve görünüm seçenekleri, gezinme ve seçme, sekmeler, alt panel ve kayan pencereler."
 ---
 
 # Kullanıcı arayüzü
 
-<Edubeam /> üç bölümden oluşur: üstte **üst çubuk**, ortada çizim yaptığınız **görüntüleyici** ve altta her nesne türü için bir tablo bulunan **alt çubuk**. Neyin nerede olduğunu öğrendiğinizde kılavuzun geri kalanı da kolayca anlaşılır.
+<Edubeam /> üç bölümden oluşur: üstte **üst araç çubuğu**, ortada çizim yaptığınız **görüntüleyici** ve altta her nesne türü için bir tablo bulunan **alt panel**. Neyin nerede olduğunu öğrendiğinizde kılavuzun geri kalanı da kolayca anlaşılır.
 
 ![Arayüzün bölümleri, aşağıdaki listeyle aynı numaralarla](/screenshots/tr/ui-overview.webp)
 
 1. **☰ menüsü**: açma, kaydetme, paylaşma ve dışa aktarma; örnekler ve rehberli turlar.
-2. **Üst çubuk düğmeleri**: Modeli temizle ve Modeli paylaş.
+2. **Üst araç çubuğu düğmeleri**: Modeli temizle ve Modeli paylaş.
 3. Modeldeki her değişiklik için **Geri al / Yinele**.
 4. **Görüntüleyici düğmeleri**: ortalama, ekrana sığdırma ve görünüm seçeneklerini açıp kapatan düğme.
 5. **Görünüm seçenekleri**: hangi sonuçların ve model parçalarının çizileceği.
-6. **Izgara, yaslama, artı imleci ve birimler.**
-7. **Alt çubuk sekmeleri**: Düğümler, Elemanlar, Yükler, Malzemeler, Kesitler, Sonuçlar.
+6. **Izgara, yakalama, artı imleci ve birimler.**
+7. **Alt panel sekmeleri**: Düğümler, Elemanlar, Yükler, Malzemeler, Kesitler, Sonuçlar.
 8. Açık sekmenin **tablosu**; buradaki her değeri düzenleyebilirsiniz.
 
 ::: tip Turu başlatın
@@ -23,7 +23,7 @@ description: "EduBeam arayüzünde bir tur: ana menü, görüntüleyici ve gör�
 
 ![Beni gezdir turu, görünüm seçenekleri adımında](/screenshots/tr/tour.webp)
 
-## Üst çubuk {#app-bar}
+## Üst araç çubuğu {#app-bar}
 
 | Kontrol | Ne yapar |
 | --- | --- |
@@ -44,11 +44,11 @@ Telefonda yalnızca ☰ menüsü ve Dokümantasyon sığar; diğer her şey men�
 | **Proje aç** / **Projeyi kaydet** | Bir `project.json` dosyasını açar veya indirir (<kbd>Ctrl</kbd>+<kbd>O</kbd> / <kbd>Ctrl</kbd>+<kbd>S</kbd>). |
 | **Son modeller** | Temizlediğiniz veya yerine başkasını açtığınız son 10 model; geri yüklemeye hazır. |
 | **Görüntüyü dışa aktar** | Çizimi PNG veya SVG olarak kaydeder ya da panoya kopyalar (<kbd>Ctrl</kbd>+<kbd>P</kbd>). |
-| **Modeli paylaş** | Üst çubuktaki düğmeyle aynı. |
+| **Modeli paylaş** | Üst araç çubuğundaki düğmeyle aynı. |
 | **Örnekler** | Hazır modellerin galerisi. |
 | **İlk kirişinizi çizin** | Yedi adımlık rehberli bir görev. |
 | **Beni gezdir** | Arayüz turu. |
-| **Modeli temizle** | Üst çubuktaki düğmeyle aynı. |
+| **Modeli temizle** | Üst araç çubuğundaki düğmeyle aynı. |
 
 Menünün en altında uygulamanın sürümü ve yayımlanma tarihi yer alır.
 
@@ -60,7 +60,7 @@ Tuval, modeli çizdiğiniz ve incelediğiniz yerdir. Uygulamanın geri kalanı b
 
 - **Sol üst:** **Geri al** ve **Yinele** (<kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd>). Ekleme, düzenleme, sürükleme, silme ve modeli temizleme dahil her model değişikliği geri alınabilir.
 - **Sağ üst:** **Modeli ortala** (<kbd>C</kbd>), **Modeli ekrana sığdır** (<kbd>F</kbd>) ve görünüm seçeneklerini gösterip gizleyen ⚙ düğmesi. Dokunmatik ekranlarda ayrıca **Dikdörtgenle seç** düğmesi bulunur.
-- **Sağ alt:** **G** ızgarayı, **S** ızgaraya yaslamayı açıp kapatır; artı imleci düğmesi imlecin konumunu cetvellerde gösterir; **birim göstergesi** ise ayarları *Dil ve bölge* sayfasında açar.
+- **Sağ alt:** **G** ızgarayı, **S** ızgaraya yakalamayı açıp kapatır; artı imleci düğmesi imlecin konumunu cetvellerde gösterir; **birim göstergesi** ise ayarları *Dil ve bölge* sayfasında açar.
 
 ### Görünüm seçenekleri {#display-options}
 
@@ -83,18 +83,18 @@ Varsayılan olarak açık olan iki sıra onay kutusu:
 
 ### Seçme ve düzenleme {#selecting-and-editing}
 
-Bir düğümü, elemanı, yükü veya ölçü çizgisini seçmek için üzerine **tıklayın**. Yanında, ayrıntılarını ve ona uygun işlemleri içeren bir panel açılır: yük ekleme, mesnet tanımlama, düzenleme, rijitlik matrisini gösterme, silme. Bir düğüme tıkladığınızda alt çubuk da Düğümler sekmesine geçer.
+Bir düğümü, elemanı, yükü veya ölçü çizgisini seçmek için üzerine **tıklayın**. Yanında, ayrıntılarını ve ona uygun işlemleri içeren bir panel açılır: yük ekleme, mesnet tanımlama, düzenleme, rijitlik matrisini gösterme, silme. Bir düğüme tıkladığınızda alt panel de Düğümler sekmesine geçer.
 
 <div class="shots">
 
-![Düğüm: yük ekleme, mesnet tanımlama, yer değiştirme öngörme](/screenshots/tr/ui-node-menu.webp)
+![Düğüm: yük ekleme, mesnet tanımlama, yer değiştirme tanımlama](/screenshots/tr/ui-node-menu.webp)
 
 ![Eleman: düzenleme, yük ekleme, rijitlik matrisi](/screenshots/tr/ui-element-menu.webp)
 
 </div>
 
 - **Tuvalin boş bir yerinde sürükleyerek** seçim dikdörtgeni çizin. İçinde kalan her şey seçilir: düğümler, elemanlar, bunların yükleri ve ölçü çizgileri. Hepsini silmek için <kbd>Delete</kbd> tuşuna basın, başka bir yere kopyalamak için <kbd>Ctrl</kbd>+<kbd>C</kbd> / <kbd>Ctrl</kbd>+<kbd>V</kbd> kullanın.
-- Bir düğümü taşımak için **düğümü sürükleyin**. Yaslama açıksa düğüm ızgaraya oturur. Bağlı elemanlar ve yükleri de onunla birlikte hareket eder.
+- Bir düğümü taşımak için **düğümü sürükleyin**. Yakalama açıksa düğüm ızgaraya oturur. Bağlı elemanlar ve yükleri de onunla birlikte hareket eder.
 - Bir yükü düzenlemek için **yüke çift tıklayın**.
 - Bilgi kutusu görmek için imleci herhangi bir nesnenin **üzerine getirin**. Düğümler yer değiştirmelerini ve dönmelerini, elemanlar malzemelerini ve kesitlerini, yükler değerlerini gösterir. Dokunmatik ekranda bunun yerine dokunun: aynı bilgiler seçim panelinde görünür.
 
@@ -122,14 +122,14 @@ Yapı hâlâ hareket edebiliyorsa EduBeam onu kesikli bir çizgiyle sallar ve so
 
 Her mesajın anlamı [Sorun giderme](/tr/reference/troubleshooting) sayfasında açıklanır.
 
-## Alt çubuk {#bottom-bar}
+## Alt panel {#bottom-bar}
 
-Her biri bir araç çubuğu ve düzenlenebilir bir tablo içeren altı sekme vardır. Sekmeler, modelde her türden kaç nesne olduğunu gösterir. Sağdaki **?** açık olan sekmeyi açıklar; bazı sütun başlıklarının yanındaki **?** de o sütunu açıklar. Çubuğu yeniden boyutlandırmak için sekme şeridini yukarı veya aşağı sürükleyin ya da sağdaki düğmeyle küçültün.
+Her biri bir araç çubuğu ve düzenlenebilir bir tablo içeren altı sekme vardır. Sekmeler, modelde her türden kaç nesne olduğunu gösterir. Sağdaki **?** açık olan sekmeyi açıklar; bazı sütun başlıklarının yanındaki **?** de o sütunu açıklar. Paneli yeniden boyutlandırmak için sekme şeridini yukarı veya aşağı sürükleyin ya da sağdaki düğmeyle küçültün.
 
 | Sekme | Araç çubuğu | Tablo |
 | --- | --- | --- |
 | **Düğümler** | Düğüm ekle (pencere), Düğüm ekle (fare) | Etiket, koordinatlar, **Tutulu serbestlik dereceleri** (mesnet sembolü, Dx, Dz, Ry, mesnet açısı α), yükler, düzenle, sil |
-| **Elemanlar** | Eleman ekle (pencere), Eleman ekle (fare) | Etiket, tür, düğümler (yer değiştirme düğmesiyle), malzeme, kesit, **Uç mafsalları**, yükler, rijitlik matrisi, sil |
+| **Elemanlar** | Eleman ekle (pencere), Eleman ekle (fare) | Etiket, tür, düğümler (sırayı ters çeviren düğmeyle), malzeme, kesit, **Uç mafsalları**, yükler, rijitlik matrisi, sil |
 | **Yükler** | Düğüm yükü ekle, Eleman yükü ekle | Tür, hedef, düzenlenebilir bileşenler, düzenle, sil |
 | **Malzemeler** | Malzeme ekle, Malzeme kütüphanesi | Etiket, E, G, α<sub>T</sub>, sil |
 | **Kesitler** | Kesit ekle, Kesit kütüphanesi, Çokgen kesit | Şekil, etiket, A, I<sub>y</sub>, h, k, şekli düzenle, sil |
@@ -143,4 +143,4 @@ Hücreleri yerinde düzenleyin: tıklayın, değeri yazın ve <kbd>Enter</kbd> t
 
 ## Kayan pencereler {#floating-windows}
 
-**Rijitlik matrisi** (bir elemanın panelinden veya Elemanlar tablosundan) elemanın genel koordinatlardaki 6 × 6 rijitlik matrisini bir pencerede açar. Tuval menüsündeki **Düzenle**, geçerli seçimin tablosunu açar. Pencereleri başlık çubuklarından sürükleyerek taşıyın ve × ile kapatın.
+**Rijitlik matrisi** (bir elemanın panelinden veya Elemanlar tablosundan) elemanın global koordinatlardaki 6 × 6 rijitlik matrisini bir pencerede açar. Tuval menüsündeki **Düzenle**, geçerli seçimin tablosunu açar. Pencereleri başlık çubuklarından sürükleyerek taşıyın ve × ile kapatın.

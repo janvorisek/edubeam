@@ -1,5 +1,5 @@
 ---
-description: "Düğüm ekleyin ve düzenleyin, ızgaraya yaslayın, elemanlara düğüm yerleştirin; ankastre, mafsallı, kayıcı ve eğik mesnetleri, mesnet çökmelerini ve ölçü çizgilerini tanımlayın."
+description: "Düğüm ekleyin ve düzenleyin, ızgaraya yakalayın, elemanlara düğüm yerleştirin; ankastre, mafsallı, kayıcı ve eğik mesnetleri, mesnet çökmelerini ve ölçü çizgilerini tanımlayın."
 ---
 
 # Düğümler ve mesnetler
@@ -29,15 +29,15 @@ Her düğümün geçerli uzunluk biriminde bir **X** ve bir **Z** koordinatı va
 
 Etiketler otomatik atanır (`1`, `2`, … ya da kendi düzeninizin devamı, örneğin `A`, `B`) ve tabloda yeniden adlandırılabilir.
 
-### Yaslama {#snapping}
+### Yakalama {#snapping}
 
-**Izgaraya yasla** açıkken (<kbd>S</kbd> veya **S** düğmesi), yerleştirdiğiniz ya da sürüklediğiniz düğümler **Izgara adımı**'nın katlarına oturur: varsayılan olarak 0,1 m, ABD birimlerinde 0,5 ft. Bunu *Ayarlar → Görüntüleyici ayarları → Izgara* bölümünden değiştirebilirsiniz. Düğümleri serbestçe yerleştirmek için yaslamayı kapatın ya da kesin koordinatları sonradan tabloya yazın.
+**Izgaraya yakala** açıkken (<kbd>S</kbd> veya **S** düğmesi), yerleştirdiğiniz ya da sürüklediğiniz düğümler **Izgara adımı**'nın katlarına oturur: varsayılan olarak 0,1 m, ABD birimlerinde 0,5 ft. Bunu *Ayarlar → Görüntüleyici ayarları → Izgara* bölümünden değiştirebilirsiniz. Düğümleri serbestçe yerleştirmek için yakalamayı kapatın ya da kesin koordinatları sonradan tabloya yazın.
 
 ### Mevcut bir elemanın üzerine düğüm yerleştirme {#placing-a-node-on-an-existing-element}
 
 Düğüm eklerken bir elemanın yakınına tıklarsanız EduBeam ne yapmak istediğinizi sorar:
 
-- **Yapıya bağla**, elemanı ikiye böler (`1a` ve `1b`). Dış uçlardaki mafsallar korunur; düzgün yayılı ve trapez yayılı yükler iki parçaya paylaştırılır, tekil yükler ve sıcaklık yüklemeleri ise birinci parçaya geçer. Ara mesnet veya yük noktası eklemenin en hızlı yolu budur.
+- **Yapıya bağla**, elemanı ikiye böler (`1a` ve `1b`). Dış uçlardaki mafsallar korunur; düzgün yayılı ve trapez yükler iki parçaya paylaştırılır, tekil yükler ve sıcaklık yüklemeleri ise birinci parçaya geçer. Ara mesnet veya yük noktası eklemenin en hızlı yolu budur.
 - **Bağımsız düğüm yerleştir**, düğümü elemanın üzerinde oluşturur ama elemana bağlamaz.
 
 ## Düğümleri düzenleme {#editing-nodes}
@@ -64,7 +64,7 @@ En hızlı yol **sembolü seçmektir**. Sembolleri düğüm panelinde **Düğüm
 | Mesnet | Tutulu | Serbest hareket | Mesnet tepkileri |
 | --- | --- | --- | --- |
 | **Serbest** | yok | her şey | yok |
-| **Mafsal** | Dx + Dz | dönme | R<sub>x</sub>, R<sub>z</sub> |
+| **Mafsallı mesnet** | Dx + Dz | dönme | R<sub>x</sub>, R<sub>z</sub> |
 | **Kayıcı mesnet** | Dz | yatay kayma, dönme | R<sub>z</sub> |
 | **Düşey kayıcı mesnet** | Dx | düşey kayma, dönme | R<sub>x</sub> |
 | **Ankastre** | Dx + Dz + Ry | yok | R<sub>x</sub>, R<sub>z</sub>, M |
@@ -75,14 +75,14 @@ En hızlı yol **sembolü seçmektir**. Sembolleri düğüm panelinde **Düğüm
 Tutulu her serbestlik derecesi için bir mesnet tepkisi hesaplanır ve çizilir.
 
 ::: tip Kafes sistem düğümleri
-Kafes çubukları, iki **uç mafsalı** da serbest bırakılmış kiriş elemanlarıdır (bkz. [Elemanlar](/tr/essentials/elements#end-hinges)). Kafes sistemin mesnetlerinde genellikle sabit mesnet (Dx + Dz) kullanılır. Bağlı tüm elemanların mafsallı olduğu bir düğümün dönme rijitliği yoktur; EduBeam böyle bir düğümü kabul eder ve dönmesini 0 olarak verir.
+Kafes çubukları, iki **uç mafsalı** da serbest bırakılmış kiriş elemanlarıdır (bkz. [Elemanlar](/tr/essentials/elements#end-hinges)). Kafes sistemin mesnetlerinde genellikle mafsallı mesnet (Dx + Dz) kullanılır. Bağlı tüm elemanların mafsallı olduğu bir düğümün dönme rijitliği yoktur; EduBeam böyle bir düğümü kabul eder ve dönmesini 0 olarak verir.
 :::
 
 ### Eğik mesnetler {#inclined-skewed-supports}
 
 **Düğüm yerel eksen açısı** α'yı derece cinsinden girin (−180…180). Bu alan düğüm panelinde *Düğüm mesnetleri* altında, Düğüm ekle ve Düğümü düzenle pencerelerinde ve Düğümler tablosunun α alanında bulunur. Düğümün eksenleri bu açı kadar döner ve mesnet serbestlik dereceleri dönmüş doğrultularda etkir; yani 30° eğimli bir yüzeydeki kayıcı mesnet, α = 30 ile `Dz`'dir. Sembol de buna göre döner ve mesnet tepkisi dönmüş doğrultuda verilir.
 
-### Stabilite {#stability}
+### Kararlılık {#stability}
 
 Çözücü toplamda en az **üç tutulu serbestlik derecesine** ihtiyaç duyar; ayrıca mesnetler ve mafsallar yapıyı tutabilmelidir. Yeterli mesnet olana kadar görüntüleyici mavi bir *Mesnet gerekli* etiketi gösterir. Mesnet sayısı yeterli olduğu hâlde mesnetler yapıyı tutamıyorsa (hepsi paralelse veya doğrultuları tek bir noktada kesişiyorsa) ya da mafsallar çubukların birbirine göre dönmesine izin veriyorsa kırmızı bir mesaj sorunu belirtir ve kesikli bir çizgi yapının nasıl hareket ettiğini gösterir. Bkz. [Sorun giderme](/tr/reference/troubleshooting).
 
@@ -92,4 +92,4 @@ Kuvvetler, momentler ve öngörülen yer değiştirmeler (mesnet çökmeleri) d�
 
 ## Ölçü çizgileri {#dimension-lines}
 
-İki nokta arasına ölçü çizgisi çizmek için tuvale sağ tıklayıp → **Ölçü ekle**'yi, bir elemanı doğrudan ölçülendirmek için elemana sağ tıklayıp → **… elemanını ölçülendir**'i seçin. Uç noktalar düğümlere yakın sürüklendiğinde düğümlere yaslanır. Bir ölçü çizgisini seçip **Düzenle** ile koordinatlarını yazabilir ya da **Ölçü çizgisini ters çevir** ile etiketini diğer tarafa alabilirsiniz. Ölçü çizgileri yalnızca görsel amaçlıdır; projeyle birlikte kaydedilir ve paylaşım bağlantılarında da taşınır.
+İki nokta arasına ölçü çizgisi çizmek için tuvale sağ tıklayıp → **Ölçü ekle**'yi, bir elemanı doğrudan ölçülendirmek için elemana sağ tıklayıp → **… elemanını ölçülendir**'i seçin. Uç noktalar düğümlere yakın sürüklendiğinde düğümlere yakalanır. Bir ölçü çizgisini seçip **Düzenle** ile koordinatlarını yazabilir ya da **Ölçü çizgisini ters çevir** ile etiketini diğer tarafa alabilirsiniz. Ölçü çizgileri yalnızca görsel amaçlıdır; projeyle birlikte kaydedilir ve paylaşım bağlantılarında da taşınır.

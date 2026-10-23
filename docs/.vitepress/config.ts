@@ -3,7 +3,7 @@ import markdownItKatex from 'markdown-it-katex';
 import implicitFigures from 'markdown-it-implicit-figures';
 import path from 'path';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
-import { cs, de, english, es, fr, hi, navFor, pl, pt, ru, sidebarFor, uk, zh } from './navigation';
+import { cs, de, english, es, fr, hi, navFor, pl, pt, ru, sidebarFor, tr, uk, zh } from './navigation';
 
 const customElements = [
   'math',
@@ -235,6 +235,18 @@ export default defineConfig({
         sidebar: sidebarFor('/ru', ru),
       },
     },
+    tr: {
+      label: 'Türkçe',
+      lang: 'tr',
+      description: 'Çevrim içi yapı analizi – düzlem kirişler, çerçeveler ve kafes sistemler doğrudan tarayıcıda.',
+      themeConfig: {
+        nav: navFor('/tr', 'tr', tr),
+        outline: { label: 'Bu sayfada' },
+        docFooter: { prev: 'Önceki sayfa', next: 'Sonraki sayfa' },
+        lastUpdated: { text: 'Son güncelleme' },
+        sidebar: sidebarFor('/tr', tr),
+      },
+    },
   },
   themeConfig: {
     outline: 'deep',
@@ -357,6 +369,23 @@ export default defineConfig({
                   selectText: 'Выбрать',
                   navigateText: 'Перейти',
                   closeText: 'Закрыть',
+                },
+              },
+            },
+          },
+          tr: {
+            translations: {
+              button: {
+                buttonText: 'Dokümantasyonda ara',
+                buttonAriaLabel: 'Dokümantasyonda ara',
+              },
+              modal: {
+                noResultsText: 'Sonuç bulunamadı:',
+                resetButtonTitle: 'Aramayı temizle',
+                footer: {
+                  selectText: 'Seç',
+                  navigateText: 'Gezin',
+                  closeText: 'Kapat',
                 },
               },
             },

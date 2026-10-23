@@ -78,7 +78,7 @@ Wenn Ihnen eine Funktion fehlt, [eröffnen Sie ein Issue](https://github.com/jan
 ## Für wen ist EduBeam gedacht? {#who-is-it-for}
 
 - **Studierende** der Technischen Mechanik und Baustatik, die sofortige Rückmeldung zu ihren Handrechnungen wollen. Siehe [Ergebnisse von Hand prüfen](/de/guide/verification).
-- **Lehrende**, die zeigen, wie Lager, Gelenke und Lasten die Schnittgrößen verändern – live am Beamer, in einer von 15 Sprachen. Siehe [Lehren mit EduBeam](/de/guide/teaching).
+- **Lehrende**, die zeigen, wie Lager, Gelenke und Lasten die Schnittgrößen verändern – live am Beamer, in einer von 16 Sprachen. Siehe [Lehren mit EduBeam](/de/guide/teaching).
 - **Ingenieurinnen und Ingenieure**, die eine schnelle Plausibilitätsprüfung wollen, bevor sie ein schwereres Desktop-Programm öffnen.
 
 ## Aufbau dieser Anleitung {#how-this-guide-is-organised}
@@ -95,7 +95,7 @@ Die **?**-Symbole in der App öffnen die passende Seite dieser Anleitung in Ihre
 
 ## Sprachen {#languages}
 
-Die Oberfläche ist auf English, Čeština, Deutsch, Español, Français, Italiano, Polski, Português, Tiếng Việt, Русский, Türkçe, Українська, हिन्दी, ไทย und 汉语 verfügbar. EduBeam übernimmt die Sprache Ihres Browsers. Ändern Sie sie unter **Einstellungen → Sprache & Region** oder öffnen Sie die App mit dem Parameter `?lang=`, z. B. [run.edubeam.app/?lang=de](https://run.edubeam.app/?lang=de){target="_blank"}.
+Die Oberfläche ist auf English, Bahasa Indonesia, Čeština, Deutsch, Español, Français, Italiano, Polski, Português, Tiếng Việt, Русский, Türkçe, Українська, हिन्दी, ไทย und 汉语 verfügbar. EduBeam übernimmt die Sprache Ihres Browsers. Ändern Sie sie unter **Einstellungen → Sprache & Region** oder öffnen Sie die App mit dem Parameter `?lang=`, z. B. [run.edubeam.app/?lang=de](https://run.edubeam.app/?lang=de){target="_blank"}.
 
 ## Autoren & Danksagung {#authors-credits}
 

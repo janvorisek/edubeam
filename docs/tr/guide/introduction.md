@@ -78,7 +78,7 @@ Eksik bir özellik sizin için önemliyse [bir issue açın](https://github.com/
 ## Kimler için? {#who-is-it-for}
 
 - El hesaplarına anında geri bildirim isteyen, yapı mekaniği öğrenen **öğrenciler**. Bkz. [Sonuçların elle kontrolü](/tr/guide/verification).
-- Mesnetlerin, mafsalların ve yüklerin iç kuvvetleri nasıl değiştirdiğini projeksiyonda canlı olarak, 15 dilden herhangi birinde gösteren **öğretim elemanları**. Bkz. [EduBeam ile öğretim](/tr/guide/teaching).
+- Mesnetlerin, mafsalların ve yüklerin iç kuvvetleri nasıl değiştirdiğini projeksiyonda canlı olarak, 16 dilden herhangi birinde gösteren **öğretim elemanları**. Bkz. [EduBeam ile öğretim](/tr/guide/teaching).
 - Daha kapsamlı bir masaüstü programı açmadan önce hızlı bir sağlama yapmak isteyen **mühendisler**.
 
 ## Bu kılavuz nasıl düzenlenmiştir? {#how-this-guide-is-organised}
@@ -95,7 +95,7 @@ Uygulamadaki **?** simgeleri bu kılavuzun ilgili sayfasını sizin dilinizde a�
 
 ## Diller {#languages}
 
-Arayüz şu dillerde kullanılabilir: English, Čeština, Deutsch, Español, Français, Italiano, Polski, Português, Tiếng Việt, Русский, Türkçe, Українська, हिन्दी, ไทย ve 汉语. EduBeam dili tarayıcınızdan alır. Dili **Ayarlar → Dil ve bölge** bölümünden değiştirebilir ya da uygulamayı `?lang=` parametresiyle açabilirsiniz, örneğin [run.edubeam.app/?lang=tr](https://run.edubeam.app/?lang=tr){target="_blank"}.
+Arayüz şu dillerde kullanılabilir: English, Bahasa Indonesia, Čeština, Deutsch, Español, Français, Italiano, Polski, Português, Tiếng Việt, Русский, Türkçe, Українська, हिन्दी, ไทย ve 汉语. EduBeam dili tarayıcınızdan alır. Dili **Ayarlar → Dil ve bölge** bölümünden değiştirebilir ya da uygulamayı `?lang=` parametresiyle açabilirsiniz, örneğin [run.edubeam.app/?lang=tr](https://run.edubeam.app/?lang=tr){target="_blank"}.
 
 ## Yazarlar ve katkıda bulunanlar {#authors-credits}
 

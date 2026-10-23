@@ -34,7 +34,7 @@ features:
     linkText: Enseigner avec EduBeam
   - icon: 🌍
     title: Votre langue, vos unités
-    details: 15 langues d’interface, unités SI ou impériales US, et au choix des axes z vers le bas ou y vers le haut comme dans les manuels.
+    details: 16 langues d’interface, unités SI ou impériales US, et au choix des axes z vers le bas ou y vers le haut comme dans les manuels.
     link: /fr/essentials/units-settings
     linkText: Unités et paramètres
   - icon: 🔗

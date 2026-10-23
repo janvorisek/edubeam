@@ -16,7 +16,7 @@ Nastavení se ukládá v prohlížeči, takže vydrží i obnovení stránky. Tl
 
 ![Nastavení → Jazyk a prostředí](/screenshots/cs/settings-language.webp)
 
-**Jazyk.** Rozhraní je k dispozici ve 15 jazycích. Aplikaci můžete otevřít také s parametrem `?lang=<kód>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`.
+**Jazyk.** Rozhraní je k dispozici ve 16 jazycích. Aplikaci můžete otevřít také s parametrem `?lang=<kód>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`.
 
 **Formát čísel.** Určuje, jak se zapisují výsledky: *Automatický*, *Vědecký* (výchozí) nebo *Inženýrský*. Viz [Formát čísel](/cs/essentials/results#number-format).
 

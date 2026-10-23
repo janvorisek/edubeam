@@ -16,7 +16,7 @@ Cài đặt được lưu trong trình duyệt và vẫn còn sau khi tải lạ
 
 ![Cài đặt → Ngôn ngữ và khu vực](/screenshots/vi/settings-language.webp)
 
-**Ngôn ngữ.** Giao diện có 15 ngôn ngữ. Bạn cũng có thể mở ứng dụng với `?lang=<code>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`.
+**Ngôn ngữ.** Giao diện có 16 ngôn ngữ. Bạn cũng có thể mở ứng dụng với `?lang=<code>`: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`.
 
 **Định dạng số.** Cách ghi giá trị kết quả: *Tự động*, *Khoa học* (mặc định) hoặc *Kỹ thuật*. Xem [Định dạng số](/vi/essentials/results#number-format).
 

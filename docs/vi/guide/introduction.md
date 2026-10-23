@@ -78,7 +78,7 @@ Nếu bạn cần một tính năng còn thiếu, hãy [tạo issue](https://git
 ## EduBeam dành cho ai? {#who-is-it-for}
 
 - **Sinh viên** học cơ học kết cấu muốn có phản hồi tức thì cho bài tính tay. Xem [Kiểm tra kết quả bằng tính tay](/vi/guide/verification).
-- **Giảng viên** muốn trình chiếu trực tiếp cách gối tựa, khớp và tải trọng làm thay đổi nội lực, bằng bất kỳ ngôn ngữ nào trong 15 ngôn ngữ. Xem [Giảng dạy với EduBeam](/vi/guide/teaching).
+- **Giảng viên** muốn trình chiếu trực tiếp cách gối tựa, khớp và tải trọng làm thay đổi nội lực, bằng bất kỳ ngôn ngữ nào trong 16 ngôn ngữ. Xem [Giảng dạy với EduBeam](/vi/guide/teaching).
 - **Kỹ sư** muốn kiểm tra nhanh trước khi mở một phần mềm máy tính nặng hơn.
 
 ## Tài liệu này được sắp xếp thế nào {#how-this-guide-is-organised}
@@ -95,7 +95,7 @@ Các biểu tượng **?** trong ứng dụng mở đúng trang tương ứng c�
 
 ## Ngôn ngữ {#languages}
 
-Giao diện có sẵn bằng English, Čeština, Deutsch, Español, Français, Italiano, Polski, Português, Tiếng Việt, Русский, Türkçe, Українська, हिन्दी, ไทย và 汉语. EduBeam chọn ngôn ngữ theo trình duyệt của bạn. Bạn có thể đổi ngôn ngữ trong **Cài đặt → Ngôn ngữ và khu vực**, hoặc mở ứng dụng với tham số `?lang=`, ví dụ [run.edubeam.app/?lang=vi](https://run.edubeam.app/?lang=vi){target="_blank"}.
+Giao diện có sẵn bằng English, Bahasa Indonesia, Čeština, Deutsch, Español, Français, Italiano, Polski, Português, Tiếng Việt, Русский, Türkçe, Українська, हिन्दी, ไทย và 汉语. EduBeam chọn ngôn ngữ theo trình duyệt của bạn. Bạn có thể đổi ngôn ngữ trong **Cài đặt → Ngôn ngữ và khu vực**, hoặc mở ứng dụng với tham số `?lang=`, ví dụ [run.edubeam.app/?lang=vi](https://run.edubeam.app/?lang=vi){target="_blank"}.
 
 ## Tác giả và ghi nhận {#authors-credits}
 

@@ -78,7 +78,7 @@ const members = [
 ## यह किसके लिए है? {#who-is-it-for}
 
 - **विद्यार्थी** जो संरचनात्मक यांत्रिकी सीख रहे हैं और अपनी हाथ की गणनाओं पर तुरंत प्रतिक्रिया चाहते हैं। देखें [परिणामों की हाथ से जाँच](/hi/guide/verification)।
-- **शिक्षक** जो प्रोजेक्टर पर लाइव, 15 में से किसी भी भाषा में दिखाना चाहते हैं कि आधार, हिंज और भार आंतरिक बलों को कैसे बदलते हैं। देखें [EduBeam के साथ पढ़ाना](/hi/guide/teaching)।
+- **शिक्षक** जो प्रोजेक्टर पर लाइव, 16 में से किसी भी भाषा में दिखाना चाहते हैं कि आधार, हिंज और भार आंतरिक बलों को कैसे बदलते हैं। देखें [EduBeam के साथ पढ़ाना](/hi/guide/teaching)।
 - **इंजीनियर** जो किसी भारी डेस्कटॉप पैकेज को खोलने से पहले एक त्वरित जाँच चाहते हैं।
 
 ## यह मार्गदर्शिका कैसे व्यवस्थित है {#how-this-guide-is-organised}
@@ -95,7 +95,7 @@ const members = [
 
 ## भाषाएँ {#languages}
 
-इंटरफ़ेस English, Čeština, Deutsch, Español, Français, Italiano, Polski, Português, Tiếng Việt, Русский, Türkçe, Українська, हिन्दी, ไทย और 汉语 में उपलब्ध है। EduBeam भाषा आपके ब्राउज़र से चुनता है। इसे **सेटिंग्स → भाषा और लोकेल** में बदलें, या ऐप को `?lang=` पैरामीटर के साथ खोलें, जैसे [run.edubeam.app/?lang=hi](https://run.edubeam.app/?lang=hi){target="_blank"}।
+इंटरफ़ेस English, Bahasa Indonesia, Čeština, Deutsch, Español, Français, Italiano, Polski, Português, Tiếng Việt, Русский, Türkçe, Українська, हिन्दी, ไทย और 汉语 में उपलब्ध है। EduBeam भाषा आपके ब्राउज़र से चुनता है। इसे **सेटिंग्स → भाषा और लोकेल** में बदलें, या ऐप को `?lang=` पैरामीटर के साथ खोलें, जैसे [run.edubeam.app/?lang=hi](https://run.edubeam.app/?lang=hi){target="_blank"}।
 
 ## लेखक और श्रेय {#authors-credits}
 

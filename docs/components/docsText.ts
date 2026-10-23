@@ -9,7 +9,7 @@ import { i18n } from '../../src/plugins/i18n';
  * locale files, so the two never disagree. Only sentences the app has no use for are kept here.
  */
 type DocsLanguage =
-  'en' | 'cs' | 'de' | 'es' | 'fr' | 'hi' | 'pl' | 'pt' | 'ru' | 'uk' | 'zh' | 'tr' | 'th' | 'vi' | 'it';
+  'en' | 'cs' | 'de' | 'es' | 'fr' | 'hi' | 'pl' | 'pt' | 'ru' | 'uk' | 'zh' | 'tr' | 'th' | 'vi' | 'it' | 'id';
 
 /** The app's locale for each docs language; the app says cn for zh. */
 const APP_LOCALE: Record<DocsLanguage, string> = {
@@ -28,6 +28,7 @@ const APP_LOCALE: Record<DocsLanguage, string> = {
   th: 'th',
   vi: 'vi',
   it: 'it',
+  id: 'id',
 };
 
 export interface DocsStrings {
@@ -296,6 +297,23 @@ const strings: Record<DocsLanguage, DocsStrings> = {
     promoAccent: 'in 3D.',
     promoSubtitle: "solai, gusci e verifiche dell'acciaio nel browser",
     promoCta: 'Provalo gratis',
+  },
+  id: {
+    loadsTitle: 'Pratinjau tipe beban',
+    loadsLede:
+      'Seperti apa tipe beban umum di EduBeam. Setiap kartu adalah model hidup yang sudah dihitung dan terbuka di aplikasi persis seperti yang diatur.',
+    openInApp: 'Buka di EduBeam',
+    simplySupportedBeam: 'Balok sederhana',
+    udlBlurb: 'Bentang sendi–rol dengan beban 12 kN/m: diagram gaya geser dan momen lentur klasik.',
+    trapezoidalBlurb: 'Beban yang naik dari 4 hingga 14 kN/m di sepanjang bentang kanan.',
+    concentratedBlurb: 'Satu beban 18 kN ke bawah di tengah bentang, tanpa joint tambahan.',
+    nodalBlurb: 'Beban 20 kN di tumpuan tengah, untuk memeriksa reaksi dan lendutan.',
+    temperatureBlurb:
+      'Perbedaan suhu sepanjang tinggi penampang (atas lebih panas daripada bawah) dan kelengkungan yang ditimbulkannya.',
+    promoTitle: 'Bawa portal Anda',
+    promoAccent: 'ke 3D.',
+    promoSubtitle: 'pelat, cangkang & pemeriksaan baja di browser Anda',
+    promoCta: 'Coba gratis',
   },
 };
 

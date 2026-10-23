@@ -78,7 +78,7 @@ const members = [
 ## 适合哪些人？ {#who-is-it-for}
 
 - 学习结构力学、希望手算结果立即得到反馈的**学生**。请看[手算校核结果](/zh/guide/verification)。
-- 在投影仪上用 15 种语言中的任意一种，实时演示支座、铰和荷载如何改变内力的**教师**。请看[用 EduBeam 教学](/zh/guide/teaching)。
+- 在投影仪上用 16 种语言中的任意一种，实时演示支座、铰和荷载如何改变内力的**教师**。请看[用 EduBeam 教学](/zh/guide/teaching)。
 - 在打开更重型的桌面软件之前，想快速做一次合理性校核的**工程师**。
 
 ## 本指南的结构 {#how-this-guide-is-organised}
@@ -95,7 +95,7 @@ const members = [
 
 ## 语言 {#languages}
 
-界面提供 English、Čeština、Deutsch、Español、Français、Italiano、Polski、Português、Tiếng Việt、Русский、Türkçe、Українська、हिन्दी、ไทย 和汉语。EduBeam 会根据浏览器选择语言。可在**设置 → 语言与区域**中更改，或用 `?lang=` 参数打开应用，例如 [run.edubeam.app/?lang=cn](https://run.edubeam.app/?lang=cn){target="_blank"}。
+界面提供 English、Bahasa Indonesia、Čeština、Deutsch、Español、Français、Italiano、Polski、Português、Tiếng Việt、Русский、Türkçe、Українська、हिन्दी、ไทย 和汉语。EduBeam 会根据浏览器选择语言。可在**设置 → 语言与区域**中更改，或用 `?lang=` 参数打开应用，例如 [run.edubeam.app/?lang=cn](https://run.edubeam.app/?lang=cn){target="_blank"}。
 
 ## 作者与致谢 {#authors-credits}
 

@@ -3,7 +3,7 @@ import { katex } from '@mdit/plugin-katex';
 import implicitFigures from 'markdown-it-implicit-figures';
 import path from 'path';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
-import { cs, de, english, es, fr, hi, it, navFor, pl, pt, ru, sidebarFor, th, tr, uk, vi, zh } from './navigation';
+import { cs, de, english, es, fr, hi, id, it, navFor, pl, pt, ru, sidebarFor, th, tr, uk, vi, zh } from './navigation';
 
 const customElements = [
   'math',
@@ -367,6 +367,18 @@ export default defineConfig({
         sidebar: sidebarFor('/it', it),
       },
     },
+    id: {
+      label: 'Bahasa Indonesia',
+      lang: 'id',
+      description: 'Analisis struktur online gratis – balok, portal, dan rangka batang 2D langsung di browser.',
+      themeConfig: {
+        nav: navFor('/id', 'id', id),
+        outline: { label: 'Di halaman ini' },
+        docFooter: { prev: 'Sebelumnya', next: 'Berikutnya' },
+        lastUpdated: { text: 'Terakhir diperbarui' },
+        sidebar: sidebarFor('/id', id),
+      },
+    },
   },
   themeConfig: {
     outline: 'deep',
@@ -557,6 +569,23 @@ export default defineConfig({
                   selectText: 'Seleziona',
                   navigateText: 'Naviga',
                   closeText: 'Chiudi',
+                },
+              },
+            },
+          },
+          id: {
+            translations: {
+              button: {
+                buttonText: 'Cari di dokumentasi',
+                buttonAriaLabel: 'Cari di dokumentasi',
+              },
+              modal: {
+                noResultsText: 'Tidak ada hasil untuk',
+                resetButtonTitle: 'Hapus kata pencarian',
+                footer: {
+                  selectText: 'Pilih',
+                  navigateText: 'Navigasi',
+                  closeText: 'Tutup',
                 },
               },
             },

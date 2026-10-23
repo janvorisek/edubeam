@@ -16,7 +16,7 @@ description: "选择语言、国际单位制或美制单位、数字格式、y �
 
 ![设置 → 语言与区域](/screenshots/zh/settings-language.webp)
 
-**语言。** 15 种界面语言。也可以用 `?lang=<code>` 打开应用：`en`、`cs`、`de`、`fr`、`es`、`pt`、`pl`、`cn`、`th`、`uk`、`ru`、`tr`、`hi`、`vi`、`it`。
+**语言。** 16 种界面语言。也可以用 `?lang=<code>` 打开应用：`en`、`cs`、`de`、`fr`、`es`、`pt`、`pl`、`cn`、`th`、`uk`、`ru`、`tr`、`hi`、`vi`、`it`、`id`。
 
 **数字格式。** 结果数值的书写方式：*自动*、*科学计数*（默认）或*工程计数*。见[数字格式](/zh/essentials/results#number-format)。
 

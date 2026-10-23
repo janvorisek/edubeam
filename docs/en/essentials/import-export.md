@@ -85,7 +85,7 @@ Viewer mode is for looking, but it is not locked: visitors can still drag nodes 
 | --- | --- |
 | `model=<data>` | Load the encoded model and fit it to the screen. |
 | `viewer=1` | Viewer mode (see above). |
-| `lang=<code>` | Switch the interface language: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`. |
+| `lang=<code>` | Switch the interface language: `en`, `cs`, `de`, `fr`, `es`, `pt`, `pl`, `cn`, `th`, `uk`, `ru`, `tr`, `hi`, `vi`, `it`, `id`. |
 | `panel=examples` | Open the examples gallery straight away. |
 
 After reading them, EduBeam removes the parameters from the address bar.

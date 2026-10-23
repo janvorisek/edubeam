@@ -310,54 +310,54 @@ export default defineConfig({
               },
             },
           },
-        },
-        pl: {
-          translations: {
-            button: {
-              buttonText: 'Szukaj w dokumentacji',
-              buttonAriaLabel: 'Szukaj w dokumentacji',
-            },
-            modal: {
-              noResultsText: 'Brak wyników dla zapytania',
-              resetButtonTitle: 'Wyczyść zapytanie',
-              footer: {
-                selectText: 'Wybierz',
-                navigateText: 'Nawiguj',
-                closeText: 'Zamknij',
+          pl: {
+            translations: {
+              button: {
+                buttonText: 'Szukaj w dokumentacji',
+                buttonAriaLabel: 'Szukaj w dokumentacji',
+              },
+              modal: {
+                noResultsText: 'Brak wyników dla zapytania',
+                resetButtonTitle: 'Wyczyść zapytanie',
+                footer: {
+                  selectText: 'Wybierz',
+                  navigateText: 'Nawiguj',
+                  closeText: 'Zamknij',
+                },
               },
             },
           },
-        },
-        uk: {
-          translations: {
-            button: {
-              buttonText: 'Пошук у документації',
-              buttonAriaLabel: 'Пошук у документації',
-            },
-            modal: {
-              noResultsText: 'Нічого не знайдено за запитом',
-              resetButtonTitle: 'Очистити запит',
-              footer: {
-                selectText: 'Обрати',
-                navigateText: 'Перейти',
-                closeText: 'Закрити',
+          uk: {
+            translations: {
+              button: {
+                buttonText: 'Пошук у документації',
+                buttonAriaLabel: 'Пошук у документації',
+              },
+              modal: {
+                noResultsText: 'Нічого не знайдено за запитом',
+                resetButtonTitle: 'Очистити запит',
+                footer: {
+                  selectText: 'Обрати',
+                  navigateText: 'Перейти',
+                  closeText: 'Закрити',
+                },
               },
             },
           },
-        },
-        ru: {
-          translations: {
-            button: {
-              buttonText: 'Поиск по документации',
-              buttonAriaLabel: 'Поиск по документации',
-            },
-            modal: {
-              noResultsText: 'Ничего не найдено по запросу',
-              resetButtonTitle: 'Очистить запрос',
-              footer: {
-                selectText: 'Выбрать',
-                navigateText: 'Перейти',
-                closeText: 'Закрыть',
+          ru: {
+            translations: {
+              button: {
+                buttonText: 'Поиск по документации',
+                buttonAriaLabel: 'Поиск по документации',
+              },
+              modal: {
+                noResultsText: 'Ничего не найдено по запросу',
+                resetButtonTitle: 'Очистить запрос',
+                footer: {
+                  selectText: 'Выбрать',
+                  navigateText: 'Перейти',
+                  closeText: 'Закрыть',
+                },
               },
             },
           },

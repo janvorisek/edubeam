@@ -478,11 +478,25 @@ export const readStoredAppSettings = (): Record<string, unknown> | null | undefi
   }
 };
 
-export const suggestLanguage = () => {
-  const langs = navigator.languages || [navigator.language];
+/** App locale of a browser language tag, matched on the language alone so cs-CZ opens Czech. */
+const appLocaleOf = (tag: string): string | undefined => {
+  let locale: Intl.Locale;
+  try {
+    locale = new Intl.Locale(tag).maximize();
+  } catch {
+    return undefined;
+  }
 
-  for (const lang of langs) {
-    if (availableLocales.some((l) => l.code === lang)) return lang;
+  // The app's Chinese is Simplified; zh-TW and zh-HK readers keep the English they had before.
+  if (locale.language === 'zh') return locale.script === 'Hans' ? 'cn' : undefined;
+
+  return availableLocales.some((l) => l.code === locale.language) ? locale.language : undefined;
+};
+
+export const suggestLanguage = (languages: readonly string[] = navigator.languages ?? [navigator.language]) => {
+  for (const tag of languages) {
+    const locale = appLocaleOf(tag);
+    if (locale) return locale;
   }
 
   return 'en';

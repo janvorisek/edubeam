@@ -18,7 +18,7 @@ Gli stessi modelli si trovano nell'app in **☰ → Esempi**, e [run.edubeam.app
 - **Mensola**: confronta la freccia all'estremità con $FL^3/3EI$ (vedi [Verificare i risultati a mano](/it/guide/verification)), poi dimezza $I_y$ nella scheda *Sezioni*.
 - **Travatura Pratt**: in questo esempio i nodi sono rigidi. Spunta entrambe le cerniere di estremità su ogni asta per ottenere una vera travatura reticolare, poi confronta gli sforzi normali. Ora rimuovi una diagonale: la travatura sta ancora in piedi?
 - **Trave continua a tre campate**: la trave è appoggiata solo alle estremità. Spunta `Dz` nei nodi interni B e C per renderla continua, e guarda comparire i momenti negativi sugli appoggi.
-- **Portale**: spunta entrambe le cerniere di estremità sulla trave per modellare collegamenti trave-colonna a cerniera, oppure trasforma il vincolo destro da carrello in cerniera.
+- **Telaio a portale**: spunta entrambe le cerniere di estremità sulla trave per modellare collegamenti trave-colonna a cerniera, oppure trasforma il vincolo destro da carrello in cerniera.
 - **Carico termico**: blocca `Dx` in entrambi i vincoli e guarda comparire lo sforzo normale.
 
 ## Tutorial svolti {#worked-tutorials}

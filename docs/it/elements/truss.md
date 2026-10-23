@@ -31,7 +31,7 @@ $$
 
 dove:
 
-- $E$ è il modulo di Young del materiale
+- $E$ è il modulo elastico del materiale
 - $A$ è l'area della sezione dell'asta
 - $L$ è la lunghezza dell'asta
 

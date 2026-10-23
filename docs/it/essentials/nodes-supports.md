@@ -75,7 +75,7 @@ Il modo più rapido è **scegliere il simbolo**. Lo trovi nel pannello del nodo 
 Per ogni GdL bloccato viene calcolata, e disegnata, una reazione.
 
 ::: tip Nodi delle travature reticolari
-Le aste reticolari sono elementi trave con entrambe le **cerniere di estremità** svincolate (vedi [Elementi](/it/essentials/elements#end-hinges)). Per il vincolo di una travatura reticolare la scelta abituale è una cerniera (Dx + Dz). Un nodo in cui tutti gli elementi collegati sono incernierati non ha rigidezza rotazionale; EduBeam lo accetta e ne riporta la rotazione come 0.
+Le aste reticolari sono elementi trave con entrambe le **cerniere di estremità** spuntate (vedi [Elementi](/it/essentials/elements#end-hinges)). Per il vincolo di una travatura reticolare la scelta abituale è una cerniera (Dx + Dz). Un nodo in cui tutti gli elementi collegati sono incernierati non ha rigidezza rotazionale; EduBeam lo accetta e ne riporta la rotazione come 0.
 :::
 
 ### Vincoli inclinati {#inclined-skewed-supports}

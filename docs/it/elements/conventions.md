@@ -12,7 +12,7 @@ La maggior parte dei risultati «sbagliati» in <Edubeam /> è in realtà una so
 - **z** — verticale, positivo **verso il basso** sullo schermo.
 - **y** — l'asse fuori dal piano (punta verso chi guarda, per un sistema destrorso). Rotazioni e momenti sono attorno a y.
 
-L'indicatore degli assi nell'angolo della griglia mostra x (rosso) e z (verde). Un nodo in sommità a una colonna di 3 m ha quindi `Z = −3` se la base è a `Z = 0`.
+L'indicatore degli assi nell'angolo della griglia mostra x (rosso) e z (verde). Il nodo in sommità di una colonna di 3 m ha quindi `Z = −3` se la base è a `Z = 0`.
 
 ## Gradi di libertà {#degrees-of-freedom}
 

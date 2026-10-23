@@ -47,7 +47,7 @@ features:
 
 <div class="start-grid">
 
-**Nuovo su EduBeam?** Segui il [Avvio rapido di 10 minuti](/it/guide/quick-start). Modelli passo passo una trave semplicemente appoggiata e verifichi ogni risultato a mano.
+**Nuovo su EduBeam?** Segui l'[Avvio rapido di 10 minuti](/it/guide/quick-start). Modelli passo passo una trave semplicemente appoggiata e verifichi ogni risultato a mano.
 
 **Sai già cosa vuoi modellare?** Passa a un [tutorial](/it/tutorials/three-hinged-frame) oppure apri un [esempio](/it/examples/) già pronto e modificalo.
 

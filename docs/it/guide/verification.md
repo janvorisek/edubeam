@@ -47,7 +47,7 @@ $L = 4$ m, $F = 18$ kN verso il basso all'estremità libera. Vincolo: nodo 1 `Dx
 | Freccia all'estremità (taglio) | $FL/(kGA)$ | 0,31 mm | — |
 | Freccia all'estremità (totale) | somma | 94,42 mm | 94,42 mm |
 
-Qui il termine di taglio vale lo 0,3 %. Accorcia la mensola a 1 m e diventa il 5 %: è a questo che serve il fattore di taglio.
+Qui il termine di taglio vale lo 0,3 %. Accorcia la mensola a 1 m e diventa il 5 %: è a questo che serve il coefficiente di taglio.
 
 <Figure>
   <Structure :show-loads="true" show-moment show-reactions :nodes="[{label: '1', coords: [0,0,0], dofs: [0,2,4]}, {label: '2', coords: [4,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['1', '2']}]" :nodal-loads="[{target: '2', values: { 0: 0, 2: 18000, 4: 0 }}]" />

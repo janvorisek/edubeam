@@ -88,7 +88,7 @@
     "editLoad": "Modifica carico",
     "loadPositionOnBeam": "Posizione del carico dal nodo iniziale",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Variazione di temperatura delle fibre inferiori meno quella delle superiori",
-    "temperatureBending": "ΔT<sub>c</sub> ... Variazione di temperatura assiale",
+    "temperatureBending": "ΔT<sub>c</sub> ... Variazione di temperatura all'asse baricentrico",
     "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
     "temperatureDeltaTs": "ΔT<sub>c</sub>",
     "temperatureDeltaTsNoHTML": "ΔTc",
@@ -106,7 +106,7 @@
     "area": "Area",
     "h": "Altezza",
     "iy": "Iy",
-    "k": "Fattore di taglio",
+    "k": "Coefficiente di taglio",
     "iz": "Iz",
     "b": "Larghezza",
     "centroid": "Baricentro",
@@ -210,7 +210,7 @@
     "toggleSnap": "Attiva/disattiva snap alla griglia (S)",
     "toggleCrosshair": "Mostra/nascondi mirino",
     "boxSelect": "Selezione con riquadro",
-    "centerContent": "Centra il contenuto",
+    "centerContent": "Centra il modello",
     "fitContent": "Adatta allo schermo",
     "holdCtrl": "Tieni premuto Ctrl per aggiungere col mouse"
   },
@@ -221,7 +221,7 @@
     "results": "Risultati",
     "nodal_results": "Risultati nodali",
     "element_results": "Risultati degli elementi",
-    "end_forces": "Forze di estremità (nel sistema di riferimento locale)",
+    "end_forces": "Forze di estremità (nel riferimento locale)",
     "exportCsv": "Esporta CSV",
     "exportHint": "Scarica entrambe le tabelle dei risultati nelle unità visualizzate, pronte per un foglio di calcolo.",
     "copied": "Risultati copiati negli appunti",
@@ -266,7 +266,7 @@
     "addMaterial": {
       "addNewMaterial": "Aggiungi nuovo materiale",
       "addMaterial": "Aggiungi materiale",
-      "E": "E - Modulo di Young",
+      "E": "E - Modulo elastico",
       "G": "G - Modulo di taglio",
       "density": "ρ - densità",
       "alphaT": "α - Coefficiente di dilatazione termica"
@@ -285,7 +285,7 @@
     "update": {
       "title": "Aggiornamento disponibile",
       "update": "Aggiorna",
-      "text1": "Stiamo rilasciando un aggiornamento che richiede di reimpostare l'app. Tutti i progressi andranno persi.",
+      "text1": "Stiamo distribuendo un aggiornamento che richiede di reimpostare l'app, quindi il lavoro in corso andrà perso.",
       "text2": "Se vuoi conservare il lavoro attuale, puoi annullare l'aggiornamento."
     },
     "editNode": {
@@ -343,7 +343,7 @@
       "noShape": "Nessuna forma poligonale",
       "centroidal": "baricentrico",
       "centroidalNote": "Tutti i momenti d'inerzia sono calcolati rispetto ad assi passanti per il baricentro; I₁, I₂ sono i valori principali e α è l'angolo dall'asse y all'asse 1.",
-      "outOfPlaneNote": "Questa sezione non è simmetrica rispetto al piano del telaio. Un'analisi 2D è esatta solo se l'asta è trattenuta contro l'inflessione laterale (fuori dallo schermo) e la torsione lungo tutta la sua lunghezza, per esempio da un solaio o da controventi ravvicinati; i soli vincoli nei nodi non bastano. Un'asta libera si torce anche perché i carichi agiscono fuori dal suo centro di taglio, e questa torsione non è inclusa negli spostamenti.",
+      "outOfPlaneNote": "Questa sezione non è simmetrica rispetto al piano del telaio. Un'analisi 2D è esatta solo se l'asta è trattenuta contro l'inflessione laterale (fuori dallo schermo) e contro la torsione lungo tutta la sua lunghezza, per esempio da un solaio o da controventi ravvicinati; i soli vincoli nei nodi non bastano. Un'asta libera si torce anche perché i carichi non passano per il suo centro di taglio, e questa torsione non è inclusa negli spostamenti.",
       "outOfPlaneRestrained": "Trattenuta lateralmente e contro la torsione lungo la lunghezza: {inertia}",
       "outOfPlaneFree": "Libera di inflettersi lateralmente (torsione comunque esclusa): {inertia}"
     }
@@ -352,7 +352,7 @@
     "materials": {},
     "material": {
       "alphaT": "Il coefficiente di dilatazione termica descrive come variano le dimensioni di un corpo al variare della temperatura.",
-      "e": "Il modulo di Young misura la rigidezza a trazione o compressione quando la forza è applicata lungo l'asse.",
+      "e": "Il modulo elastico (modulo di Young) misura la rigidezza a trazione o compressione quando la forza agisce lungo l'asse.",
       "g": "Il modulo di taglio misura la resistenza alla deformazione sotto tensioni tangenziali, cioè la rigidezza del materiale rispetto a forze applicate parallelamente alla sua superficie.",
       "density": "La densità indica quanta massa è contenuta in un dato volume di una sostanza. "
     }
@@ -360,7 +360,7 @@
   "footer": {
     "reportIssue": "Segnala un problema",
     "requestFeature": "Richiedi una funzione",
-    "released": "rilasciata il"
+    "released": "pubblicata il"
   },
   "sharing": {
     "shareViaURL": "Condividi il modello tramite URL",
@@ -380,7 +380,7 @@
     },
     "undoRedo": {
       "title": "Annulla e ripeti",
-      "description": "Torna indietro e avanti tra le modifiche. Ctrl+Z e Ctrl+Shift+Z fanno lo stesso."
+      "description": "Torna indietro e avanti tra le modifiche. Ctrl+Z e Ctrl+Shift+Z hanno lo stesso effetto."
     },
     "viewerControls": {
       "title": "Pulsanti della vista",
@@ -392,7 +392,7 @@
     },
     "gridUnits": {
       "title": "Griglia, snap e unità",
-      "description": "G mostra la griglia e S vi aggancia i nuovi nodi. Fai clic sulle unità per cambiarle, insieme alla lingua o al sistema di riferimento."
+      "description": "G mostra la griglia e S vi aggancia i nuovi nodi. Fai clic sulle unità per cambiare unità di misura, lingua o sistema di riferimento."
     },
     "bottomBar": {
       "title": "Aggiungi, rimuovi e modifica gli oggetti",
@@ -446,7 +446,7 @@
   },
   "welcome": {
     "title": "Benvenuti in <span class=\"edubeam\">edubeam</span>! 🚀",
-    "description": "Modella travi, telai e travature reticolari e guarda le sollecitazioni mentre disegni.",
+    "description": "Modella travi, telai e travature reticolari e osservane le sollecitazioni mentre disegni.",
     "start": "Come vuoi iniziare?",
     "showAround": "Fammi fare un giro",
     "showAroundHint": "Una rapida panoramica della vista, delle opzioni di visualizzazione e della barra inferiore.",
@@ -501,27 +501,27 @@
     "dismissWarnings": "Nascondi questi avvisi",
     "collapseErrors": "Riduci questo messaggio",
     "showDetails": "Mostra dettagli",
-    "blockedTitle": "Impossibile risolvere il modello",
-    "blockedDescription": "Correggi gli errori elencati prima di risolvere il modello.",
+    "blockedTitle": "Impossibile eseguire il calcolo",
+    "blockedDescription": "Correggi gli errori elencati prima di avviare il calcolo.",
     "warningsTitle": "Avvisi del modello",
-    "warningsDescription": "Il modello è stato risolto, ma sono stati rilevati i seguenti avvisi.",
+    "warningsDescription": "Il calcolo è stato eseguito, ma sono stati rilevati i seguenti avvisi.",
     "incompleteTitle": "Non ancora pronto per il calcolo",
     "incompleteDescription": "I risultati compaiono quando la struttura è vincolata. Il contorno tratteggiato nell'area di disegno mostra come può ancora muoversi.",
     "errors": "Errori",
     "warnings": "Avvisi",
     "incomplete": "Ancora da fare",
     "issues": {
-      "elementNodeCount": "L'elemento {element} deve riferirsi esattamente a 2 nodi.",
-      "elementSameNode": "L'elemento {element} si riferisce allo stesso nodo a entrambe le estremità.",
-      "elementMissingNode": "L'elemento {element} si riferisce al nodo inesistente {node}.",
-      "elementMissingMaterial": "L'elemento {element} si riferisce al materiale inesistente {material}.",
-      "elementMissingCrossSection": "L'elemento {element} si riferisce alla sezione inesistente {crossSection}.",
-      "nodalLoadMissingNode": "Il carico nodale #{index} si riferisce al nodo inesistente {node}.",
+      "elementNodeCount": "L'elemento {element} deve avere esattamente 2 nodi.",
+      "elementSameNode": "L'elemento {element} ha lo stesso nodo a entrambe le estremità.",
+      "elementMissingNode": "L'elemento {element} fa riferimento al nodo inesistente {node}.",
+      "elementMissingMaterial": "L'elemento {element} fa riferimento al materiale inesistente {material}.",
+      "elementMissingCrossSection": "L'elemento {element} fa riferimento alla sezione inesistente {crossSection}.",
+      "nodalLoadMissingNode": "Il carico nodale #{index} fa riferimento al nodo inesistente {node}.",
       "nodalLoadInvalid": "Il carico nodale #{index} contiene valori non validi.",
-      "prescribedMissingNode": "Lo spostamento imposto #{index} si riferisce al nodo inesistente {node}.",
+      "prescribedMissingNode": "Lo spostamento imposto #{index} fa riferimento al nodo inesistente {node}.",
       "prescribedInvalid": "Lo spostamento imposto #{index} contiene valori non validi.",
-      "elementLoadMissingElement": "Il carico su elemento #{index} si riferisce all'elemento inesistente {element}.",
-      "supportedNodeNotConnected": "Il nodo {node} è vincolato ma nessun elemento vi è collegato, quindi il vincolo non porta nulla.",
+      "elementLoadMissingElement": "Il carico su elemento #{index} fa riferimento all'elemento inesistente {element}.",
+      "supportedNodeNotConnected": "Il nodo {node} è vincolato ma nessun elemento vi è collegato, quindi il vincolo non ha alcun effetto.",
       "nodeNotConnected": "Il nodo {node} non è collegato a nessun elemento e il solutore lo ignora.",
       "insufficientSupports": "Per essere stabile in un'analisi 2D, il modello richiede almeno 3 GdL vincolati.",
       "needsSupports": "La struttura va vincolata prima di poter essere risolta.",
@@ -531,13 +531,13 @@
       "mechanismShort": "I vincoli non trattengono la struttura: può ancora {motion}.",
       "partMechanism": "Una parte separata della struttura (nodi {nodes}) ha abbastanza vincoli, ma questi non la trattengono: può ancora {motion}. Vincoli tutti paralleli, o le cui rette d'azione passano per uno stesso punto, lasciano la struttura libera di muoversi.",
       "partMechanismShort": "La parte con i nodi {nodes} non è trattenuta: può ancora {motion}.",
-      "hingeMechanism": "I vincoli trattengono la struttura, ma questa è ancora un meccanismo: le sue aste possono ruotare attorno alle cerniere nel nodo {nodes}. Rimuovi una cerniera, oppure aggiungi un'asta o un vincolo che impedisca il moto.",
-      "hingeMechanismShort": "Le cerniere nel nodo {nodes} permettono alla struttura di muoversi.",
+      "hingeMechanism": "I vincoli trattengono la struttura, ma questa è ancora un meccanismo: le sue aste possono ruotare attorno alle cerniere in {nodes}. Rimuovi una cerniera, oppure aggiungi un'asta o un vincolo che impedisca il moto.",
+      "hingeMechanismShort": "Le cerniere in {nodes} permettono alla struttura di muoversi.",
       "motion": {
-        "horizontal": "scorrere orizzontalmente",
-        "vertical": "muoversi verticalmente",
+        "horizontal": "traslare in orizzontale",
+        "vertical": "traslare in verticale",
         "rotation": "ruotare liberamente",
-        "mixed": "muoversi come un corpo rigido"
+        "mixed": "muoversi come corpo rigido"
       },
       "unstable": "La struttura è labile: {dofs} si muove praticamente senza resistenza. Aggiungi un vincolo o un elemento, rimuovi una cerniera di estremità, oppure controlla la rigidezza della sezione.",
       "unstableShort": "La struttura è labile: si muove quasi senza resistenza.",
@@ -590,7 +590,7 @@
     },
     "elements": {
       "title": "Elementi",
-      "body": "Gli elementi collegano due nodi e hanno un materiale e una sezione. Svincola un'estremità per trasformare una trave in un'asta incernierata o reticolare."
+      "body": "Gli elementi collegano due nodi e hanno un materiale e una sezione assegnati. Svincola un'estremità per trasformare una trave in un'asta incernierata o reticolare."
     },
     "loads": {
       "title": "Carichi",
@@ -607,11 +607,11 @@
     },
     "materials": {
       "title": "Materiali",
-      "body": "Un materiale ha modulo di Young, modulo di taglio, densità e dilatazione termica. Per una semplice analisi statica contano solo E e la sezione."
+      "body": "Un materiale ha modulo elastico, modulo di taglio, densità e coefficiente di dilatazione termica. Per una semplice analisi statica contano solo E e la sezione."
     },
     "crossSections": {
       "title": "Sezioni",
-      "body": "Una sezione fornisce l'area e il momento d'inerzia usati per la rigidezza. Sceglila dalla libreria o disegna il tuo poligono."
+      "body": "Una sezione fornisce l'area e il momento d'inerzia usati per la rigidezza. Sceglila dalla libreria o disegnane una poligonale."
     },
     "hinges": {
       "title": "Cerniere di estremità",
@@ -619,8 +619,8 @@
     },
     "signConvention": {
       "title": "Convenzione dei segni",
-      "body": "L'asse z globale punta verso il basso, quindi Fz o fz positivi tirano verso il basso e My è positivo in senso antiorario. I carichi passati al sistema locale seguono invece l'elemento.",
-      "bodyYUp": "L'asse y globale punta verso l'alto, quindi Fy o fy positivi spingono verso l'alto e Mz è positivo in senso antiorario. I carichi passati al sistema locale seguono invece l'elemento."
+      "body": "L'asse z globale punta verso il basso, quindi Fz o fz positivi agiscono verso il basso e My è positivo in senso antiorario. I carichi riferiti al sistema locale seguono invece l'orientamento dell'elemento.",
+      "bodyYUp": "L'asse y globale punta verso l'alto, quindi Fy o fy positivi agiscono verso l'alto e Mz è positivo in senso antiorario. I carichi riferiti al sistema locale seguono invece l'orientamento dell'elemento."
     },
     "results": {
       "title": "Risultati",
@@ -653,7 +653,7 @@
     "exported": "Immagine esportata",
     "failed": "Impossibile generare l'immagine.",
     "previewAlt": "Anteprima dell'immagine esportata",
-    "instructions": "Il disegno viene impaginato da capo per la dimensione scelta, così linee ed etichette mantengono il loro spessore reale. La stessa dimensione inquadra sempre la struttura allo stesso modo: comodo per esportare M, N e V affiancati.",
+    "instructions": "Il disegno viene ricomposto per la dimensione scelta, così linee ed etichette mantengono il loro spessore reale. La stessa dimensione inquadra sempre la struttura allo stesso modo: comodo per esportare M, N e V affiancati.",
     "width": "Larghezza",
     "height": "Altezza",
     "lockAspect": "Mantieni proporzioni",
@@ -694,7 +694,7 @@
         "blurb": "Campate di 5+6+5 m con carico uniforme + concentrato + uniforme, per confrontare la curvatura e le rotazioni agli appoggi."
       },
       "portal": {
-        "title": "Portale: caso di carico",
+        "title": "Telaio a portale",
         "blurb": "Trave di 8 m su colonne di 6 m con carico uniforme in copertura e carichi orizzontale + verticale ai nodi d'angolo, per verificare spostamenti laterali e flessione."
       },
       "temperature": {

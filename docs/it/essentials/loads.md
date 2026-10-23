@@ -83,7 +83,7 @@ Nel punto di applicazione il diagramma del taglio ha un salto pari a `Fz` e quel
 
 | Campo | Significato |
 | --- | --- |
-| **ΔT<sub>c</sub>**, variazione di temperatura assiale | variazione uniforme su tutta la sezione, che dà un allungamento $\alpha\,\Delta T_c\,L$ |
+| **ΔT<sub>c</sub>**, variazione di temperatura all'asse baricentrico | variazione uniforme su tutta la sezione, che dà un allungamento $\alpha\,\Delta T_c\,L$ |
 | **ΔT<sub>b</sub> − ΔT<sub>t</sub>**, differenza di temperatura | fibra inferiore meno fibra superiore, che dà una curvatura $\alpha\,(\Delta T_b - \Delta T_t)/h$ |
 
 I carichi termici usano l'**α** del materiale e l'**altezza h** della sezione. Un `ΔTb − ΔTt` positivo (più caldo in basso) allunga la fibra inferiore, quindi l'elemento si inflette verso il basso come una trave sotto carico gravitazionale. In una struttura isostatica la temperatura provoca solo spostamenti; i vincoli sovrabbondanti (estremità incastrate, continuità, aste ridondanti) la trasformano in sollecitazioni.

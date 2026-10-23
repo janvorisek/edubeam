@@ -687,7 +687,7 @@ export const it: NavigationLabels = {
     modeling: 'Modellazione',
     results: 'Risultati',
     filesSharing: 'File e condivisione',
-    reference: 'Riferimento',
+    reference: 'Riferimenti',
     theory: 'Manuale teorico',
   },
   items: {

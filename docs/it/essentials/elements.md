@@ -6,7 +6,7 @@ description: "Aggiungere elementi trave, impostare cerniere di estremità e vers
 
 ## L'elemento trave {#the-beam-element}
 
-<Edubeam /> ha un solo tipo di elemento: una **trave di Timoshenko 2D** nel piano x–z con tre gradi di libertà a ciascuna estremità (`Dx`, `Dz`, `Ry`). Porta sforzo normale, taglio e flessione, e include la deformazione a taglio, motivo per cui la sezione ha un fattore di taglio. La formulazione completa è nel [manuale teorico](/it/elements/beam).
+<Edubeam /> ha un solo tipo di elemento: una **trave di Timoshenko 2D** nel piano x–z con tre gradi di libertà a ciascuna estremità (`Dx`, `Dz`, `Ry`). Porta sforzo normale, taglio e flessione, e include la deformazione a taglio, motivo per cui la sezione ha un coefficiente di taglio. La formulazione completa è nel [manuale teorico](/it/elements/beam).
 
 <TrussElement :moment="true" caption="Elemento trave 2D – tre GdL per nodo" />
 
@@ -58,7 +58,7 @@ Scheda *Materiali* → **Aggiungi materiale**:
 
 | Campo | Simbolo | Unità | Note |
 | --- | --- | --- | --- |
-| Modulo di Young | $E$ | unità di pressione (MPa per impostazione predefinita) | Acciaio ≈ 210 000 MPa, calcestruzzo ≈ 30 000 MPa, legno ≈ 11 000 MPa |
+| Modulo elastico | $E$ | unità di pressione (MPa per impostazione predefinita) | Acciaio ≈ 210 000 MPa, calcestruzzo ≈ 30 000 MPa, legno ≈ 11 000 MPa |
 | Modulo di taglio | $G$ | unità di pressione | $G = E / (2(1+\nu))$; acciaio ≈ 81 000 MPa. Influisce solo sul termine di taglio di Timoshenko. |
 | Densità | $\rho$ | massa / lunghezza³ (kg/m³, lb/ft³) | Salvata con il progetto. Il solutore statico non la usa (non c'è un carico da peso proprio). |
 | Coefficiente di dilatazione termica | $\alpha$ | 1/K o 1/°F | Usato dai [carichi termici](/it/essentials/loads#temperature-load). Acciaio: 12 × 10⁻⁶ /K. |
@@ -91,9 +91,9 @@ Scheda *Sezioni* → **Aggiungi sezione**:
 | Area | $A$ | unità di area | Rigidezza assiale $EA$ |
 | Momento d'inerzia | $I_y$ | unità del momento d'inerzia | Rigidezza flessionale $EI_y$ rispetto all'asse perpendicolare al disegno |
 | Altezza | $h$ | unità delle dimensioni della sezione | Usata dai carichi a gradiente termico (curvatura $= \alpha\,\Delta T / h$) |
-| Fattore di taglio | $k$ | – | Fattore di correzione a taglio di Timoshenko: l'area efficace a taglio è $kA$. Usa `1` per trascurare quasi del tutto la deformazione a taglio, circa 0,83 per i rettangoli, $A_{web}/A$ per le sezioni a I. |
+| Coefficiente di taglio | $k$ | – | Coefficiente di correzione a taglio di Timoshenko: l'area efficace a taglio è $kA$, ed è quindi l'inverso del fattore di taglio χ dei testi di Scienza delle costruzioni (χ = 1,2 per il rettangolo). Usa `1` per trascurare quasi del tutto la deformazione a taglio, circa 0,83 per i rettangoli, $A_{web}/A$ per le sezioni a I. |
 
-**Libreria sezioni** fornisce valori approssimati per rettangoli, quadrati e cerchi, profili IPE e HEA, tubi RHS e CHS, e i profili AISC W e HSS (rettangolari e circolari). I suoi fattori di taglio dipendono dalla forma: $h\,t_w/A$ per i profili a I, $2ht/A$ per i tubi rettangolari, 0,5 per i tubi circolari, 0,833 per i rettangoli e 0,9 per i cerchi. Considera i valori come punto di partenza e confrontali con un sagomario prima di farvi affidamento.
+**Libreria sezioni** fornisce valori approssimati per rettangoli, quadrati e cerchi, profili IPE e HEA, tubi RHS e CHS, e i profili AISC W e HSS (rettangolari e circolari). I suoi coefficienti di taglio dipendono dalla forma: $h\,t_w/A$ per i profili a I, $2ht/A$ per i tubi rettangolari, 0,5 per i tubi circolari, 0,833 per i rettangoli e 0,9 per i cerchi. Considera i valori come punto di partenza e confrontali con un sagomario prima di farvi affidamento.
 
 ![La Libreria sezioni](/screenshots/it/sections-library.webp){.shot-lg}
 
@@ -107,7 +107,7 @@ Scheda *Sezioni* → **Sezione poligonale**, oppure *Oppure definisci una forma 
 - **Modifica** la forma: trascina i vertici (si agganciano al **Passo dello snap**), fai clic sul punto medio di un lato per inserire un vertice, fai doppio clic su un vertice per rimuoverlo, oppure digita le coordinate nella tabella dei vertici. **Aggiungi foro** aggiunge un contorno interno. **Centra sul baricentro** sposta la forma in modo che il baricentro sia nell'origine.
 - **Leggi** l'area $A$, il baricentro, i momenti d'inerzia baricentrici $I_y$, $I_z$, $I_{yz}$, i momenti principali $I_1$, $I_2$ con l'angolo degli assi principali $\alpha$ (da $y$ all'asse 1) e i raggi d'inerzia. Il disegno mostra l'ellisse d'inerzia.
 
-Al salvataggio, $A$, $I_y$ e $h$ vengono compilati a partire dalla forma. Nella tabella sono in sola lettura; usa il pulsante del poligono nella colonna *Azioni* per modificare di nuovo la forma. Il fattore di taglio $k$ resta da inserire a te. Le coordinate della sezione sono locali e destrorse, con $x$ uscente dallo schermo, $y$ verso sinistra e $z$ verso il basso.
+Al salvataggio, $A$, $I_y$ e $h$ vengono compilati a partire dalla forma. Nella tabella sono in sola lettura; usa il pulsante del poligono nella colonna *Azioni* per modificare di nuovo la forma. Il coefficiente di taglio $k$ resta da inserire a te. Le coordinate della sezione sono locali e destrorse, con $x$ uscente dallo schermo, $y$ verso sinistra e $z$ verso il basso.
 
 Se la forma non è simmetrica rispetto al piano del telaio (un angolare a L, per esempio), l'editor avverte che un'analisi 2D è esatta solo se l'asta è trattenuta contro l'inflessione laterale e la torsione lungo tutta la sua lunghezza, per esempio da un solaio. Quando $I_{yz}$ è significativo, scegli quale rigidezza flessionale usare: **Trattenuta lateralmente e contro la torsione lungo la lunghezza** ($I_y$) oppure **Libera di inflettersi lateralmente**, che è inferiore. In nessuno dei due casi la torsione è inclusa.
 

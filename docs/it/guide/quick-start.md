@@ -42,12 +42,12 @@ Gli elementi hanno bisogno di un materiale e di una sezione, quindi crea prima q
 </div>
 
 3. Apri la scheda **Sezioni** e fai clic su **Aggiungi sezione**.
-4. Inserisci `Area = 0,00285` m², `Iy = 1,943e-5` m⁴, `Altezza = 0,2` m e `Fattore di taglio = 1`. Fai clic su **Aggiungi sezione**.
+4. Inserisci `Area = 0,00285` m², `Iy = 1,943e-5` m⁴, `Altezza = 0,2` m e `Coefficiente di taglio = 1`. Fai clic su **Aggiungi sezione**.
 
 ![Aggiungi sezione. Oppure scegli dalla libreria, o disegna una forma poligonale.](/screenshots/it/qs-cross-section.webp){.shot-md}
 
-::: details Perché conta il fattore di taglio?
-EduBeam usa elementi trave di Timoshenko, che includono la deformazione a taglio. `k` è il fattore di correzione a taglio: $k \approx 0{,}83$ per un rettangolo e circa $0{,}4$–$0{,}5$ per una sezione a I quando $A$ è l'area intera. Con `k = 1` e l'area intera la deformabilità a taglio risulta leggermente *sottostimata*. Per una trave snella come questa la differenza nella freccia è ben sotto l'1 %. La formula è nella [pagina sulla teoria della trave](/it/elements/beam).
+::: details Perché conta il coefficiente di taglio?
+EduBeam usa elementi trave di Timoshenko, che includono la deformazione a taglio. `k` è il coefficiente di correzione a taglio (l'inverso del fattore di taglio χ dei testi italiani): $k \approx 0{,}83$ per un rettangolo e circa $0{,}4$–$0{,}5$ per una sezione a I quando $A$ è l'area intera. Con `k = 1` e l'area intera la deformabilità a taglio risulta leggermente *sottostimata*. Per una trave snella come questa la differenza nella freccia è ben sotto l'1 %. La formula è nella [pagina sulla teoria della trave](/it/elements/beam).
 :::
 
 ## 3. Aggiungi i nodi {#_3-add-the-nodes}
@@ -100,7 +100,7 @@ La soluzione compare non appena aggiungi il carico. Il pannello di visualizzazio
 | --- | --- |
 | **Reazioni** | Due frecce verso l'alto da **36 kN** nei nodi 1 e 2. |
 | **V<sub>z</sub>(x)** | Una retta da **+36 kN** a sinistra a **−36 kN** a destra, che si annulla in mezzeria. |
-| **M<sub>y</sub>(x)** | Una parabola con il valore estremo di **54 kNm** in mezzeria. |
+| **M<sub>y</sub>(x)** | Una parabola con il massimo di **54 kNm** in mezzeria. |
 | **Deformata** | Un abbassamento simmetrico. Passa con il mouse sul nodo `1` per leggerne la rotazione: **2,6469 · 10⁻² rad**. |
 
 La scheda **Risultati** nella barra inferiore fornisce i valori numerici. **Risultati nodali** elenca `Dx`, `Dz`, `Ry` per ogni nodo. **Risultati degli elementi** elenca le forze di estremità di ogni elemento nel suo sistema di riferimento locale.

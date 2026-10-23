@@ -4,7 +4,7 @@ description: "Tutorial passo passo: costruisci in EduBeam una travatura reticola
 
 # Tutorial: travatura reticolare piana
 
-Questo tutorial costruisce una piccola travatura reticolare isostatica, verifica gli sforzi nelle aste con il metodo dei nodi e il metodo delle sezioni, e individua un'asta scarica. Calcola circa 15 minuti.
+Questo tutorial costruisce una piccola travatura reticolare isostatica, verifica gli sforzi nelle aste con il metodo dei nodi e il metodo delle sezioni, e individua un'asta scarica. Prevedi circa 15 minuti.
 
 ![La travatura completata: sforzi normali e reazioni](/screenshots/it/tut-truss.webp)
 
@@ -37,7 +37,7 @@ Aste: corrente inferiore 1–2, 2–3, 3–4; corrente superiore 5–6; diagonal
 
 1. **Cancella struttura** (spunta *Elimina materiali* ed *Elimina sezioni*).
 2. *Materiali* → **Libreria materiali** → **Steel (S235)**.
-3. *Sezioni* → **Aggiungi sezione**: `Area = 0,002`, `Iy = 1e-6`, `Altezza = 0,1`, `Fattore di taglio = 1`. Con aste incernierate conta solo l'area.
+3. *Sezioni* → **Aggiungi sezione**: `Area = 0,002`, `Iy = 1e-6`, `Altezza = 0,1`, `Coefficiente di taglio = 1`. Con aste incernierate conta solo l'area.
 
 ## 2. Disegna le aste con le cerniere {#_2-draw-the-bars-with-hinges}
 
@@ -94,4 +94,4 @@ L'abbassamento del nodo 2 è 2,29 mm (*Risultati → Risultati nodali*). Per ese
 - **Sposta un carico.** Metti entrambi i carichi da 30 kN nel nodo 2. Ora la diagonale centrale è sollecitata: con quale segno, e perché?
 - **Rimuovi la diagonale centrale.** La travatura diventa un meccanismo; EduBeam cerchia le cerniere responsabili e mostra come il campo si deforma a taglio.
 - **Togli la spunta a tutte le cerniere.** La travatura diventa un telaio con nodi rigidi. Spunta **M<sub>y</sub> (x)**: i momenti flettenti sono minimi rispetto agli sforzi normali, ed è per questo che l'idealizzazione a nodi incernierati funziona.
-- **Metti una cerniera in entrambi i vincoli.** Una reazione in più la rende iperstatica, e gli sforzi nel corrente inferiore dipendono ora dalle aree delle aste.
+- **Usa una cerniera in entrambi i vincoli.** Una reazione in più la rende iperstatica, e gli sforzi nel corrente inferiore dipendono ora dalle aree delle aste.

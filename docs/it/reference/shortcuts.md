@@ -22,7 +22,7 @@ Le scorciatoie da tastiera funzionano quando la vista ha il focus. Vengono ignor
 | <kbd>Esc</kbd> | Annulla la modalità mouse corrente, chiude il tour, svuota la selezione o esce da una cella di tabella |
 | <kbd>Enter</kbd> | Conferma una cella di tabella |
 | <kbd>F</kbd> | Adatta allo schermo |
-| <kbd>C</kbd> | Centra il contenuto |
+| <kbd>C</kbd> | Centra il modello |
 | <kbd>G</kbd> | Mostra/nascondi la griglia |
 | <kbd>S</kbd> | Attiva/disattiva lo snap alla griglia |
 | <kbd>Ctrl</kbd>+<kbd>=</kbd> / <kbd>Ctrl</kbd>+<kbd>-</kbd> | Zoom avanti / indietro |

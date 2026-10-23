@@ -311,7 +311,7 @@ const strings: Record<DocsLanguage, DocsStrings> = {
     concentratedBlurb: 'Un unico carico di 18 kN verso il basso in mezzeria, senza nodi aggiuntivi.',
     nodalBlurb: "Un carico di 20 kN sull'appoggio intermedio, per controllare reazioni e frecce.",
     temperatureBlurb:
-      "Una differenza di temperatura lungo l'altezza della sezione (sopra più caldo che sotto) e la curvatura che provoca.",
+      "Una differenza di temperatura lungo l'altezza della sezione (fibre superiori più calde di quelle inferiori) e la curvatura che provoca.",
     promoTitle: 'Porta i tuoi telai',
     promoAccent: 'in 3D.',
     promoSubtitle: "solai, gusci e verifiche dell'acciaio nel browser",

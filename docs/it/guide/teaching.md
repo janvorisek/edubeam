@@ -8,10 +8,10 @@ description: "Usare EduBeam a lezione e nelle esercitazioni: link condivisi nell
 
 ## A lezione {#in-the-lecture}
 
-- **Rendilo leggibile dall'ultima fila.** In *Impostazioni → Impostazioni della vista*, porta la **Dimensione del carattere** a 18–20 px e la **Dimensione dei vincoli** al 130–150 %. Aumenta la **Scala dei risultati** se su un grande schermo i diagrammi sembrano timidi.
+- **Rendilo leggibile dall'ultima fila.** In *Impostazioni → Impostazioni della vista*, porta la **Dimensione del carattere** a 18–20 px e la **Dimensione dei vincoli** al 130–150 %. Aumenta la **Scala dei risultati** se su un grande schermo i diagrammi sembrano troppo piccoli.
 - **Mostra una cosa alla volta.** Nelle opzioni di visualizzazione togli la spunta a tutto tranne la grandezza di cui stai parlando, poi aggiungi le altre una per una.
 - **Modifica il modello dal vivo.** Trascina un vincolo, spunta `Ry`, aggiungi una cerniera. Gli studenti vedono subito causa ed effetto, e <kbd>Ctrl</kbd>+<kbd>Z</kbd> ti riporta indietro.
-- **Lascia che sia il solutore a spiegare i meccanismi.** Svincola una cerniera di troppo ed EduBeam fa oscillare il contorno tratteggiato del meccanismo e cerchia le cerniere responsabili. È un buon momento per parlare di labilità.
+- **Lascia che sia il solutore a spiegare i meccanismi.** Inserisci una cerniera di troppo ed EduBeam fa oscillare il contorno tratteggiato del meccanismo e cerchia le cerniere responsabili. È un buon momento per parlare di labilità.
 - **Usa la lingua e gli assi degli studenti.** Scegli la lingua dell'interfaccia, unità SI o statunitensi e assi con z verso il basso o y verso l'alto, in linea con le tue dispense.
 
 ![Un meccanismo reso visibile: le cerniere in B e C permettono al telaio di traslare lateralmente](/screenshots/it/ui-mechanism.webp)

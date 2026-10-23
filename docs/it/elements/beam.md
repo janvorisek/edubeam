@@ -40,7 +40,7 @@ $$
 
 dove:
 
-- $E$ è il modulo di Young del materiale
+- $E$ è il modulo elastico del materiale
 - $A$ è l'area della sezione della trave
 - $L$ è la lunghezza della trave
 - $I_y$ è il momento d'inerzia rispetto all'asse y
@@ -50,7 +50,7 @@ $$
 \varphi = \frac{12\,E I_y}{k\,G\,A\,L^2}
 $$
 
-con $G$ il modulo di taglio e $k$ il **fattore di taglio** della sezione (area efficace a taglio $kA$). Per $\varphi \to 0$ (trave snella, o $k$ molto grande) la matrice si riduce alla rigidezza della trave di Eulero–Bernoulli.
+con $G$ il modulo di taglio e $k$ il **coefficiente di taglio** della sezione (area efficace a taglio $kA$). Per $\varphi \to 0$ (trave snella, o $k$ molto grande) la matrice si riduce alla rigidezza della trave di Eulero–Bernoulli.
 
 ## Cerniere di estremità {#end-hinges}
 

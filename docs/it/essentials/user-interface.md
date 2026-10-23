@@ -4,7 +4,7 @@ description: "Una panoramica dell'interfaccia di EduBeam: il menu principale, la
 
 # Interfaccia utente
 
-<Edubeam /> ha tre zone: la **barra dell'app** in alto, la **vista** al centro, dove disegni, e la **barra inferiore** con una tabella per ogni tipo di oggetto. Impara cosa si trova dove e il resto della guida ti sembrerà chiaro.
+<Edubeam /> ha tre zone: la **barra dell'app** in alto, la **vista** al centro, dove disegni, e la **barra inferiore** con una tabella per ogni tipo di oggetto. Una volta capito dove si trova ogni cosa, il resto della guida ti sembrerà semplice.
 
 ![Le parti dell'interfaccia, numerate come nell'elenco qui sotto](/screenshots/it/ui-overview.webp)
 
@@ -30,7 +30,7 @@ description: "Una panoramica dell'interfaccia di EduBeam: il menu principale, la
 | **Menu ☰** | Il menu principale, vedi sotto. |
 | **Cancella struttura** | Elimina tutti i nodi, gli elementi e i carichi dopo una conferma. Due caselle eliminano anche i materiali e le sezioni. <kbd>Ctrl</kbd>+<kbd>Z</kbd> riporta indietro il modello, che resta anche in Strutture recenti. |
 | **Condividi modello** | Apre la [finestra di condivisione](/it/essentials/import-export#share-a-link) con un link che contiene l'intero modello. |
-| **Novità** | Le note di rilascio. Si aprono da sole anche una volta dopo un aggiornamento. |
+| **Novità** | Le note di versione. Si aprono da sole una volta dopo ogni aggiornamento. |
 | **Documentazione** / GitHub | Questa guida e il codice sorgente. |
 
 Su uno smartphone c'è posto solo per il menu ☰ e Documentazione; tutto il resto è nel menu.
@@ -50,7 +50,7 @@ Su uno smartphone c'è posto solo per il menu ☰ e Documentazione; tutto il res
 | **Fammi fare un giro** | Il tour dell'interfaccia. |
 | **Cancella struttura** | Come il pulsante nella barra dell'app. |
 
-In fondo al menu sono indicate la versione dell'app e la data di rilascio.
+In fondo al menu sono indicate la versione dell'app e la data di pubblicazione.
 
 ## Vista {#viewer}
 
@@ -59,7 +59,7 @@ L'area di disegno è dove disegni ed esamini il modello. Tutto il resto dell'app
 ### Pulsanti nell'area di disegno {#buttons-on-the-canvas}
 
 - **In alto a sinistra:** **Annulla** e **Ripeti** (<kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd>). Ogni modifica al modello, compresi aggiunta, modifica, trascinamento, eliminazione e cancellazione, può essere annullata.
-- **In alto a destra:** **Centra il contenuto** (<kbd>C</kbd>), **Adatta allo schermo** (<kbd>F</kbd>) e il pulsante ⚙ che mostra o nasconde le opzioni di visualizzazione. Sugli schermi touch c'è anche **Selezione con riquadro**.
+- **In alto a destra:** **Centra il modello** (<kbd>C</kbd>), **Adatta allo schermo** (<kbd>F</kbd>) e il pulsante ⚙ che mostra o nasconde le opzioni di visualizzazione. Sugli schermi touch c'è anche **Selezione con riquadro**.
 - **In basso a destra:** **G** attiva e disattiva la griglia, **S** attiva e disattiva lo snap alla griglia, il pulsante del mirino mostra la posizione del puntatore sui righelli e l'**indicatore delle unità** apre le impostazioni su *Lingua e impostazioni locali*.
 
 ### Opzioni di visualizzazione {#display-options}

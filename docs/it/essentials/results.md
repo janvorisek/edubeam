@@ -94,7 +94,7 @@ I risultati sono mostrati con cinque cifre significative. **Impostazioni → Lin
 | Formato | 40 000 si scrive | Usalo per |
 | --- | --- | --- |
 | **Scientifico** (predefinito) | 4 · 10⁴ | valori che spaziano su molti ordini di grandezza |
-| **Ingegneristico** | 40 · 10³ | corrispondere ai prefissi kilo / mega |
+| **Ingegneristico** | 40 · 10³ | allinearsi ai prefissi kilo / mega |
 | **Automatico** | 40000 | i numeri di tutti i giorni nella didattica |
 
 Automatico scrive i valori da 0,001 a 100 000 come numeri semplici e passa alle potenze di dieci fuori da questo intervallo. Il separatore decimale segue la lingua.
@@ -103,7 +103,7 @@ Automatico scrive i valori da 0,001 a 100 000 come numeri semplici e passa alle 
 
 - L'elemento trave è esatto per il modello lineare di Timoshenko sotto carichi nodali, uniformi, trapezoidali, concentrati e termici, quindi i risultati **non** dipendono dal numero di elementi.
 - Il calcolo è in doppia precisione. Valori minimi come `1,5 · 10⁻¹⁸` sono errori di arrotondamento e significano zero.
-- Le frecce includono la **deformazione a taglio**. Per aste snelle aggiunge una frazione di punto percentuale al valore di Eulero–Bernoulli; per aste tozze o corte può valere diversi punti percentuali. Imposta un valore elevato del fattore di taglio della sezione per eliminarla.
+- Le frecce includono la **deformazione a taglio**. Per aste snelle aggiunge una frazione di punto percentuale al valore di Eulero–Bernoulli; per aste tozze o corte può valere diversi punti percentuali. Imposta un valore elevato del coefficiente di taglio della sezione per eliminarla.
 
 ## Risultati in una relazione {#results-in-a-report}
 

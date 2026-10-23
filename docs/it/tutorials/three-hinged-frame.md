@@ -4,7 +4,7 @@ description: "Tutorial passo passo: modella in EduBeam un telaio a tre cerniere 
 
 # Tutorial: telaio a tre cerniere
 
-Un telaio a tre cerniere è isostatico: le tre equazioni di equilibrio più la condizione $M = 0$ nella cerniera danno tutte e quattro le reazioni vincolari. Per questo è il modello perfetto per verificare ogni numero che EduBeam disegna. Calcola circa 15 minuti.
+Un telaio a tre cerniere è isostatico: le tre equazioni di equilibrio più la condizione $M = 0$ nella cerniera danno tutte e quattro le reazioni vincolari. Per questo è il modello perfetto per verificare ogni numero che EduBeam disegna. Prevedi circa 15 minuti.
 
 ![Il telaio completato: momento flettente e reazioni](/screenshots/it/tut-frame-moment.webp)
 
@@ -31,7 +31,7 @@ Ricorda che **z punta verso il basso**, quindi la sommità delle colonne è a `Z
 
 1. **Cancella struttura** (spunta *Elimina materiali* ed *Elimina sezioni*).
 2. *Materiali* → **Libreria materiali** → **Steel (S235)**.
-3. *Sezioni* → **Aggiungi sezione**: `Area = 0,00538`, `Iy = 8,356e-5`, `Altezza = 0,3`, `Fattore di taglio = 1`.
+3. *Sezioni* → **Aggiungi sezione**: `Area = 0,00538`, `Iy = 8,356e-5`, `Altezza = 0,3`, `Coefficiente di taglio = 1`.
 
 La sezione influisce solo sugli spostamenti. Questo telaio è isostatico, quindi le sue sollecitazioni non dipendono affatto da $E$, $A$ o $I$.
 

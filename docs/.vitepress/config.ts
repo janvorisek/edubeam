@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitepress';
-import markdownItKatex from 'markdown-it-katex';
+import { katex } from '@mdit/plugin-katex';
 import implicitFigures from 'markdown-it-implicit-figures';
 import path from 'path';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
@@ -462,7 +462,7 @@ export default defineConfig({
       md.core.ruler.before('normalize', 'edubeam-logo', (state) => {
         state.src = state.src.replaceAll('<Edubeam />', '<span class="edubeam">EduBeam</span>');
       });
-      md.use(markdownItKatex);
+      md.use(katex);
       md.use(implicitFigures, {
         figcaption: true,
         copyAttrs: '^class$',

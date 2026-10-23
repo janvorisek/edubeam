@@ -33,7 +33,7 @@ Ricorda che **z punta verso il basso**, quindi la sommità delle colonne è a `Z
 2. *Materiali* → **Libreria materiali** → **Steel (S235)**.
 3. *Sezioni* → **Aggiungi sezione**: `Area = 0,00538`, `Iy = 8,356e-5`, `Altezza = 0,3`, `Coefficiente di taglio = 1`.
 
-La sezione influisce solo sugli spostamenti. Questo telaio è isostatico, quindi le sue sollecitazioni non dipendono affatto da $E$, $A$ o $I$.
+La sezione influisce solo sugli spostamenti. Questo telaio è isostatico, quindi le sue forze interne non dipendono affatto da $E$, $A$ o $I$.
 
 ## 2. Disegna il telaio {#_2-draw-the-frame}
 
@@ -89,7 +89,7 @@ $$V_A \cdot 4 - H_A \cdot 4 - q \cdot 4 \cdot 2 = 0 \quad\Rightarrow\quad H_A = 
 
 Entrambe le basi spingono verso l'interno con 20 kN; è questa spinta orizzontale a rendere efficiente un telaio a tre cerniere.
 
-**Sollecitazioni.**
+**Forze interne.**
 
 | Grandezza | Formula | Valore a mano | EduBeam |
 | --- | --- | --- | --- |

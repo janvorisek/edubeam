@@ -69,7 +69,7 @@ Conoscere i limiti fin dall'inizio fa risparmiare tempo:
 - **Solo statica lineare.** Niente effetti del secondo ordine (P–Δ), instabilità, dinamica o plasticità.
 - **Un solo caso di carico.** Non ci sono combinazioni di carico né inviluppi. Modella ogni caso separatamente e salvalo come file o link a sé.
 - **Niente peso proprio.** Se ti serve, applicalo come carico distribuito.
-- **Niente verifiche.** EduBeam ti dà sollecitazioni e spostamenti; le verifiche normative spettano a te.
+- **Niente verifiche.** EduBeam ti dà forze interne e spostamenti; le verifiche normative spettano a te.
 
 Se ti manca una funzione importante, [apri una issue](https://github.com/janvorisek/edubeam/issues).
 
@@ -78,7 +78,7 @@ Se ti manca una funzione importante, [apri una issue](https://github.com/janvori
 ## A chi si rivolge? {#who-is-it-for}
 
 - **Studenti** di Scienza delle costruzioni che vogliono un riscontro immediato sui calcoli a mano. Vedi [Verificare i risultati a mano](/it/guide/verification).
-- **Docenti** che mostrano dal vivo, al proiettore, come vincoli, cerniere e carichi cambiano le sollecitazioni, in una qualsiasi delle 18 lingue. Vedi [Insegnare con EduBeam](/it/guide/teaching).
+- **Docenti** che mostrano dal vivo, al proiettore, come vincoli, cerniere e carichi cambiano le forze interne, in una qualsiasi delle 18 lingue. Vedi [Insegnare con EduBeam](/it/guide/teaching).
 - **Ingegneri** che vogliono un rapido controllo di plausibilità prima di aprire un software desktop più pesante.
 
 ## Come è organizzata questa guida {#how-this-guide-is-organised}

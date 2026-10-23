@@ -13,7 +13,7 @@ Salvo indicazione contraria, tutti i casi usano la stessa sezione in acciaio: $E
 $$EI = 210 \times 10^9 \cdot 1{,}943 \times 10^{-5} = 4{,}080 \times 10^6\ \text{Nm}^2$$
 
 ::: tip Perché i numeri differiscono leggermente
-EduBeam usa travi di **Timoshenko**, che aggiungono una freccia da taglio $\Delta w_s$ alla classica freccia flessionale di Eulero–Bernoulli. Rotazioni, reazioni e sollecitazioni non cambiano nei casi isostatici. Per aste snelle il termine aggiuntivo è minimo; le tabelle qui sotto lo riportano esplicitamente.
+EduBeam usa travi di **Timoshenko**, che aggiungono una freccia da taglio $\Delta w_s$ alla classica freccia flessionale di Eulero–Bernoulli. Rotazioni, reazioni e forze interne non cambiano nei casi isostatici. Per aste snelle il termine aggiuntivo è minimo; le tabelle qui sotto lo riportano esplicitamente.
 :::
 
 ## Trave semplicemente appoggiata, carico uniforme {#simply-supported-beam-uniform-load}
@@ -94,7 +94,7 @@ e ciascun vincolo assorbe 10 kN in verticale e ±10 kN in orizzontale. Controlla
 
 $L = 8$ m, $\Delta T_b - \Delta T_t = -10$ K (fibre superiori più calde), $\alpha = 12 \times 10^{-6}$, $h = 0{,}2$ m.
 
-La trave è libera di incurvarsi, quindi **non nascono sollecitazioni**; la curvatura è
+La trave è libera di incurvarsi, quindi **non nascono forze interne**; la curvatura è
 
 $$\kappa = \frac{\alpha\,(\Delta T_b - \Delta T_t)}{h} = \frac{12 \times 10^{-6} \cdot (-10)}{0{,}2} = -6 \times 10^{-4}\ \text{m}^{-1}$$
 

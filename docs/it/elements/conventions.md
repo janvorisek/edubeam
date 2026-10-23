@@ -1,5 +1,5 @@
 ---
-description: "Convenzioni dei segni di EduBeam: assi globali x verso destra e z verso il basso, spostamenti, rotazioni e carichi positivi, assi locali dell'elemento, sollecitazioni e reazioni."
+description: "Convenzioni dei segni di EduBeam: assi globali x verso destra e z verso il basso, spostamenti, rotazioni e carichi positivi, assi locali dell'elemento, forze interne e reazioni."
 ---
 
 # Sistema di coordinate e convenzioni dei segni
@@ -34,7 +34,7 @@ Un carico gravitazionale è quindi un `fz` **positivo**, e un carico da vento ch
 
 L'asse **x** locale va dal nodo iniziale al nodo finale; l'asse **z** locale è perpendicolare a esso, ottenuto ruotando gli assi globali dell'angolo $\alpha$ dell'elemento. Per un elemento orizzontale disegnato da sinistra a destra, assi locali e globali coincidono. Usa **Scambia nodi** nella tabella *Elementi* per invertirne il verso.
 
-## Sollecitazioni {#internal-forces}
+## Forze interne {#internal-forces}
 
 | Grandezza | Positivo significa |
 | --- | --- |
@@ -60,7 +60,7 @@ Esiste una reazione per ogni GdL vincolato, riportata nel sistema di coordinate 
 | Carichi, spostamenti, reazioni e forze di estremità verticali | `Fz`, `fz`, `Dz`, `Z12`… | `Fy`, `fy`, `Dy`, `Y12`…, segno opposto |
 | Rotazioni e momenti | `Ry`, `My` | `Rz`, `Mz`, stesso segno (positivo antiorario) |
 | Angolo del vincolo α | misurato in senso orario | misurato in senso antiorario, segno opposto |
-| Sollecitazioni N, V, M | | invariate, diagrammi disegnati allo stesso modo |
+| Forze interne N, V, M | | invariate, diagrammi disegnati allo stesso modo |
 
 Un carico gravitazionale è quindi un `fy` **negativo**, e la sommità di una colonna di 3 m ha `Y = 3`.
 

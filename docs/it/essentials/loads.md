@@ -38,7 +38,7 @@ Nella stessa finestra scegli **Spostamento imposto**, oppure fai clic su un nodo
 | `Dz` | spostamento verticale imposto (positivo verso il basso) | unità di spostamento |
 | `Ry` | rotazione imposta | rad |
 
-Puoi inserire un valore solo per un GdL **vincolato** in quel nodo, perché si possono spostare solo i vincoli. Ogni nodo ha al massimo uno spostamento imposto; modificalo invece di aggiungerne un secondo. In una struttura isostatica un cedimento produce spostamenti ma nessuna sollecitazione; in una iperstatica produce entrambi.
+Puoi inserire un valore solo per un GdL **vincolato** in quel nodo, perché si possono spostare solo i vincoli. Ogni nodo ha al massimo uno spostamento imposto; modificalo invece di aggiungerne un secondo. In una struttura isostatica un cedimento produce spostamenti ma nessuna forza interna; in una iperstatica produce entrambi.
 
 ## Carichi su elemento {#element-loads}
 
@@ -86,7 +86,7 @@ Nel punto di applicazione il diagramma del taglio ha un salto pari a `Fz` e quel
 | **ΔT<sub>c</sub>**, variazione di temperatura all'asse baricentrico | variazione uniforme su tutta la sezione, che dà un allungamento $\alpha\,\Delta T_c\,L$ |
 | **ΔT<sub>b</sub> − ΔT<sub>t</sub>**, differenza di temperatura | fibra inferiore meno fibra superiore, che dà una curvatura $\alpha\,(\Delta T_b - \Delta T_t)/h$ |
 
-I carichi termici usano l'**α** del materiale e l'**altezza h** della sezione. Un `ΔTb − ΔTt` positivo (più caldo in basso) allunga la fibra inferiore, quindi l'elemento si inflette verso il basso come una trave sotto carico gravitazionale. In una struttura isostatica la temperatura provoca solo spostamenti; i vincoli sovrabbondanti (estremità incastrate, continuità, aste ridondanti) la trasformano in sollecitazioni.
+I carichi termici usano l'**α** del materiale e l'**altezza h** della sezione. Un `ΔTb − ΔTt` positivo (più caldo in basso) allunga la fibra inferiore, quindi l'elemento si inflette verso il basso come una trave sotto carico gravitazionale. In una struttura isostatica la temperatura provoca solo spostamenti; i vincoli sovrabbondanti (estremità incastrate, continuità, aste ridondanti) la trasformano in forze interne.
 
 <div class="shots">
 

@@ -41,7 +41,7 @@ Il modello che aveva finisce in **☰ → Strutture recenti** e può essere ripr
 
 EduBeam dà agli studenti un riscontro immediato sui calcoli a mano senza svelare il procedimento:
 
-- Chiedi di calcolare a mano reazioni, sollecitazioni e uno spostamento, poi fai costruire il modello agli studenti e confrontare i risultati. [Verificare i risultati a mano](/it/guide/verification) contiene formule pronte.
+- Chiedi di calcolare a mano reazioni, forze interne e uno spostamento, poi fai costruire il modello agli studenti e confrontare i risultati. [Verificare i risultati a mano](/it/guide/verification) contiene formule pronte.
 - Chiedi *perché* un risultato è diverso: deformazione a taglio, una cerniera mancante, un carico negli assi locali anziché globali.
 - Chiedi agli studenti di consegnare un link condiviso o un `project.json` insieme al calcolo. Puoi aprirlo e vedere esattamente cosa hanno modellato.
 - Per le relazioni, gli studenti possono esportare il disegno in **SVG** (nitido in Word e LaTeX) e i risultati in **CSV**.

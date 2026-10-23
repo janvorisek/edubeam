@@ -432,7 +432,7 @@
       },
       "display": {
         "title": "Scegli cosa mostrare",
-        "body": "L'ingranaggio in alto a destra apre le opzioni di visualizzazione: sollecitazioni, deformata, reazioni e altro. Aprilo ora."
+        "body": "L'ingranaggio in alto a destra apre le opzioni di visualizzazione: forze interne, deformata, reazioni e altro. Aprilo ora."
       },
       "fit": {
         "title": "Adattala allo schermo",
@@ -446,7 +446,7 @@
   },
   "welcome": {
     "title": "Benvenuti in <span class=\"edubeam\">edubeam</span>! 🚀",
-    "description": "Modella travi, telai e travature reticolari e osservane le sollecitazioni mentre disegni.",
+    "description": "Modella travi, telai e travature reticolari e osservane le forze interne mentre disegni.",
     "start": "Come vuoi iniziare?",
     "showAround": "Fammi fare un giro",
     "showAroundHint": "Una rapida panoramica della vista, delle opzioni di visualizzazione e della barra inferiore.",

@@ -69,7 +69,7 @@ Il modello viene risolto comunque, ma controlla questi punti:
 | I diagrammi sono enormi o minuscoli | È solo un fatto visivo. Regola **Scala dei risultati** in *Impostazioni → Impostazioni della vista*. |
 | Un carico in coordinate locali punta dalla parte sbagliata | L'asse x locale dell'elemento va dal nodo *iniziale* al nodo *finale*. Scambia i nodi, oppure inverti il segno. |
 | Il carico di un'asta inclinata non torna | **LCS** è spuntato per impostazione predefinita, quindi `fz` agisce perpendicolarmente all'asta. Togli la spunta per un carico verticale. |
-| Un carico termico non fa nulla | Una struttura isostatica si deforma liberamente sotto la temperatura, senza sollecitazioni. Verifica che α ≠ 0 e, per il gradiente, che l'altezza h della sezione sia impostata. |
+| Un carico termico non fa nulla | Una struttura isostatica si deforma liberamente sotto la temperatura, senza forze interne. Verifica che α ≠ 0 e, per il gradiente, che l'altezza h della sezione sia impostata. |
 
 ## Problemi di interfaccia {#interface-issues}
 

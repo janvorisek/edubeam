@@ -8,7 +8,7 @@ description: "단계별 튜토리얼: EduBeam에서 등분포하중을 받는 3�
 
 ![완성된 라멘: 휨모멘트와 반력](/screenshots/ko/tut-frame-moment.webp)
 
-둘러보기만 하려면 [완성된 모델을 여십시오](https://run.edubeam.app/?model=eyJuIjpbWyJBIixbMCwwLDBdLFswLDJdLG51bGxdLFsiQiIsWzAsMCwtNF0sW10sbnVsbF0sWyJDIixbNCwwLC00XSxbXSxudWxsXSxbIkQiLFs4LDAsLTRdLFtdLG51bGxdLFsiRSIsWzgsMCwwXSxbMCwyXSxudWxsXV0sImUiOltbIjEiLFsiQSIsIkIiXSwiMSIsIjEiLFtmYWxzZSxmYWxzZV1dLFsiMiIsWyJCIiwiQyJdLCIxIiwiMSIsW2ZhbHNlLHRydWVdXSxbIjMiLFsiQyIsIkQiXSwiMSIsIjEiLFtmYWxzZSxmYWxzZV1dLFsiNCIsWyJEIiwiRSJdLCIxIiwiMSIsW2ZhbHNlLGZhbHNlXV1dLCJtIjpbWyIxIiw3ODUwLDIxMDAwMDAwMDAwMCw4MTAwMDAwMDAwMCwwLjAwMDAxMl1dLCJjcyI6W1siMSIsMC4wMDUzOCwwLjAwMDA4MzU2LDAuMywxXV0sImVsIjpbWyIyIixbMCwxMDAwMF0sZmFsc2VdLFsiMyIsWzAsMTAwMDBdLGZhbHNlXV0sImQiOltdfQ%3D%3D&lang=ko){target="_blank"}.
+둘러보기만 하려면 [완성된 모델을 여세요](https://run.edubeam.app/?model=eyJuIjpbWyJBIixbMCwwLDBdLFswLDJdLG51bGxdLFsiQiIsWzAsMCwtNF0sW10sbnVsbF0sWyJDIixbNCwwLC00XSxbXSxudWxsXSxbIkQiLFs4LDAsLTRdLFtdLG51bGxdLFsiRSIsWzgsMCwwXSxbMCwyXSxudWxsXV0sImUiOltbIjEiLFsiQSIsIkIiXSwiMSIsIjEiLFtmYWxzZSxmYWxzZV1dLFsiMiIsWyJCIiwiQyJdLCIxIiwiMSIsW2ZhbHNlLHRydWVdXSxbIjMiLFsiQyIsIkQiXSwiMSIsIjEiLFtmYWxzZSxmYWxzZV1dLFsiNCIsWyJEIiwiRSJdLCIxIiwiMSIsW2ZhbHNlLGZhbHNlXV1dLCJtIjpbWyIxIiw3ODUwLDIxMDAwMDAwMDAwMCw4MTAwMDAwMDAwMCwwLjAwMDAxMl1dLCJjcyI6W1siMSIsMC4wMDUzOCwwLjAwMDA4MzU2LDAuMywxXV0sImVsIjpbWyIyIixbMCwxMDAwMF0sZmFsc2VdLFsiMyIsWzAsMTAwMDBdLGZhbHNlXV0sImQiOltdfQ%3D%3D&lang=ko){target="_blank"}.
 
 ## 문제 {#the-problem}
 
@@ -25,7 +25,7 @@ description: "단계별 튜토리얼: EduBeam에서 등분포하중을 받는 3�
 | D | 8 | −4 | |
 | E | 8 | 0 | 힌지 |
 
-**z축은 아래를 향하므로** 기둥 꼭대기는 `Z = −4`에 있다는 점을 기억하십시오.
+**z축은 아래를 향하므로** 기둥 꼭대기는 `Z = −4`에 있다는 점을 기억하세요.
 
 ## 1. 재료와 단면 {#_1-material-and-section}
 
@@ -41,29 +41,29 @@ description: "단계별 튜토리얼: EduBeam에서 등분포하중을 받는 3�
 
 1. **그리드 스냅**이 켜져 있는지 확인합니다(**S** 칩).
 2. *요소* 탭 → 두 번째 **요소 추가** 버튼(커서 아이콘).
-3. (0, 0)을 클릭한 다음 (0, −4), (4, −4), (8, −4), (8, 0)을 차례로 클릭합니다. 눈금자와 십자선을 보며 위치를 찾으십시오. 클릭할 때마다 절점이 추가되고 이전 절점과 연결됩니다.
+3. (0, 0)을 클릭한 다음 (0, −4), (4, −4), (8, −4), (8, 0)을 차례로 클릭합니다. 눈금자와 십자선을 보며 위치를 찾으세요. 클릭할 때마다 절점이 추가되고 이전 절점과 연결됩니다.
 4. <kbd>Esc</kbd>를 눌러 마치고, <kbd>F</kbd>를 눌러 라멘을 화면에 맞춥니다.
 
-이제 절점 5개와 요소 4개가 생겼습니다. 이 페이지의 그림에서는 절점 이름을 A–E로 붙였습니다. 원한다면 *절점* 표에서 이름을 바꾸거나 1–5를 그대로 써도 됩니다. 표에서 좌표를 확인하고 그리드에서 벗어난 점이 있으면 고치십시오.
+이제 절점 5개와 요소 4개가 생겼습니다. 이 페이지의 그림에서는 절점 이름을 A–E로 붙였습니다. 원한다면 *절점* 표에서 이름을 바꾸거나 1–5를 그대로 써도 됩니다. 표에서 좌표를 확인하고 그리드에서 벗어난 점이 있으면 고치세요.
 
 ## 3. 지점과 힌지 {#_3-supports-and-the-hinge}
 
-1. 절점 A를 클릭하고 **지점 조건**을 열어 **힌지**를 고릅니다. 절점 E도 같은 방법으로 설정합니다.
+1. 절점 A를 클릭하고 **지지조건**을 열어 **힌지**를 고릅니다. 절점 E도 같은 방법으로 설정합니다.
 2. *요소* 표에서 B에서 C로 가는 요소를 찾아 **끝단** 힌지(*단부 힌지*의 두 번째 칸)를 체크합니다.
 
 ![요소 표: 힌지는 요소 2의 끝단, 즉 절점 C에 있습니다](/screenshots/ko/elements-table.webp)
 
 ::: tip 힌지는 두 개가 아니라 하나
-요소 B–C의 끝단에만 힌지를 넣으면 충분합니다. 그러면 C의 모멘트가 0이 되는데, 절점 C에 강결된 부재가 C–D 하나뿐이어서 C–D가 그 절점으로 모멘트를 전달할 수 없기 때문입니다. C–D의 시작단에도 힌지를 체크해도 달라지는 것은 없습니다. 하지만 B에도 힌지를 넣으면 라멘은 메커니즘이 됩니다. 직접 해 보십시오. EduBeam이 어떻게 움직이는지 보여 줍니다.
+요소 B–C의 끝단에만 힌지를 넣으면 충분합니다. 그러면 C의 모멘트가 0이 되는데, 절점 C에 강결된 부재가 C–D 하나뿐이어서 C–D가 그 절점으로 모멘트를 전달할 수 없기 때문입니다. C–D의 시작단에도 힌지를 체크해도 달라지는 것은 없습니다. 하지만 B에도 힌지를 넣으면 라멘은 메커니즘이 됩니다. 직접 해 보세요. EduBeam이 어떻게 움직이는지 보여 줍니다.
 :::
 
 ## 4. 하중 {#_4-load}
 
-*하중* → **요소 하중 추가** → *등분포하중*, 요소 B–C, `fz = 10` kN/m. 요소 C–D에도 같은 하중을 반복합니다. 보가 수평이므로 여기서는 LCS 체크박스가 결과에 영향을 주지 않습니다.
+*하중* → **요소하중 추가** → *등분포하중*, 요소 B–C, `fz = 10` kN/m. 요소 C–D에도 같은 하중을 반복합니다. 보가 수평이므로 여기서는 LCS 체크박스가 결과에 영향을 주지 않습니다.
 
 ## 5. 결과 {#_5-results}
 
-표시 옵션은 처음에 변형 형상, 휨모멘트, 반력이 켜진 상태로 시작합니다. 나머지를 보려면 **N (x)**와 **V<sub>z</sub> (x)**를 체크하십시오.
+표시 옵션은 처음에 변형 형상, 휨모멘트, 반력이 켜진 상태로 시작합니다. 나머지를 보려면 **N (x)**와 **V<sub>z</sub> (x)**를 체크하세요.
 
 <div class="shots">
 
@@ -112,7 +112,7 @@ $$V_A \cdot 4 - H_A \cdot 4 - q \cdot 4 \cdot 2 = 0 \quad\Rightarrow\quad H_A = 
 
 ## 7. 실험해 보기 {#_7-experiment}
 
-- C의 **힌지를 해제**합니다. 라멘은 1차 부정정이 되고, 모서리 모멘트가 줄며 경간 중앙에 정모멘트가 생깁니다. 이제는 단면이 결과에 영향을 줍니다. 더 강한 보로 바꿔 보십시오.
-- **하단을 고정**합니다(**고정** 지점 선택). A와 E에 모멘트가 생깁니다.
-- **수평 하중을 추가**합니다. B에 절점 하중 `Fx = 10` kN을 가합니다. 라멘이 횡으로 변위하고 반력은 더 이상 대칭이 아닙니다. 같은 평형 방정식 3개와 $M_C = 0$으로 확인해 보십시오.
+- C의 **힌지를 해제**합니다. 라멘은 1차 부정정이 되고, 모서리 모멘트가 줄며 경간 중앙에 정모멘트가 생깁니다. 이제는 단면이 결과에 영향을 줍니다. 더 강한 보로 바꿔 보세요.
+- **하단을 고정**합니다(**고정단** 선택). A와 E에 모멘트가 생깁니다.
+- **수평 하중을 추가**합니다. B에 절점하중 `Fx = 10` kN을 가합니다. 라멘이 횡으로 변위하고 반력은 더 이상 대칭이 아닙니다. 같은 평형 방정식 3개와 $M_C = 0$으로 확인해 보세요.
 - **B에도 힌지를 체크**합니다. 이제 라멘은 메커니즘이 되며, EduBeam이 어떻게 움직일 수 있는지 애니메이션으로 보여 줍니다.

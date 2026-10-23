@@ -8,15 +8,15 @@ description: "EduBeam에 대해 자주 묻는 질문: 비용과 계정, 브라�
 
 ### EduBeam은 무엇인가요? {#what-is-edubeam}
 
-즉각적인 피드백을 원하는 학생, 교수자, 엔지니어를 위한 무료 오픈 소스 브라우저 기반 2D 보, 라멘, 트러스 해석 프로그램입니다. [소개](/ko/guide/introduction)를 참고하십시오.
+즉각적인 피드백을 원하는 학생, 교수자, 엔지니어를 위한 무료 오픈 소스 브라우저 기반 2D 보, 라멘, 트러스 해석 프로그램입니다. [소개](/ko/guide/introduction)를 참고하세요.
 
 ### 정말 무료인가요? 계정이 필요한가요? {#is-it-really-free-do-i-need-an-account}
 
-네, 무료이고 계정은 필요 없습니다. [run.edubeam.app](https://run.edubeam.app/?lang=ko)을 열고 바로 모델링을 시작하십시오. 계정도, 설치 프로그램도, 사용 제한도 없습니다. 소스 코드는 [GitHub](https://github.com/janvorisek/edubeam)에 있습니다.
+네, 무료이고 계정은 필요 없습니다. [run.edubeam.app](https://run.edubeam.app/?lang=ko)을 열고 바로 모델링을 시작하세요. 계정도, 설치 프로그램도, 사용 제한도 없습니다. 소스 코드는 [GitHub](https://github.com/janvorisek/edubeam)에 있습니다.
 
 ### 어떤 브라우저와 기기에서 작동하나요? {#which-browsers-and-devices-work}
 
-최신 Chrome, Edge, Firefox, Safari라면 어느 것이든 됩니다. 태블릿과 휴대폰에서도 작동합니다. 탭해서 선택하거나 배치하고, 절점을 드래그해 옮기고, 다른 곳을 드래그해 화면을 이동하고, 두 손가락으로 확대/축소하고, 길게 눌러 캔버스 메뉴를 엽니다. 그래도 마우스와 키보드가 있으면 모델링이 더 빠릅니다. [키보드, 마우스 및 터치](/ko/reference/shortcuts#touch)를 참고하십시오.
+최신 Chrome, Edge, Firefox, Safari라면 어느 것이든 됩니다. 태블릿과 휴대폰에서도 작동합니다. 탭해서 선택하거나 배치하고, 절점을 드래그해 옮기고, 다른 곳을 드래그해 화면을 이동하고, 두 손가락으로 확대/축소하고, 길게 눌러 캔버스 메뉴를 엽니다. 그래도 마우스와 키보드가 있으면 모델링이 더 빠릅니다. [키보드, 마우스 및 터치](/ko/reference/shortcuts#touch)를 참고하세요.
 
 ### 모델을 잃어버렸어요. 되찾을 수 있나요? {#i-lost-my-model-can-i-get-it-back}
 
@@ -28,13 +28,13 @@ EduBeam은 프로그레시브 웹 앱입니다. 한 번 불러오면 인터넷 �
 
 ### 데이터는 어디에 저장되나요? {#where-is-my-data-stored}
 
-사용자의 브라우저에만 저장됩니다. 모델은 서버로 전송되지 않습니다. 공유 링크 자체가 *곧* 모델입니다. [가져오기, 내보내기 및 공유](/ko/essentials/import-export)를 참고하십시오.
+사용자의 브라우저에만 저장됩니다. 모델은 서버로 전송되지 않습니다. 공유 링크 자체가 *곧* 모델입니다. [가져오기, 내보내기 및 공유](/ko/essentials/import-export)를 참고하세요.
 
 ## 모델링 {#modelling}
 
 ### 고정 / 힌지 / 롤러 지점은 어떻게 만드나요? {#how-do-i-make-a-fixed-pinned-roller-support}
 
-절점을 클릭하고 **지점 조건**을 열어 힌지, 롤러, 고정, 슬라이더 등의 기호를 고릅니다. 또는 자유도를 체크합니다. **Dx + Dz + Ry** = 고정, **Dx + Dz** = 힌지, **Dz** = 롤러. 모든 조합은 [절점 및 지점](/ko/essentials/nodes-supports#supports)에 정리되어 있습니다.
+절점을 클릭하고 **지지조건**을 열어 힌지, 롤러, 고정단, 슬라이더 등의 기호를 고릅니다. 또는 자유도를 체크합니다. **Dx + Dz + Ry** = 고정단, **Dx + Dz** = 힌지, **Dz** = 롤러. 모든 조합은 [절점 및 지점](/ko/essentials/nodes-supports#supports)에 정리되어 있습니다.
 
 ### 트러스는 어떻게 만드나요? {#how-do-i-make-a-truss}
 
@@ -46,23 +46,23 @@ EduBeam은 프로그레시브 웹 앱입니다. 한 번 불러오면 인터넷 �
 
 ### 보 중간에 지점이나 집중하중을 추가하려면 어떻게 하나요? {#how-do-i-add-a-support-or-a-point-load-in-the-middle-of-a-beam}
 
-*마우스로 추가*로 보 위에 절점을 추가하고 **구조물에 연결**을 고르면 보가 둘로 분할됩니다. 집중하중만 가하려면 절점도 필요 없습니다. 위치를 지정한 **집중하중** 요소 하중을 쓰십시오.
+*마우스로 추가*로 보 위에 절점을 추가하고 **구조물에 연결**을 고르면 보가 둘로 분할됩니다. 집중하중만 가하려면 절점도 필요 없습니다. 위치를 지정한 **집중하중** 요소하중을 쓰세요.
 
 ### 자중을 가할 수 있나요? {#can-i-apply-self-weight}
 
-자동으로는 안 됩니다. 등분포하중 $f_z = \rho g A$로 입력하십시오.
+자동으로는 안 됩니다. 등분포하중 $f_z = \rho g A$로 입력하세요.
 
 ### 경사 지점을 모델링할 수 있나요? {#can-i-model-inclined-supports}
 
 네. 절점에 **절점 좌표계 각도**를 설정하면 그 절점의 자유도가 회전된 좌표계에서 해석됩니다.
 
-### 하중 케이스나 하중 조합이 있나요? {#are-there-load-cases-or-combinations}
+### 하중조건이나 하중조합이 있나요? {#are-there-load-cases-or-combinations}
 
-아니요, 하중 케이스는 하나뿐입니다. 하중 케이스마다 따로 모델링해 저장하거나 공유하십시오.
+아니요, 하중조건은 하나뿐입니다. 하중조건마다 따로 모델링해 저장하거나 공유하세요.
 
 ### 하중이 왜 위를 향하나요? {#why-do-my-loads-point-up}
 
-전체 z축이 **아래**를 향하기 때문입니다. 양의 `Fz`는 아래 방향입니다. [부호 규약](/ko/elements/conventions)을 참고하십시오. 연직축이 위를 향하는 편이 좋다면 *설정 → 언어 및 지역 → 좌표계*에서 y 위 좌표축으로 바꾸십시오.
+전체 z축이 **아래**를 향하기 때문입니다. 양의 `Fz`는 아래 방향입니다. [부호 규약](/ko/elements/conventions)을 참고하세요. 연직축이 위를 향하는 편이 좋다면 *설정 → 언어 및 지역 → 좌표계*에서 y 위 좌표축으로 바꾸세요.
 
 ## 결과 {#results}
 
@@ -86,15 +86,15 @@ EduBeam은 Timoshenko 보를 쓰므로 처짐에 전단 변형이 포함됩니�
 
 ### 모델은 어떻게 공유하나요? {#how-do-i-share-a-model}
 
-**모델 공유** → **복사**. 링크에는 모델 전체가 담겨 있습니다. 받는 사람은 각자 편집 가능한 사본을 받으며, 실시간 공동 작업 기능은 없습니다. [EduBeam으로 가르치기](/ko/guide/teaching)도 참고하십시오.
+**모델 공유** → **복사**. 링크에는 모델 전체가 담겨 있습니다. 받는 사람은 각자 편집 가능한 사본을 받으며, 실시간 공동 작업 기능은 없습니다. [EduBeam으로 가르치기](/ko/guide/teaching)도 참고하세요.
 
 ### 웹 사이트나 슬라이드에 모델을 삽입할 수 있나요? {#can-i-embed-a-model-on-my-website-or-in-slides}
 
-네. 공유 링크에 `&viewer=1`을 붙여 `<iframe>`에 넣으십시오. [뷰어 삽입](/ko/essentials/import-export#embed-a-read-only-viewer)을 참고하십시오.
+네. 공유 링크에 `&viewer=1`을 붙여 `<iframe>`에 넣으세요. [뷰어 삽입](/ko/essentials/import-export#embed-a-read-only-viewer)을 참고하세요.
 
 ### 이미지나 표를 내보낼 수 있나요? {#can-i-export-images-or-tables}
 
-네. **☰ → 이미지 내보내기**(<kbd>Ctrl</kbd>+<kbd>P</kbd>)는 원하는 크기나 축척으로 그림을 PNG나 SVG로 저장합니다. **결과 → CSV 내보내기**는 두 결과 표를 저장하고, **복사**는 스프레드시트에 붙여 넣을 수 있도록 클립보드에 넣습니다. [가져오기, 내보내기 및 공유](/ko/essentials/import-export#export-an-image)를 참고하십시오.
+네. **☰ → 이미지 내보내기**(<kbd>Ctrl</kbd>+<kbd>P</kbd>)는 원하는 크기나 축척으로 그림을 PNG나 SVG로 저장합니다. **결과 → CSV 내보내기**는 두 결과 표를 저장하고, **복사**는 스프레드시트에 붙여 넣을 수 있도록 클립보드에 넣습니다. [가져오기, 내보내기 및 공유](/ko/essentials/import-export#export-an-image)를 참고하세요.
 
 ### 프로그램으로 모델을 생성할 수 있나요? {#can-i-generate-models-programmatically}
 
@@ -104,4 +104,4 @@ EduBeam은 Timoshenko 보를 쓰므로 처짐에 전단 변형이 포함됩니�
 
 ### 버그 신고나 기능 요청은 어떻게 하나요? {#how-do-i-report-a-bug-or-request-a-feature}
 
-[GitHub](https://github.com/janvorisek/edubeam/issues)에 이슈를 등록하고 문제를 재현하는 공유 링크나 프로젝트 파일을 첨부해 주십시오. 비공개 지원: [support@edubeam.app](mailto:support@edubeam.app).
+[GitHub](https://github.com/janvorisek/edubeam/issues)에 이슈를 등록하고 문제를 재현하는 공유 링크나 프로젝트 파일을 첨부해 주세요. 비공개 지원: [support@edubeam.app](mailto:support@edubeam.app).

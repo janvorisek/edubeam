@@ -19,7 +19,7 @@
     "massMatrix": "질량 행렬",
     "target": "대상",
     "components": "성분",
-    "loadCase": "하중 케이스",
+    "loadCase": "하중조건",
     "loads": "하중",
     "clearMesh": "구조물 지우기",
     "shareModel": "모델 공유",
@@ -51,7 +51,7 @@
   "nodes": {
     "addNode": "절점 추가",
     "editNode": "절점 편집",
-    "defineSupports": "지점 조건",
+    "defineSupports": "지지조건",
     "lcsAngle": "절점 좌표계 각도"
   },
   "supports": {
@@ -62,7 +62,7 @@
     "slider": "슬라이더",
     "verticalSlider": "수직 슬라이더",
     "rotation": "회전만 구속",
-    "fixed": "고정",
+    "fixed": "고정단",
     "custom": "사용자 정의"
   },
   "elements": {
@@ -76,13 +76,13 @@
     "to": "끝"
   },
   "loads": {
-    "addNodalLoad": "절점 하중 추가",
-    "addElementLoad": "요소 하중 추가",
+    "addNodalLoad": "절점하중 추가",
+    "addElementLoad": "요소하중 추가",
     "addLoad": "하중 추가",
-    "nodalLoad": "절점 하중",
-    "elementLoad": "요소 하중",
-    "prescribedDisplacement": "강제 변위",
-    "addPrescribedDisplacement": "강제 변위 지정",
+    "nodalLoad": "절점하중",
+    "elementLoad": "요소하중",
+    "prescribedDisplacement": "강제변위",
+    "addPrescribedDisplacement": "강제변위 지정",
     "UDL": "등분포하중",
     "forceMoment": "힘/모멘트",
     "editLoad": "하중 편집",
@@ -113,7 +113,7 @@
     "alpha": "주축 각도",
     "radiusOfGyration": "회전반경",
     "polygonal": "다각형 형상",
-    "derivedFromShape": "다각형 형상에서 계산된 값입니다 – 바꾸려면 형상을 편집하십시오"
+    "derivedFromShape": "다각형 형상에서 계산된 값입니다 – 바꾸려면 형상을 편집하세요"
   },
   "material": {
     "e": "E",
@@ -191,10 +191,10 @@
       "supportSize": "지점 크기"
     },
     "font_size": "글꼴 크기",
-    "result_label_orientation": "결과 값 방향",
+    "result_label_orientation": "결과 레이블 방향",
     "result_label_orientation_axis": "다이어그램에 수직",
     "result_label_orientation_horizontal": "항상 수평",
-    "result_labels": "결과 값 표시"
+    "result_labels": "결과 레이블"
   },
   "sideSettings": {
     "showDeformedShape": "변형 형상",
@@ -256,12 +256,12 @@
       "crossSection": "단면"
     },
     "addNodalLoad": {
-      "addNewNodalLoad": "새 절점 하중 추가",
-      "addNodalLoad": "절점 하중 추가"
+      "addNewNodalLoad": "새 절점하중 추가",
+      "addNodalLoad": "절점하중 추가"
     },
     "addElementLoad": {
-      "addNewElementLoad": "새 요소 하중 추가",
-      "addElementLoad": "요소 하중 추가"
+      "addNewElementLoad": "새 요소하중 추가",
+      "addElementLoad": "요소하중 추가"
     },
     "addMaterial": {
       "addNewMaterial": "새 재료 추가",
@@ -277,16 +277,16 @@
       "orDefinePolygon": "또는 다각형 형상 정의"
     },
     "editNodalLoad": {
-      "editNodalLoad": "절점 하중 편집"
+      "editNodalLoad": "절점하중 편집"
     },
     "editElementLoad": {
-      "editElementLoad": "요소 하중 편집"
+      "editElementLoad": "요소하중 편집"
     },
     "update": {
       "title": "업데이트 가능",
       "update": "업데이트",
       "text1": "앱을 초기화해야 하는 업데이트를 배포하고 있습니다. 진행 중인 작업은 모두 사라집니다.",
-      "text2": "현재 작업을 유지하려면 업데이트를 취소할 수 있습니다."
+      "text2": "현재 작업을 유지하려면 업데이트를 취소하세요."
     },
     "editNode": {
       "editNode": "절점 편집"
@@ -352,7 +352,7 @@
     "materials": {},
     "material": {
       "alphaT": "열팽창계수는 온도가 변할 때 물체의 크기가 얼마나 변하는지를 나타냅니다.",
-      "e": "탄성계수(영 계수)는 길이 방향으로 힘이 작용할 때의 인장 또는 압축 강성을 나타냅니다.",
+      "e": "탄성계수(영률)는 길이 방향으로 힘이 작용할 때의 인장 또는 압축 강성을 나타냅니다.",
       "g": "전단탄성계수는 전단응력에 의한 변형에 저항하는 정도를 나타내는 성질로, 표면에 평행하게 작용하는 힘에 대한 재료의 강성을 의미합니다.",
       "density": "밀도는 물질의 단위 부피에 들어 있는 질량을 나타냅니다."
     }
@@ -364,12 +364,12 @@
   },
   "sharing": {
     "shareViaURL": "URL로 모델 공유",
-    "instructions": "필드 안을 아무 곳이나 클릭하면 링크가 복사됩니다. 복사한 링크를 공동 작업자에게 보내십시오.",
+    "instructions": "필드 안을 아무 곳이나 클릭하면 링크가 복사됩니다. 복사한 링크를 공동 작업자에게 보내세요.",
     "copyCue": "링크 복사",
     "openLink": "링크 열기",
     "nativeShare": "시스템 공유 창으로 공유",
     "linkCopied": "링크를 클립보드에 복사했습니다",
-    "copyFailed": "자동으로 복사하지 못했습니다. 키보드 단축키를 사용하십시오.",
+    "copyFailed": "자동으로 복사하지 못했습니다. 키보드 단축키를 사용하세요.",
     "shortLink": "짧은 링크",
     "shortLinkHint": "길이가 약 절반입니다. 이전 버전의 edubeam을 쓰는 사람은 앱을 업데이트해야 열 수 있습니다."
   },
@@ -424,30 +424,30 @@
       },
       "supports": {
         "title": "지점 설정",
-        "body": "왼쪽 끝을 클릭하고 {defineSupports}을(를) 열어 Dx와 D{v}를 체크하면 힌지 지점이 됩니다. 그런 다음 오른쪽 끝을 클릭하고 D{v}를 체크하면 롤러 지점이 됩니다."
+        "body": "왼쪽 끝을 클릭하고 {defineSupports} 메뉴를 열어 Dx와 D{v}를 체크하면 힌지 지점이 됩니다. 이어서 오른쪽 끝을 클릭하고 D{v}를 체크하면 롤러 지점이 됩니다."
       },
       "load": {
         "title": "하중 가하기",
-        "body": "보를 클릭하고 {addLoad}을(를) 선택한 다음 f{v}에 값을 입력하고 확인합니다."
+        "body": "보를 클릭하고 {addLoad} 메뉴를 선택한 다음 f{v}에 값을 입력하고 확인을 누릅니다."
       },
       "display": {
         "title": "표시 항목 선택",
-        "body": "오른쪽 위의 톱니바퀴를 누르면 표시 옵션이 열립니다. 부재력, 변형 형상, 반력 등을 표시할 수 있습니다. 지금 열어 보십시오."
+        "body": "오른쪽 위의 톱니바퀴를 누르면 표시 옵션이 열립니다. 부재력, 변형 형상, 반력 등을 표시할 수 있습니다. 지금 열어 보세요."
       },
       "fit": {
         "title": "화면에 맞추기",
-        "body": "오른쪽 위의 버튼으로 모델을 화면에 맞추거나 가운데에 놓을 수 있습니다. 지금 화면에 맞추기를 누르고, 그림이 화면 밖으로 벗어날 때마다 다시 누르십시오."
+        "body": "오른쪽 위의 버튼으로 모델을 화면에 맞추거나 가운데에 놓을 수 있습니다. 지금 화면에 맞추기를 누르고, 그림이 화면 밖으로 벗어날 때마다 다시 누르세요."
       },
       "results": {
         "title": "결과 확인",
-        "body": "휨모멘트와 변형 형상이 보 위에 그려지며 편집할 때마다 갱신됩니다. 모든 절점, 요소, 하중은 아래 표에도 나열되어 있어 정확한 값을 입력할 수 있습니다. {undo}을(를) 누르면 이전 모델로 돌아갑니다."
+        "body": "휨모멘트와 변형 형상이 보 위에 그려지며 편집할 때마다 갱신됩니다. 모든 절점, 요소, 하중은 아래 표에도 나열되어 있어 정확한 값을 입력할 수 있습니다. {undo} 버튼을 누르면 이전 모델로 돌아갑니다."
       }
     }
   },
   "welcome": {
     "title": "<span class=\"edubeam\">edubeam</span>에 오신 것을 환영합니다! 🚀",
     "description": "보, 라멘, 트러스를 모델링하면 그리는 동안 부재력을 바로 볼 수 있습니다.",
-    "start": "어떻게 시작하시겠습니까?",
+    "start": "어떻게 시작할까요?",
     "showAround": "둘러보기",
     "showAroundHint": "뷰어, 표시 옵션, 하단 바를 간단히 살펴봅니다.",
     "drawFirstBeam": "첫 번째 보 그리기",
@@ -478,18 +478,18 @@
     "node": "절점",
     "element": "요소",
     "dimension": "치수선",
-    "nodal-load": "절점 하중",
-    "element-load": "요소 하중",
-    "prescribedbc-load": "강제 변위"
+    "nodal-load": "절점하중",
+    "element-load": "요소하중",
+    "prescribedbc-load": "강제변위"
   },
   "validators": {
-    "enterValue": "값을 입력하십시오",
+    "enterValue": "값을 입력하세요",
     "invalidNumber": "잘못된 숫자",
-    "positiveNumber": "0보다 큰 수를 입력하십시오",
-    "between": "{min}~{max} 범위의 값을 입력하십시오",
+    "positiveNumber": "0보다 큰 수를 입력하세요",
+    "between": "{min}~{max} 범위의 값을 입력하세요",
     "sameNodes": "요소는 서로 다른 두 절점을 연결해야 합니다",
-    "materialInUse": "이 재료는 요소 {elements}에서 사용 중입니다. 삭제하기 전에 해당 요소에 다른 재료를 지정하십시오.",
-    "crossSectionInUse": "이 단면은 요소 {elements}에서 사용 중입니다. 삭제하기 전에 해당 요소에 다른 단면을 지정하십시오."
+    "materialInUse": "이 재료는 요소 {elements}에서 사용 중입니다. 삭제하기 전에 해당 요소에 다른 재료를 지정하세요.",
+    "crossSectionInUse": "이 단면은 요소 {elements}에서 사용 중입니다. 삭제하기 전에 해당 요소에 다른 단면을 지정하세요."
   },
   "solveDiagnostics": {
     "summaryErrors": "모델 오류: {errors}",
@@ -502,36 +502,36 @@
     "collapseErrors": "이 메시지 접기",
     "showDetails": "자세히 보기",
     "blockedTitle": "모델을 해석할 수 없습니다",
-    "blockedDescription": "모델을 해석하기 전에 나열된 오류를 수정하십시오.",
+    "blockedDescription": "모델을 해석하기 전에 나열된 오류를 수정하세요.",
     "warningsTitle": "모델 경고",
     "warningsDescription": "모델을 해석했지만 다음 경고가 발견되었습니다.",
     "incompleteTitle": "아직 해석할 수 없습니다",
     "incompleteDescription": "구조물이 제자리에 고정되면 결과가 표시됩니다. 캔버스의 점선 윤곽은 구조물이 아직 어떻게 움직일 수 있는지 보여 줍니다.",
     "errors": "오류",
     "warnings": "경고",
-    "incomplete": "아직 필요",
+    "incomplete": "아직 필요한 항목",
     "issues": {
       "elementNodeCount": "요소 {element}은(는) 정확히 2개의 절점을 참조해야 합니다.",
       "elementSameNode": "요소 {element}의 양 끝이 같은 절점을 참조합니다.",
       "elementMissingNode": "요소 {element}에서 참조하는 절점 {node}이(가) 없습니다.",
       "elementMissingMaterial": "요소 {element}에서 참조하는 재료 {material}이(가) 없습니다.",
       "elementMissingCrossSection": "요소 {element}에서 참조하는 단면 {crossSection}이(가) 없습니다.",
-      "nodalLoadMissingNode": "절점 하중 #{index}에서 참조하는 절점 {node}이(가) 없습니다.",
-      "nodalLoadInvalid": "절점 하중 #{index}에 잘못된 값이 있습니다.",
-      "prescribedMissingNode": "강제 변위 #{index}에서 참조하는 절점 {node}이(가) 없습니다.",
-      "prescribedInvalid": "강제 변위 #{index}에 잘못된 값이 있습니다.",
-      "elementLoadMissingElement": "요소 하중 #{index}에서 참조하는 요소 {element}이(가) 없습니다.",
+      "nodalLoadMissingNode": "절점하중 #{index}에서 참조하는 절점 {node}이(가) 없습니다.",
+      "nodalLoadInvalid": "절점하중 #{index}에 잘못된 값이 있습니다.",
+      "prescribedMissingNode": "강제변위 #{index}에서 참조하는 절점 {node}이(가) 없습니다.",
+      "prescribedInvalid": "강제변위 #{index}에 잘못된 값이 있습니다.",
+      "elementLoadMissingElement": "요소하중 #{index}에서 참조하는 요소 {element}이(가) 없습니다.",
       "supportedNodeNotConnected": "절점 {node}에 지점이 있지만 연결된 요소가 없어 지점이 아무것도 지지하지 않습니다.",
       "nodeNotConnected": "절점 {node}은(는) 어떤 요소에도 연결되어 있지 않아 해석에서 무시됩니다.",
       "insufficientSupports": "2D 해석에서 안정하려면 모델에 구속된 자유도가 3개 이상 필요합니다.",
       "needsSupports": "구조물을 해석하려면 먼저 지점이 필요합니다.",
       "partUnsupported": "구조물의 분리된 부분(절점 {nodes})은 구속된 자유도가 3개 미만이어서 자유롭게 움직일 수 있습니다.",
-      "partNeedsSupports": "절점 {nodes}을(를) 포함하는 부분에 지점이 필요합니다.",
-      "mechanism": "지점 수는 충분하지만 구조물을 고정하지 못합니다. 구조물이 여전히 {motion} 수 있습니다. 지점이 모두 평행하거나 지점 반력의 작용선이 한 점에서 만나면 구조물이 자유롭게 움직입니다.",
-      "mechanismShort": "지점이 구조물을 고정하지 못합니다. 구조물이 여전히 {motion} 수 있습니다.",
-      "partMechanism": "구조물의 분리된 부분(절점 {nodes})은 지점 수는 충분하지만 고정되지 않습니다. 여전히 {motion} 수 있습니다. 지점이 모두 평행하거나 지점 반력의 작용선이 한 점에서 만나면 구조물이 자유롭게 움직입니다.",
-      "partMechanismShort": "절점 {nodes}을(를) 포함하는 부분이 고정되지 않습니다. 여전히 {motion} 수 있습니다.",
-      "hingeMechanism": "지점은 구조물을 고정하지만, 구조물은 여전히 메커니즘입니다. 절점 {nodes}의 힌지를 중심으로 부재가 회전할 수 있습니다. 힌지를 제거하거나, 움직임을 막는 부재나 지점을 추가하십시오.",
+      "partNeedsSupports": "구조물의 일부(절점 {nodes})에 지점이 필요합니다.",
+      "mechanism": "지점 수는 충분하지만 구조물을 고정하지 못해 여전히 {motion} 수 있습니다. 지점이 모두 평행하거나 지점 반력의 작용선이 한 점에서 만나면 구조물이 자유롭게 움직입니다.",
+      "mechanismShort": "지점이 구조물을 고정하지 못해 구조물이 여전히 {motion} 수 있습니다.",
+      "partMechanism": "구조물의 분리된 부분(절점 {nodes})은 지점 수는 충분하지만 고정되지 않아 여전히 {motion} 수 있습니다. 지점이 모두 평행하거나 지점 반력의 작용선이 한 점에서 만나면 구조물이 자유롭게 움직입니다.",
+      "partMechanismShort": "구조물의 일부(절점 {nodes})가 고정되지 않아 여전히 {motion} 수 있습니다.",
+      "hingeMechanism": "지점은 구조물을 고정하지만, 구조물은 여전히 메커니즘입니다. 절점 {nodes}의 힌지를 중심으로 부재가 회전할 수 있습니다. 힌지를 제거하거나, 움직임을 막는 부재나 지점을 추가하세요.",
       "hingeMechanismShort": "절점 {nodes}의 힌지 때문에 구조물이 움직일 수 있습니다.",
       "motion": {
         "horizontal": "수평으로 미끄러질",
@@ -539,7 +539,7 @@
         "rotation": "자유롭게 회전할",
         "mixed": "강체로 움직일"
       },
-      "unstable": "구조물이 불안정합니다. 다음 자유도가 거의 저항 없이 움직입니다: {dofs}. 지점이나 요소를 추가하거나, 단부 힌지를 제거하거나, 단면 강성을 확인하십시오.",
+      "unstable": "구조물이 불안정합니다. 다음 자유도가 거의 저항 없이 움직입니다: {dofs}. 지점이나 요소를 추가하거나, 단부 힌지를 제거하거나, 단면 강성을 확인하세요.",
       "unstableShort": "구조물이 불안정합니다. 거의 저항 없이 움직입니다.",
       "unstableDof": {
         "dx": "절점 {node}의 수평 방향(Dx)",
@@ -548,9 +548,9 @@
         "other": "절점 {node}의 자유도 {dof}"
       },
       "unstableMore": "{list} 외 {count}개",
-      "singularMatrix": "구조물이 메커니즘입니다. 강성 행렬이 특이 행렬입니다. 모든 부분이 3개 이상의 구속으로 고정되어 있는지, 단부 힌지 때문에 부재가 자유롭게 회전하지 않는지 확인하십시오.",
+      "singularMatrix": "구조물이 메커니즘입니다. 강성 행렬이 특이 행렬입니다. 모든 부분이 3개 이상의 구속으로 고정되어 있는지, 단부 힌지 때문에 부재가 자유롭게 회전하지 않는지 확인하세요.",
       "singularMatrixShort": "구조물이 메커니즘입니다. 저항 없이 움직일 수 있습니다.",
-      "solverFailed": "모델 내부의 불일치로 해석에 실패했습니다. 모델의 참조와 하중을 검토하십시오."
+      "solverFailed": "모델 내부의 불일치로 해석에 실패했습니다. 모델의 참조와 하중을 검토하세요."
     }
   },
   "loadType": {
@@ -558,7 +558,7 @@
     "concentrated": "집중하중",
     "trapezoidal": "사다리꼴 분포하중",
     "udl": "등분포하중",
-    "temperature": "온도 하중"
+    "temperature": "온도하중"
   },
   "dimensioning": {
     "add_dimension": "치수 추가",
@@ -567,11 +567,11 @@
   "warnings": {
     "noMaterialsDefined": "정의된 재료가 없습니다.",
     "noCrossSectionsDefined": "정의된 단면이 없습니다.",
-    "importFailed": "파일을 가져올 수 없습니다. 파일 형식을 확인하십시오.",
-    "prescribedDisplacementExists": "이 절점에는 이미 강제 변위가 있습니다. 먼저 삭제하십시오.",
-    "addMaterialFirst": "먼저 재료를 추가하십시오.",
-    "addCrossSectionFirst": "먼저 단면을 추가하십시오.",
-    "selectMaterialAndCrossSection": "재료와 단면을 선택하십시오.",
+    "importFailed": "파일을 가져올 수 없습니다. 파일 형식을 확인하세요.",
+    "prescribedDisplacementExists": "이 절점에는 이미 강제변위가 있습니다. 먼저 삭제하세요.",
+    "addMaterialFirst": "먼저 재료를 추가하세요.",
+    "addCrossSectionFirst": "먼저 단면을 추가하세요.",
+    "selectMaterialAndCrossSection": "재료와 단면을 선택하세요.",
     "labelInUse": "이름 {label}은(는) 이미 사용 중입니다.",
     "noMaterialOrCrossSection": "요소에 재료 또는 단면이 지정되지 않았습니다.",
     "elementMissing": "요소 {label}이(가) 더 이상 존재하지 않습니다."
@@ -598,12 +598,12 @@
       "bodyYUp": "하중은 절점에 작용하거나 요소를 따라 작용합니다. 양의 값은 전체 좌표축 방향을 따르며, y축은 위를 향합니다."
     },
     "nodalLoads": {
-      "title": "절점 하중",
-      "body": "절점 하중은 절점에 힘이나 모멘트를 직접 가합니다. 대신 강제 변위로 지점 침하를 줄 수도 있습니다."
+      "title": "절점하중",
+      "body": "절점하중은 절점에 힘이나 모멘트를 직접 가합니다. 대신 강제변위로 지점 침하를 줄 수도 있습니다."
     },
     "elementLoads": {
-      "title": "요소 하중",
-      "body": "요소 하중은 부재를 따라 작용하며 등분포, 사다리꼴, 집중, 온도 하중이 있습니다. 전체 좌표계나 국부 좌표계로 지정할 수 있습니다."
+      "title": "요소하중",
+      "body": "요소하중은 부재를 따라 작용하며 등분포하중, 사다리꼴 분포하중, 집중하중, 온도하중이 있습니다. 전체 좌표계나 국부 좌표계로 지정할 수 있습니다."
     },
     "materials": {
       "title": "재료",
@@ -619,8 +619,8 @@
     },
     "signConvention": {
       "title": "부호 규약",
-      "body": "전체 z축은 아래를 향하므로 양의 Fz나 fz는 아래로 당기고, My는 반시계 방향이 양수입니다. 국부 좌표계로 바꾼 하중은 요소를 따릅니다.",
-      "bodyYUp": "전체 y축은 위를 향하므로 양의 Fy나 fy는 위로 밀고, Mz는 반시계 방향이 양수입니다. 국부 좌표계로 바꾼 하중은 요소를 따릅니다."
+      "body": "전체 z축은 아래를 향하므로 양의 Fz나 fz는 아래 방향으로 작용하고, My는 반시계 방향이 양수입니다. 국부 좌표계로 바꾼 하중은 요소의 방향을 따릅니다.",
+      "bodyYUp": "전체 y축은 위를 향하므로 양의 Fy나 fy는 위 방향으로 작용하고, Mz는 반시계 방향이 양수입니다. 국부 좌표계로 바꾼 하중은 요소의 방향을 따릅니다."
     },
     "results": {
       "title": "결과",
@@ -662,19 +662,19 @@
     "preview": "미리보기",
     "fitAll": "전체 맞춤",
     "window": "영역…",
-    "pickWindowHint": "내보낼 영역을 그림 위에 사각형으로 드래그하십시오",
+    "pickWindowHint": "내보낼 영역을 그림 위에 사각형으로 드래그하세요",
     "dragEdge": "드래그하여 이쪽을 넓히거나 잘라 냅니다",
     "scale": "축척",
     "scaleCaption": "모델의 1 m는 종이에서 {cm} cm입니다(96 DPI). 미리보기 위에서 스크롤하면 확대/축소됩니다.",
-    "doesNotFit": "이 크기에는 모두 들어가지 않습니다. 다이어그램, 하중, 레이블이 가장자리 밖으로 약 {px} px 벗어납니다. 다이어그램을 줄이거나(현재 {diagrams} px) 캔버스를 키우십시오.",
+    "doesNotFit": "이 크기에는 모두 들어가지 않습니다. 다이어그램, 하중, 레이블이 가장자리 밖으로 약 {px} px 벗어납니다. 다이어그램을 줄이거나(현재 {diagrams} px) 캔버스를 키우세요.",
     "shrinkDiagrams": "다이어그램 축소",
     "enlargeCanvas": "캔버스 확대",
     "diagramHeight": "다이어그램 높이",
-    "shrinkNotEnough": "다이어그램을 줄이는 것만으로는 부족합니다. 하중과 레이블만으로도 더 많은 공간이 필요합니다. 대신 캔버스를 키우십시오."
+    "shrinkNotEnough": "다이어그램을 줄이는 것만으로는 부족합니다. 하중과 레이블만으로도 더 많은 공간이 필요합니다. 대신 캔버스를 키우세요."
   },
   "examples": {
     "title": "예제",
-    "instructions": "미리 만들어진 모델을 열어 살펴보십시오. 현재 모델이 대체되며, Ctrl+Z로 원래 모델을 되돌릴 수 있습니다.",
+    "instructions": "미리 만들어진 모델을 열어 살펴보세요. 현재 모델이 대체되며, Ctrl+Z로 원래 모델을 되돌릴 수 있습니다.",
     "moreInDocs": "더 많은 예제와 연습 문제",
     "items": {
       "welcome": {
@@ -683,23 +683,23 @@
       },
       "cantilever": {
         "title": "캔틸레버",
-        "blurb": "아래 방향 18 kN 절점 하중을 받는 4 m 캔틸레버로, 곡률과 자유단 처짐을 보여 줍니다."
+        "blurb": "아래 방향 18 kN 절점하중을 받는 4 m 캔틸레버로, 곡률과 자유단 처짐을 보여 줍니다."
       },
       "pratt": {
         "title": "프랫 트러스",
-        "blurb": "8 kN 절점 하중을 받는 단순한 프랫 트러스로, 축력 분포와 변위를 보여 줍니다."
+        "blurb": "8 kN 절점하중을 받는 단순한 프랫 트러스로, 축력 분포와 변위를 보여 줍니다."
       },
       "continuous": {
         "title": "3경간 연속보",
         "blurb": "5+6+5 m 경간에 등분포 + 집중 + 등분포 하중을 가해 곡률과 지점 회전각을 비교합니다."
       },
       "portal": {
-        "title": "문형 라멘 하중 케이스",
+        "title": "문형 라멘 하중조건",
         "blurb": "6 m 기둥 위의 8 m 보에 지붕 등분포하중과 모서리의 수평 + 연직 하중을 가해 횡변위와 휨을 검토합니다."
       },
       "temperature": {
-        "title": "온도 하중",
-        "blurb": "균일 및 불균일 온도 하중을 받는 경간 8 m 단순보입니다."
+        "title": "온도하중",
+        "blurb": "균일 및 불균일 온도하중을 받는 경간 8 m 단순보입니다."
       }
     }
   },
@@ -715,7 +715,7 @@
     "reasons": {
       "clear": "지움",
       "link": "공유 링크로 대체됨",
-      "file": "연 파일로 대체됨",
+      "file": "파일 열기로 대체됨",
       "example": "예제로 대체됨",
       "firstBeam": "첫 번째 보 과제로 대체됨",
       "restore": "복원한 구조물로 대체됨"

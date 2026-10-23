@@ -42,12 +42,12 @@ Phần tử cần có vật liệu và tiết diện, vì vậy hãy tạo chún
 </div>
 
 3. Mở thẻ **Tiết diện** và nhấp **Thêm tiết diện**.
-4. Nhập `Diện tích = 0,00285` m², `Iy = 1,943e-5` m⁴, `Chiều cao = 0,2` m và `Hệ số cắt = 1`. Nhấp **Thêm tiết diện**.
+4. Nhập `Diện tích = 0,00285` m², `Iy = 1,943e-5` m⁴, `Chiều cao = 0,2` m và `Hệ số hiệu chỉnh cắt = 1`. Nhấp **Thêm tiết diện**.
 
 ![Thêm tiết diện. Bạn cũng có thể chọn từ thư viện hoặc vẽ hình đa giác.](/screenshots/vi/qs-cross-section.webp){.shot-md}
 
-::: details Vì sao hệ số cắt lại quan trọng?
-EduBeam dùng phần tử dầm Timoshenko, có kể đến biến dạng cắt. `k` là hệ số hiệu chỉnh cắt: $k \approx 0{,}83$ với tiết diện chữ nhật, và khoảng $0{,}4$–$0{,}5$ với tiết diện chữ I khi $A$ là toàn bộ diện tích. Đặt `k = 1` với toàn bộ diện tích sẽ *đánh giá thấp* một chút độ mềm khi cắt. Với một dầm mảnh như dầm này, chênh lệch độ võng nhỏ hơn nhiều so với 1 %. Xem công thức ở [trang lý thuyết dầm](/vi/elements/beam).
+::: details Vì sao hệ số hiệu chỉnh cắt lại quan trọng?
+EduBeam dùng phần tử dầm Timoshenko, có kể đến biến dạng trượt. `k` là hệ số hiệu chỉnh cắt: $k \approx 0{,}83$ với tiết diện chữ nhật, và khoảng $0{,}4$–$0{,}5$ với tiết diện chữ I khi $A$ là toàn bộ diện tích. Đặt `k = 1` với toàn bộ diện tích sẽ *đánh giá thấp* một chút độ mềm khi cắt. Với một dầm mảnh như dầm này, chênh lệch độ võng nhỏ hơn nhiều so với 1 %. Xem công thức ở [trang lý thuyết dầm](/vi/elements/beam).
 :::
 
 ## 3. Thêm nút {#_3-add-the-nodes}
@@ -94,7 +94,7 @@ Bạn cũng có thể nhấp vào một nút trong vùng hiển thị và chọn
 
 Lời giải xuất hiện ngay khi tải trọng được thêm vào. Bảng hiển thị ở góc trên bên phải vùng hiển thị dùng để bật và tắt các biểu đồ. **Biến dạng**, **M<sub>y</sub>(x)** và **Phản lực** được bật sẵn. Đánh dấu **V<sub>z</sub>(x)** để thêm lực cắt.
 
-![Lực cắt (xanh lá), mô men uốn (đỏ), phản lực (tím) và hình dạng biến dạng](/screenshots/vi/qs-results.webp)
+![Lực cắt (xanh lá), mô men uốn (đỏ), phản lực (tím) và sơ đồ biến dạng](/screenshots/vi/qs-results.webp)
 
 | Lớp hiển thị | Bạn sẽ thấy |
 | --- | --- |

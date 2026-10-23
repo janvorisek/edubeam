@@ -42,7 +42,7 @@ Liên kết từ các phiên bản cũ vẫn hoạt động: liên kết trong b
 
 ![Xuất hình ảnh: chọn lớp hiển thị, khung hình và kích thước, rồi tải xuống hoặc sao chép](/screenshots/vi/export-image.webp)
 
-- **Lớp hiển thị**: các nhãn ở trên cùng chọn những gì được vẽ, độc lập với vùng hiển thị: hình dạng biến dạng, N, V, M, phản lực, gối tựa, tải trọng, nhãn nút và nhãn phần tử.
+- **Lớp hiển thị**: các nhãn ở trên cùng chọn những gì được vẽ, độc lập với vùng hiển thị: sơ đồ biến dạng, N, V, M, phản lực, gối tựa, tải trọng, nhãn nút và nhãn phần tử.
 - **Khung hình**: chọn tỷ lệ khung hình (16:9, 4:3, 3:2, 1:1), **Toàn bộ**, hoặc **Vùng chọn…** để kéo một hình chữ nhật trên hình vẽ. Bạn cũng có thể kéo các cạnh của bản xem trước.
 - **Kích thước**: chiều rộng và chiều cao tính bằng pixel, hoặc một **Tỷ lệ** như 1 : 50 để có bản vẽ đúng tỷ lệ trên giấy. **Chiều cao biểu đồ** đặt kích cỡ các biểu đồ kết quả trong hình. **Nền trong suốt** bỏ nền trắng.
 - **Tải PNG**, **Tải SVG** hoặc **Sao chép vào bộ nhớ tạm**.

@@ -37,7 +37,7 @@ Các thanh: thanh cánh dưới 1–2, 2–3, 3–4; thanh cánh trên 5–6; th
 
 1. **Xóa kết cấu** (đánh dấu *Xóa vật liệu* và *Xóa tiết diện*).
 2. *Vật liệu* → **Thư viện vật liệu** → **Steel (S235)**.
-3. *Tiết diện* → **Thêm tiết diện**: `Diện tích = 0,002`, `Iy = 1e-6`, `Chiều cao = 0,1`, `Hệ số cắt = 1`. Với các thanh có khớp, chỉ diện tích là quan trọng.
+3. *Tiết diện* → **Thêm tiết diện**: `Diện tích = 0,002`, `Iy = 1e-6`, `Chiều cao = 0,1`, `Hệ số hiệu chỉnh cắt = 1`. Với các thanh có khớp, chỉ diện tích là quan trọng.
 
 ## 2. Vẽ các thanh có khớp {#_2-draw-the-bars-with-hinges}
 

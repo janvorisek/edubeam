@@ -41,7 +41,7 @@ Cài đặt được lưu trong trình duyệt và vẫn còn sau khi tải lạ
 | Ứng suất (E, G) | Pa, kPa, MPa, GPa, ksc, psi, ksi, psf, ksf | MPa | ksi |
 | Nhiệt độ | °C, °F | °C | °F |
 
-Tải phân bố dùng đơn vị *lực / chiều dài* đã chọn (kN/m trong SI, kip/ft trong hệ Mỹ), còn khối lượng riêng dùng *khối lượng / chiều dài³*. Hệ số giãn nở nhiệt theo đơn vị nhiệt độ (1/K hoặc 1/°F). Tải nhiệt độ là *độ thay đổi* nhiệt độ, nên 10 °C tương ứng 18 °F. Góc xoay luôn tính bằng radian.
+Tải phân bố dùng đơn vị *lực / chiều dài* đã chọn (kN/m trong SI, kip/ft trong hệ Mỹ), còn khối lượng riêng dùng *khối lượng / chiều dài³*. Hệ số dãn dài do nhiệt theo đơn vị nhiệt độ (1/K hoặc 1/°F). Tải nhiệt độ là *độ thay đổi* nhiệt độ, nên 10 °C tương ứng 18 °F. Góc xoay luôn tính bằng radian.
 
 Tonf là tấn lực hệ mét (1000 kgf), không phải tấn ngắn (short ton) của Mỹ. Đơn vị hệ Mỹ được quy đổi theo định nghĩa chính xác (1 ft = 0,3048 m, 1 kip = 4448,2216 N). Với đơn vị feet, hãy nhập số thập phân như `5,5`; thước đo và dấu thập hiển thị theo feet và inch (5′-6″).
 
@@ -67,7 +67,7 @@ Tonf là tấn lực hệ mét (1000 kgf), không phải tấn ngắn (short ton
 - **Hiện cách kết cấu không ổn định có thể chuyển động** vẽ đường nét đứt của hệ biến hình.
 - **Tạo hoạt ảnh chuyển động** cho đường nét đó dao động qua lại.
 
-**Màu sắc**: màu riêng cho nút, phần tử, tải trọng, hình dạng biến dạng, lực dọc, lực cắt, mô men uốn và phản lực. Mặc định: N xanh dương, V xanh lá, M đỏ, phản lực tím, tải trọng cam.
+**Màu sắc**: màu riêng cho nút, phần tử, tải trọng, sơ đồ biến dạng, lực dọc, lực cắt, mô men uốn và phản lực. Mặc định: N xanh dương, V xanh lá, M đỏ, phản lực tím, tải trọng cam.
 
 ## Điều khiển và phím tắt {#controls-shortcuts}
 

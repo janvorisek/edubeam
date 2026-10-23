@@ -25,7 +25,7 @@ Mỗi nút có `Dx`, `Dz` (chuyển vị thẳng) và `Ry` (góc xoay). `Dz` dư
 | `Fx`, `fx`, `f1x`… | +x (sang phải; hoặc theo trục x địa phương của phần tử khi bật LCS) |
 | `Fz`, `fz`, `f1z`… | +z (**xuống dưới**; hoặc theo trục z địa phương khi bật LCS) |
 | `My` | ngược chiều kim đồng hồ trên màn hình |
-| `ΔTc` | tăng nhiệt (giãn dài) |
+| `ΔTc` | tăng nhiệt (dãn dài) |
 | `ΔTb − ΔTt` | thớ dưới nóng hơn thớ trên |
 
 Vậy tải trọng trọng lực là `fz` **dương**, còn tải gió đẩy cột bên trái sang phải là `fx` dương.

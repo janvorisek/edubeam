@@ -62,7 +62,7 @@ Mô hình vẫn được giải, nhưng hãy kiểm tra những điểm sau:
 | --- | --- |
 | Tải trọng tác dụng hướng lên | Trục **z tổng thể hướng xuống**, nên `Fz`/`fz` dương hướng xuống. Giá trị âm hướng lên. Xem [quy ước](/vi/elements/conventions). Với trục y hướng lên thì ngược lại. |
 | Độ võng lớn hoặc nhỏ gấp 1000 lần | Nhầm đơn vị: `E` nhập theo Pa trong khi đơn vị là MPa, hoặc `Iy` theo cm⁴ trong khi đơn vị là m⁴. Hãy kiểm tra ô đơn vị ở góc dưới bên phải vùng hiển thị. |
-| Độ võng lớn hơn một chút so với công thức trong sách | Biến dạng trượt Timoshenko. Tăng hệ số cắt của tiết diện, hoặc dùng thanh mảnh, để tiến gần giá trị Euler–Bernoulli. Xem [Kiểm tra kết quả bằng tính tay](/vi/guide/verification). |
+| Độ võng lớn hơn một chút so với công thức trong sách | Biến dạng trượt Timoshenko. Tăng hệ số hiệu chỉnh cắt của tiết diện, hoặc dùng thanh mảnh, để tiến gần giá trị Euler–Bernoulli. Xem [Kiểm tra kết quả bằng tính tay](/vi/guide/verification). |
 | Dấu trông có vẻ “sai” | Hãy đọc dấu từ nhãn, không phải từ phía của biểu đồ. M dương là căng thớ dưới. Nội lực đầu phần tử trong *Kết quả phần tử* theo trục địa phương của phần tử, không theo quy ước N-V-M. |
 | Hai cột giống hệt nhau có lực cắt trái dấu | Dấu của V theo chiều của từng phần tử. Hãy đổi thứ tự nút của một cột để so sánh. |
 | Các số như `4 · 10¹` | Định dạng số khoa học. Chọn *Tự động* trong *Cài đặt → Ngôn ngữ và khu vực → Định dạng số*. |

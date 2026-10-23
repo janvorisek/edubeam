@@ -1,5 +1,5 @@
 ---
-description: "Đọc biểu đồ lực dọc, lực cắt và mô men uốn, phản lực và hình dạng biến dạng, giá trị khi di chuột, bảng kết quả, xuất CSV và ma trận độ cứng."
+description: "Đọc biểu đồ lực dọc, lực cắt và mô men uốn, phản lực và sơ đồ biến dạng, giá trị khi di chuột, bảng kết quả, xuất CSV và ma trận độ cứng."
 ---
 
 # Kết quả và biểu đồ
@@ -14,7 +14,7 @@ Bật và tắt các lớp trong **tùy chọn hiển thị** ở góc trên bê
 
 | Lớp hiển thị | Màu (mặc định) | Ghi chú |
 | --- | --- | --- |
-| **Hình dạng biến dạng** | xám | Được phóng đại: chuyển vị lớn nhất được vẽ dài bằng số pixel của *Tỷ lệ kết quả*. Bật theo mặc định. |
+| **Biến dạng** | xám | Được phóng đại: chuyển vị lớn nhất được vẽ dài bằng số pixel của *Tỷ lệ kết quả*. Bật theo mặc định. |
 | **N (x)**, lực dọc | xanh dương | Kéo là dương. Không đổi dọc phần tử trừ khi có tải dọc trục tác dụng. |
 | **V<sub>z</sub> (x)**, lực cắt | xanh lá | Bậc nhất dưới tải phân bố đều, bậc hai dưới tải hình thang, có bước nhảy tại tải tập trung. |
 | **M<sub>y</sub> (x)**, mô men uốn | đỏ | Dương khi căng thớ dưới. Có nhãn ở hai đầu, tại các tải tập trung và tại mọi cực trị cục bộ (nơi V = 0). Bật theo mặc định. |
@@ -30,7 +30,7 @@ Giá trị được ghi tại các điểm đặc trưng của mỗi biểu đ�
 
 ![Mô men uốn M: −80 kNm tại cả hai góc khung, bằng 0 tại chân cột và tại khớp](/screenshots/vi/results-moment.webp)
 
-![Hình dạng biến dạng (phóng đại): khớp C bị hạ xuống](/screenshots/vi/results-deformed.webp)
+![Sơ đồ biến dạng (phóng đại): khớp C bị hạ xuống](/screenshots/vi/results-deformed.webp)
 
 </div>
 
@@ -103,7 +103,7 @@ Kết quả được hiển thị với năm chữ số có nghĩa. **Cài đặ
 
 - Phần tử dầm cho kết quả chính xác với mô hình Timoshenko tuyến tính dưới tải trọng nút, phân bố đều, hình thang, tập trung và nhiệt độ, nên kết quả **không** phụ thuộc vào số lượng phần tử.
 - Phép tính được thực hiện với độ chính xác kép (double precision). Các giá trị rất nhỏ như `1,5 · 10⁻¹⁸` là sai số làm tròn và có nghĩa là bằng 0.
-- Độ võng có kể đến **biến dạng trượt**. Với thanh mảnh, nó chỉ làm tăng giá trị Euler–Bernoulli thêm một phần nhỏ của một phần trăm; với thanh cao hoặc ngắn, có thể tăng vài phần trăm. Đặt hệ số cắt của tiết diện ở giá trị lớn để loại bỏ ảnh hưởng này.
+- Độ võng có kể đến **biến dạng trượt**. Với thanh mảnh, nó chỉ làm tăng giá trị Euler–Bernoulli thêm một phần nhỏ của một phần trăm; với thanh cao hoặc ngắn, có thể tăng vài phần trăm. Đặt hệ số hiệu chỉnh cắt của tiết diện ở giá trị lớn để loại bỏ ảnh hưởng này.
 
 ## Kết quả trong báo cáo {#results-in-a-report}
 

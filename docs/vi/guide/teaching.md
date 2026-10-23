@@ -42,7 +42,7 @@ Mô hình họ đang có được chuyển vào **☰ → Kết cấu gần đâ
 EduBeam cho sinh viên phản hồi ngay về kết quả tính tay mà không để lộ phương pháp giải:
 
 - Yêu cầu tính tay phản lực, nội lực và một chuyển vị, rồi cho sinh viên dựng mô hình và so sánh. Trang [Kiểm tra kết quả bằng tính tay](/vi/guide/verification) có sẵn các công thức.
-- Hỏi *vì sao* một kết quả lại khác: biến dạng cắt, thiếu một khớp, tải trọng nhập theo hệ trục địa phương thay vì tổng thể.
+- Hỏi *vì sao* một kết quả lại khác: biến dạng trượt, thiếu một khớp, tải trọng nhập theo hệ trục địa phương thay vì tổng thể.
 - Yêu cầu sinh viên nộp kèm liên kết chia sẻ hoặc tệp `project.json` cùng bài tính. Bạn có thể mở nó và thấy chính xác những gì họ đã mô hình hóa.
 - Để làm báo cáo, sinh viên có thể xuất hình vẽ dạng **SVG** (sắc nét trong Word và LaTeX) và kết quả dạng **CSV**.
 

@@ -32,7 +32,7 @@ const members = [
 
 [Mở EduBeam](https://run.edubeam.app/?lang=vi){target="_blank"} trong thẻ mới và làm theo phần [Bắt đầu nhanh](/vi/guide/quick-start).
 
-![Khung ba khớp trong EduBeam: tải trọng màu cam, phản lực màu tím, mô men uốn màu đỏ và hình dạng biến dạng màu xám](/screenshots/vi/hero.webp)
+![Khung ba khớp trong EduBeam: tải trọng màu cam, phản lực màu tím, mô men uốn màu đỏ và sơ đồ biến dạng màu xám](/screenshots/vi/hero.webp)
 
 ## Lần đầu sử dụng {#your-first-visit}
 
@@ -56,7 +56,7 @@ Cả ba mục đều có trong **menu ☰**, nên bạn có thể quay lại b�
 | **Gối tựa** | Gối cố định, gối di động, ngàm, ngàm trượt và mọi tổ hợp khác của các bậc tự do bị chặn `Dx`, `Dz`, `Ry`, chọn theo ký hiệu. Gối tựa xiên qua góc của nút. Lún gối tựa. |
 | **Tải trọng** | Lực và mô men tại nút, chuyển vị cưỡng bức, tải phân bố đều và hình thang, lực và mô men tập trung trên thanh, và tải nhiệt độ đều hoặc thay đổi theo chiều cao. |
 | **Tiết diện** | Thư viện vật liệu và tiết diện (châu Âu và Mỹ), cùng trình vẽ đa giác tính $A$, $I_y$, $I_z$, $I_{yz}$, trục quán tính chính và bán kính quán tính cho mọi hình dạng. |
-| **Kết quả** | Hình dạng biến dạng, lực dọc **N**, lực cắt **V**, mô men uốn **M**, phản lực, chuyển vị nút, nội lực đầu phần tử và ma trận độ cứng phần tử. |
+| **Kết quả** | Sơ đồ biến dạng, lực dọc **N**, lực cắt **V**, mô men uốn **M**, phản lực, chuyển vị nút, nội lực đầu phần tử và ma trận độ cứng phần tử. |
 | **Phân tích** | Phân tích tĩnh tuyến tính với một trường hợp tải. Kết quả chính xác cho mô hình tuyến tính, nên không cần chia lưới mịn hơn. Khi không giải được kết cấu, EduBeam cho biết lý do và tạo hoạt ảnh cho thấy kết cấu có thể chuyển động thế nào. |
 | **Tệp** | Lưu và mở dự án dạng JSON, chia sẻ cả mô hình qua liên kết, xuất hình vẽ ra PNG hoặc SVG và kết quả ra CSV. Các mô hình vừa bị thay thế được giữ lại để bạn lấy lại. Mọi dữ liệu đều nằm trên thiết bị của bạn. |
 | **Đơn vị** | SI hoặc hệ Mỹ (US customary) chỉ với một cú nhấp, hoặc chọn riêng cho từng đại lượng. Hệ trục là x sang phải, z xuống dưới hoặc x sang phải, y lên trên. |

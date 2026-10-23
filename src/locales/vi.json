@@ -33,7 +33,7 @@
     "normalForce": "Lực dọc",
     "shearForce": "Lực cắt",
     "bendingMoment": "Mô men uốn",
-    "deformedShape": "Hình dạng biến dạng",
+    "deformedShape": "Sơ đồ biến dạng",
     "reactions": "Phản lực",
     "elements": "Phần tử",
     "confirm": "Xác nhận",
@@ -106,7 +106,7 @@
     "area": "Diện tích",
     "h": "Chiều cao",
     "iy": "Iy",
-    "k": "Hệ số cắt",
+    "k": "Hệ số hiệu chỉnh cắt",
     "iz": "Iz",
     "b": "Chiều rộng",
     "centroid": "Trọng tâm",
@@ -176,7 +176,7 @@
     "viewer_settings": "Cài đặt hiển thị",
     "controls_and_shortcuts": "Điều khiển và phím tắt",
     "language_and_locale_subtitle": "Cài đặt ngôn ngữ, khu vực và đơn vị",
-    "viewer_settings_subtitle": "Tỷ lệ, màu sắc, lưới và hơn nữa",
+    "viewer_settings_subtitle": "Tỷ lệ, màu sắc, lưới và các tùy chọn khác",
     "controls_and_shortcuts_subtitle": "Cài đặt bàn phím và chuột",
     "viewer_preview": "Xem trước hiển thị",
     "language_description": "Chọn ngôn ngữ giao diện bạn muốn dùng.",
@@ -269,7 +269,7 @@
       "E": "E - Mô đun đàn hồi",
       "G": "G - Mô đun trượt",
       "density": "ρ - khối lượng riêng",
-      "alphaT": "α - Hệ số giãn nở nhiệt"
+      "alphaT": "α - Hệ số dãn dài do nhiệt"
     },
     "addCrossSection": {
       "addNewCrossSection": "Thêm tiết diện mới",
@@ -285,8 +285,8 @@
     "update": {
       "title": "Có bản cập nhật",
       "update": "Cập nhật",
-      "text1": "Chúng tôi đang phát hành một bản cập nhật cần khởi động lại ứng dụng. Mọi tiến trình hiện tại sẽ bị mất.",
-      "text2": "Nếu muốn giữ lại tiến trình hiện tại, bạn có thể hủy cập nhật."
+      "text1": "Chúng tôi đang phát hành một bản cập nhật cần khởi động lại ứng dụng. Mọi thay đổi chưa lưu sẽ bị mất.",
+      "text2": "Nếu muốn giữ lại công việc hiện tại, bạn có thể hủy cập nhật."
     },
     "editNode": {
       "editNode": "Sửa nút"
@@ -341,7 +341,7 @@
       "legendCentroid": "Trọng tâm",
       "shape": "Hình dạng",
       "noShape": "Không có hình đa giác",
-      "centroidal": "qua trọng tâm",
+      "centroidal": "trung tâm",
       "centroidalNote": "Mọi mô men quán tính đều lấy đối với các trục đi qua trọng tâm; I₁, I₂ là các giá trị chính và α là góc từ trục y đến trục 1.",
       "outOfPlaneNote": "Tiết diện này không đối xứng qua mặt phẳng khung. Phân tích 2D chỉ chính xác khi thanh được giữ chống chuyển vị ngang (ra khỏi màn hình) và chống xoắn trên toàn bộ chiều dài, ví dụ bởi bản sàn hoặc hệ giằng dày; chỉ có gối tựa tại các nút là chưa đủ. Thanh tự do còn bị xoắn vì tải trọng đặt lệch tâm cắt, và độ xoắn đó không được tính vào chuyển vị.",
       "outOfPlaneRestrained": "Được giữ ngang và chống xoắn dọc theo chiều dài: {inertia}",
@@ -351,7 +351,7 @@
   "tooltip": {
     "materials": {},
     "material": {
-      "alphaT": "Hệ số giãn nở nhiệt cho biết kích thước của vật thay đổi thế nào khi nhiệt độ thay đổi.",
+      "alphaT": "Hệ số dãn dài do nhiệt cho biết kích thước của vật thay đổi thế nào khi nhiệt độ thay đổi.",
       "e": "Mô đun đàn hồi đặc trưng cho độ cứng khi kéo hoặc nén lúc lực tác dụng dọc theo chiều dài.",
       "g": "Mô đun trượt là đặc trưng đo khả năng chống biến dạng dưới ứng suất tiếp, cho biết độ cứng của vật liệu khi chịu lực tác dụng song song với bề mặt.",
       "density": "Khối lượng riêng cho biết lượng khối lượng chứa trong một đơn vị thể tích của chất. "
@@ -380,7 +380,7 @@
     },
     "undoRedo": {
       "title": "Hoàn tác và làm lại",
-      "description": "Lùi lại và tiến tới qua các thay đổi của bạn. Ctrl+Z và Ctrl+Shift+Z cũng làm như vậy."
+      "description": "Hoàn tác hoặc làm lại các thay đổi của bạn. Ctrl+Z và Ctrl+Shift+Z có tác dụng tương tự."
     },
     "viewerControls": {
       "title": "Nút điều khiển hiển thị",
@@ -388,7 +388,7 @@
     },
     "viewerSettings": {
       "title": "Tùy chỉnh hiển thị",
-      "description": "Chọn những gì cần hiển thị – lực dọc, lực cắt, mô men uốn, hình dạng biến dạng, hoặc tất cả cùng lúc."
+      "description": "Chọn những gì cần hiển thị – lực dọc, lực cắt, mô men uốn, sơ đồ biến dạng, hoặc tất cả cùng lúc."
     },
     "gridUnits": {
       "title": "Lưới, bắt dính và đơn vị",
@@ -432,7 +432,7 @@
       },
       "display": {
         "title": "Chọn nội dung hiển thị",
-        "body": "Bánh răng ở góc trên bên phải mở các tùy chọn hiển thị: nội lực, hình dạng biến dạng, phản lực và hơn nữa. Hãy mở nó ngay bây giờ."
+        "body": "Bánh răng ở góc trên bên phải mở các tùy chọn hiển thị: nội lực, sơ đồ biến dạng, phản lực và các mục khác. Hãy mở nó ngay bây giờ."
       },
       "fit": {
         "title": "Thu vừa màn hình",
@@ -440,7 +440,7 @@
       },
       "results": {
         "title": "Đọc kết quả",
-        "body": "Mô men uốn và hình dạng biến dạng được vẽ trên dầm và cập nhật ngay khi bạn chỉnh sửa. Mọi nút, phần tử và tải trọng cũng được liệt kê trong các bảng bên dưới, nơi bạn có thể nhập giá trị chính xác. {undo} đưa bạn trở lại mô hình trước đó."
+        "body": "Biểu đồ mô men uốn và sơ đồ biến dạng được vẽ trên dầm và cập nhật ngay khi bạn chỉnh sửa. Mọi nút, phần tử và tải trọng cũng được liệt kê trong các bảng bên dưới, nơi bạn có thể nhập giá trị chính xác. {undo} đưa bạn trở lại mô hình trước đó."
       }
     }
   },
@@ -526,13 +526,13 @@
       "insufficientSupports": "Mô hình cần ít nhất 3 bậc tự do bị chặn để ổn định trong phân tích 2D.",
       "needsSupports": "Kết cấu cần gối tựa trước khi có thể giải.",
       "partUnsupported": "Một phần riêng của kết cấu (nút {nodes}) có ít hơn 3 bậc tự do bị chặn và có thể chuyển động tự do.",
-      "partNeedsSupports": "Phần có các nút {nodes} cần gối tựa.",
-      "mechanism": "Kết cấu có đủ gối tựa nhưng chúng không giữ được nó: kết cấu vẫn có thể {motion}. Các gối tựa song song với nhau, hoặc có đường tác dụng đồng quy tại một điểm, để kết cấu tự do chuyển động.",
+      "partNeedsSupports": "Phần có nút {nodes} cần gối tựa.",
+      "mechanism": "Kết cấu có đủ gối tựa nhưng chúng không giữ được nó: kết cấu vẫn có thể {motion}. Nếu các gối tựa đều song song với nhau, hoặc có đường tác dụng đồng quy tại một điểm, kết cấu vẫn chuyển động tự do được.",
       "mechanismShort": "Các gối tựa không giữ được kết cấu: nó vẫn có thể {motion}.",
-      "partMechanism": "Một phần riêng của kết cấu (nút {nodes}) có đủ gối tựa nhưng chúng không giữ được nó: phần đó vẫn có thể {motion}. Các gối tựa song song với nhau, hoặc có đường tác dụng đồng quy tại một điểm, để kết cấu tự do chuyển động.",
-      "partMechanismShort": "Phần có các nút {nodes} không được giữ: nó vẫn có thể {motion}.",
+      "partMechanism": "Một phần riêng của kết cấu (nút {nodes}) có đủ gối tựa nhưng chúng không giữ được nó: phần đó vẫn có thể {motion}. Nếu các gối tựa đều song song với nhau, hoặc có đường tác dụng đồng quy tại một điểm, kết cấu vẫn chuyển động tự do được.",
+      "partMechanismShort": "Phần có nút {nodes} không được giữ: nó vẫn có thể {motion}.",
       "hingeMechanism": "Các gối tựa giữ được kết cấu, nhưng nó vẫn là hệ biến hình: các thanh có thể xoay quanh khớp tại nút {nodes}. Hãy bỏ một khớp, hoặc thêm một thanh hay một gối tựa để ngăn chuyển động.",
-      "hingeMechanismShort": "Các khớp tại nút {nodes} cho phép kết cấu chuyển động.",
+      "hingeMechanismShort": "Khớp tại nút {nodes} cho phép kết cấu chuyển động.",
       "motion": {
         "horizontal": "trượt theo phương ngang",
         "vertical": "chuyển động theo phương đứng",
@@ -599,7 +599,7 @@
     },
     "nodalLoads": {
       "title": "Tải trọng nút",
-      "body": "Tải trọng nút đặt lực hoặc mô men trực tiếp vào nút. Chuyển vị cưỡng bức cho phép bạn đặt độ lún gối tựa thay vào đó."
+      "body": "Tải trọng nút đặt lực hoặc mô men trực tiếp vào nút. Còn chuyển vị cưỡng bức cho phép bạn đặt độ lún gối tựa."
     },
     "elementLoads": {
       "title": "Tải trọng phần tử",
@@ -607,7 +607,7 @@
     },
     "materials": {
       "title": "Vật liệu",
-      "body": "Vật liệu gồm mô đun đàn hồi, mô đun trượt, khối lượng riêng và hệ số giãn nở nhiệt. Với phân tích tĩnh thông thường, chỉ E và tiết diện là quan trọng."
+      "body": "Vật liệu gồm mô đun đàn hồi, mô đun trượt, khối lượng riêng và hệ số dãn dài do nhiệt. Với phân tích tĩnh thông thường, chỉ E và tiết diện là quan trọng."
     },
     "crossSections": {
       "title": "Tiết diện",
@@ -619,16 +619,16 @@
     },
     "signConvention": {
       "title": "Quy ước dấu",
-      "body": "Trục z tổng thể hướng xuống, nên Fz hoặc fz dương kéo xuống dưới và My dương ngược chiều kim đồng hồ. Tải trọng chuyển sang hệ địa phương thì theo phần tử.",
-      "bodyYUp": "Trục y tổng thể hướng lên, nên Fy hoặc fy dương đẩy lên trên và Mz dương ngược chiều kim đồng hồ. Tải trọng chuyển sang hệ địa phương thì theo phần tử."
+      "body": "Trục z tổng thể hướng xuống, nên Fz hoặc fz dương kéo xuống dưới và My dương ngược chiều kim đồng hồ. Tải trọng nhập theo hệ địa phương thì lấy chiều theo phần tử.",
+      "bodyYUp": "Trục y tổng thể hướng lên, nên Fy hoặc fy dương đẩy lên trên và Mz dương ngược chiều kim đồng hồ. Tải trọng nhập theo hệ địa phương thì lấy chiều theo phần tử."
     },
     "results": {
       "title": "Kết quả",
-      "body": "Khi mô hình được giải, bạn có lực dọc, lực cắt, mô men uốn, hình dạng biến dạng và phản lực, ở dạng biểu đồ và bảng."
+      "body": "Khi mô hình được giải, bạn có lực dọc, lực cắt, mô men uốn, sơ đồ biến dạng và phản lực, ở dạng biểu đồ và bảng."
     },
     "diagrams": {
       "title": "Hiển thị kết quả",
-      "body": "Các công tắc này vẽ lực dọc, lực cắt, mô men uốn, hình dạng biến dạng và phản lực lên mô hình. N dương khi kéo, M{r} dương khi căng thớ dưới."
+      "body": "Các công tắc này vẽ lực dọc, lực cắt, mô men uốn, sơ đồ biến dạng và phản lực lên mô hình. N dương khi kéo, M{r} dương khi căng thớ dưới."
     },
     "endForces": {
       "title": "Nội lực đầu phần tử",

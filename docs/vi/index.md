@@ -23,7 +23,7 @@ hero:
 features:
   - icon: ⚡
     title: Kết quả ngay khi vẽ
-    details: Không có nút Giải. Kéo một nút, đánh dấu một khớp hay đổi một tải trọng, và N, V, M, phản lực cùng hình dạng biến dạng thay đổi theo ngay lập tức.
+    details: Không có nút Giải. Kéo một nút, đánh dấu một khớp hay đổi một tải trọng, và N, V, M, phản lực cùng sơ đồ biến dạng thay đổi theo ngay lập tức.
     link: /vi/essentials/results
     linkText: Đọc kết quả
   - icon: 🧑‍🏫

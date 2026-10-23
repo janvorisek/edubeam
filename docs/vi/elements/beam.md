@@ -50,7 +50,7 @@ $$
 \varphi = \frac{12\,E I_y}{k\,G\,A\,L^2}
 $$
 
-với $G$ là mô đun trượt và $k$ là **hệ số cắt** của tiết diện (diện tích chịu cắt hiệu dụng $kA$). Khi $\varphi \to 0$ (dầm mảnh, hoặc $k$ rất lớn), ma trận trở về ma trận độ cứng của dầm Euler–Bernoulli.
+với $G$ là mô đun trượt và $k$ là **hệ số hiệu chỉnh cắt** của tiết diện (diện tích chịu cắt hiệu dụng $kA$). Khi $\varphi \to 0$ (dầm mảnh, hoặc $k$ rất lớn), ma trận trở về ma trận độ cứng của dầm Euler–Bernoulli.
 
 ## Khớp đầu thanh {#end-hinges}
 

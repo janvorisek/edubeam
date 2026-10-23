@@ -31,7 +31,7 @@ Hãy nhớ rằng **trục z hướng xuống**, nên đỉnh cột nằm tại 
 
 1. **Xóa kết cấu** (đánh dấu *Xóa vật liệu* và *Xóa tiết diện*).
 2. *Vật liệu* → **Thư viện vật liệu** → **Steel (S235)**.
-3. *Tiết diện* → **Thêm tiết diện**: `Diện tích = 0,00538`, `Iy = 8,356e-5`, `Chiều cao = 0,3`, `Hệ số cắt = 1`.
+3. *Tiết diện* → **Thêm tiết diện**: `Diện tích = 0,00538`, `Iy = 8,356e-5`, `Chiều cao = 0,3`, `Hệ số hiệu chỉnh cắt = 1`.
 
 Tiết diện chỉ ảnh hưởng đến chuyển vị. Khung này là hệ tĩnh định, nên nội lực của nó hoàn toàn không phụ thuộc vào $E$, $A$ hay $I$.
 
@@ -63,7 +63,7 @@ Bây giờ bạn có năm nút và bốn phần tử. Hình minh họa ở đây
 
 ## 5. Kết quả {#_5-results}
 
-Ban đầu, tùy chọn hiển thị bật sẵn hình dạng biến dạng, mô men uốn và phản lực. Đánh dấu **N (x)** và **V<sub>z</sub> (x)** để xem các biểu đồ còn lại.
+Ban đầu, tùy chọn hiển thị bật sẵn sơ đồ biến dạng, mô men uốn và phản lực. Đánh dấu **N (x)** và **V<sub>z</sub> (x)** để xem các biểu đồ còn lại.
 
 <div class="shots">
 
@@ -73,7 +73,7 @@ Ban đầu, tùy chọn hiển thị bật sẵn hình dạng biến dạng, mô
 
 ![Lực cắt](/screenshots/vi/results-shear.webp)
 
-![Hình dạng biến dạng](/screenshots/vi/results-deformed.webp)
+![Sơ đồ biến dạng](/screenshots/vi/results-deformed.webp)
 
 </div>
 

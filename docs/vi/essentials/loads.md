@@ -83,10 +83,10 @@ Biểu đồ lực cắt có bước nhảy bằng `Fz` tại vị trí tải v�
 
 | Trường | Ý nghĩa |
 | --- | --- |
-| **ΔT<sub>c</sub>**, thay đổi nhiệt độ dọc trục | thay đổi đều trên toàn tiết diện, gây giãn dài $\alpha\,\Delta T_c\,L$ |
+| **ΔT<sub>c</sub>**, thay đổi nhiệt độ dọc trục | thay đổi đều trên toàn tiết diện, gây dãn dài $\alpha\,\Delta T_c\,L$ |
 | **ΔT<sub>b</sub> − ΔT<sub>t</sub>**, chênh lệch nhiệt độ | thớ dưới trừ thớ trên, gây độ cong $\alpha\,(\Delta T_b - \Delta T_t)/h$ |
 
-Tải nhiệt độ dùng **α** của vật liệu và **chiều cao h** của tiết diện. `ΔTb − ΔTt` dương (thớ dưới nóng hơn) làm thớ dưới giãn dài, nên phần tử võng xuống giống dầm chịu tải trọng lực. Trong kết cấu tĩnh định, nhiệt độ chỉ gây chuyển vị; khi biến dạng bị cản trở (đầu ngàm, tính liên tục, thanh thừa) thì nó mới gây ra nội lực.
+Tải nhiệt độ dùng **α** của vật liệu và **chiều cao h** của tiết diện. `ΔTb − ΔTt` dương (thớ dưới nóng hơn) làm thớ dưới dãn dài, nên phần tử võng xuống giống dầm chịu tải trọng lực. Trong kết cấu tĩnh định, nhiệt độ chỉ gây chuyển vị; khi biến dạng bị cản trở (đầu ngàm, tính liên tục, thanh thừa) thì nó mới gây ra nội lực.
 
 <div class="shots">
 

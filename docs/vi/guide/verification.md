@@ -47,7 +47,7 @@ $L = 4$ m, $F = 18$ kN hướng xuống tại đầu tự do. Gối tựa: nút 
 | Độ võng đầu tự do (cắt) | $FL/(kGA)$ | 0,31 mm | — |
 | Độ võng đầu tự do (tổng) | tổng | 94,42 mm | 94,42 mm |
 
-Ở đây số hạng cắt chiếm 0,3 %. Rút ngắn dầm công xôn còn 1 m thì nó tăng lên 5 % – đó chính là lý do có hệ số cắt.
+Ở đây số hạng cắt chiếm 0,3 %. Rút ngắn dầm công xôn còn 1 m thì nó tăng lên 5 % – đó chính là lý do có hệ số hiệu chỉnh cắt.
 
 <Figure>
   <Structure :show-loads="true" show-moment show-reactions :nodes="[{label: '1', coords: [0,0,0], dofs: [0,2,4]}, {label: '2', coords: [4,0,0], dofs: []}]" :elements="[{label: '1', nodes: ['1', '2']}]" :nodal-loads="[{target: '2', values: { 0: 0, 2: 18000, 4: 0 }}]" />

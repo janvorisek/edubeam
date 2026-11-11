@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "Prvek {element} musí odkazovat právě na 2 uzly.",
       "elementSameNode": "Prvek {element} má na obou koncích stejný uzel.",
+      "elementZeroLength": "Prvek {element} má nulovou délku: uzly {start} a {end} leží ve stejném bodě.",
       "elementMissingNode": "Prvek {element} odkazuje na neexistující uzel {node}.",
       "elementMissingMaterial": "Prvek {element} odkazuje na neexistující materiál {material}.",
       "elementMissingCrossSection": "Prvek {element} odkazuje na neexistující průřez {crossSection}.",

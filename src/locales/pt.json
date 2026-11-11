@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "O elemento {element} deve referenciar exatamente 2 nós.",
       "elementSameNode": "O elemento {element} referencia o mesmo nó nas duas extremidades.",
+      "elementZeroLength": "O elemento {element} tem comprimento nulo: os nós {start} e {end} estão no mesmo ponto.",
       "elementMissingNode": "O elemento {element} referencia o nó inexistente {node}.",
       "elementMissingMaterial": "O elemento {element} referencia o material inexistente {material}.",
       "elementMissingCrossSection": "O elemento {element} referencia a seção inexistente {crossSection}.",

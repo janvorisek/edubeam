@@ -2737,6 +2737,7 @@ defineExpose({ centerContent, fitContent });
         >
           {{ $t('solveDiagnostics.blockedTitle') }}
         </v-chip>
+        <!-- Close labels are keys, not texts: Vuetify translates them itself, through the i18n adapter. -->
         <v-alert
           v-else-if="solveBanner"
           :model-value="true"
@@ -2744,7 +2745,7 @@ defineExpose({ centerContent, fitContent });
           density="compact"
           :type="solveBanner.type"
           closable
-          :close-label="$t('solveDiagnostics.collapseErrors')"
+          close-label="solveDiagnostics.collapseErrors"
           @click:close="collapsedErrorsKey = errorsKey"
           @mouseenter="holdFreeMotion = true"
           @mouseleave="holdFreeMotion = false"
@@ -2777,7 +2778,7 @@ defineExpose({ centerContent, fitContent });
           density="compact"
           type="warning"
           closable
-          :close-label="$t('solveDiagnostics.dismissWarnings')"
+          close-label="solveDiagnostics.dismissWarnings"
           @click:close="projectStore.dismissWarnings()"
         >
           <template #text>

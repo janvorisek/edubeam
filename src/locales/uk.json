@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "Елемент {element} має посилатися рівно на 2 вузли.",
       "elementSameNode": "Елемент {element} посилається на той самий вузол на обох кінцях.",
+      "elementZeroLength": "Елемент {element} має нульову довжину: вузли {start} і {end} розташовані в одній точці.",
       "elementMissingNode": "Елемент {element} посилається на відсутній вузол {node}.",
       "elementMissingMaterial": "Елемент {element} посилається на відсутній матеріал {material}.",
       "elementMissingCrossSection": "Елемент {element} посилається на відсутній переріз {crossSection}.",

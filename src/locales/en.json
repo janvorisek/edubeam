@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "Element {element} must reference exactly 2 nodes.",
       "elementSameNode": "Element {element} references the same node at both ends.",
+      "elementZeroLength": "Element {element} has zero length: nodes {start} and {end} are at the same point.",
       "elementMissingNode": "Element {element} references missing node {node}.",
       "elementMissingMaterial": "Element {element} references missing material {material}.",
       "elementMissingCrossSection": "Element {element} references missing cross section {crossSection}.",

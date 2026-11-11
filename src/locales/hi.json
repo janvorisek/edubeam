@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "अवयव {element} को ठीक 2 नोडों का संदर्भ देना चाहिए।",
       "elementSameNode": "अवयव {element} दोनों सिरों पर एक ही नोड का संदर्भ देता है।",
+      "elementZeroLength": "अवयव {element} की लंबाई शून्य है: नोड {start} और {end} एक ही बिंदु पर हैं।",
       "elementMissingNode": "अवयव {element} अनुपलब्ध नोड {node} का संदर्भ देता है।",
       "elementMissingMaterial": "अवयव {element} अनुपलब्ध सामग्री {material} का संदर्भ देता है।",
       "elementMissingCrossSection": "अवयव {element} अनुपलब्ध अनुप्रस्थ काट {crossSection} का संदर्भ देता है।",

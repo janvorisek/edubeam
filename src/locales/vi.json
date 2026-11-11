@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "Phần tử {element} phải tham chiếu đúng 2 nút.",
       "elementSameNode": "Phần tử {element} tham chiếu cùng một nút ở cả hai đầu.",
+      "elementZeroLength": "Phần tử {element} có chiều dài bằng 0: nút {start} và {end} nằm tại cùng một điểm.",
       "elementMissingNode": "Phần tử {element} tham chiếu nút {node} không tồn tại.",
       "elementMissingMaterial": "Phần tử {element} tham chiếu vật liệu {material} không tồn tại.",
       "elementMissingCrossSection": "Phần tử {element} tham chiếu tiết diện {crossSection} không tồn tại.",

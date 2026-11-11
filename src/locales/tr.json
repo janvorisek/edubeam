@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "{element} elemanı tam olarak 2 düğüme bağlanmalıdır.",
       "elementSameNode": "{element} elemanının iki ucu da aynı düğüme bağlı.",
+      "elementZeroLength": "{element} elemanının uzunluğu sıfır: {start} ve {end} düğümleri aynı noktada.",
       "elementMissingNode": "{element} elemanı mevcut olmayan {node} düğümüne bağlı.",
       "elementMissingMaterial": "{element} elemanına atanan {material} malzemesi mevcut değil.",
       "elementMissingCrossSection": "{element} elemanına atanan {crossSection} kesiti mevcut değil.",

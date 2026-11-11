@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "El elemento {element} debe hacer referencia a exactamente 2 nodos.",
       "elementSameNode": "El elemento {element} hace referencia al mismo nodo en ambos extremos.",
+      "elementZeroLength": "El elemento {element} tiene longitud cero: los nodos {start} y {end} están en el mismo punto.",
       "elementMissingNode": "El elemento {element} hace referencia al nodo inexistente {node}.",
       "elementMissingMaterial": "El elemento {element} hace referencia al material inexistente {material}.",
       "elementMissingCrossSection": "El elemento {element} hace referencia a la sección transversal inexistente {crossSection}.",

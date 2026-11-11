@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "Element {element} musi odwoływać się do dokładnie 2 węzłów.",
       "elementSameNode": "Element {element} ma ten sam węzeł na obu końcach.",
+      "elementZeroLength": "Element {element} ma zerową długość: węzły {start} i {end} leżą w tym samym punkcie.",
       "elementMissingNode": "Element {element} odwołuje się do nieistniejącego węzła {node}.",
       "elementMissingMaterial": "Element {element} odwołuje się do nieistniejącego materiału {material}.",
       "elementMissingCrossSection": "Element {element} odwołuje się do nieistniejącego przekroju {crossSection}.",

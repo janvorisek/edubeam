@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "Элемент {element} должен ссылаться ровно на 2 узла.",
       "elementSameNode": "Элемент {element} ссылается на один и тот же узел на обоих концах.",
+      "elementZeroLength": "Элемент {element} имеет нулевую длину: узлы {start} и {end} находятся в одной точке.",
       "elementMissingNode": "Элемент {element} ссылается на несуществующий узел {node}.",
       "elementMissingMaterial": "Элемент {element} ссылается на несуществующий материал {material}.",
       "elementMissingCrossSection": "Элемент {element} ссылается на несуществующее сечение {crossSection}.",

@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "L'elemento {element} deve avere esattamente 2 nodi.",
       "elementSameNode": "L'elemento {element} ha lo stesso nodo a entrambe le estremità.",
+      "elementZeroLength": "L'elemento {element} ha lunghezza nulla: i nodi {start} e {end} sono nello stesso punto.",
       "elementMissingNode": "L'elemento {element} fa riferimento al nodo inesistente {node}.",
       "elementMissingMaterial": "L'elemento {element} fa riferimento al materiale inesistente {material}.",
       "elementMissingCrossSection": "L'elemento {element} fa riferimento alla sezione inesistente {crossSection}.",

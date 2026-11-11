@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "单元 {element} 必须恰好引用 2 个节点。",
       "elementSameNode": "单元 {element} 的两端引用了同一个节点。",
+      "elementZeroLength": "单元 {element} 长度为零：节点 {start} 和 {end} 位于同一位置。",
       "elementMissingNode": "单元 {element} 引用了不存在的节点 {node}。",
       "elementMissingMaterial": "单元 {element} 引用了不存在的材料 {material}。",
       "elementMissingCrossSection": "单元 {element} 引用了不存在的截面 {crossSection}。",

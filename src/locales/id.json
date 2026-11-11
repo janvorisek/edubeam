@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "Elemen {element} harus merujuk tepat 2 joint.",
       "elementSameNode": "Elemen {element} merujuk joint yang sama di kedua ujungnya.",
+      "elementZeroLength": "Elemen {element} memiliki panjang nol: joint {start} dan {end} berada di titik yang sama.",
       "elementMissingNode": "Elemen {element} merujuk joint {node} yang tidak ada.",
       "elementMissingMaterial": "Elemen {element} merujuk material {material} yang tidak ada.",
       "elementMissingCrossSection": "Elemen {element} merujuk penampang {crossSection} yang tidak ada.",

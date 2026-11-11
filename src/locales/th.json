@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "เอลิเมนต์ {element} ต้องอ้างอิงโหนดจำนวน 2 โหนดพอดี",
       "elementSameNode": "เอลิเมนต์ {element} อ้างอิงโหนดเดียวกันที่ปลายทั้งสองด้าน",
+      "elementZeroLength": "เอลิเมนต์ {element} มีความยาวเป็นศูนย์ เพราะโหนด {start} และ {end} อยู่ที่ตำแหน่งเดียวกัน",
       "elementMissingNode": "เอลิเมนต์ {element} อ้างอิงโหนด {node} ที่ไม่มีอยู่",
       "elementMissingMaterial": "เอลิเมนต์ {element} อ้างอิงวัสดุ {material} ที่ไม่มีอยู่",
       "elementMissingCrossSection": "เอลิเมนต์ {element} อ้างอิงหน้าตัด {crossSection} ที่ไม่มีอยู่",

@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "Element {element} muss genau 2 Knoten referenzieren.",
       "elementSameNode": "Element {element} referenziert an beiden Enden denselben Knoten.",
+      "elementZeroLength": "Element {element} hat die Länge null: Die Knoten {start} und {end} liegen im selben Punkt.",
       "elementMissingNode": "Element {element} referenziert den fehlenden Knoten {node}.",
       "elementMissingMaterial": "Element {element} referenziert das fehlende Material {material}.",
       "elementMissingCrossSection": "Element {element} referenziert den fehlenden Querschnitt {crossSection}.",

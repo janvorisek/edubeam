@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "L'élément {element} doit référencer exactement 2 nœuds.",
       "elementSameNode": "L'élément {element} référence le même nœud à ses deux extrémités.",
+      "elementZeroLength": "L'élément {element} a une longueur nulle : les nœuds {start} et {end} sont au même point.",
       "elementMissingNode": "L'élément {element} référence le nœud inexistant {node}.",
       "elementMissingMaterial": "L'élément {element} référence le matériau inexistant {material}.",
       "elementMissingCrossSection": "L'élément {element} référence la section inexistante {crossSection}.",

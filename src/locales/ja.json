@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "要素 {element} はちょうど 2 つの節点を参照する必要があります。",
       "elementSameNode": "要素 {element} の両端が同じ節点を参照しています。",
+      "elementZeroLength": "要素 {element} の長さがゼロです。節点 {start} と {end} が同じ位置にあります。",
       "elementMissingNode": "要素 {element} が存在しない節点 {node} を参照しています。",
       "elementMissingMaterial": "要素 {element} が存在しない材料 {material} を参照しています。",
       "elementMissingCrossSection": "要素 {element} が存在しない断面 {crossSection} を参照しています。",

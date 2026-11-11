@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "요소 {element}은(는) 정확히 2개의 절점을 참조해야 합니다.",
       "elementSameNode": "요소 {element}의 양 끝이 같은 절점을 참조합니다.",
+      "elementZeroLength": "요소 {element}의 길이가 0입니다. 절점 {start}와(과) {end}이(가) 같은 위치에 있습니다.",
       "elementMissingNode": "요소 {element}에서 참조하는 절점 {node}이(가) 없습니다.",
       "elementMissingMaterial": "요소 {element}에서 참조하는 재료 {material}이(가) 없습니다.",
       "elementMissingCrossSection": "요소 {element}에서 참조하는 단면 {crossSection}이(가) 없습니다.",

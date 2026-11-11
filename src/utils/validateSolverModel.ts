@@ -1,6 +1,7 @@
 import { DofID, type LinearStaticSolver, type Node } from 'ts-fem';
 import { i18n } from '@/plugins/i18n';
 import { axisLetters } from './axisConvention';
+import { coincide } from './drawableBeam';
 
 /**
  * `incomplete` is what every model goes through while it is being drawn - a beam not
@@ -37,6 +38,9 @@ export interface SolveDiagnostics {
 export const emptyDiagnostics = (): SolveDiagnostics => ({ errors: [], incomplete: [], warnings: [] });
 
 const toLabel = (value: unknown) => String(value ?? '?');
+
+/** A label as a message names it: an empty one read like a cut-off sentence ("missing node ."). */
+const shownLabel = (label: string) => (label === '' ? '?' : label);
 
 // Every message may name a direction, so each gets the letters of the axis convention on screen.
 const t = (key: string, params: Record<string, unknown> = {}) =>
@@ -89,10 +93,28 @@ export const validateSolverModel = (solver: LinearStaticSolver): SolveDiagnostic
       continue;
     }
 
+    // A beam of zero length has no stiffness to speak of - it divides by its length - so it can
+    // never be solved. Left to the solver it surfaced as an unstable structure or a hinge mechanism,
+    // which sent people looking at their supports and hinges instead of at the two nodes.
     if (elementNodes[0] === elementNodes[1]) {
-      diagnostics.warnings.push(
-        solveIssue('warning', 'ELEMENT_DUPLICATE_NODE_REFERENCE', () => t('elementSameNode', { element: elementLabel }))
+      diagnostics.errors.push(
+        solveIssue('error', 'ELEMENT_DUPLICATE_NODE_REFERENCE', () => t('elementSameNode', { element: elementLabel }), {
+          nodes: [toLabel(elementNodes[0])],
+        })
       );
+    } else {
+      const [start, end] = elementNodes.map((label) => domain.nodes.get(toLabel(label)));
+
+      if (start && end && coincide(start, end)) {
+        diagnostics.errors.push(
+          solveIssue(
+            'error',
+            'ELEMENT_ZERO_LENGTH',
+            () => t('elementZeroLength', { element: elementLabel, start: start.label, end: end.label }),
+            { nodes: [String(start.label), String(end.label)] }
+          )
+        );
+      }
     }
 
     for (const nodeLabel of elementNodes) {
@@ -100,7 +122,7 @@ export const validateSolverModel = (solver: LinearStaticSolver): SolveDiagnostic
       if (!domain.nodes.has(normalizedNodeLabel)) {
         diagnostics.errors.push(
           solveIssue('error', 'ELEMENT_MISSING_NODE', () =>
-            t('elementMissingNode', { element: elementLabel, node: normalizedNodeLabel })
+            t('elementMissingNode', { element: elementLabel, node: shownLabel(normalizedNodeLabel) })
           )
         );
       }
@@ -180,7 +202,9 @@ export const validateSolverModel = (solver: LinearStaticSolver): SolveDiagnostic
     }
   }
 
-  if (domain.nodes.size > 0 && domain.elements.size > 0) {
+  // Stability is a question about well-formed elements. Asked of a beam with no length or a missing
+  // node, it answered with a mechanism the broken beam made up, piled on top of the real error.
+  if (domain.nodes.size > 0 && domain.elements.size > 0 && diagnostics.errors.length === 0) {
     appendStabilityIssues(solver, diagnostics);
   }
 

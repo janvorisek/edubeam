@@ -191,7 +191,9 @@ const updateResultScales = () => {
   shearForceScale.value = 1 / maxShearForce;
 };
 
-watch(props.solver, update);
+// A getter, not the solver itself: the previews (examples, recent structures) hand over a plain
+// solver, which Vue cannot watch directly. Deep keeps the project's reactive solver redrawing on edits.
+watch(() => props.solver, update, { deep: true });
 watch(() => [props.nodes, props.elements], update);
 // watch(props.elements, update);
 watch(() => props.showDeformedShape, update);

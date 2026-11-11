@@ -8,6 +8,7 @@
 import { Beam2D, DofID, type LinearStaticSolver, type Node } from 'ts-fem';
 import type { Matrix } from 'mathjs';
 import { axisLetters, vertical } from './axisConvention';
+import { downloadBlob } from './download';
 
 /**
  * Display units to render results in.
@@ -183,18 +184,7 @@ export const downloadResultsCsv = (
 ) => {
   // The BOM makes Excel read the file as UTF-8, which matters for non-Latin node labels.
   const blob = new Blob([`\ufeff${buildResultsCsv(solver, units)}`], { type: 'text/csv;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement('a');
-
-  anchor.href = url;
-  anchor.download = filename;
-  anchor.style.display = 'none';
-
-  document.body.appendChild(anchor);
-  anchor.click();
-  document.body.removeChild(anchor);
-
-  URL.revokeObjectURL(url);
+  downloadBlob(blob, filename);
 };
 
 /** Tab separated, because that is what pastes straight into spreadsheet cells. */

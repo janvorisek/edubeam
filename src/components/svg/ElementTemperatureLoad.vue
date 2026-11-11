@@ -24,6 +24,12 @@ const elementAngle = computed(() => {
   return Math.atan2(geo.dz, geo.dx) * (180 / Math.PI);
 });
 
+// Both parts of the label are shown when both are set. The separator between them is spelled out in
+// the template: plain whitespace there is condensed away, which ran the two into one.
+const bothParts = computed(
+  () => props.eload.values[0] !== 0 && (props.eload.values[1] !== 0 || props.eload.values[2] !== 0)
+);
+
 const elementLabel = computed(() => {
   const geo = target.value.computeGeo();
   const ny = geo.dx / geo.l;
@@ -51,12 +57,13 @@ const elementLabel = computed(() => {
         letter, so one load answered to two names depending on where it was read.
       -->
       <template v-if="eload.values[0] !== 0"
-        >{{ $t ? $t('loads.temperatureDeltaTsNoHTML') : 'ΔTs' }}={{
+        >{{ $t('loads.temperatureDeltaTsNoHTML') }}={{
           numberFormat.format(convertTemperature(eload.values[0]))
         }}</template
       >
+      <template v-if="bothParts">{{ ', ' }}</template>
       <template v-if="eload.values[1] !== 0 || eload.values[2] !== 0">
-        {{ $t ? $t('loads.temperatureDeltaTbtNoHTML') : 'ΔTb-ΔTt' }}={{
+        {{ $t('loads.temperatureDeltaTbtNoHTML') }}={{
           numberFormat.format(convertTemperature(eload.values[1] - eload.values[2]))
         }}
       </template>

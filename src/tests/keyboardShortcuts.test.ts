@@ -8,7 +8,7 @@ import { i18n } from '@/plugins/i18n';
 import SVGViewer from '@/components/SVGViewer.vue';
 import { useProjectStore } from '@/store/project';
 import { useViewerStore } from '@/store/viewer';
-import { hasShortcutModifier } from '@/utils/keyboard';
+import { forKeyboard, hasShortcutModifier } from '@/utils/keyboard';
 
 /**
  * Shortcuts checked `ctrlKey` only, so on a Mac, where Cmd does what Ctrl does elsewhere, none of
@@ -92,5 +92,21 @@ describe('shortcuts in the drawing', () => {
     project.clearSelection2();
     await press('Control', 'a');
     expect(project.selection2.nodes).toHaveLength(2);
+  });
+});
+
+describe('forKeyboard', () => {
+  it('names ⌘ on a Mac, in every way the texts write the modifier', () => {
+    expect(forKeyboard('Hold Ctrl to add using mouse', true)).toBe('Hold ⌘ to add using mouse');
+    expect(forKeyboard('Ctrl+Z and Ctrl+Shift+Z do the same.', true)).toBe('⌘Z and ⇧⌘Z do the same.');
+    expect(forKeyboard('Strg+Z und Strg+Umschalt+Z', true)).toBe('⌘Z und ⇧⌘Z');
+    expect(forKeyboard('Ctrl+Mayús+Z, Ctrl+Maj+Z', true)).toBe('⇧⌘Z, ⇧⌘Z');
+    expect(forKeyboard('Ctrl + C', true)).toBe('⌘C');
+    expect(forKeyboard('按住 Ctrl 并用鼠标添加', true)).toBe('按住 ⌘ 并用鼠标添加');
+  });
+
+  it('leaves the texts alone everywhere else', () => {
+    expect(forKeyboard('Ctrl+Z and Ctrl+Shift+Z do the same.', false)).toBe('Ctrl+Z and Ctrl+Shift+Z do the same.');
+    expect(forKeyboard('Control panel', true)).toBe('Control panel');
   });
 });

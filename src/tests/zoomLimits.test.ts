@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { limitZoomFactor, modelSpan, ZOOM_RANGE } from '@/utils/zoomLimits';
+import { gestureZoomStep, limitZoomFactor, modelSpan, WHEEL_STEP, wheelZoomStep, ZOOM_RANGE } from '@/utils/zoomLimits';
 
 const frame = { minX: 0, minY: 0, maxX: 10, maxY: 4 };
 
@@ -39,5 +39,39 @@ describe('zoom limits', () => {
     // 12 m visible is far past 1000x a 1 mm model.
     expect(limitZoomFactor(12, 1.05, tiny)).toBe(1);
     expect(limitZoomFactor(12, 0.95, tiny)).toBeCloseTo(0.95);
+  });
+});
+
+describe('wheel and gesture zoom steps', () => {
+  const wheel = (deltaY: number, ctrlKey = false, deltaMode = 0) => wheelZoomStep({ deltaY, ctrlKey, deltaMode });
+
+  it('steps a mouse wheel a notch at a time, whatever its delta', () => {
+    expect(wheel(100)).toBe(WHEEL_STEP);
+    expect(wheel(-3, false, 1)).toBe(-WHEEL_STEP);
+    expect(wheel(0)).toBe(0);
+  });
+
+  it('zooms a trackpad pinch by its size, so one pinch does not cross the whole range', () => {
+    expect(wheel(2, true)).toBeCloseTo(0.02);
+    expect(wheel(-0.5, true)).toBeCloseTo(-0.005);
+
+    // a pinch of 30 reports of 3 px zooms about 2.4 times, not the 4.3 of 30 fixed steps
+    let span = 10;
+    for (let i = 0; i < 30; i++) span *= 1 + wheel(-3, true);
+    expect(10 / span).toBeGreaterThan(2);
+    expect(10 / span).toBeLessThan(3);
+  });
+
+  it('keeps Ctrl with a mouse wheel at a notch', () => {
+    expect(wheel(100, true)).toBe(WHEEL_STEP);
+    expect(wheel(-3, true, 1)).toBe(-WHEEL_STEP);
+  });
+
+  it("follows Safari's pinch scale from one report to the next", () => {
+    // fingers apart: the view shrinks by the ratio, so the drawing grows with the fingers
+    expect(1 + gestureZoomStep(1, 2)).toBeCloseTo(0.5);
+    expect(1 + gestureZoomStep(2, 1)).toBeCloseTo(2);
+    expect(gestureZoomStep(1.5, 1.5)).toBe(0);
+    expect(gestureZoomStep(1, 0)).toBe(0);
   });
 });

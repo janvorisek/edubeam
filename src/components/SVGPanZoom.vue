@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Bounds } from '@/utils/fitBounds';
 import { centerSvgContent, fitSvgContent } from '@/utils/fitSvgContent';
-import { limitZoomFactor } from '@/utils/zoomLimits';
+import { gestureZoomStep, limitZoomFactor, wheelZoomStep } from '@/utils/zoomLimits';
 import { nextTick, onMounted, onUnmounted, ref } from 'vue';
 import { useAppStore } from '@/store/app';
 import { debounce } from '@/utils';
@@ -136,7 +136,35 @@ const debonceZoom = debounce(() => {
 
 const onMouseWheel = (event: WheelEvent): void => {
   zooming.value = true;
-  zoom(event.offsetX, event.offsetY, Math.sign(event.deltaY) * 0.05);
+  zoom(event.offsetX, event.offsetY, wheelZoomStep(event));
+  debonceZoom();
+};
+
+/** Fingers on the screen right now. A touch pinch is the touch handlers' to zoom. */
+let touchesDown = 0;
+/** Where the current Safari pinch was at its previous report. */
+let gestureScale = 1;
+
+const isPinchGesture = (event: Event): event is Event & { scale: number; clientX: number; clientY: number } =>
+  'scale' in event && typeof event.scale === 'number' && 'clientX' in event && typeof event.clientX === 'number';
+
+/**
+ * Safari on a Mac reports a trackpad pinch as gesture events, not as the Ctrl+wheel other browsers
+ * send, so the drawing ignored it and Safari zoomed the whole page instead. On iOS the same events
+ * come with every two finger pinch, which the touch handlers already turn into a zoom.
+ */
+const onGestureStart = (): void => {
+  gestureScale = 1;
+};
+
+const onGestureChange = (event: Event): void => {
+  if (touchesDown > 0 || !isPinchGesture(event) || !rootRef.value) return;
+
+  const rect = rootRef.value.getBoundingClientRect();
+
+  zooming.value = true;
+  zoom(event.clientX - rect.left, event.clientY - rect.top, gestureZoomStep(gestureScale, event.scale));
+  gestureScale = event.scale;
   debonceZoom();
 };
 
@@ -177,6 +205,7 @@ const touchFrame = frameQueue((touch: { x: number; y: number; distance: number; 
 });
 
 const onTouchStart = (event: TouchEvent): void => {
+  touchesDown = event.touches.length;
   if (!props.touch) return;
 
   if (event.touches.length === 1) {
@@ -203,7 +232,8 @@ const onTouchStart = (event: TouchEvent): void => {
   }
 };
 
-const onTouchEnd = (): void => {
+const onTouchEnd = (event: TouchEvent): void => {
+  touchesDown = event.touches.length;
   touchFrame.cancel();
   gestureRect = null;
 
@@ -391,7 +421,11 @@ defineExpose({ scale, fitted, centerContent, fitContent, updateMatrix, onWindowR
     @touchstart.prevent="onTouchStart"
     @touchmove.prevent="onTouchMove"
     @touchend.prevent="onTouchEnd"
+    @touchcancel.prevent="onTouchEnd"
     @wheel.prevent="onMouseWheel"
+    @gesturestart.prevent="onGestureStart"
+    @gesturechange.prevent="onGestureChange"
+    @gestureend.prevent
     @mousedown.prevent="onMouseDown"
     @mouseup.prevent="onMouseUp"
     @mousemove.prevent="onMouseMove"

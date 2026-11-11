@@ -15,6 +15,7 @@
  * vector export additionally resolves before it is written out.
  */
 import { createApp, h, nextTick, ref, shallowReactive, type Component } from 'vue';
+import { i18n } from '@/plugins/i18n';
 import type { ViewBox } from './fitBounds';
 // Barlow is the app's own typeface. Inlined into the bundle as a data URI at build time
 // rather than fetched when an export happens: a runtime fetch has to cross the service
@@ -887,6 +888,11 @@ export const createExportRenderer = (viewer: Component): ExportRenderer => {
       setup: () => () => h(viewer, { ...state.props, zoomEnabled: false, ref: instance }),
     });
 
+    // The drawing's labels are translated through `$t`. Not `app.use(i18n)`: vue-i18n disposes the
+    // instance it was installed with when that app unmounts, which would take the page's own
+    // translations down with the dialog.
+    app.config.globalProperties.$t = i18n.global.t;
+
     app.mount(mountPoint);
   };
 
@@ -1009,14 +1015,18 @@ export const createExportRenderer = (viewer: Component): ExportRenderer => {
         host.style.height = `${height}px`;
       }
 
+      const fitAll = !window && fitWith;
+
+      // Props first: the component sets up its watchers as it mounts, and mounted without a
+      // solver it would watch `undefined` for good.
+      state.props = fitAll ? fitWith : props;
       if (!app) await timed('mount', mount);
 
       let mode = window ? 'window' : 'fit';
       let overflow: Overflow | null = null;
 
-      if (!window && fitWith) {
+      if (fitAll) {
         // Fit the full drawing, then show the chosen layers in the view it found.
-        state.props = fitWith;
         await timed('render', () => nextTick());
         await fit(null);
         overflow = measureOverflow();
@@ -1165,21 +1175,10 @@ export const createExportRenderer = (viewer: Component): ExportRenderer => {
 export const canCopyImageToClipboard = () =>
   typeof ClipboardItem !== 'undefined' && typeof navigator !== 'undefined' && !!navigator.clipboard?.write;
 
-export const downloadBlob = (blob: Blob, filename: string) => {
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement('a');
-
-  anchor.href = url;
-  anchor.download = filename;
-  anchor.style.display = 'none';
-
-  document.body.appendChild(anchor);
-  anchor.click();
-  document.body.removeChild(anchor);
-
-  URL.revokeObjectURL(url);
-};
-
-export const copyBlobToClipboard = async (blob: Blob) => {
-  await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-};
+/**
+ * Takes the image as a promise and writes synchronously: Safari only lets a page write to the clipboard
+ * while the click that asked for it is still being handled, and that ends at the first `await`. Awaiting
+ * the render before writing failed there every time; a promise for the PNG keeps the write inside the click.
+ */
+export const copyImageToClipboard = (png: Promise<Blob>): Promise<void> =>
+  navigator.clipboard.write([new ClipboardItem({ 'image/png': png })]);

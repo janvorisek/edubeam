@@ -165,10 +165,11 @@ onMounted(() => {
       file.value.click();
     }
 
-    // Leave the tour. Harmless when none is running - finish() just sets the state it is
-    // already in.
+    // Leave the tour, and close the menu. Harmless when neither is open - finish() just sets the
+    // state it is already in.
     if (e.key === 'Escape') {
       endTour();
+      appStore.drawerOpen = false;
     }
   });
 
@@ -182,6 +183,26 @@ onMounted(() => {
     },
     { passive: false }
   );
+
+  /*
+   * The same for Safari on a Mac, which reports a trackpad pinch as gesture events and zoomed the
+   * whole interface with it; the drawing zooms itself from them (SVGPanZoom). A pinch on an iPhone or
+   * iPad comes with touches and is left alone, so zooming the page there still works.
+   */
+  let touching = false;
+  const trackTouches = (e: TouchEvent) => (touching = e.touches.length > 0);
+  document.addEventListener('touchstart', trackTouches, { passive: true, capture: true });
+  document.addEventListener('touchend', trackTouches, { passive: true, capture: true });
+  document.addEventListener('touchcancel', trackTouches, { passive: true, capture: true });
+  for (const type of ['gesturestart', 'gesturechange']) {
+    document.addEventListener(
+      type,
+      (e) => {
+        if (!touching) e.preventDefault();
+      },
+      { passive: false }
+    );
+  }
 });
 
 const appStore = useAppStore();

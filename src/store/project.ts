@@ -12,6 +12,7 @@ import {
   throttle,
 } from '@/utils';
 import { ensureDimensionId } from '@/utils/id';
+import { isDrawableBeam } from '@/utils/drawableBeam';
 import { inPlaneValues } from '@/utils/dofValues';
 import type { DimensionLine } from '@/types/dimension';
 import {
@@ -138,10 +139,8 @@ export const useProjectStore = defineStore(
     };
 
     const beams = computed(() => {
-      const vals = solver.value.domain.elements.values();
-      const arr = Array.from(vals);
-      const d = solver.value.domain;
-      return arr.filter((e) => e instanceof Beam2D && d.nodes.has(e.nodes[0]) && d.nodes.has(e.nodes[1])) as Beam2D[];
+      const domain = solver.value.domain;
+      return [...domain.elements.values()].filter((e) => isDrawableBeam(domain, e));
     });
 
     const _solve = () => {

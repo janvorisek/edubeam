@@ -210,15 +210,6 @@ export const useAppStore = defineStore(
       resultFormatter.value = new Intl.NumberFormat(newLocale, { maximumSignificantDigits: 5 });
     });
 
-    const dialogs = reactive({
-      addNode: false,
-      addElement: false,
-      addNodalLoad: false,
-      addElementLoad: false,
-      addMaterial: false,
-      addCrossSection: false,
-    });
-
     const zooming = ref(false);
 
     const tab = ref(null);
@@ -298,7 +289,6 @@ export const useAppStore = defineStore(
       unitSystem,
       setLengthUnit,
       sanitizeUnits,
-      dialogs,
       zooming,
       tab,
       openedTab,

@@ -16,7 +16,7 @@
           hide-details="auto"
         >
         </v-select>
-        <v-form v-model="valid">
+        <v-form ref="form" v-model="valid">
           <v-row no-gutters>
             <v-col v-if="previewLoad" cols="12" md="6" class="mb-4 mb-md-0 pe-md-4" align-self="center">
               <ElementLoadPreview class="w-100 pointer-events-none" :load="previewLoad" :show-node-labels="true" />
@@ -30,6 +30,7 @@
                     item-title="label"
                     item-value="label"
                     :label="$t('common.element')"
+                    :rules="targetRules"
                     hide-details="auto"
                     required
                   />
@@ -205,6 +206,7 @@
 <script setup lang="ts">
 import HelpTip from '../HelpTip.vue';
 import { computed, ref, watch } from 'vue';
+import type { VForm } from 'vuetify/components';
 import { useProjectStore } from '../../store/project';
 import { useAppStore } from '../../store/app';
 import { closeModal } from 'jenesius-vue-modal';
@@ -213,6 +215,7 @@ import { newPointLoadPosition } from '@/utils/newEntityDefaults';
 import { presetFamily } from '@/utils/presetFamily';
 import ElementLoadPreview from '../ElementLoadPreview.vue';
 import { deviceHasHover } from '@/utils/pointer';
+import { drawableBeam } from '@/utils/drawableBeam';
 import {
   BeamConcentratedLoad,
   BeamElementTrapezoidalEdgeLoad,
@@ -233,6 +236,7 @@ const props = defineProps<{
 
 const open = ref(true);
 const valid = ref(false);
+const form = ref<VForm | null>(null);
 const loadType = ref('udl');
 
 const loadTypes = [
@@ -262,7 +266,22 @@ watch(loadType, (newVal) => {
   }
 });
 
-const loadElementId = ref(String(props.label ?? [...useProjectStore().solver.domain.elements.values()][0].label));
+/**
+ * The element of the row the dialog was opened from, or the first one when opened on its own. Only an
+ * element that can be drawn carries a load here: one whose node is missing (from an older link or
+ * file) has no length to place a load on or preview it with. Opened from such a row, nothing is
+ * chosen rather than some other element the user did not ask for.
+ */
+const initialTarget = () => {
+  if (props.label !== undefined) return drawableBeam(projectStore.solver.domain, props.label)?.label ?? '';
+  return projectStore.beams[0]?.label ?? '';
+};
+
+const loadElementId = ref(String(initialTarget()));
+const target = computed(() => drawableBeam(projectStore.solver.domain, loadElementId.value));
+const targetRules = [
+  (v: unknown) => drawableBeam(projectStore.solver.domain, String(v)) !== undefined || t('validators.enterValue'),
+];
 const loadNodeValueFx = ref(`${appStore.convertForce(0)}`);
 const loadNodeValueFz = ref(`${appStore.convertForce(0)}`);
 const loadNodeValueMy = ref(`${appStore.convertMoment(0)}`);
@@ -297,6 +316,8 @@ const realTbt = computed(() => appStore.convertInverseTemperature(parseFloat2(lo
 const previewLoad = computed(() => {
   const domain = projectStore.solver.domain;
 
+  if (!target.value) return null;
+
   if (loadType.value === 'udl') {
     return new BeamElementUniformEdgeLoad(loadElementId.value, domain, [realFx.value, realFz.value], elementLCS.value);
   }
@@ -328,11 +349,15 @@ const previewLoad = computed(() => {
 });
 
 // The position is typed in the display length unit, so the element length is converted to match
+// Without an element there is no length to check against; the element select reports that instead.
 const minMax = (v: unknown) =>
-  rangeRule(0, appStore.convertLength(target.value.computeGeo().l), appStore.units.Length)(v);
+  !target.value || rangeRule(0, appStore.convertLength(target.value.computeGeo().l), appStore.units.Length)(v);
 
-const addElementLoad = () => {
-  if (valid.value === false) return;
+const addElementLoad = async () => {
+  // Validated here, not read from `valid`: that stays null until a field has been touched, so an
+  // untouched form - opened on an element that cannot carry a load - went through unchecked.
+  const checked = await form.value?.validate();
+  if (!checked?.valid || !target.value) return;
 
   executeModelMutationWithUndo(() => {
     useProjectStore().solver.loadCases[0].solved = false;
@@ -371,13 +396,9 @@ const addElementLoad = () => {
   closeModal();
 };
 
-const target = computed(() => {
-  return useProjectStore().solver.domain.elements.get(loadElementId.value)!;
-});
-
 // default concentrated load position to mid-span
 watch(loadType, () => {
-  if (loadType.value === 'concentrated') {
+  if (loadType.value === 'concentrated' && target.value) {
     const geo = target.value.computeGeo();
     elementLoadPos.value = `${appStore.convertLength(newPointLoadPosition(geo.l, presetFamily(appStore.units.Length)))}`;
   }

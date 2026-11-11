@@ -2,9 +2,10 @@
 import { computed, nextTick, ref, watch } from 'vue';
 import SVGElementViewer from './SVGElementViewer.vue';
 import { useAppStore } from '@/store/app';
-import { Beam2D, BeamConcentratedLoad, BeamElementLoad, LinearStaticSolver, Node } from 'ts-fem';
+import { BeamConcentratedLoad, BeamElementLoad, LinearStaticSolver, Node } from 'ts-fem';
 import { useViewerStore } from '@/store/viewer';
 import { createDimensionRenderableNode } from '@/types/dimension';
+import { drawableBeam } from '@/utils/drawableBeam';
 
 const props = withDefaults(
   defineProps<{
@@ -26,30 +27,25 @@ const viewer = ref<InstanceType<typeof SVGElementViewer> | null>(null);
 const solver = ref(new LinearStaticSolver());
 const appStore = useAppStore();
 
-const elements = computed(() => {
-  if (!props.load) return [];
-  return [props.load.domain.elements.get(props.load.target) as Beam2D];
-});
+/** The loaded element, when it can be drawn; the dialogs only preview loads on such elements. */
+const beam = computed(() => (props.load ? drawableBeam(props.load.domain, props.load.target) : undefined));
 
-// computed nodes from load's element and domain
+const elements = computed(() => (beam.value ? [beam.value] : []));
+
 const nodes = computed<Node[]>(() => {
-  if (!props.load) return [];
+  if (!beam.value || !props.load) return [];
 
-  const element = props.load.domain.elements.get(props.load.target);
-  if (!element) return [];
-
-  // get nodes from element
-  return element.nodes.map((nodeId) => props.load!.domain.nodes.get(nodeId)!);
+  const domain = props.load.domain;
+  return beam.value.nodes.flatMap((label) => domain.nodes.get(label) ?? []);
 });
 
 const dimensionLines = computed(() => {
   if (!(props.load instanceof BeamConcentratedLoad)) return [];
 
-  const element = props.load.domain.elements.get(props.load.target) as Beam2D | undefined;
+  const element = beam.value;
   if (!element) return [];
 
-  const startNode = props.load.domain.nodes.get(element.nodes[0]);
-  if (!startNode) return [];
+  const startNode = props.load.domain.nodes.get(element.nodes[0])!;
 
   const geo = element.computeGeo();
   const elementLength = geo?.l ?? 0;

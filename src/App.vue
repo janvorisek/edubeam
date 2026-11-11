@@ -34,7 +34,6 @@ import RecentStructures from '@/components/dialogs/RecentStructures.vue';
 import ExportImage from '@/components/dialogs/ExportImage.vue';
 import Changelog from '@/components/dialogs/Changelog.vue';
 import Editor from '@/views/Editor.vue';
-import Dialogs from '@/components/Dialogs.vue';
 import { useProjectStore } from './store/project';
 import { useAppStore } from './store/app';
 import { startFirstBeam } from './utils/startFirstBeam';
@@ -49,7 +48,7 @@ const { t } = useI18n();
 
 const viewerStore = useViewerStore();
 
-const file = ref(null);
+const file = ref<HTMLInputElement | null>(null);
 
 const onboardingWrapper = ref(null);
 provide('onboardingWrapper', onboardingWrapper);
@@ -162,7 +161,7 @@ onMounted(() => {
     // Open project
     if (hasShortcutModifier(e) && e.code === 'KeyO') {
       e.preventDefault();
-      file.value.click();
+      file.value?.click();
     }
 
     // Leave the tour, and close the menu. Harmless when neither is open - finish() just sets the
@@ -516,7 +515,7 @@ const app_commit = APP_COMMIT;
           prepend-icon="mdi-folder-open-outline"
           :title="$t('common.openProject')"
           value="home"
-          @click="$refs.file.click()"
+          @click="file?.click()"
         ></v-list-item>
         <v-list-item
           prepend-icon="mdi-folder-arrow-down-outline"
@@ -593,8 +592,6 @@ const app_commit = APP_COMMIT;
     <v-main>
       <Editor />
     </v-main>
-
-    <Dialogs />
 
     <widget-container-modal />
 

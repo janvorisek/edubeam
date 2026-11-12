@@ -1,6 +1,31 @@
 {
   "releases": [
     {
+      "version": "1.3.3",
+      "title": "Styly průběhů a znaménková konvence",
+      "date": "12. listopadu 2026",
+      "highlights": [
+        "Šrafované průběhy jako při kreslení rukou.",
+        "Stupeň polynomu na každém úseku.",
+        "Kterýkoli průběh překlopíte na druhou stranu.",
+        "Sdílený odkaz může otevřít i vaše průběhy.",
+        "Také: snazší výběr prutů, kompaktní nastavení a opravy."
+      ],
+      "tag": "Nejnovější",
+      "media": [
+        {
+          "src": "/changelog/media/diagram-fill.gif",
+          "alt": "Ohybový moment a posouvající síla prostého nosníku vykreslené plně, šrafovaně napříč nosníkem se stupněm polynomu na úsecích a nakonec jen obrysem",
+          "caption": "Šrafování a stupně"
+        },
+        {
+          "src": "/changelog/media/diagram-sides.gif",
+          "alt": "Ohybový moment, posouvající a normálová síla prostého nosníku překlopené na druhou stranu",
+          "caption": "Překlopení stran"
+        }
+      ]
+    },
+    {
       "version": "1.3.2",
       "title": "Nové jazyky a výpočty v polích",
       "date": "12. listopadu 2026",
@@ -11,7 +36,6 @@
         "Otevřete soubory .xml uložené původní desktopovou verzí EduBeamu.",
         "Také: vložení kopírovaných částí se zadaným posunem, plynulejší zoom a kopírování obrázku v Safari, Enter potvrzuje dialogy a srozumitelnější chybová hlášení."
       ],
-      "tag": "Nejnovější",
       "contributors": [
         {
           "name": "Jan Vorisek",

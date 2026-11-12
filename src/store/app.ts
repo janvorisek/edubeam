@@ -255,10 +255,16 @@ export const useAppStore = defineStore(
     const panButton = ref(-1);
 
     /**
-     * Share links in the compressed format. Off unless chosen: a copy of the app cached from before
-     * that format cannot read it until it updates, and opens its own model instead.
+     * Share links in the compressed format, about half as long. On by default for new users, as every
+     * version since 7 October 2026 reads them; returning users keep what they have saved.
      */
-    const shortShareLinks = ref(false);
+    const shortShareLinks = ref(true);
+
+    /**
+     * Share links open with the layers the sharer has on - the diagrams, loads and labels (`?show=`).
+     * Off by default, so a link opens with the recipient's own layers, as links always have.
+     */
+    const shareLayers = ref(false);
 
     // Everything the settings dialog edits except the language, which is a person's choice rather
     // than a preference to fall back from.
@@ -301,6 +307,7 @@ export const useAppStore = defineStore(
 
       panButton,
       shortShareLinks,
+      shareLayers,
 
       // Convert units
       convertLength,
@@ -360,6 +367,7 @@ export const useAppStore = defineStore(
         'momentUnits',
         'axisConvention',
         'shortShareLinks',
+        'shareLayers',
       ],
       debug: true,
       afterHydrate: ({ store }) => store.sanitizeUnits(),

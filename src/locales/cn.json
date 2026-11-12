@@ -46,7 +46,8 @@
     "reverse_orientation": "翻转标注",
     "undo": "撤销",
     "redo": "重做",
-    "ok": "确定"
+    "ok": "确定",
+    "close": "关闭"
   },
   "nodes": {
     "addNode": "添加节点",
@@ -194,7 +195,23 @@
     "result_label_orientation": "结果标签方向",
     "result_label_orientation_axis": "垂直于图表",
     "result_label_orientation_horizontal": "始终水平",
-    "result_labels": "结果标签"
+    "result_labels": "结果标签",
+    "diagrams": {
+      "title": "内力图",
+      "moment": "弯矩",
+      "tensionSide": "受拉侧",
+      "compressionSide": "受压侧",
+      "normal": "正轴力",
+      "shear": "正剪力",
+      "awayFromDashed": "对侧",
+      "dashedSide": "虚线侧",
+      "fill": "填充",
+      "fillSolid": "实心",
+      "fillHatch": "阴影线",
+      "fillNone": "无",
+      "degrees": "各段次数",
+      "dashedHint": "沿每个单元的虚线标示其下缘纤维。"
+    }
   },
   "sideSettings": {
     "showDeformedShape": "变形图",
@@ -295,7 +312,11 @@
       "title": "更新内容",
       "description": "新功能、改进以及我们正在开发内容的预览。",
       "contributors": "参与此版本的贡献者：{names}",
-      "comingSoon": "即将推出"
+      "comingSoon": "即将推出",
+      "tryIt": "试一试",
+      "tried": {
+        "diagramStyles": "已开启带有各段多项式次数的阴影内力图。"
+      }
     },
     "polygonSection": {
       "title": "新建多边形截面",
@@ -371,7 +392,9 @@
     "linkCopied": "链接已复制到剪贴板",
     "copyFailed": "无法自动复制，请使用键盘快捷键。",
     "shortLink": "更短的链接",
-    "shortLinkHint": "长度约为一半。使用旧版 EduBeam 的用户需要先更新应用才能打开。"
+    "shortLinkHint": "长度约为一半。使用旧版 EduBeam 的用户需要先更新应用才能打开。",
+    "shareLayers": "显示我看到的内容",
+    "shareLayersHint": "链接打开时将显示您当前开启的内力图、荷载和标签。"
   },
   "tour": {
     "menu": {

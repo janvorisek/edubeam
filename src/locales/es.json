@@ -46,7 +46,8 @@
     "reverse_orientation": "Invertir cota",
     "undo": "Deshacer",
     "redo": "Rehacer",
-    "ok": "Aceptar"
+    "ok": "Aceptar",
+    "close": "Cerrar"
   },
   "nodes": {
     "addNode": "Añadir nodo",
@@ -194,7 +195,23 @@
     "result_label_orientation": "Orientación de las etiquetas de resultados",
     "result_label_orientation_axis": "Perpendicular al diagrama",
     "result_label_orientation_horizontal": "Siempre horizontales",
-    "result_labels": "Etiquetas de resultados"
+    "result_labels": "Etiquetas de resultados",
+    "diagrams": {
+      "title": "Diagramas de esfuerzos internos",
+      "moment": "Momento flector",
+      "tensionSide": "Lado traccionado",
+      "compressionSide": "Lado comprimido",
+      "normal": "Fuerza normal positiva",
+      "shear": "Fuerza cortante positiva",
+      "awayFromDashed": "Lado opuesto",
+      "dashedSide": "Lado discontinuo",
+      "fill": "Relleno",
+      "fillSolid": "Sólido",
+      "fillHatch": "Rayado",
+      "fillNone": "Ninguno",
+      "degrees": "Grado de cada tramo",
+      "dashedHint": "La línea discontinua a lo largo de cada elemento marca sus fibras inferiores."
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Forma deformada",
@@ -295,7 +312,11 @@
       "title": "¿Qué hay de nuevo?",
       "description": "Nuevas funciones, mejoras y un vistazo a lo que estamos preparando.",
       "contributors": "Han contribuido a esta versión: {names}",
-      "comingSoon": "Próximamente"
+      "comingSoon": "Próximamente",
+      "tryIt": "Probar",
+      "tried": {
+        "diagramStyles": "Los diagramas rayados con el grado de cada tramo están activados."
+      }
     },
     "polygonSection": {
       "title": "Nueva sección transversal poligonal",
@@ -371,7 +392,9 @@
     "linkCopied": "Enlace copiado al portapapeles",
     "copyFailed": "No se pudo copiar automáticamente. Use los atajos de teclado.",
     "shortLink": "Enlace más corto",
-    "shortLinkHint": "Aproximadamente la mitad de largo. Quien use una versión anterior de EduBeam debe actualizar la aplicación antes de abrirlo."
+    "shortLinkHint": "Aproximadamente la mitad de largo. Quien use una versión anterior de EduBeam debe actualizar la aplicación antes de abrirlo.",
+    "shareLayers": "Mostrar lo que veo",
+    "shareLayersHint": "El enlace se abre con los diagramas, cargas y etiquetas que tiene activados."
   },
   "tour": {
     "menu": {

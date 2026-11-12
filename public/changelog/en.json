@@ -1,6 +1,39 @@
 {
   "releases": [
     {
+      "version": "1.3.3",
+      "title": "Diagram Styles & Sign Conventions",
+      "date": "November 12, 2026",
+      "highlights": [
+        "Hatched diagrams, drawn as by hand.",
+        "The polynomial degree of each segment.",
+        "Flip any diagram to the other side.",
+        "Share links can open with your diagrams on.",
+        "Also: easier picking of members, compact settings and fixes."
+      ],
+      "tryIt": "diagramStyles",
+      "tag": "Latest",
+      "media": [
+        {
+          "src": "/changelog/media/diagram-fill.gif",
+          "alt": "A simply supported beam's bending moment and shear force drawn solid, hatched across the beam with the degree of each segment, then as an outline",
+          "caption": "Hatching and degrees"
+        },
+        {
+          "src": "/changelog/media/diagram-sides.gif",
+          "alt": "The bending moment, shear force and normal force of a simply supported beam flipping to the other side",
+          "caption": "Flip the sides"
+        }
+      ],
+      "contributors": [
+        {
+          "name": "Jan Vorisek",
+          "commits": 6,
+          "url": "https://github.com/janvorisek"
+        }
+      ]
+    },
+    {
       "version": "1.3.2",
       "title": "New Languages & Calculations in Fields",
       "date": "November 12, 2026",
@@ -11,7 +44,6 @@
         "Open .xml files saved by the original desktop EduBeam.",
         "Also: paste copied parts at a typed offset, smoother zoom and image copying in Safari, Enter confirms dialogs, and clearer error messages."
       ],
-      "tag": "Latest",
       "contributors": [
         {
           "name": "Jan Vorisek",

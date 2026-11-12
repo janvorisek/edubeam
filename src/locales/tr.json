@@ -46,7 +46,8 @@
     "reverse_orientation": "Ölçü çizgisini ters çevir",
     "undo": "Geri al",
     "redo": "Yinele",
-    "ok": "Tamam"
+    "ok": "Tamam",
+    "close": "Kapat"
   },
   "nodes": {
     "addNode": "Düğüm ekle",
@@ -194,7 +195,23 @@
     "result_label_orientation": "Sonuç etiketlerinin yönü",
     "result_label_orientation_axis": "Diyagrama dik",
     "result_label_orientation_horizontal": "Her zaman yatay",
-    "result_labels": "Sonuç etiketleri"
+    "result_labels": "Sonuç etiketleri",
+    "diagrams": {
+      "title": "İç kuvvet diyagramları",
+      "moment": "Eğilme momenti",
+      "tensionSide": "Çekme tarafı",
+      "compressionSide": "Basınç tarafı",
+      "normal": "Pozitif normal kuvvet",
+      "shear": "Pozitif kesme kuvveti",
+      "awayFromDashed": "Karşı taraf",
+      "dashedSide": "Kesikli taraf",
+      "fill": "Dolgu",
+      "fillSolid": "Düz",
+      "fillHatch": "Taralı",
+      "fillNone": "Yok",
+      "degrees": "Her bölgenin derecesi",
+      "dashedHint": "Her elemanın boyunca uzanan kesikli çizgi alt liflerini gösterir."
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Deforme şekil",
@@ -295,7 +312,11 @@
       "title": "Yenilikler",
       "description": "Yeni özellikler, iyileştirmeler ve üzerinde çalıştıklarımıza ilk bakış.",
       "contributors": "Bu sürüme katkıda bulunanlar: {names}",
-      "comingSoon": "Yakında"
+      "comingSoon": "Yakında",
+      "tryIt": "Dene",
+      "tried": {
+        "diagramStyles": "Her bölümün polinom derecesiyle taralı diyagramlar açık."
+      }
     },
     "polygonSection": {
       "title": "Yeni çokgen kesit",
@@ -371,7 +392,9 @@
     "linkCopied": "Bağlantı panoya kopyalandı",
     "copyFailed": "Otomatik kopyalanamadı. Lütfen klavye kısayollarını kullanın.",
     "shortLink": "Daha kısa bağlantı",
-    "shortLinkHint": "Yaklaşık yarı uzunlukta. EduBeam'in eski bir sürümünü kullananların açmadan önce uygulamayı güncellemesi gerekir."
+    "shortLinkHint": "Yaklaşık yarı uzunlukta. EduBeam'in eski bir sürümünü kullananların açmadan önce uygulamayı güncellemesi gerekir.",
+    "shareLayers": "Gördüğümü göster",
+    "shareLayersHint": "Bağlantı, açık olan diyagramlar, yükler ve etiketlerle açılır."
   },
   "tour": {
     "menu": {

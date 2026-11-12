@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { DiagramStyle } from '@/utils/diagramStyle';
 import { computed, inject } from 'vue';
 import SVGElement from './svg/Element.vue';
 import { useProjectStore } from '@/store/project';
@@ -17,6 +18,7 @@ const props = defineProps<{
   scale: number;
   isZooming: boolean;
   resultLabelMode: 'axis' | 'horizontal';
+  diagramStyle?: DiagramStyle;
 }>();
 
 const projectStore = useProjectStore();
@@ -33,13 +35,20 @@ const element = computed(() => {
 });
 
 const selected = computed(() => !!element.value && projectStore.selection2.elements.includes(element.value.label));
+
+/**
+ * The highlight draws the element's diagrams again on top; their degree labels are already shown by
+ * the element underneath, and working them out again on every hover asks the solver for values each
+ * time. A computed, so the highlight gets the same object until the style itself changes.
+ */
+const highlightStyle = computed(() => (props.diagramStyle ? { ...props.diagramStyle, showDegrees: false } : undefined));
 </script>
 
 <template>
   <g v-if="element">
     <SVGElement
       :key="`element-geometry-${element.label}`"
-      class="pointer-events-none"
+      class="pointer-events-none hovered"
       :class="{ selected }"
       :show-geometry="true"
       :show-results="false"
@@ -57,6 +66,7 @@ const selected = computed(() => !!element.value && projectStore.selection2.eleme
       :shear-force-multiplier="projectStore.shearForceScale * viewerStore.resultsScalePx_"
       :bending-moment-multiplier="projectStore.bendingMomentScale * viewerStore.resultsScalePx_"
       :result-label-mode="props.resultLabelMode"
+      :diagram-style="highlightStyle"
       :convert-force="appStore.convertForce"
       :convert-moment="appStore.convertMoment"
       :font-size="viewerStore.fontSize"
@@ -82,6 +92,7 @@ const selected = computed(() => !!element.value && projectStore.selection2.eleme
       :shear-force-multiplier="projectStore.shearForceScale * viewerStore.resultsScalePx_"
       :bending-moment-multiplier="projectStore.bendingMomentScale * viewerStore.resultsScalePx_"
       :result-label-mode="props.resultLabelMode"
+      :diagram-style="highlightStyle"
       :convert-force="appStore.convertForce"
       :convert-moment="appStore.convertMoment"
       :font-size="viewerStore.fontSize"

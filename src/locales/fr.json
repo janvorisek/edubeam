@@ -46,7 +46,8 @@
     "reverse_orientation": "Inverser la cote",
     "undo": "Annuler",
     "redo": "Rétablir",
-    "ok": "OK"
+    "ok": "OK",
+    "close": "Fermer"
   },
   "nodes": {
     "addNode": "Ajouter un nœud",
@@ -194,7 +195,23 @@
     "result_label_orientation": "Orientation des étiquettes de résultats",
     "result_label_orientation_axis": "Perpendiculaires au diagramme",
     "result_label_orientation_horizontal": "Toujours horizontales",
-    "result_labels": "Étiquettes des résultats"
+    "result_labels": "Étiquettes des résultats",
+    "diagrams": {
+      "title": "Diagrammes des efforts internes",
+      "moment": "Moment fléchissant",
+      "tensionSide": "Côté tendu",
+      "compressionSide": "Côté comprimé",
+      "normal": "Effort normal positif",
+      "shear": "Effort tranchant positif",
+      "awayFromDashed": "Côté opposé",
+      "dashedSide": "Côté pointillé",
+      "fill": "Remplissage",
+      "fillSolid": "Plein",
+      "fillHatch": "Hachuré",
+      "fillNone": "Aucun",
+      "degrees": "Degré de chaque tronçon",
+      "dashedHint": "La ligne en pointillés le long de chaque élément repère ses fibres inférieures."
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Déformée",
@@ -295,7 +312,11 @@
       "title": "Quoi de neuf ?",
       "description": "Nouvelles fonctionnalités, améliorations et aperçu de ce que nous préparons.",
       "contributors": "Ont contribué à cette version : {names}",
-      "comingSoon": "Bientôt disponible"
+      "comingSoon": "Bientôt disponible",
+      "tryIt": "Essayer",
+      "tried": {
+        "diagramStyles": "Les diagrammes hachurés avec le degré de chaque tronçon sont activés."
+      }
     },
     "polygonSection": {
       "title": "Nouvelle section polygonale",
@@ -371,7 +392,9 @@
     "linkCopied": "Lien copié dans le presse-papiers",
     "copyFailed": "Impossible de copier automatiquement. Veuillez utiliser vos raccourcis clavier.",
     "shortLink": "Lien plus court",
-    "shortLinkHint": "Environ deux fois plus court. Avec une ancienne version d'EduBeam, il faut d'abord mettre l'application à jour pour l'ouvrir."
+    "shortLinkHint": "Environ deux fois plus court. Avec une ancienne version d'EduBeam, il faut d'abord mettre l'application à jour pour l'ouvrir.",
+    "shareLayers": "Montrer ce que je vois",
+    "shareLayersHint": "Le lien s'ouvre avec les diagrammes, charges et étiquettes que vous avez activés."
   },
   "tour": {
     "menu": {

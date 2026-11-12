@@ -46,7 +46,8 @@
     "reverse_orientation": "Lật kích thước",
     "undo": "Hoàn tác",
     "redo": "Làm lại",
-    "ok": "OK"
+    "ok": "OK",
+    "close": "Đóng"
   },
   "nodes": {
     "addNode": "Thêm nút",
@@ -194,7 +195,23 @@
     "result_label_orientation": "Hướng nhãn kết quả",
     "result_label_orientation_axis": "Vuông góc với biểu đồ",
     "result_label_orientation_horizontal": "Luôn nằm ngang",
-    "result_labels": "Nhãn kết quả"
+    "result_labels": "Nhãn kết quả",
+    "diagrams": {
+      "title": "Biểu đồ nội lực",
+      "moment": "Mô men uốn",
+      "tensionSide": "Phía thớ chịu kéo",
+      "compressionSide": "Phía thớ chịu nén",
+      "normal": "Lực dọc dương",
+      "shear": "Lực cắt dương",
+      "awayFromDashed": "Phía đối diện",
+      "dashedSide": "Phía nét đứt",
+      "fill": "Tô màu",
+      "fillSolid": "Tô đặc",
+      "fillHatch": "Kẻ vạch",
+      "fillNone": "Không",
+      "degrees": "Bậc của từng đoạn",
+      "dashedHint": "Nét đứt dọc theo mỗi phần tử đánh dấu thớ dưới của phần tử đó."
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Biến dạng",
@@ -295,7 +312,11 @@
       "title": "Có gì mới?",
       "description": "Tính năng mới, cải tiến và những gì chúng tôi đang phát triển.",
       "contributors": "Những người đóng góp cho phiên bản này: {names}",
-      "comingSoon": "Sắp ra mắt"
+      "comingSoon": "Sắp ra mắt",
+      "tryIt": "Dùng thử",
+      "tried": {
+        "diagramStyles": "Đã bật biểu đồ gạch chéo kèm bậc đa thức của từng đoạn."
+      }
     },
     "polygonSection": {
       "title": "Tiết diện đa giác mới",
@@ -371,7 +392,9 @@
     "linkCopied": "Đã sao chép liên kết vào bộ nhớ tạm",
     "copyFailed": "Không thể tự động sao chép. Vui lòng dùng phím tắt.",
     "shortLink": "Liên kết ngắn hơn",
-    "shortLinkHint": "Ngắn bằng khoảng một nửa. Ai đang dùng phiên bản EduBeam cũ hơn phải cập nhật ứng dụng thì mới mở được."
+    "shortLinkHint": "Ngắn bằng khoảng một nửa. Ai đang dùng phiên bản EduBeam cũ hơn phải cập nhật ứng dụng thì mới mở được.",
+    "shareLayers": "Hiện đúng những gì tôi thấy",
+    "shareLayersHint": "Liên kết sẽ mở với các biểu đồ, tải trọng và nhãn mà bạn đang bật."
   },
   "tour": {
     "menu": {

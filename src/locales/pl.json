@@ -46,7 +46,8 @@
     "reverse_orientation": "Odwróć wymiar",
     "undo": "Cofnij",
     "redo": "Ponów",
-    "ok": "OK"
+    "ok": "OK",
+    "close": "Zamknij"
   },
   "nodes": {
     "addNode": "Dodaj węzeł",
@@ -194,7 +195,23 @@
     "result_label_orientation": "Orientacja etykiet wyników",
     "result_label_orientation_axis": "Prostopadle do wykresu",
     "result_label_orientation_horizontal": "Zawsze poziomo",
-    "result_labels": "Etykiety wyników"
+    "result_labels": "Etykiety wyników",
+    "diagrams": {
+      "title": "Wykresy sił wewnętrznych",
+      "moment": "Moment zginający",
+      "tensionSide": "Po stronie rozciąganej",
+      "compressionSide": "Po stronie ściskanej",
+      "normal": "Dodatnia siła normalna",
+      "shear": "Dodatnia siła tnąca",
+      "awayFromDashed": "Strona przeciwna",
+      "dashedSide": "Strona przerywana",
+      "fill": "Wypełnienie",
+      "fillSolid": "Pełne",
+      "fillHatch": "Kreskowane",
+      "fillNone": "Brak",
+      "degrees": "Stopień wykresu w przedziałach",
+      "dashedHint": "Linia przerywana wzdłuż elementu oznacza jego dolne włókna."
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Kształt odkształcony",
@@ -295,7 +312,11 @@
       "title": "Co nowego?",
       "description": "Nowe funkcje, usprawnienia i zapowiedzi tego, nad czym pracujemy.",
       "contributors": "Nad tą wersją pracowali: {names}",
-      "comingSoon": "Wkrótce"
+      "comingSoon": "Wkrótce",
+      "tryIt": "Wypróbuj",
+      "tried": {
+        "diagramStyles": "Kreskowane wykresy ze stopniem wielomianu na odcinkach są włączone."
+      }
     },
     "polygonSection": {
       "title": "Nowy przekrój wielokątny",
@@ -371,7 +392,9 @@
     "linkCopied": "Link skopiowany do schowka",
     "copyFailed": "Nie udało się skopiować automatycznie. Użyj skrótów klawiaturowych.",
     "shortLink": "Krótszy link",
-    "shortLinkHint": "Mniej więcej o połowę krótszy. Osoby ze starszą wersją EduBeam muszą najpierw zaktualizować aplikację, aby go otworzyć."
+    "shortLinkHint": "Mniej więcej o połowę krótszy. Osoby ze starszą wersją EduBeam muszą najpierw zaktualizować aplikację, aby go otworzyć.",
+    "shareLayers": "Pokaż to, co widzę",
+    "shareLayersHint": "Link otworzy się z wykresami, obciążeniami i etykietami, które masz włączone."
   },
   "tour": {
     "menu": {

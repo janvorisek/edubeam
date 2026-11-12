@@ -46,7 +46,8 @@
     "reverse_orientation": "Bemaßung umkehren",
     "undo": "Rückgängig",
     "redo": "Wiederholen",
-    "ok": "OK"
+    "ok": "OK",
+    "close": "Schließen"
   },
   "nodes": {
     "addNode": "Knoten hinzufügen",
@@ -194,7 +195,23 @@
     "result_label_orientation": "Ausrichtung der Ergebnisbeschriftungen",
     "result_label_orientation_axis": "Senkrecht zum Diagramm",
     "result_label_orientation_horizontal": "Immer horizontal",
-    "result_labels": "Ergebnisbeschriftungen"
+    "result_labels": "Ergebnisbeschriftungen",
+    "diagrams": {
+      "title": "Schnittgrößenverläufe",
+      "moment": "Biegemoment",
+      "tensionSide": "Zugseite",
+      "compressionSide": "Druckseite",
+      "normal": "Positive Normalkraft",
+      "shear": "Positive Querkraft",
+      "awayFromDashed": "Gegenseite",
+      "dashedSide": "Gestrichelte Seite",
+      "fill": "Füllung",
+      "fillSolid": "Flächig",
+      "fillHatch": "Schraffiert",
+      "fillNone": "Keine",
+      "degrees": "Polynomgrad je Abschnitt",
+      "dashedHint": "Die gestrichelte Linie entlang jedes Elements markiert dessen untere Fasern."
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Verformte Form",
@@ -295,7 +312,11 @@
       "title": "Was gibt's Neues?",
       "description": "Neue Funktionen, Verbesserungen und Einblicke in das, woran wir gerade arbeiten.",
       "contributors": "Mitwirkende an dieser Version: {names}",
-      "comingSoon": "Demnächst"
+      "comingSoon": "Demnächst",
+      "tryIt": "Ausprobieren",
+      "tried": {
+        "diagramStyles": "Schraffierte Verläufe mit dem Polynomgrad je Abschnitt sind eingeschaltet."
+      }
     },
     "polygonSection": {
       "title": "Neuer polygonaler Querschnitt",
@@ -371,7 +392,9 @@
     "linkCopied": "Link in die Zwischenablage kopiert",
     "copyFailed": "Automatisches Kopieren war nicht möglich. Bitte verwenden Sie Ihre Tastenkürzel.",
     "shortLink": "Kürzerer Link",
-    "shortLinkHint": "Etwa halb so lang. Wer eine ältere Version von EduBeam nutzt, muss die App vor dem Öffnen aktualisieren."
+    "shortLinkHint": "Etwa halb so lang. Wer eine ältere Version von EduBeam nutzt, muss die App vor dem Öffnen aktualisieren.",
+    "shareLayers": "Zeigen, was ich sehe",
+    "shareLayersHint": "Der Link öffnet sich mit den Verläufen, Lasten und Beschriftungen, die Sie eingeschaltet haben."
   },
   "tour": {
     "menu": {

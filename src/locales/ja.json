@@ -46,7 +46,8 @@
     "reverse_orientation": "寸法線を反転",
     "undo": "元に戻す",
     "redo": "やり直し",
-    "ok": "OK"
+    "ok": "OK",
+    "close": "閉じる"
   },
   "nodes": {
     "addNode": "節点を追加",
@@ -194,7 +195,23 @@
     "result_label_orientation": "結果ラベルの向き",
     "result_label_orientation_axis": "図に垂直",
     "result_label_orientation_horizontal": "常に水平",
-    "result_labels": "結果ラベル"
+    "result_labels": "結果ラベル",
+    "diagrams": {
+      "title": "断面力図",
+      "moment": "曲げモーメント",
+      "tensionSide": "引張側",
+      "compressionSide": "圧縮側",
+      "normal": "正の軸力",
+      "shear": "正のせん断力",
+      "awayFromDashed": "反対側",
+      "dashedSide": "破線側",
+      "fill": "塗り",
+      "fillSolid": "単色",
+      "fillHatch": "ハッチング",
+      "fillNone": "なし",
+      "degrees": "各区間の次数",
+      "dashedHint": "各要素に沿った破線は下縁を示します。"
+    }
   },
   "sideSettings": {
     "showDeformedShape": "変位図",
@@ -295,7 +312,11 @@
       "title": "更新情報",
       "description": "新機能と改善点、開発中の機能をご紹介します。",
       "contributors": "このリリースの貢献者：{names}",
-      "comingSoon": "近日公開"
+      "comingSoon": "近日公開",
+      "tryIt": "試してみる",
+      "tried": {
+        "diagramStyles": "各区間の多項式の次数付きのハッチング図が有効になりました。"
+      }
     },
     "polygonSection": {
       "title": "新しい多角形断面",
@@ -371,7 +392,9 @@
     "linkCopied": "リンクをクリップボードにコピーしました",
     "copyFailed": "自動でコピーできませんでした。キーボードショートカットを使ってください。",
     "shortLink": "短いリンク",
-    "shortLinkHint": "長さは約半分です。古いバージョンの EduBeam を使っている人は、アプリを更新しないと開けません。"
+    "shortLinkHint": "長さは約半分です。古いバージョンの EduBeam を使っている人は、アプリを更新しないと開けません。",
+    "shareLayers": "自分の表示を共有",
+    "shareLayersHint": "リンクを開くと、現在表示している断面力図、荷重、ラベルがそのまま表示されます。"
   },
   "tour": {
     "menu": {

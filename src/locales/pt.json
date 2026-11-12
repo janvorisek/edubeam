@@ -46,7 +46,8 @@
     "reverse_orientation": "Inverter cota",
     "undo": "Desfazer",
     "redo": "Refazer",
-    "ok": "OK"
+    "ok": "OK",
+    "close": "Fechar"
   },
   "nodes": {
     "addNode": "Adicionar nó",
@@ -194,7 +195,23 @@
     "result_label_orientation": "Orientação dos rótulos de resultados",
     "result_label_orientation_axis": "Perpendicular ao diagrama",
     "result_label_orientation_horizontal": "Sempre horizontais",
-    "result_labels": "Rótulos de resultados"
+    "result_labels": "Rótulos de resultados",
+    "diagrams": {
+      "title": "Diagramas de esforços internos",
+      "moment": "Momento fletor",
+      "tensionSide": "Lado tracionado",
+      "compressionSide": "Lado comprimido",
+      "normal": "Esforço normal positivo",
+      "shear": "Esforço cortante positivo",
+      "awayFromDashed": "Lado oposto",
+      "dashedSide": "Lado tracejado",
+      "fill": "Preenchimento",
+      "fillSolid": "Sólido",
+      "fillHatch": "Hachurado",
+      "fillNone": "Nenhum",
+      "degrees": "Grau de cada trecho",
+      "dashedHint": "A linha tracejada ao longo de cada elemento marca suas fibras inferiores."
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Forma deformada",
@@ -295,7 +312,11 @@
       "title": "O que há de novo?",
       "description": "Novos recursos, melhorias e prévias do que estamos desenvolvendo.",
       "contributors": "Contribuíram para esta versão: {names}",
-      "comingSoon": "Em breve"
+      "comingSoon": "Em breve",
+      "tryIt": "Experimentar",
+      "tried": {
+        "diagramStyles": "Os diagramas hachurados com o grau de cada trecho estão ativados."
+      }
     },
     "polygonSection": {
       "title": "Nova seção poligonal",
@@ -371,7 +392,9 @@
     "linkCopied": "Link copiado para a área de transferência",
     "copyFailed": "Não foi possível copiar automaticamente. Use os atalhos de teclado.",
     "shortLink": "Link mais curto",
-    "shortLinkHint": "Cerca de metade do comprimento. Quem usa uma versão mais antiga do EduBeam precisa atualizar o aplicativo antes de abri-lo."
+    "shortLinkHint": "Cerca de metade do comprimento. Quem usa uma versão mais antiga do EduBeam precisa atualizar o aplicativo antes de abri-lo.",
+    "shareLayers": "Mostrar o que eu vejo",
+    "shareLayersHint": "O link abre com os diagramas, cargas e rótulos que você tem ativados."
   },
   "tour": {
     "menu": {

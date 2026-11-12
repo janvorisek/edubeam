@@ -17,6 +17,8 @@ import ReloadPrompt from './components/ReloadPrompt.vue';
 import { buildStarterModel } from './utils/starterModel';
 import { fromShareParam } from './utils/serializeModel';
 import { isEduBeamSession, parseEduBeamSession } from './utils/edubeamSession';
+import { decodeLayers } from './utils/viewLayers';
+import { dismissTriedFeature, triedFeature, undoTriedFeature } from './utils/tryIt';
 
 export default {
   name: 'App',
@@ -203,6 +205,12 @@ onMounted(() => {
 
 const appStore = useAppStore();
 
+/** From the notice of a feature tried from the changelog: where it is set for good. */
+const openTriedSettings = () => {
+  dismissTriedFeature();
+  appStore.openSettings('appearance');
+};
+
 onMounted(() => {
   const solver = useProjectStore().solver;
   const domain = solver.domain;
@@ -213,6 +221,8 @@ onMounted(() => {
   const inViewerMode = params.get('viewer');
   // Documented entry point: run.edubeam.app/?panel=examples opens the gallery straight away.
   const panel = params.get('panel');
+  // The layers the link was shared with; without it, the viewer's own (see viewLayers).
+  const show = params.get('show');
 
   // Someone who has not been through the welcome dialog yet is new here: this version is what
   // they start with, not news, so the changelog waits for the next release.
@@ -222,6 +232,8 @@ onMounted(() => {
   if (lang && availableLocales.findIndex((l) => l.code === lang) >= 0) {
     appStore.locale = lang;
   }
+
+  if (show !== null) Object.assign(viewerStore, decodeLayers(show));
 
   if (inViewerMode) {
     appStore.inViewerMode = true;
@@ -254,7 +266,7 @@ onMounted(() => {
     return;
   }
 
-  if (lang || panel) {
+  if (lang || panel || show !== null) {
     const url = document.location.href;
     window.history.pushState({}, '', url.split('?')[0]);
   }
@@ -282,7 +294,6 @@ const clearMesh = (clearMaterials = false, clearCrossSects = false) => {
   solve();
 };
 
-/** Loads a project file over the current model; alerts and keeps the model if it is not one. */
 /** A project.json, or a session saved by the desktop EduBeam. A file that is neither changes nothing. */
 const loadProjectFile = (text: string) => {
   let project: unknown;
@@ -651,9 +662,36 @@ const app_commit = APP_COMMIT;
     <v-snackbar v-model="previousModelSaved" :timeout="10000" location="bottom">
       {{ $t('recentStructures.linkNotice') }}
       <template #actions>
-        <v-btn variant="text" color="primary" @click="openRecentStructures">
+        <v-btn variant="text" @click="openRecentStructures">
           {{ $t('recentStructures.show') }}
         </v-btn>
+        <v-btn
+          icon="mdi-close"
+          variant="text"
+          size="small"
+          :aria-label="$t('common.close')"
+          @click="previousModelSaved = false"
+        />
+      </template>
+    </v-snackbar>
+    <v-snackbar
+      :model-value="!!triedFeature"
+      :timeout="10000"
+      location="bottom"
+      @update:model-value="dismissTriedFeature"
+    >
+      {{ triedFeature && $t(`dialogs.changelog.tried.${triedFeature.id}`) }}
+      <template #actions>
+        <!-- In the notice's own light text: the primary colour is too dark to read on it -->
+        <v-btn variant="text" @click="undoTriedFeature">{{ $t('common.undo') }}</v-btn>
+        <v-btn variant="text" @click="openTriedSettings">{{ $t('common.settings') }}</v-btn>
+        <v-btn
+          icon="mdi-close"
+          variant="text"
+          size="small"
+          :aria-label="$t('common.close')"
+          @click="dismissTriedFeature"
+        />
       </template>
     </v-snackbar>
     <input ref="file" type="file" style="display: none" @change="openFile" />

@@ -83,6 +83,30 @@ export const useProjectStore = defineStore(
       selection2.dimensions = [];
     };
 
+    /**
+     * Drops whatever the selection names that the model no longer has. Clearing the model, a delete
+     * or an undo can take an item away while it is selected, and the panels that list the selection
+     * look each one up.
+     */
+    const pruneSelection2 = () => {
+      const { domain } = solver.value;
+      const loadCase = solver.value.loadCases[0];
+      const dimensionIds = new Set(dimensions.value.map((dim) => dim.id));
+
+      // The same array back when nothing went, so the panels listing the selection are not redrawn.
+      const keep = <T>(items: T[], exists: (item: T) => boolean) => {
+        const kept = items.filter(exists);
+        return kept.length === items.length ? items : kept;
+      };
+
+      selection2.nodes = keep(selection2.nodes, (label) => domain.nodes.has(label));
+      selection2.elements = keep(selection2.elements, (label) => domain.elements.has(label));
+      selection2.nodalLoads = keep(selection2.nodalLoads, (i) => i < (loadCase?.nodalLoadList.length ?? 0));
+      selection2.elementLoads = keep(selection2.elementLoads, (i) => i < (loadCase?.elementLoadList.length ?? 0));
+      selection2.prescribedBC = keep(selection2.prescribedBC, (i) => i < (loadCase?.prescribedBC.length ?? 0));
+      selection2.dimensions = keep(selection2.dimensions, (id) => dimensionIds.has(id));
+    };
+
     const isAnythingSelected2 = () => {
       return (
         selection2.nodes.length > 0 ||
@@ -347,6 +371,7 @@ export const useProjectStore = defineStore(
       selection2,
       clearSelection,
       clearSelection2,
+      pruneSelection2,
       deleteSelection2,
       selectAll2,
       isAnythingSelected2,

@@ -46,7 +46,8 @@
     "reverse_orientation": "치수 뒤집기",
     "undo": "실행 취소",
     "redo": "다시 실행",
-    "ok": "확인"
+    "ok": "확인",
+    "close": "닫기"
   },
   "nodes": {
     "addNode": "절점 추가",
@@ -194,7 +195,23 @@
     "result_label_orientation": "결과 레이블 방향",
     "result_label_orientation_axis": "다이어그램에 수직",
     "result_label_orientation_horizontal": "항상 수평",
-    "result_labels": "결과 레이블"
+    "result_labels": "결과 레이블",
+    "diagrams": {
+      "title": "단면력도",
+      "moment": "휨모멘트",
+      "tensionSide": "인장 측",
+      "compressionSide": "압축 측",
+      "normal": "양의 축력",
+      "shear": "양의 전단력",
+      "awayFromDashed": "반대쪽",
+      "dashedSide": "점선 쪽",
+      "fill": "채우기",
+      "fillSolid": "단색",
+      "fillHatch": "빗금",
+      "fillNone": "없음",
+      "degrees": "구간별 차수",
+      "dashedHint": "각 요소를 따라 그려진 점선은 하연을 나타냅니다."
+    }
   },
   "sideSettings": {
     "showDeformedShape": "변형 형상",
@@ -295,7 +312,11 @@
       "title": "새로운 기능",
       "description": "새로운 기능과 개선 사항, 그리고 준비 중인 기능을 미리 소개합니다.",
       "contributors": "이번 릴리스 기여자: {names}",
-      "comingSoon": "출시 예정"
+      "comingSoon": "출시 예정",
+      "tryIt": "사용해 보기",
+      "tried": {
+        "diagramStyles": "구간별 다항식 차수가 표시된 해칭 다이어그램이 켜졌습니다."
+      }
     },
     "polygonSection": {
       "title": "새 다각형 단면",
@@ -371,7 +392,9 @@
     "linkCopied": "링크를 클립보드에 복사했습니다",
     "copyFailed": "자동으로 복사하지 못했습니다. 키보드 단축키를 사용하세요.",
     "shortLink": "짧은 링크",
-    "shortLinkHint": "길이가 약 절반입니다. 이전 버전의 edubeam을 쓰는 사람은 앱을 업데이트해야 열 수 있습니다."
+    "shortLinkHint": "길이가 약 절반입니다. 이전 버전의 edubeam을 쓰는 사람은 앱을 업데이트해야 열 수 있습니다.",
+    "shareLayers": "내 화면 그대로 보기",
+    "shareLayersHint": "링크를 열면 현재 켜 둔 단면력도, 하중, 레이블이 그대로 표시됩니다."
   },
   "tour": {
     "menu": {

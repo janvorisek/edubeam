@@ -52,15 +52,21 @@
           readonly
         ></textarea>
         <v-switch
-          v-model="appStore.shortShareLinks"
-          :label="$t('sharing.shortLink')"
-          :hint="$t('sharing.shortLinkHint')"
-          persistent-hint
+          v-for="option in options"
+          :key="option.key"
+          v-model="appStore[option.key]"
           color="primary"
           density="compact"
-          inset
-          class="mt-3"
-        />
+          hide-details
+          class="share-option"
+        >
+          <template #label>
+            <span class="share-option__text">
+              <span>{{ $t(option.label) }}</span>
+              <span class="share-option__hint">{{ $t(option.hint) }}</span>
+            </span>
+          </template>
+        </v-switch>
       </v-card-text>
       <v-divider />
       <v-card-actions class="share-actions d-flex flex-wrap">
@@ -87,6 +93,8 @@
 </template>
 
 <script setup lang="ts">
+import { useViewerStore } from '@/store/viewer';
+import { encodeLayers } from '@/utils/viewLayers';
 import HelpTip from '../HelpTip.vue';
 import { computed, ref } from 'vue';
 import { closeModal } from 'jenesius-vue-modal';
@@ -99,6 +107,13 @@ import { deviceHasHover } from '@/utils/pointer';
 const open = ref(true);
 const appStore = useAppStore();
 const projectStore = useProjectStore();
+const viewerStore = useViewerStore();
+
+/** The link's options, each with what it does written under it. */
+const options = [
+  { key: 'shortShareLinks', label: 'sharing.shortLink', hint: 'sharing.shortLinkHint' },
+  { key: 'shareLayers', label: 'sharing.shareLayers', hint: 'sharing.shareLayersHint' },
+] as const;
 
 // The model as it was when the dialog opened; the switch only changes how it is written.
 const model = serializeModel(projectStore.solver, projectStore.dimensions);
@@ -108,6 +123,7 @@ const val = computed(() => {
   // Plain is the format every copy of the app reads, so it is also the fallback.
   const param = (appStore.shortShareLinks && toShareParam(model)) || model;
   modelURL.searchParams.set('model', param);
+  if (appStore.shareLayers) modelURL.searchParams.set('show', encodeLayers(viewerStore));
 
   return modelURL.toString();
 });
@@ -193,6 +209,40 @@ const shareViaSystem = async () => {
 
 .share-actions {
   gap: 8px;
+}
+
+/* The explanation sits under the option's name, in the label, rather than in Vuetify's tiny hint. */
+.share-option {
+  margin-top: 8px;
+  /* The switch's thumb overhangs its track; this lines it up with the field above. */
+  margin-inline-start: 6px;
+
+  .v-selection-control {
+    align-items: flex-start;
+  }
+
+  .v-label {
+    opacity: 1;
+  }
+}
+
+/*
+ * The first line's middle level with the switch's, which sits 20px down its control, and clear of
+ * the thumb when it is on.
+ */
+.share-option__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 2px;
+  margin-inline-start: 8px;
+  line-height: 24px;
+}
+
+.share-option__hint {
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: rgba(var(--v-theme-on-surface), 0.64);
 }
 
 .sr-only {

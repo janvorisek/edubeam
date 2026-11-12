@@ -3,12 +3,15 @@ import { defineStore } from 'pinia';
 import { reactive, ref } from 'vue';
 import type { ViewBox } from '@/utils/fitBounds';
 import { defaultGridStep } from '@/utils/grid';
+import { DEFAULT_DIAGRAM_STYLE, type DiagramStyle } from '@/utils/diagramStyle';
 import { useAppStore } from './app';
 
 export const useViewerStore = defineStore(
   'viewer',
   () => {
     const resultLabelMode = ref<'axis' | 'horizontal'>('axis');
+    /** Sides, fill and degree labels of the internal force diagrams. */
+    const diagramStyle = reactive<DiagramStyle>({ ...DEFAULT_DIAGRAM_STYLE });
     const showSupports = ref(true);
     const showNodeLabels = ref(true);
     const showElementLabels = ref(true);
@@ -50,6 +53,7 @@ export const useViewerStore = defineStore(
 
     const reset = () => {
       resultLabelMode.value = 'axis';
+      Object.assign(diagramStyle, DEFAULT_DIAGRAM_STYLE);
       showSupports.value = true;
       showNodeLabels.value = true;
       showElementLabels.value = true;
@@ -111,6 +115,7 @@ export const useViewerStore = defineStore(
       pickWindow,
       finishWindowPick,
       resultLabelMode,
+      diagramStyle,
       colors,
       showNodeLabels,
       showLoads,

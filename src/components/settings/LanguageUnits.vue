@@ -6,7 +6,7 @@
       <v-col cols="12" md="6">
         <h4 class="mb-1">{{ $t('settings.language') }}</h4>
 
-        <div class="mb-1">{{ $t('settings.language_description') }}</div>
+        <div class="mb-3">{{ $t('settings.language_description') }}</div>
 
         <v-select
           v-model="appStore.locale"
@@ -28,7 +28,7 @@
 
         <h4 class="mb-1 mt-3">{{ $t('settings.number_format') }}</h4>
 
-        <div class="mb-1">{{ $t('settings.number_format_description') }}</div>
+        <div class="mb-3">{{ $t('settings.number_format_description') }}</div>
 
         <v-select
           v-model="appStore.numberStyle"
@@ -47,7 +47,7 @@
       <v-col cols="12" md="6">
         <h4 class="mb-1">{{ $t('settings.units.units') }}</h4>
 
-        <div class="mb-1">{{ $t('settings.units_description') }}</div>
+        <div class="mb-3">{{ $t('settings.units_description') }}</div>
 
         <v-select
           v-model="unitSystemProxy"
@@ -57,7 +57,7 @@
           :label="$t('settings.units.system')"
         />
 
-        <v-row no-gutters>
+        <v-row dense class="unit-grid">
           <v-col cols="6">
             <v-select
               :model-value="appStore.units.Length"
@@ -234,3 +234,10 @@ const unitSystemProxy = computed({
   },
 });
 </script>
+
+<style scoped>
+/* Room between the rows for the labels set into the outlined fields' borders */
+.unit-grid > .v-col {
+  padding-block: 6px;
+}
+</style>

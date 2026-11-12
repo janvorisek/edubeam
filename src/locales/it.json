@@ -46,7 +46,8 @@
     "reverse_orientation": "Inverti quota",
     "undo": "Annulla",
     "redo": "Ripeti",
-    "ok": "OK"
+    "ok": "OK",
+    "close": "Chiudi"
   },
   "nodes": {
     "addNode": "Aggiungi nodo",
@@ -194,7 +195,23 @@
     "result_label_orientation": "Orientamento delle etichette dei risultati",
     "result_label_orientation_axis": "Perpendicolari al diagramma",
     "result_label_orientation_horizontal": "Sempre orizzontali",
-    "result_labels": "Etichette dei risultati"
+    "result_labels": "Etichette dei risultati",
+    "diagrams": {
+      "title": "Diagrammi delle forze interne",
+      "moment": "Momento flettente",
+      "tensionSide": "Lato teso",
+      "compressionSide": "Lato compresso",
+      "normal": "Sforzo normale positivo",
+      "shear": "Taglio positivo",
+      "awayFromDashed": "Lato opposto",
+      "dashedSide": "Lato tratteggiato",
+      "fill": "Riempimento",
+      "fillSolid": "Pieno",
+      "fillHatch": "Tratteggiato",
+      "fillNone": "Nessuno",
+      "degrees": "Grado di ogni tratto",
+      "dashedHint": "La linea tratteggiata lungo ogni elemento indica le sue fibre inferiori."
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Deformata",
@@ -295,7 +312,11 @@
       "title": "Novità",
       "description": "Nuove funzionalità, miglioramenti e anteprime di ciò a cui stiamo lavorando.",
       "contributors": "Hanno contribuito a questa versione: {names}",
-      "comingSoon": "Prossimamente"
+      "comingSoon": "Prossimamente",
+      "tryIt": "Prova",
+      "tried": {
+        "diagramStyles": "I diagrammi tratteggiati con il grado di ogni tratto sono attivi."
+      }
     },
     "polygonSection": {
       "title": "Nuova sezione poligonale",
@@ -371,7 +392,9 @@
     "linkCopied": "Link copiato negli appunti",
     "copyFailed": "Impossibile copiare automaticamente. Usa le scorciatoie da tastiera.",
     "shortLink": "Link più corto",
-    "shortLinkHint": "Lungo circa la metà. Chi usa una versione precedente di EduBeam deve aggiornare l'app prima di poterlo aprire."
+    "shortLinkHint": "Lungo circa la metà. Chi usa una versione precedente di EduBeam deve aggiornare l'app prima di poterlo aprire.",
+    "shareLayers": "Mostra ciò che vedo",
+    "shareLayersHint": "Il link si apre con i diagrammi, i carichi e le etichette che hai attivato."
   },
   "tour": {
     "menu": {

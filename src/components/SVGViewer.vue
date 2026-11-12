@@ -81,6 +81,7 @@ import { formatMeasureAsHTML } from '../SVGUtils';
 import { snapToGrid, type LengthDisplay } from '@/utils/grid';
 
 import Selection from './Selection.vue';
+import SVGElementHandle from './svg/ElementHandle.vue';
 
 import { useLayoutStore } from '@/store/layout';
 import { EventType, eventBus } from '../EventBus';
@@ -2987,14 +2988,11 @@ defineExpose({ centerContent, fitContent });
               :shear-force-multiplier="projectStore.shearForceScale * viewerStore.resultsScalePx_"
               :bending-moment-multiplier="projectStore.bendingMomentScale * viewerStore.resultsScalePx_"
               :result-label-mode="resolvedResultLabelMode"
+              :diagram-style="viewerStore.diagramStyle"
               :convert-force="appStore.convertForce"
               :convert-moment="appStore.convertMoment"
               :font-size="viewerStore.fontSize"
               :number-format="appStore.numberFormatter"
-              @elementmousemove="onElementHover($event, element)"
-              @elementresultsmousemove="onElementHover($event, element, false)"
-              @mouseleave="hideTooltip"
-              @elementpointerup="onElementClick($event, element)"
             />
           </g>
 
@@ -3018,12 +3016,25 @@ defineExpose({ centerContent, fitContent });
               :shear-force-multiplier="projectStore.shearForceScale * viewerStore.resultsScalePx_"
               :bending-moment-multiplier="projectStore.bendingMomentScale * viewerStore.resultsScalePx_"
               :result-label-mode="resolvedResultLabelMode"
+              :diagram-style="viewerStore.diagramStyle"
               :convert-force="appStore.convertForce"
               :convert-moment="appStore.convertMoment"
               :font-size="viewerStore.fontSize"
               :number-format="appStore.numberFormatter"
-              @elementmousemove="onElementHover($event, element)"
               @elementresultsmousemove="onElementHover($event, element, false)"
+              @mouseleave="hideTooltip"
+              @elementpointerup="onElementClick($event, element)"
+            />
+          </g>
+
+          <!-- The elements' hit strokes, above every diagram so a member stays hoverable where the
+               diagram of another one is drawn over it; loads and nodes still come after. -->
+          <g class="element-handles">
+            <SVGElementHandle
+              v-for="(element, index) in projectStore.beams"
+              :key="`element-handle-${index}`"
+              :element="element"
+              @elementmousemove="onElementHover($event, element)"
               @mouseleave="hideTooltip"
               @elementpointerup="onElementClick($event, element)"
             />
@@ -3128,7 +3139,12 @@ defineExpose({ centerContent, fitContent });
             />
           </g>
           <!-- Currently hovered; drawn by its own component so the hover leaves the scene alone. -->
-          <HoveredElement :scale="scale" :is-zooming="isZooming" :result-label-mode="resolvedResultLabelMode" />
+          <HoveredElement
+            :scale="scale"
+            :is-zooming="isZooming"
+            :result-label-mode="resolvedResultLabelMode"
+            :diagram-style="viewerStore.diagramStyle"
+          />
           <!-- Paste preview -->
           <g v-if="appStore.mouseMode === MouseMode.PASTE_CLIPBOARD" ref="pasteLayer">
             <g>
@@ -3148,6 +3164,7 @@ defineExpose({ centerContent, fitContent });
                 :shear-force-multiplier="projectStore.shearForceScale * viewerStore.resultsScalePx_"
                 :bending-moment-multiplier="projectStore.bendingMomentScale * viewerStore.resultsScalePx_"
                 :result-label-mode="resolvedResultLabelMode"
+                :diagram-style="viewerStore.diagramStyle"
                 :convert-force="appStore.convertForce"
                 :convert-moment="appStore.convertMoment"
                 :font-size="viewerStore.fontSize"
@@ -3456,9 +3473,11 @@ defineExpose({ centerContent, fitContent });
       stroke: black;
       stroke-width: 2px;
 
+      // Narrower than the other handles: it lies above the diagrams, and the band it covers is
+      // taken from hovering the diagram along the member.
       &.handle {
         cursor: pointer;
-        stroke-width: 24px;
+        stroke-width: 16px;
         stroke: transparent;
       }
 
@@ -3467,7 +3486,9 @@ defineExpose({ centerContent, fitContent });
       }
     }
 
-    &:hover {
+    // The copy HoveredElement draws on top; the element's own group never has the pointer, as its
+    // hit stroke lies in a layer above the diagrams.
+    &.hovered {
       & polyline.drawable {
         stroke: black;
         stroke-width: 5px;
@@ -3506,6 +3527,13 @@ defineExpose({ centerContent, fitContent });
         fill-opacity: 0.2;
       }
     }
+    // Hatch lines across the member, drawn like the outline but lighter.
+    .normal path.hatch {
+      stroke: v-bind('viewerStore.colors.normalForce');
+      stroke-width: 1px;
+      stroke-opacity: 0.55;
+      fill: none;
+    }
 
     .shear polyline {
       stroke: v-bind('viewerStore.colors.shearForce');
@@ -3517,6 +3545,13 @@ defineExpose({ centerContent, fitContent });
         fill-opacity: 0.2;
       }
     }
+    // Hatch lines across the member, drawn like the outline but lighter.
+    .shear path.hatch {
+      stroke: v-bind('viewerStore.colors.shearForce');
+      stroke-width: 1px;
+      stroke-opacity: 0.55;
+      fill: none;
+    }
 
     .moment polyline {
       stroke: v-bind('viewerStore.colors.bendingMoment');
@@ -3527,6 +3562,13 @@ defineExpose({ centerContent, fitContent });
       &:hover {
         fill-opacity: 0.2;
       }
+    }
+    // Hatch lines across the member, drawn like the outline but lighter.
+    .moment path.hatch {
+      stroke: v-bind('viewerStore.colors.bendingMoment');
+      stroke-width: 1px;
+      stroke-opacity: 0.55;
+      fill: none;
     }
   }
 
@@ -3743,10 +3785,13 @@ defineExpose({ centerContent, fitContent });
   .svg-viewer :deep(*) {
     .element-load.load-1d polygon.handle,
     .element-load.load-1d path.handle,
-    .element.element-1d polyline.handle,
     .node polyline.handle,
     .nodal-load polyline.handle {
       stroke-width: 32px;
+    }
+
+    .element.element-1d polyline.handle {
+      stroke-width: 26px;
     }
 
     .nodal-load polyline.handle.moment {

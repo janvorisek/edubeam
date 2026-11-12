@@ -7,7 +7,7 @@
             <v-list-item
               :active="tab === 'lang'"
               value="lang"
-              class="py-3"
+              class="py-2"
               color="grey-lighten-4"
               link
               :title="$t('settings.language_and_locale')"
@@ -21,7 +21,7 @@
             <v-list-item
               :active="tab === 'appearance'"
               value="appearance"
-              class="py-3"
+              class="py-2"
               color="grey-lighten-4"
               link
               :title="$t('settings.viewer_settings')"
@@ -35,7 +35,7 @@
             <v-list-item
               :active="tab === 'controls'"
               value="controls"
-              class="py-3"
+              class="py-2"
               color="grey-lighten-4"
               link
               :title="$t('settings.controls_and_shortcuts')"
@@ -67,17 +67,19 @@
       <div class="settings-content-wrapper">
         <v-sheet class="settings-panel settings-content" rounded="lg">
           <div class="settings-content-scroll">
-            <v-window v-model="tab">
-              <v-window-item value="lang">
-                <LanguageUnits />
-              </v-window-item>
-              <v-window-item value="appearance">
-                <Appearance />
-              </v-window-item>
-              <v-window-item value="controls">
-                <KeyboardMouse />
-              </v-window-item>
-            </v-window>
+            <v-defaults-provider :defaults="compactFields">
+              <v-window v-model="tab">
+                <v-window-item value="lang">
+                  <LanguageUnits />
+                </v-window-item>
+                <v-window-item value="appearance">
+                  <Appearance />
+                </v-window-item>
+                <v-window-item value="controls">
+                  <KeyboardMouse />
+                </v-window-item>
+              </v-window>
+            </v-defaults-provider>
           </div>
         </v-sheet>
       </div>
@@ -106,6 +108,15 @@ const appStore = useAppStore();
 const viewerStore = useViewerStore();
 
 const tab = ref<SettingsTab>(props.tab ?? 'lang');
+
+/**
+ * Settings are read down a long page; Vuetify's default 56px fields made it twice as long. Outlined,
+ * as a compact filled field crams its label against the value.
+ */
+const compactFields = {
+  VSelect: { density: 'compact', variant: 'outlined' },
+  VTextField: { density: 'compact', variant: 'outlined' },
+} as const;
 
 const resetSettings = () => {
   appStore.resetSettings();
@@ -150,6 +161,12 @@ const resetSettings = () => {
   & .v-list-item {
     border-radius: 0;
   }
+
+  /* What each section holds, in full: a second line rather than an ellipsis */
+  & .v-list-item-subtitle {
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
 }
 
 .settings-content-wrapper {
@@ -177,7 +194,7 @@ const resetSettings = () => {
 .settings-content-scroll {
   flex: 1;
   overflow-y: auto;
-  padding: 24px;
+  padding: 16px 20px;
 }
 
 /*
@@ -225,9 +242,9 @@ const resetSettings = () => {
     display: none;
   }
 
-  .settings-sidebar-wrapper .v-list-item.py-3 {
-    padding-top: 8px !important;
-    padding-bottom: 8px !important;
+  .settings-sidebar-wrapper .v-list-item.py-2 {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
   }
 }
 </style>

@@ -371,7 +371,7 @@
     "linkCopied": "Lien copié dans le presse-papiers",
     "copyFailed": "Impossible de copier automatiquement. Veuillez utiliser vos raccourcis clavier.",
     "shortLink": "Lien plus court",
-    "shortLinkHint": "Environ deux fois plus court. Avec une ancienne version d'edubeam, il faut d'abord mettre l'application à jour pour l'ouvrir."
+    "shortLinkHint": "Environ deux fois plus court. Avec une ancienne version d'EduBeam, il faut d'abord mettre l'application à jour pour l'ouvrir."
   },
   "tour": {
     "menu": {
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "Bienvenue dans <span class=\"edubeam\">edubeam</span> ! 🚀",
+    "title": "Bienvenue dans <span class=\"edubeam\">EduBeam</span> ! 🚀",
     "description": "Modélisez poutres, portiques et treillis et voyez leurs efforts internes pendant que vous dessinez.",
     "start": "Comment voulez-vous commencer ?",
     "showAround": "Faire le tour",

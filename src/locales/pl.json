@@ -371,7 +371,7 @@
     "linkCopied": "Link skopiowany do schowka",
     "copyFailed": "Nie udało się skopiować automatycznie. Użyj skrótów klawiaturowych.",
     "shortLink": "Krótszy link",
-    "shortLinkHint": "Mniej więcej o połowę krótszy. Osoby ze starszą wersją edubeam muszą najpierw zaktualizować aplikację, aby go otworzyć."
+    "shortLinkHint": "Mniej więcej o połowę krótszy. Osoby ze starszą wersją EduBeam muszą najpierw zaktualizować aplikację, aby go otworzyć."
   },
   "tour": {
     "menu": {
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "Witamy w <span class=\"edubeam\">edubeam</span>! 🚀",
+    "title": "Witamy w <span class=\"edubeam\">EduBeam</span>! 🚀",
     "description": "Modeluj belki, ramy i kratownice i obserwuj siły wewnętrzne już podczas rysowania.",
     "start": "Jak chcesz zacząć?",
     "showAround": "Oprowadź mnie",

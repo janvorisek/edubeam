@@ -371,7 +371,7 @@
     "linkCopied": "Bağlantı panoya kopyalandı",
     "copyFailed": "Otomatik kopyalanamadı. Lütfen klavye kısayollarını kullanın.",
     "shortLink": "Daha kısa bağlantı",
-    "shortLinkHint": "Yaklaşık yarı uzunlukta. edubeam'in eski bir sürümünü kullananların açmadan önce uygulamayı güncellemesi gerekir."
+    "shortLinkHint": "Yaklaşık yarı uzunlukta. EduBeam'in eski bir sürümünü kullananların açmadan önce uygulamayı güncellemesi gerekir."
   },
   "tour": {
     "menu": {
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "<span class=\"edubeam\">edubeam</span>'e hoş geldiniz! 🚀",
+    "title": "<span class=\"edubeam\">EduBeam</span>'e hoş geldiniz! 🚀",
     "description": "Kiriş, çerçeve ve kafes sistemleri modelleyin, iç kuvvetleri çizerken görün.",
     "start": "Nasıl başlamak istersiniz?",
     "showAround": "Beni gezdir",

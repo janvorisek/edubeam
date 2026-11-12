@@ -488,7 +488,7 @@ const app_commit = APP_COMMIT;
     <v-app-bar v-if="!appStore.inViewerMode" clipped-lefs clipped-right app color="primary" density="compact">
       <v-app-bar-nav-icon id="appMenu" @click="appStore.drawerOpen = !appStore.drawerOpen"></v-app-bar-nav-icon>
 
-      <div class="app-title ml-3 d-flex align-center" style="user-select: none">edubeam</div>
+      <div class="app-title ml-3 d-flex align-center" style="user-select: none">EduBeam</div>
 
       <v-btn
         class="d-none d-sm-inline-flex ml-3"

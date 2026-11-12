@@ -371,7 +371,7 @@
     "linkCopied": "链接已复制到剪贴板",
     "copyFailed": "无法自动复制，请使用键盘快捷键。",
     "shortLink": "更短的链接",
-    "shortLinkHint": "长度约为一半。使用旧版 edubeam 的用户需要先更新应用才能打开。"
+    "shortLinkHint": "长度约为一半。使用旧版 EduBeam 的用户需要先更新应用才能打开。"
   },
   "tour": {
     "menu": {
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "欢迎使用 <span class=\"edubeam\">edubeam</span>！ 🚀",
+    "title": "欢迎使用 <span class=\"edubeam\">EduBeam</span>！ 🚀",
     "description": "建模梁、框架和桁架，绘制的同时即可看到内力。",
     "start": "您想如何开始？",
     "showAround": "带我看看",

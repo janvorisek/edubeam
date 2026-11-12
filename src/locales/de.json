@@ -371,7 +371,7 @@
     "linkCopied": "Link in die Zwischenablage kopiert",
     "copyFailed": "Automatisches Kopieren war nicht möglich. Bitte verwenden Sie Ihre Tastenkürzel.",
     "shortLink": "Kürzerer Link",
-    "shortLinkHint": "Etwa halb so lang. Wer eine ältere Version von edubeam nutzt, muss die App vor dem Öffnen aktualisieren."
+    "shortLinkHint": "Etwa halb so lang. Wer eine ältere Version von EduBeam nutzt, muss die App vor dem Öffnen aktualisieren."
   },
   "tour": {
     "menu": {
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "Willkommen bei <span class=\"edubeam\">edubeam</span>! 🚀",
+    "title": "Willkommen bei <span class=\"edubeam\">EduBeam</span>! 🚀",
     "description": "Modellieren Sie Balken, Rahmen und Fachwerke und sehen Sie die Schnittgrößen schon beim Zeichnen.",
     "start": "Wie möchten Sie beginnen?",
     "showAround": "Rundgang starten",

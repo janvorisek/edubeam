@@ -371,7 +371,7 @@
     "linkCopied": "Đã sao chép liên kết vào bộ nhớ tạm",
     "copyFailed": "Không thể tự động sao chép. Vui lòng dùng phím tắt.",
     "shortLink": "Liên kết ngắn hơn",
-    "shortLinkHint": "Ngắn bằng khoảng một nửa. Ai đang dùng phiên bản edubeam cũ hơn phải cập nhật ứng dụng thì mới mở được."
+    "shortLinkHint": "Ngắn bằng khoảng một nửa. Ai đang dùng phiên bản EduBeam cũ hơn phải cập nhật ứng dụng thì mới mở được."
   },
   "tour": {
     "menu": {
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "Chào mừng đến với <span class=\"edubeam\">edubeam</span>! 🚀",
+    "title": "Chào mừng đến với <span class=\"edubeam\">EduBeam</span>! 🚀",
     "description": "Mô hình hóa dầm, khung và dàn, và xem nội lực ngay khi bạn vẽ.",
     "start": "Bạn muốn bắt đầu thế nào?",
     "showAround": "Xem giới thiệu",

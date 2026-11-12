@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "<span class=\"edubeam\">edubeam</span>에 오신 것을 환영합니다! 🚀",
+    "title": "<span class=\"edubeam\">EduBeam</span>에 오신 것을 환영합니다! 🚀",
     "description": "보, 라멘, 트러스를 모델링하면 그리는 동안 부재력을 바로 볼 수 있습니다.",
     "start": "어떻게 시작할까요?",
     "showAround": "둘러보기",

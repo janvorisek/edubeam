@@ -371,7 +371,7 @@
     "linkCopied": "Link copiado para a área de transferência",
     "copyFailed": "Não foi possível copiar automaticamente. Use os atalhos de teclado.",
     "shortLink": "Link mais curto",
-    "shortLinkHint": "Cerca de metade do comprimento. Quem usa uma versão mais antiga do edubeam precisa atualizar o aplicativo antes de abri-lo."
+    "shortLinkHint": "Cerca de metade do comprimento. Quem usa uma versão mais antiga do EduBeam precisa atualizar o aplicativo antes de abri-lo."
   },
   "tour": {
     "menu": {
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "Bem-vindo ao <span class=\"edubeam\">edubeam</span>! 🚀",
+    "title": "Bem-vindo ao <span class=\"edubeam\">EduBeam</span>! 🚀",
     "description": "Modele vigas, pórticos e treliças e veja os esforços internos enquanto desenha.",
     "start": "Como você quer começar?",
     "showAround": "Fazer um tour",

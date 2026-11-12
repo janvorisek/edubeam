@@ -371,7 +371,7 @@
     "linkCopied": "リンクをクリップボードにコピーしました",
     "copyFailed": "自動でコピーできませんでした。キーボードショートカットを使ってください。",
     "shortLink": "短いリンク",
-    "shortLinkHint": "長さは約半分です。古いバージョンの edubeam を使っている人は、アプリを更新しないと開けません。"
+    "shortLinkHint": "長さは約半分です。古いバージョンの EduBeam を使っている人は、アプリを更新しないと開けません。"
   },
   "tour": {
     "menu": {
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "<span class=\"edubeam\">edubeam</span> へようこそ！ 🚀",
+    "title": "<span class=\"edubeam\">EduBeam</span> へようこそ！ 🚀",
     "description": "梁、ラーメン、トラスをモデル化して、描きながら断面力を確認できます。",
     "start": "どのように始めますか？",
     "showAround": "ツアーを見る",

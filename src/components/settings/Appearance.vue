@@ -1,22 +1,22 @@
 <template>
   <v-row class="viewer-settings">
     <v-col cols="12" md="6">
-      <h3 class="mb-3">{{ $t('settings.viewer_settings') }}</h3>
+      <h3 class="mb-1">{{ $t('settings.viewer_settings') }}</h3>
 
       <div class="vs-heading">{{ $t('settings.grid') }}</div>
       <div class="vs-group">
-        <div class="vs-row">
+        <label class="vs-row vs-row--switch">
           <span>{{ $t('settings.show_grid') }}</span>
-          <v-switch v-model="viewerStore.showGrid" color="primary" density="compact" hide-details inset />
-        </div>
-        <div class="vs-row">
+          <v-switch v-model="viewerStore.showGrid" color="primary" density="compact" hide-details />
+        </label>
+        <label class="vs-row vs-row--switch">
           <span>{{ $t('settings.snap_to_grid') }}</span>
-          <v-switch v-model="viewerStore.snapToGrid" color="primary" density="compact" hide-details inset />
-        </div>
-        <div class="vs-row">
+          <v-switch v-model="viewerStore.snapToGrid" color="primary" density="compact" hide-details />
+        </label>
+        <label class="vs-row vs-row--switch">
           <span>{{ $t('settings.show_crosshair') }}</span>
-          <v-switch v-model="viewerStore.showCrosshair" color="primary" density="compact" hide-details inset />
-        </div>
+          <v-switch v-model="viewerStore.showCrosshair" color="primary" density="compact" hide-details />
+        </label>
         <div class="vs-row">
           <span>{{ $t('settings.grid_snap_step') }}</span>
           <v-text-field
@@ -78,7 +78,7 @@
         v-model="viewerStore.resultLabelMode"
         class="vs-toggle"
         color="primary"
-        density="comfortable"
+        density="compact"
         variant="outlined"
         divided
         mandatory
@@ -87,6 +87,87 @@
         <v-btn value="horizontal">{{ $t('settings.result_label_orientation_horizontal') }}</v-btn>
       </v-btn-toggle>
 
+      <div class="vs-heading">{{ $t('settings.model_checks') }}</div>
+      <div class="vs-group">
+        <label class="vs-row vs-row--switch">
+          <span>{{ $t('settings.show_mechanisms') }}</span>
+          <v-switch v-model="viewerStore.showMechanisms" color="primary" density="compact" hide-details />
+        </label>
+        <label class="vs-row vs-row--switch">
+          <span>{{ $t('settings.animate_mechanisms') }}</span>
+          <v-switch
+            v-model="viewerStore.animateMechanisms"
+            :disabled="!viewerStore.showMechanisms"
+            color="primary"
+            density="compact"
+            hide-details
+          />
+        </label>
+      </div>
+    </v-col>
+
+    <v-col cols="12" md="6">
+      <div class="vs-heading mt-md-8">{{ $t('settings.viewer_preview') }}</div>
+      <div class="vs-preview">
+        <SVGElementViewer
+          v-if="_created"
+          id="settings-appearance"
+          class="overflow-hidden"
+          :solver="solver"
+          :nodes="[solver.domain.getNode('a'), solver.domain.getNode('b')]"
+          :elements="[solver.domain.getElement(1)]"
+          :convert-force="appStore.convertForce"
+          :convert-force-distance="appStore.convertForceDistance"
+          :convert-moment="appStore.convertMoment"
+          :convert-length="appStore.convertLength"
+          :convert-displacement="appStore.convertDisplacement"
+          :number-format="appStore.numberFormatter"
+          :nodal-loads="solver.loadCases[0].nodalLoadList"
+          :element-loads="solver.loadCases[0].elementLoadList"
+          :show-deformed-shape="showQuantity === 'deformedShape'"
+          :show-reactions="showQuantity === 'reactions'"
+          :show-loads="true"
+          :show-supports="true"
+          :show-moments="showQuantity === 'bendingMoment'"
+          :show-normal-force="showQuantity === 'normalForce'"
+          :show-shear-force="showQuantity === 'shearForce'"
+          :padding="PREVIEW_PADDING"
+          :mobile-padding="PREVIEW_PADDING"
+          :fit-reserve-px="previewReserve"
+          :results-scale-px="viewerStore.resultsScalePx_"
+          :colors="viewerStore.colors"
+          :support-size="viewerStore.supportSize"
+          :font-size="viewerStore.fontSize"
+          :result-label-mode="viewerStore.resultLabelMode"
+          :diagram-style="viewerStore.diagramStyle"
+        />
+      </div>
+
+      <v-btn-toggle
+        v-model="showQuantity"
+        class="vs-quantities"
+        color="primary"
+        variant="outlined"
+        density="compact"
+        rounded="sm"
+        divided
+        mandatory
+      >
+        <!-- Named as the viewer's own layer switches name them -->
+        <v-btn value="deformedShape">{{ $t('sideSettings.showDeformedShape') }}</v-btn>
+        <v-btn value="normalForce">N&nbsp;(x)</v-btn>
+        <v-btn value="shearForce"
+          >V<sub>{{ appStore.axes.v }}</sub
+          >&nbsp;(x)</v-btn
+        >
+        <v-btn value="bendingMoment"
+          >M<sub>{{ appStore.axes.r }}</sub
+          >&nbsp;(x)</v-btn
+        >
+        <v-btn value="reactions">{{ $t('sideSettings.showReactions') }}</v-btn>
+      </v-btn-toggle>
+
+      <!-- Under the preview, which each of these switches to the diagram it is about. -->
       <div class="vs-heading">{{ $t('settings.diagrams.title') }}</div>
       <div class="vs-group">
         <div class="vs-row">
@@ -116,7 +197,7 @@
         <div class="vs-row">
           <span>{{ $t('settings.diagrams.normal') }}</span>
           <v-select
-            v-model="viewerStore.diagramStyle.normalOnDashedSide"
+            v-model="normalOnDashedSide"
             class="vs-select"
             :items="dashedSides"
             :aria-label="$t('settings.diagrams.normal')"
@@ -137,74 +218,12 @@
             hide-details
           />
         </div>
-        <div class="vs-row">
+        <label class="vs-row vs-row--switch">
           <span>{{ $t('settings.diagrams.degrees') }}</span>
-          <v-switch v-model="showDegrees" color="primary" density="compact" hide-details inset />
-        </div>
+          <v-switch v-model="showDegrees" color="primary" density="compact" hide-details />
+        </label>
       </div>
       <div class="vs-note">{{ $t('settings.diagrams.dashedHint') }}</div>
-
-      <div class="vs-heading">{{ $t('settings.model_checks') }}</div>
-      <div class="vs-group">
-        <div class="vs-row">
-          <span>{{ $t('settings.show_mechanisms') }}</span>
-          <v-switch v-model="viewerStore.showMechanisms" color="primary" density="compact" hide-details inset />
-        </div>
-        <div class="vs-row">
-          <span>{{ $t('settings.animate_mechanisms') }}</span>
-          <v-switch
-            v-model="viewerStore.animateMechanisms"
-            :disabled="!viewerStore.showMechanisms"
-            color="primary"
-            density="compact"
-            hide-details
-            inset
-          />
-        </div>
-      </div>
-    </v-col>
-
-    <v-col cols="12" md="6">
-      <div class="vs-heading mt-md-12">{{ $t('settings.viewer_preview') }}</div>
-      <div class="vs-preview">
-        <SVGElementViewer
-          v-if="_created"
-          id="settings-appearance"
-          class="overflow-hidden"
-          :solver="solver"
-          :nodes="[solver.domain.getNode('a'), solver.domain.getNode('b')]"
-          :elements="[solver.domain.getElement(1)]"
-          :convert-force="appStore.convertForce"
-          :convert-force-distance="appStore.convertForceDistance"
-          :convert-moment="appStore.convertMoment"
-          :convert-length="appStore.convertLength"
-          :convert-displacement="appStore.convertDisplacement"
-          :number-format="appStore.numberFormatter"
-          :nodal-loads="solver.loadCases[0].nodalLoadList"
-          :element-loads="solver.loadCases[0].elementLoadList"
-          :show-deformed-shape="showQuantity === 'deformedShape'"
-          :show-reactions="showQuantity === 'reactions'"
-          :show-loads="true"
-          :show-supports="true"
-          :show-moments="showQuantity === 'bendingMoment'"
-          :show-shear-force="showQuantity === 'shearForce'"
-          :padding="PREVIEW_PADDING"
-          :mobile-padding="PREVIEW_PADDING"
-          :fit-reserve-px="previewReserve"
-          :results-scale-px="viewerStore.resultsScalePx_"
-          :colors="viewerStore.colors"
-          :support-size="viewerStore.supportSize"
-          :font-size="viewerStore.fontSize"
-          :result-label-mode="viewerStore.resultLabelMode"
-          :diagram-style="viewerStore.diagramStyle"
-        />
-      </div>
-
-      <v-chip-group v-model="showQuantity" class="vs-quantities" column mandatory selected-class="text-primary">
-        <v-chip v-for="q in previewQuantities" :key="q" :value="q" size="small" variant="outlined">
-          {{ $t(`common.${q}`) }}
-        </v-chip>
-      </v-chip-group>
 
       <div class="vs-heading">{{ $t('settings.colors.colors') }}</div>
       <div class="vs-colors">
@@ -259,16 +278,11 @@ const commitGridStep = () => {
   viewerStore.gridStep = appStore.convertInverseLength(step);
 };
 
-// No normal force: a simply supported beam under vertical load carries none
-type PreviewQuantity = 'deformedShape' | 'shearForce' | 'bendingMoment' | 'reactions';
+type PreviewQuantity = 'deformedShape' | 'normalForce' | 'shearForce' | 'bendingMoment' | 'reactions';
 
-const previewQuantities: PreviewQuantity[] = ['deformedShape', 'shearForce', 'bendingMoment', 'reactions'];
 const showQuantity = ref<PreviewQuantity>('deformedShape');
 
-/**
- * The diagram settings. Changing one shows the diagram it is about in the preview, as picking a
- * colour does; the preview beam carries no normal force, so that one has nothing to show.
- */
+/** The diagram settings. Changing one shows the diagram it is about in the preview, as picking a colour does. */
 const momentSides = computed(() => [
   { title: t('settings.diagrams.tensionSide'), value: true },
   { title: t('settings.diagrams.compressionSide'), value: false },
@@ -283,7 +297,9 @@ const fills = computed(() => [
   { title: t('settings.diagrams.fillNone'), value: 'none' },
 ]);
 
-const styleSetting = <K extends 'momentOnTensionSide' | 'shearOnDashedSide' | 'fill' | 'showDegrees'>(
+const styleSetting = <
+  K extends 'momentOnTensionSide' | 'shearOnDashedSide' | 'normalOnDashedSide' | 'fill' | 'showDegrees',
+>(
   key: K,
   preview: PreviewQuantity
 ) =>
@@ -297,6 +313,7 @@ const styleSetting = <K extends 'momentOnTensionSide' | 'shearOnDashedSide' | 'f
 
 const momentOnTensionSide = styleSetting('momentOnTensionSide', 'bendingMoment');
 const shearOnDashedSide = styleSetting('shearOnDashedSide', 'shearForce');
+const normalOnDashedSide = styleSetting('normalOnDashedSide', 'normalForce');
 const diagramFill = styleSetting('fill', 'bendingMoment') as Ref<DiagramFill>;
 const showDegrees = styleSetting('showDegrees', 'bendingMoment');
 
@@ -306,23 +323,27 @@ const colorKeys: { key: keyof typeof viewerStore.colors; preview?: PreviewQuanti
   { key: 'elements' },
   { key: 'loads' },
   { key: 'deformedShape', preview: 'deformedShape' },
-  { key: 'normalForce' },
+  { key: 'normalForce', preview: 'normalForce' },
   { key: 'shearForce', preview: 'shearForce' },
   { key: 'bendingMoment', preview: 'bendingMoment' },
   { key: 'reactions', preview: 'reactions' },
 ];
 
 /**
- * A simply supported beam in round numbers of the units in use, so its results are round too:
- * 4 m under 10 kN/m (M = 20 kNm, reactions 20 kN), or 12 ft under 1 kip/ft (M = 18 kip·ft,
- * reactions 6 kip). Labels are in the chosen units, as everywhere else.
+ * A simply supported beam rising 9 in 40 (so 41 along it) under a vertical load along it: inclined,
+ * it carries normal force too, so every diagram and every side setting has something to show, and
+ * gently enough that the diagrams stay inside the preview. In round numbers of the units in use, so
+ * its results are round too - 4 m across, 0.9 m up, under 10 kN/m: reactions 20.5 kN, M = 20.5 kNm,
+ * V = ±20 kN, N = ±4.5 kN; or 20 ft across, 4.5 ft up, under 2 kip/ft: reactions 20.5 kip,
+ * M = 102.5 kip·ft, V = ±20 kip, N = ±4.5 kip. Labels are in the chosen units, as everywhere else.
  */
-const buildPreview = (span: number, load: number) => {
+const buildPreview = (span: number, rise: number, load: number) => {
   const preview = new LinearStaticSolver();
   const domain = preview.domain;
 
+  // z points down, so rising to the right is a negative z
   domain.createNode('a', [0, 0, 0], [DofID.Dx, DofID.Dz]);
-  domain.createNode('b', [span, 0, 0], [DofID.Dz]);
+  domain.createNode('b', [span, 0, -rise], [DofID.Dz]);
 
   domain.createBeam2D(1, ['a', 'b'], 1, 1);
 
@@ -343,7 +364,8 @@ const buildPreview = (span: number, load: number) => {
     d: 4000,
   });
 
-  preview.loadCases[0].createBeamElementUniformEdgeLoad(1, [0, load], true);
+  // In global axes: vertical, as gravity, and so partly along the inclined member
+  preview.loadCases[0].createBeamElementUniformEdgeLoad(1, [0, load], false);
   preview.solve();
 
   return preview;
@@ -352,21 +374,27 @@ const buildPreview = (span: number, load: number) => {
 const FT = unitSize.length('ft');
 
 const previews: Record<PresetFamily, Ref<LinearStaticSolver>> = {
-  metric: ref(buildPreview(4, 10e3)),
-  us: ref(buildPreview(12 * FT, unitSize.force('kip') / FT)),
+  metric: ref(buildPreview(4, 0.9, 10e3)),
+  us: ref(buildPreview(20 * FT, 4.5 * FT, (2 * unitSize.force('kip')) / FT)),
 };
 
 const solver = computed(() => previews[presetFamily(appStore.units.Length)].value);
 
 /**
- * The fit only reserves the sides for the end labels, and an equal band above and below for the
- * supports, which keeps the beam in the middle of the preview. The diagrams are not measured, and
- * reserving their height as well would leave the beam no room and the fit nothing to settle on.
+ * The fit reserves the sides for the end labels, and an equal band above and below for what reaches
+ * past the inclined beam's ends: a diagram as tall as the results scale and its value label, or the
+ * supports. The band keeps the beam in the middle of the preview. It stops growing at 84px, or a large
+ * results scale would leave the beam no room at all; past that the diagrams may run over the edge.
  */
 const SUPPORT_BAND_PX = 40;
+const LABEL_PX = 30;
+const MAX_BAND_PX = 84;
 const PREVIEW_PADDING = 8;
 
-const previewReserve = { top: SUPPORT_BAND_PX, bottom: SUPPORT_BAND_PX, left: 48, right: 48 };
+const previewReserve = computed(() => {
+  const band = Math.min(MAX_BAND_PX, Math.max(SUPPORT_BAND_PX, viewerStore.resultsScalePx_ + LABEL_PX));
+  return { top: band, bottom: band, left: 48, right: 48 };
+});
 
 const _created = ref(false);
 onMounted(() => {
@@ -376,7 +404,7 @@ onMounted(() => {
 
 <style scoped>
 .vs-heading {
-  margin: 16px 0 6px;
+  margin: 12px 0 4px;
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -386,6 +414,8 @@ onMounted(() => {
 .vs-group {
   border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
   border-radius: 8px;
+  /* Keeps a hovered row's tint inside the rounded corners */
+  overflow: hidden;
 }
 
 .vs-row {
@@ -393,8 +423,20 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  min-height: 48px;
-  padding: 4px 8px 4px 14px;
+  min-height: 36px;
+  padding: 2px 6px 2px 12px;
+  font-size: 0.875rem;
+}
+
+/* Fingers need the room the mouse does not */
+@media (pointer: coarse) {
+  .vs-row {
+    min-height: 44px;
+  }
+
+  .vs-swatch {
+    min-height: 40px;
+  }
 }
 
 .vs-row + .vs-row {
@@ -403,15 +445,60 @@ onMounted(() => {
 
 .vs-row :deep(.v-switch) {
   flex: 0 0 auto;
+  /* The thumb overhangs the track; this ends it where the fields and buttons in the other rows end. */
+  margin-inline-end: 6px;
+}
+
+/* The whole row is the switch's label, so a click anywhere on it flips the switch. */
+.vs-row--switch {
+  cursor: pointer;
+}
+
+.vs-row--switch:hover {
+  background: rgba(var(--v-theme-on-surface), 0.04);
+}
+
+.vs-row--switch:has(.v-selection-control--disabled) {
+  cursor: default;
+  background: none;
+}
+
+.vs-row :deep(.v-switch .v-selection-control) {
+  min-height: 32px;
+}
+
+/*
+ * The fields in a row 32px tall rather than the 40px of Vuetify's compact density, with what they
+ * hold - a value and its unit, or a selection - centred in that height.
+ */
+.vs-row :deep(.v-field) {
+  font-size: 0.875rem;
+}
+
+.vs-row :deep(.v-field__field) {
+  align-items: center;
+}
+
+.vs-row :deep(.v-field__input) {
+  min-height: 32px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* The unit after a value, which Vuetify holds to 40px whatever the field's height */
+.vs-row :deep(.v-text-field__suffix) {
+  min-height: 32px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .vs-grid-step {
-  flex: 0 0 120px;
+  flex: 0 0 110px;
 }
 
 .vs-select {
-  flex: 0 1 220px;
-  min-width: 140px;
+  /* One width for all of them, however long the option names in a row are */
+  flex: 0 0 min(200px, 55%);
 }
 
 .vs-note {
@@ -429,8 +516,8 @@ onMounted(() => {
 .vs-toggle > .v-btn {
   flex: 1 1 0;
   height: auto;
-  min-height: 40px;
-  padding-block: 6px;
+  min-height: 32px;
+  padding-block: 4px;
   text-transform: none;
   letter-spacing: normal;
 }
@@ -440,8 +527,11 @@ onMounted(() => {
 }
 
 .vs-preview {
-  /* Room for the load arrows above and the diagrams below at the default sizes */
-  height: 220px;
+  /*
+   * Room for the load arrows, and for the diagrams at the default sizes: at the ends of the inclined
+   * beam they reach up from the higher end and down from the lower one.
+   */
+  height: 260px;
   border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
   border-radius: 8px;
   pointer-events: none;
@@ -451,22 +541,35 @@ onMounted(() => {
   height: 100%;
 }
 
-.vs-quantities :deep(.v-chip) {
-  text-transform: none;
+/* As tall as the other controls, with no more padding than the names need */
+.vs-quantities {
+  height: 32px;
+  margin-top: 6px;
 }
 
+.vs-quantities > .v-btn {
+  height: 100%;
+  min-width: 0;
+  padding-inline: 10px;
+  font-size: 0.8125rem;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* Each as wide as its name, so as many share a line as fit */
 .vs-colors {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 6px;
 }
 
 .vs-swatch {
   display: flex;
   align-items: center;
-  gap: 10px;
-  min-height: 40px;
-  padding: 6px 10px;
+  gap: 6px;
+  min-height: 28px;
+  padding: 2px 10px 2px 8px;
+  font-size: 0.8125rem;
   border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
   border-radius: 8px;
   text-align: left;
@@ -480,8 +583,8 @@ onMounted(() => {
 
 .vs-swatch__dot {
   flex: 0 0 auto;
-  width: 20px;
-  height: 20px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
 }

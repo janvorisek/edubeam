@@ -569,6 +569,7 @@
     "noMaterialsDefined": "No materials defined.",
     "noCrossSectionsDefined": "No cross sections defined.",
     "importFailed": "Could not import the file. Please check the file format.",
+    "sessionLoadCasesSkipped": "This EduBeam session has several load cases, but only one can be open at a time. Opened: {loaded}. Not opened: {skipped}.",
     "prescribedDisplacementExists": "Prescribed displacement already exists for this node. Please remove it first.",
     "addMaterialFirst": "Please add a material first.",
     "addCrossSectionFirst": "Please add a cross section first.",

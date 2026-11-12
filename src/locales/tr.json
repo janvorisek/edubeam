@@ -569,6 +569,7 @@
     "noMaterialsDefined": "Tanımlı malzeme yok.",
     "noCrossSectionsDefined": "Tanımlı kesit yok.",
     "importFailed": "Dosya içe aktarılamadı. Lütfen dosya biçimini kontrol edin.",
+    "sessionLoadCasesSkipped": "Bu EduBeam oturumunda birden fazla yükleme durumu var, ancak aynı anda yalnızca biri açılabilir. Açılan: {loaded}. Açılmayan: {skipped}.",
     "prescribedDisplacementExists": "Bu düğüm için zaten öngörülen bir yer değiştirme var. Lütfen önce onu kaldırın.",
     "addMaterialFirst": "Lütfen önce bir malzeme ekleyin.",
     "addCrossSectionFirst": "Lütfen önce bir kesit ekleyin.",

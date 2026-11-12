@@ -569,6 +569,7 @@
     "noMaterialsDefined": "ไม่มีการกำหนดวัสดุ",
     "noCrossSectionsDefined": "ไม่มีการกำหนดหน้าตัด",
     "importFailed": "ไม่สามารถนำเข้าไฟล์ได้ โปรดตรวจสอบรูปแบบไฟล์",
+    "sessionLoadCasesSkipped": "เซสชัน EduBeam นี้มีหลายกรณีแรงกระทำ แต่เปิดได้ครั้งละหนึ่งกรณีเท่านั้น เปิดแล้ว: {loaded} ไม่ได้เปิด: {skipped}",
     "prescribedDisplacementExists": "โหนดนี้มีการกระจัดที่กำหนดอยู่แล้ว โปรดลบออกก่อน",
     "addMaterialFirst": "โปรดเพิ่มวัสดุก่อน",
     "addCrossSectionFirst": "โปรดเพิ่มหน้าตัดก่อน",

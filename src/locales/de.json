@@ -569,6 +569,7 @@
     "noMaterialsDefined": "Keine Materialien definiert.",
     "noCrossSectionsDefined": "Keine Querschnitte definiert.",
     "importFailed": "Die Datei konnte nicht importiert werden. Bitte überprüfen Sie das Dateiformat.",
+    "sessionLoadCasesSkipped": "Diese EduBeam-Sitzung enthält mehrere Lastfälle, es kann aber nur einer geöffnet werden. Geöffnet: {loaded}. Nicht geöffnet: {skipped}.",
     "prescribedDisplacementExists": "Für diesen Knoten ist bereits eine Verschiebung vorgegeben. Bitte entfernen Sie diese zuerst.",
     "addMaterialFirst": "Bitte fügen Sie zuerst ein Material hinzu.",
     "addCrossSectionFirst": "Bitte fügen Sie zuerst einen Querschnitt hinzu.",

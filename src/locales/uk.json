@@ -569,6 +569,7 @@
     "noMaterialsDefined": "Матеріали не визначено.",
     "noCrossSectionsDefined": "Перерізи не визначено.",
     "importFailed": "Не вдалося імпортувати файл. Перевірте формат файлу.",
+    "sessionLoadCasesSkipped": "Цей сеанс EduBeam містить кілька випадків навантаження, але відкрити можна лише один. Відкрито: {loaded}. Не відкрито: {skipped}.",
     "prescribedDisplacementExists": "Для цього вузла вже задано переміщення. Спочатку видаліть його.",
     "addMaterialFirst": "Спочатку додайте матеріал.",
     "addCrossSectionFirst": "Спочатку додайте переріз.",

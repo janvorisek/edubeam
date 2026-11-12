@@ -569,6 +569,7 @@
     "noMaterialsDefined": "कोई सामग्री परिभाषित नहीं है।",
     "noCrossSectionsDefined": "कोई अनुप्रस्थ काट परिभाषित नहीं है।",
     "importFailed": "फ़ाइल आयात नहीं हो सकी। कृपया फ़ाइल का प्रारूप जाँचें।",
+    "sessionLoadCasesSkipped": "इस EduBeam सत्र में कई लोड केस हैं, लेकिन एक समय में केवल एक खोला जा सकता है। खोला गया: {loaded}। नहीं खोले गए: {skipped}।",
     "prescribedDisplacementExists": "इस नोड के लिए निर्धारित विस्थापन पहले से मौजूद है। कृपया पहले उसे हटाएँ।",
     "addMaterialFirst": "कृपया पहले एक सामग्री जोड़ें।",
     "addCrossSectionFirst": "कृपया पहले एक अनुप्रस्थ काट जोड़ें।",

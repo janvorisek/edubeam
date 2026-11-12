@@ -26,8 +26,6 @@ export { parseSerializedModel };
 export { smoothPath } from './smoothPath';
 export { loadType } from './loadType';
 
-export { loadXmlFile } from './loadXmlFile';
-
 export { formatScientificNumber, formatCompactNumber } from './formatScientificNumber';
 
 export { nodeLcsAngle, applyNodeLcsAngle } from './nodalLcs';

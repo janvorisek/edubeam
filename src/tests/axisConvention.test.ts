@@ -247,8 +247,8 @@ describe('axis letters', () => {
     'components/Results.vue',
     // Iy and Iz there are the section's own axes, whichever way the global ones point.
     'components/dialogs/PolygonSectionEditor.vue',
-    // Parses the old XML format, whose names are fixed.
-    'utils/loadXmlFile.ts',
+    // Reads the desktop EduBeam's sessions, whose names are fixed.
+    'utils/edubeamSession.ts',
   ];
   const hardcoded = /<sub>[yz]\d?<\/sub>|\blabel="[DFMRV][yz]\b|'[DFMRV][yz]'|>[DFMRV][yz]</;
 

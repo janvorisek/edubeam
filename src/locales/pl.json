@@ -569,6 +569,7 @@
     "noMaterialsDefined": "Nie zdefiniowano materiałów.",
     "noCrossSectionsDefined": "Nie zdefiniowano przekrojów.",
     "importFailed": "Nie udało się zaimportować pliku. Sprawdź format pliku.",
+    "sessionLoadCasesSkipped": "Ta sesja programu EduBeam ma kilka przypadków obciążenia, ale otworzyć można tylko jeden. Otwarty: {loaded}. Nieotwarte: {skipped}.",
     "prescribedDisplacementExists": "Dla tego węzła istnieje już zadane przemieszczenie. Najpierw je usuń.",
     "addMaterialFirst": "Najpierw dodaj materiał.",
     "addCrossSectionFirst": "Najpierw dodaj przekrój.",

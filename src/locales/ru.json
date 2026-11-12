@@ -569,6 +569,7 @@
     "noMaterialsDefined": "Материалы не определены.",
     "noCrossSectionsDefined": "Сечения не определены.",
     "importFailed": "Не удалось импортировать файл. Проверьте формат файла.",
+    "sessionLoadCasesSkipped": "Этот сеанс EduBeam содержит несколько случаев нагружения, но открыть можно только один. Открыт: {loaded}. Не открыты: {skipped}.",
     "prescribedDisplacementExists": "Для этого узла уже задано перемещение. Сначала удалите его.",
     "addMaterialFirst": "Сначала добавьте материал.",
     "addCrossSectionFirst": "Сначала добавьте сечение.",

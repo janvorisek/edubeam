@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<!--
+EduBeam session
+saved in version 3.2.0 on 2013-04-18 at 20h:37m:09s
+-->
+<session version="3.2.0">
+	<domain cName="Domain">
+		<materials>
+			<Material alpha="1.2e-05" d="1.0" domain="domain" e="30000000.0" label="Matroš 1"/>
+		</materials>
+		<crossSects>
+			<CrossSection a="0.162" domain="domain" dyz="1.0" h="0.54" iy="0.0039366" iz="1.0" label="1"/>
+		</crossSects>
+		<nodes>
+			<Node bcs="{'Y': False, 'x': False, 'z': True}" coords="[0.0, 0.0, 0.0]" domain="domain" label="1"/>
+			<Node bcs="{'Y': False, 'x': False, 'z': False}" coords="[3.8, 0.0, 0.0]" domain="domain" label="3"/>
+			<Node bcs="{'Y': False, 'x': False, 'z': False}" coords="[2.4, 0.0, 0.0]" domain="domain" label="2"/>
+			<Node bcs="{'Y': False, 'x': False, 'z': True}" coords="[7.8, 0.0, 3.0]" domain="domain" label="5"/>
+			<Node bcs="{'Y': False, 'x': False, 'z': False}" coords="[5.8, 0.0, 1.5]" domain="domain" label="4"/>
+			<Node bcs="{'Y': True, 'x': True, 'z': True}" coords="[2.4, 0.0, 3.0]" domain="domain" label="6"/>
+		</nodes>
+		<elements>
+			<Beam2d cs="1" domain="domain" hinges="[False, False]" label="1" mat="Matroš 1" nodes="['1', '2']"/>
+			<Beam2d cs="1" domain="domain" hinges="[False, False]" label="3" mat="Matroš 1" nodes="['3', '4']"/>
+			<Beam2d cs="1" domain="domain" hinges="[False, True]" label="2" mat="Matroš 1" nodes="['2', '3']"/>
+			<Beam2d cs="1" domain="domain" hinges="[False, True]" label="5" mat="Matroš 1" nodes="['6', '2']"/>
+			<Beam2d cs="1" domain="domain" hinges="[False, False]" label="4" mat="Matroš 1" nodes="['4', '5']"/>
+		</elements>
+		<loadCases>
+			<LoadCase domain="domain" label="Default_loadcase">
+				<NodalLoad label="1" loadCase="Default_loadcase" value="{'fx': -18.0, 'fz': 24.0, 'my': 0.0}" where="4"/>
+				<ElementLoad label="1" loadCase="Default_loadcase" value="{'fx': 0.0, 'dTc': 0.0, 'fz': 10.0, 'dTg': 0.0}" where="1"/>
+				<ElementLoad label="3" loadCase="Default_loadcase" value="{'fx': 0.0, 'dTc': 30.0, 'fz': 0.0, 'dTg': -20.0}" where="2"/>
+				<ElementLoad label="2" loadCase="Default_loadcase" value="{'fx': 0.0, 'dTc': 30.0, 'fz': 0.0, 'dTg': -20.0}" where="1"/>
+			</LoadCase>
+		</loadCases>
+	</domain>
+</session>

@@ -16,6 +16,7 @@ import Confirmation from './components/dialogs/Confirmation.vue';
 import ReloadPrompt from './components/ReloadPrompt.vue';
 import { buildStarterModel } from './utils/starterModel';
 import { fromShareParam } from './utils/serializeModel';
+import { isEduBeamSession, parseEduBeamSession } from './utils/edubeamSession';
 
 export default {
   name: 'App',
@@ -286,18 +287,42 @@ const clearMesh = (clearMaterials = false, clearCrossSects = false) => {
 };
 
 /** Loads a project file over the current model; alerts and keeps the model if it is not one. */
+/** A project.json, or a session saved by the desktop EduBeam. A file that is neither changes nothing. */
 const loadProjectFile = (text: string) => {
+  let project: unknown;
+  let skippedLoadCases: string[] = [];
+
   try {
-    const json = JSON.parse(text);
-    if (typeof json !== 'object' || json === null || typeof json.domain !== 'object') throw new Error('Not a project');
+    if (isEduBeamSession(text)) {
+      const session = parseEduBeamSession(text);
+      project = session.project;
+      skippedLoadCases = session.skippedLoadCases;
+    } else {
+      project = JSON.parse(text);
+    }
+
+    if (typeof project !== 'object' || project === null || !('domain' in project) || typeof project.domain !== 'object')
+      throw new Error('Not a project');
+
     replaceModel('file', () => {
       resetModel();
-      importJSON(json);
+      importJSON(project);
     });
     useProjectStore().clearSelection();
     solve();
   } catch (e) {
+    console.error(e);
     alert(t('warnings.importFailed'));
+    return;
+  }
+
+  if (skippedLoadCases.length > 0) {
+    alert(
+      t('warnings.sessionLoadCasesSkipped', {
+        loaded: useProjectStore().solver.loadCases[0].label,
+        skipped: skippedLoadCases.join(', '),
+      })
+    );
   }
 };
 

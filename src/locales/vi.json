@@ -569,6 +569,7 @@
     "noMaterialsDefined": "Chưa có vật liệu nào.",
     "noCrossSectionsDefined": "Chưa có tiết diện nào.",
     "importFailed": "Không thể nhập tệp. Vui lòng kiểm tra định dạng tệp.",
+    "sessionLoadCasesSkipped": "Phiên EduBeam này có nhiều trường hợp tải, nhưng chỉ mở được một. Đã mở: {loaded}. Không mở: {skipped}.",
     "prescribedDisplacementExists": "Nút này đã có chuyển vị cưỡng bức. Vui lòng xóa nó trước.",
     "addMaterialFirst": "Vui lòng thêm vật liệu trước.",
     "addCrossSectionFirst": "Vui lòng thêm tiết diện trước.",

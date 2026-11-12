@@ -569,6 +569,7 @@
     "noMaterialsDefined": "材料が定義されていません。",
     "noCrossSectionsDefined": "断面が定義されていません。",
     "importFailed": "ファイルをインポートできませんでした。ファイル形式を確認してください。",
+    "sessionLoadCasesSkipped": "この EduBeam セッションには複数の荷重ケースがありますが、開けるのは 1 つだけです。開いたケース：{loaded}。開かなかったケース：{skipped}。",
     "prescribedDisplacementExists": "この節点には既に強制変位が設定されています。先に削除してください。",
     "addMaterialFirst": "先に材料を追加してください。",
     "addCrossSectionFirst": "先に断面を追加してください。",

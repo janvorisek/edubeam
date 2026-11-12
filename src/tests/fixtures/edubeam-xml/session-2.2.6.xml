@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<!--
+EduBeam session
+saved in version 2.2.6
+-->
+<session version="2.2.6">
+	<domain cName="Domain">
+		<materials>
+			<Material alpha="1.2e-05" d="1.0" domain="domain" e="30000000.0" label="mat"/>
+		</materials>
+		<crossSects>
+			<CrossSection a="0.06" domain="domain" h="0.3" iy="0.00045" label="cs"/>
+		</crossSects>
+		<nodes>
+			<Node bcs="[True, True, False]" coords="(0.0, 0.0, 0.0)" domain="domain" label="1" pDspl="[0.0, 0.002, 0.0]"/>
+			<Node bcs="[False, False, False]" coords="(2.0, 0.0, 0.0)" domain="domain" label="2" pDspl="[0.0, 0.0, 0.0]"/>
+			<Node bcs="[False, True, False]" coords="(4.0, 0.0, 0.0)" domain="domain" label="3" pDspl="[0.0, 0.0, 0.0]"/>
+		</nodes>
+		<elements>
+			<Beam2d cs="cs" domain="domain" hinges="(False, False)" label="1" mat="mat" nodes="('1', '2')"/>
+			<Beam2d cs="cs" domain="domain" hinges="(False, False)" label="2" mat="mat" nodes="('2', '3')"/>
+		</elements>
+		<nodalLoads>
+			<NodalLoad label="F1" value="[0.0, 10.0, 0.0]" where="2"/>
+		</nodalLoads>
+		<elementLoads>
+			<DistributedLoad label="q1" value="[0.0, 5.0]" where="1"/>
+			<TemperatureLoad label="t1" value="[10.0, -5.0]" where="2"/>
+		</elementLoads>
+	</domain>
+</session>

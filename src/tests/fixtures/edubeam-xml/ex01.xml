@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<!--
+EduBeam session
+saved in version 3.2.0 on 2013-04-18 at 20h:36m:55s
+-->
+<session version="3.2.0">
+	<domain cName="Domain">
+		<materials>
+			<Material alpha="1.2e-05" d="1.0" domain="domain" e="30000000.0" label="DefaultMat šš"/>
+		</materials>
+		<crossSects>
+			<CrossSection a="0.06" domain="domain" dyz="1.0" h="0.3" iy="0.00045" iz="1.0" label="DefaultCS ěě"/>
+		</crossSects>
+		<nodes>
+			<Node bcs="{'Y': False, 'x': False, 'z': True}" coords="[-4.0, 0.0, -1.0]" domain="domain" label="1"/>
+			<Node bcs="{'Y': False, 'x': False, 'z': False}" coords="[2.0, 0.0, -1.0]" domain="domain" label="3"/>
+			<Node bcs="{'Y': False, 'x': False, 'z': False}" coords="[-1.0, 0.0, -1.0]" domain="domain" label="2"/>
+			<Node bcs="{'Y': True, 'x': True, 'z': True}" coords="[-2.0, 0.0, 7.0]" domain="domain" label="5"/>
+			<Node bcs="{'Y': False, 'x': True, 'z': True}" coords="[4.0, 0.0, -1.0]" domain="domain" label="4"/>
+		</nodes>
+		<elements>
+			<Beam2d cs="DefaultCS ěě" domain="domain" hinges="[False, False]" label="1" mat="DefaultMat šš" nodes="['1', '2']"/>
+			<Beam2d cs="DefaultCS ěě" domain="domain" hinges="[False, False]" label="3" mat="DefaultMat šš" nodes="['3', '4']"/>
+			<Beam2d cs="DefaultCS ěě" domain="domain" hinges="[False, False]" label="2" mat="DefaultMat šš" nodes="['2', '3']"/>
+		</elements>
+		<loadCases>
+			<LoadCase domain="domain" label="spojite">
+				<ElementLoad label="L_2" loadCase="spojite" value="{'fx': 0.0, 'dTc': 0.0, 'fz': 5.0, 'dTg': 0.0}" where="2"/>
+				<ElementLoad label="L_3" loadCase="spojite" value="{'fx': 0.0, 'dTc': 0.0, 'fz': 5.0, 'dTg': 0.0}" where="3"/>
+				<ElementLoad label="L_1" loadCase="spojite" value="{'fx': 0.0, 'dTc': 0.0, 'fz': 5.0, 'dTg': 0.0}" where="1"/>
+			</LoadCase>
+			<LoadCase domain="domain" label="Default_loadcase">
+				<NodalLoad label="1" loadCase="Default_loadcase" value="{'fx': 2.0, 'fz': 4.0, 'my': 0.0}" where="2"/>
+				<NodalLoad label="2" loadCase="Default_loadcase" value="{'fx': 0.0, 'fz': 0.0, 'my': 4.0}" where="3"/>
+				<NodalLoad label="F_3" loadCase="Default_loadcase" value="{'fx': 7.0, 'fz': 5.0, 'my': 0.0}" where="5"/>
+			</LoadCase>
+		</loadCases>
+	</domain>
+</session>

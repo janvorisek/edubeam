@@ -569,6 +569,7 @@
     "noMaterialsDefined": "No hay materiales definidos.",
     "noCrossSectionsDefined": "No hay secciones definidas.",
     "importFailed": "No se pudo importar el archivo. Compruebe el formato del archivo.",
+    "sessionLoadCasesSkipped": "Esta sesión de EduBeam tiene varios casos de carga, pero solo se puede abrir uno. Abierto: {loaded}. No abiertos: {skipped}.",
     "prescribedDisplacementExists": "Ya existe un desplazamiento impuesto en este nodo. Elimínelo primero.",
     "addMaterialFirst": "Añada primero un material.",
     "addCrossSectionFirst": "Añada primero una sección transversal.",

@@ -569,6 +569,7 @@
     "noMaterialsDefined": "Není definovaný žádný materiál",
     "noCrossSectionsDefined": "Není definovaný žádný průřez",
     "importFailed": "Soubor se nepodařilo importovat. Zkontrolujte prosím formát souboru.",
+    "sessionLoadCasesSkipped": "Tato relace programu EduBeam má několik zatěžovacích stavů, ale otevřít lze jen jeden. Otevřen: {loaded}. Neotevřeny: {skipped}.",
     "prescribedDisplacementExists": "Pro tento uzel již předepsané posunutí existuje. Nejprve jej prosím odstraňte.",
     "addMaterialFirst": "Nejprve prosím přidejte materiál.",
     "addCrossSectionFirst": "Nejprve prosím přidejte průřez.",

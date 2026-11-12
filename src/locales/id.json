@@ -569,6 +569,7 @@
     "noMaterialsDefined": "Belum ada material yang didefinisikan.",
     "noCrossSectionsDefined": "Belum ada penampang yang didefinisikan.",
     "importFailed": "File tidak dapat diimpor. Periksa format file.",
+    "sessionLoadCasesSkipped": "Sesi EduBeam ini memiliki beberapa kasus beban, tetapi hanya satu yang dapat dibuka. Dibuka: {loaded}. Tidak dibuka: {skipped}.",
     "prescribedDisplacementExists": "Perpindahan tumpuan sudah ada untuk joint ini. Hapus terlebih dahulu.",
     "addMaterialFirst": "Tambahkan material terlebih dahulu.",
     "addCrossSectionFirst": "Tambahkan penampang terlebih dahulu.",

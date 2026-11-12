@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="open" max-width="420" attach=".v-application">
-    <v-card>
+    <v-card @keydown="submitsForm($event) && addElementLoad()">
       <v-card-title class="d-flex align-center">
         <span>{{ $t('dialogs.addElementLoad.addNewElementLoad') }}</span>
         <HelpTip topic="elementLoads" class="ml-1" />
@@ -204,6 +204,7 @@
 </template>
 
 <script setup lang="ts">
+import { submitsForm } from '@/utils/keyboard';
 import HelpTip from '../HelpTip.vue';
 import { computed, ref, watch } from 'vue';
 import type { VForm } from 'vuetify/components';

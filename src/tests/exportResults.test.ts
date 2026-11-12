@@ -1,6 +1,13 @@
 import { describe, it, expect } from 'vitest';
 import { LinearStaticSolver, DofID } from 'ts-fem';
-import { buildElementResultRows, buildNodeResultRows, buildResultsCsv, type ResultUnits } from '@/utils/exportResults';
+import {
+  buildElementResultRows,
+  buildNodeResultRows,
+  buildResultsCsv,
+  resultScales,
+  withoutRoundOff,
+  type ResultUnits,
+} from '@/utils/exportResults';
 
 const SI: ResultUnits = {
   lengthLabel: 'm',
@@ -153,5 +160,49 @@ describe('exportResults', () => {
     expect(loose.slice(6)).toEqual([null, null, null]);
     // The supports that do carry the structure still report theirs.
     expect(rows.find((row) => row[0] === '1')[7]).toBeCloseTo(-1, 9);
+  });
+});
+
+/**
+ * A symmetric frame under a symmetric load does not sway: its midspan node moves straight down. The
+ * solver puts round-off there instead of zero, which the results read out as 8.6e-18 m.
+ */
+describe('round-off in the results', () => {
+  const symmetricFrame = () => {
+    const ls = new LinearStaticSolver();
+    const d = ls.domain;
+    d.createMaterial('m', { d: 7850, e: 210e9, g: 80e9, alpha: 12e-6 });
+    d.createCrossSection('cs', { a: 0.01, iy: 8e-5, h: 0.2, k: 1e32 });
+    d.createNode('A', [0, 0, 0], [DofID.Dx, DofID.Dz]);
+    d.createNode('B', [0, 0, -4], []);
+    d.createNode('C', [4, 0, -4], []);
+    d.createNode('D', [8, 0, -4], []);
+    d.createNode('E', [8, 0, 0], [DofID.Dx, DofID.Dz]);
+    d.createBeam2D('1', ['A', 'B'], 'm', 'cs');
+    d.createBeam2D('2', ['B', 'C'], 'm', 'cs', [false, true]);
+    d.createBeam2D('3', ['C', 'D'], 'm', 'cs');
+    d.createBeam2D('4', ['D', 'E'], 'm', 'cs');
+    ls.loadCases[0].createBeamElementUniformEdgeLoad('2', [0, 10e3], true);
+    ls.loadCases[0].createBeamElementUniformEdgeLoad('3', [0, 10e3], true);
+    ls.solve();
+    return ls;
+  };
+
+  it('reads a value twelve orders under its kind as zero, and leaves real ones alone', () => {
+    expect(withoutRoundOff(8.6e-18, 1e-2)).toBe(0);
+    expect(withoutRoundOff(-3e-15, 1e-2)).toBe(0);
+    expect(withoutRoundOff(1e-6, 1e-2)).toBe(1e-6);
+    expect(withoutRoundOff(5, 0)).toBe(5);
+  });
+
+  it('exports the midspan of a symmetric frame without sideways round-off', () => {
+    const ls = symmetricFrame();
+    const scales = resultScales(ls);
+    expect(scales.displacement).toBeGreaterThan(0);
+
+    const rows = buildNodeResultRows(ls, SI);
+    const midspan = rows.find((row) => row[0] === 'C')!;
+    expect(midspan[3]).toBe(0);
+    expect(Math.abs(midspan[4] as number)).toBeGreaterThan(0);
   });
 });

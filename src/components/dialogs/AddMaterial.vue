@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="open" max-width="420">
-    <v-card>
+    <v-card @keydown="submitsForm($event) && addMaterial()">
       <v-card-title class="d-flex align-center">
         <span>{{ $t('dialogs.addMaterial.addNewMaterial') }}</span>
         <HelpTip topic="materials" class="ml-1" />
@@ -96,6 +96,7 @@
 </template>
 
 <script setup lang="ts">
+import { submitsForm } from '@/utils/keyboard';
 import HelpTip from '../HelpTip.vue';
 import { ref } from 'vue';
 import { closeModal, openModal } from 'jenesius-vue-modal';

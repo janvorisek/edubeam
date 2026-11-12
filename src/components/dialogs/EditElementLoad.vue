@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="open" max-width="520" attach=".v-application">
-    <v-card>
+    <v-card @keydown="submitsForm($event) && editNodalLoad()">
       <v-card-title> {{ $t('dialogs.editElementLoad.editElementLoad') }} </v-card-title>
       <v-card-subtitle>{{ $t('loadType.' + loadType) }}</v-card-subtitle>
       <v-card-text>
@@ -195,6 +195,7 @@
 </template>
 
 <script setup lang="ts">
+import { submitsForm } from '@/utils/keyboard';
 import { computed, ref, watch } from 'vue';
 import { useProjectStore } from '@/store/project';
 import { closeModal } from 'jenesius-vue-modal';

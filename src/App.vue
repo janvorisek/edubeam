@@ -38,7 +38,7 @@ import Editor from '@/views/Editor.vue';
 import { useProjectStore } from './store/project';
 import { useAppStore } from './store/app';
 import { startFirstBeam } from './utils/startFirstBeam';
-import { hasShortcutModifier } from './utils/keyboard';
+import { fieldOwnsUndo, hasShortcutModifier } from './utils/keyboard';
 
 import { VOnboardingWrapper, VOnboardingStep, useVOnboarding } from 'v-onboarding';
 import 'v-onboarding/dist/style.css';
@@ -134,16 +134,12 @@ onMounted(() => {
       e.preventDefault();
     }
 
-    // Ctrl+Z (Cmd+Z on a Mac) undo
-    if (hasShortcutModifier(e) && !e.shiftKey && e.code === 'KeyZ') {
+    // Ctrl+Z (Cmd+Z on a Mac) undo, Ctrl+Shift+Z redo - of the model, unless the field the keys are
+    // pressed in takes back its own typing (see fieldOwnsUndo).
+    if (hasShortcutModifier(e) && e.code === 'KeyZ' && !fieldOwnsUndo(e.target)) {
       e.preventDefault();
-      undoModelChange();
-    }
-
-    // Ctrl+Shift+Z redo
-    if (hasShortcutModifier(e) && e.shiftKey && e.code === 'KeyZ') {
-      e.preventDefault();
-      redoModelChange();
+      if (e.shiftKey) redoModelChange();
+      else undoModelChange();
     }
 
     // Print: the browser's print of the page is meaningless here; the image export is
@@ -486,7 +482,11 @@ const app_commit = APP_COMMIT;
     </VOnboardingWrapper>
 
     <v-app-bar v-if="!appStore.inViewerMode" clipped-lefs clipped-right app color="primary" density="compact">
-      <v-app-bar-nav-icon id="appMenu" @click="appStore.drawerOpen = !appStore.drawerOpen"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        id="appMenu"
+        :aria-label="$t('tour.menu.title')"
+        @click="appStore.drawerOpen = !appStore.drawerOpen"
+      ></v-app-bar-nav-icon>
 
       <div class="app-title ml-3 d-flex align-center" style="user-select: none">EduBeam</div>
 
@@ -524,7 +524,14 @@ const app_commit = APP_COMMIT;
         <v-icon class="ml-1">mdi-open-in-new</v-icon>
       </v-btn>
 
-      <v-btn class="d-none d-sm-inline-flex" icon href="https://github.com/janvorisek/edubeam" target="_blank">
+      <v-btn
+        class="d-none d-sm-inline-flex"
+        icon
+        href="https://github.com/janvorisek/edubeam"
+        target="_blank"
+        title="GitHub"
+        aria-label="GitHub"
+      >
         <v-icon>mdi-github</v-icon>
       </v-btn>
     </v-app-bar>

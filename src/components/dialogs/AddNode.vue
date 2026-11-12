@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="open" max-width="420">
-    <v-card>
+    <v-card @keydown="submitsForm($event) && addNode()">
       <v-card-title class="d-flex align-center">
         <span>{{ $t('dialogs.addNode.addNewNode') }}</span>
         <HelpTip topic="nodes" class="ml-1" />
@@ -116,6 +116,7 @@
 </template>
 
 <script setup lang="ts">
+import { submitsForm } from '@/utils/keyboard';
 import HelpTip from '../HelpTip.vue';
 import { computed, ref } from 'vue';
 import { useProjectStore } from '../../store/project';
@@ -131,6 +132,8 @@ import {
   changeRefNumValue,
   executeModelMutationWithUndo,
   numberRules,
+  parseFloat2,
+  rangeRule,
   toggleSet,
 } from '../../utils';
 
@@ -145,18 +148,10 @@ const newNodeZ = ref('0');
 const nodalAngle = ref('0');
 const tmpNode = ref(new Node('tmp', undefined, [0, 0, 0]));
 
-const angleVal = computed(() => {
-  const val = parseFloat(nodalAngle.value);
-  return isNaN(val) ? 0 : val;
-});
+const angleVal = computed(() => parseFloat2(nodalAngle.value));
 
-const minMax = (v) => {
-  const val = parseFloat(v);
-  if (val < -180 || val > 180) {
-    return 'Enter value between -180 and 180.';
-  }
-  return true;
-};
+// A rotation, so within a half turn either way; in the same words as every other range.
+const minMax = rangeRule(-180, 180, '°');
 
 const addNode = () => {
   if (valid.value === false) return;
@@ -175,7 +170,7 @@ const addNode = () => {
   executeModelMutationWithUndo(() => {
     const node = domain.createNode(nid, [nx, 0.0, nz], [...tmpNode.value.bcs.values()]);
 
-    applyNodeLcsAngle(node, appStore.angle(parseFloat(nodalAngle.value)));
+    applyNodeLcsAngle(node, appStore.angle(parseFloat2(nodalAngle.value)));
 
     domain.nodes = new Map(domain.nodes);
   });

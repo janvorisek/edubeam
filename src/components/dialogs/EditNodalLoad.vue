@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="open" max-width="420">
-    <v-card>
+    <v-card @keydown="submitsForm($event) && editNodalLoad()">
       <v-card-title> {{ $t('dialogs.editNodalLoad.editNodalLoad') }} </v-card-title>
 
       <v-card-text>
@@ -90,6 +90,7 @@
 </template>
 
 <script setup lang="ts">
+import { submitsForm } from '@/utils/keyboard';
 import { onMounted, ref, computed } from 'vue';
 import { useProjectStore } from '../../store/project';
 import { DofID } from 'ts-fem';

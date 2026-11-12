@@ -71,7 +71,13 @@ async function openApp({
   firstVisit = false,
   url = '',
 }) {
-  const context = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 2 });
+  // A browser in the language being shot, as a first visit takes its language from there; the
+  // seeded settings set it for every other shot. Without it, every first-visit shot came out in English.
+  const context = await browser.newContext({
+    viewport: { width, height },
+    deviceScaleFactor: 2,
+    locale: lang === 'cn' ? 'zh-CN' : lang,
+  });
   context.setDefaultTimeout(5000);
   context.setDefaultNavigationTimeout(60000);
   const page = await context.newPage();

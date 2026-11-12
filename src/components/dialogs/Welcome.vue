@@ -1,7 +1,11 @@
 <template>
   <v-dialog v-model="open" max-width="760">
     <v-card>
-      <v-card-title><span v-html="$t('welcome.title')"></span></v-card-title>
+      <!-- The language comes first: everything below is read in it. -->
+      <v-card-title class="d-flex align-center flex-wrap ga-2">
+        <span class="mr-auto" v-html="$t('welcome.title')"></span>
+        <LanguageMenu />
+      </v-card-title>
 
       <v-card-text class="pb-2">
         <p class="mb-3">{{ $t('welcome.description') }}</p>
@@ -96,6 +100,7 @@ import { useAppStore } from '../../store/app';
 import { useViewerStore } from '../../store/viewer';
 import { startFirstBeam } from '@/utils/startFirstBeam';
 import AxisConventionPicker from '../settings/AxisConventionPicker.vue';
+import LanguageMenu from '../settings/LanguageMenu.vue';
 import { matchStarterModelToUnits } from '@/utils/matchStarterModel';
 import type { UnitSystem } from '@/utils/unitSystems';
 import { onRadioKeydown, radioTabIndex } from '@/utils/radioGroup';

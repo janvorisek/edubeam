@@ -46,7 +46,8 @@
     "reverse_orientation": "Inverter cota",
     "undo": "Desfazer",
     "redo": "Refazer",
-    "ok": "OK"
+    "ok": "OK",
+    "close": "Fechar"
   },
   "nodes": {
     "addNode": "Adicionar nó",
@@ -311,7 +312,11 @@
       "title": "O que há de novo?",
       "description": "Novos recursos, melhorias e prévias do que estamos desenvolvendo.",
       "contributors": "Contribuíram para esta versão: {names}",
-      "comingSoon": "Em breve"
+      "comingSoon": "Em breve",
+      "tryIt": "Experimentar",
+      "tried": {
+        "diagramStyles": "Os diagramas hachurados com o grau de cada trecho estão ativados."
+      }
     },
     "polygonSection": {
       "title": "Nova seção poligonal",

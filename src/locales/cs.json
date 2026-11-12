@@ -41,7 +41,8 @@
     "reverse_orientation": "Převrátit kótu",
     "undo": "Zpět",
     "redo": "Znovu",
-    "ok": "OK"
+    "ok": "OK",
+    "close": "Zavřít"
   },
   "tabs": {
     "nodes": "Uzly",
@@ -311,7 +312,11 @@
       "title": "Co je nového?",
       "description": "Novinky, vylepšení a ukázky toho, co chystáme dál.",
       "contributors": "Na této verzi se podíleli: {names}",
-      "comingSoon": "Připravujeme"
+      "comingSoon": "Připravujeme",
+      "tryIt": "Vyzkoušet",
+      "tried": {
+        "diagramStyles": "Šrafované průběhy se stupněm polynomu na úsecích jsou zapnuté."
+      }
     },
     "polygonSection": {
       "title": "Nový polygonální průřez",

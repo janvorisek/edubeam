@@ -46,7 +46,8 @@
     "reverse_orientation": "寸法線を反転",
     "undo": "元に戻す",
     "redo": "やり直し",
-    "ok": "OK"
+    "ok": "OK",
+    "close": "閉じる"
   },
   "nodes": {
     "addNode": "節点を追加",
@@ -311,7 +312,11 @@
       "title": "更新情報",
       "description": "新機能と改善点、開発中の機能をご紹介します。",
       "contributors": "このリリースの貢献者：{names}",
-      "comingSoon": "近日公開"
+      "comingSoon": "近日公開",
+      "tryIt": "試してみる",
+      "tried": {
+        "diagramStyles": "各区間の多項式の次数付きのハッチング図が有効になりました。"
+      }
     },
     "polygonSection": {
       "title": "新しい多角形断面",

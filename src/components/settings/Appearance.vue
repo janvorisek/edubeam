@@ -280,7 +280,8 @@ const commitGridStep = () => {
 
 type PreviewQuantity = 'deformedShape' | 'normalForce' | 'shearForce' | 'bendingMoment' | 'reactions';
 
-const showQuantity = ref<PreviewQuantity>('deformedShape');
+// The bending moment first: most of the settings here are about how it is drawn.
+const showQuantity = ref<PreviewQuantity>('bendingMoment');
 
 /** The diagram settings. Changing one shows the diagram it is about in the preview, as picking a colour does. */
 const momentSides = computed(() => [

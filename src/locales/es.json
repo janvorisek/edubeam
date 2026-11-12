@@ -46,7 +46,8 @@
     "reverse_orientation": "Invertir cota",
     "undo": "Deshacer",
     "redo": "Rehacer",
-    "ok": "Aceptar"
+    "ok": "Aceptar",
+    "close": "Cerrar"
   },
   "nodes": {
     "addNode": "Añadir nodo",
@@ -311,7 +312,11 @@
       "title": "¿Qué hay de nuevo?",
       "description": "Nuevas funciones, mejoras y un vistazo a lo que estamos preparando.",
       "contributors": "Han contribuido a esta versión: {names}",
-      "comingSoon": "Próximamente"
+      "comingSoon": "Próximamente",
+      "tryIt": "Probar",
+      "tried": {
+        "diagramStyles": "Los diagramas rayados con el grado de cada tramo están activados."
+      }
     },
     "polygonSection": {
       "title": "Nueva sección transversal poligonal",

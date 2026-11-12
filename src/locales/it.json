@@ -46,7 +46,8 @@
     "reverse_orientation": "Inverti quota",
     "undo": "Annulla",
     "redo": "Ripeti",
-    "ok": "OK"
+    "ok": "OK",
+    "close": "Chiudi"
   },
   "nodes": {
     "addNode": "Aggiungi nodo",
@@ -311,7 +312,11 @@
       "title": "Novità",
       "description": "Nuove funzionalità, miglioramenti e anteprime di ciò a cui stiamo lavorando.",
       "contributors": "Hanno contribuito a questa versione: {names}",
-      "comingSoon": "Prossimamente"
+      "comingSoon": "Prossimamente",
+      "tryIt": "Prova",
+      "tried": {
+        "diagramStyles": "I diagrammi tratteggiati con il grado di ogni tratto sono attivi."
+      }
     },
     "polygonSection": {
       "title": "Nuova sezione poligonale",

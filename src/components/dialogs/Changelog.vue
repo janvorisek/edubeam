@@ -36,6 +36,17 @@
                     release.version
                   }}</v-chip>
                   <span>{{ release.date }}</span>
+                  <v-btn
+                    v-if="release.tryIt"
+                    class="ml-3"
+                    color="primary"
+                    variant="tonal"
+                    size="x-small"
+                    prepend-icon="mdi-play-circle-outline"
+                    @click="tryIt(release.tryIt)"
+                  >
+                    {{ $t('dialogs.changelog.tryIt') }}
+                  </v-btn>
                 </div>
               </div>
               <v-chip v-if="release.tag" size="small" color="primary" variant="flat">{{ release.tag }}</v-chip>
@@ -150,6 +161,8 @@ import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import { closeModal } from 'jenesius-vue-modal';
 import { useI18n } from 'vue-i18n';
 import { useAppStore } from '@/store/app';
+import { useProjectStore } from '@/store/project';
+import { isTryItId, tryFeature, type TryItId } from '@/utils/tryIt';
 
 const open = ref(true);
 type MediaEntry = {
@@ -180,6 +193,8 @@ type ReleaseEntry = {
    * the base file whatever the language, and a locale never has to repeat them.
    */
   contributors?: ContributorEntry[];
+  /** A feature of the release the reader can switch on from here; see `utils/tryIt`. */
+  tryIt?: TryItId;
 };
 
 type UpcomingEntry = {
@@ -268,6 +283,8 @@ const cloneRelease = (entry: ReleaseEntry): ReleaseEntry => ({
   tag: entry.tag,
   media: entry.media ? entry.media.map(cloneMedia) : undefined,
   contributors: entry.contributors ? entry.contributors.map((person) => ({ ...person })) : undefined,
+  // A name this version does not know (from a newer file in the cache) shows no button rather than a broken one.
+  tryIt: isTryItId(entry.tryIt) ? entry.tryIt : undefined,
 });
 
 const cloneUpcoming = (entry: UpcomingEntry): UpcomingEntry => ({
@@ -317,6 +334,8 @@ const mergeChangelog = (base: ChangelogData, localized: ChangelogData | null): C
         override.media && override.media.length ? override.media.map(cloneMedia) : baseEntry.media?.map(cloneMedia),
       // Deliberately not overridable: one list of people, shared by every language.
       contributors: baseEntry.contributors?.map((person) => ({ ...person })),
+      // Nor is what a release lets the reader try; only its words translate.
+      tryIt: isTryItId(baseEntry.tryIt) ? baseEntry.tryIt : undefined,
     };
   });
 
@@ -387,6 +406,18 @@ const markSeen = () => {
 const closeAndTrack = () => {
   markSeen();
   closeModal();
+};
+
+/**
+ * Switches the feature on and shows it on the reader's own structure. With nothing drawn yet there
+ * is no structure to show it on, so the viewer settings open instead, where the preview beam does.
+ */
+const tryIt = (id: TryItId) => {
+  tryFeature(id);
+  closeAndTrack();
+
+  if (useProjectStore().beams.length === 0) appStore.openSettings('appearance');
+  else appStore.tab = 0;
 };
 
 onBeforeUnmount(() => {
@@ -469,6 +500,11 @@ onBeforeUnmount(() => {
 /* Opt-in per image (size: "large" in the JSON); everything else stays a thumbnail */
 .changelog-media-item--large {
   grid-column: 1 / -1;
+}
+
+/* Two to a row have the room to be shown larger than a row of three */
+.changelog-media-grid:has(> :nth-child(2):last-child) .changelog-media-img {
+  max-height: 240px;
 }
 
 .changelog-media-item--large .changelog-media-img {

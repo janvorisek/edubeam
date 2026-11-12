@@ -46,7 +46,8 @@
     "reverse_orientation": "Inverser la cote",
     "undo": "Annuler",
     "redo": "Rétablir",
-    "ok": "OK"
+    "ok": "OK",
+    "close": "Fermer"
   },
   "nodes": {
     "addNode": "Ajouter un nœud",
@@ -311,7 +312,11 @@
       "title": "Quoi de neuf ?",
       "description": "Nouvelles fonctionnalités, améliorations et aperçu de ce que nous préparons.",
       "contributors": "Ont contribué à cette version : {names}",
-      "comingSoon": "Bientôt disponible"
+      "comingSoon": "Bientôt disponible",
+      "tryIt": "Essayer",
+      "tried": {
+        "diagramStyles": "Les diagrammes hachurés avec le degré de chaque tronçon sont activés."
+      }
     },
     "polygonSection": {
       "title": "Nouvelle section polygonale",

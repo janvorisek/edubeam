@@ -46,7 +46,8 @@
     "reverse_orientation": "Ölçü çizgisini ters çevir",
     "undo": "Geri al",
     "redo": "Yinele",
-    "ok": "Tamam"
+    "ok": "Tamam",
+    "close": "Kapat"
   },
   "nodes": {
     "addNode": "Düğüm ekle",
@@ -311,7 +312,11 @@
       "title": "Yenilikler",
       "description": "Yeni özellikler, iyileştirmeler ve üzerinde çalıştıklarımıza ilk bakış.",
       "contributors": "Bu sürüme katkıda bulunanlar: {names}",
-      "comingSoon": "Yakında"
+      "comingSoon": "Yakında",
+      "tryIt": "Dene",
+      "tried": {
+        "diagramStyles": "Her bölümün polinom derecesiyle taralı diyagramlar açık."
+      }
     },
     "polygonSection": {
       "title": "Yeni çokgen kesit",

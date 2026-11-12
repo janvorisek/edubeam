@@ -46,7 +46,8 @@
     "reverse_orientation": "Bemaßung umkehren",
     "undo": "Rückgängig",
     "redo": "Wiederholen",
-    "ok": "OK"
+    "ok": "OK",
+    "close": "Schließen"
   },
   "nodes": {
     "addNode": "Knoten hinzufügen",
@@ -311,7 +312,11 @@
       "title": "Was gibt's Neues?",
       "description": "Neue Funktionen, Verbesserungen und Einblicke in das, woran wir gerade arbeiten.",
       "contributors": "Mitwirkende an dieser Version: {names}",
-      "comingSoon": "Demnächst"
+      "comingSoon": "Demnächst",
+      "tryIt": "Ausprobieren",
+      "tried": {
+        "diagramStyles": "Schraffierte Verläufe mit dem Polynomgrad je Abschnitt sind eingeschaltet."
+      }
     },
     "polygonSection": {
       "title": "Neuer polygonaler Querschnitt",

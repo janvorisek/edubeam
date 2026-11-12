@@ -46,7 +46,8 @@
     "reverse_orientation": "Flip dimension",
     "undo": "Undo",
     "redo": "Redo",
-    "ok": "OK"
+    "ok": "OK",
+    "close": "Close"
   },
   "nodes": {
     "addNode": "Add node",
@@ -311,7 +312,11 @@
       "title": "What's New?",
       "description": "New features, improvements, and sneak peeks of what we’re working on.",
       "contributors": "Contributors to this release: {names}",
-      "comingSoon": "Coming soon"
+      "comingSoon": "Coming soon",
+      "tryIt": "Try it",
+      "tried": {
+        "diagramStyles": "Hatched diagrams with the degree of each segment are on."
+      }
     },
     "polygonSection": {
       "title": "New polygonal cross section",

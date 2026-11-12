@@ -46,7 +46,8 @@
     "reverse_orientation": "치수 뒤집기",
     "undo": "실행 취소",
     "redo": "다시 실행",
-    "ok": "확인"
+    "ok": "확인",
+    "close": "닫기"
   },
   "nodes": {
     "addNode": "절점 추가",
@@ -311,7 +312,11 @@
       "title": "새로운 기능",
       "description": "새로운 기능과 개선 사항, 그리고 준비 중인 기능을 미리 소개합니다.",
       "contributors": "이번 릴리스 기여자: {names}",
-      "comingSoon": "출시 예정"
+      "comingSoon": "출시 예정",
+      "tryIt": "사용해 보기",
+      "tried": {
+        "diagramStyles": "구간별 다항식 차수가 표시된 해칭 다이어그램이 켜졌습니다."
+      }
     },
     "polygonSection": {
       "title": "새 다각형 단면",

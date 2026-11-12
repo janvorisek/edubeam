@@ -46,7 +46,8 @@
     "reverse_orientation": "Lật kích thước",
     "undo": "Hoàn tác",
     "redo": "Làm lại",
-    "ok": "OK"
+    "ok": "OK",
+    "close": "Đóng"
   },
   "nodes": {
     "addNode": "Thêm nút",
@@ -311,7 +312,11 @@
       "title": "Có gì mới?",
       "description": "Tính năng mới, cải tiến và những gì chúng tôi đang phát triển.",
       "contributors": "Những người đóng góp cho phiên bản này: {names}",
-      "comingSoon": "Sắp ra mắt"
+      "comingSoon": "Sắp ra mắt",
+      "tryIt": "Dùng thử",
+      "tried": {
+        "diagramStyles": "Đã bật biểu đồ gạch chéo kèm bậc đa thức của từng đoạn."
+      }
     },
     "polygonSection": {
       "title": "Tiết diện đa giác mới",

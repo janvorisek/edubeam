@@ -46,7 +46,8 @@
     "reverse_orientation": "Balik dimensi",
     "undo": "Urungkan",
     "redo": "Ulangi",
-    "ok": "OK"
+    "ok": "OK",
+    "close": "Tutup"
   },
   "nodes": {
     "addNode": "Tambah joint",
@@ -311,7 +312,11 @@
       "title": "Apa yang baru?",
       "description": "Fitur baru, perbaikan, dan bocoran hal yang sedang kami kerjakan.",
       "contributors": "Kontributor rilis ini: {names}",
-      "comingSoon": "Segera hadir"
+      "comingSoon": "Segera hadir",
+      "tryIt": "Coba",
+      "tried": {
+        "diagramStyles": "Diagram berarsir dengan derajat tiap segmen telah aktif."
+      }
     },
     "polygonSection": {
       "title": "Penampang poligon baru",

@@ -18,6 +18,7 @@ import { buildStarterModel } from './utils/starterModel';
 import { fromShareParam } from './utils/serializeModel';
 import { isEduBeamSession, parseEduBeamSession } from './utils/edubeamSession';
 import { decodeLayers } from './utils/viewLayers';
+import { dismissTriedFeature, triedFeature, undoTriedFeature } from './utils/tryIt';
 
 export default {
   name: 'App',
@@ -203,6 +204,12 @@ onMounted(() => {
 });
 
 const appStore = useAppStore();
+
+/** From the notice of a feature tried from the changelog: where it is set for good. */
+const openTriedSettings = () => {
+  dismissTriedFeature();
+  appStore.openSettings('appearance');
+};
 
 onMounted(() => {
   const solver = useProjectStore().solver;
@@ -655,9 +662,36 @@ const app_commit = APP_COMMIT;
     <v-snackbar v-model="previousModelSaved" :timeout="10000" location="bottom">
       {{ $t('recentStructures.linkNotice') }}
       <template #actions>
-        <v-btn variant="text" color="primary" @click="openRecentStructures">
+        <v-btn variant="text" @click="openRecentStructures">
           {{ $t('recentStructures.show') }}
         </v-btn>
+        <v-btn
+          icon="mdi-close"
+          variant="text"
+          size="small"
+          :aria-label="$t('common.close')"
+          @click="previousModelSaved = false"
+        />
+      </template>
+    </v-snackbar>
+    <v-snackbar
+      :model-value="!!triedFeature"
+      :timeout="10000"
+      location="bottom"
+      @update:model-value="dismissTriedFeature"
+    >
+      {{ triedFeature && $t(`dialogs.changelog.tried.${triedFeature.id}`) }}
+      <template #actions>
+        <!-- In the notice's own light text: the primary colour is too dark to read on it -->
+        <v-btn variant="text" @click="undoTriedFeature">{{ $t('common.undo') }}</v-btn>
+        <v-btn variant="text" @click="openTriedSettings">{{ $t('common.settings') }}</v-btn>
+        <v-btn
+          icon="mdi-close"
+          variant="text"
+          size="small"
+          :aria-label="$t('common.close')"
+          @click="dismissTriedFeature"
+        />
       </template>
     </v-snackbar>
     <input ref="file" type="file" style="display: none" @change="openFile" />

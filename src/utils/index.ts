@@ -79,6 +79,7 @@ const restoreProjectSnapshot = (snapshot: ProjectSnapshot) => {
   projectStore.selection2.elementLoads = [...snapshot.selection2.elementLoads];
   projectStore.selection2.prescribedBC = [...snapshot.selection2.prescribedBC];
   projectStore.selection2.dimensions = [...snapshot.selection2.dimensions];
+  projectStore.pruneSelection2();
 
   solve();
 };
@@ -99,6 +100,8 @@ export const executeModelMutationWithUndo = (mutate: () => void) => {
     modelMutationDepth--;
   }
 
+  // Before the snapshot, so a redo never brings back a selection of something deleted.
+  useProjectStore().pruneSelection2();
   const next = captureProjectSnapshot();
   if (prev.model === null || next.model === null || prev.model === next.model) {
     solve();
@@ -151,7 +154,11 @@ export const replaceModel = (reason: RecentStructureReason, replace: () => void)
   const before = captureProjectSnapshot();
 
   try {
-    executeModelMutationWithUndo(replace);
+    // A different model: the old one's labels would select unrelated items in it, or nothing at all.
+    executeModelMutationWithUndo(() => {
+      useProjectStore().clearSelection2();
+      replace();
+    });
   } catch (e) {
     if (before.model !== null) restoreProjectSnapshot(before);
     throw e;

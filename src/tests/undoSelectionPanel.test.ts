@@ -2,7 +2,14 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { LinearStaticSolver, DofID } from 'ts-fem';
 import { useProjectStore } from '@/store/project';
-import { executeModelMutationWithUndo, toggleSet, undoModelChange } from '@/utils';
+import {
+  executeModelMutationWithUndo,
+  redoModelChange,
+  replaceModel,
+  resetModel,
+  toggleSet,
+  undoModelChange,
+} from '@/utils';
 import { undoRedoManager } from '@/CommandManager';
 
 const openPanelOnNode = () => {
@@ -62,5 +69,61 @@ describe('the selection panel across undo', () => {
     undoModelChange();
 
     expect(projectStore.selection2.nodes).toEqual(['1']);
+  });
+});
+
+describe('the selection after the model changes under it', () => {
+  // The panel listing the selection looks each item up; one that is gone crashed it (EDUBEAM-APP-FP).
+  const selectBeam = () => {
+    setActivePinia(createPinia());
+    undoRedoManager.clearHistory();
+
+    const projectStore = useProjectStore();
+    const solver = new LinearStaticSolver();
+    const domain = solver.domain;
+    domain.createMaterial('m', { e: 210e9, g: 81e9, alpha: 1.2e-5, d: 7850 });
+    domain.createCrossSection('cs', { a: 1e-2, iy: 1e-5, h: 0.2, k: 1e32 });
+    domain.createNode('1', [0, 0, 0], [DofID.Dx, DofID.Dz]);
+    domain.createNode('2', [4, 0, 0], [DofID.Dz]);
+    domain.createBeam2D('1', ['1', '2'], 'm', 'cs');
+    projectStore.solver = solver;
+    projectStore.selection2.nodes = ['1', '2'];
+    projectStore.selection2.elements = ['1'];
+
+    return projectStore;
+  };
+
+  const exists = (projectStore: ReturnType<typeof useProjectStore>) => {
+    const { domain } = projectStore.solver;
+    return (
+      projectStore.selection2.nodes.every((label) => domain.nodes.has(label)) &&
+      projectStore.selection2.elements.every((label) => domain.elements.has(label))
+    );
+  };
+
+  it('lets go of everything when the model is cleared, also after undo and redo', () => {
+    const projectStore = selectBeam();
+
+    replaceModel('clear', () => resetModel());
+    expect(projectStore.selection2.elements).toEqual([]);
+    expect(projectStore.selection2.nodes).toEqual([]);
+
+    undoModelChange();
+    expect(projectStore.solver.domain.elements.size).toBe(1);
+    expect(projectStore.selection2.elements).toEqual(['1']);
+
+    redoModelChange();
+    expect(projectStore.solver.domain.elements.size).toBe(0);
+    expect(projectStore.selection2.elements).toEqual([]);
+  });
+
+  it('keeps only what is left after an edit removes part of it', () => {
+    const projectStore = selectBeam();
+
+    executeModelMutationWithUndo(() => projectStore.solver.domain.elements.delete('1'));
+
+    expect(projectStore.selection2.elements).toEqual([]);
+    expect(projectStore.selection2.nodes).toEqual(['1', '2']);
+    expect(exists(projectStore)).toBe(true);
   });
 });

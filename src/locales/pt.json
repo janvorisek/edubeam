@@ -194,7 +194,23 @@
     "result_label_orientation": "Orientação dos rótulos de resultados",
     "result_label_orientation_axis": "Perpendicular ao diagrama",
     "result_label_orientation_horizontal": "Sempre horizontais",
-    "result_labels": "Rótulos de resultados"
+    "result_labels": "Rótulos de resultados",
+    "diagrams": {
+      "title": "Diagramas de esforços internos",
+      "moment": "Momento fletor",
+      "tensionSide": "Lado tracionado",
+      "compressionSide": "Lado comprimido",
+      "normal": "Esforço normal positivo",
+      "shear": "Esforço cortante positivo",
+      "awayFromDashed": "Lado oposto",
+      "dashedSide": "Lado tracejado",
+      "fill": "Preenchimento",
+      "fillSolid": "Sólido",
+      "fillHatch": "Hachurado",
+      "fillNone": "Nenhum",
+      "degrees": "Grau de cada trecho",
+      "dashedHint": "A linha tracejada ao longo de cada elemento marca suas fibras inferiores."
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Forma deformada",

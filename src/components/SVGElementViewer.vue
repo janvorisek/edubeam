@@ -30,6 +30,7 @@ import SVGDimensioning from './svg/Dimensioning.vue';
 import { loadType } from '../utils/loadType';
 import { boundsFromPoints, type Padding, type ViewBox } from '@/utils/fitBounds';
 import type { DimensionRenderableNode } from '@/types/dimension';
+import { DEFAULT_DIAGRAM_STYLE, type DiagramStyle } from '@/utils/diagramStyle';
 
 const props = withDefaults(
   defineProps<{
@@ -92,6 +93,7 @@ const props = withDefaults(
     convertTemperature?: (value: number) => number;
     convertDisplacement?: (value: number) => number;
     resultLabelMode?: 'axis' | 'horizontal';
+    diagramStyle?: DiagramStyle;
     numberFormat?: Intl.NumberFormat;
     zoomEnabled?: boolean;
     fontSize?: number;
@@ -142,6 +144,7 @@ const props = withDefaults(
     convertTemperature: (v) => v,
     convertDisplacement: (v) => v,
     resultLabelMode: 'axis',
+    diagramStyle: () => ({ ...DEFAULT_DIAGRAM_STYLE }),
     numberFormat: () => new Intl.NumberFormat(),
     zoomEnabled: false,
     fontSize: 13,
@@ -437,6 +440,7 @@ defineExpose({ centerContent, fitContent, setView, update });
               :shear-force-multiplier="shearForceScale * props.resultsScalePx"
               :bending-moment-multiplier="bendingMomentScale * props.resultsScalePx"
               :result-label-mode="props.resultLabelMode"
+              :diagram-style="props.diagramStyle"
               :convert-force="props.convertForce"
               :convert-moment="props.convertMoment"
               :font-size="props.fontSize"
@@ -463,6 +467,7 @@ defineExpose({ centerContent, fitContent, setView, update });
               :shear-force-multiplier="shearForceScale * props.resultsScalePx"
               :bending-moment-multiplier="bendingMomentScale * props.resultsScalePx"
               :result-label-mode="props.resultLabelMode"
+              :diagram-style="props.diagramStyle"
               :convert-force="props.convertForce"
               :convert-moment="props.convertMoment"
               :font-size="props.fontSize"
@@ -645,6 +650,13 @@ defineExpose({ centerContent, fitContent, setView, update });
         fill-opacity: 0.2;
       }
     }
+    // Hatch lines across the member, drawn like the outline but lighter.
+    .normal path.hatch {
+      stroke: v-bind('colors.normalForce');
+      stroke-width: 1px;
+      stroke-opacity: 0.55;
+      fill: none;
+    }
     .shear polyline {
       stroke: v-bind('colors.shearForce');
       stroke-width: 1px;
@@ -654,6 +666,13 @@ defineExpose({ centerContent, fitContent, setView, update });
         fill-opacity: 0.2;
       }
     }
+    // Hatch lines across the member, drawn like the outline but lighter.
+    .shear path.hatch {
+      stroke: v-bind('colors.shearForce');
+      stroke-width: 1px;
+      stroke-opacity: 0.55;
+      fill: none;
+    }
     .moment polyline {
       stroke: v-bind('colors.bendingMoment');
       stroke-width: 1px;
@@ -662,6 +681,13 @@ defineExpose({ centerContent, fitContent, setView, update });
       &:hover {
         fill-opacity: 0.2;
       }
+    }
+    // Hatch lines across the member, drawn like the outline but lighter.
+    .moment path.hatch {
+      stroke: v-bind('colors.bendingMoment');
+      stroke-width: 1px;
+      stroke-opacity: 0.55;
+      fill: none;
     }
   }
 

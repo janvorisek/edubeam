@@ -194,7 +194,23 @@
     "result_label_orientation": "Orientación de las etiquetas de resultados",
     "result_label_orientation_axis": "Perpendicular al diagrama",
     "result_label_orientation_horizontal": "Siempre horizontales",
-    "result_labels": "Etiquetas de resultados"
+    "result_labels": "Etiquetas de resultados",
+    "diagrams": {
+      "title": "Diagramas de esfuerzos internos",
+      "moment": "Momento flector",
+      "tensionSide": "Lado traccionado",
+      "compressionSide": "Lado comprimido",
+      "normal": "Fuerza normal positiva",
+      "shear": "Fuerza cortante positiva",
+      "awayFromDashed": "Lado opuesto",
+      "dashedSide": "Lado discontinuo",
+      "fill": "Relleno",
+      "fillSolid": "Sólido",
+      "fillHatch": "Rayado",
+      "fillNone": "Ninguno",
+      "degrees": "Grado de cada tramo",
+      "dashedHint": "La línea discontinua a lo largo de cada elemento marca sus fibras inferiores."
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Forma deformada",

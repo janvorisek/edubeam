@@ -194,7 +194,23 @@
     "result_label_orientation": "结果标签方向",
     "result_label_orientation_axis": "垂直于图表",
     "result_label_orientation_horizontal": "始终水平",
-    "result_labels": "结果标签"
+    "result_labels": "结果标签",
+    "diagrams": {
+      "title": "内力图",
+      "moment": "弯矩",
+      "tensionSide": "受拉侧",
+      "compressionSide": "受压侧",
+      "normal": "正轴力",
+      "shear": "正剪力",
+      "awayFromDashed": "对侧",
+      "dashedSide": "虚线侧",
+      "fill": "填充",
+      "fillSolid": "实心",
+      "fillHatch": "阴影线",
+      "fillNone": "无",
+      "degrees": "各段次数",
+      "dashedHint": "沿每个单元的虚线标示其下缘纤维。"
+    }
   },
   "sideSettings": {
     "showDeformedShape": "变形图",

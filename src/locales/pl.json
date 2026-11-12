@@ -194,7 +194,23 @@
     "result_label_orientation": "Orientacja etykiet wyników",
     "result_label_orientation_axis": "Prostopadle do wykresu",
     "result_label_orientation_horizontal": "Zawsze poziomo",
-    "result_labels": "Etykiety wyników"
+    "result_labels": "Etykiety wyników",
+    "diagrams": {
+      "title": "Wykresy sił wewnętrznych",
+      "moment": "Moment zginający",
+      "tensionSide": "Po stronie rozciąganej",
+      "compressionSide": "Po stronie ściskanej",
+      "normal": "Dodatnia siła normalna",
+      "shear": "Dodatnia siła tnąca",
+      "awayFromDashed": "Strona przeciwna",
+      "dashedSide": "Strona przerywana",
+      "fill": "Wypełnienie",
+      "fillSolid": "Pełne",
+      "fillHatch": "Kreskowane",
+      "fillNone": "Brak",
+      "degrees": "Stopień wykresu w przedziałach",
+      "dashedHint": "Linia przerywana wzdłuż elementu oznacza jego dolne włókna."
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Kształt odkształcony",

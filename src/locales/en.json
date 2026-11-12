@@ -194,7 +194,23 @@
     "result_label_orientation": "Result label orientation",
     "result_label_orientation_axis": "Perpendicular to chart",
     "result_label_orientation_horizontal": "Always horizontal",
-    "result_labels": "Result labels"
+    "result_labels": "Result labels",
+    "diagrams": {
+      "title": "Internal force diagrams",
+      "moment": "Bending moment",
+      "tensionSide": "Tension side",
+      "compressionSide": "Compression side",
+      "normal": "Positive normal force",
+      "shear": "Positive shear force",
+      "awayFromDashed": "Opposite side",
+      "dashedSide": "Dashed side",
+      "fill": "Fill",
+      "fillSolid": "Solid",
+      "fillHatch": "Hatched",
+      "fillNone": "None",
+      "degrees": "Degree of each segment",
+      "dashedHint": "The dashed line along each element marks its bottom fibres."
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Deformed shape",

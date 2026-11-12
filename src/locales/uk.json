@@ -194,7 +194,23 @@
     "result_label_orientation": "Орієнтація підписів результатів",
     "result_label_orientation_axis": "Перпендикулярно до епюри",
     "result_label_orientation_horizontal": "Завжди горизонтально",
-    "result_labels": "Підписи результатів"
+    "result_labels": "Підписи результатів",
+    "diagrams": {
+      "title": "Епюри внутрішніх зусиль",
+      "moment": "Згинальний момент",
+      "tensionSide": "З боку розтягнутих волокон",
+      "compressionSide": "З боку стиснутих волокон",
+      "normal": "Додатна поздовжня сила",
+      "shear": "Додатна поперечна сила",
+      "awayFromDashed": "Протилежний бік",
+      "dashedSide": "Бік пунктиру",
+      "fill": "Заливка",
+      "fillSolid": "Суцільна",
+      "fillHatch": "Штрихування",
+      "fillNone": "Немає",
+      "degrees": "Степінь епюри на ділянках",
+      "dashedHint": "Пунктирна лінія вздовж елемента позначає його нижні волокна."
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Деформована форма",

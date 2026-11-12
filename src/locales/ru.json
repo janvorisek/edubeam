@@ -194,7 +194,23 @@
     "result_label_orientation": "Ориентация подписей результатов",
     "result_label_orientation_axis": "Перпендикулярно эпюре",
     "result_label_orientation_horizontal": "Всегда горизонтально",
-    "result_labels": "Подписи результатов"
+    "result_labels": "Подписи результатов",
+    "diagrams": {
+      "title": "Эпюры внутренних усилий",
+      "moment": "Изгибающий момент",
+      "tensionSide": "Со стороны растянутых волокон",
+      "compressionSide": "Со стороны сжатых волокон",
+      "normal": "Положительная продольная сила",
+      "shear": "Положительная поперечная сила",
+      "awayFromDashed": "Противоположная сторона",
+      "dashedSide": "Сторона пунктира",
+      "fill": "Заливка",
+      "fillSolid": "Сплошная",
+      "fillHatch": "Штриховка",
+      "fillNone": "Нет",
+      "degrees": "Степень эпюры на участках",
+      "dashedHint": "Пунктирная линия вдоль элемента отмечает его нижние волокна."
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Деформированная форма",

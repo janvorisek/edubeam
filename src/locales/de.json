@@ -194,7 +194,23 @@
     "result_label_orientation": "Ausrichtung der Ergebnisbeschriftungen",
     "result_label_orientation_axis": "Senkrecht zum Diagramm",
     "result_label_orientation_horizontal": "Immer horizontal",
-    "result_labels": "Ergebnisbeschriftungen"
+    "result_labels": "Ergebnisbeschriftungen",
+    "diagrams": {
+      "title": "Schnittgrößenverläufe",
+      "moment": "Biegemoment",
+      "tensionSide": "Zugseite",
+      "compressionSide": "Druckseite",
+      "normal": "Positive Normalkraft",
+      "shear": "Positive Querkraft",
+      "awayFromDashed": "Gegenseite",
+      "dashedSide": "Gestrichelte Seite",
+      "fill": "Füllung",
+      "fillSolid": "Flächig",
+      "fillHatch": "Schraffiert",
+      "fillNone": "Keine",
+      "degrees": "Polynomgrad je Abschnitt",
+      "dashedHint": "Die gestrichelte Linie entlang jedes Elements markiert dessen untere Fasern."
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Verformte Form",

@@ -2987,6 +2987,7 @@ defineExpose({ centerContent, fitContent });
               :shear-force-multiplier="projectStore.shearForceScale * viewerStore.resultsScalePx_"
               :bending-moment-multiplier="projectStore.bendingMomentScale * viewerStore.resultsScalePx_"
               :result-label-mode="resolvedResultLabelMode"
+              :diagram-style="viewerStore.diagramStyle"
               :convert-force="appStore.convertForce"
               :convert-moment="appStore.convertMoment"
               :font-size="viewerStore.fontSize"
@@ -3018,6 +3019,7 @@ defineExpose({ centerContent, fitContent });
               :shear-force-multiplier="projectStore.shearForceScale * viewerStore.resultsScalePx_"
               :bending-moment-multiplier="projectStore.bendingMomentScale * viewerStore.resultsScalePx_"
               :result-label-mode="resolvedResultLabelMode"
+              :diagram-style="viewerStore.diagramStyle"
               :convert-force="appStore.convertForce"
               :convert-moment="appStore.convertMoment"
               :font-size="viewerStore.fontSize"
@@ -3128,7 +3130,12 @@ defineExpose({ centerContent, fitContent });
             />
           </g>
           <!-- Currently hovered; drawn by its own component so the hover leaves the scene alone. -->
-          <HoveredElement :scale="scale" :is-zooming="isZooming" :result-label-mode="resolvedResultLabelMode" />
+          <HoveredElement
+            :scale="scale"
+            :is-zooming="isZooming"
+            :result-label-mode="resolvedResultLabelMode"
+            :diagram-style="viewerStore.diagramStyle"
+          />
           <!-- Paste preview -->
           <g v-if="appStore.mouseMode === MouseMode.PASTE_CLIPBOARD" ref="pasteLayer">
             <g>
@@ -3148,6 +3155,7 @@ defineExpose({ centerContent, fitContent });
                 :shear-force-multiplier="projectStore.shearForceScale * viewerStore.resultsScalePx_"
                 :bending-moment-multiplier="projectStore.bendingMomentScale * viewerStore.resultsScalePx_"
                 :result-label-mode="resolvedResultLabelMode"
+                :diagram-style="viewerStore.diagramStyle"
                 :convert-force="appStore.convertForce"
                 :convert-moment="appStore.convertMoment"
                 :font-size="viewerStore.fontSize"
@@ -3506,6 +3514,13 @@ defineExpose({ centerContent, fitContent });
         fill-opacity: 0.2;
       }
     }
+    // Hatch lines across the member, drawn like the outline but lighter.
+    .normal path.hatch {
+      stroke: v-bind('viewerStore.colors.normalForce');
+      stroke-width: 1px;
+      stroke-opacity: 0.55;
+      fill: none;
+    }
 
     .shear polyline {
       stroke: v-bind('viewerStore.colors.shearForce');
@@ -3517,6 +3532,13 @@ defineExpose({ centerContent, fitContent });
         fill-opacity: 0.2;
       }
     }
+    // Hatch lines across the member, drawn like the outline but lighter.
+    .shear path.hatch {
+      stroke: v-bind('viewerStore.colors.shearForce');
+      stroke-width: 1px;
+      stroke-opacity: 0.55;
+      fill: none;
+    }
 
     .moment polyline {
       stroke: v-bind('viewerStore.colors.bendingMoment');
@@ -3527,6 +3549,13 @@ defineExpose({ centerContent, fitContent });
       &:hover {
         fill-opacity: 0.2;
       }
+    }
+    // Hatch lines across the member, drawn like the outline but lighter.
+    .moment path.hatch {
+      stroke: v-bind('viewerStore.colors.bendingMoment');
+      stroke-width: 1px;
+      stroke-opacity: 0.55;
+      fill: none;
     }
   }
 

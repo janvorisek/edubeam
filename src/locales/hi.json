@@ -194,7 +194,23 @@
     "result_label_orientation": "परिणाम लेबल की दिशा",
     "result_label_orientation_axis": "आरेख के लंबवत",
     "result_label_orientation_horizontal": "हमेशा क्षैतिज",
-    "result_labels": "परिणाम लेबल"
+    "result_labels": "परिणाम लेबल",
+    "diagrams": {
+      "title": "आंतरिक बल आरेख",
+      "moment": "बंकन आघूर्ण",
+      "tensionSide": "तनाव की ओर",
+      "compressionSide": "संपीडन की ओर",
+      "normal": "धनात्मक अक्षीय बल",
+      "shear": "धनात्मक अपरूपण बल",
+      "awayFromDashed": "विपरीत ओर",
+      "dashedSide": "डैश रेखा की ओर",
+      "fill": "भराव",
+      "fillSolid": "ठोस",
+      "fillHatch": "हैच",
+      "fillNone": "कोई नहीं",
+      "degrees": "प्रत्येक खंड की घात",
+      "dashedHint": "प्रत्येक अवयव के साथ डैश रेखा उसके निचले तंतुओं को दर्शाती है।"
+    }
   },
   "sideSettings": {
     "showDeformedShape": "विरूपित आकार",

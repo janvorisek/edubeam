@@ -2,6 +2,14 @@
 import { smoothPath } from '../../utils/smoothPath';
 import { Node, LoadCase, Beam2D, BeamConcentratedLoad, BeamElementTrapezoidalEdgeLoad } from 'ts-fem';
 import { computed } from 'vue';
+import {
+  DEFAULT_DIAGRAM_STYLE,
+  HATCH_SPACING_PX,
+  hatchPositions,
+  polynomialDegree,
+  type DiagramSamples,
+  type DiagramStyle,
+} from '@/utils/diagramStyle';
 
 type ResultLabelMode = 'axis' | 'horizontal';
 type ResultLabelAnchor = 'start' | 'end' | 'middle';
@@ -29,6 +37,7 @@ const props = withDefaults(
     numberFormat?: Intl.NumberFormat;
     showGeometry?: boolean;
     showResults?: boolean;
+    diagramStyle?: DiagramStyle;
   }>(),
   {
     padding: 10,
@@ -38,8 +47,38 @@ const props = withDefaults(
     numberFormat: () => new Intl.NumberFormat(),
     showGeometry: true,
     showResults: true,
+    diagramStyle: () => ({ ...DEFAULT_DIAGRAM_STYLE }),
   }
 );
+
+/** A value label of N(x) or V(x): where it goes, the value, and how it is turned. */
+type ForceLabel = [x: number, y: number, value: number, angle: number, anchor: ResultLabelAnchor];
+/** A value label of M(x), with the leader from the outline to it. */
+type MomentLabel = [
+  axisX: number,
+  axisY: number,
+  chartX: number,
+  chartY: number,
+  labelX: number,
+  labelY: number,
+  value: number,
+  isExtrema: boolean,
+  angle: number,
+  anchor: ResultLabelAnchor,
+];
+
+/** A diagram's outline, its labels, and what the style adds: hatch lines and segment degrees. */
+type DiagramDrawing<Label> = {
+  values: string;
+  text: Label[];
+  hatch: string;
+  degrees: [x: number, y: number, text: string][];
+};
+type Diagrams = {
+  normal: DiagramDrawing<ForceLabel>;
+  shear: DiagramDrawing<ForceLabel>;
+  moment: DiagramDrawing<MomentLabel>;
+};
 
 const elementCoords = computed(() => {
   const nodes = props.element.nodes.map((n) => props.element.domain.nodes.get(n)!.coords);
@@ -78,7 +117,7 @@ function resultLabelOrientation(
   tangentX: number,
   labelX: number,
   beamMidX: number
-) {
+): { angle: number; anchor: ResultLabelAnchor } {
   if (props.resultLabelMode === 'horizontal') {
     const endpointTolerance = 1e-6;
     const horizontalAnchor: ResultLabelAnchor =
@@ -185,22 +224,18 @@ const results = computed(() => {
   return smoothPath(result);
 });
 
-const forces = computed(() => {
-  if (!props.loadCase.solved)
-    return {
-      normal: {
-        text: [],
-        values: '',
-      },
-      shear: {
-        text: [],
-        values: '',
-      },
-      moment: {
-        text: [],
-        values: '',
-      },
-    };
+/**
+ * An outline without its tint keeps its fill, at zero opacity: SVG hit-tests painted fill only, so
+ * with `fill: none` hovering a hatched diagram caught the lines and fell through the gaps between
+ * them, and the hover flickered. Setting `pointer-events` instead would also have overridden the
+ * `pointer-events: none` the hover highlight inherits, and the highlight then caught the pointer.
+ */
+const unfilled = computed(() => (props.diagramStyle.fill === 'solid' ? undefined : 'fill-opacity: 0'));
+
+const noDiagram = () => ({ text: [], values: '', hatch: '', degrees: [] });
+
+const forces = computed((): Diagrams => {
+  if (!props.loadCase.solved) return { normal: noDiagram(), shear: noDiagram(), moment: noDiagram() };
 
   let result = '';
   let resultV = '';
@@ -218,10 +253,24 @@ const forces = computed(() => {
   const cos = geo.dx / geo.l;
   const sin = geo.dz / geo.l;
 
-  const nx = geo.dz / geo.l;
-  const ny = -geo.dx / geo.l;
-  const momentNx = -geo.dz / geo.l;
-  const momentNy = geo.dx / geo.l;
+  const style = props.diagramStyle;
+
+  // Which side of the member each diagram's positive values go: N and V away from the dashed line
+  // unless chosen otherwise, M on the dashed side - the tension side of a positive moment.
+  const normalSide = style.normalOnDashedSide ? -1 : 1;
+  const shearSide = style.shearOnDashedSide ? -1 : 1;
+  const momentSide = style.momentOnTensionSide ? 1 : -1;
+
+  const nNx = (normalSide * geo.dz) / geo.l;
+  const nNy = (-normalSide * geo.dx) / geo.l;
+  const nVx = (shearSide * geo.dz) / geo.l;
+  const nVy = (-shearSide * geo.dx) / geo.l;
+  const momentNx = (-momentSide * geo.dz) / geo.l;
+  const momentNy = (momentSide * geo.dx) / geo.l;
+
+  const normalSamples: [number, number][] = [];
+  const shearSamples: [number, number][] = [];
+  const momentSamples: [number, number][] = [];
 
   // Calculate V(x)=0
   //const dV = forcesV.V[nseg] - forcesV.V[0];
@@ -324,30 +373,32 @@ const forces = computed(() => {
     if (Math.abs(vNraw) < 1e-6) nNzero++;
     if (Math.abs(vVraw) < 1e-6) nVzero++;
 
-    result += `${xc + vNraw * nx * scaleBy},${zc + vNraw * ny * scaleBy} `;
-    resultV += `${xc + vVraw * nx * scaleByV},${zc + vVraw * ny * scaleByV} `;
+    normalSamples.push([nvvalues[s], vNraw]);
+    shearSamples.push([nvvalues[s], vVraw]);
+
+    result += `${xc + vNraw * nNx * scaleBy},${zc + vNraw * nNy * scaleBy} `;
+    resultV += `${xc + vVraw * nVx * scaleByV},${zc + vVraw * nVy * scaleByV} `;
   }
 
   for (let s = 0; s < mvalues.length; s++) {
     const xc = n1.coords[0] + cos * mvalues[s];
     const zc = n1.coords[2] + sin * mvalues[s];
 
-    const nx = -geo.dz / geo.l;
-    const ny = geo.dx / geo.l;
-
     const vMraw = props.element.computeBendingMomentAt(props.loadCase, mvalues[s]);
     if (Math.abs(vMraw) < 1e-6) nMzero++;
 
-    resultM += `${xc + vMraw * nx * scaleByM},${zc + vMraw * ny * scaleByM} `;
+    momentSamples.push([mvalues[s], vMraw]);
+
+    resultM += `${xc + vMraw * momentNx * scaleByM},${zc + vMraw * momentNy * scaleByM} `;
   }
 
   if (nNzero === nvvalues.length) result = '';
   if (nVzero === nvvalues.length) resultV = '';
   if (nMzero === mvalues.length) resultM = '';
 
-  const result2 = [];
-  const result2V = [];
-  const result2M = [];
+  const result2: ForceLabel[] = [];
+  const result2V: ForceLabel[] = [];
+  const result2M: MomentLabel[] = [];
 
   for (let s = 0; s < labelsX.length; s++) {
     const xc = n1.coords[0] + cos * labelsX[s];
@@ -356,39 +407,39 @@ const forces = computed(() => {
     const vNraw = props.element.computeNormalForceAt(props.loadCase, labelsX[s]);
     const vN = props.convertForce(vNraw);
     if (Math.abs(vN) > 1e-8) {
-      const [dx, dy] = resultLabelOffset(vNraw, nx, ny);
-      const labelX = xc + vNraw * nx * scaleBy + dx;
+      const [dx, dy] = resultLabelOffset(vNraw, nNx, nNy);
+      const labelX = xc + vNraw * nNx * scaleBy + dx;
       const orientation = resultLabelOrientation(
         vNraw,
-        nx,
-        ny,
+        nNx,
+        nNy,
         labelsX[s],
         geo.l,
-        vNraw * nx * scaleBy + dx,
+        vNraw * nNx * scaleBy + dx,
         cos,
         labelX,
         (n1.coords[0] + n2.coords[0]) / 2
       );
-      result2.push([labelX, zc + vNraw * ny * scaleBy + dy, vN, orientation.angle, orientation.anchor]);
+      result2.push([labelX, zc + vNraw * nNy * scaleBy + dy, vN, orientation.angle, orientation.anchor]);
     }
 
     const vVraw = props.element.computeShearForceAt(props.loadCase, labelsX[s]);
     const vV = props.convertForce(vVraw);
     if (Math.abs(vV) > 1e-8) {
-      const [dx, dy] = resultLabelOffset(vVraw, nx, ny);
-      const labelX = xc + vVraw * nx * scaleByV + dx;
+      const [dx, dy] = resultLabelOffset(vVraw, nVx, nVy);
+      const labelX = xc + vVraw * nVx * scaleByV + dx;
       const orientation = resultLabelOrientation(
         vVraw,
-        nx,
-        ny,
+        nVx,
+        nVy,
         labelsX[s],
         geo.l,
-        vVraw * nx * scaleByV + dx,
+        vVraw * nVx * scaleByV + dx,
         cos,
         labelX,
         (n1.coords[0] + n2.coords[0]) / 2
       );
-      result2V.push([labelX, zc + vVraw * ny * scaleByV + dy, vV, orientation.angle, orientation.anchor]);
+      result2V.push([labelX, zc + vVraw * nVy * scaleByV + dy, vV, orientation.angle, orientation.anchor]);
     }
   }
 
@@ -430,25 +481,112 @@ const forces = computed(() => {
     }
   }
 
-  const ret = {
-    normal: { values: `${n1.coords[0]},${n1.coords[2]} ${result}${n2.coords[0]},${n2.coords[2]}`, text: result2 },
-    shear: { values: `${n1.coords[0]},${n1.coords[2]} ${resultV}${n2.coords[0]},${n2.coords[2]}`, text: result2V },
-    moment: { values: `${n1.coords[0]},${n1.coords[2]} ${resultM}${n2.coords[0]},${n2.coords[2]}`, text: result2M },
+  /**
+   * Hatch lines across the member from its axis to the outline, a fixed distance apart on screen,
+   * as diagrams are drawn by hand. They end on the outline because they read the same samples.
+   */
+  const hatch = (samples: DiagramSamples, scaleBy: number, normalX: number, normalY: number) => {
+    if (style.fill !== 'hatch') return '';
+
+    const spacing = HATCH_SPACING_PX / props.scale;
+    // shorter than a pixel on screen is no line
+    const minimum = 1 / props.scale / Math.max(Math.abs(scaleBy), 1e-300);
+
+    return hatchPositions(samples, geo.l, spacing, minimum)
+      .map(([position, value]) => {
+        const x = n1.coords[0] + cos * position;
+        const z = n1.coords[2] + sin * position;
+        return `M${x},${z}L${x + value * normalX * scaleBy},${z + value * normalY * scaleBy}`;
+      })
+      .join('');
+  };
+
+  /**
+   * The degree of each piece of a diagram between the points where a point load breaks it, written
+   * inside the diagram halfway out from the axis - or just outside it when it is too thin for that.
+   */
+  const breaks = [...new Set([0, ...concentrated.map((c) => c.values[3]), geo.l])]
+    .filter((x) => x >= 0 && x <= geo.l)
+    .sort((a, b) => a - b);
+
+  const degrees = (
+    valueAt: (x: number) => number,
+    scaleBy: number,
+    normalX: number,
+    normalY: number
+  ): [number, number, string][] => {
+    if (!style.showDegrees) return [];
+
+    const labels: [number, number, string][] = [];
+
+    for (let i = 0; i < breaks.length - 1; i++) {
+      const [a, b] = [breaks[i], breaks[i + 1]];
+      if (b - a < 1e-9) continue;
+
+      // five equally spaced points inside the piece, clear of the jumps at its ends
+      const degree = polynomialDegree([0.1, 0.3, 0.5, 0.7, 0.9].map((t) => valueAt(a + t * (b - a))));
+      if (degree === null) continue;
+
+      const middle = (a + b) / 2;
+      const value = valueAt(middle);
+      const reachPx = Math.abs(value * scaleBy) * props.scale;
+      const outward = Math.sign(value) || 1;
+      const fromAxis =
+        reachPx >= 2 * props.fontSize
+          ? (value * scaleBy) / 2
+          : value * scaleBy + (outward * props.fontSize * 0.9) / props.scale;
+
+      labels.push([
+        n1.coords[0] + cos * middle + normalX * fromAxis,
+        n1.coords[2] + sin * middle + normalY * fromAxis,
+        `${degree}°`,
+      ]);
+    }
+
+    return labels;
+  };
+
+  const loadCase = props.loadCase;
+  const element = props.element;
+
+  const ret: Diagrams = {
+    normal: {
+      values: `${n1.coords[0]},${n1.coords[2]} ${result}${n2.coords[0]},${n2.coords[2]}`,
+      text: result2,
+      hatch: result ? hatch(normalSamples, scaleBy, nNx, nNy) : '',
+      // only for a diagram on show: each degree asks the solver for five values
+      degrees: props.showNormalForce
+        ? degrees((x) => element.computeNormalForceAt(loadCase, x), scaleBy, nNx, nNy)
+        : [],
+    },
+    shear: {
+      values: `${n1.coords[0]},${n1.coords[2]} ${resultV}${n2.coords[0]},${n2.coords[2]}`,
+      text: result2V,
+      hatch: resultV ? hatch(shearSamples, scaleByV, nVx, nVy) : '',
+      // only for a diagram on show: each degree asks the solver for five values
+      degrees: props.showShearForce ? degrees((x) => element.computeShearForceAt(loadCase, x), scaleByV, nVx, nVy) : [],
+    },
+    moment: {
+      values: `${n1.coords[0]},${n1.coords[2]} ${resultM}${n2.coords[0]},${n2.coords[2]}`,
+      text: result2M,
+      hatch: resultM ? hatch(momentSamples, scaleByM, momentNx, momentNy) : '',
+      // only for a diagram on show: each degree asks the solver for five values
+      degrees: props.showBendingMoment
+        ? degrees((x) => element.computeBendingMomentAt(loadCase, x), scaleByM, momentNx, momentNy)
+        : [],
+    },
   };
 
   if (!props.showBendingMoment) {
-    ret.moment.text = [];
-    ret.moment.values = '';
+    ret.moment = noDiagram();
   }
 
   if (!props.showShearForce) {
-    ret.shear.text = [];
-    ret.shear.values = '';
+    ret.shear = noDiagram();
   }
 
   if (!props.showNormalForce) {
-    ret.normal.text = [];
-    ret.normal.values = '';
+    ret.normal = noDiagram();
   }
 
   return ret;
@@ -481,7 +619,32 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
         vector-effect="non-scaling-stroke"
         stroke-linecap="round"
         stroke-linejoin="round"
+        :style="unfilled"
       />
+      <path v-if="forces.normal.hatch" :d="forces.normal.hatch" class="hatch" vector-effect="non-scaling-stroke" />
+      <template v-for="(degree, di) in forces.normal.degrees" :key="`degree-${di}`">
+        <text
+          v-if="showLabelBackground"
+          :font-size="fontSize / scale"
+          class="moment-label degree-label filter-text-label"
+          :x="degree[0]"
+          :y="degree[1]"
+          text-anchor="middle"
+          dy="0.35em"
+        >
+          {{ degree[2] }}
+        </text>
+        <text
+          :font-size="fontSize / scale"
+          class="moment-label degree-label"
+          :x="degree[0]"
+          :y="degree[1]"
+          text-anchor="middle"
+          dy="0.35em"
+        >
+          {{ degree[2] }}
+        </text>
+      </template>
       <g
         v-for="(mv, mli) in forces.normal.text"
         :key="mli"
@@ -524,7 +687,32 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
         vector-effect="non-scaling-stroke"
         stroke-linecap="round"
         stroke-linejoin="round"
+        :style="unfilled"
       />
+      <path v-if="forces.shear.hatch" :d="forces.shear.hatch" class="hatch" vector-effect="non-scaling-stroke" />
+      <template v-for="(degree, di) in forces.shear.degrees" :key="`degree-${di}`">
+        <text
+          v-if="showLabelBackground"
+          :font-size="fontSize / scale"
+          class="moment-label degree-label filter-text-label"
+          :x="degree[0]"
+          :y="degree[1]"
+          text-anchor="middle"
+          dy="0.35em"
+        >
+          {{ degree[2] }}
+        </text>
+        <text
+          :font-size="fontSize / scale"
+          class="moment-label degree-label"
+          :x="degree[0]"
+          :y="degree[1]"
+          text-anchor="middle"
+          dy="0.35em"
+        >
+          {{ degree[2] }}
+        </text>
+      </template>
       <g v-for="(mv, mli) in forces.shear.text" :key="mli" :transform="`translate(${mv[0]} ${mv[1]}) rotate(${mv[3]})`">
         <text
           v-if="showLabelBackground"
@@ -564,7 +752,32 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
         vector-effect="non-scaling-stroke"
         stroke-linecap="round"
         stroke-linejoin="round"
+        :style="unfilled"
       />
+      <path v-if="forces.moment.hatch" :d="forces.moment.hatch" class="hatch" vector-effect="non-scaling-stroke" />
+      <template v-for="(degree, di) in forces.moment.degrees" :key="`degree-${di}`">
+        <text
+          v-if="showLabelBackground"
+          :font-size="fontSize / scale"
+          class="moment-label degree-label filter-text-label"
+          :x="degree[0]"
+          :y="degree[1]"
+          text-anchor="middle"
+          dy="0.35em"
+        >
+          {{ degree[2] }}
+        </text>
+        <text
+          :font-size="fontSize / scale"
+          class="moment-label degree-label"
+          :x="degree[0]"
+          :y="degree[1]"
+          text-anchor="middle"
+          dy="0.35em"
+        >
+          {{ degree[2] }}
+        </text>
+      </template>
       <g v-for="(mv, mli) in forces.moment.text" :key="mli">
         <polyline
           :points="`${mv[0]},${mv[1]} ${mv[2]},${mv[3]}`"

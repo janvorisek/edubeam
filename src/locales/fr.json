@@ -194,7 +194,23 @@
     "result_label_orientation": "Orientation des étiquettes de résultats",
     "result_label_orientation_axis": "Perpendiculaires au diagramme",
     "result_label_orientation_horizontal": "Toujours horizontales",
-    "result_labels": "Étiquettes des résultats"
+    "result_labels": "Étiquettes des résultats",
+    "diagrams": {
+      "title": "Diagrammes des efforts internes",
+      "moment": "Moment fléchissant",
+      "tensionSide": "Côté tendu",
+      "compressionSide": "Côté comprimé",
+      "normal": "Effort normal positif",
+      "shear": "Effort tranchant positif",
+      "awayFromDashed": "Côté opposé",
+      "dashedSide": "Côté pointillé",
+      "fill": "Remplissage",
+      "fillSolid": "Plein",
+      "fillHatch": "Hachuré",
+      "fillNone": "Aucun",
+      "degrees": "Degré de chaque tronçon",
+      "dashedHint": "La ligne en pointillés le long de chaque élément repère ses fibres inférieures."
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Déformée",

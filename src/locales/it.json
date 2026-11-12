@@ -194,7 +194,23 @@
     "result_label_orientation": "Orientamento delle etichette dei risultati",
     "result_label_orientation_axis": "Perpendicolari al diagramma",
     "result_label_orientation_horizontal": "Sempre orizzontali",
-    "result_labels": "Etichette dei risultati"
+    "result_labels": "Etichette dei risultati",
+    "diagrams": {
+      "title": "Diagrammi delle forze interne",
+      "moment": "Momento flettente",
+      "tensionSide": "Lato teso",
+      "compressionSide": "Lato compresso",
+      "normal": "Sforzo normale positivo",
+      "shear": "Taglio positivo",
+      "awayFromDashed": "Lato opposto",
+      "dashedSide": "Lato tratteggiato",
+      "fill": "Riempimento",
+      "fillSolid": "Pieno",
+      "fillHatch": "Tratteggiato",
+      "fillNone": "Nessuno",
+      "degrees": "Grado di ogni tratto",
+      "dashedHint": "La linea tratteggiata lungo ogni elemento indica le sue fibre inferiori."
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Deformata",

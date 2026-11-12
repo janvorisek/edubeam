@@ -194,7 +194,23 @@
     "result_label_orientation": "Orientasi label hasil",
     "result_label_orientation_axis": "Tegak lurus diagram",
     "result_label_orientation_horizontal": "Selalu horizontal",
-    "result_labels": "Label hasil"
+    "result_labels": "Label hasil",
+    "diagrams": {
+      "title": "Diagram gaya dalam",
+      "moment": "Momen lentur",
+      "tensionSide": "Sisi tarik",
+      "compressionSide": "Sisi tekan",
+      "normal": "Gaya normal positif",
+      "shear": "Gaya geser positif",
+      "awayFromDashed": "Sisi berlawanan",
+      "dashedSide": "Sisi putus-putus",
+      "fill": "Isian",
+      "fillSolid": "Penuh",
+      "fillHatch": "Arsir",
+      "fillNone": "Tanpa",
+      "degrees": "Derajat tiap segmen",
+      "dashedHint": "Garis putus-putus di sepanjang tiap elemen menandai serat bawahnya."
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Bentuk deformasi",

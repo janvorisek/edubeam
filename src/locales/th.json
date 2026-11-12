@@ -194,7 +194,23 @@
     "result_label_orientation": "ทิศทางป้ายผลลัพธ์",
     "result_label_orientation_axis": "ตั้งฉากกับแผนภาพ",
     "result_label_orientation_horizontal": "แนวนอนเสมอ",
-    "result_labels": "ป้ายผลลัพธ์"
+    "result_labels": "ป้ายผลลัพธ์",
+    "diagrams": {
+      "title": "แผนภาพแรงภายใน",
+      "moment": "โมเมนต์ดัด",
+      "tensionSide": "ด้านรับแรงดึง",
+      "compressionSide": "ด้านรับแรงอัด",
+      "normal": "แรงตามแนวแกนเป็นบวก",
+      "shear": "แรงเฉือนเป็นบวก",
+      "awayFromDashed": "ด้านตรงข้าม",
+      "dashedSide": "ด้านเส้นประ",
+      "fill": "การเติมสี",
+      "fillSolid": "ทึบ",
+      "fillHatch": "แรเงาเส้น",
+      "fillNone": "ไม่มี",
+      "degrees": "ดีกรีของแต่ละช่วง",
+      "dashedHint": "เส้นประตามแนวแต่ละเอลิเมนต์แสดงเส้นใยล่างของเอลิเมนต์นั้น"
+    }
   },
   "sideSettings": {
     "showDeformedShape": "รูปร่างที่เสียรูป",

@@ -137,7 +137,23 @@
     "result_label_orientation": "Orientace popisků výsledků",
     "result_label_orientation_axis": "Kolmo k vykreslení grafu",
     "result_label_orientation_horizontal": "Vždy vodorovně",
-    "result_labels": "Popisky výsledků"
+    "result_labels": "Popisky výsledků",
+    "diagrams": {
+      "title": "Průběhy vnitřních sil",
+      "moment": "Ohybový moment",
+      "tensionSide": "Na tažené straně",
+      "compressionSide": "Na tlačené straně",
+      "normal": "Kladná normálová síla",
+      "shear": "Kladná posouvající síla",
+      "awayFromDashed": "Opačná strana",
+      "dashedSide": "Čárkovaná strana",
+      "fill": "Výplň",
+      "fillSolid": "Plná",
+      "fillHatch": "Šrafovaná",
+      "fillNone": "Žádná",
+      "degrees": "Stupeň polynomu na úsecích",
+      "dashedHint": "Čárkovaná čára podél prvku označuje jeho dolní vlákna."
+    }
   },
   "elements": {
     "addElement": "Přidat prvek",

@@ -194,7 +194,23 @@
     "result_label_orientation": "Sonuç etiketlerinin yönü",
     "result_label_orientation_axis": "Diyagrama dik",
     "result_label_orientation_horizontal": "Her zaman yatay",
-    "result_labels": "Sonuç etiketleri"
+    "result_labels": "Sonuç etiketleri",
+    "diagrams": {
+      "title": "İç kuvvet diyagramları",
+      "moment": "Eğilme momenti",
+      "tensionSide": "Çekme tarafı",
+      "compressionSide": "Basınç tarafı",
+      "normal": "Pozitif normal kuvvet",
+      "shear": "Pozitif kesme kuvveti",
+      "awayFromDashed": "Karşı taraf",
+      "dashedSide": "Kesikli taraf",
+      "fill": "Dolgu",
+      "fillSolid": "Düz",
+      "fillHatch": "Taralı",
+      "fillNone": "Yok",
+      "degrees": "Her bölgenin derecesi",
+      "dashedHint": "Her elemanın boyunca uzanan kesikli çizgi alt liflerini gösterir."
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Deforme şekil",

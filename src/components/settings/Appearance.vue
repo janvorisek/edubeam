@@ -87,6 +87,63 @@
         <v-btn value="horizontal">{{ $t('settings.result_label_orientation_horizontal') }}</v-btn>
       </v-btn-toggle>
 
+      <div class="vs-heading">{{ $t('settings.diagrams.title') }}</div>
+      <div class="vs-group">
+        <div class="vs-row">
+          <span>{{ $t('settings.diagrams.moment') }}</span>
+          <v-select
+            v-model="momentOnTensionSide"
+            class="vs-select"
+            :items="momentSides"
+            :aria-label="$t('settings.diagrams.moment')"
+            density="compact"
+            variant="outlined"
+            hide-details
+          />
+        </div>
+        <div class="vs-row">
+          <span>{{ $t('settings.diagrams.shear') }}</span>
+          <v-select
+            v-model="shearOnDashedSide"
+            class="vs-select"
+            :items="dashedSides"
+            :aria-label="$t('settings.diagrams.shear')"
+            density="compact"
+            variant="outlined"
+            hide-details
+          />
+        </div>
+        <div class="vs-row">
+          <span>{{ $t('settings.diagrams.normal') }}</span>
+          <v-select
+            v-model="viewerStore.diagramStyle.normalOnDashedSide"
+            class="vs-select"
+            :items="dashedSides"
+            :aria-label="$t('settings.diagrams.normal')"
+            density="compact"
+            variant="outlined"
+            hide-details
+          />
+        </div>
+        <div class="vs-row">
+          <span>{{ $t('settings.diagrams.fill') }}</span>
+          <v-select
+            v-model="diagramFill"
+            class="vs-select"
+            :items="fills"
+            :aria-label="$t('settings.diagrams.fill')"
+            density="compact"
+            variant="outlined"
+            hide-details
+          />
+        </div>
+        <div class="vs-row">
+          <span>{{ $t('settings.diagrams.degrees') }}</span>
+          <v-switch v-model="showDegrees" color="primary" density="compact" hide-details inset />
+        </div>
+      </div>
+      <div class="vs-note">{{ $t('settings.diagrams.dashedHint') }}</div>
+
       <div class="vs-heading">{{ $t('settings.model_checks') }}</div>
       <div class="vs-group">
         <div class="vs-row">
@@ -139,6 +196,7 @@
           :support-size="viewerStore.supportSize"
           :font-size="viewerStore.fontSize"
           :result-label-mode="viewerStore.resultLabelMode"
+          :diagram-style="viewerStore.diagramStyle"
         />
       </div>
 
@@ -174,9 +232,12 @@ import { unitSize } from '@/utils/unitConversions';
 import { presetFamily, type PresetFamily } from '@/utils/presetFamily';
 import { checkNumber, parseFloat2, positiveNumberRules } from '@/utils';
 import SettingStepper from './SettingStepper.vue';
+import { useI18n } from 'vue-i18n';
+import type { DiagramFill } from '@/utils/diagramStyle';
 
 const viewerStore = useViewerStore();
 const appStore = useAppStore();
+const { t } = useI18n();
 
 /**
  * Edited as text rather than `type="number"`: a decimal comma, which is what a phone keyboard
@@ -203,6 +264,41 @@ type PreviewQuantity = 'deformedShape' | 'shearForce' | 'bendingMoment' | 'react
 
 const previewQuantities: PreviewQuantity[] = ['deformedShape', 'shearForce', 'bendingMoment', 'reactions'];
 const showQuantity = ref<PreviewQuantity>('deformedShape');
+
+/**
+ * The diagram settings. Changing one shows the diagram it is about in the preview, as picking a
+ * colour does; the preview beam carries no normal force, so that one has nothing to show.
+ */
+const momentSides = computed(() => [
+  { title: t('settings.diagrams.tensionSide'), value: true },
+  { title: t('settings.diagrams.compressionSide'), value: false },
+]);
+const dashedSides = computed(() => [
+  { title: t('settings.diagrams.awayFromDashed'), value: false },
+  { title: t('settings.diagrams.dashedSide'), value: true },
+]);
+const fills = computed(() => [
+  { title: t('settings.diagrams.fillSolid'), value: 'solid' },
+  { title: t('settings.diagrams.fillHatch'), value: 'hatch' },
+  { title: t('settings.diagrams.fillNone'), value: 'none' },
+]);
+
+const styleSetting = <K extends 'momentOnTensionSide' | 'shearOnDashedSide' | 'fill' | 'showDegrees'>(
+  key: K,
+  preview: PreviewQuantity
+) =>
+  computed({
+    get: () => viewerStore.diagramStyle[key],
+    set: (value: (typeof viewerStore.diagramStyle)[K]) => {
+      viewerStore.diagramStyle[key] = value;
+      showQuantity.value = preview;
+    },
+  });
+
+const momentOnTensionSide = styleSetting('momentOnTensionSide', 'bendingMoment');
+const shearOnDashedSide = styleSetting('shearOnDashedSide', 'shearForce');
+const diagramFill = styleSetting('fill', 'bendingMoment') as Ref<DiagramFill>;
+const showDegrees = styleSetting('showDegrees', 'bendingMoment');
 
 /** Picking a result's colour shows that result in the preview, so the change can be seen. */
 const colorKeys: { key: keyof typeof viewerStore.colors; preview?: PreviewQuantity }[] = [
@@ -311,6 +407,17 @@ onMounted(() => {
 
 .vs-grid-step {
   flex: 0 0 120px;
+}
+
+.vs-select {
+  flex: 0 1 220px;
+  min-width: 140px;
+}
+
+.vs-note {
+  margin: 6px 2px 0;
+  font-size: 0.75rem;
+  color: rgba(var(--v-theme-on-surface), 0.64);
 }
 
 .vs-toggle {

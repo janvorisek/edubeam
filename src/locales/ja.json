@@ -194,7 +194,23 @@
     "result_label_orientation": "結果ラベルの向き",
     "result_label_orientation_axis": "図に垂直",
     "result_label_orientation_horizontal": "常に水平",
-    "result_labels": "結果ラベル"
+    "result_labels": "結果ラベル",
+    "diagrams": {
+      "title": "断面力図",
+      "moment": "曲げモーメント",
+      "tensionSide": "引張側",
+      "compressionSide": "圧縮側",
+      "normal": "正の軸力",
+      "shear": "正のせん断力",
+      "awayFromDashed": "反対側",
+      "dashedSide": "破線側",
+      "fill": "塗り",
+      "fillSolid": "単色",
+      "fillHatch": "ハッチング",
+      "fillNone": "なし",
+      "degrees": "各区間の次数",
+      "dashedHint": "各要素に沿った破線は下縁を示します。"
+    }
   },
   "sideSettings": {
     "showDeformedShape": "変位図",

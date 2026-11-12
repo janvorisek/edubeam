@@ -524,6 +524,7 @@ const viewerProps = computed(() => ({
   fontSize: viewerStore.fontSize,
   resultsScalePx: diagramPx.value,
   resultLabelMode: viewerStore.resultLabelMode,
+  diagramStyle: { ...viewerStore.diagramStyle },
   convertForce: appStore.convertForce,
   // Distributed loads label themselves through this one, not `convertForce`; leaving it
   // off falls back to the identity and prints raw N/m beside a drawing the app shows in

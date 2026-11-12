@@ -194,7 +194,23 @@
     "result_label_orientation": "Hướng nhãn kết quả",
     "result_label_orientation_axis": "Vuông góc với biểu đồ",
     "result_label_orientation_horizontal": "Luôn nằm ngang",
-    "result_labels": "Nhãn kết quả"
+    "result_labels": "Nhãn kết quả",
+    "diagrams": {
+      "title": "Biểu đồ nội lực",
+      "moment": "Mô men uốn",
+      "tensionSide": "Phía thớ chịu kéo",
+      "compressionSide": "Phía thớ chịu nén",
+      "normal": "Lực dọc dương",
+      "shear": "Lực cắt dương",
+      "awayFromDashed": "Phía đối diện",
+      "dashedSide": "Phía nét đứt",
+      "fill": "Tô màu",
+      "fillSolid": "Tô đặc",
+      "fillHatch": "Kẻ vạch",
+      "fillNone": "Không",
+      "degrees": "Bậc của từng đoạn",
+      "dashedHint": "Nét đứt dọc theo mỗi phần tử đánh dấu thớ dưới của phần tử đó."
+    }
   },
   "sideSettings": {
     "showDeformedShape": "Biến dạng",

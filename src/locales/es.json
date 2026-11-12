@@ -371,7 +371,7 @@
     "linkCopied": "Enlace copiado al portapapeles",
     "copyFailed": "No se pudo copiar automáticamente. Use los atajos de teclado.",
     "shortLink": "Enlace más corto",
-    "shortLinkHint": "Aproximadamente la mitad de largo. Quien use una versión anterior de edubeam debe actualizar la aplicación antes de abrirlo."
+    "shortLinkHint": "Aproximadamente la mitad de largo. Quien use una versión anterior de EduBeam debe actualizar la aplicación antes de abrirlo."
   },
   "tour": {
     "menu": {
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "¡Bienvenido a <span class=\"edubeam\">edubeam</span>! 🚀",
+    "title": "¡Bienvenido a <span class=\"edubeam\">EduBeam</span>! 🚀",
     "description": "Modela vigas, pórticos y celosías y ve sus esfuerzos internos mientras dibujas.",
     "start": "¿Cómo quieres empezar?",
     "showAround": "Hacer un recorrido",
@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "El elemento {element} debe hacer referencia a exactamente 2 nodos.",
       "elementSameNode": "El elemento {element} hace referencia al mismo nodo en ambos extremos.",
+      "elementZeroLength": "El elemento {element} tiene longitud cero: los nodos {start} y {end} están en el mismo punto.",
       "elementMissingNode": "El elemento {element} hace referencia al nodo inexistente {node}.",
       "elementMissingMaterial": "El elemento {element} hace referencia al material inexistente {material}.",
       "elementMissingCrossSection": "El elemento {element} hace referencia a la sección transversal inexistente {crossSection}.",
@@ -568,6 +569,7 @@
     "noMaterialsDefined": "No hay materiales definidos.",
     "noCrossSectionsDefined": "No hay secciones definidas.",
     "importFailed": "No se pudo importar el archivo. Compruebe el formato del archivo.",
+    "sessionLoadCasesSkipped": "Esta sesión de EduBeam tiene varios casos de carga, pero solo se puede abrir uno. Abierto: {loaded}. No abiertos: {skipped}.",
     "prescribedDisplacementExists": "Ya existe un desplazamiento impuesto en este nodo. Elimínelo primero.",
     "addMaterialFirst": "Añada primero un material.",
     "addCrossSectionFirst": "Añada primero una sección transversal.",

@@ -371,7 +371,7 @@
     "linkCopied": "Link skopiowany do schowka",
     "copyFailed": "Nie udało się skopiować automatycznie. Użyj skrótów klawiaturowych.",
     "shortLink": "Krótszy link",
-    "shortLinkHint": "Mniej więcej o połowę krótszy. Osoby ze starszą wersją edubeam muszą najpierw zaktualizować aplikację, aby go otworzyć."
+    "shortLinkHint": "Mniej więcej o połowę krótszy. Osoby ze starszą wersją EduBeam muszą najpierw zaktualizować aplikację, aby go otworzyć."
   },
   "tour": {
     "menu": {
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "Witamy w <span class=\"edubeam\">edubeam</span>! 🚀",
+    "title": "Witamy w <span class=\"edubeam\">EduBeam</span>! 🚀",
     "description": "Modeluj belki, ramy i kratownice i obserwuj siły wewnętrzne już podczas rysowania.",
     "start": "Jak chcesz zacząć?",
     "showAround": "Oprowadź mnie",
@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "Element {element} musi odwoływać się do dokładnie 2 węzłów.",
       "elementSameNode": "Element {element} ma ten sam węzeł na obu końcach.",
+      "elementZeroLength": "Element {element} ma zerową długość: węzły {start} i {end} leżą w tym samym punkcie.",
       "elementMissingNode": "Element {element} odwołuje się do nieistniejącego węzła {node}.",
       "elementMissingMaterial": "Element {element} odwołuje się do nieistniejącego materiału {material}.",
       "elementMissingCrossSection": "Element {element} odwołuje się do nieistniejącego przekroju {crossSection}.",
@@ -568,6 +569,7 @@
     "noMaterialsDefined": "Nie zdefiniowano materiałów.",
     "noCrossSectionsDefined": "Nie zdefiniowano przekrojów.",
     "importFailed": "Nie udało się zaimportować pliku. Sprawdź format pliku.",
+    "sessionLoadCasesSkipped": "Ta sesja programu EduBeam ma kilka przypadków obciążenia, ale otworzyć można tylko jeden. Otwarty: {loaded}. Nieotwarte: {skipped}.",
     "prescribedDisplacementExists": "Dla tego węzła istnieje już zadane przemieszczenie. Najpierw je usuń.",
     "addMaterialFirst": "Najpierw dodaj materiał.",
     "addCrossSectionFirst": "Najpierw dodaj przekrój.",

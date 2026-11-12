@@ -1,6 +1,9 @@
 import { createI18n } from 'vue-i18n';
 import messages from '@intlify/unplugin-vue-i18n/messages';
 import * as vloc from 'vuetify/locale';
+import { forKeyboard, isApplePlatform } from '@/utils/keyboard';
+
+const APPLE_KEYBOARD = isApplePlatform();
 
 export const availableLocales = [
   { code: 'en', name: 'English' },
@@ -30,6 +33,8 @@ export const i18n = createI18n({
   locale: 'en',
   fallbackLocale: 'en',
   messages: messages,
+  postTranslation: (translated) =>
+    typeof translated === 'string' ? forKeyboard(translated, APPLE_KEYBOARD) : translated,
 });
 
 /** The BCP 47 tag of an app locale. `cn` is not one, but `?lang=cn` links are out there, so it stays. */

@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "<span class=\"edubeam\">edubeam</span>에 오신 것을 환영합니다! 🚀",
+    "title": "<span class=\"edubeam\">EduBeam</span>에 오신 것을 환영합니다! 🚀",
     "description": "보, 라멘, 트러스를 모델링하면 그리는 동안 부재력을 바로 볼 수 있습니다.",
     "start": "어떻게 시작할까요?",
     "showAround": "둘러보기",
@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "요소 {element}은(는) 정확히 2개의 절점을 참조해야 합니다.",
       "elementSameNode": "요소 {element}의 양 끝이 같은 절점을 참조합니다.",
+      "elementZeroLength": "요소 {element}의 길이가 0입니다. 절점 {start}와(과) {end}이(가) 같은 위치에 있습니다.",
       "elementMissingNode": "요소 {element}에서 참조하는 절점 {node}이(가) 없습니다.",
       "elementMissingMaterial": "요소 {element}에서 참조하는 재료 {material}이(가) 없습니다.",
       "elementMissingCrossSection": "요소 {element}에서 참조하는 단면 {crossSection}이(가) 없습니다.",
@@ -568,6 +569,7 @@
     "noMaterialsDefined": "정의된 재료가 없습니다.",
     "noCrossSectionsDefined": "정의된 단면이 없습니다.",
     "importFailed": "파일을 가져올 수 없습니다. 파일 형식을 확인하세요.",
+    "sessionLoadCasesSkipped": "이 EduBeam 세션에는 하중조건이 여러 개 있지만 한 번에 하나만 열 수 있습니다. 연 하중조건: {loaded}. 열지 않은 하중조건: {skipped}.",
     "prescribedDisplacementExists": "이 절점에는 이미 강제변위가 있습니다. 먼저 삭제하세요.",
     "addMaterialFirst": "먼저 재료를 추가하세요.",
     "addCrossSectionFirst": "먼저 단면을 추가하세요.",

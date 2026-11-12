@@ -33,3 +33,30 @@ export const limitZoomFactor = (visibleSpan: number, factor: number, bounds: Bou
 
   return next / visibleSpan;
 };
+
+/** The most one wheel event zooms: a notch of a mouse wheel, 5 %. */
+export const WHEEL_STEP = 0.05;
+
+/**
+ * How far one wheel event zooms, as the `deltaY` that `zoom` takes (positive zooms out).
+ *
+ * A mouse wheel moves in notches, and each one is a fixed step. A trackpad pinch arrives in Chrome and
+ * Firefox as a stream of Ctrl+wheel events of a few pixels each, sixty a second; a fixed step for every
+ * one of them flew through the whole zoom range in one pinch. Those zoom by their size instead, capped
+ * at a notch, so Ctrl with a mouse wheel still steps the way it did.
+ */
+export const wheelZoomStep = (e: Readonly<Pick<WheelEvent, 'deltaY' | 'deltaMode' | 'ctrlKey'>>): number => {
+  if (!e.ctrlKey) return Math.sign(e.deltaY) * WHEEL_STEP;
+
+  // Lines and pages, which only a real wheel reports, are taken as the notches they are.
+  const pixels = e.deltaMode === 0 ? e.deltaY : Math.sign(e.deltaY) * 100;
+
+  return Math.max(-WHEEL_STEP, Math.min(WHEEL_STEP, pixels * 0.01));
+};
+
+/**
+ * The `deltaY` for one report of Safari's pinch gesture. Its `scale` is the pinch so far, relative to
+ * where it started, so each report zooms by how much it changed since the previous one.
+ */
+export const gestureZoomStep = (previousScale: number, scale: number): number =>
+  scale > 0 && previousScale > 0 ? previousScale / scale - 1 : 0;

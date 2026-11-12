@@ -371,7 +371,7 @@
     "linkCopied": "Lien copié dans le presse-papiers",
     "copyFailed": "Impossible de copier automatiquement. Veuillez utiliser vos raccourcis clavier.",
     "shortLink": "Lien plus court",
-    "shortLinkHint": "Environ deux fois plus court. Avec une ancienne version d'edubeam, il faut d'abord mettre l'application à jour pour l'ouvrir."
+    "shortLinkHint": "Environ deux fois plus court. Avec une ancienne version d'EduBeam, il faut d'abord mettre l'application à jour pour l'ouvrir."
   },
   "tour": {
     "menu": {
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "Bienvenue dans <span class=\"edubeam\">edubeam</span> ! 🚀",
+    "title": "Bienvenue dans <span class=\"edubeam\">EduBeam</span> ! 🚀",
     "description": "Modélisez poutres, portiques et treillis et voyez leurs efforts internes pendant que vous dessinez.",
     "start": "Comment voulez-vous commencer ?",
     "showAround": "Faire le tour",
@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "L'élément {element} doit référencer exactement 2 nœuds.",
       "elementSameNode": "L'élément {element} référence le même nœud à ses deux extrémités.",
+      "elementZeroLength": "L'élément {element} a une longueur nulle : les nœuds {start} et {end} sont au même point.",
       "elementMissingNode": "L'élément {element} référence le nœud inexistant {node}.",
       "elementMissingMaterial": "L'élément {element} référence le matériau inexistant {material}.",
       "elementMissingCrossSection": "L'élément {element} référence la section inexistante {crossSection}.",
@@ -568,6 +569,7 @@
     "noMaterialsDefined": "Aucun matériau défini.",
     "noCrossSectionsDefined": "Aucune section définie.",
     "importFailed": "Impossible d'importer le fichier. Veuillez vérifier le format du fichier.",
+    "sessionLoadCasesSkipped": "Cette session EduBeam contient plusieurs cas de charge, mais un seul peut être ouvert. Ouvert : {loaded}. Non ouverts : {skipped}.",
     "prescribedDisplacementExists": "Un déplacement imposé existe déjà pour ce nœud. Veuillez d'abord le supprimer.",
     "addMaterialFirst": "Veuillez d'abord ajouter un matériau.",
     "addCrossSectionFirst": "Veuillez d'abord ajouter une section.",

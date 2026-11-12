@@ -371,7 +371,7 @@
     "linkCopied": "Đã sao chép liên kết vào bộ nhớ tạm",
     "copyFailed": "Không thể tự động sao chép. Vui lòng dùng phím tắt.",
     "shortLink": "Liên kết ngắn hơn",
-    "shortLinkHint": "Ngắn bằng khoảng một nửa. Ai đang dùng phiên bản edubeam cũ hơn phải cập nhật ứng dụng thì mới mở được."
+    "shortLinkHint": "Ngắn bằng khoảng một nửa. Ai đang dùng phiên bản EduBeam cũ hơn phải cập nhật ứng dụng thì mới mở được."
   },
   "tour": {
     "menu": {
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "Chào mừng đến với <span class=\"edubeam\">edubeam</span>! 🚀",
+    "title": "Chào mừng đến với <span class=\"edubeam\">EduBeam</span>! 🚀",
     "description": "Mô hình hóa dầm, khung và dàn, và xem nội lực ngay khi bạn vẽ.",
     "start": "Bạn muốn bắt đầu thế nào?",
     "showAround": "Xem giới thiệu",
@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "Phần tử {element} phải tham chiếu đúng 2 nút.",
       "elementSameNode": "Phần tử {element} tham chiếu cùng một nút ở cả hai đầu.",
+      "elementZeroLength": "Phần tử {element} có chiều dài bằng 0: nút {start} và {end} nằm tại cùng một điểm.",
       "elementMissingNode": "Phần tử {element} tham chiếu nút {node} không tồn tại.",
       "elementMissingMaterial": "Phần tử {element} tham chiếu vật liệu {material} không tồn tại.",
       "elementMissingCrossSection": "Phần tử {element} tham chiếu tiết diện {crossSection} không tồn tại.",
@@ -568,6 +569,7 @@
     "noMaterialsDefined": "Chưa có vật liệu nào.",
     "noCrossSectionsDefined": "Chưa có tiết diện nào.",
     "importFailed": "Không thể nhập tệp. Vui lòng kiểm tra định dạng tệp.",
+    "sessionLoadCasesSkipped": "Phiên EduBeam này có nhiều trường hợp tải, nhưng chỉ mở được một. Đã mở: {loaded}. Không mở: {skipped}.",
     "prescribedDisplacementExists": "Nút này đã có chuyển vị cưỡng bức. Vui lòng xóa nó trước.",
     "addMaterialFirst": "Vui lòng thêm vật liệu trước.",
     "addCrossSectionFirst": "Vui lòng thêm tiết diện trước.",

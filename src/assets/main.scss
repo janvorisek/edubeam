@@ -34,6 +34,14 @@ body,
   overflow: hidden;
 }
 
+/*
+ * No double-tap zoom: on an iPhone two quick taps on undo or on a table's buttons zoomed the page
+ * instead of pressing the button twice. Pinching the page still zooms.
+ */
+html {
+  touch-action: manipulation;
+}
+
 .pointer-events-none {
   pointer-events: none;
 }

@@ -371,7 +371,7 @@
     "linkCopied": "リンクをクリップボードにコピーしました",
     "copyFailed": "自動でコピーできませんでした。キーボードショートカットを使ってください。",
     "shortLink": "短いリンク",
-    "shortLinkHint": "長さは約半分です。古いバージョンの edubeam を使っている人は、アプリを更新しないと開けません。"
+    "shortLinkHint": "長さは約半分です。古いバージョンの EduBeam を使っている人は、アプリを更新しないと開けません。"
   },
   "tour": {
     "menu": {
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "<span class=\"edubeam\">edubeam</span> へようこそ！ 🚀",
+    "title": "<span class=\"edubeam\">EduBeam</span> へようこそ！ 🚀",
     "description": "梁、ラーメン、トラスをモデル化して、描きながら断面力を確認できます。",
     "start": "どのように始めますか？",
     "showAround": "ツアーを見る",
@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "要素 {element} はちょうど 2 つの節点を参照する必要があります。",
       "elementSameNode": "要素 {element} の両端が同じ節点を参照しています。",
+      "elementZeroLength": "要素 {element} の長さがゼロです。節点 {start} と {end} が同じ位置にあります。",
       "elementMissingNode": "要素 {element} が存在しない節点 {node} を参照しています。",
       "elementMissingMaterial": "要素 {element} が存在しない材料 {material} を参照しています。",
       "elementMissingCrossSection": "要素 {element} が存在しない断面 {crossSection} を参照しています。",
@@ -568,6 +569,7 @@
     "noMaterialsDefined": "材料が定義されていません。",
     "noCrossSectionsDefined": "断面が定義されていません。",
     "importFailed": "ファイルをインポートできませんでした。ファイル形式を確認してください。",
+    "sessionLoadCasesSkipped": "この EduBeam セッションには複数の荷重ケースがありますが、開けるのは 1 つだけです。開いたケース：{loaded}。開かなかったケース：{skipped}。",
     "prescribedDisplacementExists": "この節点には既に強制変位が設定されています。先に削除してください。",
     "addMaterialFirst": "先に材料を追加してください。",
     "addCrossSectionFirst": "先に断面を追加してください。",

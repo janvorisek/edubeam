@@ -243,13 +243,12 @@ describe('editing in y up', () => {
 describe('axis letters', () => {
   const src = join(process.cwd(), 'src');
   const skipped = [
-    // Nothing opens the dialogs in Dialogs.vue any more, and Results.vue is not mounted anywhere.
-    'components/Dialogs.vue',
+    // Results.vue is not mounted anywhere.
     'components/Results.vue',
     // Iy and Iz there are the section's own axes, whichever way the global ones point.
     'components/dialogs/PolygonSectionEditor.vue',
-    // Parses the old XML format, whose names are fixed.
-    'utils/loadXmlFile.ts',
+    // Reads the desktop EduBeam's sessions, whose names are fixed.
+    'utils/edubeamSession.ts',
   ];
   const hardcoded = /<sub>[yz]\d?<\/sub>|\blabel="[DFMRV][yz]\b|'[DFMRV][yz]'|>[DFMRV][yz]</;
 

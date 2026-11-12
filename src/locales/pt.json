@@ -371,7 +371,7 @@
     "linkCopied": "Link copiado para a área de transferência",
     "copyFailed": "Não foi possível copiar automaticamente. Use os atalhos de teclado.",
     "shortLink": "Link mais curto",
-    "shortLinkHint": "Cerca de metade do comprimento. Quem usa uma versão mais antiga do edubeam precisa atualizar o aplicativo antes de abri-lo."
+    "shortLinkHint": "Cerca de metade do comprimento. Quem usa uma versão mais antiga do EduBeam precisa atualizar o aplicativo antes de abri-lo."
   },
   "tour": {
     "menu": {
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "Bem-vindo ao <span class=\"edubeam\">edubeam</span>! 🚀",
+    "title": "Bem-vindo ao <span class=\"edubeam\">EduBeam</span>! 🚀",
     "description": "Modele vigas, pórticos e treliças e veja os esforços internos enquanto desenha.",
     "start": "Como você quer começar?",
     "showAround": "Fazer um tour",
@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "O elemento {element} deve referenciar exatamente 2 nós.",
       "elementSameNode": "O elemento {element} referencia o mesmo nó nas duas extremidades.",
+      "elementZeroLength": "O elemento {element} tem comprimento nulo: os nós {start} e {end} estão no mesmo ponto.",
       "elementMissingNode": "O elemento {element} referencia o nó inexistente {node}.",
       "elementMissingMaterial": "O elemento {element} referencia o material inexistente {material}.",
       "elementMissingCrossSection": "O elemento {element} referencia a seção inexistente {crossSection}.",
@@ -568,6 +569,7 @@
     "noMaterialsDefined": "Nenhum material definido.",
     "noCrossSectionsDefined": "Nenhuma seção definida.",
     "importFailed": "Não foi possível importar o arquivo. Verifique o formato do arquivo.",
+    "sessionLoadCasesSkipped": "Esta sessão do EduBeam tem vários casos de carga, mas só é possível abrir um. Aberto: {loaded}. Não abertos: {skipped}.",
     "prescribedDisplacementExists": "Já existe um deslocamento prescrito para este nó. Remova-o primeiro.",
     "addMaterialFirst": "Adicione um material primeiro.",
     "addCrossSectionFirst": "Adicione uma seção primeiro.",

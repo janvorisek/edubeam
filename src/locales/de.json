@@ -371,7 +371,7 @@
     "linkCopied": "Link in die Zwischenablage kopiert",
     "copyFailed": "Automatisches Kopieren war nicht möglich. Bitte verwenden Sie Ihre Tastenkürzel.",
     "shortLink": "Kürzerer Link",
-    "shortLinkHint": "Etwa halb so lang. Wer eine ältere Version von edubeam nutzt, muss die App vor dem Öffnen aktualisieren."
+    "shortLinkHint": "Etwa halb so lang. Wer eine ältere Version von EduBeam nutzt, muss die App vor dem Öffnen aktualisieren."
   },
   "tour": {
     "menu": {
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "Willkommen bei <span class=\"edubeam\">edubeam</span>! 🚀",
+    "title": "Willkommen bei <span class=\"edubeam\">EduBeam</span>! 🚀",
     "description": "Modellieren Sie Balken, Rahmen und Fachwerke und sehen Sie die Schnittgrößen schon beim Zeichnen.",
     "start": "Wie möchten Sie beginnen?",
     "showAround": "Rundgang starten",
@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "Element {element} muss genau 2 Knoten referenzieren.",
       "elementSameNode": "Element {element} referenziert an beiden Enden denselben Knoten.",
+      "elementZeroLength": "Element {element} hat die Länge null: Die Knoten {start} und {end} liegen im selben Punkt.",
       "elementMissingNode": "Element {element} referenziert den fehlenden Knoten {node}.",
       "elementMissingMaterial": "Element {element} referenziert das fehlende Material {material}.",
       "elementMissingCrossSection": "Element {element} referenziert den fehlenden Querschnitt {crossSection}.",
@@ -568,6 +569,7 @@
     "noMaterialsDefined": "Keine Materialien definiert.",
     "noCrossSectionsDefined": "Keine Querschnitte definiert.",
     "importFailed": "Die Datei konnte nicht importiert werden. Bitte überprüfen Sie das Dateiformat.",
+    "sessionLoadCasesSkipped": "Diese EduBeam-Sitzung enthält mehrere Lastfälle, es kann aber nur einer geöffnet werden. Geöffnet: {loaded}. Nicht geöffnet: {skipped}.",
     "prescribedDisplacementExists": "Für diesen Knoten ist bereits eine Verschiebung vorgegeben. Bitte entfernen Sie diese zuerst.",
     "addMaterialFirst": "Bitte fügen Sie zuerst ein Material hinzu.",
     "addCrossSectionFirst": "Bitte fügen Sie zuerst einen Querschnitt hinzu.",

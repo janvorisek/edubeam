@@ -16,6 +16,7 @@ import Confirmation from './components/dialogs/Confirmation.vue';
 import ReloadPrompt from './components/ReloadPrompt.vue';
 import { buildStarterModel } from './utils/starterModel';
 import { fromShareParam } from './utils/serializeModel';
+import { isEduBeamSession, parseEduBeamSession } from './utils/edubeamSession';
 
 export default {
   name: 'App',
@@ -34,11 +35,10 @@ import RecentStructures from '@/components/dialogs/RecentStructures.vue';
 import ExportImage from '@/components/dialogs/ExportImage.vue';
 import Changelog from '@/components/dialogs/Changelog.vue';
 import Editor from '@/views/Editor.vue';
-import Dialogs from '@/components/Dialogs.vue';
 import { useProjectStore } from './store/project';
 import { useAppStore } from './store/app';
 import { startFirstBeam } from './utils/startFirstBeam';
-import { hasShortcutModifier } from './utils/keyboard';
+import { fieldOwnsUndo, hasShortcutModifier } from './utils/keyboard';
 
 import { VOnboardingWrapper, VOnboardingStep, useVOnboarding } from 'v-onboarding';
 import 'v-onboarding/dist/style.css';
@@ -49,7 +49,7 @@ const { t } = useI18n();
 
 const viewerStore = useViewerStore();
 
-const file = ref(null);
+const file = ref<HTMLInputElement | null>(null);
 
 const onboardingWrapper = ref(null);
 provide('onboardingWrapper', onboardingWrapper);
@@ -134,16 +134,12 @@ onMounted(() => {
       e.preventDefault();
     }
 
-    // Ctrl+Z (Cmd+Z on a Mac) undo
-    if (hasShortcutModifier(e) && !e.shiftKey && e.code === 'KeyZ') {
+    // Ctrl+Z (Cmd+Z on a Mac) undo, Ctrl+Shift+Z redo - of the model, unless the field the keys are
+    // pressed in takes back its own typing (see fieldOwnsUndo).
+    if (hasShortcutModifier(e) && e.code === 'KeyZ' && !fieldOwnsUndo(e.target)) {
       e.preventDefault();
-      undoModelChange();
-    }
-
-    // Ctrl+Shift+Z redo
-    if (hasShortcutModifier(e) && e.shiftKey && e.code === 'KeyZ') {
-      e.preventDefault();
-      redoModelChange();
+      if (e.shiftKey) redoModelChange();
+      else undoModelChange();
     }
 
     // Print: the browser's print of the page is meaningless here; the image export is
@@ -162,13 +158,14 @@ onMounted(() => {
     // Open project
     if (hasShortcutModifier(e) && e.code === 'KeyO') {
       e.preventDefault();
-      file.value.click();
+      file.value?.click();
     }
 
-    // Leave the tour. Harmless when none is running - finish() just sets the state it is
-    // already in.
+    // Leave the tour, and close the menu. Harmless when neither is open - finish() just sets the
+    // state it is already in.
     if (e.key === 'Escape') {
       endTour();
+      appStore.drawerOpen = false;
     }
   });
 
@@ -182,6 +179,26 @@ onMounted(() => {
     },
     { passive: false }
   );
+
+  /*
+   * The same for Safari on a Mac, which reports a trackpad pinch as gesture events and zoomed the
+   * whole interface with it; the drawing zooms itself from them (SVGPanZoom). A pinch on an iPhone or
+   * iPad comes with touches and is left alone, so zooming the page there still works.
+   */
+  let touching = false;
+  const trackTouches = (e: TouchEvent) => (touching = e.touches.length > 0);
+  document.addEventListener('touchstart', trackTouches, { passive: true, capture: true });
+  document.addEventListener('touchend', trackTouches, { passive: true, capture: true });
+  document.addEventListener('touchcancel', trackTouches, { passive: true, capture: true });
+  for (const type of ['gesturestart', 'gesturechange']) {
+    document.addEventListener(
+      type,
+      (e) => {
+        if (!touching) e.preventDefault();
+      },
+      { passive: false }
+    );
+  }
 });
 
 const appStore = useAppStore();
@@ -266,18 +283,42 @@ const clearMesh = (clearMaterials = false, clearCrossSects = false) => {
 };
 
 /** Loads a project file over the current model; alerts and keeps the model if it is not one. */
+/** A project.json, or a session saved by the desktop EduBeam. A file that is neither changes nothing. */
 const loadProjectFile = (text: string) => {
+  let project: unknown;
+  let skippedLoadCases: string[] = [];
+
   try {
-    const json = JSON.parse(text);
-    if (typeof json !== 'object' || json === null || typeof json.domain !== 'object') throw new Error('Not a project');
+    if (isEduBeamSession(text)) {
+      const session = parseEduBeamSession(text);
+      project = session.project;
+      skippedLoadCases = session.skippedLoadCases;
+    } else {
+      project = JSON.parse(text);
+    }
+
+    if (typeof project !== 'object' || project === null || !('domain' in project) || typeof project.domain !== 'object')
+      throw new Error('Not a project');
+
     replaceModel('file', () => {
       resetModel();
-      importJSON(json);
+      importJSON(project);
     });
     useProjectStore().clearSelection();
     solve();
   } catch (e) {
+    console.error(e);
     alert(t('warnings.importFailed'));
+    return;
+  }
+
+  if (skippedLoadCases.length > 0) {
+    alert(
+      t('warnings.sessionLoadCasesSkipped', {
+        loaded: useProjectStore().solver.loadCases[0].label,
+        skipped: skippedLoadCases.join(', '),
+      })
+    );
   }
 };
 
@@ -441,9 +482,13 @@ const app_commit = APP_COMMIT;
     </VOnboardingWrapper>
 
     <v-app-bar v-if="!appStore.inViewerMode" clipped-lefs clipped-right app color="primary" density="compact">
-      <v-app-bar-nav-icon id="appMenu" @click="appStore.drawerOpen = !appStore.drawerOpen"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        id="appMenu"
+        :aria-label="$t('tour.menu.title')"
+        @click="appStore.drawerOpen = !appStore.drawerOpen"
+      ></v-app-bar-nav-icon>
 
-      <div class="app-title ml-3 d-flex align-center" style="user-select: none">edubeam</div>
+      <div class="app-title ml-3 d-flex align-center" style="user-select: none">EduBeam</div>
 
       <v-btn
         class="d-none d-sm-inline-flex ml-3"
@@ -479,7 +524,14 @@ const app_commit = APP_COMMIT;
         <v-icon class="ml-1">mdi-open-in-new</v-icon>
       </v-btn>
 
-      <v-btn class="d-none d-sm-inline-flex" icon href="https://github.com/janvorisek/edubeam" target="_blank">
+      <v-btn
+        class="d-none d-sm-inline-flex"
+        icon
+        href="https://github.com/janvorisek/edubeam"
+        target="_blank"
+        title="GitHub"
+        aria-label="GitHub"
+      >
         <v-icon>mdi-github</v-icon>
       </v-btn>
     </v-app-bar>
@@ -495,7 +547,7 @@ const app_commit = APP_COMMIT;
           prepend-icon="mdi-folder-open-outline"
           :title="$t('common.openProject')"
           value="home"
-          @click="$refs.file.click()"
+          @click="file?.click()"
         ></v-list-item>
         <v-list-item
           prepend-icon="mdi-folder-arrow-down-outline"
@@ -572,8 +624,6 @@ const app_commit = APP_COMMIT;
     <v-main>
       <Editor />
     </v-main>
-
-    <Dialogs />
 
     <widget-container-modal />
 

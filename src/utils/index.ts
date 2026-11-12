@@ -6,13 +6,14 @@ import { useViewerStore } from '../store/viewer';
 import { useRecentStructuresStore, type RecentStructureReason } from '../store/recentStructures';
 
 import { loadType } from './loadType';
-import { hasShortcutModifier } from './keyboard';
 import { ensureDimensionId, createDimensionId } from './id';
 import { deserializeModel, parseSerializedModel, serializeModel } from './serializeModel';
 import { deserializeShape, serializeShape } from './sectionProperties';
 import { createDimensionPoint, createDimensionPointFromNode, type DimensionPoint } from '@/types/dimension';
 import { applyNodeLcsAngle, nodeLcsAngle } from './nodalLcs';
 import { angle, axisLetters } from './axisConvention';
+import { isNumberInputCharacter, parseNumberInput } from './numberInput';
+import { nextTick } from 'vue';
 
 export type EntityWithLabel = { label: string & { [key: string]: unknown } };
 
@@ -25,8 +26,6 @@ export { parseSerializedModel };
 
 export { smoothPath } from './smoothPath';
 export { loadType } from './loadType';
-
-export { loadXmlFile } from './loadXmlFile';
 
 export { formatScientificNumber, formatCompactNumber } from './formatScientificNumber';
 
@@ -189,25 +188,11 @@ export const checkNumber = (e: KeyboardEvent) => {
   // separately; blocking those keys would block typing itself. Let them through unjudged.
   if (e.key === 'Unidentified' || e.key === 'Process' || e.isComposing) return;
 
-  const isNumber = !isNaN(e.key as unknown as number);
+  // Only a typed character can be wrong. Keys that type nothing - arrows, Tab, Enter, Backspace -
+  // and every shortcut, Ctrl/Cmd+Z included, are left to the field.
+  if (e.key.length !== 1 || e.ctrlKey || e.metaKey || e.altKey) return;
 
-  const isActionKey =
-    (hasShortcutModifier(e) && ['a', 'c', 'v', 'x'].includes(e.key)) ||
-    e.key === 'Escape' ||
-    e.key === 'Delete' ||
-    e.key === 'Backspace' ||
-    e.key === 'Enter' ||
-    e.key === 'Tab' ||
-    e.key === 'ArrowRight' ||
-    e.key === 'ArrowLeft' ||
-    e.key === 'End' ||
-    e.key === 'Home' ||
-    e.key === 'e' ||
-    e.key === '-';
-
-  const isComma = e.key === ',' || e.key === '.';
-
-  if (isNumber || isActionKey || isComma) return;
+  if (isNumberInputCharacter(e.key)) return;
 
   e.stopPropagation();
   e.preventDefault();
@@ -502,19 +487,15 @@ export const suggestLanguage = (languages: readonly string[] = navigator.languag
   return 'en';
 };
 
+/**
+ * A dialog field's value while it is being typed, for previews: what cannot be read yet (an empty
+ * field, a lone minus, half a sum) counts as zero. The field's rules are what stop it being saved.
+ */
 export const parseFloat2 = (s: string | number) => {
-  s = s.toString();
+  if (typeof s === 'number') return Number.isFinite(s) ? s : 0;
 
-  if (s === '') return 0;
-  if (s === '-') return 0;
-
-  s = s.replaceAll(/\s/g, '');
-
-  let tmp = parseFloat(s.replace(',', '.'));
-
-  tmp = isNaN(tmp) ? 0 : tmp;
-
-  return tmp;
+  const value = parseNumberInput(s);
+  return Number.isNaN(value) ? 0 : value;
 };
 
 export const setUnsolved = () => {
@@ -545,6 +526,15 @@ const restoreRenderedValue = (el: HTMLInputElement, modelValue: unknown) => {
 };
 
 /**
+ * After a commit, the field shows the value as the table writes it rather than what was typed: 3*2
+ * becomes 6. Vue writes the new value itself when it changed; when it did not, nothing would replace
+ * the sum, so the rendered value is put back once Vue has had its turn.
+ */
+const showCommittedValue = (el: HTMLInputElement, modelValue: unknown) => {
+  void nextTick(() => restoreRenderedValue(el, modelValue));
+};
+
+/**
  * Where a concentrated load or deformation may sit on its beam: from one node to the other, and
  * never past either.
  *
@@ -563,22 +553,21 @@ export const changeSetArrayItem = (
   el?: HTMLInputElement,
   formatter?: (v: number) => number
 ) => {
-  if (el.value === '') el.value = '0';
-
-  const val = parseFloat(el.value.replace(/\s/g, '').replace(',', '.'));
+  // Empty or unreadable puts the value back: a field cleared to retype it and left was saved as zero,
+  // which could move a node onto another one.
+  const val = parseNumberInput(el.value);
   if (!Number.isFinite(val)) return restoreRenderedValue(el, item[set][value]);
 
   executeModelMutationWithUndo(() => {
     setUnsolved();
     item[set][value] = formatter ? formatter(val) : val;
   });
+  showCommittedValue(el, item[set][value]);
 };
 
 export const changeRefNumValue = (value: string) => {
-  const val = parseFloat(value.replace(/\s/g, '').replace(',', '.'));
-  if (isNaN(val)) return 0;
-
-  return val;
+  const val = parseNumberInput(value);
+  return Number.isNaN(val) ? 0 : val;
 };
 
 /**
@@ -590,11 +579,7 @@ const ruleValueAsNumber = (v: unknown) => {
   if (typeof v === 'number') return v;
   if (typeof v !== 'string') return NaN;
 
-  const normalized = v.replace(/\s/g, '').replace(',', '.');
-  if (normalized === '') return NaN;
-
-  // Number(), not parseFloat(): trailing junk like "5abc" has to stay invalid
-  return Number(normalized);
+  return parseNumberInput(v);
 };
 
 const isEmptyRuleValue = (v: unknown) => v === '' || v === null || v === undefined;
@@ -638,15 +623,14 @@ export const rangeRule =
   };
 
 export const changeItem = (item: object, value: string, el?: HTMLInputElement, formatter?: (v: number) => number) => {
-  if (el.value === '') el.value = '0';
-
-  const val = parseFloat(el.value.replace(/\s/g, '').replace(',', '.'));
+  const val = parseNumberInput(el.value);
   if (!Number.isFinite(val)) return restoreRenderedValue(el, item[value]);
 
   executeModelMutationWithUndo(() => {
     setUnsolved();
     item[value] = formatter ? formatter(val) : val;
   });
+  showCommittedValue(el, item[value]);
 };
 
 /** Rotates a node's local system, recorded for undo - what every editable angle field commits. */
@@ -664,12 +648,11 @@ export const setNodeLcsAngle = (node: Node | undefined, degrees: number) => {
  * unreadable entry puts the shown angle back.
  */
 export const changeNodeLcsAngle = (node: Node | undefined, el: HTMLInputElement) => {
-  if (el.value === '') el.value = '0';
-
-  const degrees = parseFloat(el.value.replace(/\s/g, '').replace(',', '.'));
+  const degrees = parseNumberInput(el.value);
   if (!Number.isFinite(degrees)) return restoreRenderedValue(el, angle(nodeLcsAngle(node)));
 
   setNodeLcsAngle(node, angle(degrees));
+  showCommittedValue(el, angle(nodeLcsAngle(node)));
 };
 
 export const changeLabel = (map: string, item: EntityWithLabel, el?: HTMLInputElement) => {

@@ -371,7 +371,7 @@
     "linkCopied": "Link copied to clipboard",
     "copyFailed": "Could not copy automatically. Please use your keyboard shortcuts.",
     "shortLink": "Shorter link",
-    "shortLinkHint": "About half as long. Anyone on an older version of edubeam has to update the app before it opens."
+    "shortLinkHint": "About half as long. Anyone on an older version of EduBeam has to update the app before it opens."
   },
   "tour": {
     "menu": {
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "Welcome to <span class=\"edubeam\">edubeam</span>! 🚀",
+    "title": "Welcome to <span class=\"edubeam\">EduBeam</span>! 🚀",
     "description": "Model beams, frames and trusses and see their internal forces as you draw.",
     "start": "How would you like to start?",
     "showAround": "Show me around",
@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "Element {element} must reference exactly 2 nodes.",
       "elementSameNode": "Element {element} references the same node at both ends.",
+      "elementZeroLength": "Element {element} has zero length: nodes {start} and {end} are at the same point.",
       "elementMissingNode": "Element {element} references missing node {node}.",
       "elementMissingMaterial": "Element {element} references missing material {material}.",
       "elementMissingCrossSection": "Element {element} references missing cross section {crossSection}.",
@@ -568,6 +569,7 @@
     "noMaterialsDefined": "No materials defined.",
     "noCrossSectionsDefined": "No cross sections defined.",
     "importFailed": "Could not import the file. Please check the file format.",
+    "sessionLoadCasesSkipped": "This EduBeam session has several load cases, but only one can be open at a time. Opened: {loaded}. Not opened: {skipped}.",
     "prescribedDisplacementExists": "Prescribed displacement already exists for this node. Please remove it first.",
     "addMaterialFirst": "Please add a material first.",
     "addCrossSectionFirst": "Please add a cross section first.",

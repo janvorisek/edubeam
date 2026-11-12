@@ -371,7 +371,7 @@
     "linkCopied": "Bağlantı panoya kopyalandı",
     "copyFailed": "Otomatik kopyalanamadı. Lütfen klavye kısayollarını kullanın.",
     "shortLink": "Daha kısa bağlantı",
-    "shortLinkHint": "Yaklaşık yarı uzunlukta. edubeam'in eski bir sürümünü kullananların açmadan önce uygulamayı güncellemesi gerekir."
+    "shortLinkHint": "Yaklaşık yarı uzunlukta. EduBeam'in eski bir sürümünü kullananların açmadan önce uygulamayı güncellemesi gerekir."
   },
   "tour": {
     "menu": {
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "<span class=\"edubeam\">edubeam</span>'e hoş geldiniz! 🚀",
+    "title": "<span class=\"edubeam\">EduBeam</span>'e hoş geldiniz! 🚀",
     "description": "Kiriş, çerçeve ve kafes sistemleri modelleyin, iç kuvvetleri çizerken görün.",
     "start": "Nasıl başlamak istersiniz?",
     "showAround": "Beni gezdir",
@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "{element} elemanı tam olarak 2 düğüme bağlanmalıdır.",
       "elementSameNode": "{element} elemanının iki ucu da aynı düğüme bağlı.",
+      "elementZeroLength": "{element} elemanının uzunluğu sıfır: {start} ve {end} düğümleri aynı noktada.",
       "elementMissingNode": "{element} elemanı mevcut olmayan {node} düğümüne bağlı.",
       "elementMissingMaterial": "{element} elemanına atanan {material} malzemesi mevcut değil.",
       "elementMissingCrossSection": "{element} elemanına atanan {crossSection} kesiti mevcut değil.",
@@ -568,6 +569,7 @@
     "noMaterialsDefined": "Tanımlı malzeme yok.",
     "noCrossSectionsDefined": "Tanımlı kesit yok.",
     "importFailed": "Dosya içe aktarılamadı. Lütfen dosya biçimini kontrol edin.",
+    "sessionLoadCasesSkipped": "Bu EduBeam oturumunda birden fazla yükleme durumu var, ancak aynı anda yalnızca biri açılabilir. Açılan: {loaded}. Açılmayan: {skipped}.",
     "prescribedDisplacementExists": "Bu düğüm için zaten öngörülen bir yer değiştirme var. Lütfen önce onu kaldırın.",
     "addMaterialFirst": "Lütfen önce bir malzeme ekleyin.",
     "addCrossSectionFirst": "Lütfen önce bir kesit ekleyin.",

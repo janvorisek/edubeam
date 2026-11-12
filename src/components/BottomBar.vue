@@ -219,6 +219,8 @@
                 icon="mdi-plus-circle"
                 density="compact"
                 variant="text"
+                :title="$t('loads.addNodalLoad')"
+                :aria-label="$t('loads.addNodalLoad')"
                 @click="openModal(AddNodalLoad, { label: item.label })"
               >
               </v-btn>
@@ -248,9 +250,18 @@
                 density="compact"
                 variant="text"
                 icon="mdi-pencil"
+                :title="$t('nodes.editNode')"
+                :aria-label="$t('nodes.editNode')"
                 @click="openModal(EditNode, { label: item.label })"
               ></v-btn>
-              <v-btn density="compact" variant="text" icon="mdi-close" @click="deleteNode(item.label)"></v-btn>
+              <v-btn
+                density="compact"
+                variant="text"
+                icon="mdi-close"
+                :title="$t('common.delete')"
+                :aria-label="$t('common.delete')"
+                @click="deleteNode(item.label)"
+              ></v-btn>
             </div>
           </template>
         </v-data-table-virtual>
@@ -352,6 +363,7 @@
                 v-tooltip="{ text: $t('elements.swapNodeOrder'), location: 'bottom', openOnClick: !deviceHasHover }"
                 href="#"
                 class="text-decoration-none text-primary"
+                :aria-label="$t('elements.swapNodeOrder')"
                 @click.stop="swapNodes(item)"
               >
                 <v-icon small>mdi-swap-horizontal</v-icon>
@@ -447,6 +459,8 @@
                 icon="mdi-plus-circle"
                 density="compact"
                 variant="text"
+                :title="$t('loads.addElementLoad')"
+                :aria-label="$t('loads.addElementLoad')"
                 @click="openModal(AddElementLoad, { label: item.label })"
               >
               </v-btn>
@@ -476,9 +490,18 @@
                 density="compact"
                 variant="text"
                 icon="mdi-matrix"
+                :title="$t('common.stiffnessMatrix')"
+                :aria-label="$t('common.stiffnessMatrix')"
                 @click="layoutStore.openWidget($t('common.stiffnessMatrix'), StiffnessMatrix, { label: item.label })"
               ></v-btn>
-              <v-btn density="compact" variant="text" icon="mdi-close" @click="deleteElement(item.label)"></v-btn>
+              <v-btn
+                density="compact"
+                variant="text"
+                icon="mdi-close"
+                :title="$t('common.delete')"
+                :aria-label="$t('common.delete')"
+                @click="deleteElement(item.label)"
+              ></v-btn>
             </div>
           </template>
         </v-data-table-virtual>
@@ -951,6 +974,8 @@
                 density="compact"
                 variant="text"
                 icon="mdi-pencil"
+                :title="$t('loads.editLoad')"
+                :aria-label="$t('loads.editLoad')"
                 @click="openLoadEditor(item.type, item.index)"
               ></v-btn>
               <v-btn
@@ -958,6 +983,8 @@
                 density="compact"
                 variant="text"
                 icon="mdi-close"
+                :title="$t('common.delete')"
+                :aria-label="$t('common.delete')"
                 @click="deleteElementLoad(item.ref)"
               ></v-btn>
               <v-btn
@@ -965,6 +992,8 @@
                 density="compact"
                 variant="text"
                 icon="mdi-close"
+                :title="$t('common.delete')"
+                :aria-label="$t('common.delete')"
                 @click="deleteNodalLoad(item.ref)"
               ></v-btn>
               <v-btn
@@ -972,6 +1001,8 @@
                 density="compact"
                 variant="text"
                 icon="mdi-close"
+                :title="$t('common.delete')"
+                :aria-label="$t('common.delete')"
                 @click="deletePrescribedDisplacement(item.ref)"
               ></v-btn>
             </div>
@@ -1096,7 +1127,14 @@
             />
           </template>
           <template #item.actions="{ item }">
-            <v-btn density="compact" variant="text" icon="mdi-close" @click="deleteMaterial(item.label)"></v-btn>
+            <v-btn
+              density="compact"
+              variant="text"
+              icon="mdi-close"
+              :title="$t('common.delete')"
+              :aria-label="$t('common.delete')"
+              @click="deleteMaterial(item.label)"
+            ></v-btn>
           </template>
         </v-data-table-virtual>
       </v-window-item>
@@ -1253,7 +1291,14 @@
               :title="$t('dialogs.polygonSection.editShape')"
               @click="openModal(PolygonSectionEditor, { label: item.label })"
             ></v-btn>
-            <v-btn density="compact" variant="text" icon="mdi-close" @click="deleteCrossSection(item.label)"></v-btn>
+            <v-btn
+              density="compact"
+              variant="text"
+              icon="mdi-close"
+              :title="$t('common.delete')"
+              :aria-label="$t('common.delete')"
+              @click="deleteCrossSection(item.label)"
+            ></v-btn>
           </template>
         </v-data-table-virtual>
       </v-window-item>
@@ -1360,7 +1405,10 @@
                       v-html="
                         appStore.formatResultHTML(
                           appStore.convertDisplacement(
-                            item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dx])
+                            withoutRoundOff(
+                              item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dx]),
+                              scales.displacement
+                            )
                           )
                         )
                       "
@@ -1382,7 +1430,10 @@
                         appStore.formatResultHTML(
                           appStore.vertical(
                             appStore.convertDisplacement(
-                              item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dz])
+                              withoutRoundOff(
+                                item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Dz]),
+                                scales.displacement
+                              )
                             )
                           )
                         )
@@ -1402,7 +1453,12 @@
                       "
                       class="inline-edit fw pl-1"
                       v-html="
-                        appStore.formatResultHTML(item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Ry]))
+                        appStore.formatResultHTML(
+                          withoutRoundOff(
+                            item.getUnknowns(useProjectStore().solver.loadCases[0], [DofID.Ry]),
+                            scales.rotation
+                          )
+                        )
                       "
                     />
                     <div v-else class="inline-edit fw pl-1" v-html="appStore.formatResultHTML(0)"></div>
@@ -1471,10 +1527,10 @@
                       v-html="
                         appStore.formatResultHTML(
                           nameBeamForce(i) === 'M'
-                            ? appStore.convertMoment(f.value)
+                            ? appStore.convertMoment(withoutRoundOff(f.value, scales.moment))
                             : i % 3 === 1
-                              ? appStore.vertical(appStore.convertForce(f.value))
-                              : appStore.convertForce(f.value)
+                              ? appStore.vertical(appStore.convertForce(withoutRoundOff(f.value, scales.force)))
+                              : appStore.convertForce(withoutRoundOff(f.value, scales.force))
                         )
                       "
                     />
@@ -1504,6 +1560,7 @@
 </template>
 
 <script setup lang="ts">
+import { parseNumberInput } from '@/utils/numberInput';
 import {
   Node,
   Element,
@@ -1550,7 +1607,13 @@ import {
 } from '../utils';
 import { DofID, Beam2D, PrescribedDisplacement } from 'ts-fem';
 import { formatMeasureAsHTML } from '../SVGUtils';
-import { buildResultsTsv, downloadResultsCsv, resultUnitsFromStore } from '../utils/exportResults';
+import {
+  buildResultsTsv,
+  downloadResultsCsv,
+  resultScales,
+  resultUnitsFromStore,
+  withoutRoundOff,
+} from '../utils/exportResults';
 
 import HelpTip from './HelpTip.vue';
 import SupportPicker from './SupportPicker.vue';
@@ -1605,11 +1668,9 @@ const loadPositionRange = (load: BeamConcentratedLoad) => {
 const setLoadPosition = (load: BeamConcentratedLoad, el: HTMLInputElement) => {
   const beam = useProjectStore().solver.domain.elements.get(load.target) as Beam2D | undefined;
   const length = beam ? beam.computeGeo().l : 0;
-  // parseFloat2 reads anything it cannot understand as zero, which would send the load to the
-  // start of the beam; read it the way the other inline boxes do, so nonsense leaves it alone
-  const text = el.value.replace(/\s/g, '').replace(',', '.');
-  const typed = text === '' ? 0 : parseFloat(text);
-  const placed = positionAlongBeam(appStore.convertInverseLength(typed), length, load.values[3]);
+  // What cannot be read - an empty field included - leaves the load where it was, as in the other
+  // inline boxes; positionAlongBeam keeps the current position for NaN.
+  const placed = positionAlongBeam(appStore.convertInverseLength(parseNumberInput(el.value)), length, load.values[3]);
 
   executeModelMutationWithUndo(() => {
     setUnsolved();
@@ -1621,6 +1682,9 @@ const setLoadPosition = (load: BeamConcentratedLoad, el: HTMLInputElement) => {
 
 const projStore = useProjectStore();
 const layoutStore = useLayoutStore();
+
+/** What counts as round-off in the results tables: measured against the solved model, once per solve. */
+const scales = computed(() => resultScales(projStore.solver));
 
 /**
  * The virtual tables work their visible window out from a height they measure once and then learn

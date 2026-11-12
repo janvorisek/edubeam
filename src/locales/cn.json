@@ -371,7 +371,7 @@
     "linkCopied": "链接已复制到剪贴板",
     "copyFailed": "无法自动复制，请使用键盘快捷键。",
     "shortLink": "更短的链接",
-    "shortLinkHint": "长度约为一半。使用旧版 edubeam 的用户需要先更新应用才能打开。"
+    "shortLinkHint": "长度约为一半。使用旧版 EduBeam 的用户需要先更新应用才能打开。"
   },
   "tour": {
     "menu": {
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "欢迎使用 <span class=\"edubeam\">edubeam</span>！ 🚀",
+    "title": "欢迎使用 <span class=\"edubeam\">EduBeam</span>！ 🚀",
     "description": "建模梁、框架和桁架，绘制的同时即可看到内力。",
     "start": "您想如何开始？",
     "showAround": "带我看看",
@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "单元 {element} 必须恰好引用 2 个节点。",
       "elementSameNode": "单元 {element} 的两端引用了同一个节点。",
+      "elementZeroLength": "单元 {element} 长度为零：节点 {start} 和 {end} 位于同一位置。",
       "elementMissingNode": "单元 {element} 引用了不存在的节点 {node}。",
       "elementMissingMaterial": "单元 {element} 引用了不存在的材料 {material}。",
       "elementMissingCrossSection": "单元 {element} 引用了不存在的截面 {crossSection}。",
@@ -568,6 +569,7 @@
     "noMaterialsDefined": "尚未定义材料。",
     "noCrossSectionsDefined": "尚未定义截面。",
     "importFailed": "无法导入该文件。请检查文件格式。",
+    "sessionLoadCasesSkipped": "此 EduBeam 会话包含多个荷载工况，但一次只能打开一个。已打开：{loaded}。未打开：{skipped}。",
     "prescribedDisplacementExists": "该节点已存在位移约束。请先将其删除。",
     "addMaterialFirst": "请先添加材料。",
     "addCrossSectionFirst": "请先添加截面。",

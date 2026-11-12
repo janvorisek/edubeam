@@ -371,7 +371,7 @@
     "linkCopied": "Ссылка скопирована в буфер обмена",
     "copyFailed": "Не удалось скопировать автоматически. Используйте сочетания клавиш.",
     "shortLink": "Короткая ссылка",
-    "shortLinkHint": "Примерно вдвое короче. Тем, у кого старая версия edubeam, нужно сначала обновить приложение, чтобы открыть её."
+    "shortLinkHint": "Примерно вдвое короче. Тем, у кого старая версия EduBeam, нужно сначала обновить приложение, чтобы открыть её."
   },
   "tour": {
     "menu": {
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "Добро пожаловать в <span class=\"edubeam\">edubeam</span>! 🚀",
+    "title": "Добро пожаловать в <span class=\"edubeam\">EduBeam</span>! 🚀",
     "description": "Моделируйте балки, рамы и фермы и смотрите внутренние усилия прямо во время рисования.",
     "start": "С чего начнём?",
     "showAround": "Показать интерфейс",
@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "Элемент {element} должен ссылаться ровно на 2 узла.",
       "elementSameNode": "Элемент {element} ссылается на один и тот же узел на обоих концах.",
+      "elementZeroLength": "Элемент {element} имеет нулевую длину: узлы {start} и {end} находятся в одной точке.",
       "elementMissingNode": "Элемент {element} ссылается на несуществующий узел {node}.",
       "elementMissingMaterial": "Элемент {element} ссылается на несуществующий материал {material}.",
       "elementMissingCrossSection": "Элемент {element} ссылается на несуществующее сечение {crossSection}.",
@@ -568,6 +569,7 @@
     "noMaterialsDefined": "Материалы не определены.",
     "noCrossSectionsDefined": "Сечения не определены.",
     "importFailed": "Не удалось импортировать файл. Проверьте формат файла.",
+    "sessionLoadCasesSkipped": "Этот сеанс EduBeam содержит несколько случаев нагружения, но открыть можно только один. Открыт: {loaded}. Не открыты: {skipped}.",
     "prescribedDisplacementExists": "Для этого узла уже задано перемещение. Сначала удалите его.",
     "addMaterialFirst": "Сначала добавьте материал.",
     "addCrossSectionFirst": "Сначала добавьте сечение.",

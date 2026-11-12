@@ -371,7 +371,7 @@
     "linkCopied": "Tautan disalin ke clipboard",
     "copyFailed": "Tidak dapat menyalin otomatis. Gunakan pintasan keyboard.",
     "shortLink": "Tautan lebih pendek",
-    "shortLinkHint": "Kira-kira setengah panjangnya. Siapa pun yang memakai versi edubeam yang lebih lama harus memperbarui aplikasi sebelum tautan bisa dibuka."
+    "shortLinkHint": "Kira-kira setengah panjangnya. Siapa pun yang memakai versi EduBeam yang lebih lama harus memperbarui aplikasi sebelum tautan bisa dibuka."
   },
   "tour": {
     "menu": {
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "Selamat datang di <span class=\"edubeam\">edubeam</span>! 🚀",
+    "title": "Selamat datang di <span class=\"edubeam\">EduBeam</span>! 🚀",
     "description": "Modelkan balok, portal, dan rangka batang, lalu lihat gaya dalamnya sambil menggambar.",
     "start": "Bagaimana Anda ingin memulai?",
     "showAround": "Ajak saya berkeliling",
@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "Elemen {element} harus merujuk tepat 2 joint.",
       "elementSameNode": "Elemen {element} merujuk joint yang sama di kedua ujungnya.",
+      "elementZeroLength": "Elemen {element} memiliki panjang nol: joint {start} dan {end} berada di titik yang sama.",
       "elementMissingNode": "Elemen {element} merujuk joint {node} yang tidak ada.",
       "elementMissingMaterial": "Elemen {element} merujuk material {material} yang tidak ada.",
       "elementMissingCrossSection": "Elemen {element} merujuk penampang {crossSection} yang tidak ada.",
@@ -568,6 +569,7 @@
     "noMaterialsDefined": "Belum ada material yang didefinisikan.",
     "noCrossSectionsDefined": "Belum ada penampang yang didefinisikan.",
     "importFailed": "File tidak dapat diimpor. Periksa format file.",
+    "sessionLoadCasesSkipped": "Sesi EduBeam ini memiliki beberapa kasus beban, tetapi hanya satu yang dapat dibuka. Dibuka: {loaded}. Tidak dibuka: {skipped}.",
     "prescribedDisplacementExists": "Perpindahan tumpuan sudah ada untuk joint ini. Hapus terlebih dahulu.",
     "addMaterialFirst": "Tambahkan material terlebih dahulu.",
     "addCrossSectionFirst": "Tambahkan penampang terlebih dahulu.",

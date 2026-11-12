@@ -59,7 +59,7 @@ These must always keep loading, with the same results:
 - `?viewer=1` and `?lang=` links, including `lang` codes such as `cn`
 - `project.json` files from every released version
 - the model and settings saved in local storage, so returning users don't lose their work
-- legacy EduBeam XML sessions (`src/utils/loadXmlFile.ts`)
+- sessions of the desktop EduBeam 2.x-3.5 (`.xml`, `src/utils/edubeamSession.ts`, fixtures in `src/tests/fixtures/edubeam-xml/`)
 
 Rules:
 

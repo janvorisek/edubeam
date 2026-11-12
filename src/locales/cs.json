@@ -371,7 +371,7 @@
     "linkCopied": "Odkaz zkopírován do schránky",
     "copyFailed": "Nepodařilo se automaticky zkopírovat. Použijte prosím klávesové zkratky.",
     "shortLink": "Kratší odkaz",
-    "shortLinkHint": "Zhruba poloviční délka. Kdo používá starší verzi aplikace edubeam, musí ji před otevřením odkazu aktualizovat."
+    "shortLinkHint": "Zhruba poloviční délka. Kdo používá starší verzi aplikace EduBeam, musí ji před otevřením odkazu aktualizovat."
   },
   "tour": {
     "menu": {
@@ -396,7 +396,7 @@
     },
     "bottomBar": {
       "title": "Přidávání, odebírání a úprava entit",
-      "description": " Ústředí edubeamu, kde lze jednodušše měnit každý aspekt vaší konstrukce. Od uzlů po prvky, zatížení, materiály a průřezy - je to místo, kde můžete provádět rychlé a komplexní změny."
+      "description": " Ústředí EduBeamu, kde lze jednodušše měnit každý aspekt vaší konstrukce. Od uzlů po prvky, zatížení, materiály a průřezy - je to místo, kde můžete provádět rychlé a komplexní změny."
     },
     "help": {
       "title": "Nápověda",
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "Vítejte v <span class=\"edubeam\">edubeamu</span>! 🚀",
+    "title": "Vítejte v <span class=\"edubeam\">EduBeamu</span>! 🚀",
     "description": "Modelujte nosníky, rámy a příhradové konstrukce a sledujte vnitřní síly už při kreslení.",
     "start": "Jak chcete začít?",
     "showAround": "Provést aplikací",
@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "Prvek {element} musí odkazovat právě na 2 uzly.",
       "elementSameNode": "Prvek {element} má na obou koncích stejný uzel.",
+      "elementZeroLength": "Prvek {element} má nulovou délku: uzly {start} a {end} leží ve stejném bodě.",
       "elementMissingNode": "Prvek {element} odkazuje na neexistující uzel {node}.",
       "elementMissingMaterial": "Prvek {element} odkazuje na neexistující materiál {material}.",
       "elementMissingCrossSection": "Prvek {element} odkazuje na neexistující průřez {crossSection}.",
@@ -568,6 +569,7 @@
     "noMaterialsDefined": "Není definovaný žádný materiál",
     "noCrossSectionsDefined": "Není definovaný žádný průřez",
     "importFailed": "Soubor se nepodařilo importovat. Zkontrolujte prosím formát souboru.",
+    "sessionLoadCasesSkipped": "Tato relace programu EduBeam má několik zatěžovacích stavů, ale otevřít lze jen jeden. Otevřen: {loaded}. Neotevřeny: {skipped}.",
     "prescribedDisplacementExists": "Pro tento uzel již předepsané posunutí existuje. Nejprve jej prosím odstraňte.",
     "addMaterialFirst": "Nejprve prosím přidejte materiál.",
     "addCrossSectionFirst": "Nejprve prosím přidejte průřez.",

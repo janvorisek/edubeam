@@ -27,7 +27,7 @@ const open = ref(true);
 @media (min-width: 1101px) {
   .v-dialog > .v-overlay__content > .v-card.settings-card {
     flex: 0 0 auto;
-    height: min(760px, calc(100vh - 48px));
+    height: min(760px, calc(100dvh - 48px));
   }
 }
 </style>

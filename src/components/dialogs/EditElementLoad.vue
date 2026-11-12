@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="open" max-width="520" attach=".v-application">
-    <v-card>
+    <v-card @keydown="submitsForm($event) && editNodalLoad()">
       <v-card-title> {{ $t('dialogs.editElementLoad.editElementLoad') }} </v-card-title>
       <v-card-subtitle>{{ $t('loadType.' + loadType) }}</v-card-subtitle>
       <v-card-text>
@@ -195,6 +195,7 @@
 </template>
 
 <script setup lang="ts">
+import { submitsForm } from '@/utils/keyboard';
 import { computed, ref, watch } from 'vue';
 import { useProjectStore } from '@/store/project';
 import { closeModal } from 'jenesius-vue-modal';
@@ -209,6 +210,7 @@ import {
 } from 'ts-fem';
 import ElementLoadPreview from '../ElementLoadPreview.vue';
 import { deviceHasHover } from '@/utils/pointer';
+import { drawableBeam } from '@/utils/drawableBeam';
 import { formatMeasureAsHTML } from '@/SVGUtils';
 
 type EditableElementLoad =
@@ -224,9 +226,9 @@ const props = defineProps<{
 const open = ref(true);
 const valid = ref(false);
 
-const target = computed(() => {
-  return useProjectStore().solver.domain.elements.get(load.value.target)!;
-});
+// Missing when the load sits on an element whose node is gone; its values stay editable, but there
+// is no length to check a position against or to preview the load on.
+const target = computed(() => drawableBeam(projectStore.solver.domain, load.value.target));
 
 const elementd = computed(() => {
   return useProjectStore().solver.loadCases[0].elementLoadList[props.index].target;
@@ -271,7 +273,7 @@ const elementLCS = ref(false);
 
 // The position is typed in the display length unit, so the element length is converted to match
 const minMax = (v: unknown) =>
-  rangeRule(0, appStore.convertLength(target.value.computeGeo().l), appStore.units.Length)(v);
+  !target.value || rangeRule(0, appStore.convertLength(target.value.computeGeo().l), appStore.units.Length)(v);
 
 const inverseIntensity = computed(() =>
   loadType.value === 'udl' ? appStore.convertInverseForceDistance : appStore.convertInverseForce
@@ -294,6 +296,8 @@ const realTbt = computed(() => appStore.convertInverseTemperature(parseFloat2(lo
 
 const previewLoad = computed(() => {
   const domain = projectStore.solver.domain;
+
+  if (!target.value) return null;
 
   if (loadType.value === 'udl') {
     return new BeamElementUniformEdgeLoad(load.value.target, domain, [realFx.value, realFz.value], elementLCS.value);

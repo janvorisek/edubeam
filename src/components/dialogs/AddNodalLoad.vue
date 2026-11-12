@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="open" max-width="420">
-    <v-card>
+    <v-card @keydown="submitsForm($event) && addNodalLoad()">
       <v-card-title class="d-flex align-center">
         <span>{{ $t('dialogs.addNodalLoad.addNewNodalLoad') }}</span>
         <HelpTip topic="nodalLoads" class="ml-1" />
@@ -101,6 +101,7 @@
 </template>
 
 <script setup lang="ts">
+import { submitsForm } from '@/utils/keyboard';
 import HelpTip from '../HelpTip.vue';
 import { ref, computed, onMounted, watch } from 'vue';
 import { useProjectStore } from '../../store/project';

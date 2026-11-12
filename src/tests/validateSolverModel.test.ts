@@ -329,3 +329,54 @@ describe('hinge mechanisms', () => {
     }
   });
 });
+
+/**
+ * A beam of zero length cannot be solved, and the solver said so in the wrong words: an unstable
+ * structure, or a hinge mechanism at the next node. Moving a node onto the other end of its beam -
+ * clearing a coordinate field does it easily - showed nothing but that misleading banner.
+ */
+describe('validateSolverModel zero length beams', () => {
+  it('names the beam and its two nodes when they are at the same point', () => {
+    const ls = buildBeam([DofID.Dx, DofID.Dz, DofID.Ry]);
+    ls.domain.createNode('3', [3, 0, 0], []);
+    ls.domain.createBeam2D('B2', ['2', '3'], 'm', 'cs');
+
+    const diagnostics = validateSolverModel(ls);
+    const issue = diagnostics.errors.find((e) => e.code === 'ELEMENT_ZERO_LENGTH');
+
+    expect(issue?.message).toBe('Element B2 has zero length: nodes 2 and 3 are at the same point.');
+    expect(issue?.nodes).toEqual(['2', '3']);
+    // and nothing the broken beam makes up on top of it, such as a mechanism
+    expect(codes(diagnostics.errors)).toEqual(['ELEMENT_ZERO_LENGTH']);
+  });
+
+  it('takes a beam with the same node at both ends as an error, not a warning', () => {
+    const ls = buildBeam([DofID.Dx, DofID.Dz, DofID.Ry]);
+    ls.domain.createBeam2D('B2', ['2', '2'], 'm', 'cs');
+
+    const diagnostics = validateSolverModel(ls);
+
+    expect(codes(diagnostics.errors)).toContain('ELEMENT_DUPLICATE_NODE_REFERENCE');
+    expect(codes(diagnostics.warnings)).not.toContain('ELEMENT_DUPLICATE_NODE_REFERENCE');
+    expect(codes(diagnostics.errors)).not.toContain('ELEMENT_ZERO_LENGTH');
+  });
+
+  it('leaves a short beam alone', () => {
+    const ls = buildBeam([DofID.Dx, DofID.Dz, DofID.Ry]);
+    ls.domain.createNode('3', [3.001, 0, 0], []);
+    ls.domain.createBeam2D('B2', ['2', '3'], 'm', 'cs');
+
+    expect(codes(validateSolverModel(ls).errors)).not.toContain('ELEMENT_ZERO_LENGTH');
+  });
+});
+
+describe('validateSolverModel messages', () => {
+  it('names an empty node label as unknown rather than leaving a gap', () => {
+    const ls = buildBeam([DofID.Dx, DofID.Dz, DofID.Ry]);
+    ls.domain.createBeam2D('B2', ['2', ''], 'm', 'cs');
+
+    const issue = validateSolverModel(ls).errors.find((e) => e.code === 'ELEMENT_MISSING_NODE');
+
+    expect(issue?.message).toBe('Element B2 references missing node ?.');
+  });
+});

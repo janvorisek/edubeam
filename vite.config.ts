@@ -62,8 +62,8 @@ export default defineConfig({
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
       },
       manifest: {
-        name: 'edubeam',
-        short_name: 'edubeam',
+        name: 'EduBeam',
+        short_name: 'EduBeam',
         description:
           'Explore 2D structural analysis directly in your web browser – tailored for students and educators alike. Solve beam and truss structures.',
         theme_color: '#111133',

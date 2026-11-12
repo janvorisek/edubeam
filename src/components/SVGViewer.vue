@@ -53,7 +53,7 @@ import { selectionSubtitle } from '@/utils/selectionDetails';
 import { boundsFromPoints } from '@/utils/fitBounds';
 import { placePopupNearAnchor, type AnchorRect } from '@/utils/popupPlacement';
 import { deviceCanTouch, deviceHasHover } from '@/utils/pointer';
-import { hasShortcutModifier } from '@/utils/keyboard';
+import { forKeyboard, hasShortcutModifier, isApplePlatform } from '@/utils/keyboard';
 import {
   Node,
   DofID,
@@ -511,6 +511,7 @@ const { ctrl_a, ctrl_c, ctrl_v, meta_a, meta_c, meta_v } = useMagicKeys({
 });
 
 // Cmd on a Mac does what Ctrl does elsewhere.
+const APPLE_KEYBOARD = isApplePlatform();
 const selectAllKeys = computed(() => ctrl_a.value || meta_a.value);
 const copyKeys = computed(() => ctrl_c.value || meta_c.value);
 const pasteKeys = computed(() => ctrl_v.value || meta_v.value);
@@ -2678,7 +2679,7 @@ defineExpose({ centerContent, fitContent });
         </template>
         <template #label>
           <span class="label">{{ $t('common.copy') }}</span>
-          <span class="ml-auto text-right" style="font-size: 10px">Ctrl + C</span>
+          <span class="ml-auto text-right" style="font-size: 10px">{{ forKeyboard('Ctrl + C', APPLE_KEYBOARD) }}</span>
         </template>
       </context-menu-item>
       <context-menu-item :disabled="!useClipboardStore().isAnythingInClipboard()" @click="paste()">
@@ -2687,7 +2688,7 @@ defineExpose({ centerContent, fitContent });
         </template>
         <template #label>
           <span class="label">{{ $t('common.paste') }}</span>
-          <span class="ml-auto text-right" style="font-size: 10px">Ctrl + V</span>
+          <span class="ml-auto text-right" style="font-size: 10px">{{ forKeyboard('Ctrl + V', APPLE_KEYBOARD) }}</span>
         </template>
       </context-menu-item>
       <context-menu-item
@@ -2736,6 +2737,7 @@ defineExpose({ centerContent, fitContent });
         >
           {{ $t('solveDiagnostics.blockedTitle') }}
         </v-chip>
+        <!-- Close labels are keys, not texts: Vuetify translates them itself, through the i18n adapter. -->
         <v-alert
           v-else-if="solveBanner"
           :model-value="true"
@@ -2743,7 +2745,7 @@ defineExpose({ centerContent, fitContent });
           density="compact"
           :type="solveBanner.type"
           closable
-          :close-label="$t('solveDiagnostics.collapseErrors')"
+          close-label="solveDiagnostics.collapseErrors"
           @click:close="collapsedErrorsKey = errorsKey"
           @mouseenter="holdFreeMotion = true"
           @mouseleave="holdFreeMotion = false"
@@ -2776,7 +2778,7 @@ defineExpose({ centerContent, fitContent });
           density="compact"
           type="warning"
           closable
-          :close-label="$t('solveDiagnostics.dismissWarnings')"
+          close-label="solveDiagnostics.dismissWarnings"
           @click:close="projectStore.dismissWarnings()"
         >
           <template #text>
@@ -3329,6 +3331,11 @@ defineExpose({ centerContent, fitContent });
 </template>
 
 <style lang="scss" scoped>
+/* A long press opens the drawing's menu; iOS would otherwise also pop up its own callout over it. */
+.svg-viewer {
+  -webkit-touch-callout: none;
+}
+
 /*
  * The display options float over the top of the viewer, where the model's messages sit too.
  * Only the panels themselves take the pointer; the gaps around them, which on a phone fall

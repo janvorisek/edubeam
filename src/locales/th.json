@@ -371,7 +371,7 @@
     "linkCopied": "คัดลอกลิงก์ไปยังคลิปบอร์ดแล้ว",
     "copyFailed": "คัดลอกอัตโนมัติไม่สำเร็จ โปรดคัดลอกด้วยแป้นพิมพ์ลัด",
     "shortLink": "ลิงก์ที่สั้นกว่า",
-    "shortLinkHint": "สั้นลงประมาณครึ่งหนึ่ง ผู้ที่ใช้ edubeam เวอร์ชันเก่าต้องอัปเดตแอปก่อนจึงจะเปิดได้"
+    "shortLinkHint": "สั้นลงประมาณครึ่งหนึ่ง ผู้ที่ใช้ EduBeam เวอร์ชันเก่าต้องอัปเดตแอปก่อนจึงจะเปิดได้"
   },
   "tour": {
     "menu": {
@@ -445,7 +445,7 @@
     }
   },
   "welcome": {
-    "title": "ยินดีต้อนรับสู่ <span class=\"edubeam\">edubeam</span>! 🚀",
+    "title": "ยินดีต้อนรับสู่ <span class=\"edubeam\">EduBeam</span>! 🚀",
     "description": "สร้างโมเดลคาน โครงข้อแข็ง และโครงถัก แล้วดูแรงภายในได้ทันทีขณะวาด",
     "start": "คุณอยากเริ่มอย่างไร?",
     "showAround": "พาชมแอป",
@@ -513,6 +513,7 @@
     "issues": {
       "elementNodeCount": "เอลิเมนต์ {element} ต้องอ้างอิงโหนดจำนวน 2 โหนดพอดี",
       "elementSameNode": "เอลิเมนต์ {element} อ้างอิงโหนดเดียวกันที่ปลายทั้งสองด้าน",
+      "elementZeroLength": "เอลิเมนต์ {element} มีความยาวเป็นศูนย์ เพราะโหนด {start} และ {end} อยู่ที่ตำแหน่งเดียวกัน",
       "elementMissingNode": "เอลิเมนต์ {element} อ้างอิงโหนด {node} ที่ไม่มีอยู่",
       "elementMissingMaterial": "เอลิเมนต์ {element} อ้างอิงวัสดุ {material} ที่ไม่มีอยู่",
       "elementMissingCrossSection": "เอลิเมนต์ {element} อ้างอิงหน้าตัด {crossSection} ที่ไม่มีอยู่",
@@ -568,6 +569,7 @@
     "noMaterialsDefined": "ไม่มีการกำหนดวัสดุ",
     "noCrossSectionsDefined": "ไม่มีการกำหนดหน้าตัด",
     "importFailed": "ไม่สามารถนำเข้าไฟล์ได้ โปรดตรวจสอบรูปแบบไฟล์",
+    "sessionLoadCasesSkipped": "เซสชัน EduBeam นี้มีหลายกรณีแรงกระทำ แต่เปิดได้ครั้งละหนึ่งกรณีเท่านั้น เปิดแล้ว: {loaded} ไม่ได้เปิด: {skipped}",
     "prescribedDisplacementExists": "โหนดนี้มีการกระจัดที่กำหนดอยู่แล้ว โปรดลบออกก่อน",
     "addMaterialFirst": "โปรดเพิ่มวัสดุก่อน",
     "addCrossSectionFirst": "โปรดเพิ่มหน้าตัดก่อน",

@@ -264,11 +264,11 @@ import {
   canCopyImageToClipboard,
   clampExportSide,
   minimumExportSide,
-  copyBlobToClipboard,
-  downloadBlob,
+  copyImageToClipboard,
   createExportRenderer,
   type Overflow,
 } from '@/utils/exportImage';
+import { downloadBlob } from '@/utils/download';
 
 const projectStore = useProjectStore();
 const viewerStore = useViewerStore();
@@ -1200,7 +1200,7 @@ const saveVector = () =>
 
 const copy = () =>
   run(async () => {
-    await copyBlobToClipboard(await render());
+    await copyImageToClipboard(render());
     notify('exportImage.copied');
   });
 </script>

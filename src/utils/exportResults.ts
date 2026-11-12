@@ -8,6 +8,7 @@
 import { Beam2D, DofID, type LinearStaticSolver, type Node } from 'ts-fem';
 import type { Matrix } from 'mathjs';
 import { axisLetters, vertical } from './axisConvention';
+import { downloadBlob } from './download';
 
 /**
  * Display units to render results in.
@@ -74,6 +75,54 @@ const readReaction = (solver: LinearStaticSolver, node: Node, dof: DofID) => {
   return 'get' in reactions.values ? (reactions.values as unknown as Matrix).get([index]) : reactions.values[index];
 };
 
+/**
+ * Below this share of the largest value of its kind, a result is floating-point round-off, not a
+ * result: a symmetric structure's midspan node showed a sideways displacement of 8.6e-18 m beside
+ * deflections of 1e-2. A double holds about 16 digits; nothing twelve orders under the model's own
+ * scale is a value anyone computed on purpose.
+ */
+export const ROUND_OFF = 1e-12;
+
+/** The largest magnitude of each kind of result in the solved model, in SI. */
+export interface ResultScales {
+  displacement: number;
+  rotation: number;
+  force: number;
+  moment: number;
+}
+
+const NO_SCALES: ResultScales = { displacement: 0, rotation: 0, force: 0, moment: 0 };
+
+export const resultScales = (solver: LinearStaticSolver): ResultScales => {
+  if (!solver.loadCases[0].solved) return NO_SCALES;
+
+  const scales = { ...NO_SCALES };
+  const grow = (kind: keyof ResultScales, value: number | null) => {
+    if (value !== null && Number.isFinite(value)) scales[kind] = Math.max(scales[kind], Math.abs(value));
+  };
+
+  for (const node of solver.domain.nodes.values()) {
+    grow('displacement', readUnknown(solver, node, DofID.Dx));
+    grow('displacement', readUnknown(solver, node, DofID.Dz));
+    grow('rotation', readUnknown(solver, node, DofID.Ry));
+    grow('force', readReaction(solver, node, DofID.Dx));
+    grow('force', readReaction(solver, node, DofID.Dz));
+    grow('moment', readReaction(solver, node, DofID.Ry));
+  }
+
+  for (const element of solver.domain.elements.values()) {
+    if (!(element instanceof Beam2D)) continue;
+
+    const endForces = element.computeEndForces(solver.loadCases[0]).toArray() as number[];
+    endForces.forEach((value, i) => grow(i % 3 === 2 ? 'moment' : 'force', value));
+  }
+
+  return scales;
+};
+
+/** `value`, or zero when it is round-off against the largest value of its kind. */
+export const withoutRoundOff = (value: number, scale: number) => (Math.abs(value) <= ROUND_OFF * scale ? 0 : value);
+
 /** RFC 4180 quoting: only when needed, and doubling any embedded quote. */
 const csvCell = (value: string | number | null) => {
   if (value === null) return '';
@@ -105,20 +154,24 @@ export const buildNodeResultRows = (solver: LinearStaticSolver, units: ResultUni
     ],
   ];
 
+  const scales = resultScales(solver);
+
   for (const node of sortByLabel([...solver.domain.nodes.values()])) {
     const displacement = (dof: DofID) => {
       const value = readUnknown(solver, node, dof);
 
-      return value === null ? null : units.displacement(value);
+      return value === null ? null : units.displacement(withoutRoundOff(value, scales.displacement));
     };
     const reaction = (dof: DofID) => {
-      const value = readReaction(solver, node, dof);
+      const raw = readReaction(solver, node, dof);
 
-      if (value === null) return null;
+      if (raw === null) return null;
+      const value = withoutRoundOff(raw, dof === DofID.Ry ? scales.moment : scales.force);
       if (dof === DofID.Dz) return vertical(units.force(value));
 
       return dof === DofID.Ry ? units.moment(value) : units.force(value);
     };
+    const rotation = readUnknown(solver, node, DofID.Ry);
 
     const dz = displacement(DofID.Dz);
 
@@ -129,7 +182,7 @@ export const buildNodeResultRows = (solver: LinearStaticSolver, units: ResultUni
       displacement(DofID.Dx),
       dz === null ? null : vertical(dz),
       // Rotations are an angle, not a length, so they bypass the length conversion.
-      readUnknown(solver, node, DofID.Ry),
+      rotation === null ? null : withoutRoundOff(rotation, scales.rotation),
       ...REACTION_DOFS.map(reaction),
     ]);
   }
@@ -154,15 +207,18 @@ export const buildElementResultRows = (solver: LinearStaticSolver, units: Result
     ],
   ];
 
+  const scales = resultScales(solver);
+
   for (const element of sortByLabel([...solver.domain.elements.values()])) {
     if (!(element instanceof Beam2D)) continue;
 
     const endForces = element.computeEndForces(loadCase).toArray() as number[];
     // computeEndForces returns [N, V, M] at the start node followed by [N, V, M] at the end, with V
     // along the local vertical axis.
-    const converted = endForces.map((value, i) => {
-      if (i % 3 === 2) return units.moment(value);
+    const converted = endForces.map((raw, i) => {
+      if (i % 3 === 2) return units.moment(withoutRoundOff(raw, scales.moment));
 
+      const value = withoutRoundOff(raw, scales.force);
       return i % 3 === 1 ? vertical(units.force(value)) : units.force(value);
     });
 
@@ -183,18 +239,7 @@ export const downloadResultsCsv = (
 ) => {
   // The BOM makes Excel read the file as UTF-8, which matters for non-Latin node labels.
   const blob = new Blob([`\ufeff${buildResultsCsv(solver, units)}`], { type: 'text/csv;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement('a');
-
-  anchor.href = url;
-  anchor.download = filename;
-  anchor.style.display = 'none';
-
-  document.body.appendChild(anchor);
-  anchor.click();
-  document.body.removeChild(anchor);
-
-  URL.revokeObjectURL(url);
+  downloadBlob(blob, filename);
 };
 
 /** Tab separated, because that is what pastes straight into spreadsheet cells. */

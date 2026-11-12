@@ -4,6 +4,7 @@ import AddNodalLoadDialog from './dialogs/AddNodalLoad.vue';
 import { useProjectStore } from '@/store/project';
 import { useAppStore } from '@/store/app';
 import { deleteNode, nodeLcsAngle, setNodeLcsAngle, toggleSet } from '@/utils';
+import { parseNumberInput } from '@/utils/numberInput';
 import { computed, ref, watch } from 'vue';
 import SupportPicker from './SupportPicker.vue';
 import { setSupportType } from '@/utils/supports';
@@ -33,7 +34,11 @@ const angle = computed(() => appStore.angle(nodeLcsAngle(node.value)));
  */
 watch([node, angle], () => (lcs.value = angle.value.toString()), { immediate: true });
 
-const lcsChange = () => setNodeLcsAngle(node.value, appStore.angle(parseFloat(lcs.value)));
+const lcsChange = () => {
+  const degrees = parseNumberInput(lcs.value);
+  if (Number.isFinite(degrees)) setNodeLcsAngle(node.value, appStore.angle(degrees));
+  else lcs.value = angle.value.toString();
+};
 
 const removeNode = () => {
   if (projectStore.selection.type !== 'node' || projectStore.selection.label === null) return;

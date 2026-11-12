@@ -136,7 +136,7 @@ const open = ref(true);
 const newElementFrom = ref('');
 const newElementTo = ref('');
 /** End releases of the new element, in the order of the From / To nodes above. */
-const newElementHinges = ref([false, false]);
+const newElementHinges = ref<[boolean, boolean]>([false, false]);
 const newElementMat = ref('');
 const newElementCS = ref('');
 
@@ -161,12 +161,17 @@ const addElement = () => {
     return alert(i18n.global.t('warnings.selectMaterialAndCrossSection'));
   }
 
-  if (String(newElementFrom.value) === String(newElementTo.value)) {
+  const domain = useProjectStore().solver.domain;
+  const from = String(newElementFrom.value);
+  const to = String(newElementTo.value);
+
+  // Both ends must be nodes of the model. With fewer than two nodes the selects start empty, and
+  // picking only one of them made an element ending at node "", which nothing could draw.
+  if (from === to || !domain.nodes.has(from) || !domain.nodes.has(to)) {
     return alert(i18n.global.t('validators.sameNodes'));
   }
 
   useProjectStore().solver.loadCases[0].solved = false;
-  const domain = useProjectStore().solver.domain;
 
   //if (domain.elements.has(999)) return alert("Element id 999 already exists");
 
@@ -177,9 +182,8 @@ const addElement = () => {
   }
 
   executeModelMutationWithUndo(() => {
-    domain.createBeam2D(nid, [newElementFrom.value, newElementTo.value], newElementMat.value, newElementCS.value, [
-      ...newElementHinges.value,
-    ]);
+    const [startHinge, endHinge] = newElementHinges.value;
+    domain.createBeam2D(nid, [from, to], newElementMat.value, newElementCS.value, [startHinge, endHinge]);
     domain.elements = new Map(domain.elements);
   });
 

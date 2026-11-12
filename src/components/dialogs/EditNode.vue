@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="open" max-width="420">
-    <v-card>
+    <v-card @keydown="submitsForm($event) && edit()">
       <v-card-title> {{ $t('dialogs.editNode.editNode') }} </v-card-title>
 
       <v-card-text>
@@ -121,6 +121,7 @@
 </template>
 
 <script setup lang="ts">
+import { submitsForm } from '@/utils/keyboard';
 import { onMounted, ref, computed } from 'vue';
 import { useProjectStore } from '../../store/project';
 import { Node } from 'ts-fem';
@@ -132,6 +133,7 @@ import {
   executeModelMutationWithUndo,
   nodeLcsAngle,
   parseFloat2,
+  rangeRule,
   setUnsolved,
   toggleSet,
 } from '@/utils';
@@ -159,18 +161,10 @@ const newNodeX = ref('0');
 const newNodeZ = ref('0');
 const nodalAngle = ref('0');
 
-const angleVal = computed(() => {
-  const val = parseFloat(nodalAngle.value);
-  return isNaN(val) ? 0 : val;
-});
+const angleVal = computed(() => parseFloat2(nodalAngle.value));
 
-const minMax = (v) => {
-  const val = parseFloat(v);
-  if (val < -180 || val > 180) {
-    return 'Enter value between -180 and 180.';
-  }
-  return true;
-};
+// A rotation, so within a half turn either way; in the same words as every other range.
+const minMax = rangeRule(-180, 180, '°');
 
 onMounted(() => {
   nodalAngle.value = appStore.angle(nodeLcsAngle(node.value)).toString();
@@ -193,7 +187,7 @@ const edit = () => {
   executeModelMutationWithUndo(() => {
     setUnsolved();
 
-    applyNodeLcsAngle(node.value, appStore.angle(parseFloat(nodalAngle.value)));
+    applyNodeLcsAngle(node.value, appStore.angle(parseFloat2(nodalAngle.value)));
 
     node.value.coords = [x, 0, z];
     node.value.bcs = new Set(tmpNode.value.bcs);

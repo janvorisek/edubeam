@@ -60,7 +60,7 @@
     "@types/node": "^25.9.8",
     "@types/webfontloader": "^1.6.38",
     "@typescript-eslint/parser": "^8.71.0",
-    "@vitejs/plugin-vue": "^6.0.9",
+    "@vitejs/plugin-vue": "^6.0.10",
     "@vitest/ui": "^4.1.11",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.9.0",

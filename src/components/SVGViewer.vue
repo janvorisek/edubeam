@@ -81,6 +81,7 @@ import { formatMeasureAsHTML } from '../SVGUtils';
 import { snapToGrid, type LengthDisplay } from '@/utils/grid';
 
 import Selection from './Selection.vue';
+import SVGElementHandle from './svg/ElementHandle.vue';
 
 import { useLayoutStore } from '@/store/layout';
 import { EventType, eventBus } from '../EventBus';
@@ -2992,10 +2993,6 @@ defineExpose({ centerContent, fitContent });
               :convert-moment="appStore.convertMoment"
               :font-size="viewerStore.fontSize"
               :number-format="appStore.numberFormatter"
-              @elementmousemove="onElementHover($event, element)"
-              @elementresultsmousemove="onElementHover($event, element, false)"
-              @mouseleave="hideTooltip"
-              @elementpointerup="onElementClick($event, element)"
             />
           </g>
 
@@ -3024,8 +3021,20 @@ defineExpose({ centerContent, fitContent });
               :convert-moment="appStore.convertMoment"
               :font-size="viewerStore.fontSize"
               :number-format="appStore.numberFormatter"
-              @elementmousemove="onElementHover($event, element)"
               @elementresultsmousemove="onElementHover($event, element, false)"
+              @mouseleave="hideTooltip"
+              @elementpointerup="onElementClick($event, element)"
+            />
+          </g>
+
+          <!-- The elements' hit strokes, above every diagram so a member stays hoverable where the
+               diagram of another one is drawn over it; loads and nodes still come after. -->
+          <g class="element-handles">
+            <SVGElementHandle
+              v-for="(element, index) in projectStore.beams"
+              :key="`element-handle-${index}`"
+              :element="element"
+              @elementmousemove="onElementHover($event, element)"
               @mouseleave="hideTooltip"
               @elementpointerup="onElementClick($event, element)"
             />
@@ -3464,9 +3473,11 @@ defineExpose({ centerContent, fitContent });
       stroke: black;
       stroke-width: 2px;
 
+      // Narrower than the other handles: it lies above the diagrams, and the band it covers is
+      // taken from hovering the diagram along the member.
       &.handle {
         cursor: pointer;
-        stroke-width: 24px;
+        stroke-width: 16px;
         stroke: transparent;
       }
 
@@ -3475,7 +3486,9 @@ defineExpose({ centerContent, fitContent });
       }
     }
 
-    &:hover {
+    // The copy HoveredElement draws on top; the element's own group never has the pointer, as its
+    // hit stroke lies in a layer above the diagrams.
+    &.hovered {
       & polyline.drawable {
         stroke: black;
         stroke-width: 5px;
@@ -3772,10 +3785,13 @@ defineExpose({ centerContent, fitContent });
   .svg-viewer :deep(*) {
     .element-load.load-1d polygon.handle,
     .element-load.load-1d path.handle,
-    .element.element-1d polyline.handle,
     .node polyline.handle,
     .nodal-load polyline.handle {
       stroke-width: 32px;
+    }
+
+    .element.element-1d polyline.handle {
+      stroke-width: 26px;
     }
 
     .nodal-load polyline.handle.moment {

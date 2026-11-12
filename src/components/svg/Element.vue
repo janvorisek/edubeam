@@ -592,7 +592,7 @@ const forces = computed((): Diagrams => {
   return ret;
 });
 
-const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elementpointerup']);
+const emit = defineEmits(['elementresultsmousemove', 'elementpointerup']);
 </script>
 
 <template>
@@ -868,15 +868,6 @@ const emit = defineEmits(['elementmousemove', 'elementresultsmousemove', 'elemen
           {{ element.label }}
         </text>
       </g>
-
-      <polyline
-        :points="elementCoords"
-        vector-effect="non-scaling-stroke"
-        class="handle"
-        :data-element-id="element.label"
-        @mousemove="emit('elementmousemove', $event, element)"
-        @pointerup="emit('elementpointerup', $event)"
-      />
     </template>
   </g>
 </template>

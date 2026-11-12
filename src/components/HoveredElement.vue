@@ -48,7 +48,7 @@ const highlightStyle = computed(() => (props.diagramStyle ? { ...props.diagramSt
   <g v-if="element">
     <SVGElement
       :key="`element-geometry-${element.label}`"
-      class="pointer-events-none"
+      class="pointer-events-none hovered"
       :class="{ selected }"
       :show-geometry="true"
       :show-results="false"

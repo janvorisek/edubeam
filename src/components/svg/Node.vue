@@ -244,6 +244,13 @@ const getRotSupportAngle = (node: Node) => {
 };
 
 const emit = defineEmits(['nodemousemove', 'nodepointerdown', 'nodepointerup', 'nodedefomousemove']);
+
+/*
+ * The label and the reaction values are `pointer-events-none`: they only show, and let the pointer
+ * through to the node and the elements below. WebKit hit-tests text this small in model units by a
+ * box far larger than the glyphs, which made a dead spot over the members around a labelled node.
+ * (Here rather than in the template, where a comment would be copied into every exported SVG.)
+ */
 </script>
 
 <template>
@@ -333,7 +340,7 @@ const emit = defineEmits(['nodemousemove', 'nodepointerdown', 'nodepointerup', '
         Math.abs(getReaction(node, DofID.Dz)) > 1e-32
       "
       data-fit-ignore="results"
-      class="reaction"
+      class="reaction pointer-events-none"
       :font-size="fontSize / scale"
       font-weight="normal"
       text-anchor="end"
@@ -368,7 +375,7 @@ const emit = defineEmits(['nodemousemove', 'nodepointerdown', 'nodepointerup', '
         Math.abs(getReaction(node, DofID.Dx)) > 1e-32
       "
       data-fit-ignore="results"
-      class="reaction"
+      class="reaction pointer-events-none"
       :font-size="fontSize / scale"
       font-weight="normal"
       :text-anchor="getReaction(node, DofID.Dx) > 0 ? 'end' : 'start'"
@@ -402,7 +409,7 @@ const emit = defineEmits(['nodemousemove', 'nodepointerdown', 'nodepointerup', '
         Math.abs(getReaction(node, DofID.Ry)) > 1e-32
       "
       data-fit-ignore="results"
-      class="reaction"
+      class="reaction pointer-events-none"
       :font-size="fontSize / scale"
       font-weight="normal"
       text-anchor="start"
@@ -430,6 +437,7 @@ const emit = defineEmits(['nodemousemove', 'nodepointerdown', 'nodepointerup', '
 
     <g
       v-if="showLabel"
+      class="pointer-events-none"
       :transform="`translate(${(-12 - (node.label.toString().length - 1) * 2) / scale}, ${-12 / scale})`"
     >
       <circle

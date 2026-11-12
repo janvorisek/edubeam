@@ -61,6 +61,16 @@
           inset
           class="mt-3"
         />
+        <v-switch
+          v-model="appStore.shareLayers"
+          :label="$t('sharing.shareLayers')"
+          :hint="$t('sharing.shareLayersHint')"
+          persistent-hint
+          color="primary"
+          density="compact"
+          inset
+          class="mt-1"
+        />
       </v-card-text>
       <v-divider />
       <v-card-actions class="share-actions d-flex flex-wrap">
@@ -87,6 +97,8 @@
 </template>
 
 <script setup lang="ts">
+import { useViewerStore } from '@/store/viewer';
+import { encodeLayers } from '@/utils/viewLayers';
 import HelpTip from '../HelpTip.vue';
 import { computed, ref } from 'vue';
 import { closeModal } from 'jenesius-vue-modal';
@@ -99,6 +111,7 @@ import { deviceHasHover } from '@/utils/pointer';
 const open = ref(true);
 const appStore = useAppStore();
 const projectStore = useProjectStore();
+const viewerStore = useViewerStore();
 
 // The model as it was when the dialog opened; the switch only changes how it is written.
 const model = serializeModel(projectStore.solver, projectStore.dimensions);
@@ -108,6 +121,7 @@ const val = computed(() => {
   // Plain is the format every copy of the app reads, so it is also the fallback.
   const param = (appStore.shortShareLinks && toShareParam(model)) || model;
   modelURL.searchParams.set('model', param);
+  if (appStore.shareLayers) modelURL.searchParams.set('show', encodeLayers(viewerStore));
 
   return modelURL.toString();
 });

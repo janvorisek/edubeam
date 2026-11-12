@@ -371,7 +371,9 @@
     "linkCopied": "Link skopiowany do schowka",
     "copyFailed": "Nie udało się skopiować automatycznie. Użyj skrótów klawiaturowych.",
     "shortLink": "Krótszy link",
-    "shortLinkHint": "Mniej więcej o połowę krótszy. Osoby ze starszą wersją EduBeam muszą najpierw zaktualizować aplikację, aby go otworzyć."
+    "shortLinkHint": "Mniej więcej o połowę krótszy. Osoby ze starszą wersją EduBeam muszą najpierw zaktualizować aplikację, aby go otworzyć.",
+    "shareLayers": "Pokaż to, co widzę",
+    "shareLayersHint": "Link otworzy się z wykresami, obciążeniami i etykietami, które masz włączone."
   },
   "tour": {
     "menu": {

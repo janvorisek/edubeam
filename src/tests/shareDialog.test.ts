@@ -1,12 +1,15 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { mount } from '@vue/test-utils';
+import { createApp } from 'vue';
 import { createPinia, setActivePinia } from 'pinia';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { createVuetify } from 'vuetify';
 import * as components from 'vuetify/components';
 import { DofID } from 'ts-fem';
 import { i18n } from '@/plugins/i18n';
 import Share from '@/components/dialogs/Share.vue';
 import { useAppStore } from '@/store/app';
+import { useViewerStore } from '@/store/viewer';
 import { useProjectStore } from '@/store/project';
 import { fromShareParam, serializeModel } from '@/utils/serializeModel';
 
@@ -49,22 +52,61 @@ describe('the share dialog', () => {
     build();
   });
 
-  it('gives the plain link unless a shorter one is chosen', async () => {
+  it('gives the shorter link by default, carrying the same model', async () => {
+    await openShare();
+
+    const store = useProjectStore();
+    const plain = serializeModel(store.solver, store.dimensions);
+    const short = sharedParam();
+
+    expect(short.length).toBeLessThan(plain.length);
+    expect(fromShareParam(short)).toBe(plain);
+  });
+
+  it('gives the plain link, which every version ever released opens, when turned off', async () => {
+    useAppStore().shortShareLinks = false;
     await openShare();
 
     const store = useProjectStore();
     expect(sharedParam()).toBe(serializeModel(store.solver, store.dimensions));
   });
 
-  it('gives a shorter link carrying the same model when chosen', async () => {
+  it('carries the layers the sharer has on only when asked to', async () => {
+    const viewer = useViewerStore();
+    Object.assign(viewer, { showBendingMoment: true, showReactions: true, showLoads: true, showShearForce: false });
+    Object.assign(viewer, { showNormalForce: false, showDeformedShape: false, showSupports: true });
+    Object.assign(viewer, { showNodeLabels: false, showElementLabels: false });
     await openShare();
-    const plain = sharedParam();
 
-    useAppStore().shortShareLinks = true;
-    await new Promise((r) => setTimeout(r, 0));
+    const link = () => new URL(document.querySelector<HTMLTextAreaElement>('.share-textarea textarea')!.value);
+    const settle = () => new Promise((r) => setTimeout(r, 0));
+    expect(link().searchParams.has('show')).toBe(false);
 
-    const short = sharedParam();
-    expect(short.length).toBeLessThan(plain.length);
-    expect(fromShareParam(short)).toBe(plain);
+    useAppStore().shareLayers = true;
+    await settle();
+    expect(link().searchParams.get('show')).toBe('MRLS');
+
+    useAppStore().shareLayers = false;
+    await settle();
+    expect(link().searchParams.has('show')).toBe(false);
+  });
+
+  it('keeps what a returning user has saved, and gives a new one short links', () => {
+    // Pinia applies plugins once it is installed into an app, so the store is made inside one.
+    const persisted = () => {
+      const pinia = createPinia();
+      pinia.use(piniaPluginPersistedstate);
+      createApp({}).use(pinia);
+      setActivePinia(pinia);
+      return useAppStore();
+    };
+
+    localStorage.setItem('app', JSON.stringify({ shortShareLinks: false, locale: 'en' }));
+    expect(persisted().shortShareLinks).toBe(false);
+
+    localStorage.removeItem('app');
+    expect(persisted().shortShareLinks).toBe(true);
+
+    localStorage.removeItem('app');
   });
 });

@@ -371,7 +371,9 @@
     "linkCopied": "Odkaz zkopírován do schránky",
     "copyFailed": "Nepodařilo se automaticky zkopírovat. Použijte prosím klávesové zkratky.",
     "shortLink": "Kratší odkaz",
-    "shortLinkHint": "Zhruba poloviční délka. Kdo používá starší verzi aplikace EduBeam, musí ji před otevřením odkazu aktualizovat."
+    "shortLinkHint": "Zhruba poloviční délka. Kdo používá starší verzi aplikace EduBeam, musí ji před otevřením odkazu aktualizovat.",
+    "shareLayers": "Zobrazit to, co vidím já",
+    "shareLayersHint": "Odkaz se otevře se stejnými průběhy, zatíženími a popisky, jaké máte zapnuté."
   },
   "tour": {
     "menu": {

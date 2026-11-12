@@ -371,7 +371,9 @@
     "linkCopied": "Đã sao chép liên kết vào bộ nhớ tạm",
     "copyFailed": "Không thể tự động sao chép. Vui lòng dùng phím tắt.",
     "shortLink": "Liên kết ngắn hơn",
-    "shortLinkHint": "Ngắn bằng khoảng một nửa. Ai đang dùng phiên bản EduBeam cũ hơn phải cập nhật ứng dụng thì mới mở được."
+    "shortLinkHint": "Ngắn bằng khoảng một nửa. Ai đang dùng phiên bản EduBeam cũ hơn phải cập nhật ứng dụng thì mới mở được.",
+    "shareLayers": "Hiện đúng những gì tôi thấy",
+    "shareLayersHint": "Liên kết sẽ mở với các biểu đồ, tải trọng và nhãn mà bạn đang bật."
   },
   "tour": {
     "menu": {

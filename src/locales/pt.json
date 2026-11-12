@@ -371,7 +371,9 @@
     "linkCopied": "Link copiado para a área de transferência",
     "copyFailed": "Não foi possível copiar automaticamente. Use os atalhos de teclado.",
     "shortLink": "Link mais curto",
-    "shortLinkHint": "Cerca de metade do comprimento. Quem usa uma versão mais antiga do EduBeam precisa atualizar o aplicativo antes de abri-lo."
+    "shortLinkHint": "Cerca de metade do comprimento. Quem usa uma versão mais antiga do EduBeam precisa atualizar o aplicativo antes de abri-lo.",
+    "shareLayers": "Mostrar o que eu vejo",
+    "shareLayersHint": "O link abre com os diagramas, cargas e rótulos que você tem ativados."
   },
   "tour": {
     "menu": {

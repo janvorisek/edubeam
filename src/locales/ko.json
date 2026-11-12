@@ -371,7 +371,9 @@
     "linkCopied": "링크를 클립보드에 복사했습니다",
     "copyFailed": "자동으로 복사하지 못했습니다. 키보드 단축키를 사용하세요.",
     "shortLink": "짧은 링크",
-    "shortLinkHint": "길이가 약 절반입니다. 이전 버전의 edubeam을 쓰는 사람은 앱을 업데이트해야 열 수 있습니다."
+    "shortLinkHint": "길이가 약 절반입니다. 이전 버전의 edubeam을 쓰는 사람은 앱을 업데이트해야 열 수 있습니다.",
+    "shareLayers": "내 화면 그대로 보기",
+    "shareLayersHint": "링크를 열면 현재 켜 둔 단면력도, 하중, 레이블이 그대로 표시됩니다."
   },
   "tour": {
     "menu": {

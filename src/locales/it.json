@@ -371,7 +371,9 @@
     "linkCopied": "Link copiato negli appunti",
     "copyFailed": "Impossibile copiare automaticamente. Usa le scorciatoie da tastiera.",
     "shortLink": "Link più corto",
-    "shortLinkHint": "Lungo circa la metà. Chi usa una versione precedente di EduBeam deve aggiornare l'app prima di poterlo aprire."
+    "shortLinkHint": "Lungo circa la metà. Chi usa una versione precedente di EduBeam deve aggiornare l'app prima di poterlo aprire.",
+    "shareLayers": "Mostra ciò che vedo",
+    "shareLayersHint": "Il link si apre con i diagrammi, i carichi e le etichette che hai attivato."
   },
   "tour": {
     "menu": {

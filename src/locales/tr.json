@@ -371,7 +371,9 @@
     "linkCopied": "Bağlantı panoya kopyalandı",
     "copyFailed": "Otomatik kopyalanamadı. Lütfen klavye kısayollarını kullanın.",
     "shortLink": "Daha kısa bağlantı",
-    "shortLinkHint": "Yaklaşık yarı uzunlukta. EduBeam'in eski bir sürümünü kullananların açmadan önce uygulamayı güncellemesi gerekir."
+    "shortLinkHint": "Yaklaşık yarı uzunlukta. EduBeam'in eski bir sürümünü kullananların açmadan önce uygulamayı güncellemesi gerekir.",
+    "shareLayers": "Gördüğümü göster",
+    "shareLayersHint": "Bağlantı, açık olan diyagramlar, yükler ve etiketlerle açılır."
   },
   "tour": {
     "menu": {

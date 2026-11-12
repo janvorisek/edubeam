@@ -371,7 +371,9 @@
     "linkCopied": "Link copied to clipboard",
     "copyFailed": "Could not copy automatically. Please use your keyboard shortcuts.",
     "shortLink": "Shorter link",
-    "shortLinkHint": "About half as long. Anyone on an older version of EduBeam has to update the app before it opens."
+    "shortLinkHint": "About half as long. Anyone on an older version of EduBeam has to update the app before it opens.",
+    "shareLayers": "Show what I see",
+    "shareLayersHint": "The link opens with the diagrams, loads and labels you have on."
   },
   "tour": {
     "menu": {

@@ -17,6 +17,7 @@ import ReloadPrompt from './components/ReloadPrompt.vue';
 import { buildStarterModel } from './utils/starterModel';
 import { fromShareParam } from './utils/serializeModel';
 import { isEduBeamSession, parseEduBeamSession } from './utils/edubeamSession';
+import { decodeLayers } from './utils/viewLayers';
 
 export default {
   name: 'App',
@@ -213,6 +214,8 @@ onMounted(() => {
   const inViewerMode = params.get('viewer');
   // Documented entry point: run.edubeam.app/?panel=examples opens the gallery straight away.
   const panel = params.get('panel');
+  // The layers the link was shared with; without it, the viewer's own (see viewLayers).
+  const show = params.get('show');
 
   // Someone who has not been through the welcome dialog yet is new here: this version is what
   // they start with, not news, so the changelog waits for the next release.
@@ -222,6 +225,8 @@ onMounted(() => {
   if (lang && availableLocales.findIndex((l) => l.code === lang) >= 0) {
     appStore.locale = lang;
   }
+
+  if (show !== null) Object.assign(viewerStore, decodeLayers(show));
 
   if (inViewerMode) {
     appStore.inViewerMode = true;
@@ -254,7 +259,7 @@ onMounted(() => {
     return;
   }
 
-  if (lang || panel) {
+  if (lang || panel || show !== null) {
     const url = document.location.href;
     window.history.pushState({}, '', url.split('?')[0]);
   }
@@ -282,7 +287,6 @@ const clearMesh = (clearMaterials = false, clearCrossSects = false) => {
   solve();
 };
 
-/** Loads a project file over the current model; alerts and keeps the model if it is not one. */
 /** A project.json, or a session saved by the desktop EduBeam. A file that is neither changes nothing. */
 const loadProjectFile = (text: string) => {
   let project: unknown;

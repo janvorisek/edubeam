@@ -371,7 +371,9 @@
     "linkCopied": "Link in die Zwischenablage kopiert",
     "copyFailed": "Automatisches Kopieren war nicht möglich. Bitte verwenden Sie Ihre Tastenkürzel.",
     "shortLink": "Kürzerer Link",
-    "shortLinkHint": "Etwa halb so lang. Wer eine ältere Version von EduBeam nutzt, muss die App vor dem Öffnen aktualisieren."
+    "shortLinkHint": "Etwa halb so lang. Wer eine ältere Version von EduBeam nutzt, muss die App vor dem Öffnen aktualisieren.",
+    "shareLayers": "Zeigen, was ich sehe",
+    "shareLayersHint": "Der Link öffnet sich mit den Verläufen, Lasten und Beschriftungen, die Sie eingeschaltet haben."
   },
   "tour": {
     "menu": {

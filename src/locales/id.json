@@ -371,7 +371,9 @@
     "linkCopied": "Tautan disalin ke clipboard",
     "copyFailed": "Tidak dapat menyalin otomatis. Gunakan pintasan keyboard.",
     "shortLink": "Tautan lebih pendek",
-    "shortLinkHint": "Kira-kira setengah panjangnya. Siapa pun yang memakai versi EduBeam yang lebih lama harus memperbarui aplikasi sebelum tautan bisa dibuka."
+    "shortLinkHint": "Kira-kira setengah panjangnya. Siapa pun yang memakai versi EduBeam yang lebih lama harus memperbarui aplikasi sebelum tautan bisa dibuka.",
+    "shareLayers": "Tampilkan yang saya lihat",
+    "shareLayersHint": "Tautan terbuka dengan diagram, beban, dan label yang Anda aktifkan."
   },
   "tour": {
     "menu": {

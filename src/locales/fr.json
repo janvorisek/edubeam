@@ -371,7 +371,9 @@
     "linkCopied": "Lien copié dans le presse-papiers",
     "copyFailed": "Impossible de copier automatiquement. Veuillez utiliser vos raccourcis clavier.",
     "shortLink": "Lien plus court",
-    "shortLinkHint": "Environ deux fois plus court. Avec une ancienne version d'EduBeam, il faut d'abord mettre l'application à jour pour l'ouvrir."
+    "shortLinkHint": "Environ deux fois plus court. Avec une ancienne version d'EduBeam, il faut d'abord mettre l'application à jour pour l'ouvrir.",
+    "shareLayers": "Montrer ce que je vois",
+    "shareLayersHint": "Le lien s'ouvre avec les diagrammes, charges et étiquettes que vous avez activés."
   },
   "tour": {
     "menu": {

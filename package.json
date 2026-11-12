@@ -26,7 +26,7 @@
     "@imengyu/vue3-context-menu": "^1.5.6",
     "@intlify/unplugin-vue-i18n": "^11.2.5",
     "@mdit/plugin-katex": "^1.0.3",
-    "@sentry/vite-plugin": "^4.9.1",
+    "@sentry/vite-plugin": "^11.8.0",
     "@sentry/vue": "^10.75.3",
     "@tweakpane/plugin-essentials": "^0.2.1",
     "@vueuse/components": "^14.4.0",

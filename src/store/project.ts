@@ -312,6 +312,17 @@ export const useProjectStore = defineStore(
 
     const deleteSelection2 = () => {
       executeModelMutationWithUndo(() => {
+        const loadCase = solver.value.loadCases[0];
+
+        // The selected loads by what they are, not where they sit: deleting a node or an element
+        // takes its loads with it, the rest of a list closes up, and the indices selected before
+        // then name other loads - a window around one structure deleted a load on another.
+        const picked = <T>(list: T[], indices: number[]) =>
+          indices.map((i) => list[i]).filter((item): item is T => item !== undefined);
+        const nodalLoads = picked(loadCase.nodalLoadList, selection2.nodalLoads);
+        const elementLoads = picked(loadCase.elementLoadList, selection2.elementLoads);
+        const prescribedBC = picked(loadCase.prescribedBC, selection2.prescribedBC);
+
         let toDelete = [];
         for (const element of selection2.elements) {
           toDelete.push(element);
@@ -330,27 +341,20 @@ export const useProjectStore = defineStore(
           deleteNode(node, false);
         }
 
-        const loadCase = solver.value.loadCases[0];
-        for (const i of [...selection2.nodalLoads].sort((a, b) => b - a)) {
-          if (loadCase.nodalLoadList[i] === undefined) continue;
+        // whatever of them a node or an element did not already take with it
+        const remove = <T>(list: T[], items: T[]) => {
+          for (const item of items) {
+            const i = list.indexOf(item);
+            if (i === -1) continue;
 
-          loadCase.solved = false;
-          loadCase.nodalLoadList.splice(i, 1);
-        }
+            loadCase.solved = false;
+            list.splice(i, 1);
+          }
+        };
 
-        for (const i of [...selection2.elementLoads].sort((a, b) => b - a)) {
-          if (loadCase.elementLoadList[i] === undefined) continue;
-
-          loadCase.solved = false;
-          loadCase.elementLoadList.splice(i, 1);
-        }
-
-        for (const i of [...selection2.prescribedBC].sort((a, b) => b - a)) {
-          if (loadCase.prescribedBC[i] === undefined) continue;
-
-          loadCase.solved = false;
-          loadCase.prescribedBC.splice(i, 1);
-        }
+        remove(loadCase.nodalLoadList, nodalLoads);
+        remove(loadCase.elementLoadList, elementLoads);
+        remove(loadCase.prescribedBC, prescribedBC);
 
         if (selection2.dimensions.length > 0) {
           const toDelete = new Set(selection2.dimensions);

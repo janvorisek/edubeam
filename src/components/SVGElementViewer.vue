@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import SvgPanZoom from './SVGPanZoom2.vue';
-import SvgGrid from './SVGGrid.vue';
 import SvgViewerDefs from './SVGViewerDefs.vue';
-import { ref, onMounted, computed, watch, provide } from 'vue';
+import { ref, onMounted, computed, watch, provide, useId } from 'vue';
 
-import { throttle } from '../utils/throttle';
 import {
   Node,
   Beam2D,
@@ -34,9 +32,9 @@ import { DEFAULT_DIAGRAM_STYLE, type DiagramStyle } from '@/utils/diagramStyle';
 
 const props = withDefaults(
   defineProps<{
+    /** Names this viewer's markers; each viewer on a page needs its own. */
     id?: string;
     solver: LinearStaticSolver;
-    showGrid?: boolean;
     showElements?: boolean;
     showNodes?: boolean;
     showLoads?: boolean;
@@ -99,8 +97,7 @@ const props = withDefaults(
     fontSize?: number;
   }>(),
   {
-    id: new Date().getTime().toString(),
-    showGrid: false,
+    id: undefined,
     showElements: true,
     showNodes: true,
     showLoads: false,
@@ -152,12 +149,18 @@ const props = withDefaults(
 );
 
 const panZoom = ref<InstanceType<typeof SvgPanZoom> | null>(null);
-const grid = ref<InstanceType<typeof SvgGrid> | null>(null);
 
 const svg = ref<SVGSVGElement>();
 const viewport = ref<SVGGElement>();
 
-provide('viewer_uuid', props.id);
+/*
+ * Markers are looked up by id across the whole page, and their size depends on this viewer's
+ * scale. A shared id - the old default was one timestamp per page load - made every preview draw
+ * the first one's reaction arrows, at the first one's scale.
+ */
+const viewerId = props.id ?? `viewer-${useId()}`;
+
+provide('viewer_uuid', viewerId);
 
 const update = () => {
   updateResultScales();
@@ -223,8 +226,6 @@ const centerContent = () => {
   if (!panZoom.value) return;
 
   panZoom.value.centerContent();
-
-  if (grid.value) grid.value.refreshGrid(true);
 };
 
 /** Resolves with the fit once its final view is shown; `null` when a newer fit took over. */
@@ -232,8 +233,6 @@ const fitContent = async () => {
   if (!panZoom.value) return null;
 
   const result = await panZoom.value.fitContent();
-
-  if (grid.value) grid.value.refreshGrid(true);
 
   return result;
 };
@@ -271,12 +270,8 @@ const modelBounds = () => {
   return boundsFromPoints(points);
 };
 
-const onUpdate = throttle((zooming: boolean) => {
-  if (grid.value) grid.value.refreshGrid(zooming);
-}, 100);
-
 const dynamicMarker = (label: string) => {
-  return `url(#${props.id}-${label})`;
+  return `url(#${viewerId}-${label})`;
 };
 
 // Computed dynamic markers
@@ -329,10 +324,6 @@ defineExpose({ centerContent, fitContent, setView, update });
 
 <template>
   <div class="d-flex flex-column fill-height svg-viewer" style="z-index: 1">
-    <svg v-if="false" class="w-100 fill-height" style="position: absolute">
-      <SvgGrid ref="grid" :svg="svg as SVGSVGElement" :viewport="viewport as SVGGElement" :zoom="scale" />
-    </svg>
-
     <SvgPanZoom
       ref="panZoom"
       :padding="props.padding"
@@ -342,7 +333,6 @@ defineExpose({ centerContent, fitContent, setView, update });
       :fit-ignore="props.fitIgnore"
       :fit-reserve="fitReserve"
       style="overflow: visible; z-index: 50; min-height: 0"
-      @update="onUpdate"
     >
       <svg
         ref="svg"
@@ -382,7 +372,7 @@ defineExpose({ centerContent, fitContent, setView, update });
           '--colors-loads': props.colors.loads,
         }"
       >
-        <SvgViewerDefs :id="id" :colors="colors" :support-size="supportSize" :scale="scale" />
+        <SvgViewerDefs :id="viewerId" :colors="colors" :support-size="supportSize" :scale="scale" />
         <g ref="viewport">
           <g>
             <g v-if="props.showLoads" data-fit-ignore="loads">

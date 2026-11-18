@@ -99,11 +99,19 @@ const zoom = (mx: number, my: number, deltaY: number): void => {
   updateMatrix(true);
 };
 
+/*
+ * Without zoom the drawing is a preview, and the wheel and touches belong to the page around it:
+ * the wheel and one finger scroll the page, and a tap reaches a link the preview sits in.
+ */
 const onMouseWheel = (event: WheelEvent): void => {
+  if (!props.zoomEnabled) return;
+  event.preventDefault();
   zoom(event.offsetX, event.offsetY, Math.sign(event.deltaY) * 0.05);
 };
 
 const onTouchStart = (event: TouchEvent): void => {
+  if (!props.zoomEnabled) return;
+  event.preventDefault();
   if (event.touches.length === 1) {
     touchPointer.value.x = event.touches[0].clientX;
     touchPointer.value.y = event.touches[0].clientY;
@@ -128,12 +136,16 @@ const onTouchStart = (event: TouchEvent): void => {
   }
 };
 
-const onTouchEnd = (): void => {
+const onTouchEnd = (event: TouchEvent): void => {
+  if (!props.zoomEnabled) return;
+  event.preventDefault();
   touchPointer.value.move = false;
   touchPointer.value.pinch = false;
 };
 
 const onTouchMove = (event: TouchEvent): void => {
+  if (!props.zoomEnabled) return;
+  event.preventDefault();
   //console.log({ touchmove: event.touches.length, pointer: JSON.stringify(touchPointer) })
   if (event.touches.length === 1 && touchPointer.value.move) {
     autoFit.value = false;
@@ -312,11 +324,11 @@ defineExpose({ scale, fitted, centerContent, fitContent, setViewBox, updateMatri
   <div
     ref="rootRef"
     class="w-100 fill-height"
-    style="touch-action: none"
-    @touchstart.prevent="onTouchStart"
-    @touchmove.prevent="onTouchMove"
-    @touchend.prevent="onTouchEnd"
-    @wheel.prevent="onMouseWheel"
+    :style="{ touchAction: zoomEnabled ? 'none' : 'auto' }"
+    @touchstart="onTouchStart"
+    @touchmove="onTouchMove"
+    @touchend="onTouchEnd"
+    @wheel="onMouseWheel"
     @mousedown.prevent="onMouseDown"
     @mouseup.prevent="onMouseUp"
     @mousemove.prevent="onMouseMove"

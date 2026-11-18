@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { vertical } from '@/utils/axisConvention';
-import { formatScientificNumber } from '@/utils/index';
+import { formatScientificNumber } from '@/utils/formatScientificNumber';
 import { inPlaneValues } from '@/utils/dofValues';
 import { actingInGlobalAxes } from '@/utils/nodalLcs';
 import { PrescribedDisplacement } from 'ts-fem';

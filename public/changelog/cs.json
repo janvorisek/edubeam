@@ -1,16 +1,6 @@
 {
   "releases": [
     {
-      "version": "1.3.5",
-      "title": "Zatížení v osách podpory",
-      "date": "18. listopadu 2026",
-      "highlights": [
-        "Na pootočené podpoře zadáte uzlové zatížení v jejích vlastních osách nebo v globálních.",
-        "Předepsané posunutí pootočené podpory se kreslí ve směru podpory."
-      ],
-      "tag": "Nejnovější"
-    },
-    {
       "version": "1.3.4",
       "title": "Přesnější výsledky",
       "date": "18. listopadu 2026",
@@ -18,7 +8,8 @@
         "Přesné výsledky pro pruty se smykovou deformací: osamělá břemena, momenty a lichoběžníková zatížení.",
         "Uzlová zatížení na pootočených podporách působí v globálních osách.",
         "Také: smazání vybraných zatížení odstraní ta správná."
-      ]
+      ],
+      "tag": "Nejnovější"
     },
     {
       "version": "1.3.3",

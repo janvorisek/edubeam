@@ -55,7 +55,11 @@ const REACTION_DOFS: DofID[] = [DofID.Dx, DofID.Dz, DofID.Ry];
  * A node no element touches gets no equation numbers, so the solver has nothing to read back for it
  * - asking anyway throws instead of returning a value. That holds for a supported one's reactions too.
  */
-const isNumbered = (solver: LinearStaticSolver, node: Node, dof: DofID) =>
+/**
+ * Whether the last solve gave the node's DOF an equation. A node supported or connected since then
+ * has none yet, until the next solve; its results do not exist and reading them throws.
+ */
+export const isNumbered = (solver: LinearStaticSolver, node: Node, dof: DofID) =>
   solver.nodeCodeNumbers.get(node.label)?.[dof] !== undefined;
 
 const readUnknown = (solver: LinearStaticSolver, node: Node, dof: DofID) => {

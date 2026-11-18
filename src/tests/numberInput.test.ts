@@ -58,4 +58,15 @@ describe('reading a number field', () => {
     for (const char of '0123456789.,eE+-*/^() ×÷') expect(isNumberInputCharacter(char), char).toBe(true);
     for (const char of 'aZx%$=;') expect(isNumberInputCharacter(char), char).toBe(false);
   });
+
+  // EDUBEAM-APP-FQ: typed with a Chinese input method, "0，5" never got its decimal comma in
+  it('reads full-width digits and signs as Chinese, Japanese and Korean keyboards type them', () => {
+    expect(parseNumberInput('０，５')).toBe(0.5);
+    expect(parseNumberInput('１２．５')).toBe(12.5);
+    expect(parseNumberInput('３。５')).toBe(3.5);
+    expect(parseNumberInput('－２＋（６／３）')).toBe(0);
+    expect(parseNumberInput('1\u30002')).toBe(12);
+    for (const char of '０９，．。－＋＊／（）') expect(isNumberInputCharacter(char), char).toBe(true);
+    for (const char of 'ａ％＝') expect(isNumberInputCharacter(char), char).toBe(false);
+  });
 });

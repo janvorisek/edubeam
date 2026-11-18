@@ -1,6 +1,17 @@
 {
   "releases": [
     {
+      "version": "1.3.4",
+      "title": "Přesnější výsledky",
+      "date": "18. listopadu 2026",
+      "highlights": [
+        "Přesné výsledky pro pruty se smykovou deformací: osamělá břemena, momenty a lichoběžníková zatížení.",
+        "Uzlová zatížení na pootočených podporách působí v globálních osách.",
+        "Také: smazání vybraných zatížení odstraní ta správná."
+      ],
+      "tag": "Nejnovější"
+    },
+    {
       "version": "1.3.3",
       "title": "Styly průběhů a znaménková konvence",
       "date": "12. listopadu 2026",
@@ -11,7 +22,6 @@
         "Sdílený odkaz může otevřít i vaše průběhy.",
         "Také: snazší výběr prutů, kompaktní nastavení a opravy."
       ],
-      "tag": "Nejnovější",
       "media": [
         {
           "src": "/changelog/media/diagram-fill.gif",

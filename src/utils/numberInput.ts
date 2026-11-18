@@ -11,9 +11,17 @@
 /** Spaces, including the no-break and thin ones copied out of formatted numbers. */
 const SPACE = /[\s\u00a0\u2009\u202f]/g;
 
+/**
+ * Full-width forms, as Chinese, Japanese and Korean input methods type them, read as the plain
+ * ones: ０-９ as digits, ， and ． as the decimal comma and point, － ＋ ＊ ／ and the brackets
+ * as signs (NFKC). The ideographic full stop 。, which those keyboards give for the full stop key,
+ * is a decimal point too.
+ */
+const plain = (text: string) => text.normalize('NFKC').replace(/\u3002/g, '.');
+
 /** Signs people paste: the minus sign, the multiplication signs × and ·, and ÷. */
 const normalize = (text: string) =>
-  text
+  plain(text)
     .replace(SPACE, '')
     .replace(/\u2212/g, '-')
     .replace(/[\u00d7\u00b7]/g, '*')
@@ -96,4 +104,5 @@ export const parseNumberInput = (text: string): number => {
 };
 
 /** Characters a number field can hold; the keystroke filter lets nothing else be typed. */
-export const isNumberInputCharacter = (char: string) => /^[\d.,eE+\-*/^()\s\u00d7\u00b7\u00f7\u2212]$/.test(char);
+export const isNumberInputCharacter = (char: string) =>
+  /^[\d.,eE+\-*/^()\s\u00d7\u00b7\u00f7\u2212]$/.test(plain(char));

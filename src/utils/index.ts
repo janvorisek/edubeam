@@ -192,8 +192,9 @@ export const checkNumber = (e: KeyboardEvent) => {
   if (e.key === 'Escape') if ('activeElement' in document) (document.activeElement as HTMLElement).blur();
 
   // Android soft keyboards and IMEs report 'Unidentified' or 'Process' and deliver the text
-  // separately; blocking those keys would block typing itself. Let them through unjudged.
-  if (e.key === 'Unidentified' || e.key === 'Process' || e.isComposing) return;
+  // separately; blocking those keys would block typing itself. Let them through unjudged. So does
+  // an event with no key at all, as Chrome's autofill and some input methods send.
+  if (typeof e.key !== 'string' || e.key === 'Unidentified' || e.key === 'Process' || e.isComposing) return;
 
   // Only a typed character can be wrong. Keys that type nothing - arrows, Tab, Enter, Backspace -
   // and every shortcut, Ctrl/Cmd+Z included, are left to the field.

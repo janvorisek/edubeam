@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { Matrix, multiply } from 'mathjs';
-import { Node, DofID, LoadCase } from 'ts-fem';
+import { Node, DofID, LoadCase, type LinearStaticSolver } from 'ts-fem';
+import { isNumbered } from '@/utils/exportResults';
 import { computed } from 'vue';
 
 const props = withDefaults(
@@ -219,6 +220,10 @@ const isSupportedAtAll = computed(() => {
 });
 
 const getReaction = (node: Node, dof: DofID) => {
+  // Drawn between an edit and the solve after it, a support the last solve did not number has no
+  // reaction yet - only the next solve gives it one
+  if ([...node.bcs].some((d) => !isNumbered(node.domain.solver as LinearStaticSolver, node, d))) return 0;
+
   const r = node.getReactions(props.loadCase, !node.hasLcs());
   const i = r.dofs.findIndex((e) => e === dof);
 

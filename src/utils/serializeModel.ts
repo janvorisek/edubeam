@@ -118,7 +118,7 @@ export const isValidSerializedModel = (tmp: unknown): boolean => {
         (r[2] === undefined || isNumberArray(r[2], 2)) &&
         isOptionalBool(r[3])
     ) &&
-    isRowList(m.nl, (r) => isLabel(r[0]) && isDofValues(r[1])) &&
+    isRowList(m.nl, (r) => isLabel(r[0]) && isDofValues(r[1]) && isOptionalBool(r[2])) &&
     isRowList(m.pd, (r) => isLabel(r[0]) && isDofValues(r[1])) &&
     (m.d === undefined || (Array.isArray(m.d) && m.d.length <= MAX_ENTITIES))
   );
@@ -246,8 +246,9 @@ export const serializeModel = (ls: LinearStaticSolver, dims: DimensionLine[]) =>
       etraploads.push([load.target, load.startValues, load.endValues, load.lcs]);
     });
 
+  // A third entry only for a load in the node's own axes, so links without one stay as they were
   ls.loadCases[0].nodalLoadList.forEach((load) => {
-    nloads.push([load.target, load.values]);
+    nloads.push(load.lcs ? [load.target, load.values, true] : [load.target, load.values]);
   });
 
   ls.loadCases[0].prescribedBC.forEach((load) => {
@@ -370,7 +371,8 @@ export const deserializeModel = (base64String: string, ls: LinearStaticSolver, d
 
   if ('nl' in tmp) {
     for (const e of tmp.nl) {
-      ls.loadCases[0].createNodalLoad(e[0], e[1]);
+      // Without the third entry, as in every link before it existed, the load is in the global axes
+      ls.loadCases[0].createNodalLoad(e[0], e[1], e[2] === true);
     }
   }
 

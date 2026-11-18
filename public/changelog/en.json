@@ -1,6 +1,23 @@
 {
   "releases": [
     {
+      "version": "1.3.5",
+      "title": "Loads in Support Axes",
+      "date": "November 18, 2026",
+      "highlights": [
+        "On a turned support, give a nodal load in its own axes or in the global ones.",
+        "Prescribed displacements on turned supports are drawn along the support."
+      ],
+      "tag": "Latest",
+      "contributors": [
+        {
+          "name": "Jan Vorisek",
+          "commits": 1,
+          "url": "https://github.com/janvorisek"
+        }
+      ]
+    },
+    {
       "version": "1.3.4",
       "title": "More Exact Results",
       "date": "November 18, 2026",
@@ -9,7 +26,6 @@
         "Nodal loads on rotated supports act in the global axes.",
         "Also: deleting selected loads removes the right ones."
       ],
-      "tag": "Latest",
       "contributors": [
         {
           "name": "Jan Vorisek",

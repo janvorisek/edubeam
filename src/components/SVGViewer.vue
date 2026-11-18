@@ -1005,6 +1005,16 @@ const startLongPress = (e: PointerEvent) => {
   }, LONG_PRESS_MS);
 };
 
+/**
+ * Whether a press has turned into a drag: the pointer has travelled further than a click's jitter,
+ * or a finger resting on the screen, moves it. Until then a press on a node or a dimension point is
+ * a click, and moves nothing. Fingers jitter more than a mouse.
+ */
+const dragStarted = (e: PointerEvent) => {
+  const slop = e.pointerType === 'mouse' ? 4 : 10;
+  return Math.hypot(e.clientX - mouseStartX, e.clientY - mouseStartY) > slop;
+};
+
 const hasMoved = (e: MouseEvent | PointerEvent) => {
   const dx = e.clientX - mouseStartX;
   const dy = e.clientY - mouseStartY;
@@ -1159,6 +1169,7 @@ const onDimensionPointPointerDown = (e: PointerEvent, dimensionId: string, point
     pointIndex: pointIndex as 0 | 1,
     startPoint: createDimensionPoint(currentPoint.x, currentPoint.y, currentPoint.sourceNodeLabel ?? null),
     lastPoint: createDimensionPoint(currentPoint.x, currentPoint.y, currentPoint.sourceNodeLabel ?? null),
+    started: false,
   };
 
   pointerDownOriginatesFromDimension = true;
@@ -1278,6 +1289,9 @@ const selectionDetails = computed(() => {
 });
 
 let drgNode: Node | null = null;
+/** Where the node is from the point it was grabbed at, so it moves with the pointer instead of jumping onto it. */
+let grabX = 0;
+let grabZ = 0;
 let origX = 0;
 let origZ = 0;
 let finalX = 0;
@@ -1289,6 +1303,8 @@ let dragDimensionPoint: {
   pointIndex: 0 | 1;
   startPoint: DimensionPoint;
   lastPoint: DimensionPoint;
+  /** False until the pointer has travelled far enough for the press to be a drag. */
+  started: boolean;
 } | null = null;
 let pendingDimensionId: string | null = null;
 let pointerDownOriginatesFromDimension = false;
@@ -1492,7 +1508,8 @@ const mouseMove = (e: PointerEvent) => {
   }
 
   if (isDraggingDimensionPoint()) {
-    updateDimensionPointFromPointer();
+    if (!dragDimensionPoint!.started && dragStarted(e)) dragDimensionPoint!.started = true;
+    if (dragDimensionPoint!.started) updateDimensionPointFromPointer();
   }
 
   if (isDraggingDimension()) {
@@ -1514,16 +1531,31 @@ const mouseMove = (e: PointerEvent) => {
     }
 
     if (drgNode === null) {
+      if (!dragStarted(e)) return;
+
       drgNode = item;
       origX = item.coords[0];
       origZ = item.coords[2];
+
+      // Measured from where the press began, in the model, so the node keeps its place under the
+      // pointer - grabbed off its centre, or where its deformed shape is drawn, it used to jump
+      const start = screenToModel({ clientX: mouseStartX, clientY: mouseStartY } as PointerEvent);
+      grabX = item.coords[0] - start.x;
+      grabZ = item.coords[2] - start.y;
     }
 
-    item.coords[0] = mouseXReal.value;
-    item.coords[2] = mouseYReal.value;
+    // The node's new place snaps to the grid, not the pointer's
+    const p = screenToModel(e);
+    const step = viewerStore.gridStep;
+    const snap = viewerStore.snapToGrid && Number.isFinite(step) && step > 0;
+    const x = snap ? snapToGrid(p.x + grabX, step, lengthDisplay) : p.x + grabX;
+    const z = snap ? snapToGrid(p.y + grabZ, step, lengthDisplay) : p.y + grabZ;
 
-    finalX = mouseXReal.value;
-    finalZ = mouseYReal.value;
+    item.coords[0] = x;
+    item.coords[2] = z;
+
+    finalX = x;
+    finalZ = z;
 
     //useProjectStore().solver.loadCases[0].solved = false;
     solve();

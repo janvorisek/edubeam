@@ -93,7 +93,10 @@
     "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
     "temperatureDeltaTs": "ΔT<sub>c</sub>",
     "temperatureDeltaTsNoHTML": "ΔTc",
-    "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
+    "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt",
+    "globalAxes": "Assi globali",
+    "nodeAxes": "Assi del nodo",
+    "alongSupportAxes": "Lungo gli assi propri del vincolo."
   },
   "tabs": {
     "nodes": "Nodi",

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { vertical } from '@/utils/axisConvention';
 import { inPlaneValues } from '@/utils/dofValues';
+import { actingInGlobalAxes } from '@/utils/nodalLcs';
 import { NodalLoad } from 'ts-fem';
 import { computed } from 'vue';
 
@@ -24,22 +25,26 @@ const props = withDefaults(
 /** Undefined when the load outlives its node; the drawing then leaves it out rather than throwing. */
 const target = computed(() => props.nload.domain.nodes.get(props.nload.target));
 
+/** The values as entered, in the load's own axes; the labels show these. */
 const values = computed(() => inPlaneValues(props.nload.values));
 
+/** Where the force points on the drawing: a load in the node's axes turns with the node. */
+const drawn = computed(() => actingInGlobalAxes(target.value, values.value, props.nload.lcs));
+
 const angle = computed(() => {
-  return -(Math.atan2(values.value[0], values.value[2]) * 180) / Math.PI;
+  return -(Math.atan2(drawn.value.x, drawn.value.z) * 180) / Math.PI;
 });
 
 /** Length of the force vector; zero for a load that is a pure moment. */
 const forceSize = computed(() => {
-  return Math.sqrt(values.value[0] * values.value[0] + values.value[2] * values.value[2]);
+  return Math.sqrt(drawn.value.x * drawn.value.x + drawn.value.z * drawn.value.z);
 });
 
 /** Unit vector pointing back along the arrow, or the origin when there is no force to point along. */
 const forceDirection = computed(() => {
   if (forceSize.value === 0) return { x: 0, z: 0 };
 
-  return { x: -values.value[0] / forceSize.value, z: -values.value[2] / forceSize.value };
+  return { x: -drawn.value.x / forceSize.value, z: -drawn.value.z / forceSize.value };
 });
 
 /**
@@ -69,8 +74,8 @@ const stackedTransform = computed(() => {
   // count per angle
   const angleMap = new Map<number, number>();
   for (let i = 0; i < index; i++) {
-    // calculate full angle in 360deg space
-    const { 0: fx, 2: fz } = inPlaneValues(nloads[i].values);
+    // calculate full angle in 360deg space, as drawn
+    const { x: fx, z: fz } = actingInGlobalAxes(target.value, inPlaneValues(nloads[i].values), nloads[i].lcs);
     const ang = (360 + -(Math.atan2(fx, fz) * 180) / Math.PI) % 360;
 
     angleMap.set(ang, (angleMap.get(ang) || 0) + 1);
@@ -135,16 +140,10 @@ const stackedTransform = computed(() => {
       v-if="values[0] !== 0 || values[2] !== 0"
       :font-size="fontSize / scale"
       font-weight="normal"
-      :text-anchor="values[0] > 0 ? 'end' : 'start'"
+      :text-anchor="drawn.x > 0 ? 'end' : 'start'"
       dy="0.35em"
-      :transform="`translate(${
-        target.coords[0] -
-        (40 * values[0]) / Math.sqrt(values[0] * values[0] + values[2] * values[2]) / scale -
-        (values[0] > 0 ? 4 : -4) / scale
-      }
-              ${
-                target.coords[2] - (40 * values[2]) / Math.sqrt(values[0] * values[0] + values[2] * values[2]) / scale
-              })`"
+      :transform="`translate(${target.coords[0] + (40 * forceDirection.x) / scale - (drawn.x > 0 ? 4 : -4) / scale}
+              ${target.coords[2] + (40 * forceDirection.z) / scale})`"
     >
       {{ numberFormat.format(convertForce(Math.sqrt(values[0] * values[0] + values[2] * values[2]))) }}
       <template v-if="values[0] !== 0 && values[2] !== 0">

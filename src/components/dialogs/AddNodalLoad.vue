@@ -15,6 +15,23 @@
             :disabled="nodeBcs.size === 0"
           ></v-radio>
         </v-radio-group>
+        <!-- On a turned node a force can be given in its own axes; a settlement always is -->
+        <v-btn-toggle
+          v-if="loadType === 'force' && turnedNode"
+          v-model="inNodeAxes"
+          class="axes-toggle mx-6"
+          color="primary"
+          density="compact"
+          variant="outlined"
+          divided
+          mandatory
+        >
+          <v-btn :value="false" size="small">{{ $t('loads.globalAxes') }}</v-btn>
+          <v-btn :value="true" size="small">{{ $t('loads.nodeAxes') }}</v-btn>
+        </v-btn-toggle>
+        <p v-if="loadType === 'displacement' && turnedNode" class="axes-note mx-6">
+          {{ $t('loads.alongSupportAxes') }}
+        </p>
         <v-form v-model="valid">
           <v-container>
             <v-row no-gutters>
@@ -26,6 +43,7 @@
                     :my="loadType === 'force' ? realMy : realRy"
                     :type="loadType === 'force' ? 'force' : 'displacement'"
                     :label="loadNodeId"
+                    :axes-angle="axesAngle"
                   />
                 </div>
               </v-col>
@@ -47,7 +65,7 @@
                   <v-col cols="12">
                     <v-text-field
                       v-model="loadNodeValueFx"
-                      :label="`${mainLabel}x`"
+                      :label="`${mainLabel}x${mark}`"
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="mainUnits"
@@ -59,7 +77,7 @@
                   <v-col cols="12">
                     <v-text-field
                       v-model="loadNodeValueFz"
-                      :label="`${mainLabel}${appStore.axes.v}`"
+                      :label="`${mainLabel}${appStore.axes.v}${mark}`"
                       hide-details="auto"
                       :rules="numberRules"
                       :suffix="mainUnits"
@@ -111,6 +129,7 @@ import { useAppStore } from '@/store/app';
 import { checkNumber, executeModelMutationWithUndo, parseFloat2, numberRules } from '@/utils';
 import { i18n } from '@/plugins/i18n';
 import Vector2DHelper from '../Vector2DHelper.vue';
+import { globalToNode, isTurned, nodeLcsAngle, nodeToGlobal } from '@/utils/nodalLcs';
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
@@ -139,11 +158,14 @@ const nodeBcs = computed<Set<number>>(() => selectedNode.value?.bcs ?? new Set()
 const loadNodeValueFx = ref(`${appStore.convertForce(0)}`);
 const loadNodeValueFz = ref(`${appStore.convertForce(0)}`);
 const loadNodeValueMy = ref('0');
+const inNodeAxes = ref(false);
 
 watch(loadNodeId, () => {
   if (nodeBcs.value.size === 0) {
     loadType.value = 'force';
   }
+  // A node without axes of its own has only the global ones
+  if (!turnedNode.value) inNodeAxes.value = false;
 });
 
 const mainLabel = computed(() => (loadType.value === 'force' ? 'F' : 'D'));
@@ -161,6 +183,35 @@ const realDz = computed(() =>
   appStore.vertical(appStore.convertInverseDisplacement(parseFloat2(loadNodeValueFz.value)))
 );
 const realRy = computed(() => parseFloat2(loadNodeValueMy.value));
+
+/** A node whose axes are turned: a turned support. */
+const turnedNode = computed(() => isTurned(selectedNode.value));
+
+/** Whether the components are in the node's own axes: a force when asked to, a settlement always. */
+const primed = computed(() => turnedNode.value && (loadType.value === 'displacement' || inNodeAxes.value));
+const mark = computed(() => (primed.value ? '′' : ''));
+const axesAngle = computed(() => (primed.value ? nodeLcsAngle(selectedNode.value) : 0));
+
+/** As many digits as are worth showing, so a turned 10 does not read 8.660254037844387. */
+const shown = (v: number) => String(Number(v.toPrecision(12)));
+
+/**
+ * Switching the axes keeps the force where it is: the fields are rewritten with its components in
+ * the other axes, rather than the same numbers suddenly pointing elsewhere.
+ */
+const convertForceFields = (toNodeAxes: boolean) => {
+  const turnedValues = (toNodeAxes ? globalToNode : nodeToGlobal)(selectedNode.value, realFx.value, realFz.value);
+  // Turning leaves round-off where a component should vanish: 10 kN down, in axes turned back, has
+  // an x of 2e-12; that is zero, not a number to show
+  const size = Math.max(...turnedValues.map(Math.abs));
+  const [x, z] = turnedValues.map((v) => (Math.abs(v) < 1e-12 * size ? 0 : v));
+  loadNodeValueFx.value = shown(appStore.convertForce(x));
+  loadNodeValueFz.value = shown(appStore.vertical(appStore.convertForce(z)));
+};
+
+watch(inNodeAxes, (toNodeAxes) => {
+  if (turnedNode.value) convertForceFields(toNodeAxes);
+});
 
 onMounted(() => {
   if (props.type === 'displacement') {
@@ -186,11 +237,15 @@ const addNodalLoad = () => {
     useProjectStore().solver.loadCases[0].solved = false;
 
     if (loadType.value === 'force') {
-      useProjectStore().solver.loadCases[0].createNodalLoad(loadNodeId.value, {
-        [DofID.Dx]: realFx.value,
-        [DofID.Dz]: realFz.value,
-        [DofID.Ry]: realMy.value,
-      });
+      useProjectStore().solver.loadCases[0].createNodalLoad(
+        loadNodeId.value,
+        {
+          [DofID.Dx]: realFx.value,
+          [DofID.Dz]: realFz.value,
+          [DofID.Ry]: realMy.value,
+        },
+        inNodeAxes.value && turnedNode.value
+      );
     } else {
       useProjectStore().solver.loadCases[0].createPrescribedDisplacement(loadNodeId.value, {
         [DofID.Dx]: realDx.value,
@@ -204,3 +259,20 @@ const addNodalLoad = () => {
   closeModal();
 };
 </script>
+
+<style scoped>
+.axes-toggle {
+  height: 30px;
+}
+
+.axes-toggle .v-btn {
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.axes-note {
+  margin: 2px 0 0;
+  font-size: 0.8125rem;
+  color: rgba(var(--v-theme-on-surface), 0.64);
+}
+</style>

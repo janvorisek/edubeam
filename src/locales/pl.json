@@ -93,7 +93,10 @@
     "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
     "temperatureDeltaTs": "ΔT<sub>c</sub>",
     "temperatureDeltaTsNoHTML": "ΔTc",
-    "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
+    "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt",
+    "globalAxes": "Osie globalne",
+    "nodeAxes": "Osie węzła",
+    "alongSupportAxes": "Wzdłuż własnych osi podpory."
   },
   "tabs": {
     "nodes": "Węzły",

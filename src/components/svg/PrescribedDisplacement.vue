@@ -2,6 +2,7 @@
 import { vertical } from '@/utils/axisConvention';
 import { formatScientificNumber } from '@/utils/index';
 import { inPlaneValues } from '@/utils/dofValues';
+import { actingInGlobalAxes } from '@/utils/nodalLcs';
 import { PrescribedDisplacement } from 'ts-fem';
 import { computed } from 'vue';
 
@@ -23,7 +24,11 @@ const props = withDefaults(
 /** Undefined when the load outlives its node; the drawing then leaves it out rather than throwing. */
 const target = computed(() => props.nload.domain.nodes.get(props.nload.target));
 
+/** The values as entered, along the support's own axes; the labels show these. */
 const values = computed(() => inPlaneValues(props.nload.prescribedValues));
+
+/** Where the node is moved on the drawing: a turned support moves along its own axes. */
+const drawn = computed(() => actingInGlobalAxes(target.value, values.value, true));
 
 const hasTranslation = computed(() => values.value[0] !== 0 || values.value[2] !== 0);
 
@@ -34,8 +39,8 @@ const hasRotation = computed(() => Math.abs(rotation.value) > 1e-32);
 
 const translationTip = computed(() => {
   return {
-    x: target.value.coords[0] + (values.value[0] * props.multiplier) / props.scale,
-    z: target.value.coords[2] + (values.value[2] * props.multiplier) / props.scale,
+    x: target.value.coords[0] + (drawn.value.x * props.multiplier) / props.scale,
+    z: target.value.coords[2] + (drawn.value.z * props.multiplier) / props.scale,
   };
 });
 
@@ -97,9 +102,9 @@ const rotationHandleRadius = computed(() => (20 * (50 / 60)) / props.scale);
       v-if="hasTranslation"
       :font-size="fontSize / scale"
       font-weight="normal"
-      :text-anchor="values[0] > 0 ? 'start' : 'end'"
+      :text-anchor="drawn.x > 0 ? 'start' : 'end'"
       dy="0.35em"
-      :transform="`translate(${translationTip.x + (values[0] > 0 ? 10 / scale : -10 / scale)}
+      :transform="`translate(${translationTip.x + (drawn.x > 0 ? 10 / scale : -10 / scale)}
               ${translationTip.z})`"
     >
       {{ formatScientificNumber(convertDisplacement(translationMagnitude), 2) }}

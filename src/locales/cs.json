@@ -183,7 +183,10 @@
     "temperatureDeltaTbt": "ΔT<sub>d</sub>-ΔT<sub>h</sub>",
     "temperatureDeltaTbtNoHTML": "ΔTd-ΔTh",
     "temperatureDeltaTs": "ΔT<sub>s</sub>",
-    "temperatureDeltaTsNoHTML": "ΔTs"
+    "temperatureDeltaTsNoHTML": "ΔTs",
+    "globalAxes": "Globální osy",
+    "nodeAxes": "Osy uzlu",
+    "alongSupportAxes": "Ve směru vlastních os podpory."
   },
   "material": {
     "alphaT": "α_T",

@@ -1561,6 +1561,7 @@
 
 <script setup lang="ts">
 import { parseNumberInput } from '@/utils/numberInput';
+import { axisMark } from '@/utils/nodalLcs';
 import {
   Node,
   Element,
@@ -1937,10 +1938,13 @@ const nodeLoadChips = (item: Node): NodeLoadChip[] => {
     if (nl.target !== item.label) return;
 
     const tmp = [];
+    const mark = axisMark(item, nl.lcs);
     if (DofID.Dx in nl.values && Math.abs(nl.values[DofID.Dx]) > 1e-12)
-      tmp.push('F<sub>x</sub> = ' + appStore.convertForce(nl.values[DofID.Dx]));
+      tmp.push(`F<sub>x${mark}</sub> = ` + appStore.convertForce(nl.values[DofID.Dx]));
     if (DofID.Dz in nl.values && Math.abs(nl.values[DofID.Dz]) > 1e-12)
-      tmp.push(`F<sub>${appStore.axes.v}</sub> = ` + appStore.vertical(appStore.convertForce(nl.values[DofID.Dz])));
+      tmp.push(
+        `F<sub>${appStore.axes.v}${mark}</sub> = ` + appStore.vertical(appStore.convertForce(nl.values[DofID.Dz]))
+      );
     if (DofID.Ry in nl.values && Math.abs(nl.values[DofID.Ry]) > 1e-12)
       tmp.push(`M<sub>${appStore.axes.r}</sub> = ` + appStore.convertMoment(nl.values[DofID.Ry]));
 
@@ -1952,11 +1956,15 @@ const nodeLoadChips = (item: Node): NodeLoadChip[] => {
 
     const values = bc.prescribedValues;
     const tmp = [];
+    // Along the support's own axes, which a turned support marks with a prime
+    const mark = axisMark(item, true);
     // Displacements are lengths; a prescribed rotation is stored and shown in radians.
     if (DofID.Dx in values && Math.abs(values[DofID.Dx]) > 1e-12)
-      tmp.push('D<sub>x</sub> = ' + appStore.convertDisplacement(values[DofID.Dx]));
+      tmp.push(`D<sub>x${mark}</sub> = ` + appStore.convertDisplacement(values[DofID.Dx]));
     if (DofID.Dz in values && Math.abs(values[DofID.Dz]) > 1e-12)
-      tmp.push(`D<sub>${appStore.axes.v}</sub> = ` + appStore.vertical(appStore.convertDisplacement(values[DofID.Dz])));
+      tmp.push(
+        `D<sub>${appStore.axes.v}${mark}</sub> = ` + appStore.vertical(appStore.convertDisplacement(values[DofID.Dz]))
+      );
     if (DofID.Ry in values && Math.abs(values[DofID.Ry]) > 1e-12)
       tmp.push(`R<sub>${appStore.axes.r}</sub> = ` + values[DofID.Ry]);
 

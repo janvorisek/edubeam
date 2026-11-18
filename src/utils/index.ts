@@ -266,6 +266,8 @@ export const exportJSON = () => {
         return {
           target: nl.target,
           values: nl.values,
+          // Only for a load in the node's own axes; files without it are in the global axes
+          ...(nl.lcs ? { lcs: true } : {}),
         };
       }),
       elementLoads: lc.elementLoadList.map((el) => {
@@ -377,7 +379,7 @@ export const importJSON = (json: any) => {
       useProjectStore().solver.loadCases[0].label = loadCase.label;
 
       for (const nl of loadCase.nodalLoads) {
-        useProjectStore().solver.loadCases[0].createNodalLoad(nl.target, nl.values);
+        useProjectStore().solver.loadCases[0].createNodalLoad(nl.target, nl.values, nl.lcs === true);
       }
 
       for (const el of loadCase.elementLoads) {

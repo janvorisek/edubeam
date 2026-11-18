@@ -93,7 +93,10 @@
     "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
     "temperatureDeltaTs": "ΔT<sub>c</sub>",
     "temperatureDeltaTsNoHTML": "ΔTc",
-    "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt"
+    "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt",
+    "globalAxes": "전체 좌표축",
+    "nodeAxes": "절점 좌표축",
+    "alongSupportAxes": "지점 자체의 좌표축 방향입니다."
   },
   "tabs": {
     "nodes": "절점",

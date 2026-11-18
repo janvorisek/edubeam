@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { closeModal, openModal } from 'jenesius-vue-modal';
 import SvgPanZoom from './SVGPanZoom.vue';
+import { axisMark } from '@/utils/nodalLcs';
 import SvgGrid from './SVGGrid.vue';
 import Crosshair from './Crosshair.vue';
 import SvgViewerDefs from './SVGViewerDefs.vue';
@@ -808,14 +809,15 @@ const buildElementLoadDetails = (el: BeamElementLoad): EntityDetails => {
 
 const buildNodalLoadDetails = (el: NodalLoad): EntityDetails => {
   const rows: string[] = [];
+  const mark = axisMark(projectStore.solver.domain.nodes.get(el.target), el.lcs);
 
   if (Math.abs(el.values[0]) > 1e-32) {
-    rows.push(`F<sub>x</sub> = ${appStore.convertForce(el.values[0])} ${appStore.units.Force}`);
+    rows.push(`F<sub>x${mark}</sub> = ${appStore.convertForce(el.values[0])} ${appStore.units.Force}`);
   }
 
   if (Math.abs(el.values[2]) > 1e-32) {
     rows.push(
-      `F<sub>${appStore.axes.v}</sub> = ${appStore.vertical(appStore.convertForce(el.values[2]))} ${appStore.units.Force}`
+      `F<sub>${appStore.axes.v}${mark}</sub> = ${appStore.vertical(appStore.convertForce(el.values[2]))} ${appStore.units.Force}`
     );
   }
 
@@ -828,14 +830,18 @@ const buildNodalLoadDetails = (el: NodalLoad): EntityDetails => {
 
 const buildPrescribedBCDetails = (el: PrescribedDisplacement): EntityDetails => {
   const rows: string[] = [];
+  // Along the support's own axes, which a turned support marks with a prime
+  const mark = axisMark(projectStore.solver.domain.nodes.get(el.target), true);
 
   if (Math.abs(el.prescribedValues[0]) > 1e-32) {
-    rows.push(`D<sub>x</sub> = ${appStore.convertDisplacement(el.prescribedValues[0])} ${appStore.units.Displacement}`);
+    rows.push(
+      `D<sub>x${mark}</sub> = ${appStore.convertDisplacement(el.prescribedValues[0])} ${appStore.units.Displacement}`
+    );
   }
 
   if (Math.abs(el.prescribedValues[2]) > 1e-32) {
     rows.push(
-      `D<sub>${appStore.axes.v}</sub> = ${appStore.vertical(appStore.convertDisplacement(el.prescribedValues[2]))} ` +
+      `D<sub>${appStore.axes.v}${mark}</sub> = ${appStore.vertical(appStore.convertDisplacement(el.prescribedValues[2]))} ` +
         appStore.units.Displacement
     );
   }

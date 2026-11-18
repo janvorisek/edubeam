@@ -26,7 +26,7 @@ type Selection = {
  * those indices shift as soon as any load is deleted, so they cannot be kept until the paste.
  */
 type CopiedLoad =
-  | { kind: 'nodal'; target: string; values: NodalLoad['values'] }
+  | { kind: 'nodal'; target: string; values: NodalLoad['values']; lcs: boolean }
   | { kind: 'prescribed'; target: string; values: PrescribedDisplacement['prescribedValues'] }
   | { kind: 'concentrated' | 'uniform'; target: string; values: number[]; lcs: boolean }
   | { kind: 'trapezoidal'; target: string; startValues: [number, number]; endValues: [number, number]; lcs: boolean }
@@ -92,7 +92,12 @@ export const useClipboardStore = defineStore('clipboard', () => {
       ...sel.nodalLoads
         .map((i) => loadCase.nodalLoadList[i])
         .filter(Boolean)
-        .map((l): CopiedLoad => ({ kind: 'nodal', target: String(l.target), values: cloneClipboardValue(l.values) })),
+        .map((l): CopiedLoad => ({
+          kind: 'nodal',
+          target: String(l.target),
+          values: cloneClipboardValue(l.values),
+          lcs: l.lcs,
+        })),
       ...sel.prescribedBC
         .map((i) => loadCase.prescribedBC[i])
         .filter(Boolean)
@@ -149,7 +154,7 @@ export const useClipboardStore = defineStore('clipboard', () => {
         const target = l.kind === 'nodal' || l.kind === 'prescribed' ? nodeMap.get(l.target) : elMap.get(l.target);
         if (target === undefined) continue;
 
-        if (l.kind === 'nodal') loadCase.createNodalLoad(target, cloneClipboardValue(l.values));
+        if (l.kind === 'nodal') loadCase.createNodalLoad(target, cloneClipboardValue(l.values), l.lcs);
         else if (l.kind === 'prescribed') loadCase.createPrescribedDisplacement(target, cloneClipboardValue(l.values));
         else if (l.kind === 'concentrated') {
           loadCase.createBeamConcentratedLoad(target, cloneClipboardValue(l.values), l.lcs);

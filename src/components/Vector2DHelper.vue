@@ -12,10 +12,16 @@ const props = withDefaults(
     type?: 'force' | 'displacement';
     /** The node the load acts on, drawn and named the way the element preview names its own. */
     label?: string | number;
+    /**
+     * Degrees the components' axes are turned from the global ones (x towards z, as a turned
+     * support's are); the arrow and its component legs turn with them.
+     */
+    axesAngle?: number;
   }>(),
   {
     type: 'force',
     label: undefined,
+    axesAngle: 0,
   }
 );
 
@@ -93,6 +99,12 @@ const center2 = computed(() => {
   return { x: center.value.x + x * 10, y: center.value.y + y * 10 };
 });
 
+/** A point of the arrow in the turned axes, where it lands on the preview (y down, like z). */
+const turned = (p: { x: number; y: number }) => {
+  const r = (props.axesAngle * Math.PI) / 180;
+  return { x: p.x * Math.cos(r) - p.y * Math.sin(r), y: p.x * Math.sin(r) + p.y * Math.cos(r) };
+};
+
 /** Frame whatever is actually drawn - the arrow, the arc, or both - instead of a fixed window. */
 const vbox = computed(() => {
   let minX = 0;
@@ -101,10 +113,13 @@ const vbox = computed(() => {
   let maxY = 0;
 
   if (hasVector.value) {
-    minX = Math.min(minX, end.value.x);
-    maxX = Math.max(maxX, end.value.x);
-    minY = Math.min(minY, end.value.y);
-    maxY = Math.max(maxY, end.value.y);
+    // The arrow's head and the corner its component legs meet at, as turned
+    for (const p of [turned(end.value), turned({ x: end.value.x, y: 0 })]) {
+      minX = Math.min(minX, p.x);
+      maxX = Math.max(maxX, p.x);
+      minY = Math.min(minY, p.y);
+      maxY = Math.max(maxY, p.y);
+    }
   }
 
   if (hasRotational.value) {
@@ -180,7 +195,7 @@ const hasLabel = computed(() => props.label !== undefined && String(props.label)
  * moment marker at the node's own coordinates, arrowhead included, and centred on the tail the
  * two read as unrelated pictures.
  */
-const nodeAt = computed(() => (hasVector.value ? end.value : { x: 0, y: 0 }));
+const nodeAt = computed(() => (hasVector.value ? turned(end.value) : { x: 0, y: 0 }));
 
 /**
  * The value belongs at the arrowhead, which is where the eye goes and which says which way the
@@ -210,7 +225,7 @@ const strokeDash = computed(() => (isDisplacement.value ? '4 3' : undefined));
       </marker>
     </defs>
 
-    <g v-if="hasVector">
+    <g v-if="hasVector" :transform="`rotate(${props.axesAngle})`">
       <!-- Arrow -->
       <line
         x1="0"

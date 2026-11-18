@@ -1557,6 +1557,11 @@ const mouseMove = (e: PointerEvent) => {
     finalX = x;
     finalZ = z;
 
+    // The crosshair and its ruler labels follow the node, not the pointer that holds it off-centre:
+    // the coordinates read are where the node goes
+    mouseXReal.value = x;
+    mouseYReal.value = z;
+
     //useProjectStore().solver.loadCases[0].solved = false;
     solve();
   }

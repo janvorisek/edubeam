@@ -14,8 +14,7 @@
     "test:run": "vitest run",
     "lint": "eslint src --ext .ts,.vue",
     "lint:fix": "eslint src --ext .ts,.vue --fix",
-    "contributors": "node scripts/contributors.mjs",
-    "screenshots": "node scripts/screenshots/run.mjs"
+    "contributors": "node scripts/contributors.mjs"
   },
   "dependencies": {
     "@edubeam/fem": "^0.3.1",

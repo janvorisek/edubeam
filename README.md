@@ -100,7 +100,6 @@ That's all you need. Here are the other scripts:
 | `npm run build`                        | Build the app into `dist/`                        |
 | `npm test` / `npm run test:run`        | Run the tests in watch mode / once                |
 | `npm run lint` / `npm run lint:fix`    | Check `src/` with ESLint / fix what it can        |
-| `npm run screenshots`                  | Retake the guide's screenshots on the website     |
 | `npm run contributors`                 | See who has contributed since the last release    |
 
 ### Where things live

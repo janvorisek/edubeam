@@ -26,7 +26,7 @@ Global **x** points right and global **z** points **down**. A positive `Fz` or `
 
 ![Add nodal load. The preview shows the direction as you type.](/screenshots/loads-nodal.webp){.shot-md}
 
-Components are always in the **global** coordinate system. A node can carry several nodal loads; they add up and are drawn stacked.
+Components are in the **global** coordinate system. On a node whose axes are turned (an [inclined support](/essentials/nodes-supports#inclined-skewed-supports)), the dialog adds a **Global axes / Node axes** switch: in node axes the components, shown as `Fx′` and `Fz′`, act along the node's own axes and turn with it if its angle changes later. Switching rewrites the values, so the load stays where it is. A node can carry several nodal loads; they add up and are drawn stacked.
 
 ### Prescribed displacements (support settlements)
 
@@ -39,6 +39,8 @@ In the same dialog choose **Prescribed displacement**, or click a supported node
 | `Ry` | imposed rotation | rad |
 
 You can only enter a value for a DOF that is **restrained** at that node, because only supports can be moved. Each node has at most one prescribed displacement; edit it rather than adding a second. In a statically determinate structure a settlement produces displacements but no internal forces; in an indeterminate one it produces both.
+
+On an inclined support the fields read `Dx′` and `Dz′`: a settlement acts along the support's own axes, the ones its restraints act in, and is drawn that way.
 
 ## Element loads
 

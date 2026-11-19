@@ -26,7 +26,7 @@ Global **x** ekseni sağa, global **z** ekseni **aşağı** doğrudur. Bu nedenl
 
 ![Düğüm yükü ekle. Önizleme, siz yazarken yükün yönünü gösterir.](/screenshots/tr/loads-nodal.webp){.shot-md}
 
-Bileşenler her zaman **global** koordinat sistemindedir. Bir düğüme birden fazla düğüm yükü etkiyebilir; bunlar toplanır ve üst üste çizilir.
+Bileşenler **global** koordinat sistemindedir. Eksenleri döndürülmüş bir düğümde ([eğik mesnet](/tr/essentials/nodes-supports#inclined-skewed-supports)) iletişim kutusuna **Global eksenler / Düğüm eksenleri** seçicisi eklenir: düğüm eksenlerinde `Fx′` ve `Fz′` olarak gösterilen bileşenler düğümün kendi eksenleri boyunca etkir ve açısı sonradan değişirse düğümle birlikte döner. Eksen değiştirmek değerleri yeniden hesaplar; yük olduğu yerde kalır. Bir düğüme birden fazla düğüm yükü etkiyebilir; bunlar toplanır ve üst üste çizilir.
 
 ### Öngörülen yer değiştirmeler (mesnet çökmeleri) {#prescribed-displacements-support-settlements}
 
@@ -39,6 +39,8 @@ Aynı pencerede **Öngörülen yer değiştirme**'yi seçin ya da mesnetli bir d
 | `Ry` | verilen dönme | rad |
 
 Yalnızca o düğümde **tutulu** olan bir serbestlik derecesine değer girebilirsiniz, çünkü yalnızca mesnetler hareket ettirilebilir. Her düğümde en fazla bir öngörülen yer değiştirme olabilir; ikincisini eklemek yerine mevcut olanı düzenleyin. İzostatik bir yapıda mesnet çökmesi yer değiştirme oluşturur ama iç kuvvet oluşturmaz; hiperstatik bir yapıda ikisini de oluşturur.
+
+Eğik bir mesnette alanlar `Dx′` ve `Dz′` adını alır: yer değiştirme, mesnedin bağlarının etkidiği kendi eksenleri boyunca etkir ve öyle çizilir.
 
 ## Eleman yükleri {#element-loads}
 

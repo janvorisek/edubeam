@@ -26,7 +26,7 @@ Záložka *Zatížení* → **Přidat uzlové zatížení**, nebo klikněte na u
 
 ![Přidat uzlové zatížení. Náhled ukazuje směr už během psaní.](/screenshots/cs/loads-nodal.webp){.shot-md}
 
-Složky se vždy zadávají v **globálním** souřadném systému. V jednom uzlu může působit více uzlových zatížení – sečtou se a vykreslí nad sebou.
+Složky se zadávají v **globálním** souřadném systému. V uzlu s natočenými osami ([šikmá podpora](/cs/essentials/nodes-supports#inclined-skewed-supports)) přibude v dialogu přepínač **Globální osy / Osy uzlu**: v osách uzlu působí složky, označené `Fx′` a `Fz′`, ve vlastních osách uzlu a natočí se s ním, pokud se jeho úhel později změní. Přepnutí hodnoty přepočte, takže zatížení zůstane, kde bylo. V jednom uzlu může působit více uzlových zatížení – sečtou se a vykreslí nad sebou.
 
 ### Předepsaná posunutí (poklesy podpor) {#prescribed-displacements-support-settlements}
 
@@ -39,6 +39,8 @@ Ve stejném dialogu zvolte **Předepsané posunutí**, nebo klikněte na podepř
 | `Ry` | vnucené pootočení | rad |
 
 Hodnotu zadáte jen pro stupeň volnosti, který je v daném uzlu **podepřen** – posunout lze jen podporu. Každý uzel může mít nejvýše jedno předepsané posunutí; místo přidání dalšího upravte to stávající. U staticky určité konstrukce vyvolá pokles podpory posunutí, ale žádné vnitřní síly; u staticky neurčité obojí.
+
+U šikmé podpory jsou pole označena `Dx′` a `Dz′`: posunutí působí ve vlastních osách podpory, ve kterých působí i její vazby, a tak se také vykreslí.
 
 ## Prvková zatížení {#element-loads}
 

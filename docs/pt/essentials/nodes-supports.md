@@ -80,7 +80,7 @@ As barras de treliça são elementos de viga com as duas **rótulas de extremida
 
 ### Apoios inclinados {#inclined-skewed-supports}
 
-Defina o **Ângulo do SCL nodal** α em graus (−180…180). Ele está no painel do nó em *Apoios do nó*, nos diálogos Adicionar nó e Editar nó, e no campo α da tabela de nós. Os eixos do nó giram esse ângulo e os GLs do apoio atuam nas direções giradas, então um apoio móvel sobre um talude de 30° é `Dz` com α = 30. O símbolo gira junto e a reação é informada na direção girada.
+Defina o **Ângulo do SCL nodal** α em graus (−180…180). Ele está no painel do nó em *Apoios do nó*, nos diálogos Adicionar nó e Editar nó, e no campo α da tabela de nós. Os eixos do nó giram esse ângulo e os GLs do apoio atuam nas direções giradas, então um apoio móvel sobre um talude de 30° é `Dz` com α = 30. O símbolo gira junto e a reação é informada na direção girada. As cargas nodais em um nó assim podem ser dadas nos eixos globais ou nos eixos próprios do nó, e um deslocamento prescrito atua segundo os eixos do apoio; veja [Cargas nodais](/pt/essentials/loads#nodal-loads).
 
 ### Estabilidade {#stability}
 

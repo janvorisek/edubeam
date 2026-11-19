@@ -58,7 +58,7 @@ Uma rótula em uma extremidade do elemento libera o grau de liberdade de rotaç�
 
 ## Cargas de elemento {#element-loads}
 
-Cargas distribuídas, concentradas e térmicas são convertidas em **cargas nodais equivalentes** $\mathbf{f}_{eq}$ (o oposto das reações de engastamento perfeito) e somadas ao vetor global de cargas. Após a solução, os esforços ao longo do elemento são recuperados a partir dos deslocamentos de extremidade mais a solução particular exata da carga de elemento, de modo que os diagramas são exatos ao longo da barra.
+Cargas distribuídas, concentradas e térmicas são convertidas em **cargas nodais equivalentes** $\mathbf{f}_{eq}$ (o oposto das reações de engastamento perfeito) e somadas ao vetor global de cargas. Após a solução, os esforços ao longo do elemento são recuperados a partir dos deslocamentos de extremidade mais a solução particular exata da carga de elemento, de modo que os diagramas são exatos ao longo da barra. As forças de engastamento perfeito e a deformada entre os nós são as soluções exatas de uma barra de Timoshenko, de modo que a deformada desenhada inclui também a deformação por cisalhamento.
 
 ## Matriz de transformação {#transformation-matrix}
 

@@ -26,7 +26,7 @@ Thẻ *Tải trọng* → **Thêm tải nút**, hoặc nhấp vào một nút �
 
 ![Thêm tải nút. Hình xem trước cho thấy chiều tải ngay khi bạn gõ.](/screenshots/vi/loads-nodal.webp){.shot-md}
 
-Các thành phần luôn theo hệ tọa độ **tổng thể**. Một nút có thể chịu nhiều tải trọng nút; chúng được cộng lại và vẽ chồng lên nhau.
+Các thành phần theo hệ tọa độ **tổng thể**. Ở nút có hệ trục bị xoay ([gối nghiêng](/vi/essentials/nodes-supports#inclined-skewed-supports)), hộp thoại có thêm công tắc **Trục tổng thể / Trục nút**: theo trục nút, các thành phần, hiển thị là `Fx′` và `Fz′`, tác dụng theo trục riêng của nút và xoay theo nút nếu góc của nút thay đổi sau này. Khi chuyển trục, giá trị được tính lại để tải trọng giữ nguyên vị trí. Một nút có thể chịu nhiều tải trọng nút; chúng được cộng lại và vẽ chồng lên nhau.
 
 ### Chuyển vị cưỡng bức (lún gối tựa) {#prescribed-displacements-support-settlements}
 
@@ -39,6 +39,8 @@ Trong cùng hộp thoại, chọn **Chuyển vị cưỡng bức**, hoặc nhấ
 | `Ry` | góc xoay cưỡng bức | rad |
 
 Bạn chỉ nhập được giá trị cho bậc tự do **bị chặn** tại nút đó, vì chỉ gối tựa mới có thể bị dịch chuyển. Mỗi nút có tối đa một chuyển vị cưỡng bức; hãy sửa nó thay vì thêm cái thứ hai. Trong kết cấu tĩnh định, lún gối tựa chỉ gây chuyển vị mà không gây nội lực; trong kết cấu siêu tĩnh, nó gây cả hai.
+
+Ở gối nghiêng, các ô có tên `Dx′` và `Dz′`: chuyển vị tác dụng theo các trục riêng của gối, cũng là các trục của liên kết, và được vẽ như vậy.
 
 ## Tải trọng phần tử {#element-loads}
 

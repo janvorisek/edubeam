@@ -80,7 +80,7 @@ Kafes çubukları, iki **uç mafsalı** da serbest bırakılmış kiriş elemanl
 
 ### Eğik mesnetler {#inclined-skewed-supports}
 
-**Düğüm yerel eksen açısı** α'yı derece cinsinden girin (−180…180). Bu alan düğüm panelinde *Düğüm mesnetleri* altında, Düğüm ekle ve Düğümü düzenle pencerelerinde ve Düğümler tablosunun α alanında bulunur. Düğümün eksenleri bu açı kadar döner ve mesnet serbestlik dereceleri dönmüş doğrultularda etkir; yani 30° eğimli bir yüzeydeki kayıcı mesnet, α = 30 ile `Dz`'dir. Sembol de buna göre döner ve mesnet tepkisi dönmüş doğrultuda verilir.
+**Düğüm yerel eksen açısı** α'yı derece cinsinden girin (−180…180). Bu alan düğüm panelinde *Düğüm mesnetleri* altında, Düğüm ekle ve Düğümü düzenle pencerelerinde ve Düğümler tablosunun α alanında bulunur. Düğümün eksenleri bu açı kadar döner ve mesnet serbestlik dereceleri dönmüş doğrultularda etkir; yani 30° eğimli bir yüzeydeki kayıcı mesnet, α = 30 ile `Dz`'dir. Sembol de buna göre döner ve mesnet tepkisi dönmüş doğrultuda verilir. Böyle bir düğümdeki düğüm yükleri global eksenlerde ya da düğümün kendi eksenlerinde verilebilir; öngörülen yer değiştirme ise mesnedin eksenleri boyunca etkir; bkz. [Düğüm yükleri](/tr/essentials/loads#nodal-loads).
 
 ### Kararlılık {#stability}
 

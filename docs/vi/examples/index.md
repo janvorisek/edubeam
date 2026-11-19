@@ -16,7 +16,7 @@ Các mô hình này cũng có trong ứng dụng tại **☰ → Ví dụ**, và
 
 - **Dầm siêu tĩnh**: bỏ đánh dấu `Ry` tại đầu ngàm để có dầm đơn giản. Mô men giữa nhịp tăng lên bao nhiêu?
 - **Dầm công xôn**: so sánh độ võng đầu tự do với $FL^3/3EI$ (xem [Kiểm tra kết quả bằng tính tay](/vi/guide/verification)), rồi giảm $I_y$ đi một nửa trong thẻ *Tiết diện*.
-- **Dàn Pratt**: các nút trong ví dụ này là nút cứng. Đánh dấu cả hai khớp đầu thanh trên mọi thanh để có một dàn thực sự, rồi so sánh lực dọc. Bây giờ hãy xóa một thanh xiên: dàn có còn đứng vững không?
+- **Dàn Warren**: các nút trong ví dụ này là nút cứng. Đánh dấu cả hai khớp đầu thanh trên mọi thanh để có một dàn thực sự, rồi so sánh lực dọc. Bây giờ hãy xóa một thanh xiên: dàn có còn đứng vững không?
 - **Dầm liên tục ba nhịp**: dầm chỉ được đỡ ở hai đầu. Đánh dấu `Dz` tại các nút giữa B và C để có dầm liên tục, và xem mô men âm xuất hiện trên các gối.
 - **Khung cổng**: đánh dấu cả hai khớp đầu thanh trên dầm để mô hình hóa liên kết khớp giữa dầm và cột, hoặc đổi gối bên phải từ gối di động thành gối cố định.
 - **Tải nhiệt độ**: chặn `Dx` tại cả hai gối và xem lực dọc xuất hiện.

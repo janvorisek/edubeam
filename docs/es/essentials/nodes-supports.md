@@ -80,7 +80,7 @@ Las barras de celosía son elementos viga con ambas **rótulas de extremo** libe
 
 ### Apoyos inclinados (girados) {#inclined-skewed-supports}
 
-Define el **Ángulo del SCL nodal** α en grados (−180…180). Está en el panel del nodo, en *Apoyos del nodo*, en los diálogos Añadir nodo y Editar nodo, y en el campo α de la tabla de nodos. Los ejes del nodo giran ese ángulo y los GDL del apoyo actúan en las direcciones giradas, de modo que un rodillo sobre una pendiente de 30° es `Dz` con α = 30. El símbolo gira en consecuencia y la reacción se da en la dirección girada.
+Define el **Ángulo del SCL nodal** α en grados (−180…180). Está en el panel del nodo, en *Apoyos del nodo*, en los diálogos Añadir nodo y Editar nodo, y en el campo α de la tabla de nodos. Los ejes del nodo giran ese ángulo y los GDL del apoyo actúan en las direcciones giradas, de modo que un rodillo sobre una pendiente de 30° es `Dz` con α = 30. El símbolo gira en consecuencia y la reacción se da en la dirección girada. Las cargas nodales en un nudo así pueden darse en ejes globales o en los ejes propios del nudo, y un desplazamiento impuesto actúa según los ejes del apoyo; véase [Cargas nodales](/es/essentials/loads#nodal-loads).
 
 ### Estabilidad {#stability}
 

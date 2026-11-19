@@ -26,7 +26,7 @@ Tab *Beban* → **Tambah beban joint**, atau klik joint → **Tambah beban**. Pi
 
 ![Tambah beban joint. Pratinjau menunjukkan arah saat Anda mengetik.](/screenshots/id/loads-nodal.webp){.shot-md}
 
-Komponen selalu dalam sistem koordinat **global**. Sebuah joint dapat memikul beberapa beban joint; semuanya dijumlahkan dan digambar bertumpuk.
+Komponen dinyatakan dalam sistem koordinat **global**. Pada joint yang sumbunya diputar ([tumpuan miring](/id/essentials/nodes-supports#inclined-skewed-supports)), dialog menambahkan pengalih **Sumbu global / Sumbu titik**: dalam sumbu titik, komponen yang ditampilkan sebagai `Fx′` dan `Fz′` bekerja searah sumbu joint itu sendiri dan ikut berputar jika sudutnya kemudian berubah. Saat berpindah sumbu, nilai dihitung ulang sehingga beban tetap di tempatnya. Sebuah joint dapat memikul beberapa beban joint; semuanya dijumlahkan dan digambar bertumpuk.
 
 ### Perpindahan tumpuan (penurunan tumpuan) {#prescribed-displacements-support-settlements}
 
@@ -39,6 +39,8 @@ Di dialog yang sama pilih **Perpindahan tumpuan**, atau klik joint yang bertumpu
 | `Ry` | rotasi yang diberikan | rad |
 
 Anda hanya dapat memasukkan nilai untuk DOF yang **ditahan** di joint tersebut, karena hanya tumpuan yang dapat dipindahkan. Setiap joint memiliki paling banyak satu perpindahan tumpuan; edit yang sudah ada alih-alih menambahkan yang kedua. Pada struktur statis tertentu, penurunan tumpuan menghasilkan perpindahan tetapi tidak menimbulkan gaya dalam; pada struktur statis tak tentu, keduanya terjadi.
+
+Pada tumpuan miring, kolom bernama `Dx′` dan `Dz′`: perpindahan bekerja searah sumbu tumpuan itu sendiri, sumbu tempat kekangannya bekerja, dan digambar seperti itu.
 
 ## Beban elemen {#element-loads}
 

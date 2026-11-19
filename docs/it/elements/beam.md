@@ -58,7 +58,7 @@ Una cerniera all'estremità di un elemento svincola il GdL rotazionale corrispon
 
 ## Carichi sull'elemento {#element-loads}
 
-I carichi distribuiti, concentrati e termici vengono convertiti in **carichi nodali equivalenti** $\mathbf{f}_{eq}$ (l'opposto delle forze di incastro perfetto) e sommati al vettore globale dei carichi. Dopo la soluzione, le forze interne lungo l'elemento vengono ricostruite dagli spostamenti di estremità più la soluzione particolare esatta del carico sull'elemento, quindi i diagrammi sono esatti lungo tutta l'asta.
+I carichi distribuiti, concentrati e termici vengono convertiti in **carichi nodali equivalenti** $\mathbf{f}_{eq}$ (l'opposto delle forze di incastro perfetto) e sommati al vettore globale dei carichi. Dopo la soluzione, le forze interne lungo l'elemento vengono ricostruite dagli spostamenti di estremità più la soluzione particolare esatta del carico sull'elemento, quindi i diagrammi sono esatti lungo tutta l'asta. Le forze di incastro perfetto e la deformata tra i nodi sono le soluzioni esatte di un'asta di Timoshenko, quindi la deformata disegnata include anche la deformazione a taglio.
 
 ## Matrice di trasformazione {#transformation-matrix}
 

@@ -80,7 +80,7 @@ Les barres de treillis sont des éléments poutre dont les deux **rotules d’ex
 
 ### Appuis inclinés {#inclined-skewed-supports}
 
-Définissez l’**Angle du SCL nodal** α en degrés (−180…180). Il se trouve dans le panneau du nœud sous *Appuis du nœud*, dans les boîtes de dialogue Ajouter un nœud et Modifier le nœud, et dans le champ α du tableau des nœuds. Les axes du nœud tournent de cet angle et les DDL d’appui agissent dans les directions tournées : un appui simple sur une pente à 30° est donc `Dz` avec α = 30. Le symbole tourne en conséquence et la réaction est donnée dans la direction tournée.
+Définissez l’**Angle du SCL nodal** α en degrés (−180…180). Il se trouve dans le panneau du nœud sous *Appuis du nœud*, dans les boîtes de dialogue Ajouter un nœud et Modifier le nœud, et dans le champ α du tableau des nœuds. Les axes du nœud tournent de cet angle et les DDL d’appui agissent dans les directions tournées : un appui simple sur une pente à 30° est donc `Dz` avec α = 30. Le symbole tourne en conséquence et la réaction est donnée dans la direction tournée. Les charges nodales sur un tel nœud peuvent être données dans les axes globaux ou dans les axes propres du nœud, et un déplacement imposé agit selon les axes de l'appui ; voir [Charges nodales](/fr/essentials/loads#nodal-loads).
 
 ### Stabilité {#stability}
 

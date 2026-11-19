@@ -80,7 +80,7 @@ Příhradové pruty jsou nosníkové prvky, které mají uvolněné oba **koncov
 
 ### Šikmé (natočené) podpory {#inclined-skewed-supports}
 
-Nastavte **Pootočení systému souřadnic** α ve stupních (−180…180). Najdete ho v panelu uzlu pod *Podepření uzlu*, v dialozích Přidat uzel a Upravit uzel a v poli α tabulky Uzly. Osy uzlu se pootočí o zadaný úhel a podepřené stupně volnosti pak působí v pootočených směrech. Posuvný kloub na svahu se sklonem 30° je tedy `Dz` s α = 30. Značka se natočí stejně a reakce se uvádí v pootočeném směru.
+Nastavte **Pootočení systému souřadnic** α ve stupních (−180…180). Najdete ho v panelu uzlu pod *Podepření uzlu*, v dialozích Přidat uzel a Upravit uzel a v poli α tabulky Uzly. Osy uzlu se pootočí o zadaný úhel a podepřené stupně volnosti pak působí v pootočených směrech. Posuvný kloub na svahu se sklonem 30° je tedy `Dz` s α = 30. Značka se natočí stejně a reakce se uvádí v pootočeném směru. Uzlová zatížení v takovém uzlu zadáte v globálních osách nebo ve vlastních osách uzlu a předepsané posunutí působí v osách podpory; viz [Uzlová zatížení](/cs/essentials/loads#nodal-loads).
 
 ### Stabilita {#stability}
 

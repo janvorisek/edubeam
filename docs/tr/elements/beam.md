@@ -58,7 +58,7 @@ Eleman ucundaki bir mafsal, o uçtaki dönme serbestlik derecesini serbest bıra
 
 ## Eleman yükleri {#element-loads}
 
-Yayılı, tekil ve sıcaklık yükleri **eşdeğer düğüm yüklerine** $\mathbf{f}_{eq}$ (ankastrelik uç kuvvetlerinin ters işaretlisi) dönüştürülür ve global yük vektörüne eklenir. Çözümden sonra eleman boyunca iç kuvvetler, uç yer değiştirmelerinden ve eleman yükünün kesin özel çözümünden elde edilir; bu sayede diyagramlar çubuk boyunca kesindir.
+Yayılı, tekil ve sıcaklık yükleri **eşdeğer düğüm yüklerine** $\mathbf{f}_{eq}$ (ankastrelik uç kuvvetlerinin ters işaretlisi) dönüştürülür ve global yük vektörüne eklenir. Çözümden sonra eleman boyunca iç kuvvetler, uç yer değiştirmelerinden ve eleman yükünün kesin özel çözümünden elde edilir; bu sayede diyagramlar çubuk boyunca kesindir. Ankastre uç kuvvetleri ve düğümler arasındaki elastik eğri bir Timoshenko çubuğunun tam çözümleridir; bu yüzden çizilen şekil değiştirmiş biçim kayma şekil değiştirmesini de içerir.
 
 ## Dönüşüm matrisi {#transformation-matrix}
 

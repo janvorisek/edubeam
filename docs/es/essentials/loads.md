@@ -26,7 +26,7 @@ Pestaña *Cargas* → **Añadir carga nodal**, o haz clic en un nodo → **Añad
 
 ![Añadir carga nodal. La vista previa muestra la dirección mientras escribes.](/screenshots/es/loads-nodal.webp){.shot-md}
 
-Las componentes están siempre en el sistema de coordenadas **global**. Un nodo puede tener varias cargas nodales; se suman y se dibujan apiladas.
+Las componentes están en el sistema de coordenadas **global**. En un nudo con los ejes girados (un [apoyo inclinado](/es/essentials/nodes-supports#inclined-skewed-supports)), el diálogo añade el selector **Ejes globales / Ejes del nudo**: en ejes del nudo, las componentes, mostradas como `Fx′` y `Fz′`, actúan según los ejes propios del nudo y giran con él si su ángulo cambia después. Al cambiar de ejes, los valores se recalculan para que la carga quede donde estaba. Un nudo puede tener varias cargas nodales; se suman y se dibujan apiladas.
 
 ### Desplazamientos impuestos (asientos de apoyo) {#prescribed-displacements-support-settlements}
 
@@ -39,6 +39,8 @@ En el mismo diálogo elige **Desplazamiento impuesto**, o haz clic en un nodo co
 | `Ry` | giro impuesto | rad |
 
 Solo puedes introducir un valor en un GDL que esté **restringido** en ese nodo, porque solo los apoyos se pueden mover. Cada nodo tiene como máximo un desplazamiento impuesto; edítalo en lugar de añadir un segundo. En una estructura isostática, un asiento produce desplazamientos pero no esfuerzos; en una hiperestática produce ambos.
+
+En un apoyo inclinado los campos se llaman `Dx′` y `Dz′`: el desplazamiento actúa según los ejes propios del apoyo, en los que actúan sus restricciones, y se dibuja así.
 
 ## Cargas de elemento {#element-loads}
 

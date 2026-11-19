@@ -26,7 +26,7 @@ Zakładka *Obciążenia* → **Dodaj obciążenie węzłowe** albo kliknij węze
 
 ![Dodaj obciążenie węzłowe. Podgląd pokazuje kierunek już podczas wpisywania.](/screenshots/pl/loads-nodal.webp){.shot-md}
 
-Składowe są zawsze w **globalnym** układzie współrzędnych. Węzeł może mieć kilka obciążeń węzłowych; sumują się i są rysowane jedno nad drugim.
+Składowe podaje się w **globalnym** układzie współrzędnych. W węźle z obróconymi osiami ([podpora ukośna](/pl/essentials/nodes-supports#inclined-skewed-supports)) okno ma dodatkowo przełącznik **Osie globalne / Osie węzła**: w osiach węzła składowe, oznaczone `Fx′` i `Fz′`, działają w osiach własnych węzła i obracają się razem z nim, jeśli jego kąt później się zmieni. Przełączenie przelicza wartości, więc obciążenie zostaje tam, gdzie było. W jednym węźle może działać kilka obciążeń węzłowych; sumują się i są rysowane jedno nad drugim.
 
 ### Zadane przemieszczenia (osiadania podpór) {#prescribed-displacements-support-settlements}
 
@@ -39,6 +39,8 @@ W tym samym oknie wybierz **Zadane przemieszczenie** albo kliknij podparty węze
 | `Ry` | wymuszony obrót | rad |
 
 Wartość można wpisać tylko dla stopnia swobody, który jest w tym węźle **zablokowany**, ponieważ przesuwać można tylko podpory. Każdy węzeł ma najwyżej jedno zadane przemieszczenie; edytuj je zamiast dodawać drugie. W układzie statycznie wyznaczalnym osiadanie wywołuje przemieszczenia, ale nie siły przekrojowe; w układzie statycznie niewyznaczalnym wywołuje jedno i drugie.
+
+Przy podporze ukośnej pola mają oznaczenia `Dx′` i `Dz′`: przemieszczenie działa w osiach własnych podpory, w których działają jej więzy, i tak jest rysowane.
 
 ## Obciążenia elementów {#element-loads}
 

@@ -58,7 +58,7 @@ Sendi di ujung elemen melepas DOF rotasi yang bersangkutan: rotasi tersebut diel
 
 ## Beban elemen {#element-loads}
 
-Beban merata, terpusat, dan suhu dikonversi menjadi **beban joint ekuivalen** $\mathbf{f}_{eq}$ (negatif dari gaya ujung jepit) dan ditambahkan ke vektor beban global. Setelah solusi diperoleh, gaya dalam di sepanjang elemen dihitung dari perpindahan ujung ditambah solusi partikular eksak dari beban elemen, sehingga diagramnya eksak di sepanjang batang.
+Beban merata, terpusat, dan suhu dikonversi menjadi **beban joint ekuivalen** $\mathbf{f}_{eq}$ (negatif dari gaya ujung jepit) dan ditambahkan ke vektor beban global. Setelah solusi diperoleh, gaya dalam di sepanjang elemen dihitung dari perpindahan ujung ditambah solusi partikular eksak dari beban elemen, sehingga diagramnya eksak di sepanjang batang. Gaya ujung jepit dan garis lendutan di antara joint adalah solusi eksak batang Timoshenko, sehingga bentuk terdeformasi yang digambar juga mencakup deformasi geser.
 
 ## Matriks transformasi {#transformation-matrix}
 

@@ -16,7 +16,7 @@ Les mêmes modèles se trouvent dans l’application sous **☰ → Exemples**, 
 
 - **Poutre hyperstatique** : décochez `Ry` à l’encastrement pour obtenir une poutre sur deux appuis. De combien le moment à mi-portée augmente-t-il ?
 - **Console** : comparez la flèche à l’extrémité avec $FL^3/3EI$ (voir [Vérifier les résultats à la main](/fr/guide/verification)), puis divisez $I_y$ par deux dans l’onglet *Sections*.
-- **Treillis Pratt** : les nœuds de cet exemple sont rigides. Cochez les deux rotules d’extrémité de chaque barre pour en faire un vrai treillis, puis comparez les efforts normaux. Supprimez maintenant une diagonale : le treillis tient-il encore ?
+- **Treillis Warren** : les nœuds de cet exemple sont rigides. Cochez les deux rotules d’extrémité de chaque barre pour en faire un vrai treillis, puis comparez les efforts normaux. Supprimez maintenant une diagonale : le treillis tient-il encore ?
 - **Poutre continue à trois travées** : la poutre n’est appuyée qu’à ses extrémités. Cochez `Dz` aux nœuds intérieurs B et C pour la rendre continue, et regardez les moments négatifs apparaître sur les appuis.
 - **Portique** : cochez les deux rotules d’extrémité de la traverse pour modéliser des assemblages poutre-poteau articulés, ou remplacez l’appui simple de droite par une articulation.
 - **Charge thermique** : bloquez `Dx` aux deux appuis et regardez l’effort normal apparaître.

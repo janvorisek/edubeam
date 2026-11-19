@@ -58,7 +58,7 @@ Une rotule à une extrémité libère le degré de liberté de rotation correspo
 
 ## Charges d’élément {#element-loads}
 
-Charges réparties, ponctuelles et thermiques sont converties en **charges nodales équivalentes** $\mathbf{f}_{eq}$ (opposé des réactions d’encastrement parfait) et ajoutées au vecteur global des charges. Après résolution, les sollicitations le long de l’élément sont reconstruites à partir des déplacements d’extrémité et de la solution particulière exacte de la charge d’élément, si bien que les diagrammes sont exacts le long de la barre.
+Charges réparties, ponctuelles et thermiques sont converties en **charges nodales équivalentes** $\mathbf{f}_{eq}$ (opposé des réactions d’encastrement parfait) et ajoutées au vecteur global des charges. Après résolution, les sollicitations le long de l’élément sont reconstruites à partir des déplacements d’extrémité et de la solution particulière exacte de la charge d’élément, si bien que les diagrammes sont exacts le long de la barre. Les efforts d'encastrement parfait et la déformée entre les nœuds sont les solutions exactes d'une barre de Timoshenko : la déformée dessinée inclut donc aussi la déformation due à l'effort tranchant.
 
 ## Matrice de passage {#transformation-matrix}
 

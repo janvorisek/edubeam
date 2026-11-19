@@ -80,7 +80,7 @@ Thanh dàn là phần tử dầm được giải phóng cả hai **khớp đầu
 
 ### Gối tựa xiên {#inclined-skewed-supports}
 
-Đặt **Góc LCS của nút** α theo độ (−180…180). Góc này có trong bảng của nút ở mục *Gối tựa tại nút*, trong các hộp thoại Thêm nút và Sửa nút, và ở ô α của bảng Nút. Các trục của nút xoay đi một góc bằng giá trị đó và các bậc tự do của gối tựa tác dụng theo phương đã xoay, nên một gối di động trên mặt dốc 30° là `Dz` với α = 30. Ký hiệu xoay theo, và phản lực được báo theo phương đã xoay.
+Đặt **Góc LCS của nút** α theo độ (−180…180). Góc này có trong bảng của nút ở mục *Gối tựa tại nút*, trong các hộp thoại Thêm nút và Sửa nút, và ở ô α của bảng Nút. Các trục của nút xoay đi một góc bằng giá trị đó và các bậc tự do của gối tựa tác dụng theo phương đã xoay, nên một gối di động trên mặt dốc 30° là `Dz` với α = 30. Ký hiệu xoay theo, và phản lực được báo theo phương đã xoay. Tải trọng nút tại nút như vậy có thể nhập theo trục tổng thể hoặc theo trục riêng của nút, còn chuyển vị cưỡng bức tác dụng theo các trục của gối; xem [Tải trọng nút](/vi/essentials/loads#nodal-loads).
 
 ### Ổn định {#stability}
 

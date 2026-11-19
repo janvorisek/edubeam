@@ -58,7 +58,7 @@ A hinge at an element end releases the corresponding rotational DOF: the rotatio
 
 ## Element loads
 
-Distributed, concentrated and temperature loads are converted to **equivalent nodal loads** $\mathbf{f}_{eq}$ (the negative of the fixed-end forces) and added to the global load vector. After the solution, internal forces along the element are recovered from the end displacements plus the exact particular solution of the element load, so diagrams are exact along the member.
+Distributed, concentrated and temperature loads are converted to **equivalent nodal loads** $\mathbf{f}_{eq}$ (the negative of the fixed-end forces) and added to the global load vector. After the solution, internal forces along the element are recovered from the end displacements plus the exact particular solution of the element load, so diagrams are exact along the member. The fixed-end forces and the deflected shape between the nodes are the exact solutions of a Timoshenko member, so the drawn deformed shape includes shear deformation too.
 
 ## Transformation Matrix
 

@@ -80,7 +80,7 @@ Le aste reticolari sono elementi trave con entrambe le **cerniere di estremità*
 
 ### Vincoli inclinati {#inclined-skewed-supports}
 
-Imposta l'**Angolo LCS nodale** α in gradi (−180…180). Lo trovi nel pannello del nodo sotto *Vincoli del nodo*, nelle finestre Aggiungi nodo e Modifica nodo, e nel campo α della tabella Nodi. Gli assi del nodo ruotano di quell'angolo e i GdL vincolati agiscono nelle direzioni ruotate, quindi un carrello su un piano inclinato di 30° è `Dz` con α = 30. Il simbolo ruota di conseguenza e la reazione è riportata nella direzione ruotata.
+Imposta l'**Angolo LCS nodale** α in gradi (−180…180). Lo trovi nel pannello del nodo sotto *Vincoli del nodo*, nelle finestre Aggiungi nodo e Modifica nodo, e nel campo α della tabella Nodi. Gli assi del nodo ruotano di quell'angolo e i GdL vincolati agiscono nelle direzioni ruotate, quindi un carrello su un piano inclinato di 30° è `Dz` con α = 30. Il simbolo ruota di conseguenza e la reazione è riportata nella direzione ruotata. I carichi nodali su un nodo di questo tipo si possono dare negli assi globali o negli assi propri del nodo, e uno spostamento imposto agisce lungo gli assi del vincolo; vedi [Carichi nodali](/it/essentials/loads#nodal-loads).
 
 ### Stabilità {#stability}
 

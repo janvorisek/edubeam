@@ -80,7 +80,7 @@ Pręty kratownicy to elementy belkowe ze zwolnionymi oboma **przegubami końcowy
 
 ### Podpory ukośne {#inclined-skewed-supports}
 
-Ustaw **Kąt lokalnego układu** α w stopniach (−180…180). Znajdziesz go w panelu węzła pod *Podpory węzła*, w oknach Dodaj węzeł i Edytuj węzeł oraz w polu α tabeli Węzły. Osie węzła obracają się o ten kąt, a stopnie swobody podpory działają w obróconych kierunkach, więc podpora przesuwna na zboczu nachylonym pod kątem 30° to `Dz` z α = 30. Symbol obraca się odpowiednio, a reakcja jest podawana w obróconym kierunku.
+Ustaw **Kąt lokalnego układu** α w stopniach (−180…180). Znajdziesz go w panelu węzła pod *Podpory węzła*, w oknach Dodaj węzeł i Edytuj węzeł oraz w polu α tabeli Węzły. Osie węzła obracają się o ten kąt, a stopnie swobody podpory działają w obróconych kierunkach, więc podpora przesuwna na zboczu nachylonym pod kątem 30° to `Dz` z α = 30. Symbol obraca się odpowiednio, a reakcja jest podawana w obróconym kierunku. Obciążenia węzłowe w takim węźle można podać w osiach globalnych albo w osiach własnych węzła, a zadane przemieszczenie działa w osiach podpory; zob. [Obciążenia węzłowe](/pl/essentials/loads#nodal-loads).
 
 ### Stateczność {#stability}
 

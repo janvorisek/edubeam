@@ -26,7 +26,7 @@ Onglet *Charges* → **Ajouter une charge nodale**, ou cliquez sur un nœud → 
 
 ![Ajouter une charge nodale. L’aperçu montre la direction pendant la saisie.](/screenshots/fr/loads-nodal.webp){.shot-md}
 
-Les composantes sont toujours exprimées dans le repère **global**. Un nœud peut porter plusieurs charges nodales ; elles s’additionnent et sont dessinées empilées.
+Les composantes sont exprimées dans le repère **global**. Sur un nœud dont les axes sont tournés (un [appui incliné](/fr/essentials/nodes-supports#inclined-skewed-supports)), la boîte de dialogue ajoute le sélecteur **Axes globaux / Axes du nœud** : dans les axes du nœud, les composantes, affichées `Fx′` et `Fz′`, agissent selon les axes propres du nœud et tournent avec lui si son angle change ensuite. Changer d'axes recalcule les valeurs, de sorte que la charge reste où elle est. Un nœud peut porter plusieurs charges nodales ; elles s'additionnent et sont dessinées empilées.
 
 ### Déplacements imposés (tassements d’appui) {#prescribed-displacements-support-settlements}
 
@@ -39,6 +39,8 @@ Dans la même boîte de dialogue, choisissez **Déplacement imposé**, ou clique
 | `Ry` | rotation imposée | rad |
 
 Vous ne pouvez saisir une valeur que pour un DDL **bloqué** à ce nœud, car seuls les appuis peuvent être déplacés. Chaque nœud porte au plus un déplacement imposé ; modifiez-le plutôt que d’en ajouter un second. Dans une structure isostatique, un tassement produit des déplacements mais aucun effort interne ; dans une structure hyperstatique, il produit les deux.
+
+Sur un appui incliné, les champs s'appellent `Dx′` et `Dz′` : le déplacement agit selon les axes propres de l'appui, ceux de ses liaisons, et il est dessiné ainsi.
 
 ## Charges d’élément {#element-loads}
 

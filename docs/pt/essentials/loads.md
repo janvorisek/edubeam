@@ -26,7 +26,7 @@ Aba *Cargas* → **Adicionar carga nodal**, ou clique em um nó → **Adicionar 
 
 ![Adicionar carga nodal. A prévia mostra o sentido enquanto você digita.](/screenshots/pt/loads-nodal.webp){.shot-md}
 
-As componentes estão sempre no sistema de coordenadas **global**. Um nó pode receber várias cargas nodais; elas se somam e são desenhadas empilhadas.
+As componentes estão no sistema de coordenadas **global**. Em um nó com os eixos girados (um [apoio inclinado](/pt/essentials/nodes-supports#inclined-skewed-supports)), o diálogo acrescenta o seletor **Eixos globais / Eixos do nó**: nos eixos do nó, as componentes, mostradas como `Fx′` e `Fz′`, atuam segundo os eixos próprios do nó e giram com ele se o ângulo dele mudar depois. Ao trocar de eixos, os valores são recalculados para que a carga fique onde estava. Um nó pode receber várias cargas nodais; elas se somam e são desenhadas empilhadas.
 
 ### Deslocamentos prescritos (recalques de apoio) {#prescribed-displacements-support-settlements}
 
@@ -39,6 +39,8 @@ No mesmo diálogo, escolha **Deslocamento prescrito**, ou clique em um nó com a
 | `Ry` | rotação imposta | rad |
 
 Só é possível informar um valor para um GL que esteja **restringido** naquele nó, porque apenas apoios podem ser movidos. Cada nó tem no máximo um deslocamento prescrito; edite-o em vez de adicionar um segundo. Em uma estrutura isostática, um recalque produz deslocamentos, mas não esforços internos; em uma hiperestática, produz ambos.
+
+Em um apoio inclinado os campos se chamam `Dx′` e `Dz′`: o deslocamento atua segundo os eixos próprios do apoio, nos quais atuam suas restrições, e é desenhado assim.
 
 ## Cargas de elemento {#element-loads}
 

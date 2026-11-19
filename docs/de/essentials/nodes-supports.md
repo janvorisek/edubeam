@@ -80,7 +80,7 @@ Fachwerkstäbe sind Balkenelemente, bei denen beide **Endgelenke** freigegeben s
 
 ### Gedrehte (schräge) Lager {#inclined-skewed-supports}
 
-Legen Sie den **Knoten-LKS-Winkel** α in Grad fest (−180…180). Er steht im Panel des Knotens unter *Knotenlagerung*, in den Dialogen Knoten hinzufügen und Knoten bearbeiten sowie im Feld α der Knotentabelle. Die Achsen des Knotens werden um diesen Winkel gedreht, und die gelagerten Freiheitsgrade wirken in den gedrehten Richtungen; ein Loslager auf einer 30°-Schräge ist also `Dz` mit α = 30. Das Symbol dreht sich entsprechend mit, und die Auflagerreaktion wird in der gedrehten Richtung ausgegeben.
+Legen Sie den **Knoten-LKS-Winkel** α in Grad fest (−180…180). Er steht im Panel des Knotens unter *Knotenlagerung*, in den Dialogen Knoten hinzufügen und Knoten bearbeiten sowie im Feld α der Knotentabelle. Die Achsen des Knotens werden um diesen Winkel gedreht, und die gelagerten Freiheitsgrade wirken in den gedrehten Richtungen; ein Loslager auf einer 30°-Schräge ist also `Dz` mit α = 30. Das Symbol dreht sich entsprechend mit, und die Auflagerreaktion wird in der gedrehten Richtung ausgegeben. Knotenlasten an einem solchen Knoten lassen sich in globalen Achsen oder in den Knotenachsen angeben, und eine vorgegebene Verschiebung wirkt in den Achsen des Lagers; siehe [Knotenlasten](/de/essentials/loads#nodal-loads).
 
 ### Stabilität {#stability}
 

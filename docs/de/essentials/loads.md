@@ -26,7 +26,7 @@ Reiter *Lasten* → **Knotenlast hinzufügen** oder Klick auf einen Knoten → *
 
 ![Knotenlast hinzufügen. Die Vorschau zeigt schon beim Tippen die Richtung.](/screenshots/de/loads-nodal.webp){.shot-md}
 
-Die Komponenten beziehen sich immer auf das **globale** Koordinatensystem. Ein Knoten kann mehrere Knotenlasten tragen; sie addieren sich und werden übereinander gezeichnet.
+Die Komponenten beziehen sich auf das **globale** Koordinatensystem. An einem Knoten mit gedrehten Achsen (einem [schrägen Lager](/de/essentials/nodes-supports#inclined-skewed-supports)) zeigt der Dialog zusätzlich den Schalter **Globale Achsen / Knotenachsen**: In Knotenachsen wirken die Komponenten, angezeigt als `Fx′` und `Fz′`, in den eigenen Achsen des Knotens und drehen sich mit, wenn sich sein Winkel später ändert. Beim Umschalten werden die Werte umgerechnet, sodass die Last bleibt, wo sie ist. Ein Knoten kann mehrere Knotenlasten tragen; sie addieren sich und werden übereinander gezeichnet.
 
 ### Vorgegebene Verschiebungen (Auflagersenkungen) {#prescribed-displacements-support-settlements}
 
@@ -39,6 +39,8 @@ Wählen Sie im selben Dialog **Vorgegebene Verschiebung** oder klicken Sie auf e
 | `Ry` | aufgezwungene Verdrehung | rad |
 
 Einen Wert können Sie nur für einen Freiheitsgrad eingeben, der an diesem Knoten **gehalten** ist, denn nur Lager lassen sich verschieben. Jeder Knoten hat höchstens eine vorgegebene Verschiebung; bearbeiten Sie sie, statt eine zweite hinzuzufügen. In einem statisch bestimmten Tragwerk erzeugt eine Auflagersenkung Verschiebungen, aber keine Schnittgrößen; in einem statisch unbestimmten beides.
+
+An einem schrägen Lager heißen die Felder `Dx′` und `Dz′`: Die Verschiebung wirkt in den eigenen Achsen des Lagers, in denen auch seine Lagerbedingungen wirken, und wird so gezeichnet.
 
 ## Elementlasten {#element-loads}
 

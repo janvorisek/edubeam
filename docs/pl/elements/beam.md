@@ -58,7 +58,7 @@ Przegub na końcu elementu zwalnia odpowiedni obrotowy stopień swobody: obrót 
 
 ## Obciążenia elementów {#element-loads}
 
-Obciążenia rozłożone, skupione i termiczne są zamieniane na **zastępcze obciążenia węzłowe** $\mathbf{f}_{eq}$ (siły utwierdzenia ze znakiem przeciwnym) i dodawane do globalnego wektora obciążeń. Po rozwiązaniu siły przekrojowe wzdłuż elementu są odtwarzane z przemieszczeń końcowych oraz dokładnego rozwiązania szczególnego dla obciążenia elementu, dlatego wykresy są dokładne na całej długości pręta.
+Obciążenia rozłożone, skupione i termiczne są zamieniane na **zastępcze obciążenia węzłowe** $\mathbf{f}_{eq}$ (siły utwierdzenia ze znakiem przeciwnym) i dodawane do globalnego wektora obciążeń. Po rozwiązaniu siły przekrojowe wzdłuż elementu są odtwarzane z przemieszczeń końcowych oraz dokładnego rozwiązania szczególnego dla obciążenia elementu, dlatego wykresy są dokładne na całej długości pręta. Siły przywęzłowe pręta obustronnie utwierdzonego i linia ugięcia między węzłami są dokładnymi rozwiązaniami pręta Timoszenki, więc rysowany kształt po deformacji uwzględnia także odkształcenie od ścinania.
 
 ## Macierz transformacji {#transformation-matrix}
 

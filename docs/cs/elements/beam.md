@@ -58,7 +58,7 @@ Kloub na konci prvku uvolní příslušné pootočení: to se z matice 6 × 6 vy
 
 ## Prvková zatížení {#element-loads}
 
-Spojité, osamělé i teplotní zatížení se převádí na **ekvivalentní uzlové zatížení** $\mathbf{f}_{eq}$ (primární koncové síly s opačným znaménkem) a přičte se ke globálnímu vektoru zatížení. Po vyřešení se vnitřní síly po délce prutu dopočítají z koncových posunutí a z přesného partikulárního řešení pro dané prvkové zatížení. Průběhy jsou proto přesné po celé délce prutu.
+Spojité, osamělé i teplotní zatížení se převádí na **ekvivalentní uzlové zatížení** $\mathbf{f}_{eq}$ (primární koncové síly s opačným znaménkem) a přičte se ke globálnímu vektoru zatížení. Po vyřešení se vnitřní síly po délce prutu dopočítají z koncových posunutí a z přesného partikulárního řešení pro dané prvkové zatížení. Průběhy jsou proto přesné po celé délce prutu. Koncové síly oboustranně vetknutého prutu i průhybová čára mezi uzly jsou přesná řešení Timošenkova prutu, takže vykreslený deformovaný tvar zahrnuje i smykovou deformaci.
 
 ## Transformační matice {#transformation-matrix}
 

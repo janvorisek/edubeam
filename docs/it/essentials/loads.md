@@ -26,7 +26,7 @@ Scheda *Carichi* → **Aggiungi carico nodale**, oppure fai clic su un nodo → 
 
 ![Aggiungi carico nodale. L'anteprima mostra il verso mentre digiti.](/screenshots/it/loads-nodal.webp){.shot-md}
 
-Le componenti sono sempre nel sistema di coordinate **globale**. Un nodo può portare più carichi nodali; si sommano e vengono disegnati uno sopra l'altro.
+Le componenti sono espresse nel sistema di riferimento **globale**. Su un nodo con gli assi ruotati (un [vincolo inclinato](/it/essentials/nodes-supports#inclined-skewed-supports)) la finestra aggiunge il selettore **Assi globali / Assi del nodo**: negli assi del nodo le componenti, indicate come `Fx′` e `Fz′`, agiscono lungo gli assi propri del nodo e ruotano con esso se in seguito il suo angolo cambia. Passando da un sistema all'altro i valori vengono ricalcolati, così il carico resta dov'è. Un nodo può avere più carichi nodali; si sommano e vengono disegnati sovrapposti.
 
 ### Spostamenti imposti (cedimenti vincolari) {#prescribed-displacements-support-settlements}
 
@@ -39,6 +39,8 @@ Nella stessa finestra scegli **Spostamento imposto**, oppure fai clic su un nodo
 | `Ry` | rotazione imposta | rad |
 
 Puoi inserire un valore solo per un GdL **vincolato** in quel nodo, perché si possono spostare solo i vincoli. Ogni nodo ha al massimo uno spostamento imposto; modificalo invece di aggiungerne un secondo. In una struttura isostatica un cedimento produce spostamenti ma nessuna forza interna; in una iperstatica produce entrambi.
+
+Su un vincolo inclinato i campi si chiamano `Dx′` e `Dz′`: lo spostamento agisce lungo gli assi propri del vincolo, gli stessi delle sue reazioni, ed è disegnato così.
 
 ## Carichi su elemento {#element-loads}
 

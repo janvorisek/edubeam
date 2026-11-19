@@ -58,7 +58,7 @@ Khớp ở đầu phần tử giải phóng bậc tự do xoay tương ứng: g�
 
 ## Tải trọng phần tử {#element-loads}
 
-Tải phân bố, tải tập trung và tải nhiệt độ được quy đổi thành **tải trọng nút tương đương** $\mathbf{f}_{eq}$ (bằng nội lực đầu ngàm đổi dấu) và cộng vào véc tơ tải trọng tổng thể. Sau khi giải, nội lực dọc phần tử được xác định từ chuyển vị đầu thanh cộng với nghiệm riêng chính xác của tải trọng phần tử, nên biểu đồ chính xác trên toàn bộ chiều dài thanh.
+Tải phân bố, tải tập trung và tải nhiệt độ được quy đổi thành **tải trọng nút tương đương** $\mathbf{f}_{eq}$ (bằng nội lực đầu ngàm đổi dấu) và cộng vào véc tơ tải trọng tổng thể. Sau khi giải, nội lực dọc phần tử được xác định từ chuyển vị đầu thanh cộng với nghiệm riêng chính xác của tải trọng phần tử, nên biểu đồ chính xác trên toàn bộ chiều dài thanh. Lực đầu thanh ngàm hai đầu và đường đàn hồi giữa các nút là nghiệm chính xác của thanh Timoshenko, nên hình dạng biến dạng được vẽ cũng bao gồm biến dạng cắt.
 
 ## Ma trận biến đổi {#transformation-matrix}
 

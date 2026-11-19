@@ -58,7 +58,7 @@ Una rótula en un extremo del elemento libera el grado de libertad de giro corre
 
 ## Cargas de elemento {#element-loads}
 
-Las cargas distribuidas, concentradas y térmicas se convierten en **cargas nodales equivalentes** $\mathbf{f}_{eq}$ (las fuerzas de empotramiento perfecto cambiadas de signo) y se suman al vector global de cargas. Tras la solución, los esfuerzos a lo largo del elemento se recuperan a partir de los desplazamientos de extremo más la solución particular exacta de la carga de elemento, de modo que los diagramas son exactos a lo largo de la barra.
+Las cargas distribuidas, concentradas y térmicas se convierten en **cargas nodales equivalentes** $\mathbf{f}_{eq}$ (las fuerzas de empotramiento perfecto cambiadas de signo) y se suman al vector global de cargas. Tras la solución, los esfuerzos a lo largo del elemento se recuperan a partir de los desplazamientos de extremo más la solución particular exacta de la carga de elemento, de modo que los diagramas son exactos a lo largo de la barra. Las fuerzas de empotramiento perfecto y la deformada entre los nudos son las soluciones exactas de una barra de Timoshenko, de modo que la deformada dibujada incluye también la deformación por cortante.
 
 ## Matriz de transformación {#transformation-matrix}
 

@@ -80,7 +80,7 @@ Truss members are beam elements with both **end hinges** released (see [Elements
 
 ### Inclined (skewed) supports
 
-Set the **Nodal LCS angle** α in degrees (−180…180). It is in the node's panel under *Node supports*, in the Add and Edit node dialogs, and in the α field of the Nodes table. The node's axes rotate by that angle and the support DOFs act in the rotated directions, so a roller on a 30° slope is `Dz` with α = 30. The symbol rotates accordingly and the reaction is reported in the rotated direction.
+Set the **Nodal LCS angle** α in degrees (−180…180). It is in the node's panel under *Node supports*, in the Add and Edit node dialogs, and in the α field of the Nodes table. The node's axes rotate by that angle and the support DOFs act in the rotated directions, so a roller on a 30° slope is `Dz` with α = 30. The symbol rotates accordingly and the reaction is reported in the rotated direction. Nodal loads on such a node can be given in the global axes or in the node's own, and a prescribed displacement acts along the support's axes; see [Nodal loads](/essentials/loads#nodal-loads).
 
 ### Stability
 

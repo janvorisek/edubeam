@@ -58,7 +58,7 @@ Ein Gelenk am Elementende gibt den zugehörigen Drehfreiheitsgrad frei: die Verd
 
 ## Elementlasten {#element-loads}
 
-Strecken-, Einzel- und Temperaturlasten werden in **äquivalente Knotenlasten** $\mathbf{f}_{eq}$ (das Negative der Volleinspannkräfte) umgerechnet und dem globalen Lastvektor hinzugefügt. Nach der Lösung werden die Schnittgrößen entlang des Elements aus den Stabendverschiebungen und der exakten Partikulärlösung der Elementlast zurückgerechnet, sodass die Verläufe entlang des Stabs exakt sind.
+Strecken-, Einzel- und Temperaturlasten werden in **äquivalente Knotenlasten** $\mathbf{f}_{eq}$ (das Negative der Volleinspannkräfte) umgerechnet und dem globalen Lastvektor hinzugefügt. Nach der Lösung werden die Schnittgrößen entlang des Elements aus den Stabendverschiebungen und der exakten Partikulärlösung der Elementlast zurückgerechnet, sodass die Verläufe entlang des Stabs exakt sind. Die Volleinspannkräfte und die Biegelinie zwischen den Knoten sind die exakten Lösungen eines Timoshenko-Stabs, sodass die gezeichnete Verformung auch die Schubverformung enthält.
 
 ## Transformationsmatrix {#transformation-matrix}
 

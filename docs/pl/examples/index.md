@@ -16,7 +16,7 @@ Te same modele znajdziesz w aplikacji pod **☰ → Przykłady**, a [run.edubeam
 
 - **Belka statycznie niewyznaczalna**: odznacz `Ry` w utwierdzeniu, aby otrzymać belkę swobodnie podpartą. O ile wzrośnie moment w środku rozpiętości?
 - **Wspornik**: porównaj ugięcie końca z $FL^3/3EI$ (zobacz [Sprawdzanie wyników ręcznie](/pl/guide/verification)), a następnie zmniejsz $I_y$ o połowę w zakładce *Przekroje*.
-- **Kratownica Pratta**: węzły w tym przykładzie są sztywne. Zaznacz oba przeguby końcowe w każdym pręcie, aby otrzymać prawdziwą kratownicę, i porównaj siły osiowe. Teraz usuń jeden krzyżulec: czy kratownica nadal stoi?
+- **Kratownica Warrena**: węzły w tym przykładzie są sztywne. Zaznacz oba przeguby końcowe w każdym pręcie, aby otrzymać prawdziwą kratownicę, i porównaj siły osiowe. Teraz usuń jeden krzyżulec: czy kratownica nadal stoi?
 - **Belka ciągła trzyprzęsłowa**: belka jest podparta tylko na końcach. Zaznacz `Dz` w węzłach wewnętrznych B i C, aby stała się ciągła, i obserwuj, jak nad podporami pojawiają się momenty ujemne.
 - **Rama portalowa**: zaznacz oba przeguby końcowe rygla, aby zamodelować przegubowe połączenia rygla ze słupami, albo zamień prawą podporę przesuwną na nieprzesuwną.
 - **Obciążenie termiczne**: zablokuj `Dx` na obu podporach i obserwuj, jak pojawia się siła osiowa.

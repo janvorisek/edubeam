@@ -80,7 +80,7 @@ Batang rangka adalah elemen balok dengan kedua **sendi ujung** dilepas (lihat [E
 
 ### Tumpuan miring {#inclined-skewed-supports}
 
-Atur **Sudut LCS joint** α dalam derajat (−180…180). Sudut ini ada di panel joint pada *Tumpuan joint*, di dialog Tambah joint dan Edit joint, serta di kolom α tabel Joint. Sumbu joint berputar sebesar sudut tersebut dan DOF tumpuan bekerja pada arah yang diputar, jadi rol pada kemiringan 30° adalah `Dz` dengan α = 30. Simbolnya ikut berputar dan reaksi dilaporkan pada arah yang diputar.
+Atur **Sudut LCS joint** α dalam derajat (−180…180). Sudut ini ada di panel joint pada *Tumpuan joint*, di dialog Tambah joint dan Edit joint, serta di kolom α tabel Joint. Sumbu joint berputar sebesar sudut tersebut dan DOF tumpuan bekerja pada arah yang diputar, jadi rol pada kemiringan 30° adalah `Dz` dengan α = 30. Simbolnya ikut berputar dan reaksi dilaporkan pada arah yang diputar. Beban joint pada joint seperti ini dapat diberikan dalam sumbu global atau dalam sumbu joint itu sendiri, sedangkan perpindahan tumpuan bekerja searah sumbu tumpuan; lihat [Beban joint](/id/essentials/loads#nodal-loads).
 
 ### Stabilitas {#stability}
 

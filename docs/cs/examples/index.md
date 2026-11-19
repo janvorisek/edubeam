@@ -16,7 +16,7 @@ Tytéž modely najdete v aplikaci v **☰ → Příklady** a odkaz [run.edubeam.
 
 - **Staticky neurčitý nosník**: odškrtněte `Ry` ve vetknutí a vznikne prostý nosník. O kolik vzroste moment uprostřed rozpětí?
 - **Konzola**: porovnejte průhyb na konci s $FL^3/3EI$ (viz [Ověření výsledků ručně](/cs/guide/verification)) a pak v záložce *Průřezy* zmenšete $I_y$ na polovinu.
-- **Prattův příhradový nosník**: styčníky jsou v tomto příkladu tuhé. Zaškrtněte u každého prutu oba koncové klouby, aby vznikla skutečná příhradová konstrukce, a porovnejte normálové síly. Pak odstraňte jednu diagonálu: udrží se konstrukce?
+- **Warrenův příhradový nosník**: styčníky jsou v tomto příkladu tuhé. Zaškrtněte u každého prutu oba koncové klouby, aby vznikla skutečná příhradová konstrukce, a porovnejte normálové síly. Pak odstraňte jednu diagonálu: udrží se konstrukce?
 - **Spojitý nosník o třech polích**: nosník je podepřený jen na koncích. Zaškrtnutím `Dz` ve vnitřních uzlech B a C z něj uděláte spojitý nosník; sledujte, jak se nad podporami objeví záporné momenty.
 - **Rámová konstrukce**: zaškrtnutím obou koncových kloubů příčle namodelujete její kloubové připojení ke sloupům. Případně změňte pravou podporu z posuvného kloubu na pevný kloub.
 - **Teplotní zatížení**: podepřete `Dx` v obou podporách a sledujte, jak vznikne normálová síla.

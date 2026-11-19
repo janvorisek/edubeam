@@ -25,7 +25,7 @@
 </p>
 
 <p align="center">
-  <a href="https://run.edubeam.app"><img src="docs/public/download.png" alt="A braced frame in edubeam with its deformed shape, bending moment diagram and reactions" width="820"></a>
+  <a href="https://run.edubeam.app"><img src=".github/readme/download.png" alt="A braced frame in edubeam with its deformed shape, bending moment diagram and reactions" width="820"></a>
 </p>
 
 ## Hi there 👋
@@ -78,7 +78,7 @@ You don't need to worry about losing work: edubeam saves to your browser as you 
 edubeam is happy staying in 2D. When you need 3D frames, slabs and shells, try our sibling app [Elementarium](https://elementarium.app/?utm_source=edubeam&utm_medium=link&utm_campaign=readme).
 
 <a href="https://elementarium.app/?utm_source=edubeam&utm_medium=banner&utm_campaign=leaderboard&utm_content=readme">
-  <img src="docs/public/elementarium/leaderboard@2x.png" alt="Elementarium: take your frames into 3D. Slabs, shells and steel checks in your browser." width="728">
+  <img src=".github/readme/elementarium/leaderboard@2x.png" alt="Elementarium: take your frames into 3D. Slabs, shells and steel checks in your browser." width="728">
 </a>
 
 ## Hacking on edubeam
@@ -100,8 +100,6 @@ That's all you need. Here are the other scripts:
 | `npm run build`                        | Build the app into `dist/`                        |
 | `npm test` / `npm run test:run`        | Run the tests in watch mode / once                |
 | `npm run lint` / `npm run lint:fix`    | Check `src/` with ESLint / fix what it can        |
-| `npm run docs:dev`                     | Preview the documentation site                    |
-| `npm run docs:build`                   | Build the documentation site                      |
 | `npm run contributors`                 | See who has contributed since the last release    |
 
 ### Where things live
@@ -114,11 +112,10 @@ src/
   CommandManager.ts     undo/redo; every model edit goes through here
   locales/              UI translations, one JSON file per language
   tests/                Vitest specs
-docs/                   VitePress documentation, one folder per language
 public/changelog/       in-app release notes and their screenshots
 ```
 
-The finite element solver has its own package: [ts-fem](https://github.com/janvorisek/ts-fem).
+The finite element solver has its own package: [@edubeam/fem](https://github.com/EduBeamApp/fem).
 
 ### Building and hosting
 
@@ -140,7 +137,7 @@ You don't have to write code to help. Bug reports, example models, docs fixes an
 
 - **Found something odd?** [Open an issue](https://github.com/janvorisek/edubeam/issues). A screenshot or a share link helps a lot.
 - **Want to send code?** Branch from `dev`, run `npm run test:run` and `npm run lint`, then open a pull request against `dev`. Small, focused PRs are the easiest to review, and before/after screenshots help if you've changed the UI.
-- **Speak another language?** The app strings are in [`src/locales/`](src/locales). [`en.json`](src/locales/en.json) is the source, and the docs are in [`docs/<lang>/`](docs). You can fix a translation or start a new language.
+- **Speak another language?** The app strings are in [`src/locales/`](src/locales). [`en.json`](src/locales/en.json) is the source, and the guide is part of the [website](https://www.edubeam.app). You can fix a translation or start a new language.
 
 edubeam currently speaks English, Czech, German, Spanish, French, Polish, Portuguese, Russian, Ukrainian, Chinese, Thai, Turkish, Hindi, Vietnamese, Italian, Indonesian, Japanese and Korean. Thanks to everyone who helped get it there! ❤️
 

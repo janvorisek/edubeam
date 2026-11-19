@@ -5,7 +5,7 @@ import { createPinia, setActivePinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { createVuetify } from 'vuetify';
 import * as components from 'vuetify/components';
-import { DofID } from 'ts-fem';
+import { DofID } from '@edubeam/fem';
 import { i18n } from '@/plugins/i18n';
 import Share from '@/components/dialogs/Share.vue';
 import { useAppStore } from '@/store/app';

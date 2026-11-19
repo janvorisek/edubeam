@@ -5,6 +5,7 @@ import { placingKey } from '@/types/placing';
 import { vertical } from '@/utils/axisConvention';
 import { useAppStore } from '@/store/app';
 import { formatFeetInches, stepDecimals } from '@/utils/grid';
+import { toFixedDisplay } from '@/utils/numberDisplay';
 
 /**
  * Lines across the drawing through the point the pointer would place at, with that point's
@@ -102,12 +103,7 @@ const decimals = computed(() =>
   viewerStore.snapToGrid ? stepDecimals(appStore.convertLength(viewerStore.gridStep)) : 3
 );
 
-const format = (value: number) => {
-  const text = value.toFixed(decimals.value);
-
-  // A value just below zero must not print as "-0.00".
-  return Number(text) === 0 ? (0).toFixed(decimals.value) : text;
-};
+const format = (value: number) => toFixedDisplay(value, decimals.value);
 
 // In feet, as the rulers read: feet and inches
 const label = (value: number) => (appStore.units.Length === 'ft' ? formatFeetInches(value) : format(value));

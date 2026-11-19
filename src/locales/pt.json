@@ -514,8 +514,8 @@
     "positiveNumber": "Insira um número maior que zero",
     "between": "Insira um valor entre {min} e {max}",
     "sameNodes": "Um elemento deve ligar dois nós diferentes",
-    "materialInUse": "O material é usado pelos elementos {elements}. Reatribua-os antes de excluí-lo.",
-    "crossSectionInUse": "A seção é usada pelos elementos {elements}. Reatribua-os antes de excluí-la."
+    "materialInUse": "O material é usado pelo elemento {elements}. Reatribua-o antes de excluir o material. | O material é usado pelos elementos {elements}. Reatribua-os antes de excluí-lo.",
+    "crossSectionInUse": "A seção é usada pelo elemento {elements}. Reatribua-o antes de excluir a seção. | A seção é usada pelos elementos {elements}. Reatribua-os antes de excluí-la."
   },
   "solveDiagnostics": {
     "summaryErrors": "Erros no modelo: {errors}",
@@ -558,8 +558,8 @@
       "mechanismShort": "Os apoios não fixam a estrutura: ela ainda pode {motion}.",
       "partMechanism": "Uma parte separada da estrutura (nós {nodes}) tem apoios suficientes, mas eles não a fixam: ela ainda pode {motion}. Apoios todos paralelos, ou cujas linhas de ação se encontram num único ponto, deixam a estrutura livre para se mover.",
       "partMechanismShort": "A parte com os nós {nodes} não está fixada: ela ainda pode {motion}.",
-      "hingeMechanism": "Os apoios fixam a estrutura, mas ela ainda é um mecanismo: suas barras podem girar em torno das articulações do nó {nodes}. Remova uma articulação ou adicione uma barra ou um apoio que impeça o movimento.",
-      "hingeMechanismShort": "As articulações do nó {nodes} deixam a estrutura se mover.",
+      "hingeMechanism": "Os apoios fixam a estrutura, mas ela ainda é um mecanismo: suas barras podem girar em torno das articulações do nó {nodes}. Remova uma articulação ou adicione uma barra ou um apoio que impeça o movimento. | Os apoios fixam a estrutura, mas ela ainda é um mecanismo: suas barras podem girar em torno das articulações dos nós {nodes}. Remova uma articulação ou adicione uma barra ou um apoio que impeça o movimento.",
+      "hingeMechanismShort": "As articulações do nó {nodes} deixam a estrutura se mover. | As articulações dos nós {nodes} deixam a estrutura se mover.",
       "motion": {
         "horizontal": "deslizar horizontalmente",
         "vertical": "se mover verticalmente",
@@ -635,7 +635,7 @@
     },
     "materials": {
       "title": "Materiais",
-      "body": "Um material guarda o módulo de Young, o de cisalhamento, a densidade e a dilatação térmica. Numa análise estática simples só importam E e a seção."
+      "body": "Um material guarda o módulo de Young, o de cisalhamento, a densidade e a dilatação térmica. Uma análise estática usa E, G para a deformação por cisalhamento e α para as cargas térmicas; a densidade não entra."
     },
     "crossSections": {
       "title": "Seções",
@@ -714,8 +714,8 @@
         "blurb": "Balanço de 4 m resistindo a uma carga nodal de 18 kN para baixo, destacando a curvatura e o deslocamento da extremidade."
       },
       "pratt": {
-        "title": "Treliça Pratt",
-        "blurb": "Treliça Pratt simples com cargas de 8 kN nos nós, mostrando a distribuição dos esforços normais e os deslocamentos."
+        "title": "Treliça Warren",
+        "blurb": "Treliça Warren simples com cargas de 8 kN nos nós, mostrando a distribuição dos esforços normais e os deslocamentos."
       },
       "continuous": {
         "title": "Viga contínua de três vãos",
@@ -747,6 +747,35 @@
       "example": "Substituída por um exemplo",
       "firstBeam": "Substituída pela tarefa “primeira viga”",
       "restore": "Substituída por uma estrutura restaurada"
+    }
+  },
+  "library": {
+    "name": {
+      "steel": "Aço",
+      "steelHss": "Aço HSS",
+      "stainlessSteel": "Aço inoxidável",
+      "aluminum": "Alumínio",
+      "concrete": "Concreto",
+      "timber": "Madeira",
+      "castIron": "Ferro fundido",
+      "copper": "Cobre",
+      "brass": "Latão",
+      "bronze": "Bronze",
+      "titanium": "Titânio",
+      "glass": "Vidro",
+      "polycarbonate": "Policarbonato",
+      "rect": "Retângulo",
+      "square": "Quadrado",
+      "circular": "Circular"
+    },
+    "qualifier": {
+      "gray": "cinzento",
+      "lightweight": "leve",
+      "sodaLime": "sodocálcico",
+      "quasiIsotropic": "quase isotrópico",
+      "rigid": "rígido",
+      "acrylic": "acrílico",
+      "approx": "aprox."
     }
   }
 }

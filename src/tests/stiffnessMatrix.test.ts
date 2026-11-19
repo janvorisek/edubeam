@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
-import { DofID } from 'ts-fem';
+import { DofID } from '@edubeam/fem';
 import { i18n } from '@/plugins/i18n';
 import { useProjectStore } from '@/store/project';
 import StiffnessMatrix from '@/components/StiffnessMatrix.vue';

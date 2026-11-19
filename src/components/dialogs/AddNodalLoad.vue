@@ -123,7 +123,7 @@ import { submitsForm } from '@/utils/keyboard';
 import HelpTip from '../HelpTip.vue';
 import { ref, computed, onMounted, watch } from 'vue';
 import { useProjectStore } from '../../store/project';
-import { DofID } from 'ts-fem';
+import { DofID } from '@edubeam/fem';
 import { closeModal } from 'jenesius-vue-modal';
 import { useAppStore } from '@/store/app';
 import { checkNumber, executeModelMutationWithUndo, parseFloat2, numberRules } from '@/utils';

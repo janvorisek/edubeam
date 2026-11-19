@@ -8,7 +8,7 @@
  * The tips in between point at the viewer's own buttons. There is nothing in the model to show
  * that someone has learned where one is, so a tip is done once its button or Next is pressed.
  */
-import type { LinearStaticSolver } from 'ts-fem';
+import type { LinearStaticSolver } from '@edubeam/fem';
 import { MouseMode } from '@/mouse';
 import { createExampleLibrary } from './examples';
 

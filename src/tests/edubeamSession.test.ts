@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { createPinia, setActivePinia } from 'pinia';
-import { DofID, type Beam2D, type Node } from 'ts-fem';
+import { DofID, type Beam2D, type Node } from '@edubeam/fem';
 import type { Matrix } from 'mathjs';
 import { useProjectStore } from '@/store/project';
 import { importJSON, resetModel } from '@/utils';

@@ -4,7 +4,7 @@ import {
   BeamElementUniformEdgeLoad,
   BeamTemperatureLoad,
   Load,
-} from 'ts-fem';
+} from '@edubeam/fem';
 
 export const loadType = (el: Load) => {
   if (el instanceof BeamElementUniformEdgeLoad) {

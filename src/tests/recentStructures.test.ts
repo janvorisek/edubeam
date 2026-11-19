@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
-import { LinearStaticSolver, DofID } from 'ts-fem';
+import { LinearStaticSolver, DofID } from '@edubeam/fem';
 import { useProjectStore } from '@/store/project';
 import { RECENT_STRUCTURES_KEY, RECENT_STRUCTURES_LIMIT, useRecentStructuresStore } from '@/store/recentStructures';
 import { deserializeModel, replaceModel, resetModel, serializeModel, undoModelChange } from '@/utils';

@@ -5,7 +5,7 @@ import {
   BeamConcentratedLoad,
   BeamTemperatureLoad,
   BeamElementTrapezoidalEdgeLoad,
-} from 'ts-fem';
+} from '@edubeam/fem';
 import { deflateSync, Inflate } from 'fflate';
 import { createDimensionId, ensureDimensionId } from './id';
 import { deserializeShape, isSerializedShape, serializeShape } from './sectionProperties';

@@ -2,7 +2,7 @@
 import { vertical } from '@/utils/axisConvention';
 import { inPlaneValues } from '@/utils/dofValues';
 import { actingInGlobalAxes } from '@/utils/nodalLcs';
-import { NodalLoad } from 'ts-fem';
+import { NodalLoad } from '@edubeam/fem';
 import { computed } from 'vue';
 
 const props = withDefaults(

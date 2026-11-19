@@ -635,7 +635,7 @@
     },
     "materials": {
       "title": "Material",
-      "body": "Material memiliki modulus elastisitas, modulus geser, massa jenis, dan koefisien muai panas. Untuk analisis statis biasa, hanya E dan penampang yang berpengaruh."
+      "body": "Material memiliki modulus elastisitas, modulus geser, massa jenis, dan koefisien muai panas. Analisis statis menggunakan E, G untuk deformasi geser, dan α untuk beban suhu; massa jenis tidak digunakan."
     },
     "crossSections": {
       "title": "Penampang",
@@ -714,8 +714,8 @@
         "blurb": "Kantilever 4 m yang memikul beban joint 18 kN ke bawah, menyoroti kelengkungan dan lendutan ujung."
       },
       "pratt": {
-        "title": "Rangka batang Pratt",
-        "blurb": "Rangka batang Pratt sederhana dengan beban joint 8 kN yang menunjukkan distribusi gaya aksial dan perpindahan."
+        "title": "Rangka batang Warren",
+        "blurb": "Rangka batang Warren sederhana dengan beban joint 8 kN yang menunjukkan distribusi gaya aksial dan perpindahan."
       },
       "continuous": {
         "title": "Balok menerus tiga bentang",
@@ -747,6 +747,35 @@
       "example": "Diganti oleh contoh",
       "firstBeam": "Diganti oleh tugas balok pertama",
       "restore": "Diganti oleh struktur yang dipulihkan"
+    }
+  },
+  "library": {
+    "name": {
+      "steel": "Baja",
+      "steelHss": "Baja HSS",
+      "stainlessSteel": "Baja tahan karat",
+      "aluminum": "Aluminium",
+      "concrete": "Beton",
+      "timber": "Kayu",
+      "castIron": "Besi tuang",
+      "copper": "Tembaga",
+      "brass": "Kuningan",
+      "bronze": "Perunggu",
+      "titanium": "Titanium",
+      "glass": "Kaca",
+      "polycarbonate": "Polikarbonat",
+      "rect": "Persegi panjang",
+      "square": "Persegi",
+      "circular": "Lingkaran"
+    },
+    "qualifier": {
+      "gray": "kelabu",
+      "lightweight": "ringan",
+      "sodaLime": "soda-kapur",
+      "quasiIsotropic": "kuasi-isotropik",
+      "rigid": "kaku",
+      "acrylic": "akrilik",
+      "approx": "perkiraan"
     }
   }
 }

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Node, Beam2D, BeamElementTrapezoidalEdgeLoad, BeamElementUniformEdgeLoad } from 'ts-fem';
+import { Node, Beam2D, BeamElementTrapezoidalEdgeLoad, BeamElementUniformEdgeLoad } from '@edubeam/fem';
 import { computed, inject } from 'vue';
 
 const props = withDefaults(

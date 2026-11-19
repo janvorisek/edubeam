@@ -5,6 +5,24 @@
 export const hasShortcutModifier = (e: Readonly<Pick<KeyboardEvent | MouseEvent, 'ctrlKey' | 'metaKey'>>): boolean =>
   e.ctrlKey || e.metaKey;
 
+/**
+ * Ctrl/Cmd with plus or minus zooms the drawing. The character decides first, because layouts put
+ * + and - on other keys: on a German keyboard + is a key of its own (`BracketRight`), and on a
+ * Turkish one the key in the US `Equal` position types -. Only a key that types none of + = - falls
+ * back to its US position (`Equal`, `Minus`), as the US keys always zoomed, and the keypad's plus and
+ * minus count as well.
+ */
+export const zoomShortcut = (
+  e: Readonly<Pick<KeyboardEvent, 'ctrlKey' | 'metaKey' | 'key' | 'code'>>
+): 'in' | 'out' | null => {
+  if (!hasShortcutModifier(e)) return null;
+  if (e.key === '+' || e.key === '=') return 'in';
+  if (e.key === '-') return 'out';
+  if (e.code === 'Equal' || e.code === 'NumpadAdd') return 'in';
+  if (e.code === 'Minus' || e.code === 'NumpadSubtract') return 'out';
+  return null;
+};
+
 /** Macs, iPads and iPhones, whose keyboards do the shortcuts with ⌘. */
 export const isApplePlatform = (): boolean =>
   typeof navigator !== 'undefined' && /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent);

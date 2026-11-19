@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import SVGViewerDefs from '../SVGViewerDefs.vue';
 import { supportMarker } from '@/SVGUtils';
-import { DofID, Node } from 'ts-fem';
+import { DofID, Node } from '@edubeam/fem';
 
 const props = defineProps<{
   angle: number;

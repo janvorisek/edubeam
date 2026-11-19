@@ -514,8 +514,8 @@
     "positiveNumber": "Enter a number greater than zero",
     "between": "Enter a value between {min} and {max}",
     "sameNodes": "An element must connect two different nodes",
-    "materialInUse": "Material is used by element(s) {elements}. Reassign them before deleting it.",
-    "crossSectionInUse": "Cross-section is used by element(s) {elements}. Reassign them before deleting it."
+    "materialInUse": "Material is used by element {elements}. Reassign it before deleting the material. | Material is used by elements {elements}. Reassign them before deleting it.",
+    "crossSectionInUse": "Cross-section is used by element {elements}. Reassign it before deleting the cross-section. | Cross-section is used by elements {elements}. Reassign them before deleting it."
   },
   "solveDiagnostics": {
     "summaryErrors": "Errors in the model: {errors}",
@@ -558,8 +558,8 @@
       "mechanismShort": "The supports do not hold the structure: it can still {motion}.",
       "partMechanism": "A separate part of the structure (nodes {nodes}) has enough supports but they do not hold it: it can still {motion}. Supports that are all parallel, or whose lines of action meet in one point, leave the structure free to move.",
       "partMechanismShort": "The part with nodes {nodes} is not held: it can still {motion}.",
-      "hingeMechanism": "The supports hold the structure, but it is still a mechanism: its members can turn about the hinges at node {nodes}. Remove a hinge, or add a member or a support that stops the motion.",
-      "hingeMechanismShort": "The hinges at node {nodes} let the structure move.",
+      "hingeMechanism": "The supports hold the structure, but it is still a mechanism: its members can turn about the hinges at node {nodes}. Remove a hinge, or add a member or a support that stops the motion. | The supports hold the structure, but it is still a mechanism: its members can turn about the hinges at nodes {nodes}. Remove a hinge, or add a member or a support that stops the motion.",
+      "hingeMechanismShort": "The hinges at node {nodes} let the structure move. | The hinges at nodes {nodes} let the structure move.",
       "motion": {
         "horizontal": "slide horizontally",
         "vertical": "move vertically",
@@ -635,7 +635,7 @@
     },
     "materials": {
       "title": "Materials",
-      "body": "A material carries Young's modulus, shear modulus, density and thermal expansion. Only E and the section matter for a plain static analysis."
+      "body": "A material carries Young's modulus, shear modulus, density and thermal expansion. A static analysis uses E, G for shear deformation, and α for temperature loads; density does not enter it."
     },
     "crossSections": {
       "title": "Cross sections",
@@ -714,8 +714,8 @@
         "blurb": "4 m cantilever resisting an 18 kN downward nodal load, highlighting curvature and tip deflection."
       },
       "pratt": {
-        "title": "Pratt truss",
-        "blurb": "Simple Pratt truss with 8 kN joint loads showing axial force distribution and displacements."
+        "title": "Warren truss",
+        "blurb": "Simple Warren truss with 8 kN joint loads showing axial force distribution and displacements."
       },
       "continuous": {
         "title": "Three-span continuous beam",
@@ -747,6 +747,35 @@
       "example": "Replaced by an example",
       "firstBeam": "Replaced by the first-beam task",
       "restore": "Replaced by a restored structure"
+    }
+  },
+  "library": {
+    "name": {
+      "steel": "Steel",
+      "steelHss": "Steel HSS",
+      "stainlessSteel": "Stainless steel",
+      "aluminum": "Aluminum",
+      "concrete": "Concrete",
+      "timber": "Timber",
+      "castIron": "Cast iron",
+      "copper": "Copper",
+      "brass": "Brass",
+      "bronze": "Bronze",
+      "titanium": "Titanium",
+      "glass": "Glass",
+      "polycarbonate": "Polycarbonate",
+      "rect": "Rect",
+      "square": "Square",
+      "circular": "Circular"
+    },
+    "qualifier": {
+      "gray": "gray",
+      "lightweight": "lightweight",
+      "sodaLime": "soda-lime",
+      "quasiIsotropic": "quasi-isotropic",
+      "rigid": "rigid",
+      "acrylic": "acrylic",
+      "approx": "approx"
     }
   }
 }

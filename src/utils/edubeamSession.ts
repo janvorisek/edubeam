@@ -1,5 +1,5 @@
 import { XMLParser, XMLValidator } from 'fast-xml-parser';
-import { DofID } from 'ts-fem';
+import { DofID } from '@edubeam/fem';
 import { parsePythonLiteral, type PyValue } from './pythonLiteral';
 
 /**

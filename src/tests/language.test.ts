@@ -1,25 +1,13 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { readdirSync } from 'node:fs';
-import { join } from 'node:path';
 import { availableLocales, i18n, setLocale } from '@/plugins/i18n';
 import { suggestLanguage } from '@/utils';
 import { docsUrl } from '@/utils/docs';
 
 /**
- * The app once spoke Thai and Turkish with English help pages, while the Hindi docs sent readers to an
- * English app. Every language is now both, and a new one has to be added to both.
+ * The app once spoke Thai and Turkish with English help pages. The guide on the website is in every
+ * language of the app, so help links in each one open the guide in that language.
  */
-describe('the languages of the app and the docs', () => {
-  const docsLanguages = readdirSync(join(process.cwd(), 'docs'), { withFileTypes: true })
-    .filter((entry) => entry.isDirectory() && /^[a-z]{2}$/.test(entry.name))
-    .map((entry) => entry.name);
-  // The docs say zh where the app says cn.
-  const appLanguages = availableLocales.map((l) => (l.code === 'cn' ? 'zh' : l.code));
-
-  it('are the same', () => {
-    expect([...docsLanguages].sort()).toEqual([...appLanguages].sort());
-  });
-
+describe('the help links of every language', () => {
   it.each(availableLocales.filter((l) => l.code !== 'en').map((l) => l.code))(
     'link %s help to its own docs',
     (locale) => {

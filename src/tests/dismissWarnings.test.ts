@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
-import { DofID } from 'ts-fem';
+import { DofID } from '@edubeam/fem';
 import { useProjectStore } from '@/store/project';
 
 /** A properly held cantilever, so the only diagnostics are the warnings the tests add. */

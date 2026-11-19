@@ -62,3 +62,34 @@ export const formatResultAsText = (value: number, style: ResultNumberStyle, form
 
   return `${format.format(mantissa)}·10${superscript(exponent)}`;
 };
+
+/**
+ * A number formatter for display that writes a value rounding to zero as 0: plain Intl writes
+ * -0.001 to two decimals as "-0.00", and round-off in a result is often a tiny negative number.
+ * `signDisplay: 'negative'` is from 2023; a browser without it gets the formatter as before.
+ */
+export const createDisplayNumberFormat = (locale: string, options: Intl.NumberFormatOptions): Intl.NumberFormat => {
+  try {
+    return new Intl.NumberFormat(locale, { ...options, signDisplay: 'negative' });
+  } catch {
+    return new Intl.NumberFormat(locale, options);
+  }
+};
+
+/** `value.toFixed(digits)`, but a value that rounds to zero is written 0, never "-0.00". */
+export const toFixedDisplay = (value: number, digits: number): string => {
+  const text = value.toFixed(digits);
+  return Number(text) === 0 ? (0).toFixed(digits) : text;
+};
+
+/**
+ * A displacement or rotation label on the drawing: written by the labels' formatter, so it has the
+ * language's decimal separator, with a power of ten outside 0.01-1000, where two decimals would
+ * show nothing or too much (the range formatScientificNumber used).
+ */
+export const formatDisplacementLabel = (value: number, format: Intl.NumberFormat): string => {
+  const magnitude = Math.abs(value);
+  if (value === 0 || (magnitude >= 0.01 && magnitude <= 1000)) return format.format(value);
+
+  return formatResultAsText(value, 'scientific', format);
+};

@@ -1,4 +1,4 @@
-import { Node, DofID, Beam2D, NodalLoad, BeamElementUniformEdgeLoad, PrescribedDisplacement } from 'ts-fem';
+import { Node, DofID, Beam2D, NodalLoad, BeamElementUniformEdgeLoad, PrescribedDisplacement } from '@edubeam/fem';
 import { inPlaneValues } from '@/utils/dofValues';
 
 export function supportMarker(node: Node) {

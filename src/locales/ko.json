@@ -635,7 +635,7 @@
     },
     "materials": {
       "title": "재료",
-      "body": "재료에는 탄성계수, 전단탄성계수, 밀도, 열팽창계수가 있습니다. 일반적인 정적 해석에는 E와 단면만 영향을 줍니다."
+      "body": "재료에는 탄성계수, 전단탄성계수, 밀도, 열팽창계수가 있습니다. 정적 해석에는 E, 전단 변형에 G, 온도하중에 α가 쓰이며 밀도는 쓰이지 않습니다."
     },
     "crossSections": {
       "title": "단면",
@@ -714,8 +714,8 @@
         "blurb": "아래 방향 18 kN 절점하중을 받는 4 m 캔틸레버로, 곡률과 자유단 처짐을 보여 줍니다."
       },
       "pratt": {
-        "title": "프랫 트러스",
-        "blurb": "8 kN 절점하중을 받는 단순한 프랫 트러스로, 축력 분포와 변위를 보여 줍니다."
+        "title": "워렌 트러스",
+        "blurb": "8 kN 절점하중을 받는 단순한 워렌 트러스로, 축력 분포와 변위를 보여 줍니다."
       },
       "continuous": {
         "title": "3경간 연속보",
@@ -747,6 +747,35 @@
       "example": "예제로 대체됨",
       "firstBeam": "첫 번째 보 과제로 대체됨",
       "restore": "복원한 구조물로 대체됨"
+    }
+  },
+  "library": {
+    "name": {
+      "steel": "강재",
+      "steelHss": "강재 HSS",
+      "stainlessSteel": "스테인리스강",
+      "aluminum": "알루미늄",
+      "concrete": "콘크리트",
+      "timber": "목재",
+      "castIron": "주철",
+      "copper": "구리",
+      "brass": "황동",
+      "bronze": "청동",
+      "titanium": "티타늄",
+      "glass": "유리",
+      "polycarbonate": "폴리카보네이트",
+      "rect": "직사각형",
+      "square": "정사각형",
+      "circular": "원형"
+    },
+    "qualifier": {
+      "gray": "회색",
+      "lightweight": "경량",
+      "sodaLime": "소다석회",
+      "quasiIsotropic": "준등방성",
+      "rigid": "경질",
+      "acrylic": "아크릴",
+      "approx": "근사"
     }
   }
 }

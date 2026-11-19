@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
-import { DofID } from 'ts-fem';
+import { DofID } from '@edubeam/fem';
 import { useProjectStore } from '@/store/project';
 
 /** Simply supported beam under a transverse load: bending and shear, but no normal force. */

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
-import { LinearStaticSolver } from 'ts-fem';
+import { LinearStaticSolver } from '@edubeam/fem';
 import { useProjectStore } from '@/store/project';
 import { buildStarterModel } from '@/utils/starterModel';
 import { matchStarterModelToUnits } from '@/utils/matchStarterModel';

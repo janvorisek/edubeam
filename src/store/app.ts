@@ -10,7 +10,12 @@ import { setLocale } from '@/plugins/i18n';
 import { openModal } from 'jenesius-vue-modal';
 import SettingsModal from '../components/dialogs/Settings.vue';
 import { isMobile, readStoredAppSettings, suggestLanguage } from '@/utils';
-import { formatResultAsHTML, formatResultAsText, type ResultNumberStyle } from '@/utils/numberDisplay';
+import {
+  createDisplayNumberFormat,
+  formatResultAsHTML,
+  formatResultAsText,
+  type ResultNumberStyle,
+} from '@/utils/numberDisplay';
 import { fromSI, momentLabel, unitSize, type ForceUnit, type LengthUnit } from '@/utils/unitConversions';
 import {
   matchUnitSystem,
@@ -30,6 +35,11 @@ export type SettingsTab = 'lang' | 'appearance' | 'controls';
 const asRecord = (value: unknown): Record<string, unknown> =>
   typeof value === 'object' && value !== null ? (value as Record<string, unknown>) : {};
 
+/** Labels on the drawing: two decimals. */
+const LABEL_DIGITS: Intl.NumberFormatOptions = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
+/** Results span orders of magnitude: significant digits, the exponent written separately. */
+const RESULT_DIGITS: Intl.NumberFormatOptions = { maximumSignificantDigits: 5 };
+
 export const useAppStore = defineStore(
   'app',
   () => {
@@ -42,13 +52,11 @@ export const useAppStore = defineStore(
     const bottomBarHeight = ref(226);
 
     const locale = ref(suggestLanguage());
-    const numberFormatter = ref(
-      new Intl.NumberFormat(locale.value, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-    );
+    const numberFormatter = ref(createDisplayNumberFormat(locale.value, LABEL_DIGITS));
     // Results span orders of magnitude, so their mantissa is written by significant digits and
     // the exponent by the chosen style.
     const numberStyle = ref<ResultNumberStyle>('scientific');
-    const resultFormatter = ref(new Intl.NumberFormat(locale.value, { maximumSignificantDigits: 5 }));
+    const resultFormatter = ref(createDisplayNumberFormat(locale.value, RESULT_DIGITS));
 
     const formatResultHTML = (value: number) => formatResultAsHTML(value, numberStyle.value, resultFormatter.value);
     const formatResultText = (value: number) => formatResultAsText(value, numberStyle.value, resultFormatter.value);
@@ -206,8 +214,8 @@ export const useAppStore = defineStore(
 
     watch(locale, (newLocale) => {
       setLocale(newLocale);
-      numberFormatter.value = new Intl.NumberFormat(newLocale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      resultFormatter.value = new Intl.NumberFormat(newLocale, { maximumSignificantDigits: 5 });
+      numberFormatter.value = createDisplayNumberFormat(newLocale, LABEL_DIGITS);
+      resultFormatter.value = createDisplayNumberFormat(newLocale, RESULT_DIGITS);
     });
 
     const zooming = ref(false);

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { vertical } from '@/utils/axisConvention';
-import { BeamConcentratedLoad } from 'ts-fem';
+import { BeamConcentratedLoad } from '@edubeam/fem';
 import { computed } from 'vue';
 
 const props = withDefaults(

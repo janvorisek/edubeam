@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { mount } from '@vue/test-utils';
 import { createVuetify } from 'vuetify';
-import { LinearStaticSolver, DofID } from 'ts-fem';
+import { LinearStaticSolver, DofID } from '@edubeam/fem';
 import SVGNode from '@/components/svg/Node.vue';
 
 /**

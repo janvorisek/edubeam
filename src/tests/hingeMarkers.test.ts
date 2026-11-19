@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
-import { LinearStaticSolver } from 'ts-fem';
+import { LinearStaticSolver } from '@edubeam/fem';
 import SVGElement from '../components/svg/Element.vue';
 
 const beam = (length: number, hinges: [boolean, boolean]) => {

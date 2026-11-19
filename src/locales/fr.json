@@ -514,8 +514,8 @@
     "positiveNumber": "Saisissez un nombre supérieur à zéro",
     "between": "Saisissez une valeur entre {min} et {max}",
     "sameNodes": "Un élément doit relier deux nœuds différents",
-    "materialInUse": "Le matériau est utilisé par les éléments suivants : {elements}. Réaffectez-les avant de le supprimer.",
-    "crossSectionInUse": "La section est utilisée par les éléments suivants : {elements}. Réaffectez-les avant de la supprimer."
+    "materialInUse": "Le matériau est utilisé par l'élément {elements}. Réaffectez-le avant de supprimer le matériau. | Le matériau est utilisé par les éléments suivants : {elements}. Réaffectez-les avant de le supprimer.",
+    "crossSectionInUse": "La section est utilisée par l'élément {elements}. Réaffectez-le avant de supprimer la section. | La section est utilisée par les éléments suivants : {elements}. Réaffectez-les avant de la supprimer."
   },
   "solveDiagnostics": {
     "summaryErrors": "Erreurs dans le modèle : {errors}",
@@ -558,8 +558,8 @@
       "mechanismShort": "Les appuis ne maintiennent pas la structure : elle peut encore {motion}.",
       "partMechanism": "Une partie séparée de la structure (nœuds {nodes}) a suffisamment d'appuis, mais ils ne la maintiennent pas : elle peut encore {motion}. Des appuis tous parallèles, ou dont les lignes d'action concourent en un même point, laissent la structure libre de se déplacer.",
       "partMechanismShort": "La partie avec les nœuds {nodes} n'est pas maintenue : elle peut encore {motion}.",
-      "hingeMechanism": "Les appuis maintiennent la structure, mais c'est encore un mécanisme : ses barres peuvent tourner autour des articulations du nœud {nodes}. Supprimez une articulation ou ajoutez une barre ou un appui qui empêche le mouvement.",
-      "hingeMechanismShort": "Les articulations du nœud {nodes} laissent la structure bouger.",
+      "hingeMechanism": "Les appuis maintiennent la structure, mais c'est encore un mécanisme : ses barres peuvent tourner autour des articulations du nœud {nodes}. Supprimez une articulation ou ajoutez une barre ou un appui qui empêche le mouvement. | Les appuis maintiennent la structure, mais c'est encore un mécanisme : ses barres peuvent tourner autour des articulations des nœuds {nodes}. Supprimez une articulation ou ajoutez une barre ou un appui qui empêche le mouvement.",
+      "hingeMechanismShort": "Les articulations du nœud {nodes} laissent la structure bouger. | Les articulations des nœuds {nodes} laissent la structure bouger.",
       "motion": {
         "horizontal": "glisser horizontalement",
         "vertical": "se déplacer verticalement",
@@ -635,7 +635,7 @@
     },
     "materials": {
       "title": "Matériaux",
-      "body": "Un matériau porte le module de Young, le module de cisaillement, la masse volumique et la dilatation thermique. Pour une statique simple, seuls E et la section comptent."
+      "body": "Un matériau porte le module de Young, le module de cisaillement, la masse volumique et la dilatation thermique. Un calcul statique utilise E, G pour la déformation due à l'effort tranchant et α pour les charges thermiques ; la masse volumique n'y intervient pas."
     },
     "crossSections": {
       "title": "Sections",
@@ -714,8 +714,8 @@
         "blurb": "Console de 4 m reprenant une charge nodale de 18 kN vers le bas, mettant en évidence la courbure et la flèche en bout."
       },
       "pratt": {
-        "title": "Treillis Pratt",
-        "blurb": "Treillis Pratt simple avec des charges nodales de 8 kN, montrant la répartition des efforts normaux et les déplacements."
+        "title": "Treillis Warren",
+        "blurb": "Treillis Warren simple avec des charges nodales de 8 kN, montrant la répartition des efforts normaux et les déplacements."
       },
       "continuous": {
         "title": "Poutre continue à trois travées",
@@ -747,6 +747,35 @@
       "example": "Remplacée par un exemple",
       "firstBeam": "Remplacée par la tâche « première poutre »",
       "restore": "Remplacée par une structure restaurée"
+    }
+  },
+  "library": {
+    "name": {
+      "steel": "Acier",
+      "steelHss": "Acier HSS",
+      "stainlessSteel": "Acier inoxydable",
+      "aluminum": "Aluminium",
+      "concrete": "Béton",
+      "timber": "Bois",
+      "castIron": "Fonte",
+      "copper": "Cuivre",
+      "brass": "Laiton",
+      "bronze": "Bronze",
+      "titanium": "Titane",
+      "glass": "Verre",
+      "polycarbonate": "Polycarbonate",
+      "rect": "Rectangle",
+      "square": "Carré",
+      "circular": "Circulaire"
+    },
+    "qualifier": {
+      "gray": "grise",
+      "lightweight": "léger",
+      "sodaLime": "sodocalcique",
+      "quasiIsotropic": "quasi-isotrope",
+      "rigid": "rigide",
+      "acrylic": "acrylique",
+      "approx": "approx."
     }
   }
 }

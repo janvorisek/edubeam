@@ -124,7 +124,7 @@
 import { submitsForm } from '@/utils/keyboard';
 import { onMounted, ref, computed } from 'vue';
 import { useProjectStore } from '../../store/project';
-import { Node } from 'ts-fem';
+import { Node } from '@edubeam/fem';
 import { closeModal } from 'jenesius-vue-modal';
 import { useAppStore } from '@/store/app';
 import {

@@ -5,7 +5,7 @@
  * carries them, so a table pasted into Excel or Matlab means the same thing as the one
  * on screen — which is the whole point when a student is checking a hand calculation.
  */
-import { Beam2D, DofID, type LinearStaticSolver, type Node } from 'ts-fem';
+import { Beam2D, DofID, type LinearStaticSolver, type Node } from '@edubeam/fem';
 import type { Matrix } from 'mathjs';
 import { axisLetters, vertical } from './axisConvention';
 import { downloadBlob } from './download';

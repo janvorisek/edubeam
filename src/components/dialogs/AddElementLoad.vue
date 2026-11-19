@@ -222,7 +222,7 @@ import {
   BeamElementTrapezoidalEdgeLoad,
   BeamElementUniformEdgeLoad,
   BeamTemperatureLoad,
-} from 'ts-fem';
+} from '@edubeam/fem';
 import { formatMeasureAsHTML } from '@/SVGUtils';
 
 import { useI18n } from 'vue-i18n';

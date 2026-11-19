@@ -353,11 +353,7 @@
                 :exclude="item.nodes[1]"
                 :prefix="$t('common.node')"
                 style="width: 100px"
-                @update:model-value="
-                  setUnsolved();
-                  item.nodes[0] = String($event);
-                  solve();
-                "
+                @update:model-value="changeElementNode(item, 0, $event)"
               />
               <a
                 v-tooltip="{ text: $t('elements.swapNodeOrder'), location: 'bottom', openOnClick: !deviceHasHover }"
@@ -374,11 +370,7 @@
                 :exclude="item.nodes[0]"
                 :prefix="$t('common.node')"
                 style="width: 100px"
-                @update:model-value="
-                  setUnsolved();
-                  item.nodes[1] = String($event);
-                  solve();
-                "
+                @update:model-value="changeElementNode(item, 1, $event)"
               />
             </div>
           </template>
@@ -388,13 +380,10 @@
               so a label read back as a number finds nothing and the element is left with neither.
             -->
             <select
-              v-model="item.mat"
+              :value="item.mat"
               class="mini-select flex-shrink-0"
               style="width: 100%"
-              @change="
-                setUnsolved();
-                solve();
-              "
+              @change="changeElementProperty(item, 'mat', ($event.target as HTMLSelectElement).value)"
             >
               <option v-for="node in materials" :key="node.label" :value="node.label">
                 {{ node.label }}
@@ -407,13 +396,10 @@
               so a label read back as a number finds nothing and the element is left with neither.
             -->
             <select
-              v-model="item.cs"
+              :value="item.cs"
               class="mini-select flex-shrink-0"
               style="width: 100%"
-              @change="
-                setUnsolved();
-                solve();
-              "
+              @change="changeElementProperty(item, 'cs', ($event.target as HTMLSelectElement).value)"
             >
               <option v-for="node in crossSections" :key="node.label" :value="node.label">
                 {{ node.label }}
@@ -933,38 +919,29 @@
           <template #item.target="{ item }">
             <EntitySelect
               v-if="item.type === 'node'"
-              v-model="item.ref.target"
+              :model-value="item.ref.target"
               :items="nodes"
               :prefix="$t('common.node')"
               style="width: 100%"
-              @update:model-value="
-                setUnsolved();
-                solve();
-              "
+              @update:model-value="changeLoadTarget(item.ref, $event)"
             />
 
             <EntitySelect
               v-else-if="item.type === 'prescribed'"
-              v-model="item.ref.target"
+              :model-value="item.ref.target"
               :items="nodes.filter((n) => n.bcs.size > 0)"
               :prefix="$t('common.node')"
               style="width: 100%"
-              @update:model-value="
-                setUnsolved();
-                solve();
-              "
+              @update:model-value="changeLoadTarget(item.ref, $event)"
             />
 
             <EntitySelect
               v-else-if="item.type === 'element'"
-              v-model="item.ref.target"
+              :model-value="item.ref.target"
               :items="elements"
               :prefix="$t('common.element')"
               style="width: 100%"
-              @update:model-value="
-                setUnsolved();
-                solve();
-              "
+              @update:model-value="changeLoadTarget(item.ref, $event)"
             />
           </template>
 
@@ -1562,6 +1539,7 @@
 <script setup lang="ts">
 import { parseNumberInput } from '@/utils/numberInput';
 import { axisMark } from '@/utils/nodalLcs';
+import { formatDisplacementLabel } from '@/utils/numberDisplay';
 import {
   Node,
   Element,
@@ -1573,7 +1551,7 @@ import {
   BeamConcentratedLoad,
   BeamTemperatureLoad,
   NodalLoad,
-} from 'ts-fem';
+} from '@edubeam/fem';
 
 import { onMounted, computed, reactive, ref, watch } from 'vue';
 import { useProjectStore } from '../store/project';
@@ -1583,6 +1561,7 @@ import {
   capitalize,
   changeItem,
   changeLabel,
+  changeLoadTarget,
   changeNodeLcsAngle,
   changeSetArrayItem,
   checkNumber,
@@ -1598,6 +1577,8 @@ import {
   setUnsolved,
   solve,
   swapNodes,
+  changeElementNode,
+  changeElementProperty,
   toggleArray,
   toggleBoolean,
   toggleSet,
@@ -1606,7 +1587,7 @@ import {
   executeModelMutationWithUndo,
   positionAlongBeam,
 } from '../utils';
-import { DofID, Beam2D, PrescribedDisplacement } from 'ts-fem';
+import { DofID, Beam2D, PrescribedDisplacement } from '@edubeam/fem';
 import { formatMeasureAsHTML } from '../SVGUtils';
 import {
   buildResultsTsv,
@@ -1930,6 +1911,12 @@ interface NodeLoadChip {
  * Everything applied to a node: nodal forces and prescribed displacements alike. Both open the same
  * edit dialog, which tells them apart by `type`.
  */
+/** Chip values as the drawing labels write them: the locale's decimals, no floating-point round-off. */
+const shown = (value: number) => appStore.numberFormatter.format(value);
+const shownDisplacement = (value: number) => formatDisplacementLabel(value, appStore.numberFormatter);
+/** Between a chip's values: a semicolon where the comma is the decimal mark, so "5,00, 12,35" can't happen. */
+const chipSeparator = () => (appStore.numberFormatter.format(1.5).includes(',') ? '; ' : ', ');
+
 const nodeLoadChips = (item: Node): NodeLoadChip[] => {
   const loadCase = useProjectStore().solver.loadCases[0];
   const chips: NodeLoadChip[] = [];
@@ -1940,15 +1927,16 @@ const nodeLoadChips = (item: Node): NodeLoadChip[] => {
     const tmp = [];
     const mark = axisMark(item, nl.lcs);
     if (DofID.Dx in nl.values && Math.abs(nl.values[DofID.Dx]) > 1e-12)
-      tmp.push(`F<sub>x${mark}</sub> = ` + appStore.convertForce(nl.values[DofID.Dx]));
+      tmp.push(`F<sub>x${mark}</sub> = ` + shown(appStore.convertForce(nl.values[DofID.Dx])));
     if (DofID.Dz in nl.values && Math.abs(nl.values[DofID.Dz]) > 1e-12)
       tmp.push(
-        `F<sub>${appStore.axes.v}${mark}</sub> = ` + appStore.vertical(appStore.convertForce(nl.values[DofID.Dz]))
+        `F<sub>${appStore.axes.v}${mark}</sub> = ` +
+          shown(appStore.vertical(appStore.convertForce(nl.values[DofID.Dz])))
       );
     if (DofID.Ry in nl.values && Math.abs(nl.values[DofID.Ry]) > 1e-12)
-      tmp.push(`M<sub>${appStore.axes.r}</sub> = ` + appStore.convertMoment(nl.values[DofID.Ry]));
+      tmp.push(`M<sub>${appStore.axes.r}</sub> = ` + shown(appStore.convertMoment(nl.values[DofID.Ry])));
 
-    chips.push({ index, type: 'force', text: tmp.join(', ') });
+    chips.push({ index, type: 'force', text: tmp.join(chipSeparator()) });
   });
 
   loadCase.prescribedBC.forEach((bc, index) => {
@@ -1960,15 +1948,16 @@ const nodeLoadChips = (item: Node): NodeLoadChip[] => {
     const mark = axisMark(item, true);
     // Displacements are lengths; a prescribed rotation is stored and shown in radians.
     if (DofID.Dx in values && Math.abs(values[DofID.Dx]) > 1e-12)
-      tmp.push(`D<sub>x${mark}</sub> = ` + appStore.convertDisplacement(values[DofID.Dx]));
+      tmp.push(`D<sub>x${mark}</sub> = ` + shownDisplacement(appStore.convertDisplacement(values[DofID.Dx])));
     if (DofID.Dz in values && Math.abs(values[DofID.Dz]) > 1e-12)
       tmp.push(
-        `D<sub>${appStore.axes.v}${mark}</sub> = ` + appStore.vertical(appStore.convertDisplacement(values[DofID.Dz]))
+        `D<sub>${appStore.axes.v}${mark}</sub> = ` +
+          shownDisplacement(appStore.vertical(appStore.convertDisplacement(values[DofID.Dz])))
       );
     if (DofID.Ry in values && Math.abs(values[DofID.Ry]) > 1e-12)
-      tmp.push(`R<sub>${appStore.axes.r}</sub> = ` + values[DofID.Ry]);
+      tmp.push(`R<sub>${appStore.axes.r}</sub> = ` + shownDisplacement(values[DofID.Ry]));
 
-    chips.push({ index, type: 'displacement', text: tmp.join(', ') });
+    chips.push({ index, type: 'displacement', text: tmp.join(chipSeparator()) });
   });
 
   return chips;
@@ -1992,32 +1981,32 @@ const formatElementLoadsAtElement = (item: Beam2D): [number, string][] => {
     const ff = nl.type === 'concentrated' ? 'F' : 'f';
     if (nl.type === 'temperature' && 'values' in nl.ref) {
       if (Math.abs(nl.ref.values[0]) > 1e-12)
-        tmp.push(t('loads.temperatureDeltaTs') + ' = ' + appStore.convertTemperature(nl.ref.values[0]));
+        tmp.push(t('loads.temperatureDeltaTs') + ' = ' + shown(appStore.convertTemperature(nl.ref.values[0])));
       if (Math.abs(nl.ref.values[1]) > 1e-12)
-        tmp.push(t('loads.temperatureDeltaTbt') + ' = ' + appStore.convertTemperature(nl.ref.values[1]));
+        tmp.push(t('loads.temperatureDeltaTbt') + ' = ' + shown(appStore.convertTemperature(nl.ref.values[1])));
     } else if (nl.type === 'trapezoidal' && nl.ref instanceof BeamElementTrapezoidalEdgeLoad) {
       const startFx = nl.ref.startValues[0];
       const endFx = nl.ref.endValues[0];
       const startFz = nl.ref.startValues[1];
       const endFz = nl.ref.endValues[1];
       if (Math.abs(startFx) > 1e-12 || Math.abs(endFx) > 1e-12) {
-        const startText = appStore.convertForceDistance(startFx);
-        const endText = appStore.convertForceDistance(endFx);
+        const startText = shown(appStore.convertForceDistance(startFx));
+        const endText = shown(appStore.convertForceDistance(endFx));
         tmp.push(`${ff}<sub>x</sub> = ${startText} → ${endText}`);
       }
       if (Math.abs(startFz) > 1e-12 || Math.abs(endFz) > 1e-12) {
-        const startText = appStore.vertical(appStore.convertForceDistance(startFz));
-        const endText = appStore.vertical(appStore.convertForceDistance(endFz));
+        const startText = shown(appStore.vertical(appStore.convertForceDistance(startFz)));
+        const endText = shown(appStore.vertical(appStore.convertForceDistance(endFz)));
         tmp.push(`${ff}<sub>${appStore.axes.v}</sub> = ${startText} → ${endText}`);
       }
     } else if ('values' in nl.ref) {
       const convert = nl.type === 'udl' ? appStore.convertForceDistance : appStore.convertForce;
 
-      if (Math.abs(nl.ref.values[0]) > 1e-12) tmp.push(ff + '<sub>x</sub> = ' + convert(nl.ref.values[0]));
+      if (Math.abs(nl.ref.values[0]) > 1e-12) tmp.push(ff + '<sub>x</sub> = ' + shown(convert(nl.ref.values[0])));
       if (Math.abs(nl.ref.values[1]) > 1e-12)
-        tmp.push(`${ff}<sub>${appStore.axes.v}</sub> = ` + appStore.vertical(convert(nl.ref.values[1])));
+        tmp.push(`${ff}<sub>${appStore.axes.v}</sub> = ` + shown(appStore.vertical(convert(nl.ref.values[1]))));
     }
-    return [nl.index, tmp.join(', ')];
+    return [nl.index, tmp.join(chipSeparator())];
   });
 };
 

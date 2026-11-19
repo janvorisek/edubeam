@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { mount } from '@vue/test-utils';
 import { createVuetify } from 'vuetify';
-import { DofID } from 'ts-fem';
+import { DofID } from '@edubeam/fem';
 import { MouseMode } from '@/mouse';
 import { useAppStore } from '@/store/app';
 import { useClipboardStore } from '@/store/clipboard';

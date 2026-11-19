@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { LinearStaticSolver, DofID } from 'ts-fem';
+import { LinearStaticSolver, DofID } from '@edubeam/fem';
 import { applyNodeLcsAngle, nodeLcsAngle } from '@/utils/nodalLcs';
 
 const makeNode = () => {

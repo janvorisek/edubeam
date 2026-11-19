@@ -5,7 +5,7 @@
  * documentation site, so the two can never drift apart. Titles and blurbs stay English
  * here, matching how the material and cross section libraries name their presets.
  */
-import { DofID, LinearStaticSolver } from 'ts-fem';
+import { DofID, LinearStaticSolver } from '@edubeam/fem';
 
 /** Overlays that make each example's point on first sight. */
 export interface ExampleViewerFlags {
@@ -80,6 +80,8 @@ export const examples: ExampleDefinition[] = [
     },
   },
   {
+    // A Warren truss (alternating diagonals, no verticals). The id is older than the title and
+    // keys its locale texts and the docs gallery, so it stays.
     id: 'pratt',
     // Axial force labels crowd the small preview cards, so the truss leads with its deflected shape.
     viewer: { ...DEFAULT_OVERLAYS, showMoments: false },

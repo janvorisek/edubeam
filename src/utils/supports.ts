@@ -1,4 +1,4 @@
-import { DofID, Node } from 'ts-fem';
+import { DofID, Node } from '@edubeam/fem';
 import { executeModelMutationWithUndo, setUnsolved } from '@/utils';
 
 /** The supports students name: no support, then the most common first, each a fixed set of restrained DOFs in the node's LCS. */

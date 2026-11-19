@@ -2,7 +2,7 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { defineComponent, h, reactive } from 'vue';
 import { mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
-import { LinearStaticSolver, DofID } from 'ts-fem';
+import { LinearStaticSolver, DofID } from '@edubeam/fem';
 import { i18n } from '@/plugins/i18n';
 import { useProjectStore } from '@/store/project';
 import { useAppStore } from '@/store/app';
@@ -16,7 +16,7 @@ import {
   type DimensionPoint,
 } from '../types/dimension';
 
-/** Enough of a ts-fem node for the lookup: a label and coordinates. */
+/** Enough of an @edubeam/fem node for the lookup: a label and coordinates. */
 type TestNode = { label: string; coords: [number, number, number] };
 
 type NodeLookup = Parameters<typeof resolveDimensionPoints>[1];

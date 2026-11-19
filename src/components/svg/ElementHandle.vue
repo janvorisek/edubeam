@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Beam2D } from 'ts-fem';
+import type { Beam2D } from '@edubeam/fem';
 import { computed } from 'vue';
 
 /**

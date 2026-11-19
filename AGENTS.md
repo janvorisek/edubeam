@@ -17,7 +17,6 @@ npm run dev          # Vite dev server
 npm run test:run     # Vitest, once
 npm run lint         # ESLint on src/ (lint:fix to apply fixes)
 npm run build        # production bundle in dist/
-npm run docs:dev     # VitePress docs
 ```
 
 Run `test:run` and `lint` before calling a change done.
@@ -41,7 +40,7 @@ Run `test:run` and `lint` before calling a change done.
 
 ## Architecture
 
-- The FE solver lives in the separate [ts-fem](https://github.com/janvorisek/ts-fem) package. Keep solver math out of components.
+- The FE solver lives in the separate [@edubeam/fem](https://github.com/EduBeamApp/fem) package. Keep solver math out of components.
 - Model state is in `src/store/project.ts`. View state is in `viewer.ts` and `layout.ts`.
 - Every user edit to the model must be undoable. Wrap it in `executeModelMutationWithUndo` (`src/utils/index.ts`), which snapshots the project and pushes a command to `undoRedoManager`. Don't write your own undo.
 - Stored values are SI (m, N, Pa, rad). Unit conversion happens only for display and input (`src/utils/unitConversions.ts`).
@@ -73,7 +72,7 @@ Rules:
 - New behavior includes or updates tests in `src/tests/` when practical.
 - Keep lint and type checks clean for the files you touch.
 - Prefer deleting unclear code over keeping speculative abstractions.
-- Check numerical changes against a hand calculation. `docs/en/guide/verification.md` has closed-form reference cases.
+- Check numerical changes against a hand calculation. The guide's verification page (`content/en/guide/verification.md` in the website) has closed-form reference cases.
 
 ## UI Changes
 
@@ -86,9 +85,8 @@ Rules:
 
 - `src/locales/en.json` is the source. `locales.test.ts` fails unless **every** locale has every English key, no extra keys, and the same `{placeholders}`. A new string means adding it to all 12 locale files.
 - Where academic and software terminology differ, use the terms structural analysis software (SAP2000, ETABS, …) uses in that language.
-- Docs live in `docs/<lang>/`. English is in `docs/en/` but is served from the root (`/guide/…`, not `/en/guide/…`) through `rewrites` in `docs/.vitepress/config.ts`. Help links in the app go through `docsUrl` (`src/utils/docs.ts`).
-- Every language has the same pages; the nav and sidebar are built once in `docs/.vitepress/navigation.ts`. Translated headings keep the English id (`## Podpory {#supports}`), because the app's help links point to those anchors in every language.
-- Docs screenshots come from `npm run docs:screenshots` (with `npm run dev` running): `--lang cs` or `--lang all` for the translations, `--missing` to fill gaps. Regenerate them when the UI they show changes.
+- The guide is part of the website, www.edubeam.app, in its own repository (`@edubeam/web`). English is served from the root (`/guide/…`), other languages under `/<lang>/…`. Help links in the app go through `docsUrl` (`src/utils/docs.ts`) and point to headings by their English id (`## Podpory {#supports}`) in every language, so keep those ids when a help topic moves.
+- The guide's screenshots are taken by the website's `npm run screenshots`, which drives this app through its URL (`npm run dev` here). Retake them there when the UI they show changes.
 
 ## Export
 

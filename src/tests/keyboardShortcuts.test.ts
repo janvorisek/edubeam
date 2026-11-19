@@ -3,12 +3,19 @@ import { createPinia, setActivePinia } from 'pinia';
 import { mount, type VueWrapper } from '@vue/test-utils';
 import { createVuetify } from 'vuetify';
 import { nextTick } from 'vue';
-import { DofID } from 'ts-fem';
+import { DofID } from '@edubeam/fem';
 import { i18n } from '@/plugins/i18n';
 import SVGViewer from '@/components/SVGViewer.vue';
 import { useProjectStore } from '@/store/project';
 import { useViewerStore } from '@/store/viewer';
-import { fieldOwnsUndo, forKeyboard, hasShortcutModifier, isTextEntry, submitsForm } from '@/utils/keyboard';
+import {
+  fieldOwnsUndo,
+  forKeyboard,
+  hasShortcutModifier,
+  isTextEntry,
+  submitsForm,
+  zoomShortcut,
+} from '@/utils/keyboard';
 
 /**
  * Shortcuts checked `ctrlKey` only, so on a Mac, where Cmd does what Ctrl does elsewhere, none of
@@ -92,6 +99,49 @@ describe('shortcuts in the drawing', () => {
     project.clearSelection2();
     await press('Control', 'a');
     expect(project.selection2.nodes).toHaveLength(2);
+  });
+});
+
+describe('zoomShortcut', () => {
+  const key = (key: string, code: string, modifier: 'ctrl' | 'meta' | null = 'ctrl') => ({
+    key,
+    code,
+    ctrlKey: modifier === 'ctrl',
+    metaKey: modifier === 'meta',
+  });
+
+  it('zooms with the keys of a US keyboard, as it always did', () => {
+    expect(zoomShortcut(key('=', 'Equal'))).toBe('in');
+    expect(zoomShortcut(key('+', 'Equal'))).toBe('in');
+    expect(zoomShortcut(key('-', 'Minus'))).toBe('out');
+    expect(zoomShortcut(key('=', 'Equal', 'meta'))).toBe('in');
+  });
+
+  it('zooms with + and - where a layout puts them on other keys', () => {
+    // German: + has a key of its own, right of Ü, and - is where the US slash is
+    expect(zoomShortcut(key('+', 'BracketRight'))).toBe('in');
+    expect(zoomShortcut(key('-', 'Slash'))).toBe('out');
+    expect(zoomShortcut(key('+', 'BracketRight', 'meta'))).toBe('in');
+    // and the physical keys keep working there too
+    expect(zoomShortcut(key('´', 'Equal'))).toBe('in');
+    expect(zoomShortcut(key('ß', 'Minus'))).toBe('out');
+  });
+
+  it('goes by the character where a layout swaps the US keys', () => {
+    // Turkish Q: the key in the US = position types -, the one in the US - position types *
+    expect(zoomShortcut(key('-', 'Equal'))).toBe('out');
+    expect(zoomShortcut(key('*', 'Minus'))).toBe('out');
+  });
+
+  it('zooms with the keypad', () => {
+    expect(zoomShortcut(key('+', 'NumpadAdd'))).toBe('in');
+    expect(zoomShortcut(key('-', 'NumpadSubtract'))).toBe('out');
+  });
+
+  it('needs Ctrl or Cmd', () => {
+    expect(zoomShortcut(key('+', 'BracketRight', null))).toBeNull();
+    expect(zoomShortcut(key('-', 'Minus', null))).toBeNull();
+    expect(zoomShortcut(key('z', 'KeyZ'))).toBeNull();
   });
 });
 

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { LinearStaticSolver } from 'ts-fem';
+import { LinearStaticSolver } from '@edubeam/fem';
 import { parseSerializedModel, serializeModel } from '@/utils/serializeModel';
 import { buildStarterModel } from '@/utils/starterModel';
 import type { DimensionLine } from '@/types/dimension';

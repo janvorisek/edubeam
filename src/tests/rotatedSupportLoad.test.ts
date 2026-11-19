@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { LinearStaticSolver, DofID, type LoadCase, type Node } from 'ts-fem';
+import { LinearStaticSolver, DofID, type LoadCase, type Node } from '@edubeam/fem';
 import { applyNodeLcsAngle } from '@/utils/nodalLcs';
 
 /**

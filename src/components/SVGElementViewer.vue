@@ -14,7 +14,7 @@ import {
   BeamElementUniformEdgeLoad,
   BeamConcentratedLoad,
   PrescribedDisplacement,
-} from 'ts-fem';
+} from '@edubeam/fem';
 import { max, min } from 'mathjs';
 
 import SVGElementLoad from './svg/ElementLoad.vue';

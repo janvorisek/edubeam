@@ -3,7 +3,7 @@ import { mount, type VueWrapper } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import { createVuetify } from 'vuetify';
 import * as components from 'vuetify/components';
-import { DofID } from 'ts-fem';
+import { DofID } from '@edubeam/fem';
 import { i18n } from '@/plugins/i18n';
 import AddElement from '@/components/dialogs/AddElement.vue';
 import AddElementLoad from '@/components/dialogs/AddElementLoad.vue';

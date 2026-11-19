@@ -514,8 +514,8 @@
     "positiveNumber": "Zadejte číslo větší než nula",
     "between": "Zadejte hodnotu mezi {min} a {max}",
     "sameNodes": "Prvek musí spojovat dva různé uzly",
-    "materialInUse": "Materiál používají prvky {elements}. Před smazáním jim přiřaďte jiný.",
-    "crossSectionInUse": "Průřez používají prvky {elements}. Před smazáním jim přiřaďte jiný."
+    "materialInUse": "Materiál používá prvek {elements}. Před smazáním mu přiřaďte jiný. | Materiál používají prvky {elements}. Před smazáním jim přiřaďte jiný.",
+    "crossSectionInUse": "Průřez používá prvek {elements}. Před smazáním mu přiřaďte jiný. | Průřez používají prvky {elements}. Před smazáním jim přiřaďte jiný."
   },
   "solveDiagnostics": {
     "summaryErrors": "Chyby v modelu: {errors}",
@@ -558,8 +558,8 @@
       "mechanismShort": "Podpory konstrukci nezajišťují: stále se může {motion}.",
       "partMechanism": "Samostatná část konstrukce (uzly {nodes}) má dostatek podpor, ale ty ji nezajišťují: stále se může {motion}. Jsou-li všechny vazby rovnoběžné nebo se jejich nositelky protínají v jednom bodě, konstrukce se může volně pohybovat.",
       "partMechanismShort": "Část s uzly {nodes} není zajištěna: stále se může {motion}.",
-      "hingeMechanism": "Podpory konstrukci drží, ale přesto je to mechanismus: její pruty se mohou otáčet kolem kloubů v uzlu {nodes}. Odstraňte kloub nebo přidejte prut či podporu, která pohybu zabrání.",
-      "hingeMechanismShort": "Klouby v uzlu {nodes} umožňují konstrukci pohyb.",
+      "hingeMechanism": "Podpory konstrukci drží, ale přesto je to mechanismus: její pruty se mohou otáčet kolem kloubů v uzlu {nodes}. Odstraňte kloub nebo přidejte prut či podporu, která pohybu zabrání. | Podpory konstrukci drží, ale přesto je to mechanismus: její pruty se mohou otáčet kolem kloubů v uzlech {nodes}. Odstraňte kloub nebo přidejte prut či podporu, která pohybu zabrání.",
+      "hingeMechanismShort": "Klouby v uzlu {nodes} umožňují konstrukci pohyb. | Klouby v uzlech {nodes} umožňují konstrukci pohyb.",
       "motion": {
         "horizontal": "posouvat vodorovně",
         "vertical": "posouvat svisle",
@@ -635,7 +635,7 @@
     },
     "materials": {
       "title": "Materiály",
-      "body": "Materiál nese modul pružnosti, modul ve smyku, hustotu a teplotní roztažnost. Pro běžný statický výpočet stačí E a průřez."
+      "body": "Materiál nese modul pružnosti, modul ve smyku, hustotu a teplotní roztažnost. Statický výpočet používá E, G pro smykové deformace a α pro změnu teploty; hustota do něj nevstupuje."
     },
     "crossSections": {
       "title": "Průřezy",
@@ -714,8 +714,8 @@
         "blurb": "Konzola délky 4 m zatížená svislou uzlovou silou 18 kN směrem dolů – ukazuje křivost a průhyb volného konce."
       },
       "pratt": {
-        "title": "Prattův příhradový nosník",
-        "blurb": "Jednoduchý Prattův příhradový nosník se styčníkovými silami 8 kN – ukazuje rozdělení normálových sil a posunutí."
+        "title": "Warrenův příhradový nosník",
+        "blurb": "Jednoduchý Warrenův příhradový nosník se styčníkovými silami 8 kN – ukazuje rozdělení normálových sil a posunutí."
       },
       "continuous": {
         "title": "Spojitý nosník o třech polích",
@@ -747,6 +747,35 @@
       "example": "Nahrazeno příkladem",
       "firstBeam": "Nahrazeno úlohou „první nosník“",
       "restore": "Nahrazeno obnovenou konstrukcí"
+    }
+  },
+  "library": {
+    "name": {
+      "steel": "Ocel",
+      "steelHss": "Ocel HSS",
+      "stainlessSteel": "Nerezová ocel",
+      "aluminum": "Hliník",
+      "concrete": "Beton",
+      "timber": "Dřevo",
+      "castIron": "Litina",
+      "copper": "Měď",
+      "brass": "Mosaz",
+      "bronze": "Bronz",
+      "titanium": "Titan",
+      "glass": "Sklo",
+      "polycarbonate": "Polykarbonát",
+      "rect": "Obdélník",
+      "square": "Čtverec",
+      "circular": "Kruh"
+    },
+    "qualifier": {
+      "gray": "šedá",
+      "lightweight": "lehký",
+      "sodaLime": "sodnovápenaté",
+      "quasiIsotropic": "kvaziizotropní",
+      "rigid": "tvrdé",
+      "acrylic": "akrylát",
+      "approx": "přibl."
     }
   }
 }

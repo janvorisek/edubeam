@@ -23,7 +23,9 @@ export const newMaterialDefaults = (family: PresetFamily) => {
     return { e, g, alpha, d };
   }
 
-  return { e: 210000e6, g: 210000e6 / (2 * (1 + 0.2)), alpha: 12e-6, d: 1000 };
+  // G = E / 2(1 + ν) with steel's ν ≈ 0.3, as the library's steels have it. It was E / 2.4, which is
+  // ν = 0.2, a concrete's, and made the shear stiffness 8 % too high.
+  return { e: 210000e6, g: 81000e6, alpha: 12e-6, d: 1000 };
 };
 
 /** What the add-section dialog starts with, in SI: a W12x26 in US units, round numbers otherwise. */

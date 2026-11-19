@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { smoothPath } from '../../utils/smoothPath';
-import { Node, LoadCase, Beam2D, BeamConcentratedLoad, BeamElementTrapezoidalEdgeLoad } from 'ts-fem';
+import { Node, LoadCase, Beam2D, BeamConcentratedLoad, BeamElementTrapezoidalEdgeLoad } from '@edubeam/fem';
 import { computed } from 'vue';
 import {
   DEFAULT_DIAGRAM_STYLE,

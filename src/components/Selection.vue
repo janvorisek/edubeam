@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { useProjectStore } from '../store/project';
 import { useAppStore } from '@/store/app';
+import { toFixedDisplay } from '@/utils/numberDisplay';
 import SectionThumbnail from './SectionThumbnail.vue';
 import '@/types/crossSection';
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
 
-// ts-fem nodes are 3D; the 2D model lives in the x-z plane
+// Solver nodes are 3D; the 2D model lives in the x-z plane
 const coord = (label: string, index: 0 | 2) => projectStore.solver.domain.nodes.get(label).coords[index];
 </script>
 
@@ -25,8 +26,8 @@ const coord = (label: string, index: 0 | 2) => projectStore.solver.domain.nodes.
         <tbody>
           <tr v-for="label in projectStore.selection2.nodes" :key="label">
             <td>{{ label }}</td>
-            <td>{{ appStore.convertLength(coord(label, 0)).toFixed(2) }}</td>
-            <td>{{ appStore.vertical(appStore.convertLength(coord(label, 2))).toFixed(2) }}</td>
+            <td>{{ toFixedDisplay(appStore.convertLength(coord(label, 0)), 2) }}</td>
+            <td>{{ toFixedDisplay(appStore.vertical(appStore.convertLength(coord(label, 2))), 2) }}</td>
           </tr>
         </tbody>
       </v-table>

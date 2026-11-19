@@ -1,6 +1,6 @@
 // Utilities
 import { defineStore } from 'pinia';
-import { LinearStaticSolver, Beam2D } from 'ts-fem';
+import { LinearStaticSolver, Beam2D } from '@edubeam/fem';
 import { ref, computed, reactive } from 'vue';
 import { max, min } from 'mathjs';
 import {

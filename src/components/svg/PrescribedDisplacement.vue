@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { vertical } from '@/utils/axisConvention';
-import { formatScientificNumber } from '@/utils/formatScientificNumber';
+import { formatDisplacementLabel } from '@/utils/numberDisplay';
 import { inPlaneValues } from '@/utils/dofValues';
 import { actingInGlobalAxes } from '@/utils/nodalLcs';
 import { PrescribedDisplacement } from '@edubeam/fem';
@@ -107,10 +107,10 @@ const rotationHandleRadius = computed(() => (20 * (50 / 60)) / props.scale);
       :transform="`translate(${translationTip.x + (drawn.x > 0 ? 10 / scale : -10 / scale)}
               ${translationTip.z})`"
     >
-      {{ formatScientificNumber(convertDisplacement(translationMagnitude), 2) }}
+      {{ formatDisplacementLabel(convertDisplacement(translationMagnitude), numberFormat) }}
       <template v-if="hasBothTranslationComponents">
-        ({{ formatScientificNumber(convertDisplacement(values[0]), 2) }};
-        {{ formatScientificNumber(vertical(convertDisplacement(values[2])), 2) }})
+        ({{ formatDisplacementLabel(convertDisplacement(values[0]), numberFormat) }};
+        {{ formatDisplacementLabel(vertical(convertDisplacement(values[2])), numberFormat) }})
       </template>
     </text>
 
@@ -123,7 +123,7 @@ const rotationHandleRadius = computed(() => (20 * (50 / 60)) / props.scale);
       :transform="`translate(${target.coords[0] + (fontSize + 8) / scale}
               ${target.coords[2] - (fontSize / 2 + 2) / scale})`"
     >
-      {{ formatScientificNumber(rotation, 2) }}
+      {{ formatDisplacementLabel(rotation, numberFormat) }}
     </text>
   </g>
 </template>

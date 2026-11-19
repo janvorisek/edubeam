@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useAppStore } from '../store/app';
 import { computed, useId } from 'vue';
-import { formatScientificNumber } from '../utils';
+import { formatDisplacementLabel } from '@/utils/numberDisplay';
 
 const props = withDefaults(
   defineProps<{
@@ -55,7 +55,11 @@ const convertMain = (value: number) =>
 /** A prescribed rotation is stored and shown in radians, a moment in the selected moment unit. */
 const convertRotational = (value: number) => (isDisplacement.value ? value : appStore.convertMoment(value));
 
-const formatValue = (value: number) => (isDisplacement.value ? formatScientificNumber(value, 2) : value.toFixed(2));
+// As the drawing labels them, with the language's decimal separator.
+const formatValue = (value: number) =>
+  isDisplacement.value
+    ? formatDisplacementLabel(value, appStore.numberFormatter)
+    : appStore.numberFormatter.format(value);
 
 const loadNodeValueFxInUnits = computed(() => convertMain(props.fx));
 

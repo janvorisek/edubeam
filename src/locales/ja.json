@@ -514,8 +514,8 @@
     "positiveNumber": "0 より大きい数値を入力してください",
     "between": "{min} から {max} までの値を入力してください",
     "sameNodes": "要素は異なる 2 つの節点を結ぶ必要があります",
-    "materialInUse": "この材料は要素 {elements} で使われています。削除する前に、これらの要素に別の材料を割り当ててください。",
-    "crossSectionInUse": "この断面は要素 {elements} で使われています。削除する前に、これらの要素に別の断面を割り当ててください。"
+    "materialInUse": "この材料は要素 {elements} で使われています。削除する前に、この要素に別の材料を割り当ててください。 | この材料は要素 {elements} で使われています。削除する前に、これらの要素に別の材料を割り当ててください。",
+    "crossSectionInUse": "この断面は要素 {elements} で使われています。削除する前に、この要素に別の断面を割り当ててください。 | この断面は要素 {elements} で使われています。削除する前に、これらの要素に別の断面を割り当ててください。"
   },
   "solveDiagnostics": {
     "summaryErrors": "モデルのエラー：{errors}",
@@ -635,7 +635,7 @@
     },
     "materials": {
       "title": "材料",
-      "body": "材料はヤング係数、せん断弾性係数、密度、線膨張係数を持ちます。通常の静的解析で影響するのは E と断面だけです。"
+      "body": "材料はヤング係数、せん断弾性係数、密度、線膨張係数を持ちます。静的解析では E、せん断変形に G、温度荷重に α を使います。密度は使いません。"
     },
     "crossSections": {
       "title": "断面",
@@ -714,8 +714,8 @@
         "blurb": "先端に 18 kN の下向き節点荷重を受ける長さ 4 m の片持ち梁。曲率と先端のたわみがよくわかります。"
       },
       "pratt": {
-        "title": "プラットトラス",
-        "blurb": "8 kN の節点荷重を受けるシンプルなプラットトラス。軸力の分布と変位を示します。"
+        "title": "ワーレントラス",
+        "blurb": "8 kN の節点荷重を受けるシンプルなワーレントラス。軸力の分布と変位を示します。"
       },
       "continuous": {
         "title": "3 径間連続梁",
@@ -747,6 +747,35 @@
       "example": "例題で置き換え",
       "firstBeam": "「はじめての梁」タスクで置き換え",
       "restore": "復元したモデルで置き換え"
+    }
+  },
+  "library": {
+    "name": {
+      "steel": "鋼材",
+      "steelHss": "鋼材 HSS",
+      "stainlessSteel": "ステンレス鋼",
+      "aluminum": "アルミニウム",
+      "concrete": "コンクリート",
+      "timber": "木材",
+      "castIron": "鋳鉄",
+      "copper": "銅",
+      "brass": "黄銅",
+      "bronze": "青銅",
+      "titanium": "チタン",
+      "glass": "ガラス",
+      "polycarbonate": "ポリカーボネート",
+      "rect": "矩形",
+      "square": "正方形",
+      "circular": "円形"
+    },
+    "qualifier": {
+      "gray": "ねずみ",
+      "lightweight": "軽量",
+      "sodaLime": "ソーダ石灰",
+      "quasiIsotropic": "疑似等方",
+      "rigid": "硬質",
+      "acrylic": "アクリル",
+      "approx": "概略"
     }
   }
 }

@@ -71,6 +71,7 @@ import { formatMeasureAsHTML } from '@/SVGUtils';
 import { useI18n } from 'vue-i18n';
 import { materialPresets as allMaterialPresets, type MaterialPreset } from '@/utils/materialPresets';
 import { familyFirst, presetFamily } from '@/utils/presetFamily';
+import { presetDisplayName } from '@/utils/presetNames';
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
@@ -79,10 +80,15 @@ const { t } = useI18n();
 const open = ref(true);
 
 // ASTM grades on top for someone working in feet, the EN ones otherwise
-const materialPresets = computed(() => familyFirst(allMaterialPresets, presetFamily(appStore.units.Length)));
+const materialPresets = computed(() =>
+  familyFirst(allMaterialPresets, presetFamily(appStore.units.Length)).map((preset) => ({
+    ...preset,
+    shownName: presetDisplayName(preset.name, t),
+  }))
+);
 
 const headers = computed(() => [
-  { title: t('common.material'), key: 'name', width: 200 },
+  { title: t('common.material'), key: 'shownName', width: 200 },
   { title: t('material.e'), key: 'e', width: 140, units: appStore.units.Pressure },
   { title: t('material.g'), key: 'g', width: 140, units: appStore.units.Pressure },
   { title: t('material.alphaT'), key: 'alpha', width: 120, units: appStore.units.ThermalExpansion },
@@ -90,13 +96,14 @@ const headers = computed(() => [
   { title: t('common.actions'), key: 'actions', sortable: false },
 ]);
 
-const addPreset = (preset: MaterialPreset) => {
+/** Labelled with the name as shown, in the app language; see presetDisplayName. */
+const addPreset = (preset: MaterialPreset & { shownName: string }) => {
   const domain = projectStore.solver.domain;
-  let label = preset.name;
+  let label = preset.shownName;
   let suffix = 2;
 
   while (domain.materials.has(label)) {
-    label = `${preset.name} (${suffix})`;
+    label = `${preset.shownName} (${suffix})`;
     suffix++;
   }
 

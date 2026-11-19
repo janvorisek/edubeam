@@ -514,8 +514,8 @@
     "positiveNumber": "Sıfırdan büyük bir sayı girin",
     "between": "{min} ile {max} arasında bir değer girin",
     "sameNodes": "Bir eleman iki farklı düğümü birbirine bağlamalıdır",
-    "materialInUse": "Bu malzeme şu elemanlarda kullanılıyor: {elements}. Silmeden önce bu elemanlara başka bir malzeme atayın.",
-    "crossSectionInUse": "Bu kesit şu elemanlarda kullanılıyor: {elements}. Silmeden önce bu elemanlara başka bir kesit atayın."
+    "materialInUse": "Bu malzeme şu elemanda kullanılıyor: {elements}. Silmeden önce bu elemana başka bir malzeme atayın. | Bu malzeme şu elemanlarda kullanılıyor: {elements}. Silmeden önce bu elemanlara başka bir malzeme atayın.",
+    "crossSectionInUse": "Bu kesit şu elemanda kullanılıyor: {elements}. Silmeden önce bu elemana başka bir kesit atayın. | Bu kesit şu elemanlarda kullanılıyor: {elements}. Silmeden önce bu elemanlara başka bir kesit atayın."
   },
   "solveDiagnostics": {
     "summaryErrors": "Modelde {errors} hata var.",
@@ -558,8 +558,8 @@
       "mechanismShort": "Mesnetler yapıyı tutmuyor: yapı hâlâ {motion}.",
       "partMechanism": "Yapının ayrık bir parçasında (düğüm: {nodes}) yeterli sayıda mesnet var, ancak bu mesnetler parçayı tutmuyor: parça hâlâ {motion}. Mesnetlerin tümü paralelse veya tesir çizgileri tek bir noktada kesişiyorsa yapı serbestçe hareket edebilir.",
       "partMechanismShort": "{nodes} düğümlü parça tutulmuyor: hâlâ {motion}.",
-      "hingeMechanism": "Mesnetler yapıyı tutuyor, ancak yapı yine de bir mekanizma: çubukları mafsallar etrafında dönebiliyor (düğüm: {nodes}). Bir mafsalı kaldırın ya da hareketi durduracak bir çubuk veya mesnet ekleyin.",
-      "hingeMechanismShort": "Mafsallar yapının hareket etmesine izin veriyor (düğüm: {nodes}).",
+      "hingeMechanism": "Mesnetler yapıyı tutuyor, ancak yapı yine de bir mekanizma: çubukları mafsallar etrafında dönebiliyor (düğüm: {nodes}). Bir mafsalı kaldırın ya da hareketi durduracak bir çubuk veya mesnet ekleyin. | Mesnetler yapıyı tutuyor, ancak yapı yine de bir mekanizma: çubukları mafsallar etrafında dönebiliyor (düğümler: {nodes}). Bir mafsalı kaldırın ya da hareketi durduracak bir çubuk veya mesnet ekleyin.",
+      "hingeMechanismShort": "Mafsallar yapının hareket etmesine izin veriyor (düğüm: {nodes}). | Mafsallar yapının hareket etmesine izin veriyor (düğümler: {nodes}).",
       "motion": {
         "horizontal": "yatay doğrultuda kayabiliyor",
         "vertical": "düşey doğrultuda hareket edebiliyor",
@@ -635,7 +635,7 @@
     },
     "materials": {
       "title": "Malzemeler",
-      "body": "Malzeme; elastisite modülü, kayma modülü, yoğunluk ve ısıl genleşme katsayısıyla tanımlanır. Basit bir statik analizde yalnızca E ve kesit özellikleri etkilidir."
+      "body": "Malzeme; elastisite modülü, kayma modülü, yoğunluk ve ısıl genleşme katsayısıyla tanımlanır. Statik analizde E, kayma şekil değiştirmesi için G ve sıcaklık yüklemeleri için α kullanılır; yoğunluk kullanılmaz."
     },
     "crossSections": {
       "title": "Kesitler",
@@ -714,8 +714,8 @@
         "blurb": "Aşağı yönlü 18 kN'lik tekil düğüm yükü taşıyan 4 m'lik konsol; eğrilik ve uç sehimi öne çıkıyor."
       },
       "pratt": {
-        "title": "Pratt kafes kirişi",
-        "blurb": "Düğümlerine 8 kN yük etkiyen basit Pratt kafes kirişi; çubuk kuvvetlerinin dağılımını ve yer değiştirmeleri gösterir."
+        "title": "Warren kafes kirişi",
+        "blurb": "Düğümlerine 8 kN yük etkiyen basit Warren kafes kirişi; çubuk kuvvetlerinin dağılımını ve yer değiştirmeleri gösterir."
       },
       "continuous": {
         "title": "Üç açıklıklı sürekli kiriş",
@@ -747,6 +747,35 @@
       "example": "Bir örnekle değiştirildi",
       "firstBeam": "“İlk kiriş” göreviyle değiştirildi",
       "restore": "Geri yüklenen modelle değiştirildi"
+    }
+  },
+  "library": {
+    "name": {
+      "steel": "Çelik",
+      "steelHss": "Çelik HSS",
+      "stainlessSteel": "Paslanmaz çelik",
+      "aluminum": "Alüminyum",
+      "concrete": "Beton",
+      "timber": "Ahşap",
+      "castIron": "Dökme demir",
+      "copper": "Bakır",
+      "brass": "Pirinç",
+      "bronze": "Bronz",
+      "titanium": "Titanyum",
+      "glass": "Cam",
+      "polycarbonate": "Polikarbonat",
+      "rect": "Dikdörtgen",
+      "square": "Kare",
+      "circular": "Daire"
+    },
+    "qualifier": {
+      "gray": "gri",
+      "lightweight": "hafif",
+      "sodaLime": "soda-kireç",
+      "quasiIsotropic": "yarı izotropik",
+      "rigid": "sert",
+      "acrylic": "akrilik",
+      "approx": "yaklaşık"
     }
   }
 }

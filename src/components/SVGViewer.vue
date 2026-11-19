@@ -50,11 +50,14 @@ import {
   undoModelChange,
 } from '../utils';
 import { createDimensionId, ensureDimensionId } from '@/utils/id';
+import { formatDisplacementLabel } from '@/utils/numberDisplay';
+import { resultScales, withoutRoundOff } from '@/utils/exportResults';
 import { selectionSubtitle } from '@/utils/selectionDetails';
 import { boundsFromPoints } from '@/utils/fitBounds';
 import { placePopupNearAnchor, type AnchorRect } from '@/utils/popupPlacement';
 import { deviceCanTouch, deviceHasHover } from '@/utils/pointer';
-import { forKeyboard, hasShortcutModifier, isApplePlatform } from '@/utils/keyboard';
+import { forKeyboard, hasShortcutModifier, isApplePlatform, zoomShortcut } from '@/utils/keyboard';
+import { splitBeamAtNode } from '@/utils/splitBeam';
 import {
   Node,
   DofID,
@@ -287,15 +290,11 @@ const hideTooltip = (clearHoverState = true) => {
 };
 
 const zoom = (e: KeyboardEvent) => {
-  if (hasShortcutModifier(e) && e.code === 'Equal') {
-    panZoom.value?.zoom(svg.value.clientWidth / 2, svg.value.clientHeight / 2, -0.1);
-    e.preventDefault();
-  }
+  const direction = zoomShortcut(e);
+  if (direction === null) return;
 
-  if (hasShortcutModifier(e) && e.code === 'Minus') {
-    panZoom.value?.zoom(svg.value.clientWidth / 2, svg.value.clientHeight / 2, 0.1);
-    e.preventDefault();
-  }
+  panZoom.value?.zoom(svg.value.clientWidth / 2, svg.value.clientHeight / 2, direction === 'in' ? -0.1 : 0.1);
+  e.preventDefault();
 };
 
 const resetAndFit = () => {
@@ -757,6 +756,12 @@ const showEntityTooltip = (e: MouseEvent, details: EntityDetails) => {
   document.body.style.cursor = 'pointer';
 };
 
+/** A load value as the drawing labels it, so a tooltip does not show round-off the label hides. */
+const shownValue = (value: number) => appStore.numberFormatter.format(value);
+
+/** A prescribed displacement or rotation, as its label on the drawing writes it. */
+const shownDisplacement = (value: number) => formatDisplacementLabel(value, appStore.numberFormatter);
+
 const buildElementDetails = (el: Beam2D): EntityDetails => ({
   title: `${t('common.element')} ${escapeHtml(el.label)}`,
   body: `CS=${escapeHtml(el.cs)}, Mat=${escapeHtml(el.mat)}`,
@@ -778,30 +783,36 @@ const buildElementLoadDetails = (el: BeamElementLoad): EntityDetails => {
 
   if (el instanceof BeamTemperatureLoad) {
     if (Math.abs(el.values[0]) > 1e-32) {
-      rows.push(`${t('loads.temperatureDeltaTs')} = ${appStore.convertTemperature(el.values[0])} ${uu}`);
+      rows.push(`${t('loads.temperatureDeltaTs')} = ${shownValue(appStore.convertTemperature(el.values[0]))} ${uu}`);
     }
 
     if (Math.abs(el.values[1]) > 1e-32) {
-      rows.push(`${t('loads.temperatureDeltaTbt')} = ${appStore.convertTemperature(el.values[1])} ${uu}`);
+      rows.push(`${t('loads.temperatureDeltaTbt')} = ${shownValue(appStore.convertTemperature(el.values[1]))} ${uu}`);
     }
   } else if (el instanceof BeamElementTrapezoidalEdgeLoad) {
     if (Math.abs(el.startValues[0]) > 1e-32 || Math.abs(el.endValues[0]) > 1e-32) {
       rows.push(
-        `${ff}<sub>x</sub> = ${convertIntensity(el.startValues[0])} → ${convertIntensity(el.endValues[0])} ${uu}`
+        `${ff}<sub>x</sub> = ${shownValue(convertIntensity(el.startValues[0]))} → ` +
+          `${shownValue(convertIntensity(el.endValues[0]))} ${uu}`
       );
     }
 
     if (Math.abs(el.startValues[1]) > 1e-32 || Math.abs(el.endValues[1]) > 1e-32) {
       rows.push(
-        `${ff}<sub>${appStore.axes.v}</sub> = ${appStore.vertical(convertIntensity(el.startValues[1]))} → ` +
-          `${appStore.vertical(convertIntensity(el.endValues[1]))} ${uu}`
+        `${ff}<sub>${appStore.axes.v}</sub> = ${shownValue(appStore.vertical(convertIntensity(el.startValues[1])))} → ` +
+          `${shownValue(appStore.vertical(convertIntensity(el.endValues[1])))} ${uu}`
       );
     }
   } else if (el instanceof BeamElementUniformEdgeLoad || el instanceof BeamConcentratedLoad) {
-    if (Math.abs(el.values[0]) > 1e-32) rows.push(`${ff}<sub>x</sub> = ${convertIntensity(el.values[0])} ${uu}`);
+    if (Math.abs(el.values[0]) > 1e-32) {
+      rows.push(`${ff}<sub>x</sub> = ${shownValue(convertIntensity(el.values[0]))} ${uu}`);
+    }
 
-    if (Math.abs(el.values[1]) > 1e-32)
-      rows.push(`${ff}<sub>${appStore.axes.v}</sub> = ${appStore.vertical(convertIntensity(el.values[1]))} ${uu}`);
+    if (Math.abs(el.values[1]) > 1e-32) {
+      rows.push(
+        `${ff}<sub>${appStore.axes.v}</sub> = ${shownValue(appStore.vertical(convertIntensity(el.values[1])))} ${uu}`
+      );
+    }
   }
 
   return { title: t(lt), body: rows.join('<br>') };
@@ -812,17 +823,20 @@ const buildNodalLoadDetails = (el: NodalLoad): EntityDetails => {
   const mark = axisMark(projectStore.solver.domain.nodes.get(el.target), el.lcs);
 
   if (Math.abs(el.values[0]) > 1e-32) {
-    rows.push(`F<sub>x${mark}</sub> = ${appStore.convertForce(el.values[0])} ${appStore.units.Force}`);
+    rows.push(`F<sub>x${mark}</sub> = ${shownValue(appStore.convertForce(el.values[0]))} ${appStore.units.Force}`);
   }
 
   if (Math.abs(el.values[2]) > 1e-32) {
     rows.push(
-      `F<sub>${appStore.axes.v}${mark}</sub> = ${appStore.vertical(appStore.convertForce(el.values[2]))} ${appStore.units.Force}`
+      `F<sub>${appStore.axes.v}${mark}</sub> = ${shownValue(appStore.vertical(appStore.convertForce(el.values[2])))} ` +
+        appStore.units.Force
     );
   }
 
   if (Math.abs(el.values[4]) > 1e-32) {
-    rows.push(`M<sub>${appStore.axes.r}</sub> = ${appStore.convertMoment(el.values[4])} ${appStore.units.Moment}`);
+    rows.push(
+      `M<sub>${appStore.axes.r}</sub> = ${shownValue(appStore.convertMoment(el.values[4]))} ${appStore.units.Moment}`
+    );
   }
 
   return { title: t('loads.nodalLoad'), body: rows.join('<br>') };
@@ -835,52 +849,55 @@ const buildPrescribedBCDetails = (el: PrescribedDisplacement): EntityDetails => 
 
   if (Math.abs(el.prescribedValues[0]) > 1e-32) {
     rows.push(
-      `D<sub>x${mark}</sub> = ${appStore.convertDisplacement(el.prescribedValues[0])} ${appStore.units.Displacement}`
+      `D<sub>x${mark}</sub> = ${shownDisplacement(appStore.convertDisplacement(el.prescribedValues[0]))} ` +
+        appStore.units.Displacement
     );
   }
 
   if (Math.abs(el.prescribedValues[2]) > 1e-32) {
     rows.push(
-      `D<sub>${appStore.axes.v}${mark}</sub> = ${appStore.vertical(appStore.convertDisplacement(el.prescribedValues[2]))} ` +
+      `D<sub>${appStore.axes.v}${mark}</sub> = ` +
+        `${shownDisplacement(appStore.vertical(appStore.convertDisplacement(el.prescribedValues[2])))} ` +
         appStore.units.Displacement
     );
   }
 
   if (Math.abs(el.prescribedValues[4]) > 1e-32) {
-    rows.push(`R<sub>${appStore.axes.r}</sub> = ${el.prescribedValues[4]} ${appStore.units.Angle}`);
+    rows.push(`R<sub>${appStore.axes.r}</sub> = ${shownDisplacement(el.prescribedValues[4])} ${appStore.units.Angle}`);
   }
 
   return { title: t('loads.prescribedDisplacement'), body: rows.join('<br>') };
 };
 
+/** Round-off against the largest result of its kind reads as 0, as in the results table. Once per solve. */
+const roundOffScales = computed(() => resultScales(projectStore.solver));
+
 const buildNodeDetails = (node: Node): EntityDetails => {
   const rows: string[] = [];
+  const loadCase = projectStore.solver.loadCases[0];
 
-  if (
-    projectStore.solver.loadCases[0].solved &&
-    projectStore.beams.some((element) => element.nodes.includes(node.label))
-  ) {
+  if (loadCase.solved && projectStore.beams.some((element) => element.nodes.includes(node.label))) {
+    const scales = roundOffScales.value;
+    // Typed as a matrix, but a single DOF comes back as a plain number (see readUnknown).
+    const unknown = (dof: DofID) =>
+      withoutRoundOff(
+        node.getUnknowns(loadCase, [dof]) as unknown as number,
+        dof === DofID.Ry ? scales.rotation : scales.displacement
+      );
+
     rows.push(
-      `u<sub>x</sub> = ${appStore.formatResultHTML(
-        // @ts-expect-error It return value for single Dof
-        appStore.convertDisplacement(node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dx]))
-      )} ${appStore.units.Displacement}`
+      `u<sub>x</sub> = ${appStore.formatResultHTML(appStore.convertDisplacement(unknown(DofID.Dx)))} ` +
+        appStore.units.Displacement
     );
 
     rows.push(
-      `u<sub>${appStore.axes.v}</sub> = ${appStore.formatResultHTML(
-        appStore.vertical(
-          // @ts-expect-error It return value for single Dof
-          appStore.convertDisplacement(node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Dz]))
-        )
-      )} ${appStore.units.Displacement}`
+      `u<sub>${appStore.axes.v}</sub> = ` +
+        `${appStore.formatResultHTML(appStore.vertical(appStore.convertDisplacement(unknown(DofID.Dz))))} ` +
+        appStore.units.Displacement
     );
 
     rows.push(
-      `φ<sub>${appStore.axes.r}</sub> = ${appStore.formatResultHTML(
-        // @ts-expect-error It return value for single Dof
-        node.getUnknowns(projectStore.solver.loadCases[0], [DofID.Ry])
-      )} ${appStore.units.Angle}`
+      `φ<sub>${appStore.axes.r}</sub> = ${appStore.formatResultHTML(unknown(DofID.Ry))} ${appStore.units.Angle}`
     );
   }
 
@@ -1617,62 +1634,7 @@ const placeAtPointer = (e: PointerEvent) => {
                   projectStore.solver.loadCases[0].solved = false;
                   placeNode(newNodeId);
 
-                  const prevHinges = beam.hinges;
-
-                  const startNode = projectStore.solver.domain.nodes.get(beam.nodes[0])!;
-                  const endNode = projectStore.solver.domain.nodes.get(beam.nodes[1])!;
-                  const newNode = projectStore.solver.domain.nodes.get(String(newNodeId))!;
-                  const totalLength = Math.hypot(
-                    endNode.coords[0] - startNode.coords[0],
-                    endNode.coords[2] - startNode.coords[2]
-                  );
-                  const partialLength = Math.hypot(
-                    newNode.coords[0] - startNode.coords[0],
-                    newNode.coords[2] - startNode.coords[2]
-                  );
-                  const splitRatio = totalLength > 0 ? Math.min(Math.max(partialLength / totalLength, 0), 1) : 0.5;
-
-                  projectStore.solver.domain.createBeam2D(
-                    beam.label + 'a',
-                    [beam.nodes[0], newNodeId],
-                    beam.mat,
-                    beam.cs,
-                    [prevHinges[0], false]
-                  );
-
-                  projectStore.solver.domain.createBeam2D(
-                    beam.label + 'b',
-                    [newNodeId, beam.nodes[1]],
-                    beam.mat,
-                    beam.cs,
-                    [false, prevHinges[1]]
-                  );
-
-                  for (const loadCase of projectStore.solver.loadCases) {
-                    loadCase.solved = false;
-                    for (let i = loadCase.elementLoadList.length - 1; i >= 0; i--) {
-                      const load = loadCase.elementLoadList[i];
-                      if (load.target !== beam.label) continue;
-
-                      if (load instanceof BeamElementUniformEdgeLoad) {
-                        load.target = beam.label + 'a';
-                        loadCase.createBeamElementUniformEdgeLoad(beam.label + 'b', [...load.values], load.lcs);
-                      } else if (load instanceof BeamElementTrapezoidalEdgeLoad) {
-                        const midValues: [number, number] = [
-                          load.startValues[0] + (load.endValues[0] - load.startValues[0]) * splitRatio,
-                          load.startValues[1] + (load.endValues[1] - load.startValues[1]) * splitRatio,
-                        ];
-                        const startValues: [number, number] = [...load.startValues] as [number, number];
-                        const endValues: [number, number] = [...load.endValues] as [number, number];
-                        load.change(beam.label + 'a', startValues, midValues, load.lcs);
-                        loadCase.createBeamElementTrapezoidalEdgeLoad(beam.label + 'b', midValues, endValues, load.lcs);
-                      } else {
-                        load.target = beam.label + 'a';
-                      }
-                    }
-                  }
-
-                  projectStore.solver.domain.elements.delete(beam.label);
+                  splitBeamAtNode(projectStore.solver, beam, String(newNodeId));
                 });
 
                 appStore.mouseMode = MouseMode.NONE;

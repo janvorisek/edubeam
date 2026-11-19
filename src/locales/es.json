@@ -514,8 +514,8 @@
     "positiveNumber": "Introduzca un número mayor que cero",
     "between": "Introduzca un valor entre {min} y {max}",
     "sameNodes": "Un elemento debe unir dos nodos distintos",
-    "materialInUse": "El material lo usan los elementos {elements}. Reasígnelos antes de eliminarlo.",
-    "crossSectionInUse": "La sección transversal la usan los elementos {elements}. Reasígnelos antes de eliminarla."
+    "materialInUse": "El material lo usa el elemento {elements}. Reasígnelo antes de eliminar el material. | El material lo usan los elementos {elements}. Reasígnelos antes de eliminarlo.",
+    "crossSectionInUse": "La sección transversal la usa el elemento {elements}. Reasígnelo antes de eliminar la sección. | La sección transversal la usan los elementos {elements}. Reasígnelos antes de eliminarla."
   },
   "solveDiagnostics": {
     "summaryErrors": "Errores en el modelo: {errors}",
@@ -558,8 +558,8 @@
       "mechanismShort": "Los apoyos no sujetan la estructura: todavía puede {motion}.",
       "partMechanism": "Una parte independiente de la estructura (nodos {nodes}) tiene suficientes apoyos, pero no la sujetan: todavía puede {motion}. Si todos los apoyos son paralelos o sus líneas de acción se cortan en un punto, la estructura queda libre para moverse.",
       "partMechanismShort": "La parte con los nudos {nodes} no está sujeta: todavía puede {motion}.",
-      "hingeMechanism": "Los apoyos sujetan la estructura, pero sigue siendo un mecanismo: sus barras pueden girar alrededor de las articulaciones del nudo {nodes}. Quita una articulación o añade una barra o un apoyo que impida el movimiento.",
-      "hingeMechanismShort": "Las articulaciones del nudo {nodes} permiten que la estructura se mueva.",
+      "hingeMechanism": "Los apoyos sujetan la estructura, pero sigue siendo un mecanismo: sus barras pueden girar alrededor de las articulaciones del nudo {nodes}. Quita una articulación o añade una barra o un apoyo que impida el movimiento. | Los apoyos sujetan la estructura, pero sigue siendo un mecanismo: sus barras pueden girar alrededor de las articulaciones de los nudos {nodes}. Quita una articulación o añade una barra o un apoyo que impida el movimiento.",
+      "hingeMechanismShort": "Las articulaciones del nudo {nodes} permiten que la estructura se mueva. | Las articulaciones de los nudos {nodes} permiten que la estructura se mueva.",
       "motion": {
         "horizontal": "desplazarse horizontalmente",
         "vertical": "moverse verticalmente",
@@ -635,7 +635,7 @@
     },
     "materials": {
       "title": "Materiales",
-      "body": "Un material guarda el módulo de Young, el de cortante, la densidad y la dilatación térmica. En un análisis estático solo importan E y la sección."
+      "body": "Un material guarda el módulo de Young, el de cortante, la densidad y la dilatación térmica. Un análisis estático usa E, G para la deformación por cortante y α para las cargas térmicas; la densidad no interviene."
     },
     "crossSections": {
       "title": "Secciones",
@@ -714,8 +714,8 @@
         "blurb": "Voladizo de 4 m con una carga nodal de 18 kN hacia abajo, que muestra la curvatura y la flecha en el extremo."
       },
       "pratt": {
-        "title": "Celosía Pratt",
-        "blurb": "Celosía Pratt sencilla con cargas de 8 kN en los nudos que muestra la distribución de axiles y los desplazamientos."
+        "title": "Celosía Warren",
+        "blurb": "Celosía Warren sencilla con cargas de 8 kN en los nudos que muestra la distribución de axiles y los desplazamientos."
       },
       "continuous": {
         "title": "Viga continua de tres vanos",
@@ -747,6 +747,35 @@
       "example": "Reemplazada por un ejemplo",
       "firstBeam": "Reemplazada por la tarea «primera viga»",
       "restore": "Reemplazada por una estructura restaurada"
+    }
+  },
+  "library": {
+    "name": {
+      "steel": "Acero",
+      "steelHss": "Acero HSS",
+      "stainlessSteel": "Acero inoxidable",
+      "aluminum": "Aluminio",
+      "concrete": "Hormigón",
+      "timber": "Madera",
+      "castIron": "Fundición",
+      "copper": "Cobre",
+      "brass": "Latón",
+      "bronze": "Bronce",
+      "titanium": "Titanio",
+      "glass": "Vidrio",
+      "polycarbonate": "Policarbonato",
+      "rect": "Rectángulo",
+      "square": "Cuadrado",
+      "circular": "Circular"
+    },
+    "qualifier": {
+      "gray": "gris",
+      "lightweight": "ligero",
+      "sodaLime": "sodocálcico",
+      "quasiIsotropic": "cuasiisótropo",
+      "rigid": "rígido",
+      "acrylic": "acrílico",
+      "approx": "aprox."
     }
   }
 }

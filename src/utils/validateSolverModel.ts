@@ -46,6 +46,10 @@ const shownLabel = (label: string) => (label === '' ? '?' : label);
 const t = (key: string, params: Record<string, unknown> = {}) =>
   i18n.global.t(`solveDiagnostics.issues.${key}`, { ...axisLetters(), ...params });
 
+/** A message naming a list of nodes, worded for one node or for several ("node 2" / "nodes 2, 3"). */
+const tNodes = (key: string, nodes: readonly string[]) =>
+  i18n.global.t(`solveDiagnostics.issues.${key}`, { ...axisLetters(), nodes: formatNodeList(nodes) }, nodes.length);
+
 /**
  * Builds an issue whose message is translated when it is read, not when the model is solved,
  * so switching the language relabels the diagnostics already on screen.
@@ -218,7 +222,7 @@ const PLANAR_DOFS: DofID[] = [DofID.Dx, DofID.Dz, DofID.Ry];
 const RIGID_BODY_DOFS = 3;
 
 /** Renders a node list for a message, truncated so a large floating part stays readable. */
-const formatNodeList = (labels: string[], limit = 6) => {
+const formatNodeList = (labels: readonly string[], limit = 6) => {
   const sorted = [...labels].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
 
   return sorted.length > limit ? `${sorted.slice(0, limit).join(', ')}, …` : sorted.join(', ');
@@ -660,10 +664,10 @@ const appendKinematicIssues = (solver: LinearStaticSolver, part: string[], diagn
   const nodes = mechanism.hinges.length > 0 ? mechanism.hinges : supportedNodes(solver, part);
 
   diagnostics.errors.push(
-    solveIssue('error', 'HINGE_MECHANISM', () => t('hingeMechanism', { nodes: formatNodeList(nodes) }), {
+    solveIssue('error', 'HINGE_MECHANISM', () => tNodes('hingeMechanism', nodes), {
       nodes,
       motion: mechanism.motion,
-      summary: () => t('hingeMechanismShort', { nodes: formatNodeList(nodes) }),
+      summary: () => tNodes('hingeMechanismShort', nodes),
     })
   );
 };

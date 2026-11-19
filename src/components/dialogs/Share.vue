@@ -217,12 +217,18 @@ const shareViaSystem = async () => {
   /* The switch's thumb overhangs its track; this lines it up with the field above. */
   margin-inline-start: 6px;
 
+  /* Switch labels are kept on one line app-wide, and these hints ran past the dialog's edge in
+     longer languages and on a phone; they wrap instead. */
   .v-selection-control {
     align-items: flex-start;
+    min-width: 0;
   }
 
-  .v-label {
+  /* Important and more specific, to outweigh the app-wide nowrap on selection labels (main.scss). */
+  .v-selection-control .v-label {
     opacity: 1;
+    min-width: 0;
+    white-space: normal !important;
   }
 }
 

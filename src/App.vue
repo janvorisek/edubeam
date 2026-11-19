@@ -40,7 +40,8 @@ import Editor from '@/views/Editor.vue';
 import { useProjectStore } from './store/project';
 import { useAppStore } from './store/app';
 import { startFirstBeam } from './utils/startFirstBeam';
-import { fieldOwnsUndo, hasShortcutModifier } from './utils/keyboard';
+import { fieldOwnsUndo, hasShortcutModifier, zoomShortcut } from './utils/keyboard';
+import { isViewerModeParam } from './utils/urlParams';
 
 import { VOnboardingWrapper, VOnboardingStep, useVOnboarding } from 'v-onboarding';
 import 'v-onboarding/dist/style.css';
@@ -132,7 +133,8 @@ const fixTourStepPosition = () => {
 
 onMounted(() => {
   document.addEventListener('keydown', function (e) {
-    if (hasShortcutModifier(e) && (e.key === '+' || e.key === '=' || e.key === '-')) {
+    // The browser's own zoom would scale the whole interface; the drawing zooms itself (SVGViewer).
+    if (zoomShortcut(e) !== null) {
       e.preventDefault();
     }
 
@@ -218,7 +220,7 @@ onMounted(() => {
   const params = new URL(document.location as unknown as URL).searchParams;
   const name = params.get('model');
   const lang = params.get('lang');
-  const inViewerMode = params.get('viewer');
+  const inViewerMode = isViewerModeParam(params.get('viewer'));
   // Documented entry point: run.edubeam.app/?panel=examples opens the gallery straight away.
   const panel = params.get('panel');
   // The layers the link was shared with; without it, the viewer's own (see viewLayers).

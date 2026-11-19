@@ -80,6 +80,8 @@ export const examples: ExampleDefinition[] = [
     },
   },
   {
+    // A Warren truss (alternating diagonals, no verticals). The id is older than the title and
+    // keys its locale texts and the docs gallery, so it stays.
     id: 'pratt',
     // Axial force labels crowd the small preview cards, so the truss leads with its deflected shape.
     viewer: { ...DEFAULT_OVERLAYS, showMoments: false },

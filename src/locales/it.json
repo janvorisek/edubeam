@@ -514,8 +514,8 @@
     "positiveNumber": "Inserisci un numero maggiore di zero",
     "between": "Inserisci un valore tra {min} e {max}",
     "sameNodes": "Un elemento deve collegare due nodi diversi",
-    "materialInUse": "Il materiale è usato dagli elementi {elements}. Riassegnali prima di eliminarlo.",
-    "crossSectionInUse": "La sezione è usata dagli elementi {elements}. Riassegnali prima di eliminarla."
+    "materialInUse": "Il materiale è usato dall'elemento {elements}. Riassegnalo prima di eliminare il materiale. | Il materiale è usato dagli elementi {elements}. Riassegnali prima di eliminarlo.",
+    "crossSectionInUse": "La sezione è usata dall'elemento {elements}. Riassegnalo prima di eliminare la sezione. | La sezione è usata dagli elementi {elements}. Riassegnali prima di eliminarla."
   },
   "solveDiagnostics": {
     "summaryErrors": "Errori nel modello: {errors}",
@@ -635,7 +635,7 @@
     },
     "materials": {
       "title": "Materiali",
-      "body": "Un materiale ha modulo elastico, modulo di taglio, densità e coefficiente di dilatazione termica. Per una semplice analisi statica contano solo E e la sezione."
+      "body": "Un materiale ha modulo elastico, modulo di taglio, densità e coefficiente di dilatazione termica. L'analisi statica usa E, G per la deformazione a taglio e α per i carichi termici; la densità non interviene."
     },
     "crossSections": {
       "title": "Sezioni",
@@ -714,8 +714,8 @@
         "blurb": "Mensola di 4 m con un carico nodale di 18 kN verso il basso, per evidenziare curvatura e freccia all'estremità."
       },
       "pratt": {
-        "title": "Travatura Pratt",
-        "blurb": "Semplice travatura reticolare Pratt con carichi nodali di 8 kN: distribuzione degli sforzi normali e spostamenti."
+        "title": "Travatura Warren",
+        "blurb": "Semplice travatura reticolare Warren con carichi nodali di 8 kN: distribuzione degli sforzi normali e spostamenti."
       },
       "continuous": {
         "title": "Trave continua a tre campate",
@@ -747,6 +747,35 @@
       "example": "Sostituita da un esempio",
       "firstBeam": "Sostituita dall'esercizio della prima trave",
       "restore": "Sostituita da una struttura ripristinata"
+    }
+  },
+  "library": {
+    "name": {
+      "steel": "Acciaio",
+      "steelHss": "Acciaio HSS",
+      "stainlessSteel": "Acciaio inossidabile",
+      "aluminum": "Alluminio",
+      "concrete": "Calcestruzzo",
+      "timber": "Legno",
+      "castIron": "Ghisa",
+      "copper": "Rame",
+      "brass": "Ottone",
+      "bronze": "Bronzo",
+      "titanium": "Titanio",
+      "glass": "Vetro",
+      "polycarbonate": "Policarbonato",
+      "rect": "Rettangolo",
+      "square": "Quadrato",
+      "circular": "Circolare"
+    },
+    "qualifier": {
+      "gray": "grigia",
+      "lightweight": "leggero",
+      "sodaLime": "sodico-calcico",
+      "quasiIsotropic": "quasi-isotropo",
+      "rigid": "rigido",
+      "acrylic": "acrilico",
+      "approx": "appross."
     }
   }
 }

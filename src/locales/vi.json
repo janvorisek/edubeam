@@ -514,8 +514,8 @@
     "positiveNumber": "Nhập một số lớn hơn 0",
     "between": "Nhập giá trị từ {min} đến {max}",
     "sameNodes": "Phần tử phải nối hai nút khác nhau",
-    "materialInUse": "Vật liệu đang được dùng bởi phần tử {elements}. Hãy gán lại cho chúng trước khi xóa.",
-    "crossSectionInUse": "Tiết diện đang được dùng bởi phần tử {elements}. Hãy gán lại cho chúng trước khi xóa."
+    "materialInUse": "Vật liệu đang được dùng bởi phần tử {elements}. Hãy gán lại cho phần tử đó trước khi xóa. | Vật liệu đang được dùng bởi các phần tử {elements}. Hãy gán lại cho chúng trước khi xóa.",
+    "crossSectionInUse": "Tiết diện đang được dùng bởi phần tử {elements}. Hãy gán lại cho phần tử đó trước khi xóa. | Tiết diện đang được dùng bởi các phần tử {elements}. Hãy gán lại cho chúng trước khi xóa."
   },
   "solveDiagnostics": {
     "summaryErrors": "Lỗi trong mô hình: {errors}",
@@ -558,8 +558,8 @@
       "mechanismShort": "Các gối tựa không giữ được kết cấu: nó vẫn có thể {motion}.",
       "partMechanism": "Một phần riêng của kết cấu (nút {nodes}) có đủ gối tựa nhưng chúng không giữ được nó: phần đó vẫn có thể {motion}. Nếu các gối tựa đều song song với nhau, hoặc có đường tác dụng đồng quy tại một điểm, kết cấu vẫn chuyển động tự do được.",
       "partMechanismShort": "Phần có nút {nodes} không được giữ: nó vẫn có thể {motion}.",
-      "hingeMechanism": "Các gối tựa giữ được kết cấu, nhưng nó vẫn là hệ biến hình: các thanh có thể xoay quanh khớp tại nút {nodes}. Hãy bỏ một khớp, hoặc thêm một thanh hay một gối tựa để ngăn chuyển động.",
-      "hingeMechanismShort": "Khớp tại nút {nodes} cho phép kết cấu chuyển động.",
+      "hingeMechanism": "Các gối tựa giữ được kết cấu, nhưng nó vẫn là hệ biến hình: các thanh có thể xoay quanh khớp tại nút {nodes}. Hãy bỏ một khớp, hoặc thêm một thanh hay một gối tựa để ngăn chuyển động. | Các gối tựa giữ được kết cấu, nhưng nó vẫn là hệ biến hình: các thanh có thể xoay quanh khớp tại các nút {nodes}. Hãy bỏ một khớp, hoặc thêm một thanh hay một gối tựa để ngăn chuyển động.",
+      "hingeMechanismShort": "Khớp tại nút {nodes} cho phép kết cấu chuyển động. | Khớp tại các nút {nodes} cho phép kết cấu chuyển động.",
       "motion": {
         "horizontal": "trượt theo phương ngang",
         "vertical": "chuyển động theo phương đứng",
@@ -635,7 +635,7 @@
     },
     "materials": {
       "title": "Vật liệu",
-      "body": "Vật liệu gồm mô đun đàn hồi, mô đun trượt, khối lượng riêng và hệ số dãn dài do nhiệt. Với phân tích tĩnh thông thường, chỉ E và tiết diện là quan trọng."
+      "body": "Vật liệu gồm mô đun đàn hồi, mô đun trượt, khối lượng riêng và hệ số dãn dài do nhiệt. Phân tích tĩnh dùng E, G cho biến dạng trượt và α cho tải nhiệt độ; khối lượng riêng không được dùng."
     },
     "crossSections": {
       "title": "Tiết diện",
@@ -714,8 +714,8 @@
         "blurb": "Dầm công xôn 4 m chịu tải trọng nút 18 kN hướng xuống, làm rõ độ cong và độ võng đầu tự do."
       },
       "pratt": {
-        "title": "Dàn Pratt",
-        "blurb": "Dàn Pratt đơn giản chịu tải 8 kN tại các mắt dàn, cho thấy phân bố lực dọc và chuyển vị."
+        "title": "Dàn Warren",
+        "blurb": "Dàn Warren đơn giản chịu tải 8 kN tại các mắt dàn, cho thấy phân bố lực dọc và chuyển vị."
       },
       "continuous": {
         "title": "Dầm liên tục ba nhịp",
@@ -747,6 +747,35 @@
       "example": "Bị thay bởi một ví dụ",
       "firstBeam": "Bị thay bởi bài “Dầm đầu tiên”",
       "restore": "Bị thay bởi kết cấu được khôi phục"
+    }
+  },
+  "library": {
+    "name": {
+      "steel": "Thép",
+      "steelHss": "Thép HSS",
+      "stainlessSteel": "Thép không gỉ",
+      "aluminum": "Nhôm",
+      "concrete": "Bê tông",
+      "timber": "Gỗ",
+      "castIron": "Gang",
+      "copper": "Đồng",
+      "brass": "Đồng thau",
+      "bronze": "Đồng thiếc",
+      "titanium": "Titan",
+      "glass": "Kính",
+      "polycarbonate": "Polycarbonate",
+      "rect": "Chữ nhật",
+      "square": "Vuông",
+      "circular": "Tròn"
+    },
+    "qualifier": {
+      "gray": "xám",
+      "lightweight": "nhẹ",
+      "sodaLime": "soda-vôi",
+      "quasiIsotropic": "gần đẳng hướng",
+      "rigid": "cứng",
+      "acrylic": "acrylic",
+      "approx": "gần đúng"
     }
   }
 }

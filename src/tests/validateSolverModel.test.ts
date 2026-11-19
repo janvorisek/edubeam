@@ -260,8 +260,19 @@ describe('hinge mechanisms', () => {
     // Two independent motions - column 1 swinging on its roller, the rest swaying - and both
     // hinges take part, so both are pointed at.
     expect(issue?.nodes?.sort()).toEqual(['2', '3']);
-    expect(issue?.summary).toMatch(/^The hinges at node/);
+    // Several nodes are named in the plural
+    expect(issue?.summary).toBe('The hinges at nodes 2, 3 let the structure move.');
     expect(Math.max(...[...issue!.motion!.values()].map(([u, w]) => Math.hypot(u, w)))).toBeCloseTo(1);
+  });
+
+  it('names a single hinge node in the singular', () => {
+    // Pin and roller hold the frame, but the hinge at the top of the first column lets it fold.
+    const ls = buildHingedFrame({ '1': [DofID.Dx, DofID.Dz], '4': [DofID.Dz] }, { '1': [false, true] });
+    const issue = validateSolverModel(ls).errors.find((e) => e.code === 'HINGE_MECHANISM');
+
+    expect(issue?.nodes).toEqual(['2']);
+    expect(issue?.summary).toBe('The hinges at node 2 let the structure move.');
+    expect(issue?.message).toMatch(/turn about the hinges at node 2\./);
   });
 
   it('catches four pinned bars moving as a linkage', () => {

@@ -16,7 +16,11 @@ const flatten = (messages: Messages, prefix = ''): Record<string, string> =>
     return flat;
   }, {});
 
-const placeholders = (message: string) => [...message.matchAll(/\{(\w+)\}/g)].map((m) => m[1]).sort();
+// A plural message names its placeholders once per form, and a language without plurals has one form.
+const placeholders = (message: string) => [...new Set([...message.matchAll(/\{(\w+)\}/g)].map((m) => m[1]))].sort();
+
+/** The forms of a vue-i18n plural message, "one | many". */
+const pluralForms = (message: string) => message.split(/\s\|\s/);
 
 const en = flatten(read('en'));
 
@@ -30,6 +34,18 @@ describe.each(availableLocales.filter((l) => l.code !== 'en').map((l) => l.code)
 
   it('has no key English does not', () => {
     expect(Object.keys(messages).filter((key) => !(key in en))).toEqual([]);
+  });
+
+  /**
+   * vue-i18n reads two forms as one | many, but three as zero | one | many: a third form would turn
+   * "node 2" into the plural. Lists of labels need only one and many, in every language.
+   */
+  it('words a plural message in one form, or in two as English does', () => {
+    const wrong = Object.keys(messages).filter((key) => {
+      const forms = pluralForms(messages[key]).length;
+      return key in en && forms > 1 && forms !== pluralForms(en[key]).length;
+    });
+    expect(wrong).toEqual([]);
   });
 
   it('keeps the placeholders of the English text', () => {

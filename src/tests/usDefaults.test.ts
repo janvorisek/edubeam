@@ -70,8 +70,10 @@ describe('the US libraries', () => {
 describe('what new things start as in US units', () => {
   it('starts a material as A992', () => {
     expect(fromSI(newMaterialDefaults('us').e, unitSize.pressure('ksi'))).toBe(29000);
-    // and the metric one as it always was
-    expect(newMaterialDefaults('metric')).toEqual({ e: 210e9, g: 87.5e9, alpha: 12e-6, d: 1000 });
+    // and the metric one as it always was, but for G, which is steel's: E / 2(1 + 0.3) ≈ 81 000 MPa
+    expect(newMaterialDefaults('metric')).toEqual({ e: 210e9, g: 81e9, alpha: 12e-6, d: 1000 });
+    const { e, g } = newMaterialDefaults('metric');
+    expect(e / (2 * g) - 1).toBeCloseTo(0.3, 1);
   });
 
   it('draws a new section in whole and fractional inches', () => {

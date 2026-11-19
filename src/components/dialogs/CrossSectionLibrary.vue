@@ -68,6 +68,7 @@ import { formatMeasureAsHTML } from '@/SVGUtils';
 import { useI18n } from 'vue-i18n';
 import { crossSectionPresets as allCrossSectionPresets, type CrossSectionPreset } from '@/utils/crossSectionPresets';
 import { familyFirst, presetFamily } from '@/utils/presetFamily';
+import { presetDisplayName } from '@/utils/presetNames';
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
@@ -76,23 +77,29 @@ const { t } = useI18n();
 const open = ref(true);
 
 // AISC shapes on top for someone working in feet, the EN ones otherwise
-const crossSectionPresets = computed(() => familyFirst(allCrossSectionPresets, presetFamily(appStore.units.Length)));
+const crossSectionPresets = computed(() =>
+  familyFirst(allCrossSectionPresets, presetFamily(appStore.units.Length)).map((preset) => ({
+    ...preset,
+    shownName: presetDisplayName(preset.name, t),
+  }))
+);
 
 const headers = computed(() => [
-  { title: t('common.crossSection'), key: 'name', width: 220 },
+  { title: t('common.crossSection'), key: 'shownName', width: 220 },
   { title: t('crossSection.area'), key: 'a', width: 140, units: appStore.units.Area },
   { title: t('crossSection.iy'), key: 'iy', width: 140, units: appStore.units.AreaM2 },
   { title: t('crossSection.k'), key: 'k', width: 120 },
   { title: t('common.actions'), key: 'actions', sortable: false },
 ]);
 
-const addPreset = (preset: CrossSectionPreset) => {
+/** Labelled with the name as shown, in the app language; see presetDisplayName. */
+const addPreset = (preset: CrossSectionPreset & { shownName: string }) => {
   const domain = projectStore.solver.domain;
-  let label = preset.name;
+  let label = preset.shownName;
   let suffix = 2;
 
   while (domain.crossSections.has(label)) {
-    label = `${preset.name} (${suffix})`;
+    label = `${preset.shownName} (${suffix})`;
     suffix++;
   }
 

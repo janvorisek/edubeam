@@ -1,4 +1,4 @@
-import { Beam2D, type Domain, type Node } from 'ts-fem';
+import { Beam2D, type Domain, type Node } from '@edubeam/fem';
 
 /**
  * Shorter than this (in metres) a beam is taken to have no length. Nodes typed at the same

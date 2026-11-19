@@ -1,4 +1,4 @@
-import type { Node } from 'ts-fem';
+import type { Node } from '@edubeam/fem';
 
 /** Below this, an angle is indistinguishable from an unrotated support. */
 const NEGLIGIBLE_RADIANS = 1e-8;

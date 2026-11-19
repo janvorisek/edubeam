@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { mount } from '@vue/test-utils';
 import { h, nextTick, provide, ref } from 'vue';
-import { DofID } from 'ts-fem';
+import { DofID } from '@edubeam/fem';
 import HoveredElement from '@/components/HoveredElement.vue';
 import { intersectedKey, type Intersected } from '@/types/hover';
 import { useProjectStore } from '@/store/project';

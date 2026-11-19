@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { defineComponent, h } from 'vue';
 import { mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
-import { LinearStaticSolver, DofID } from 'ts-fem';
+import { LinearStaticSolver, DofID } from '@edubeam/fem';
 import { i18n } from '@/plugins/i18n';
 import { useProjectStore } from '@/store/project';
 import ContextMenuNode from '@/components/ContextMenuNode.vue';

@@ -111,7 +111,7 @@
 import { submitsForm } from '@/utils/keyboard';
 import { onMounted, ref, computed, watch } from 'vue';
 import { useProjectStore } from '../../store/project';
-import { DofID } from 'ts-fem';
+import { DofID } from '@edubeam/fem';
 import { closeModal } from 'jenesius-vue-modal';
 import { useAppStore } from '@/store/app';
 import { checkNumber, parseFloat2 } from '@/utils';

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { LinearStaticSolver, DofID } from 'ts-fem';
+import { LinearStaticSolver, DofID } from '@edubeam/fem';
 import { MouseMode } from '@/mouse';
 import { clearForFirstBeam, currentFirstBeamStep, firstBeamState, type FirstBeamStepId } from '@/utils/firstBeam';
 import { validateSolverModel } from '@/utils/validateSolverModel';

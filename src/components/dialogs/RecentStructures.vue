@@ -84,7 +84,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { closeModal } from 'jenesius-vue-modal';
-import { LinearStaticSolver } from 'ts-fem';
+import { LinearStaticSolver } from '@edubeam/fem';
 import SVGElementViewer from '../SVGElementViewer.vue';
 import { deserializeModel, parseSerializedModel, replaceModel, resetModel } from '@/utils';
 import { useProjectStore } from '@/store/project';

@@ -1,4 +1,4 @@
-import type { Node } from 'ts-fem';
+import type { Node } from '@edubeam/fem';
 
 export type DimensionPoint = {
   x: number;

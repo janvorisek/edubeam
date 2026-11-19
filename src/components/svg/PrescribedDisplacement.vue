@@ -3,7 +3,7 @@ import { vertical } from '@/utils/axisConvention';
 import { formatScientificNumber } from '@/utils/formatScientificNumber';
 import { inPlaneValues } from '@/utils/dofValues';
 import { actingInGlobalAxes } from '@/utils/nodalLcs';
-import { PrescribedDisplacement } from 'ts-fem';
+import { PrescribedDisplacement } from '@edubeam/fem';
 import { computed } from 'vue';
 
 const props = withDefaults(

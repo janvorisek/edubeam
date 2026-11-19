@@ -3,7 +3,7 @@ import { createPinia, setActivePinia } from 'pinia';
 import { mount, type VueWrapper } from '@vue/test-utils';
 import { createVuetify } from 'vuetify';
 import { nextTick } from 'vue';
-import { DofID } from 'ts-fem';
+import { DofID } from '@edubeam/fem';
 import { i18n } from '@/plugins/i18n';
 import SVGViewer from '@/components/SVGViewer.vue';
 import { useProjectStore } from '@/store/project';

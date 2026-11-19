@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { LinearStaticSolver, DofID } from 'ts-fem';
+import { LinearStaticSolver, DofID } from '@edubeam/fem';
 import { ref, onMounted, reactive, nextTick, computed } from 'vue';
 import SVGElementViewer from '../../src/components/SVGElementViewer.vue';
 import { VTweakpane } from 'v-tweakpane';

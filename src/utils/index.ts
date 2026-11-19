@@ -1,4 +1,4 @@
-import { Beam2D, BeamElementTrapezoidalEdgeLoad, NodalLoad, Node } from 'ts-fem';
+import { Beam2D, BeamElementTrapezoidalEdgeLoad, NodalLoad, Node } from '@edubeam/fem';
 import { availableLocales, i18n } from '../plugins/i18n';
 import { useProjectStore } from '../store/project';
 import { Command, IKeyValue, undoRedoManager } from '../CommandManager';

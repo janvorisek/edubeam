@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Matrix, multiply } from 'mathjs';
-import { Node, DofID, LoadCase, type LinearStaticSolver } from 'ts-fem';
+import { Node, DofID, LoadCase, type LinearStaticSolver } from '@edubeam/fem';
 import { isNumbered } from '@/utils/exportResults';
 import { computed } from 'vue';
 

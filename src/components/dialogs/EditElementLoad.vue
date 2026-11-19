@@ -207,7 +207,7 @@ import {
   BeamElementTrapezoidalEdgeLoad,
   BeamElementUniformEdgeLoad,
   BeamTemperatureLoad,
-} from 'ts-fem';
+} from '@edubeam/fem';
 import ElementLoadPreview from '../ElementLoadPreview.vue';
 import { deviceHasHover } from '@/utils/pointer';
 import { drawableBeam } from '@/utils/drawableBeam';

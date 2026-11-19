@@ -2,7 +2,7 @@
 import { computed, nextTick, ref, watch } from 'vue';
 import SVGElementViewer from './SVGElementViewer.vue';
 import { useAppStore } from '@/store/app';
-import { BeamConcentratedLoad, BeamElementLoad, LinearStaticSolver, Node } from 'ts-fem';
+import { BeamConcentratedLoad, BeamElementLoad, LinearStaticSolver, Node } from '@edubeam/fem';
 import { useViewerStore } from '@/store/viewer';
 import { createDimensionRenderableNode } from '@/types/dimension';
 import { drawableBeam } from '@/utils/drawableBeam';

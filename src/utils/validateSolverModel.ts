@@ -1,4 +1,4 @@
-import { DofID, type LinearStaticSolver, type Node } from 'ts-fem';
+import { DofID, type LinearStaticSolver, type Node } from '@edubeam/fem';
 import { i18n } from '@/plugins/i18n';
 import { axisLetters } from './axisConvention';
 import { coincide } from './drawableBeam';

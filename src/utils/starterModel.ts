@@ -1,4 +1,4 @@
-import { DofID, type LinearStaticSolver } from 'ts-fem';
+import { DofID, type LinearStaticSolver } from '@edubeam/fem';
 import { createDimensionId } from './id';
 import { createDimensionPointFromNode, type DimensionLine } from '@/types/dimension';
 import type { UnitSystem } from './unitSystems';

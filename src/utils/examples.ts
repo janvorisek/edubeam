@@ -5,7 +5,7 @@
  * documentation site, so the two can never drift apart. Titles and blurbs stay English
  * here, matching how the material and cross section libraries name their presets.
  */
-import { DofID, LinearStaticSolver } from 'ts-fem';
+import { DofID, LinearStaticSolver } from '@edubeam/fem';
 
 /** Overlays that make each example's point on first sight. */
 export interface ExampleViewerFlags {

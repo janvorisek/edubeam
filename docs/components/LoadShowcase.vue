@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LinearStaticSolver, DofID, type Node, type Element, type NodalLoad, type BeamElementLoad } from 'ts-fem';
+import { LinearStaticSolver, DofID, type Node, type Element, type NodalLoad, type BeamElementLoad } from '@edubeam/fem';
 import SVGElementViewer from '../../src/components/SVGElementViewer.vue';
 import { serializeModel } from '../../src/utils/serializeModel';
 import { useDocsText, type DocsStrings } from './docsText';

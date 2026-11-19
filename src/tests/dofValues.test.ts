@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
-import { DofID, LinearStaticSolver } from 'ts-fem';
+import { DofID, LinearStaticSolver } from '@edubeam/fem';
 import { inPlaneValues } from '@/utils/dofValues';
 import NodalLoad from '@/components/svg/NodalLoad.vue';
 import PrescribedDisplacement from '@/components/svg/PrescribedDisplacement.vue';

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { LinearStaticSolver, DofID } from 'ts-fem';
+import { LinearStaticSolver, DofID } from '@edubeam/fem';
 import { findMechanismIssues, validateSolverModel } from '@/utils/validateSolverModel';
 import { buildExampleSolver, examples } from '@/utils/examples';
 

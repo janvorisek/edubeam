@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type Node, type Element, type NodalLoad, type BeamElementLoad } from 'ts-fem';
+import { type Node, type Element, type NodalLoad, type BeamElementLoad } from '@edubeam/fem';
 import SVGElementViewer from '../../src/components/SVGElementViewer.vue';
 import { serializeModel } from '../../src/utils/serializeModel';
 // Single source of truth, shared with the Examples panel inside the app.

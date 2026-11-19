@@ -1,4 +1,4 @@
-import { DofID, type EnumDictionary } from 'ts-fem';
+import { DofID, type EnumDictionary } from '@edubeam/fem';
 
 type InPlaneDof = DofID.Dx | DofID.Dz | DofID.Ry;
 

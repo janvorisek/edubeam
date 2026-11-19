@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { DofID } from 'ts-fem';
+import { DofID } from '@edubeam/fem';
 import { getExample, buildExampleSolver } from '@/utils/examples';
 
 /**

@@ -1573,7 +1573,7 @@ import {
   BeamConcentratedLoad,
   BeamTemperatureLoad,
   NodalLoad,
-} from 'ts-fem';
+} from '@edubeam/fem';
 
 import { onMounted, computed, reactive, ref, watch } from 'vue';
 import { useProjectStore } from '../store/project';
@@ -1606,7 +1606,7 @@ import {
   executeModelMutationWithUndo,
   positionAlongBeam,
 } from '../utils';
-import { DofID, Beam2D, PrescribedDisplacement } from 'ts-fem';
+import { DofID, Beam2D, PrescribedDisplacement } from '@edubeam/fem';
 import { formatMeasureAsHTML } from '../SVGUtils';
 import {
   buildResultsTsv,

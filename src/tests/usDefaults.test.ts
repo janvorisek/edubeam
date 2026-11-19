@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { LinearStaticSolver } from 'ts-fem';
+import { LinearStaticSolver } from '@edubeam/fem';
 import { buildStarterModel } from '@/utils/starterModel';
 import { crossSectionPresets } from '@/utils/crossSectionPresets';
 import { materialPresets } from '@/utils/materialPresets';

@@ -9,7 +9,7 @@ import {
   BeamTemperatureLoad,
   type NodalLoad,
   type PrescribedDisplacement,
-} from 'ts-fem';
+} from '@edubeam/fem';
 import { copyNode, executeModelMutationWithUndo, setUnsolved } from '@/utils';
 
 type Selection = {

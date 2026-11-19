@@ -245,7 +245,7 @@
 import { useViewerStore } from '@/store/viewer';
 import { useAppStore } from '@/store/app';
 import SVGElementViewer from '../SVGElementViewer.vue';
-import { LinearStaticSolver, DofID } from 'ts-fem';
+import { LinearStaticSolver, DofID } from '@edubeam/fem';
 import { computed, onMounted, ref, watch, type Ref } from 'vue';
 import { unitSize } from '@/utils/unitConversions';
 import { presetFamily, type PresetFamily } from '@/utils/presetFamily';

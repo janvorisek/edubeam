@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Node, Beam2D, BeamTemperatureLoad } from 'ts-fem';
+import { Node, Beam2D, BeamTemperatureLoad } from '@edubeam/fem';
 import { computed } from 'vue';
 
 const props = withDefaults(

@@ -65,7 +65,7 @@ import {
   BeamElementTrapezoidalEdgeLoad,
   BeamElementUniformEdgeLoad,
   BeamTemperatureLoad,
-} from 'ts-fem';
+} from '@edubeam/fem';
 import { useMagicKeys } from '@vueuse/core';
 
 import { useI18n } from 'vue-i18n';
@@ -86,7 +86,7 @@ import SVGElementHandle from './svg/ElementHandle.vue';
 
 import { useLayoutStore } from '@/store/layout';
 import { EventType, eventBus } from '../EventBus';
-import { BeamConcentratedLoad } from 'ts-fem';
+import { BeamConcentratedLoad } from '@edubeam/fem';
 import { useClipboardStore } from '../store/clipboard';
 import {
   createDimensionPoint,

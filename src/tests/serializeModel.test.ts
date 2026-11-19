@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { LinearStaticSolver, DofID, Beam2D, BeamElementUniformEdgeLoad } from 'ts-fem';
+import { LinearStaticSolver, DofID, Beam2D, BeamElementUniformEdgeLoad } from '@edubeam/fem';
 import { deflateSync } from 'fflate';
 import {
   serializeModel,

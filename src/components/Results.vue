@@ -24,7 +24,7 @@ import { computed } from 'vue';
 import { useProjectStore } from '../store/project';
 import { useAppStore } from '../store/app';
 
-import { Node, Element, DofID } from 'ts-fem';
+import { Node, Element, DofID } from '@edubeam/fem';
 
 import { useI18n } from 'vue-i18n';
 import { reactive } from 'vue';

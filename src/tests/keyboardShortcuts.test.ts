@@ -127,6 +127,12 @@ describe('zoomShortcut', () => {
     expect(zoomShortcut(key('ß', 'Minus'))).toBe('out');
   });
 
+  it('goes by the character where a layout swaps the US keys', () => {
+    // Turkish Q: the key in the US = position types -, the one in the US - position types *
+    expect(zoomShortcut(key('-', 'Equal'))).toBe('out');
+    expect(zoomShortcut(key('*', 'Minus'))).toBe('out');
+  });
+
   it('zooms with the keypad', () => {
     expect(zoomShortcut(key('+', 'NumpadAdd'))).toBe('in');
     expect(zoomShortcut(key('-', 'NumpadSubtract'))).toBe('out');

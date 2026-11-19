@@ -201,7 +201,14 @@ import { useProjectStore } from '@/store/project';
 import { closeModal } from 'jenesius-vue-modal';
 import { onMounted } from 'vue';
 import { useAppStore } from '@/store/app';
-import { checkNumber, numberRules, parseFloat2, rangeRule, loadType as LT } from '@/utils';
+import {
+  checkNumber,
+  executeModelMutationWithUndo,
+  numberRules,
+  parseFloat2,
+  rangeRule,
+  loadType as LT,
+} from '@/utils';
 import {
   BeamConcentratedLoad,
   BeamElementTrapezoidalEdgeLoad,
@@ -368,41 +375,41 @@ onMounted(() => {
 const editNodalLoad = () => {
   if (valid.value === false) return;
 
-  if (load.value instanceof BeamElementUniformEdgeLoad || load.value instanceof BeamConcentratedLoad) {
-    load.value.values[0] = realFx.value;
-    load.value.values[1] = realFz.value;
-  }
+  // One undo step for the whole edit; it re-solves the model too.
+  executeModelMutationWithUndo(() => {
+    if (load.value instanceof BeamElementUniformEdgeLoad || load.value instanceof BeamConcentratedLoad) {
+      load.value.values[0] = realFx.value;
+      load.value.values[1] = realFz.value;
+    }
 
-  if (
-    load.value instanceof BeamElementUniformEdgeLoad ||
-    load.value instanceof BeamElementTrapezoidalEdgeLoad ||
-    load.value instanceof BeamConcentratedLoad
-  ) {
-    load.value.lcs = elementLCS.value;
-  }
+    if (
+      load.value instanceof BeamElementUniformEdgeLoad ||
+      load.value instanceof BeamElementTrapezoidalEdgeLoad ||
+      load.value instanceof BeamConcentratedLoad
+    ) {
+      load.value.lcs = elementLCS.value;
+    }
 
-  if (load.value instanceof BeamElementTrapezoidalEdgeLoad) {
-    load.value.change(
-      load.value.target,
-      [realTrapStartFx.value, realTrapStartFz.value],
-      [realTrapEndFx.value, realTrapEndFz.value],
-      elementLCS.value
-    );
-  }
+    if (load.value instanceof BeamElementTrapezoidalEdgeLoad) {
+      load.value.change(
+        load.value.target,
+        [realTrapStartFx.value, realTrapStartFz.value],
+        [realTrapEndFx.value, realTrapEndFz.value],
+        elementLCS.value
+      );
+    }
 
-  if (load.value instanceof BeamConcentratedLoad) {
-    load.value.values[2] = realMy.value;
-    load.value.values[3] = realDist.value;
-  }
+    if (load.value instanceof BeamConcentratedLoad) {
+      load.value.values[2] = realMy.value;
+      load.value.values[3] = realDist.value;
+    }
 
-  if (load.value instanceof BeamTemperatureLoad) {
-    load.value.values[0] = realTc.value;
-    load.value.values[1] = realTbt.value;
-  }
+    if (load.value instanceof BeamTemperatureLoad) {
+      load.value.values[0] = realTc.value;
+      load.value.values[1] = realTbt.value;
+    }
+  });
 
-  //load.values[DofID.Ry] = loadNodeValueMy.value;
-
-  useProjectStore().solve();
   projectStore.clearSelection();
   closeModal();
 };

@@ -1,4 +1,4 @@
-import { Beam2D, BeamElementTrapezoidalEdgeLoad, NodalLoad, Node } from '@edubeam/fem';
+import { Beam2D, BeamElementTrapezoidalEdgeLoad, Element, NodalLoad, Node } from '@edubeam/fem';
 import { availableLocales, i18n } from '../plugins/i18n';
 import { useProjectStore } from '../store/project';
 import { Command, IKeyValue, undoRedoManager } from '../CommandManager';
@@ -517,10 +517,35 @@ export const solve = () => {
 };
 
 export const swapNodes = (el: Beam2D) => {
-  el.nodes = el.nodes.reverse();
+  executeModelMutationWithUndo(() => {
+    setUnsolved();
+    el.nodes = el.nodes.reverse();
+    el.hinges = [el.hinges[1], el.hinges[0]];
+  });
+};
 
-  el.hinges = [el.hinges[1], el.hinges[0]];
-  solve();
+/** Connects one end of an element to another node, as an undoable edit. */
+export const changeElementNode = (el: Element, end: 0 | 1, node: string | number) => {
+  const label = String(node);
+  if (el.nodes[end] === label) return;
+
+  executeModelMutationWithUndo(() => {
+    setUnsolved();
+    el.nodes[end] = label;
+  });
+};
+
+/**
+ * Gives an element another material or cross section, as an undoable edit. Labels stay text: the
+ * domain keys both by the label as a string.
+ */
+export const changeElementProperty = (el: Element, property: 'mat' | 'cs', label: string) => {
+  if (el[property] === label) return;
+
+  executeModelMutationWithUndo(() => {
+    setUnsolved();
+    el[property] = label;
+  });
 };
 
 /**
@@ -790,6 +815,17 @@ export const toggleBoolean = (item: unknown, value: string) => {
   });
 };
 
+/** Moves a load to another node or element, as one undoable step. */
+export const changeLoadTarget = (load: { target: string }, target: string | number) => {
+  const label = String(target);
+  if (load.target === label) return;
+
+  executeModelMutationWithUndo(() => {
+    setUnsolved();
+    load.target = label;
+  });
+};
+
 const removeElementFromModel = (id: string) => {
   setUnsolved();
 
@@ -897,7 +933,7 @@ export const elementsUsingCrossSection = (id: string) =>
 export const deleteMaterial = (id: string, trackHistory = true) => {
   const used = elementsUsingMaterial(id);
   if (used.length > 0) {
-    alert(i18n.global.t('validators.materialInUse', { elements: used.join(', ') }));
+    alert(i18n.global.t('validators.materialInUse', { elements: used.join(', ') }, used.length));
     return false;
   }
 
@@ -919,7 +955,7 @@ const removeCrossSectionFromModel = (id: string) => {
 export const deleteCrossSection = (id: string, trackHistory = true) => {
   const used = elementsUsingCrossSection(id);
   if (used.length > 0) {
-    alert(i18n.global.t('validators.crossSectionInUse', { elements: used.join(', ') }));
+    alert(i18n.global.t('validators.crossSectionInUse', { elements: used.join(', ') }, used.length));
     return false;
   }
 

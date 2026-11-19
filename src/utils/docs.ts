@@ -1,7 +1,8 @@
 import { i18n } from '../plugins/i18n';
 
 /**
- * Documentation site (VitePress). The app itself lives on run.edubeam.app.
+ * The guide on the EduBeam website (its own repository, @edubeam/web). The app itself lives on
+ * run.edubeam.app.
  */
 export const DOCS_BASE = 'https://www.edubeam.app';
 

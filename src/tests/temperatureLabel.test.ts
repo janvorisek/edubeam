@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { readdirSync, readFileSync, existsSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 /**
@@ -76,41 +76,6 @@ describe('the letters of a temperature load', () => {
     for (const [language, loads] of languages) {
       expect(loads.temperatureBending.startsWith(loads.temperatureDeltaTs), language).toBe(true);
       expect(loads.temperatureAxial.startsWith(loads.temperatureDeltaTbt), language).toBe(true);
-    }
-  });
-});
-
-/**
- * The documentation teaches the same symbol the dialog shows, and the two are edited apart, so they
- * drift apart - which is how a ΔTs in the docs came to sit against a ΔTc in the drawing.
- */
-describe('the documentation', () => {
-  const DOCS = [
-    ['en', 'docs/en/essentials/loads.md'],
-    ['cs', 'docs/cs/essentials/loads.md'],
-    ['de', 'docs/de/essentials/loads.md'],
-  ] as const;
-
-  it('teaches the same letters the app shows', () => {
-    for (const [language, path] of DOCS) {
-      const full = join(process.cwd(), path);
-
-      expect(existsSync(full), path).toBe(true);
-
-      const text = readFileSync(full, 'utf-8');
-      const fibres = plain(of(language).temperatureDeltaTbt).replace(/ΔT|-/g, '');
-
-      expect(text, path).toContain(`ΔT<sub>${expectedAxial(fibres)}</sub>`);
-      expect(text, path).not.toContain(`ΔT<sub>${expectedAxial(fibres) === 's' ? 'c' : 's'}</sub>`);
-    }
-  });
-
-  it('carries the same letter into the formulas as into the table', () => {
-    for (const [language, path] of DOCS) {
-      const text = readFileSync(join(process.cwd(), path), 'utf-8');
-      const fibres = plain(of(language).temperatureDeltaTbt).replace(/ΔT|-/g, '');
-
-      expect(text, path).toContain(`\\Delta T_${expectedAxial(fibres)}`);
     }
   });
 });

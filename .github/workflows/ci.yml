@@ -59,5 +59,3 @@ jobs:
 
       # No SENTRY_AUTH_TOKEN here: the Sentry plugin skips the source map upload, which only deploys need.
       - run: npm run build
-
-      - run: npm run docs:build

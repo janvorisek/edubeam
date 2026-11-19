@@ -99,7 +99,7 @@ const members = [
 
 ## Авторы и благодарности {#authors-credits}
 
-Разработку <Edubeam /> возглавляет [Ян Воржишек (Jan Voříšek)](https://github.com/janvorisek), сопровождающий и дизайнер современной веб-версии. Браузерная версия разрабатывается независимо от ЧВУТ. Первоначальный настольный EduBeam для Windows и Linux создали [Борек Пацак (Bořek Patzák)](http://ksm.fsv.cvut.cz/~bp/), [Ян Странский (Jan Stránský)](https://mech.fsv.cvut.cz/~stransky/en/) и [Вит Шмилауэр (Vít Šmilauer)](https://mech.fsv.cvut.cz/~smilauer/) на кафедре механики [строительного факультета Чешского технического университета в Праге](https://www.fsv.cvut.cz/en). Решатель — библиотека с открытым исходным кодом [ts-fem](https://github.com/janvorisek/ts-fem).
+Разработку <Edubeam /> возглавляет [Ян Воржишек (Jan Voříšek)](https://github.com/janvorisek), сопровождающий и дизайнер современной веб-версии. Браузерная версия разрабатывается независимо от ЧВУТ. Первоначальный настольный EduBeam для Windows и Linux создали [Борек Пацак (Bořek Patzák)](http://ksm.fsv.cvut.cz/~bp/), [Ян Странский (Jan Stránský)](https://mech.fsv.cvut.cz/~stransky/en/) и [Вит Шмилауэр (Vít Šmilauer)](https://mech.fsv.cvut.cz/~smilauer/) на кафедре механики [строительного факультета Чешского технического университета в Праге](https://www.fsv.cvut.cz/en). Решатель — библиотека с открытым исходным кодом [@edubeam/fem](https://github.com/EduBeamApp/fem).
 
 <VPTeamMembers size="small" :members="members" />
 

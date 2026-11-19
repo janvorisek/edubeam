@@ -99,7 +99,7 @@ const members = [
 
 ## लेखक और श्रेय {#authors-credits}
 
-<Edubeam /> का नेतृत्व [Jan Voříšek](https://github.com/janvorisek) करते हैं, जो आधुनिक वेब संस्करण के अनुरक्षक (maintainer) और प्रोडक्ट डिज़ाइनर हैं। ब्राउज़र संस्करण CTU से स्वतंत्र रूप से विकसित किया जाता है। Windows और Linux के लिए मूल डेस्कटॉप EduBeam को [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) और [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) ने यांत्रिकी विभाग, [CTU Prague – Faculty of Civil Engineering](https://www.fsv.cvut.cz/en) में बनाया था। सॉल्वर ओपन-सोर्स [ts-fem](https://github.com/janvorisek/ts-fem) लाइब्रेरी है।
+<Edubeam /> का नेतृत्व [Jan Voříšek](https://github.com/janvorisek) करते हैं, जो आधुनिक वेब संस्करण के अनुरक्षक (maintainer) और प्रोडक्ट डिज़ाइनर हैं। ब्राउज़र संस्करण CTU से स्वतंत्र रूप से विकसित किया जाता है। Windows और Linux के लिए मूल डेस्कटॉप EduBeam को [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) और [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) ने यांत्रिकी विभाग, [CTU Prague – Faculty of Civil Engineering](https://www.fsv.cvut.cz/en) में बनाया था। सॉल्वर ओपन-सोर्स [@edubeam/fem](https://github.com/EduBeamApp/fem) लाइब्रेरी है।
 
 <VPTeamMembers size="small" :members="members" />
 

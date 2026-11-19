@@ -99,7 +99,7 @@ const members = [
 
 ## Автори та подяки {#authors-credits}
 
-Розробку <Edubeam /> очолює [Jan Voříšek](https://github.com/janvorisek) — супровідник і дизайнер продукту сучасної вебверсії. Браузерна версія розробляється незалежно від ЧВУТ. Первісний настільний EduBeam для Windows і Linux створили [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) та [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) на кафедрі механіки [Чеського технічного університету в Празі — факультет цивільного будівництва](https://www.fsv.cvut.cz/en). Розв'язувач — це бібліотека з відкритим кодом [ts-fem](https://github.com/janvorisek/ts-fem).
+Розробку <Edubeam /> очолює [Jan Voříšek](https://github.com/janvorisek) — супровідник і дизайнер продукту сучасної вебверсії. Браузерна версія розробляється незалежно від ЧВУТ. Первісний настільний EduBeam для Windows і Linux створили [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) та [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) на кафедрі механіки [Чеського технічного університету в Празі — факультет цивільного будівництва](https://www.fsv.cvut.cz/en). Розв'язувач — це бібліотека з відкритим кодом [@edubeam/fem](https://github.com/EduBeamApp/fem).
 
 <VPTeamMembers size="small" :members="members" />
 

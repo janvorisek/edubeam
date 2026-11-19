@@ -16,7 +16,7 @@ import {
   type DimensionPoint,
 } from '../types/dimension';
 
-/** Enough of a ts-fem node for the lookup: a label and coordinates. */
+/** Enough of an @edubeam/fem node for the lookup: a label and coordinates. */
 type TestNode = { label: string; coords: [number, number, number] };
 
 type NodeLookup = Parameters<typeof resolveDimensionPoints>[1];

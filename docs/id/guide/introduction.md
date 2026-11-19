@@ -99,7 +99,7 @@ Antarmuka tersedia dalam English, Bahasa Indonesia, Čeština, Deutsch, Español
 
 ## Penulis & penghargaan {#authors-credits}
 
-<Edubeam /> dipimpin oleh [Jan Voříšek](https://github.com/janvorisek), pengelola dan perancang produk di balik edisi web modern. Versi browser dikembangkan secara independen dari CTU. EduBeam desktop asli untuk Windows dan Linux dibuat oleh [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/), dan [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) di Departemen Mekanika, [CTU Praha – Fakultas Teknik Sipil](https://www.fsv.cvut.cz/en). Solvernya adalah pustaka open-source [ts-fem](https://github.com/janvorisek/ts-fem).
+<Edubeam /> dipimpin oleh [Jan Voříšek](https://github.com/janvorisek), pengelola dan perancang produk di balik edisi web modern. Versi browser dikembangkan secara independen dari CTU. EduBeam desktop asli untuk Windows dan Linux dibuat oleh [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/), dan [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) di Departemen Mekanika, [CTU Praha – Fakultas Teknik Sipil](https://www.fsv.cvut.cz/en). Solvernya adalah pustaka open-source [@edubeam/fem](https://github.com/EduBeamApp/fem).
 
 <VPTeamMembers size="small" :members="members" />
 

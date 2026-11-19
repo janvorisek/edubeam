@@ -99,7 +99,7 @@ const members = [
 
 ## 作者与致谢 {#authors-credits}
 
-<Edubeam /> 由 [Jan Voříšek](https://github.com/janvorisek) 主导，他是现代网页版的维护者和产品设计师。浏览器版本独立于 CTU 开发。最初的 Windows 和 Linux 桌面版 EduBeam 由 [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/)、[Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) 和 [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) 在[布拉格捷克理工大学（CTU）土木工程学院](https://www.fsv.cvut.cz/en)力学系开发。求解器是开源的 [ts-fem](https://github.com/janvorisek/ts-fem) 库。
+<Edubeam /> 由 [Jan Voříšek](https://github.com/janvorisek) 主导，他是现代网页版的维护者和产品设计师。浏览器版本独立于 CTU 开发。最初的 Windows 和 Linux 桌面版 EduBeam 由 [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/)、[Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) 和 [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) 在[布拉格捷克理工大学（CTU）土木工程学院](https://www.fsv.cvut.cz/en)力学系开发。求解器是开源的 [@edubeam/fem](https://github.com/EduBeamApp/fem) 库。
 
 <VPTeamMembers size="small" :members="members" />
 

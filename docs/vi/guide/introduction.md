@@ -99,7 +99,7 @@ Giao diện có sẵn bằng English, Bahasa Indonesia, Čeština, Deutsch, Espa
 
 ## Tác giả và ghi nhận {#authors-credits}
 
-<Edubeam /> do [Jan Voříšek](https://github.com/janvorisek) dẫn dắt, người duy trì và thiết kế sản phẩm của phiên bản web hiện đại. Phiên bản trình duyệt được phát triển độc lập với CTU. EduBeam bản desktop gốc cho Windows và Linux do [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) và [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) tạo ra tại Bộ môn Cơ học, [CTU Prague – Khoa Xây dựng](https://www.fsv.cvut.cz/en). Bộ giải là thư viện mã nguồn mở [ts-fem](https://github.com/janvorisek/ts-fem).
+<Edubeam /> do [Jan Voříšek](https://github.com/janvorisek) dẫn dắt, người duy trì và thiết kế sản phẩm của phiên bản web hiện đại. Phiên bản trình duyệt được phát triển độc lập với CTU. EduBeam bản desktop gốc cho Windows và Linux do [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) và [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) tạo ra tại Bộ môn Cơ học, [CTU Prague – Khoa Xây dựng](https://www.fsv.cvut.cz/en). Bộ giải là thư viện mã nguồn mở [@edubeam/fem](https://github.com/EduBeamApp/fem).
 
 <VPTeamMembers size="small" :members="members" />
 

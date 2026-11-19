@@ -41,7 +41,7 @@ Run `test:run` and `lint` before calling a change done.
 
 ## Architecture
 
-- The FE solver lives in the separate [ts-fem](https://github.com/janvorisek/ts-fem) package. Keep solver math out of components.
+- The FE solver lives in the separate [@edubeam/fem](https://github.com/EduBeamApp/fem) package. Keep solver math out of components.
 - Model state is in `src/store/project.ts`. View state is in `viewer.ts` and `layout.ts`.
 - Every user edit to the model must be undoable. Wrap it in `executeModelMutationWithUndo` (`src/utils/index.ts`), which snapshots the project and pushes a command to `undoRedoManager`. Don't write your own undo.
 - Stored values are SI (m, N, Pa, rad). Unit conversion happens only for display and input (`src/utils/unitConversions.ts`).

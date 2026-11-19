@@ -99,7 +99,7 @@ Interfejs jest dostępny w językach: English, Bahasa Indonesia, Čeština, Deut
 
 ## Autorzy i podziękowania {#authors-credits}
 
-<Edubeam /> rozwija [Jan Voříšek](https://github.com/janvorisek), opiekun i projektant nowoczesnej wersji webowej. Wersja przeglądarkowa powstaje niezależnie od ČVUT. Pierwotny, desktopowy EduBeam dla Windows i Linuksa stworzyli [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) i [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) w Katedrze Mechaniki [Politechniki Czeskiej w Pradze (ČVUT) – Wydział Inżynierii Lądowej](https://www.fsv.cvut.cz/en). Solverem jest otwartoźródłowa biblioteka [ts-fem](https://github.com/janvorisek/ts-fem).
+<Edubeam /> rozwija [Jan Voříšek](https://github.com/janvorisek), opiekun i projektant nowoczesnej wersji webowej. Wersja przeglądarkowa powstaje niezależnie od ČVUT. Pierwotny, desktopowy EduBeam dla Windows i Linuksa stworzyli [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) i [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) w Katedrze Mechaniki [Politechniki Czeskiej w Pradze (ČVUT) – Wydział Inżynierii Lądowej](https://www.fsv.cvut.cz/en). Solverem jest otwartoźródłowa biblioteka [@edubeam/fem](https://github.com/EduBeamApp/fem).
 
 <VPTeamMembers size="small" :members="members" />
 

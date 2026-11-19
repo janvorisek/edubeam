@@ -99,7 +99,7 @@ const members = [
 
 ## 作者とクレジット {#authors-credits}
 
-<Edubeam /> は、現在の Web 版のメンテナーでありプロダクトデザイナーでもある [Jan Voříšek](https://github.com/janvorisek) が率いています。ブラウザ版は CTU とは独立して開発されています。Windows と Linux 向けの元のデスクトップ版 EduBeam は、[チェコ工科大学プラハ校（CTU）土木工学部](https://www.fsv.cvut.cz/en)力学科の [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/)、[Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/)、[Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) によって作られました。ソルバーはオープンソースの [ts-fem](https://github.com/janvorisek/ts-fem) ライブラリです。
+<Edubeam /> は、現在の Web 版のメンテナーでありプロダクトデザイナーでもある [Jan Voříšek](https://github.com/janvorisek) が率いています。ブラウザ版は CTU とは独立して開発されています。Windows と Linux 向けの元のデスクトップ版 EduBeam は、[チェコ工科大学プラハ校（CTU）土木工学部](https://www.fsv.cvut.cz/en)力学科の [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/)、[Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/)、[Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) によって作られました。ソルバーはオープンソースの [@edubeam/fem](https://github.com/EduBeamApp/fem) ライブラリです。
 
 <VPTeamMembers size="small" :members="members" />
 

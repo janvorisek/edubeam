@@ -99,7 +99,7 @@ const members = [
 
 ## 개발자 및 감사의 글 {#authors-credits}
 
-<Edubeam />은 최신 웹 버전의 관리자이자 제품 디자이너인 [Jan Voříšek](https://github.com/janvorisek)이 이끌고 있습니다. 브라우저 버전은 CTU와 별개로 개발됩니다. Windows와 Linux용 원래 데스크톱 EduBeam은 [CTU 프라하 토목공학부](https://www.fsv.cvut.cz/en) 역학과의 [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/), [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/)가 만들었습니다. 솔버는 오픈 소스 [ts-fem](https://github.com/janvorisek/ts-fem) 라이브러리입니다.
+<Edubeam />은 최신 웹 버전의 관리자이자 제품 디자이너인 [Jan Voříšek](https://github.com/janvorisek)이 이끌고 있습니다. 브라우저 버전은 CTU와 별개로 개발됩니다. Windows와 Linux용 원래 데스크톱 EduBeam은 [CTU 프라하 토목공학부](https://www.fsv.cvut.cz/en) 역학과의 [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/), [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/)가 만들었습니다. 솔버는 오픈 소스 [@edubeam/fem](https://github.com/EduBeamApp/fem) 라이브러리입니다.
 
 <VPTeamMembers size="small" :members="members" />
 

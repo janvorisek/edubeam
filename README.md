@@ -118,7 +118,7 @@ docs/                   VitePress documentation, one folder per language
 public/changelog/       in-app release notes and their screenshots
 ```
 
-The finite element solver has its own package: [ts-fem](https://github.com/janvorisek/ts-fem).
+The finite element solver has its own package: [@edubeam/fem](https://github.com/EduBeamApp/fem).
 
 ### Building and hosting
 

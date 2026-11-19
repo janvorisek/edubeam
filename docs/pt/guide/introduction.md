@@ -99,7 +99,7 @@ A interface está disponível em English, Bahasa Indonesia, Čeština, Deutsch, 
 
 ## Autores e créditos {#authors-credits}
 
-<Edubeam /> é liderado por [Jan Voříšek](https://github.com/janvorisek), mantenedor e designer de produto da edição web moderna. A versão para navegador é desenvolvida de forma independente da ČVUT. O EduBeam de desktop original para Windows e Linux foi criado por [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) e [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) no Departamento de Mecânica da [Faculdade de Engenharia Civil da Universidade Técnica Tcheca de Praga (ČVUT)](https://www.fsv.cvut.cz/en). O solver é a biblioteca de código aberto [ts-fem](https://github.com/janvorisek/ts-fem).
+<Edubeam /> é liderado por [Jan Voříšek](https://github.com/janvorisek), mantenedor e designer de produto da edição web moderna. A versão para navegador é desenvolvida de forma independente da ČVUT. O EduBeam de desktop original para Windows e Linux foi criado por [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) e [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) no Departamento de Mecânica da [Faculdade de Engenharia Civil da Universidade Técnica Tcheca de Praga (ČVUT)](https://www.fsv.cvut.cz/en). O solver é a biblioteca de código aberto [@edubeam/fem](https://github.com/EduBeamApp/fem).
 
 <VPTeamMembers size="small" :members="members" />
 

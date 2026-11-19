@@ -99,7 +99,7 @@ const members = [
 
 ## ผู้พัฒนาและกิตติกรรมประกาศ {#authors-credits}
 
-<Edubeam /> นำโดย [Jan Voříšek](https://github.com/janvorisek) ผู้ดูแลโปรเจกต์และผู้ออกแบบผลิตภัณฑ์ของเวอร์ชันเว็บสมัยใหม่ เวอร์ชันเบราว์เซอร์พัฒนาโดยอิสระจาก CTU ส่วน EduBeam รุ่นเดสก์ท็อปดั้งเดิมสำหรับ Windows และ Linux สร้างโดย [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) และ [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) ที่ภาควิชากลศาสตร์ [คณะวิศวกรรมโยธา CTU Prague](https://www.fsv.cvut.cz/en) ตัวคำนวณคือไลบรารีโอเพนซอร์ส [ts-fem](https://github.com/janvorisek/ts-fem)
+<Edubeam /> นำโดย [Jan Voříšek](https://github.com/janvorisek) ผู้ดูแลโปรเจกต์และผู้ออกแบบผลิตภัณฑ์ของเวอร์ชันเว็บสมัยใหม่ เวอร์ชันเบราว์เซอร์พัฒนาโดยอิสระจาก CTU ส่วน EduBeam รุ่นเดสก์ท็อปดั้งเดิมสำหรับ Windows และ Linux สร้างโดย [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) และ [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) ที่ภาควิชากลศาสตร์ [คณะวิศวกรรมโยธา CTU Prague](https://www.fsv.cvut.cz/en) ตัวคำนวณคือไลบรารีโอเพนซอร์ส [@edubeam/fem](https://github.com/EduBeamApp/fem)
 
 <VPTeamMembers size="small" :members="members" />
 

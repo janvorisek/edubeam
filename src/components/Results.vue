@@ -56,7 +56,7 @@ const nodes = computed(() => {
     display.push(node);
   }
 
-  // @ts-expect-error ts-fem is wrongly typed
+  // @ts-expect-error @edubeam/fem is wrongly typed
   return display.sort((a, b) => ('' + a.label).localeCompare(b.label, undefined, { numeric: true }));
 });
 

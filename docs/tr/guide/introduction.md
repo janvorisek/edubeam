@@ -99,7 +99,7 @@ Arayüz şu dillerde kullanılabilir: English, Bahasa Indonesia, Čeština, Deut
 
 ## Yazarlar ve katkıda bulunanlar {#authors-credits}
 
-<Edubeam /> projesini, modern web sürümünün bakımını yapan ve ürün tasarımını üstlenen [Jan Voříšek](https://github.com/janvorisek) yönetir. Tarayıcı sürümü Prag Çek Teknik Üniversitesi'nden (ČVUT) bağımsız olarak geliştirilmektedir. Windows ve Linux için orijinal masaüstü EduBeam, [ČVUT Prag – İnşaat Fakültesi](https://www.fsv.cvut.cz/en) Mekanik Bölümü'nde [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) ve [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) tarafından geliştirilmiştir. Çözücü, açık kaynaklı [ts-fem](https://github.com/janvorisek/ts-fem) kütüphanesidir.
+<Edubeam /> projesini, modern web sürümünün bakımını yapan ve ürün tasarımını üstlenen [Jan Voříšek](https://github.com/janvorisek) yönetir. Tarayıcı sürümü Prag Çek Teknik Üniversitesi'nden (ČVUT) bağımsız olarak geliştirilmektedir. Windows ve Linux için orijinal masaüstü EduBeam, [ČVUT Prag – İnşaat Fakültesi](https://www.fsv.cvut.cz/en) Mekanik Bölümü'nde [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) ve [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) tarafından geliştirilmiştir. Çözücü, açık kaynaklı [@edubeam/fem](https://github.com/EduBeamApp/fem) kütüphanesidir.
 
 <VPTeamMembers size="small" :members="members" />
 

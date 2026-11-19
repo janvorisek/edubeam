@@ -99,7 +99,7 @@ Rozhraní je k dispozici v těchto jazycích: English, Bahasa Indonesia, Češti
 
 ## Autoři a poděkování {#authors-credits}
 
-<Edubeam /> vede [Jan Voříšek](https://github.com/janvorisek), správce projektu a autor návrhu moderní webové verze. Webová verze vzniká nezávisle na ČVUT. Původní desktopový EduBeam pro Windows a Linux vytvořili [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) a [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) na Katedře mechaniky [Fakulty stavební ČVUT v Praze](https://www.fsv.cvut.cz/en). Výpočetním jádrem je open-source knihovna [ts-fem](https://github.com/janvorisek/ts-fem).
+<Edubeam /> vede [Jan Voříšek](https://github.com/janvorisek), správce projektu a autor návrhu moderní webové verze. Webová verze vzniká nezávisle na ČVUT. Původní desktopový EduBeam pro Windows a Linux vytvořili [Bořek Patzák](http://ksm.fsv.cvut.cz/~bp/), [Jan Stránský](https://mech.fsv.cvut.cz/~stransky/en/) a [Vít Šmilauer](https://mech.fsv.cvut.cz/~smilauer/) na Katedře mechaniky [Fakulty stavební ČVUT v Praze](https://www.fsv.cvut.cz/en). Výpočetním jádrem je open-source knihovna [@edubeam/fem](https://github.com/EduBeamApp/fem).
 
 <VPTeamMembers size="small" :members="members" />
 

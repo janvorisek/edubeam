@@ -1631,9 +1631,7 @@ const appStore = useAppStore();
  * in other programs. Set here rather than by the tabs' own model, which can only select.
  */
 const onTab = (tab: string) => {
-  // Until a tab is chosen the first one shows
-  const shown = appStore.bottomBarTab ?? `tab-${tabs[0]?.id}`;
-  if (appStore.bottomBarOpen && shown === tab) {
+  if (appStore.bottomBarOpen && appStore.bottomBarTab === tab) {
     appStore.bottomBarOpen = false;
     return;
   }

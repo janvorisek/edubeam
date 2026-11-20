@@ -221,7 +221,8 @@ export const useAppStore = defineStore(
     const zooming = ref(false);
 
     const tab = ref(null);
-    const bottomBarTab = ref(null);
+    /** The bottom bar's open tab; the nodes' until another is chosen (the tabs only show, see BottomBar) */
+    const bottomBarTab = ref('tab-nodes');
 
     const mouseMode = ref<MouseMode>(MouseMode.NONE);
     const mouse = ref({ x: 0, y: 0, sx: 0, sy: 0 });

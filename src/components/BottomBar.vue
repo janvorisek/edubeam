@@ -3,18 +3,13 @@
     <!-- The strip is also the bar's resize handle; see Editor.vue for the drag it starts. -->
     <div class="d-flex justify-space-between bg-primary" data-resize-handle="vertical">
       <v-tabs
-        v-model="appStore.bottomBarTab"
+        :model-value="appStore.bottomBarTab"
         bg-color="primary"
         :show-arrows="false"
         height="36"
         :hide-slider="props.height === 36"
       >
-        <v-tab
-          v-for="(tab, index) in tabs"
-          :key="index"
-          :value="`tab-${tab.id}`"
-          @click="appStore.bottomBarOpen = true"
-        >
+        <v-tab v-for="(tab, index) in tabs" :key="index" :value="`tab-${tab.id}`" @click="onTab(`tab-${tab.id}`)">
           <template #default>
             <v-icon small class="mr-3">{{ tab.icon }}</v-icon> {{ $t(tab.title) }}</template
           >
@@ -440,7 +435,8 @@
             </select>
           </template>
           <template #item.loads="{ item }">
-            <div class="d-flex align-center">
+            <!-- As tall as the other tables' rows, as the nodes' loads are: a chip group pads itself out -->
+            <div class="d-flex align-center" style="height: 28px">
               <v-btn
                 icon="mdi-plus-circle"
                 density="compact"
@@ -1631,6 +1627,21 @@ const { t } = useI18n();
 const appStore = useAppStore();
 
 /**
+ * A tab opens the bar on itself; the open tab, pressed again, closes the bar - as a panel's tabs do
+ * in other programs. Set here rather than by the tabs' own model, which can only select.
+ */
+const onTab = (tab: string) => {
+  // Until a tab is chosen the first one shows
+  const shown = appStore.bottomBarTab ?? `tab-${tabs[0]?.id}`;
+  if (appStore.bottomBarOpen && shown === tab) {
+    appStore.bottomBarOpen = false;
+    return;
+  }
+  appStore.bottomBarTab = tab;
+  appStore.bottomBarOpen = true;
+};
+
+/**
  * Where along its beam a concentrated load sits.
  *
  * There is no such place as past the end: the solver splits the beam at that distance, and a split
@@ -2005,6 +2016,9 @@ const formatElementLoadsAtElement = (item: Beam2D): [number, string][] => {
       if (Math.abs(nl.ref.values[0]) > 1e-12) tmp.push(ff + '<sub>x</sub> = ' + shown(convert(nl.ref.values[0])));
       if (Math.abs(nl.ref.values[1]) > 1e-12)
         tmp.push(`${ff}<sub>${appStore.axes.v}</sub> = ` + shown(appStore.vertical(convert(nl.ref.values[1]))));
+      // A point load's moment, written as a nodal one is: without it, a moment alone had an empty chip
+      if (nl.type === 'concentrated' && Math.abs(nl.ref.values[2] ?? 0) > 1e-12)
+        tmp.push(`M<sub>${appStore.axes.r}</sub> = ` + shown(appStore.convertMoment(nl.ref.values[2])));
     }
     return [nl.index, tmp.join(chipSeparator())];
   });

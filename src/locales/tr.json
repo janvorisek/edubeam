@@ -436,7 +436,8 @@
     },
     "tools": {
       "title": "Araçlar",
-      "description": "Düğümleri, elemanları, mesnetleri ve yükleri doğrudan çizime ekleyin. Mesnet veya yük türünü seçmek için bir aracı basılı tutun ya da köşesine tıklayın. Noktalar düğümlere ve bir elemanın ortasına ve üçte birlik noktalarına yapışır; serbest yerleştirmek için Alt tuşunu basılı tutun. Tuşlar: V seçim, N düğüm, E eleman, U mesnet, L yük, D ölçü, Esc seçime dön."
+      "description": "Düğümleri, elemanları, mesnetleri ve yükleri doğrudan çizime ekleyin. Mesnet veya yük türünü seçmek için bir aracı basılı tutun ya da köşesine tıklayın. Noktalar düğümlere ve bir elemanın ortasına ve üçte birlik noktalarına yapışır; serbest yerleştirmek için Alt tuşunu basılı tutun. Tuşlar: V seçim, N düğüm, E eleman, U mesnet, L yük, D ölçü, Esc seçime dön.",
+      "descriptionTouch": "Düğümleri, elemanları, mesnetleri ve yükleri doğrudan çizime ekleyin: bir araca, sonra yerleşeceği yere, iş bitince de oka dokunun. Mesnet ve yük araçları bir tür listesi açar. Noktalar düğümlere ve bir elemanın ortasına ve üçte birlik noktalarına yapışır. Tek parmak görünümü kaydırır, iki parmak yakınlaştırır. Bir düğümü taşımak için sürükleyin, bir yükü kaldırmak için basılı tutun ya da menü için başka bir yerde basılı tutun."
     },
     "viewerControls": {
       "title": "Görüntüleyici düğmeleri",

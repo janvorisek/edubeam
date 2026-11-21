@@ -436,7 +436,8 @@
     },
     "tools": {
       "title": "Outils",
-      "description": "Ajoutez des nœuds, des éléments, des appuis et des charges directement sur le dessin. Maintenez un outil ou cliquez sur son coin pour choisir le type d’appui ou de charge. Les points s’accrochent aux nœuds ainsi qu’au milieu et aux tiers d’un élément ; maintenez Alt pour placer librement. Touches : V sélection, N nœud, E élément, U appui, L charge, D cote, Échap retour à la sélection."
+      "description": "Ajoutez des nœuds, des éléments, des appuis et des charges directement sur le dessin. Maintenez un outil ou cliquez sur son coin pour choisir le type d’appui ou de charge. Les points s’accrochent aux nœuds ainsi qu’au milieu et aux tiers d’un élément ; maintenez Alt pour placer librement. Touches : V sélection, N nœud, E élément, U appui, L charge, D cote, Échap retour à la sélection.",
+      "descriptionTouch": "Ajoutez des nœuds, des éléments, des appuis et des charges directement sur le dessin : touchez un outil, puis l’endroit voulu, et la flèche une fois terminé. Les outils d’appui et de charge ouvrent la liste des types. Les points s’accrochent aux nœuds ainsi qu’au milieu et aux tiers d’un élément. Un doigt déplace la vue, deux doigts zooment. Faites glisser un nœud pour le déplacer, maintenez une charge pour la saisir, ou maintenez ailleurs pour ouvrir le menu."
     },
     "viewerControls": {
       "title": "Boutons de visualisation",

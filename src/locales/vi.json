@@ -436,7 +436,8 @@
     },
     "tools": {
       "title": "Công cụ",
-      "description": "Thêm nút, phần tử, gối tựa và tải trọng ngay trên bản vẽ. Giữ một công cụ hoặc nhấp vào góc của nó để chọn loại gối tựa hoặc tải trọng. Điểm bắt dính vào nút và vào trung điểm, điểm một phần ba của phần tử; giữ Alt để đặt tự do. Phím: V chọn, N nút, E phần tử, U gối tựa, L tải trọng, D kích thước, Esc quay lại chọn."
+      "description": "Thêm nút, phần tử, gối tựa và tải trọng ngay trên bản vẽ. Giữ một công cụ hoặc nhấp vào góc của nó để chọn loại gối tựa hoặc tải trọng. Điểm bắt dính vào nút và vào trung điểm, điểm một phần ba của phần tử; giữ Alt để đặt tự do. Phím: V chọn, N nút, E phần tử, U gối tựa, L tải trọng, D kích thước, Esc quay lại chọn.",
+      "descriptionTouch": "Thêm nút, phần tử, gối tựa và tải trọng ngay trên bản vẽ: chạm vào một công cụ, rồi chạm vào vị trí cần đặt, và chạm mũi tên khi xong. Công cụ gối tựa và tải trọng mở danh sách các loại. Điểm bắt dính vào nút và vào trung điểm, điểm một phần ba của phần tử. Một ngón tay để di chuyển khung nhìn, hai ngón tay để thu phóng. Kéo một nút để di chuyển, giữ một tải trọng để nhấc lên, hoặc giữ ở chỗ khác để mở menu."
     },
     "viewerControls": {
       "title": "Nút điều khiển hiển thị",

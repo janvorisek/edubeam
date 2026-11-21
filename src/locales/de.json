@@ -436,7 +436,8 @@
     },
     "tools": {
       "title": "Werkzeuge",
-      "description": "Fügen Sie Knoten, Elemente, Lager und Lasten direkt in der Zeichnung hinzu. Halten Sie ein Werkzeug gedrückt oder klicken Sie auf seine Ecke, um die Art des Lagers oder der Last zu wählen. Punkte rasten an Knoten sowie an Mitte und Dritteln eines Elements ein; mit gedrückter Alt-Taste platzieren Sie frei. Tasten: V Auswahl, N Knoten, E Element, U Lager, L Last, D Bemaßung, Esc zurück zur Auswahl."
+      "description": "Fügen Sie Knoten, Elemente, Lager und Lasten direkt in der Zeichnung hinzu. Halten Sie ein Werkzeug gedrückt oder klicken Sie auf seine Ecke, um die Art des Lagers oder der Last zu wählen. Punkte rasten an Knoten sowie an Mitte und Dritteln eines Elements ein; mit gedrückter Alt-Taste platzieren Sie frei. Tasten: V Auswahl, N Knoten, E Element, U Lager, L Last, D Bemaßung, Esc zurück zur Auswahl.",
+      "descriptionTouch": "Fügen Sie Knoten, Elemente, Lager und Lasten direkt in der Zeichnung hinzu: Tippen Sie auf ein Werkzeug, dann auf die Stelle und zum Schluss auf den Pfeil. Die Werkzeuge für Lager und Lasten öffnen eine Liste der Arten. Punkte rasten an Knoten sowie an Mitte und Dritteln eines Elements ein. Ein Finger verschiebt die Ansicht, zwei Finger zoomen. Ziehen Sie einen Knoten, um ihn zu verschieben, halten Sie eine Last gedrückt, um sie aufzunehmen, oder halten Sie anderswo gedrückt für das Menü."
     },
     "viewerControls": {
       "title": "Viewer-Schaltflächen",

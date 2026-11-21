@@ -436,7 +436,8 @@
     },
     "tools": {
       "title": "Tools",
-      "description": "Add nodes, elements, supports and loads right on the drawing. Hold a tool, or click its corner, to choose the kind of support or load. Points snap to nodes and to an element's middle and thirds; hold Alt to place freely. Keys: V select, N node, E element, U support, L load, D dimension, Esc back to select."
+      "description": "Add nodes, elements, supports and loads right on the drawing. Hold a tool, or click its corner, to choose the kind of support or load. Points snap to nodes and to an element's middle and thirds; hold Alt to place freely. Keys: V select, N node, E element, U support, L load, D dimension, Esc back to select.",
+      "descriptionTouch": "Add nodes, elements, supports and loads right on the drawing: tap a tool, then tap where it goes, and the arrow when you are done. The support and load tools open a list of kinds. Points snap to nodes and to an element's middle and thirds. One finger pans, two fingers zoom. Drag a node to move it, hold a load to pick it up, or hold anywhere else for the menu."
     },
     "viewerControls": {
       "title": "Viewer buttons",

@@ -436,7 +436,8 @@
     },
     "tools": {
       "title": "Strumenti",
-      "description": "Aggiungi nodi, elementi, vincoli e carichi direttamente sul disegno. Tieni premuto uno strumento o fai clic sul suo angolo per scegliere il tipo di vincolo o di carico. I punti si agganciano ai nodi e al centro e ai terzi di un elemento; tieni premuto Alt per posizionare liberamente. Tasti: V selezione, N nodo, E elemento, U vincolo, L carico, D quota, Esc torna alla selezione."
+      "description": "Aggiungi nodi, elementi, vincoli e carichi direttamente sul disegno. Tieni premuto uno strumento o fai clic sul suo angolo per scegliere il tipo di vincolo o di carico. I punti si agganciano ai nodi e al centro e ai terzi di un elemento; tieni premuto Alt per posizionare liberamente. Tasti: V selezione, N nodo, E elemento, U vincolo, L carico, D quota, Esc torna alla selezione.",
+      "descriptionTouch": "Aggiungi nodi, elementi, vincoli e carichi direttamente sul disegno: tocca uno strumento, poi il punto in cui va e, alla fine, la freccia. Gli strumenti vincolo e carico aprono l’elenco dei tipi. I punti si agganciano ai nodi e al centro e ai terzi di un elemento. Un dito sposta la vista, due dita fanno lo zoom. Trascina un nodo per spostarlo, tieni premuto un carico per sollevarlo o tieni premuto altrove per il menu."
     },
     "viewerControls": {
       "title": "Pulsanti della vista",

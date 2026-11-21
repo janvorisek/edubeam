@@ -436,7 +436,8 @@
     },
     "tools": {
       "title": "Alat",
-      "description": "Tambahkan joint, elemen, tumpuan, dan beban langsung pada gambar. Tahan sebuah alat atau klik sudutnya untuk memilih jenis tumpuan atau beban. Titik menempel ke joint serta ke tengah dan sepertiga elemen; tahan Alt untuk menempatkan bebas. Tombol: V pilih, N joint, E elemen, U tumpuan, L beban, D dimensi, Esc kembali ke pilih."
+      "description": "Tambahkan joint, elemen, tumpuan, dan beban langsung pada gambar. Tahan sebuah alat atau klik sudutnya untuk memilih jenis tumpuan atau beban. Titik menempel ke joint serta ke tengah dan sepertiga elemen; tahan Alt untuk menempatkan bebas. Tombol: V pilih, N joint, E elemen, U tumpuan, L beban, D dimensi, Esc kembali ke pilih.",
+      "descriptionTouch": "Tambahkan joint, elemen, tumpuan, dan beban langsung pada gambar: ketuk sebuah alat, lalu ketuk tempatnya, dan ketuk panah setelah selesai. Alat tumpuan dan beban membuka daftar jenisnya. Titik menempel ke joint serta ke tengah dan sepertiga elemen. Satu jari menggeser tampilan, dua jari memperbesar. Seret joint untuk memindahkannya, tahan beban untuk mengangkatnya, atau tahan di tempat lain untuk membuka menu."
     },
     "viewerControls": {
       "title": "Tombol tampilan",

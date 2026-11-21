@@ -43,6 +43,7 @@ import { startFirstBeam } from './utils/startFirstBeam';
 import { fieldOwnsUndo, hasShortcutModifier, zoomShortcut } from './utils/keyboard';
 import { isViewerModeParam } from './utils/urlParams';
 
+import { deviceHasHover } from '@/utils/pointer';
 import { VOnboardingWrapper, VOnboardingStep, useVOnboarding } from 'v-onboarding';
 import 'v-onboarding/dist/style.css';
 
@@ -68,7 +69,11 @@ const steps = computed(() => [
   },
   {
     attachTo: { element: '#toolRail' },
-    content: { title: t('tour.tools.title'), description: t('tour.tools.description') },
+    // Where nothing hovers, a finger: taps, holds and two fingers, not corners, Alt and keys
+    content: {
+      title: t('tour.tools.title'),
+      description: deviceHasHover.value ? t('tour.tools.description') : t('tour.tools.descriptionTouch'),
+    },
   },
   {
     attachTo: { element: '#viewerControls' },
@@ -109,18 +114,32 @@ const steps = computed(() => [
  * attach to: the pane it is about is hidden, so everything in it measures zero. Switching to it
  * once, before the first step, is simpler than asking each step that needs it to switch for itself.
  */
+/** The display options as the tour found them: it opens them to show them, and puts them back after */
+let settingsOpenBeforeTour: boolean | null = null;
+
 const startTour = async () => {
   const drawing = appStore.tabs.find((tab) => tab.props.id === 'viewer');
 
   if (drawing) appStore.tab = drawing.value;
 
+  settingsOpenBeforeTour ??= viewerStore.settingsOpen;
   viewerStore.settingsOpen = true;
   await nextTick();
   useVOnboarding(onboardingWrapper).start();
 };
 
 // The step slot's own `exit` only emits an event; this is what takes the tour down.
+provide('startTour', startTour);
+
 const endTour = () => useVOnboarding(onboardingWrapper).finish();
+
+// However it ends: the last step, its close button or Esc. Esc finishes a tour that is not running
+// too, which opened nothing.
+const onTourFinish = () => {
+  if (settingsOpenBeforeTour === null) return;
+  viewerStore.settingsOpen = settingsOpenBeforeTour;
+  settingsOpenBeforeTour = null;
+};
 
 /**
  * v-onboarding builds a fresh popper for each step the moment its bubble mounts, from whatever
@@ -473,6 +492,7 @@ const app_commit = APP_COMMIT;
           enabled: false,
         },
       }"
+      @finish="onTourFinish"
     >
       <template #default="{ previous, next, step, isFirst, isLast, index }">
         <VOnboardingStep>

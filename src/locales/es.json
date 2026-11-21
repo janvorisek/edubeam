@@ -436,7 +436,8 @@
     },
     "tools": {
       "title": "Herramientas",
-      "description": "Añada nodos, elementos, apoyos y cargas directamente en el dibujo. Mantenga pulsada una herramienta o haga clic en su esquina para elegir el tipo de apoyo o de carga. Los puntos se ajustan a los nodos y al centro y los tercios de un elemento; mantenga Alt para colocar libremente. Teclas: V seleccionar, N nodo, E elemento, U apoyo, L carga, D cota, Esc volver a seleccionar."
+      "description": "Añada nodos, elementos, apoyos y cargas directamente en el dibujo. Mantenga pulsada una herramienta o haga clic en su esquina para elegir el tipo de apoyo o de carga. Los puntos se ajustan a los nodos y al centro y los tercios de un elemento; mantenga Alt para colocar libremente. Teclas: V seleccionar, N nodo, E elemento, U apoyo, L carga, D cota, Esc volver a seleccionar.",
+      "descriptionTouch": "Añada nodos, elementos, apoyos y cargas directamente en el dibujo: toque una herramienta, luego el lugar donde va y, al terminar, la flecha. Las herramientas de apoyos y cargas abren una lista de tipos. Los puntos se ajustan a los nodos y al centro y los tercios de un elemento. Un dedo desplaza la vista y dos dedos hacen zoom. Arrastre un nodo para moverlo, mantenga pulsada una carga para levantarla o mantenga pulsado en otro lugar para abrir el menú."
     },
     "viewerControls": {
       "title": "Botones del visor",

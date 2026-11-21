@@ -436,7 +436,8 @@
     },
     "tools": {
       "title": "Ferramentas",
-      "description": "Adicione nós, elementos, apoios e cargas diretamente no desenho. Mantenha uma ferramenta pressionada ou clique no seu canto para escolher o tipo de apoio ou de carga. Os pontos se ajustam aos nós e ao meio e aos terços de um elemento; segure Alt para posicionar livremente. Teclas: V selecionar, N nó, E elemento, U apoio, L carga, D cota, Esc voltar a selecionar."
+      "description": "Adicione nós, elementos, apoios e cargas diretamente no desenho. Mantenha uma ferramenta pressionada ou clique no seu canto para escolher o tipo de apoio ou de carga. Os pontos se ajustam aos nós e ao meio e aos terços de um elemento; segure Alt para posicionar livremente. Teclas: V selecionar, N nó, E elemento, U apoio, L carga, D cota, Esc voltar a selecionar.",
+      "descriptionTouch": "Adicione nós, elementos, apoios e cargas diretamente no desenho: toque numa ferramenta, depois no local onde ela vai e, ao terminar, na seta. As ferramentas de apoios e cargas abrem uma lista de tipos. Os pontos se ajustam aos nós e ao meio e aos terços de um elemento. Um dedo move a vista, dois dedos fazem zoom. Arraste um nó para movê-lo, mantenha uma carga pressionada para levantá-la ou mantenha pressionado em outro lugar para abrir o menu."
     },
     "viewerControls": {
       "title": "Botões de visualização",

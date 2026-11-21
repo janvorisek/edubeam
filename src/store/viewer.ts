@@ -5,7 +5,7 @@ import type { ViewBox } from '@/utils/fitBounds';
 import { defaultGridStep } from '@/utils/grid';
 import { DEFAULT_DIAGRAM_STYLE, type DiagramStyle } from '@/utils/diagramStyle';
 import { useAppStore } from './app';
-import { hasStoredSettings } from '@/utils';
+import { compactScreen, hasStoredSettings } from '@/utils';
 
 /** A figure of the Report tab: the structure with its loads, its reactions, a diagram, its deformed shape */
 export type ReportFigure = 'loads' | 'reactions' | 'N' | 'V' | 'M' | 'w';
@@ -88,7 +88,8 @@ export const useViewerStore = defineStore(
     const reportPaper = ref<ReportPaper>(useAppStore().unitSystem === 'us' ? 'letter' : 'a4');
     const reportOrientation = ref<'portrait' | 'landscape'>('portrait');
 
-    const settingsOpen = ref(true);
+    /** The display options: open where there is room for them beside the drawing, which a phone has not */
+    const settingsOpen = ref(!compactScreen());
 
     /**
      * The settings this version added, as read back from storage: what one cannot be (written by
@@ -150,7 +151,7 @@ export const useViewerStore = defineStore(
       reportFigures.value = [...DEFAULT_REPORT_FIGURES];
       reportGuides.value = true;
 
-      settingsOpen.value = true;
+      settingsOpen.value = !compactScreen();
     };
 
     /**

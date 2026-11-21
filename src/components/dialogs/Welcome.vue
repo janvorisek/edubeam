@@ -93,12 +93,12 @@
 import { computed, inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { closeModal, openModal } from 'jenesius-vue-modal';
-import { useVOnboarding } from 'v-onboarding';
 
 import Examples from './Examples.vue';
 import { useAppStore } from '../../store/app';
 import { useViewerStore } from '../../store/viewer';
 import { startFirstBeam } from '@/utils/startFirstBeam';
+import { compactScreen } from '@/utils';
 import AxisConventionPicker from '../settings/AxisConventionPicker.vue';
 import LanguageMenu from '../settings/LanguageMenu.vue';
 import { matchStarterModelToUnits } from '@/utils/matchStarterModel';
@@ -106,7 +106,8 @@ import type { UnitSystem } from '@/utils/unitSystems';
 import { onRadioKeydown, radioTabIndex } from '@/utils/radioGroup';
 
 const appStore = useAppStore();
-const onboardingWrapper = inject('onboardingWrapper');
+/** The app's own start of the tour, which opens the display options it shows and puts them back after */
+const startTour = inject<() => Promise<void>>('startTour')!;
 
 const open = ref(true);
 const { t } = useI18n();
@@ -138,18 +139,17 @@ const finish = () => {
   closeModal();
 };
 
-// Anyone skipping or opening an example gets the display options straight away. The task keeps
-// them closed, as opening them is one of its steps.
+// Anyone skipping or opening an example gets the display options straight away, where there is room
+// for them beside the drawing; on a phone they would cover half of it. The task keeps them closed,
+// as opening them is one of its steps.
 const skip = () => {
-  useViewerStore().settingsOpen = true;
+  useViewerStore().settingsOpen = !compactScreen();
   finish();
 };
 
-// The tour points at the display options, so they have to be open for it.
 const showAround = () => {
-  useViewerStore().settingsOpen = true;
   finish();
-  useVOnboarding(onboardingWrapper).start();
+  void startTour();
 };
 
 const drawFirstBeam = () => {
@@ -159,7 +159,7 @@ const drawFirstBeam = () => {
 
 const openExamples = () => {
   appStore.onboardingFinished = true;
-  useViewerStore().settingsOpen = true;
+  useViewerStore().settingsOpen = !compactScreen();
   // Replaces this dialog rather than stacking on it.
   openModal(Examples);
 };

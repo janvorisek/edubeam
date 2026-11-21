@@ -436,7 +436,8 @@
     },
     "tools": {
       "title": "Nástroje",
-      "description": "Uzly, prvky, podpory a zatížení přidáte přímo do výkresu. Podržením nástroje nebo kliknutím na jeho roh zvolíte druh podpory či zatížení. Body se přichytávají k uzlům a ke středu a třetinám prvků; podržením Alt umístíte volně. Klávesy: V výběr, N uzel, E prvek, U podpora, L zatížení, D kóta, Esc zpět na výběr."
+      "description": "Uzly, prvky, podpory a zatížení přidáte přímo do výkresu. Podržením nástroje nebo kliknutím na jeho roh zvolíte druh podpory či zatížení. Body se přichytávají k uzlům a ke středu a třetinám prvků; podržením Alt umístíte volně. Klávesy: V výběr, N uzel, E prvek, U podpora, L zatížení, D kóta, Esc zpět na výběr.",
+      "descriptionTouch": "Uzly, prvky, podpory a zatížení přidáte přímo do výkresu: klepněte na nástroj, pak na místo, kam patří, a nakonec na šipku. Nástroje podpor a zatížení nabídnou seznam druhů. Body se přichytávají k uzlům a ke středu a třetinám prvků. Jedním prstem posunete pohled, dvěma přiblížíte. Uzel přesunete tažením, zatížení zvednete podržením a podržením jinde otevřete nabídku."
     },
     "viewerControls": {
       "title": "Tlačítka zobrazení",

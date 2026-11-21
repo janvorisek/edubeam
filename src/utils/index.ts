@@ -1067,15 +1067,22 @@ export function float2String(v: number) {
   return v;
 }
 
+/**
+ * A window too small for the drawing to share: narrower than 600 px, a phone held upright, or lower
+ * than 500 px, one held sideways. Measured, so a phone asking for the desktop site counts too.
+ */
+export const compactScreen = (): boolean =>
+  typeof window !== 'undefined' && window.matchMedia('(max-width: 599.98px), (max-height: 499.98px)').matches;
+
+/** A phone or a tablet, or a window too narrow or too low to give the bottom bar room as well */
 export function isMobile(): boolean {
   const userAgent = navigator.userAgent;
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
   const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 
-  // Adjust this value as per your requirements
   const mobileScreenWidthThreshold = 768;
 
-  return isMobile || screenWidth < mobileScreenWidthThreshold;
+  return isMobile || screenWidth < mobileScreenWidthThreshold || compactScreen();
 }
 
 export const copyNode = (n: Node, d: { x: number; z: number }) => {

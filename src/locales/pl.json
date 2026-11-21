@@ -436,7 +436,8 @@
     },
     "tools": {
       "title": "Narzędzia",
-      "description": "Dodawaj węzły, elementy, podpory i obciążenia bezpośrednio na rysunku. Przytrzymaj narzędzie lub kliknij jego róg, aby wybrać rodzaj podpory lub obciążenia. Punkty przyciągają się do węzłów oraz do środka i trzecich części elementu; przytrzymaj Alt, aby umieścić swobodnie. Klawisze: V zaznaczanie, N węzeł, E element, U podpora, L obciążenie, D wymiar, Esc powrót do zaznaczania."
+      "description": "Dodawaj węzły, elementy, podpory i obciążenia bezpośrednio na rysunku. Przytrzymaj narzędzie lub kliknij jego róg, aby wybrać rodzaj podpory lub obciążenia. Punkty przyciągają się do węzłów oraz do środka i trzecich części elementu; przytrzymaj Alt, aby umieścić swobodnie. Klawisze: V zaznaczanie, N węzeł, E element, U podpora, L obciążenie, D wymiar, Esc powrót do zaznaczania.",
+      "descriptionTouch": "Dodawaj węzły, elementy, podpory i obciążenia bezpośrednio na rysunku: dotknij narzędzia, potem miejsca, w którym ma się znaleźć, a na koniec strzałki. Narzędzia podpór i obciążeń otwierają listę rodzajów. Punkty przyciągają się do węzłów oraz do środka i trzecich części elementu. Jeden palec przesuwa widok, dwa palce przybliżają. Przeciągnij węzeł, aby go przesunąć, przytrzymaj obciążenie, aby je podnieść, albo przytrzymaj w innym miejscu, aby otworzyć menu."
     },
     "viewerControls": {
       "title": "Przyciski widoku",

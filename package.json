@@ -47,7 +47,7 @@
     "@types/node": "^25.9.8",
     "@types/webfontloader": "^1.6.38",
     "@vitejs/plugin-vue": "^6.0.9",
-    "@vitest/ui": "^4.1.11",
+    "@vitest/ui": "^5.1.0",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/test-utils": "^2.5.1",
     "eslint": "^10.11.0",

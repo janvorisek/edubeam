@@ -1530,9 +1530,18 @@ const startLongPress = (e: PointerEvent) => {
     longPressFired = true;
     // On a load, the long press lifts it; its menu waits for the finger to lift unmoved
     if (liftLoad(clientX, clientY, element)) return;
+    // On a node, the press already holds it for a drag: the menu waits for the finger to lift
+    // unmoved, and a drag after the hold moves the node, menu-less (see onMouseUp)
+    if (appStore.mouseMode === MouseMode.MOVING && intersected.value.type === 'node') {
+      nodeHeld = { x: clientX, y: clientY, element };
+      return;
+    }
     openCanvasMenu(clientX, clientY, element);
   }, LONG_PRESS_MS);
 };
+
+/** A node a finger has held long enough for its menu, which opens if it lifts without dragging */
+let nodeHeld: { readonly x: number; readonly y: number; readonly element: Beam2D | null } | null = null;
 
 /**
  * Whether a press has turned into a drag: the pointer has travelled further than a click's jitter,
@@ -1620,8 +1629,9 @@ const placeSelectionPanel = (e: MouseEvent) => {
 };
 
 const onNodeClick = (e: MouseEvent) => {
-  // A placing mode owns the canvas: a press there places, it does not select.
-  if (hasMoved(e) || longPressFired || activeAddMode.value) return;
+  // A placing mode owns the canvas: a press there places, it does not select. A node held for its
+  // menu is selected, for the menu to act on, as a right click selects it.
+  if (hasMoved(e) || (longPressFired && !nodeHeld) || activeAddMode.value) return;
 
   appStore.bottomBarTab = 'tab-nodes';
 
@@ -1634,7 +1644,7 @@ const onNodeClick = (e: MouseEvent) => {
   projectStore.clearSelection2();
   projectStore.selection2.nodes = [index];
 
-  placeSelectionPanel(e);
+  if (!nodeHeld) placeSelectionPanel(e);
 };
 
 const onElementClick = (e: MouseEvent, element: Beam2D) => {
@@ -1965,6 +1975,7 @@ const endPointerWork = () => {
   if (appStore.mouseMode === MouseMode.PICK_WINDOW) finishWindowPick(null);
   loadDrag.value = null;
   touchedLoad = null;
+  nodeHeld = null;
   cancelDimensionDrag();
   cancelDimensionPointDrag();
   cancelNodeDrag();
@@ -2797,6 +2808,12 @@ const onPointerCancel = (e: PointerEvent) => {
   pendingTap = false;
   cancelLongPress();
   longPressFired = false;
+  nodeHeld = null;
+  // A node drag the browser broke off: put back, or it stays armed and the next tap moves the node
+  if (drgNode) {
+    cancelNodeDrag();
+    appStore.mouseMode = MouseMode.NONE;
+  }
 };
 
 const onMouseUp = (e: PointerEvent) => {
@@ -2817,6 +2834,21 @@ const onMouseUp = (e: PointerEvent) => {
     if (drag.started) dropLoad(drag);
     else openCanvasMenu(drag.lifted.x, drag.lifted.y, drag.lifted.element);
     return;
+  }
+
+  // A node a finger held: dragged after the hold, the drag ends below as any other; held still, the
+  // menu it was held for opens now, on the node its own click has just selected
+  const held = nodeHeld;
+  nodeHeld = null;
+  if (held) {
+    longPressFired = false;
+    if (!drgNode) {
+      appStore.mouseMode = MouseMode.NONE;
+      intersected.value.type = null;
+      intersected.value.index = null;
+      openCanvasMenu(held.x, held.y, held.element);
+      return;
+    }
   }
 
   // The press became the menu; its release is not a tap and must not select or place.

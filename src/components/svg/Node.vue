@@ -437,6 +437,7 @@ const emit = defineEmits(['nodemousemove', 'nodepointerdown', 'nodepointerup', '
         class="handle"
         :data-node-id="node.label"
         @mousemove="emit('nodedefomousemove', $event, node)"
+        @pointerdown="emit('nodepointerdown', $event, node)"
       />
     </g>
 

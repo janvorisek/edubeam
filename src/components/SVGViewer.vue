@@ -1964,6 +1964,8 @@ const cancelNodeDrag = () => {
   drgNode.coords[0] = origX;
   drgNode.coords[2] = origZ;
   drgNode = null;
+  // The drag solved the model at every step: the results, and the drawing, are still of where it was dragged
+  solve();
 };
 
 /**
@@ -1973,6 +1975,11 @@ const cancelNodeDrag = () => {
  */
 const endPointerWork = () => {
   if (appStore.mouseMode === MouseMode.PICK_WINDOW) finishWindowPick(null);
+  cancelDrags();
+};
+
+/** Puts back what the pointer holds: a load, a node or a dimension being dragged, or about to be */
+const cancelDrags = () => {
   loadDrag.value = null;
   touchedLoad = null;
   nodeHeld = null;
@@ -2613,11 +2620,20 @@ const onMouseDown = (e: PointerEvent) => {
   if (e.isPrimary) activePointers.clear();
   activePointers.add(e.pointerId);
 
-  // A second finger turns the gesture into a pinch or a two finger pan. Nothing may be placed by
-  // it, and the tap the first finger had started is off.
+  // A second finger turns the gesture into a pinch or a two finger pan. Nothing may be placed,
+  // dragged or selected by it: the first finger's tap and long press are off, and what it held - a
+  // node, a load, a dimension, a selection box - goes back, or the zoom drags it along. The second
+  // finger's own press on a node has latched that node too.
   if (activePointers.size > 1) {
     pendingTap = false;
     cancelLongPress();
+    cancelDrags();
+    const mode = appStore.mouseMode;
+    if (mode === MouseMode.MOVING || mode === MouseMode.HOVER || mode === MouseMode.SELECTING) {
+      appStore.mouseMode = MouseMode.NONE;
+      intersected.value.type = null;
+      intersected.value.index = null;
+    }
     return;
   }
 

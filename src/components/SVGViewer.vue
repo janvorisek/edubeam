@@ -889,6 +889,21 @@ const openFlyout = (tool: Tool | 'box') => {
 const closeFlyout = (open: boolean) => {
   if (!open) flyout.value = null;
 };
+/**
+ * A flyout closes on a click outside, which a tap on the drawing never fires (SVGPanZoom prevents
+ * the touch defaults): watch presses instead, as the canvas menu does.
+ */
+const closeFlyoutOnOutsidePress = (e: PointerEvent) => {
+  const target = e.target instanceof Element ? e.target : null;
+  if (target?.closest('.tool-flyout')) return;
+  takePressFromDrawing(e);
+  flyout.value = null;
+};
+watch(flyout, (open) => {
+  if (open) document.addEventListener('pointerdown', closeFlyoutOnOutsidePress, true);
+  else document.removeEventListener('pointerdown', closeFlyoutOnOutsidePress, true);
+});
+onUnmounted(() => document.removeEventListener('pointerdown', closeFlyoutOnOutsidePress, true));
 /** A kind chosen in a flyout is taken up at once, with its tool */
 const pickSupport = (type: SupportType) => {
   toolSupport.value = type;
@@ -1484,8 +1499,21 @@ const onNodePress = (e: PointerEvent, node: Node) => {
  */
 const LONG_PRESS_MS = 500;
 let longPressTimer: number | null = null;
-/** True from the moment the menu opened until the gesture's pointerup has been swallowed. */
-let longPressFired = false;
+/**
+ * The press belongs to a menu, which a long press opened or a press outside closed: true until its
+ * pointerup has been swallowed, which no click handler takes for a tap.
+ */
+let pressTaken = false;
+
+/**
+ * A press on the drawing that puts a menu away does only that: it reaches nothing under it, which
+ * would latch a node or a load for a drag, and its release selects or places nothing.
+ */
+const takePressFromDrawing = (e: PointerEvent) => {
+  if (!(e.target instanceof Element) || !svg.value?.contains(e.target)) return;
+  e.stopPropagation();
+  pressTaken = true;
+};
 
 const cancelLongPress = () => {
   if (longPressTimer !== null) window.clearTimeout(longPressTimer);
@@ -1527,7 +1555,7 @@ const startLongPress = (e: PointerEvent) => {
 
   longPressTimer = window.setTimeout(() => {
     longPressTimer = null;
-    longPressFired = true;
+    pressTaken = true;
     // On a load, the long press lifts it; its menu waits for the finger to lift unmoved
     if (liftLoad(clientX, clientY, element)) return;
     // On a node, the press already holds it for a drag: the menu waits for the finger to lift
@@ -1631,7 +1659,7 @@ const placeSelectionPanel = (e: MouseEvent) => {
 const onNodeClick = (e: MouseEvent) => {
   // A placing mode owns the canvas: a press there places, it does not select. A node held for its
   // menu is selected, for the menu to act on, as a right click selects it.
-  if (hasMoved(e) || (longPressFired && !nodeHeld) || activeAddMode.value) return;
+  if (hasMoved(e) || (pressTaken && !nodeHeld) || activeAddMode.value) return;
 
   appStore.bottomBarTab = 'tab-nodes';
 
@@ -1649,7 +1677,7 @@ const onNodeClick = (e: MouseEvent) => {
 
 const onElementClick = (e: MouseEvent, element: Beam2D) => {
   // A placing mode owns the canvas: a press there places, it does not select.
-  if (hasMoved(e) || longPressFired || activeAddMode.value) return;
+  if (hasMoved(e) || pressTaken || activeAddMode.value) return;
 
   appStore.bottomBarTab = 'tab-elements';
 
@@ -1664,7 +1692,7 @@ const onElementClick = (e: MouseEvent, element: Beam2D) => {
 
 const onDimensionClick = (e: PointerEvent, dimensionId: string) => {
   // A placing mode owns the canvas: a press there places, it does not select.
-  if (hasMoved(e) || longPressFired || activeAddMode.value) return;
+  if (hasMoved(e) || pressTaken || activeAddMode.value) return;
 
   projectStore.clearSelection();
   projectStore.clearSelection2();
@@ -1818,7 +1846,7 @@ const onPlotLoadDblClick = (e: MouseEvent) => {
 const onElementLoadClick = (e: MouseEvent, index: number) => {
   // A placing mode owns the canvas: a press there places, it does not select. A load dragged away is
   // moved, not selected.
-  if (hasMoved(e) || longPressFired || activeAddMode.value || loadDrag.value?.started) return;
+  if (hasMoved(e) || pressTaken || activeAddMode.value || loadDrag.value?.started) return;
 
   appStore.bottomBarTab = 'tab-loads';
 
@@ -1834,7 +1862,7 @@ const onElementLoadClick = (e: MouseEvent, index: number) => {
 const onNodalLoadClick = (e: MouseEvent, index: number) => {
   // A placing mode owns the canvas: a press there places, it does not select. A load dragged away is
   // moved, not selected.
-  if (hasMoved(e) || longPressFired || activeAddMode.value || loadDrag.value?.started) return;
+  if (hasMoved(e) || pressTaken || activeAddMode.value || loadDrag.value?.started) return;
 
   appStore.bottomBarTab = 'tab-loads';
 
@@ -1849,7 +1877,7 @@ const onNodalLoadClick = (e: MouseEvent, index: number) => {
 
 const onPrescribedBCClick = (e: MouseEvent, index: number) => {
   // A placing mode owns the canvas: a press there places, it does not select.
-  if (hasMoved(e) || longPressFired || activeAddMode.value) return;
+  if (hasMoved(e) || pressTaken || activeAddMode.value) return;
 
   appStore.bottomBarTab = 'tab-loads';
 
@@ -2579,12 +2607,8 @@ const dropLoad = (d: LoadDrag) => {
 
 const onMouseDown = (e: PointerEvent) => {
   lastPointerType = e.pointerType;
-
-  // Identity, not a flag: a press that lands outside the canvas then leaves nothing armed here.
-  if (e === ctxMenuDismissEvent) {
-    ctxMenuDismissEvent = null;
-    return;
-  }
+  // A press of its own: one a menu took, whose release was lost off the drawing, is over
+  pressTaken = false;
 
   // Picking a window: the drag is the whole interaction, nothing is selected or placed.
   if (appStore.mouseMode === MouseMode.PICK_WINDOW) {
@@ -2823,7 +2847,7 @@ const onPointerCancel = (e: PointerEvent) => {
   touchedLoad = null;
   pendingTap = false;
   cancelLongPress();
-  longPressFired = false;
+  pressTaken = false;
   nodeHeld = null;
   // A node drag the browser broke off: put back, or it stays armed and the next tap moves the node
   if (drgNode) {
@@ -2845,7 +2869,7 @@ const onMouseUp = (e: PointerEvent) => {
 
   // A load a finger lifted: dropped where it was dragged, or the long press's menu where it was not
   if (drag?.lifted) {
-    longPressFired = false;
+    pressTaken = false;
     appStore.mouseMode = MouseMode.NONE;
     if (drag.started) dropLoad(drag);
     else openCanvasMenu(drag.lifted.x, drag.lifted.y, drag.lifted.element);
@@ -2857,7 +2881,7 @@ const onMouseUp = (e: PointerEvent) => {
   const held = nodeHeld;
   nodeHeld = null;
   if (held) {
-    longPressFired = false;
+    pressTaken = false;
     if (!drgNode) {
       appStore.mouseMode = MouseMode.NONE;
       intersected.value.type = null;
@@ -2868,8 +2892,8 @@ const onMouseUp = (e: PointerEvent) => {
   }
 
   // The press became the menu; its release is not a tap and must not select or place.
-  if (longPressFired) {
-    longPressFired = false;
+  if (pressTaken) {
+    pressTaken = false;
     return;
   }
 
@@ -3048,8 +3072,6 @@ const onMouseUp = (e: PointerEvent) => {
 const showCtxMenu = ref(false);
 /** The element the menu was opened over, if any: what a dimension can be built from directly. */
 const ctxMenuElement = ref<Beam2D | null>(null);
-/** The very press that dismissed the menu: the canvas must not read it as a press of its own. */
-let ctxMenuDismissEvent: PointerEvent | null = null;
 const optionsCtxMenu = reactive({
   zIndex: 3000,
   minWidth: 230,
@@ -3067,7 +3089,7 @@ const elementAtEvent = (e: Event) => {
 };
 
 const openCtxMenu = (e: MouseEvent) => {
-  if (hasMoved(e) || longPressFired) return;
+  if (hasMoved(e) || pressTaken) return;
 
   ctxMenuElement.value = elementAtEvent(e);
   optionsCtxMenu.x = e.clientX;
@@ -3079,12 +3101,12 @@ const openCtxMenu = (e: MouseEvent) => {
 /**
  * The menu closes itself on a click outside, but the canvas suppresses the compatibility click a
  * tap would fire (SVGPanZoom prevents the touch defaults), so on a touch screen nothing ever
- * dismissed it. Watch presses instead, and swallow the one that closed the menu.
+ * dismissed it. Watch presses instead.
  */
 const closeCtxMenuOnOutsidePress = (e: PointerEvent) => {
   if (e.target instanceof Element && e.target.closest('.mx-context-menu')) return;
 
-  ctxMenuDismissEvent = e;
+  takePressFromDrawing(e);
   showCtxMenu.value = false;
 };
 
@@ -3336,6 +3358,7 @@ defineExpose({ centerContent, fitContent });
         :open-on-click="false"
         location="end"
         offset="8"
+        content-class="tool-flyout"
         @update:model-value="closeFlyout"
       >
         <v-list density="compact" class="py-1" :aria-label="$t('sideSettings.supports')">
@@ -3357,6 +3380,7 @@ defineExpose({ centerContent, fitContent });
         :open-on-click="false"
         location="end"
         offset="8"
+        content-class="tool-flyout"
         @update:model-value="closeFlyout"
       >
         <v-list density="compact" class="py-1" :aria-label="$t('sideSettings.loads')">

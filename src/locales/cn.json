@@ -330,7 +330,8 @@
       "comingSoon": "即将推出",
       "tryIt": "试一试",
       "tried": {
-        "diagramStyles": "已开启带有各段多项式次数的阴影内力图。"
+        "diagramStyles": "已开启带有各段多项式次数的阴影内力图。",
+        "newDrawing": "已开启带阴影内力图的新版绘图。"
       }
     },
     "polygonSection": {

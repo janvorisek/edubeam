@@ -330,7 +330,8 @@
       "comingSoon": "Coming soon",
       "tryIt": "Try it",
       "tried": {
-        "diagramStyles": "Hatched diagrams with the degree of each segment are on."
+        "diagramStyles": "Hatched diagrams with the degree of each segment are on.",
+        "newDrawing": "The new drawing with hatched diagrams is on."
       }
     },
     "polygonSection": {

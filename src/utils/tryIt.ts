@@ -38,6 +38,9 @@ const TRY_IT = {
 
 export type TryItId = keyof typeof TRY_IT;
 
+/** Every feature there is to try: each has its notice, `dialogs.changelog.tried.<id>` */
+export const TRY_IT_IDS = Object.keys(TRY_IT) as TryItId[];
+
 export const isTryItId = (value: unknown): value is TryItId =>
   typeof value === 'string' && Object.hasOwn(TRY_IT, value);
 

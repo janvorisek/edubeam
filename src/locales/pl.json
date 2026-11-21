@@ -330,7 +330,8 @@
       "comingSoon": "Wkrótce",
       "tryIt": "Wypróbuj",
       "tried": {
-        "diagramStyles": "Kreskowane wykresy ze stopniem wielomianu na odcinkach są włączone."
+        "diagramStyles": "Kreskowane wykresy ze stopniem wielomianu na odcinkach są włączone.",
+        "newDrawing": "Nowy rysunek z kreskowanymi wykresami jest włączony."
       }
     },
     "polygonSection": {

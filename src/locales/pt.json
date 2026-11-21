@@ -330,7 +330,8 @@
       "comingSoon": "Em breve",
       "tryIt": "Experimentar",
       "tried": {
-        "diagramStyles": "Os diagramas hachurados com o grau de cada trecho estão ativados."
+        "diagramStyles": "Os diagramas hachurados com o grau de cada trecho estão ativados.",
+        "newDrawing": "O novo desenho com diagramas hachurados está ativado."
       }
     },
     "polygonSection": {

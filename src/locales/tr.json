@@ -330,7 +330,8 @@
       "comingSoon": "Yakında",
       "tryIt": "Dene",
       "tried": {
-        "diagramStyles": "Her bölümün polinom derecesiyle taralı diyagramlar açık."
+        "diagramStyles": "Her bölümün polinom derecesiyle taralı diyagramlar açık.",
+        "newDrawing": "Taralı diyagramlarla yeni çizim açık."
       }
     },
     "polygonSection": {

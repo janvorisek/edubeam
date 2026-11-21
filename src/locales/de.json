@@ -330,7 +330,8 @@
       "comingSoon": "Demnächst",
       "tryIt": "Ausprobieren",
       "tried": {
-        "diagramStyles": "Schraffierte Verläufe mit dem Polynomgrad je Abschnitt sind eingeschaltet."
+        "diagramStyles": "Schraffierte Verläufe mit dem Polynomgrad je Abschnitt sind eingeschaltet.",
+        "newDrawing": "Die neue Darstellung mit schraffierten Verläufen ist eingeschaltet."
       }
     },
     "polygonSection": {

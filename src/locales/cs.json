@@ -330,7 +330,8 @@
       "comingSoon": "Připravujeme",
       "tryIt": "Vyzkoušet",
       "tried": {
-        "diagramStyles": "Šrafované průběhy se stupněm polynomu na úsecích jsou zapnuté."
+        "diagramStyles": "Šrafované průběhy se stupněm polynomu na úsecích jsou zapnuté.",
+        "newDrawing": "Nové vykreslování se šrafovanými průběhy je zapnuté."
       }
     },
     "polygonSection": {

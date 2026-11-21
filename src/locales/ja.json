@@ -330,7 +330,8 @@
       "comingSoon": "近日公開",
       "tryIt": "試してみる",
       "tried": {
-        "diagramStyles": "各区間の多項式の次数付きのハッチング図が有効になりました。"
+        "diagramStyles": "各区間の多項式の次数付きのハッチング図が有効になりました。",
+        "newDrawing": "ハッチング図の新しい描画が有効になりました。"
       }
     },
     "polygonSection": {

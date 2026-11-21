@@ -330,7 +330,8 @@
       "comingSoon": "출시 예정",
       "tryIt": "사용해 보기",
       "tried": {
-        "diagramStyles": "구간별 다항식 차수가 표시된 해칭 다이어그램이 켜졌습니다."
+        "diagramStyles": "구간별 다항식 차수가 표시된 해칭 다이어그램이 켜졌습니다.",
+        "newDrawing": "해칭 다이어그램의 새 도면이 켜졌습니다."
       }
     },
     "polygonSection": {

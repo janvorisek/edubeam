@@ -330,7 +330,8 @@
       "comingSoon": "Segera hadir",
       "tryIt": "Coba",
       "tried": {
-        "diagramStyles": "Diagram berarsir dengan derajat tiap segmen telah aktif."
+        "diagramStyles": "Diagram berarsir dengan derajat tiap segmen telah aktif.",
+        "newDrawing": "Gambar baru dengan diagram berarsir telah aktif."
       }
     },
     "polygonSection": {

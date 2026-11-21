@@ -330,7 +330,8 @@
       "comingSoon": "Sắp ra mắt",
       "tryIt": "Dùng thử",
       "tried": {
-        "diagramStyles": "Đã bật biểu đồ gạch chéo kèm bậc đa thức của từng đoạn."
+        "diagramStyles": "Đã bật biểu đồ gạch chéo kèm bậc đa thức của từng đoạn.",
+        "newDrawing": "Đã bật bản vẽ mới với biểu đồ gạch chéo."
       }
     },
     "polygonSection": {

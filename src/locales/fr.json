@@ -330,7 +330,8 @@
       "comingSoon": "Bientôt disponible",
       "tryIt": "Essayer",
       "tried": {
-        "diagramStyles": "Les diagrammes hachurés avec le degré de chaque tronçon sont activés."
+        "diagramStyles": "Les diagrammes hachurés avec le degré de chaque tronçon sont activés.",
+        "newDrawing": "Le nouveau dessin avec des diagrammes hachurés est activé."
       }
     },
     "polygonSection": {

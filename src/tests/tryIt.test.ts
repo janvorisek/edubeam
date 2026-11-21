@@ -1,7 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { useViewerStore } from '@/store/viewer';
-import { isTryItId, triedFeature, tryFeature, undoTriedFeature } from '@/utils/tryIt';
+import { TRY_IT_IDS, isTryItId, triedFeature, tryFeature, undoTriedFeature } from '@/utils/tryIt';
+import en from '@/locales/en.json';
 
 describe('trying a feature from the changelog', () => {
   beforeEach(() => {
@@ -47,5 +48,10 @@ describe('trying a feature from the changelog', () => {
     undoTriedFeature();
     expect(viewer.renderer).toBe('classic');
     expect(viewer.diagramStyle.fill).toBe('solid');
+  });
+
+  it('has a notice for every feature, so the toast never shows a key', () => {
+    const tried: Record<string, string> = en.dialogs.changelog.tried;
+    for (const id of TRY_IT_IDS) expect(tried[id], id).toBeTruthy();
   });
 });

@@ -330,7 +330,8 @@
       "comingSoon": "Prossimamente",
       "tryIt": "Prova",
       "tried": {
-        "diagramStyles": "I diagrammi tratteggiati con il grado di ogni tratto sono attivi."
+        "diagramStyles": "I diagrammi tratteggiati con il grado di ogni tratto sono attivi.",
+        "newDrawing": "Il nuovo disegno con diagrammi tratteggiati è attivo."
       }
     },
     "polygonSection": {

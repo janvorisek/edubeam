@@ -330,7 +330,8 @@
       "comingSoon": "Próximamente",
       "tryIt": "Probar",
       "tried": {
-        "diagramStyles": "Los diagramas rayados con el grado de cada tramo están activados."
+        "diagramStyles": "Los diagramas rayados con el grado de cada tramo están activados.",
+        "newDrawing": "El nuevo dibujo con diagramas rayados está activado."
       }
     },
     "polygonSection": {

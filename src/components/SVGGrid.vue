@@ -208,7 +208,7 @@ defineExpose({ refreshGrid });
     width: calc(100% - 32px);
     height: calc(100% - 32px);
     fill: transparent;
-    stroke: var(--eb-muted, #666);
+    stroke: var(--eb-frame, #666);
     stroke-width: 1px;
   }
 }

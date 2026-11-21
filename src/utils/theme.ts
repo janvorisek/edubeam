@@ -75,6 +75,9 @@ export const drawingVars = (theme: ThemeName): Record<string, string> => {
     '--eb-paper': p.paper,
     '--eb-muted': p.muted,
     '--eb-grid': p.grid,
+    // The rulers' inner edge: the light theme's grey, and on the dark canvas a quiet line a step above
+    // the grid, where the muted grey was the brightest line on the screen
+    '--eb-frame': dark ? '#2c3247' : '#666666',
     // The rulers' numbers: black in the light theme, a step behind the drawing in the dark one
     '--eb-ruler': dark ? '#646b80' : p.ink,
     // The selection's blue, lightened to read on the night canvas

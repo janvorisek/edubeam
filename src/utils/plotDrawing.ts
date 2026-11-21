@@ -248,6 +248,8 @@ export const editorSceneOptions = (
 
 const YIELDING_GROUPS: ReadonlySet<string> = new Set(['loads']);
 
+const LAST_GROUPS: ReadonlySet<string> = new Set(['memberLabels']);
+
 /** Labels placed after the given data, and left out when crowded */
 const LATE_GROUPS: ReadonlySet<string> = new Set([...RESULT_LAYERS, 'memberLabels']);
 
@@ -263,6 +265,9 @@ export const editorResolveOptions = (look: EditorLook, shown: ReadonlySet<PlotLa
   yieldingGroups: YIELDING_GROUPS,
   // and are never left out
   keptGroups: YIELDING_GROUPS,
+  // The members' names last of all: they find room round the loads' values or give way, not take the
+  // place a load's value, never left out, then has to cover
+  lastGroups: LAST_GROUPS,
 });
 
 /** A node square as a path, so a file writes it with the rest */

@@ -103,6 +103,8 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
+    // One solver and one Vue, whichever package imports them
+    dedupe: ['@edubeam/fem', 'vue'],
     extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue'],
   },
 

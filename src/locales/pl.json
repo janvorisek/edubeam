@@ -2,7 +2,8 @@
   "tabView": {
     "viewer": "Widok",
     "settings": "Ustawienia",
-    "results": "Wyniki"
+    "results": "Wyniki",
+    "report": "Raport"
   },
   "common": {
     "label": "Etykieta",
@@ -86,6 +87,7 @@
     "addPrescribedDisplacement": "Zadaj przemieszczenie",
     "UDL": "Obciążenie równomiernie rozłożone",
     "forceMoment": "Siła/Moment",
+    "moment": "Moment",
     "editLoad": "Edytuj obciążenie",
     "loadPositionOnBeam": "Pozycja obciążenia od węzła początkowego",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Zmiana temperatury dolnych minus górnych włókien",
@@ -198,6 +200,10 @@
     "result_label_orientation": "Orientacja etykiet wyników",
     "result_label_orientation_axis": "Prostopadle do wykresu",
     "result_label_orientation_horizontal": "Zawsze poziomo",
+    "renderer": "Renderowanie",
+    "renderer_classic": "Klasyczne",
+    "renderer_plot": "Nowe (beta)",
+    "show_readout": "Pokaż wartości przy kursorze",
     "result_labels": "Etykiety wyników",
     "diagrams": {
       "title": "Wykresy sił wewnętrznych",
@@ -232,7 +238,13 @@
     "boxSelect": "Zaznaczanie prostokątem",
     "centerContent": "Wyśrodkuj widok",
     "fitContent": "Dopasuj do ekranu",
-    "holdCtrl": "Przytrzymaj Ctrl, aby dodawać myszą"
+    "holdCtrl": "Przytrzymaj Ctrl, aby dodawać myszą",
+    "select": "Zaznacz",
+    "tools": "Narzędzia",
+    "snapMiddle": "Środek",
+    "snapThird": "Jedna trzecia",
+    "snapOnElement": "Na elemencie {label}",
+    "placeFreely": "Przytrzymaj Alt, aby umieścić swobodnie"
   },
   "dofs": {
     "bcs": "Podparte stopnie swobody"
@@ -399,6 +411,19 @@
     "shareLayers": "Pokaż to, co widzę",
     "shareLayersHint": "Link otworzy się z wykresami, obciążeniami i etykietami, które masz włączone."
   },
+  "shortcuts": {
+    "title": "Skróty klawiszowe",
+    "drawing": "Rysunek",
+    "editing": "Edycja",
+    "cancel": "Powrót do zaznaczania, anulowanie wstawiania",
+    "placeFreely": "Umieszczanie swobodne, bez przyciągania (przytrzymaj)",
+    "grid": "Pokaż lub ukryj siatkę",
+    "snap": "Włącz lub wyłącz przyciąganie do siatki",
+    "zoom": "Powiększanie i pomniejszanie",
+    "selectAll": "Zaznacz wszystko",
+    "save": "Zapisz projekt",
+    "exportImage": "Eksportuj obraz"
+  },
   "tour": {
     "menu": {
       "title": "Menu",
@@ -407,6 +432,10 @@
     "undoRedo": {
       "title": "Cofnij i ponów",
       "description": "Przechodź wstecz i naprzód przez swoje zmiany. Ctrl+Z i Ctrl+Shift+Z robią to samo."
+    },
+    "tools": {
+      "title": "Narzędzia",
+      "description": "Dodawaj węzły, elementy, podpory i obciążenia bezpośrednio na rysunku. Przytrzymaj narzędzie lub kliknij jego róg, aby wybrać rodzaj podpory lub obciążenia. Punkty przyciągają się do węzłów oraz do środka i trzecich części elementu; przytrzymaj Alt, aby umieścić swobodnie. Klawisze: V zaznaczanie, N węzeł, E element, U podpora, L obciążenie, D wymiar, Esc powrót do zaznaczania."
     },
     "viewerControls": {
       "title": "Przyciski widoku",
@@ -777,5 +806,15 @@
       "acrylic": "akryl",
       "approx": "przybl."
     }
+  },
+  "report": {
+    "column": "W kolumnie",
+    "row": "W wierszu",
+    "no_results": "Wyświetlane po rozwiązaniu konstrukcji",
+    "guides": "Linie pomocnicze",
+    "print": "Drukuj",
+    "paper": "Papier",
+    "portrait": "Pionowo",
+    "landscape": "Poziomo"
   }
 }

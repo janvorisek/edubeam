@@ -21,6 +21,19 @@ const TRY_IT = {
       viewer.showBendingMoment = before.showBendingMoment;
     };
   },
+  /** The new drawing, with hatched diagrams, as someone new starts with it. */
+  newDrawing: () => {
+    const viewer = useViewerStore();
+    const before = { renderer: viewer.renderer, fill: viewer.diagramStyle.fill };
+
+    viewer.renderer = 'plot';
+    viewer.diagramStyle.fill = 'hatch';
+
+    return () => {
+      viewer.renderer = before.renderer;
+      viewer.diagramStyle.fill = before.fill;
+    };
+  },
 } satisfies Record<string, () => () => void>;
 
 export type TryItId = keyof typeof TRY_IT;

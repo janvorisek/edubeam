@@ -40,6 +40,7 @@
                 :convert-moment="convertMoment"
                 :zoom-enabled="false"
                 :support-size="0.5"
+                :plot="tileLook"
               />
             </div>
             <div class="example-copy">
@@ -71,11 +72,15 @@
 import { ref } from 'vue';
 import { closeModal } from 'jenesius-vue-modal';
 import SVGElementViewer from '../SVGElementViewer.vue';
+import { useTileLook } from '@/utils/useEditorLook';
 import { buildExampleSolver, createExampleLibrary, examples, type ExampleDefinition } from '@/utils/examples';
 import { docsUrl, trackDocsClick } from '@/utils/docs';
 import { replaceModel, resetModel } from '@/utils';
 import { useProjectStore } from '@/store/project';
 import { eventBus, EventType } from '@/EventBus';
+
+// Drawn by the renderer the canvas uses
+const tileLook = useTileLook();
 
 const open = ref(true);
 

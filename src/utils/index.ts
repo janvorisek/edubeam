@@ -473,6 +473,18 @@ export const readStoredAppSettings = (): Record<string, unknown> | null | undefi
   }
 };
 
+/**
+ * Whether a store has saved its settings in this browser before, under its id: no on a first visit.
+ * Storage that cannot be read counts as a first visit, which only means the defaults are offered.
+ */
+export const hasStoredSettings = (storeId: string): boolean => {
+  try {
+    return localStorage.getItem(storeId) !== null;
+  } catch {
+    return false;
+  }
+};
+
 /** App locale of a browser language tag, matched on the language alone so cs-CZ opens Czech. */
 const appLocaleOf = (tag: string): string | undefined => {
   let locale: Intl.Locale;

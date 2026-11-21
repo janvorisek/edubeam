@@ -138,6 +138,10 @@
     "result_label_orientation": "Orientace popisků výsledků",
     "result_label_orientation_axis": "Kolmo k vykreslení grafu",
     "result_label_orientation_horizontal": "Vždy vodorovně",
+    "renderer": "Vykreslování",
+    "renderer_classic": "Klasické",
+    "renderer_plot": "Nové (beta)",
+    "show_readout": "Zobrazit hodnoty u kurzoru",
     "result_labels": "Popisky výsledků",
     "diagrams": {
       "title": "Průběhy vnitřních sil",
@@ -176,6 +180,7 @@
     "addPrescribedDisplacement": "Předepsat posunutí",
     "UDL": "Rovnoměrné",
     "forceMoment": "Síla/moment",
+    "moment": "Moment",
     "editLoad": "Upravit zatížení",
     "loadPositionOnBeam": "Vzdálenost od počátečního uzlu",
     "temperatureAxial": "ΔT<sub>d</sub>-ΔT<sub>h</sub> ... Rozdíl oteplení dolních a horních vláken",
@@ -214,7 +219,8 @@
   "tabView": {
     "results": "Výsledky",
     "settings": "Nastavení",
-    "viewer": "Konstrukce"
+    "viewer": "Konstrukce",
+    "report": "Protokol"
   },
   "sideSettings": {
     "showDeformedShape": "Deformovaný tvar",
@@ -232,7 +238,13 @@
     "boxSelect": "Výběr obdélníkem",
     "centerContent": "Vystředit konstrukci",
     "fitContent": "Přizpůsobit obrazovce",
-    "holdCtrl": "Podržením Ctrl přidáte myší"
+    "holdCtrl": "Podržením Ctrl přidáte myší",
+    "select": "Výběr",
+    "tools": "Nástroje",
+    "snapMiddle": "Střed",
+    "snapThird": "Třetina",
+    "snapOnElement": "Na prutu {label}",
+    "placeFreely": "Podržením Alt umístíte volně"
   },
   "dofs": {
     "bcs": "Podepřené stupně volnosti"
@@ -399,6 +411,19 @@
     "shareLayers": "Zobrazit to, co vidím já",
     "shareLayersHint": "Odkaz se otevře se stejnými průběhy, zatíženími a popisky, jaké máte zapnuté."
   },
+  "shortcuts": {
+    "title": "Klávesové zkratky",
+    "drawing": "Výkres",
+    "editing": "Úpravy",
+    "cancel": "Zpět na výběr, zrušení vkládání",
+    "placeFreely": "Volné umístění bez přichytávání (podržet)",
+    "grid": "Zobrazit nebo skrýt mřížku",
+    "snap": "Zapnout nebo vypnout přichytávání k mřížce",
+    "zoom": "Přiblížit a oddálit",
+    "selectAll": "Vybrat vše",
+    "save": "Uložit projekt",
+    "exportImage": "Exportovat obrázek"
+  },
   "tour": {
     "menu": {
       "title": "Menu",
@@ -407,6 +432,10 @@
     "undoRedo": {
       "title": "Zpět a znovu",
       "description": "Procházejte své změny dozadu i dopředu. Totéž dělá Ctrl+Z a Ctrl+Shift+Z."
+    },
+    "tools": {
+      "title": "Nástroje",
+      "description": "Uzly, prvky, podpory a zatížení přidáte přímo do výkresu. Podržením nástroje nebo kliknutím na jeho roh zvolíte druh podpory či zatížení. Body se přichytávají k uzlům a ke středu a třetinám prvků; podržením Alt umístíte volně. Klávesy: V výběr, N uzel, E prvek, U podpora, L zatížení, D kóta, Esc zpět na výběr."
     },
     "viewerControls": {
       "title": "Tlačítka zobrazení",
@@ -777,5 +806,15 @@
       "acrylic": "akrylát",
       "approx": "přibl."
     }
+  },
+  "report": {
+    "column": "Pod sebou",
+    "row": "Vedle sebe",
+    "no_results": "Zobrazí se po vyřešení konstrukce",
+    "guides": "Pomocné čáry",
+    "print": "Tisk",
+    "paper": "Papír",
+    "portrait": "Na výšku",
+    "landscape": "Na šířku"
   }
 }

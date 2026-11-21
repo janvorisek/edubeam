@@ -3,6 +3,32 @@
     <v-col cols="12" md="6">
       <h3 class="mb-1">{{ $t('settings.viewer_settings') }}</h3>
 
+      <div class="vs-heading">{{ $t('settings.renderer') }}</div>
+      <v-btn-toggle
+        v-model="viewerStore.renderer"
+        class="vs-toggle"
+        color="primary"
+        density="compact"
+        variant="outlined"
+        divided
+        mandatory
+      >
+        <v-btn value="classic">{{ $t('settings.renderer_classic') }}</v-btn>
+        <v-btn value="plot">{{ $t('settings.renderer_plot') }}</v-btn>
+      </v-btn-toggle>
+      <div class="vs-group mt-2">
+        <label class="vs-row vs-row--switch">
+          <span>{{ $t('settings.show_readout') }}</span>
+          <v-switch
+            v-model="viewerStore.showReadout"
+            :disabled="viewerStore.renderer !== 'plot'"
+            color="primary"
+            density="compact"
+            hide-details
+          />
+        </label>
+      </div>
+
       <div class="vs-heading">{{ $t('settings.grid') }}</div>
       <div class="vs-group">
         <label class="vs-row vs-row--switch">
@@ -108,9 +134,11 @@
 
     <v-col cols="12" md="6">
       <div class="vs-heading mt-md-8">{{ $t('settings.viewer_preview') }}</div>
-      <div class="vs-preview">
+      <div ref="previewBox" class="vs-preview">
+        <!-- Drawn by the renderer the canvas uses: the preview shows what the settings will look like -->
+        <div v-if="plotPreviewSvg" class="vs-preview-plot" v-html="plotPreviewSvg" />
         <SVGElementViewer
-          v-if="_created"
+          v-else-if="_created && viewerStore.renderer === 'classic'"
           id="settings-appearance"
           class="overflow-hidden"
           :solver="solver"
@@ -246,7 +274,11 @@ import { useViewerStore } from '@/store/viewer';
 import { useAppStore } from '@/store/app';
 import SVGElementViewer from '../SVGElementViewer.vue';
 import { LinearStaticSolver, DofID } from '@edubeam/fem';
-import { computed, onMounted, ref, watch, type Ref } from 'vue';
+import { computed, onMounted, ref, useTemplateRef, watch, type Ref } from 'vue';
+import { useElementSize } from '@vueuse/core';
+import type { PlotLayer, PlotModel } from '@edubeam/plot';
+import { editorFigure, editorFigureSvg, editorLayers, readEditorModel } from '@/utils/plotDrawing';
+import { useEditorLook } from '@/utils/useEditorLook';
 import { unitSize } from '@/utils/unitConversions';
 import { presetFamily, type PresetFamily } from '@/utils/presetFamily';
 import { checkNumber, parseFloat2, positiveNumberRules } from '@/utils';
@@ -397,6 +429,50 @@ const previewReserve = computed(() => {
   return { top: band, bottom: band, left: 48, right: 48 };
 });
 
+/* ── The preview as the plot renderer draws it ──────────────────────────────────────────────── */
+const previewBox = useTemplateRef<HTMLElement>('previewBox');
+// The box inside its border
+const { width: previewWidth, height: previewHeight } = useElementSize(previewBox, undefined, { box: 'content-box' });
+const look = useEditorLook();
+
+const previewModel = computed((): PlotModel | null => {
+  try {
+    return readEditorModel(solver.value);
+  } catch (error) {
+    console.warn('[plot renderer] cannot read the preview', error);
+    return null;
+  }
+});
+
+/** Every quantity the buttons show makes room, so switching between them keeps the beam where it is */
+const PREVIEW_RESERVE: readonly PlotLayer[] = ['N', 'V', 'M', 'w', 'reactions'];
+
+const plotPreviewSvg = computed((): string => {
+  const model = previewModel.value;
+  const width = Math.floor(previewWidth.value);
+  const height = Math.floor(previewHeight.value);
+  if (viewerStore.renderer !== 'plot' || !model || width <= 0 || height <= 0) return '';
+  const q = showQuantity.value;
+  const shown = editorLayers({
+    supports: true,
+    loads: true,
+    reactions: q === 'reactions',
+    nodeLabels: false,
+    memberLabels: false,
+    normalForce: q === 'normalForce',
+    shearForce: q === 'shearForce',
+    bendingMoment: q === 'bendingMoment',
+    deformedShape: q === 'deformedShape',
+  });
+  try {
+    const figure = editorFigure(model, look.value, shown, { width, height, padding: PREVIEW_PADDING }, PREVIEW_RESERVE);
+    return editorFigureSvg(figure, look.value, viewerStore.colors, { background: false });
+  } catch (error) {
+    console.warn('[plot renderer] cannot draw the preview', error);
+    return '';
+  }
+});
+
 const _created = ref(false);
 onMounted(() => {
   _created.value = true;
@@ -540,6 +616,10 @@ onMounted(() => {
 
 .vs-preview > * {
   height: 100%;
+}
+
+.vs-preview-plot :deep(svg) {
+  display: block;
 }
 
 /* As tall as the other controls, with no more padding than the names need */

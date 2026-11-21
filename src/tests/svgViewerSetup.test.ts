@@ -9,6 +9,8 @@ import { useClipboardStore } from '@/store/clipboard';
 import { i18n } from '@/plugins/i18n';
 import SVGViewer from '@/components/SVGViewer.vue';
 import { useProjectStore } from '@/store/project';
+import { useViewerStore } from '@/store/viewer';
+import { vi } from 'vitest';
 
 /**
  * The drawing hands parts of its state to the overlays that draw on top of it, and a watch or a
@@ -41,7 +43,11 @@ const mountViewer = () => {
 };
 
 describe('the drawing', () => {
-  beforeEach(() => setActivePinia(createPinia()));
+  beforeEach(() => {
+    setActivePinia(createPinia());
+    // The editor's own drawing; the plot renderer, which someone new starts with, is tested below
+    useViewerStore().renderer = 'classic';
+  });
 
   it('sets up without an error on an empty model', () => {
     const { wrapper, errors } = mountViewer();
@@ -113,5 +119,77 @@ describe('the drawing', () => {
     await new Promise((r) => setTimeout(r, 0));
 
     expect(errors).toEqual([]);
+  });
+
+  describe('by the plot renderer', () => {
+    /** The plot drawing reports a model it cannot read or draw as a warning, and draws nothing */
+    const plotWarnings = () => {
+      const warn = vi.spyOn(console, 'warn');
+      return () => warn.mock.calls.filter((call) => String(call[0]).startsWith('[plot renderer]'));
+    };
+
+    beforeEach(() => {
+      useViewerStore().renderer = 'plot';
+    });
+
+    it('draws the model by plot, with its own hit layer, and none of the editor drawing', async () => {
+      const warnings = plotWarnings();
+      withMissingNode();
+      useProjectStore().solve();
+
+      const { wrapper, errors } = mountViewer();
+      await new Promise((r) => setTimeout(r, 0));
+
+      expect(errors).toEqual([]);
+      expect(warnings()).toEqual([]);
+      expect(wrapper.find('.plot-picture').exists()).toBe(true);
+      expect(wrapper.findAll('g.element')).toHaveLength(0);
+      // The members and nodes are hit where plot draws them, the missing node's element left out
+      const hits = wrapper.find('.plot-hits');
+      expect(hits.findAll('.member[data-element-id]').map((h) => h.attributes('data-element-id'))).toEqual(['1']);
+      expect(hits.findAll('[data-node-id]').map((h) => h.attributes('data-node-id'))).toEqual(['1', '2']);
+    });
+
+    it("hits a member's diagrams as the member itself", async () => {
+      const projectStore = useProjectStore();
+      const domain = projectStore.solver.domain;
+      domain.createNode(1, [0, 0, 0], [DofID.Dx, DofID.Dz]);
+      domain.createNode(2, [4, 0, 0], [DofID.Dz]);
+      domain.createMaterial(1, { e: 210000e6, g: 8.75e10, alpha: 12e-6, d: 4000 });
+      domain.createCrossSection(1, { a: 1, iy: 8.356e-5, iz: 1, dyz: 999991, h: 1, k: 1e32, j: 99999 });
+      domain.createBeam2D(1, [1, 2], 1, 1);
+      projectStore.solver.loadCases[0].createBeamElementUniformEdgeLoad('1', [0, 10e3], true);
+      projectStore.solve();
+
+      const { wrapper, errors } = mountViewer();
+      await new Promise((r) => setTimeout(r, 0));
+
+      expect(errors).toEqual([]);
+      // The moment diagram, on by default: over it, the pointer is over element 1
+      const results = wrapper.findAll('.plot-hits .result');
+      expect(results.length).toBeGreaterThan(0);
+      expect(results.every((h) => h.attributes('data-element-id') === '1')).toBe(true);
+    });
+
+    it('previews a paste by plot', async () => {
+      const warnings = plotWarnings();
+      withMissingNode();
+      useClipboardStore().select({
+        nodes: ['1', '2'],
+        elements: ['1', '2'],
+        nodalLoads: [],
+        elementLoads: [],
+        prescribedBC: [],
+        dimensions: [],
+      });
+
+      const { wrapper, errors } = mountViewer();
+      useAppStore().mouseMode = MouseMode.PASTE_CLIPBOARD;
+      await new Promise((r) => setTimeout(r, 0));
+
+      expect(errors).toEqual([]);
+      expect(warnings()).toEqual([]);
+      expect(wrapper.find('.plot-paste').exists()).toBe(true);
+    });
   });
 });

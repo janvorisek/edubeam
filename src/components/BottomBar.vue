@@ -54,7 +54,7 @@
             :color="appStore.mouseMode === MouseMode.ADD_NODE ? 'primary' : 'secondary'"
             style="border-left: 1px solid #ccc"
             :rounded="0"
-            @click.stop="toggleMouseMode(MouseMode.ADD_NODE)"
+            @click.stop="chooseTool('node')"
           >
             <v-icon small>mdi-cursor-default-outline</v-icon> {{ $t('nodes.addNode') }}
           </v-btn>
@@ -287,7 +287,7 @@
             :color="appStore.mouseMode === MouseMode.ADD_ELEMENT ? 'primary' : 'secondary'"
             style="border-left: 1px solid #ccc"
             :rounded="0"
-            @click.stop="addElementUsingMouse"
+            @click.stop="chooseTool('element')"
           >
             <v-icon small>mdi-cursor-default-outline</v-icon> {{ $t('elements.addElement') }}
           </v-btn>
@@ -1534,6 +1534,7 @@
 
 <script setup lang="ts">
 import { parseNumberInput } from '@/utils/numberInput';
+import { useTools } from '@/utils/useTools';
 import { axisMark } from '@/utils/nodalLcs';
 import { formatDisplacementLabel } from '@/utils/numberDisplay';
 import {
@@ -2022,30 +2023,9 @@ const formatElementLoadsAtElement = (item: Beam2D): [number, string][] => {
   });
 };
 
-/** The button that starts a placing mode also leaves it, for touch where there is no Esc key. */
-const toggleMouseMode = (mode: MouseMode) => {
-  appStore.mouseMode = appStore.mouseMode === mode ? MouseMode.NONE : mode;
-};
-
-const addElementUsingMouse = () => {
-  if (appStore.mouseMode === MouseMode.ADD_ELEMENT) {
-    appStore.mouseMode = MouseMode.NONE;
-    return;
-  }
-
-  // check if we have material and CS to assign
-  if (projStore.solver.domain.materials.size === 0) {
-    alert(t('warnings.addMaterialFirst'));
-    return;
-  }
-
-  if (projStore.solver.domain.crossSections.size === 0) {
-    alert(t('warnings.addCrossSectionFirst'));
-    return;
-  }
-
-  appStore.mouseMode = MouseMode.ADD_ELEMENT;
-};
+// The button that starts a placing mode also leaves it, for touch where there is no Esc key: the
+// drawing's tools, as its tool rail chooses them
+const { choose: chooseTool } = useTools();
 
 const tabs = reactive([
   {

@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import SvgPanZoom from './SVGPanZoom2.vue';
 import SvgViewerDefs from './SVGViewerDefs.vue';
-import { ref, onMounted, computed, watch, provide, useId } from 'vue';
+import { ref, onMounted, computed, watch, provide, useId, shallowRef } from 'vue';
+import type { PlotModel } from '@edubeam/plot';
+import PlotScene from './PlotScene.vue';
+import { dimensionAnchors, editorFit, editorLayers, readEditorModel, type EditorLook } from '@/utils/plotDrawing';
 
 import {
   Node,
@@ -95,6 +98,11 @@ const props = withDefaults(
     numberFormat?: Intl.NumberFormat;
     zoomEnabled?: boolean;
     fontSize?: number;
+    /**
+     * Draws the model with @edubeam/plot in this look instead of the editor's own drawing, as the
+     * canvas does with the plot renderer; the dimension lines stay. The layers follow the show* props.
+     */
+    plot?: EditorLook | null;
   }>(),
   {
     id: undefined,
@@ -145,6 +153,7 @@ const props = withDefaults(
     numberFormat: () => new Intl.NumberFormat(),
     zoomEnabled: false,
     fontSize: 13,
+    plot: null,
   }
 );
 
@@ -164,8 +173,70 @@ provide('viewer_uuid', viewerId);
 
 const update = () => {
   updateResultScales();
+  readPlotModel();
   fitContent();
 };
+
+/* ── Drawn by plot ───────────────────────────────────────────────────────────────────────────── */
+const plotModel = shallowRef<PlotModel | null>(null);
+// Read again with every update, which follows the solver
+const readPlotModel = () => {
+  if (!props.plot) {
+    plotModel.value = null;
+    return;
+  }
+  try {
+    plotModel.value = readEditorModel(props.solver);
+  } catch (error) {
+    console.warn('[plot renderer] cannot read the model', error);
+    plotModel.value = null;
+  }
+};
+
+const plotLayers = computed(() =>
+  editorLayers({
+    supports: props.showSupports,
+    loads: props.showLoads,
+    reactions: props.showReactions,
+    nodeLabels: props.showNodeLabels,
+    memberLabels: props.showElementLabels,
+    normalForce: props.showNormalForce,
+    shearForce: props.showShearForce,
+    bendingMoment: props.showMoments,
+    deformedShape: props.showDeformedShape,
+  })
+);
+
+/**
+ * Plot knows how far everything it draws reaches at any scale, so the fit is worked out, not
+ * measured off the drawing: symbols and labels keep their size in px, and on a small tile they can
+ * outweigh the structure, which a measured fit chases without end.
+ */
+const plotFitView = computed(() => {
+  const look = props.plot;
+  const model = plotModel.value;
+  if (!look || !model || model.nodes.length === 0) return null;
+  const layers = plotLayers.value;
+  const diagramScale = plotDiagramScale.value;
+  const dimensions = dimensionAnchors(props.dimlines, look.fontSize);
+  return (width: number, height: number, padding: number): ViewBox | null => {
+    try {
+      const fit = editorFit(model, look, layers, { width, height, padding }, { extra: dimensions, diagramScale });
+      return { x: -fit.tx / fit.s, y: -fit.ty / fit.s, w: width / fit.s, h: height / fit.s };
+    } catch (error) {
+      console.warn('[plot renderer] cannot fit the model', error);
+      return null;
+    }
+  };
+});
+
+/** This viewer's own diagram scales, px per SI unit, as its own drawing uses them */
+const plotDiagramScale = computed(() => ({
+  N: normalForceScale.value * props.resultsScalePx,
+  V: shearForceScale.value * props.resultsScalePx,
+  M: bendingMomentScale.value * props.resultsScalePx,
+  w: defoScale.value * props.resultsScalePx,
+}));
 
 const updateResultScales = () => {
   if (!props.solver.loadCases[0].solved) return;
@@ -206,6 +277,7 @@ watch(() => props.showDeformedShape, update);
 watch(() => props.showNormalForce, update);
 watch(() => props.showShearForce, update);
 watch(() => props.showMoments, update);
+watch(() => props.plot !== null, readPlotModel, { immediate: true });
 
 const defoScale = ref(1);
 const normalForceScale = ref(1);
@@ -247,6 +319,8 @@ const LOAD_DECORATION_PX = 60;
  */
 const fitReserve = computed(() => {
   if (props.fitReservePx !== undefined) return props.fitReservePx;
+  // Plot's drawing is measured as it is, labels and all: nothing to reserve room for
+  if (props.plot) return 0;
   if (props.noFitForResults) return 0;
 
   return Math.max(props.resultsScalePx, LOAD_DECORATION_PX) + props.fontSize + 8;
@@ -332,6 +406,7 @@ defineExpose({ centerContent, fitContent, setView, update });
       :model-bounds="modelBounds"
       :fit-ignore="props.fitIgnore"
       :fit-reserve="fitReserve"
+      :fit-view="plotFitView"
       style="overflow: visible; z-index: 50; min-height: 0"
     >
       <svg
@@ -374,137 +449,150 @@ defineExpose({ centerContent, fitContent, setView, update });
       >
         <SvgViewerDefs :id="viewerId" :colors="colors" :support-size="supportSize" :scale="scale" />
         <g ref="viewport">
-          <g>
-            <g v-if="props.showLoads" data-fit-ignore="loads">
-              <template v-for="(eload, index) in props.elementLoads">
-                <SVGElementLoad
-                  v-if="eload instanceof BeamElementUniformEdgeLoad || eload instanceof BeamElementTrapezoidalEdgeLoad"
-                  :key="`element-udl-${index}`"
-                  :data-element-load-id="index"
-                  :eload="eload"
-                  :scale="scale"
-                  :convert-force-distance="props.convertForceDistance"
-                  :font-size="props.fontSize"
-                  :number-format="props.numberFormat"
-                />
-                <SVGElementTemperatureLoad
-                  v-else-if="loadType(eload) === 'temperature'"
-                  :key="`element-temperature-${index}`"
-                  :data-element-load-id="index"
-                  :eload="eload"
-                  :scale="scale"
-                  :convert-temperature="props.convertTemperature"
-                  :font-size="props.fontSize"
-                  :number-format="props.numberFormat"
-                />
-                <SVGElementConcentratedLoad
-                  v-else-if="eload instanceof BeamConcentratedLoad"
-                  :key="`element-cl-${index}`"
-                  :data-element-load-id="index"
-                  :eload="eload"
-                  :scale="scale"
-                  :convert-force="props.convertForce"
-                  :convert-moment="props.convertMoment"
-                  :font-size="props.fontSize"
-                  :number-format="props.numberFormat"
-                />
-              </template>
+          <PlotScene
+            v-if="props.plot && plotModel"
+            :model="plotModel"
+            :look="props.plot"
+            :layers="plotLayers"
+            :scale="scale"
+            :colors="props.colors"
+            :diagram-scale="plotDiagramScale"
+          />
+          <template v-else>
+            <g>
+              <g v-if="props.showLoads" data-fit-ignore="loads">
+                <template v-for="(eload, index) in props.elementLoads">
+                  <SVGElementLoad
+                    v-if="
+                      eload instanceof BeamElementUniformEdgeLoad || eload instanceof BeamElementTrapezoidalEdgeLoad
+                    "
+                    :key="`element-udl-${index}`"
+                    :data-element-load-id="index"
+                    :eload="eload"
+                    :scale="scale"
+                    :convert-force-distance="props.convertForceDistance"
+                    :font-size="props.fontSize"
+                    :number-format="props.numberFormat"
+                  />
+                  <SVGElementTemperatureLoad
+                    v-else-if="loadType(eload) === 'temperature'"
+                    :key="`element-temperature-${index}`"
+                    :data-element-load-id="index"
+                    :eload="eload"
+                    :scale="scale"
+                    :convert-temperature="props.convertTemperature"
+                    :font-size="props.fontSize"
+                    :number-format="props.numberFormat"
+                  />
+                  <SVGElementConcentratedLoad
+                    v-else-if="eload instanceof BeamConcentratedLoad"
+                    :key="`element-cl-${index}`"
+                    :data-element-load-id="index"
+                    :eload="eload"
+                    :scale="scale"
+                    :convert-force="props.convertForce"
+                    :convert-moment="props.convertMoment"
+                    :font-size="props.fontSize"
+                    :number-format="props.numberFormat"
+                  />
+                </template>
+              </g>
             </g>
-          </g>
-          <g>
-            <SVGElement
-              v-for="(element, index) in props.elements"
-              :key="`element-geometry-${index}`"
-              :show-geometry="true"
-              :show-results="false"
-              :element="element"
-              :scale="scale"
-              :show-deformed-shape="props.showDeformedShape"
-              :show-normal-force="props.showNormalForce"
-              :show-shear-force="props.showShearForce"
-              :show-bending-moment="props.showMoments"
-              :show-label="props.showElementLabels"
-              :load-case="props.solver.loadCases[0]"
-              :deformed-shape-multiplier="defoScale * props.resultsScalePx"
-              :normal-force-multiplier="normalForceScale * props.resultsScalePx"
-              :shear-force-multiplier="shearForceScale * props.resultsScalePx"
-              :bending-moment-multiplier="bendingMomentScale * props.resultsScalePx"
-              :result-label-mode="props.resultLabelMode"
-              :diagram-style="props.diagramStyle"
-              :convert-force="props.convertForce"
-              :convert-moment="props.convertMoment"
-              :font-size="props.fontSize"
-              :number-format="props.numberFormat"
-            />
-          </g>
-
-          <g>
-            <SVGElement
-              v-for="(element, index) in props.elements"
-              :key="`element-results-${index}`"
-              :show-geometry="false"
-              :show-results="true"
-              :element="element"
-              :scale="scale"
-              :show-deformed-shape="props.showDeformedShape"
-              :show-normal-force="props.showNormalForce"
-              :show-shear-force="props.showShearForce"
-              :show-bending-moment="props.showMoments"
-              :show-label="props.showElementLabels"
-              :load-case="props.solver.loadCases[0]"
-              :deformed-shape-multiplier="defoScale * props.resultsScalePx"
-              :normal-force-multiplier="normalForceScale * props.resultsScalePx"
-              :shear-force-multiplier="shearForceScale * props.resultsScalePx"
-              :bending-moment-multiplier="bendingMomentScale * props.resultsScalePx"
-              :result-label-mode="props.resultLabelMode"
-              :diagram-style="props.diagramStyle"
-              :convert-force="props.convertForce"
-              :convert-moment="props.convertMoment"
-              :font-size="props.fontSize"
-              :number-format="props.numberFormat"
-            />
-          </g>
-
-          <!-- Painted above the elements, matching the drawing, so a load is never hidden by a beam. -->
-          <g v-if="props.showLoads" data-fit-ignore="loads">
-            <SVGNodalLoad
-              v-for="(nload, index) in props.nodalLoads"
-              :key="`nodal-load-${index}`"
-              :nload="nload"
-              :scale="scale"
-              :convert-force="props.convertForce"
-              :font-size="props.fontSize"
-              :number-format="props.numberFormat"
-            />
-            <SVGPrescribedDisplacement
-              v-for="(nload, index) in props.prescribedDisplacements"
-              :key="`nodal-load-${index}`"
-              :nload="nload"
-              :scale="scale"
-              :convert-displacement="props.convertDisplacement"
-              :multiplier="defoScale * props.resultsScalePx"
-              :font-size="props.fontSize"
-              :number-format="props.numberFormat"
-            />
-          </g>
-          <g class="nodes">
-            <g v-for="(node, index) in props.nodes" :key="`node-${index}`">
-              <SVGNode
-                :node="node"
+            <g>
+              <SVGElement
+                v-for="(element, index) in props.elements"
+                :key="`element-geometry-${index}`"
+                :show-geometry="true"
+                :show-results="false"
+                :element="element"
                 :scale="scale"
-                :show-label="props.showNodeLabels"
-                :show-supports="props.showSupports"
                 :show-deformed-shape="props.showDeformedShape"
-                :show-reactions="props.showReactions"
+                :show-normal-force="props.showNormalForce"
+                :show-shear-force="props.showShearForce"
+                :show-bending-moment="props.showMoments"
+                :show-label="props.showElementLabels"
+                :load-case="props.solver.loadCases[0]"
+                :deformed-shape-multiplier="defoScale * props.resultsScalePx"
+                :normal-force-multiplier="normalForceScale * props.resultsScalePx"
+                :shear-force-multiplier="shearForceScale * props.resultsScalePx"
+                :bending-moment-multiplier="bendingMomentScale * props.resultsScalePx"
+                :result-label-mode="props.resultLabelMode"
+                :diagram-style="props.diagramStyle"
                 :convert-force="props.convertForce"
                 :convert-moment="props.convertMoment"
+                :font-size="props.fontSize"
+                :number-format="props.numberFormat"
+              />
+            </g>
+
+            <g>
+              <SVGElement
+                v-for="(element, index) in props.elements"
+                :key="`element-results-${index}`"
+                :show-geometry="false"
+                :show-results="true"
+                :element="element"
+                :scale="scale"
+                :show-deformed-shape="props.showDeformedShape"
+                :show-normal-force="props.showNormalForce"
+                :show-shear-force="props.showShearForce"
+                :show-bending-moment="props.showMoments"
+                :show-label="props.showElementLabels"
                 :load-case="props.solver.loadCases[0]"
+                :deformed-shape-multiplier="defoScale * props.resultsScalePx"
+                :normal-force-multiplier="normalForceScale * props.resultsScalePx"
+                :shear-force-multiplier="shearForceScale * props.resultsScalePx"
+                :bending-moment-multiplier="bendingMomentScale * props.resultsScalePx"
+                :result-label-mode="props.resultLabelMode"
+                :diagram-style="props.diagramStyle"
+                :convert-force="props.convertForce"
+                :convert-moment="props.convertMoment"
+                :font-size="props.fontSize"
+                :number-format="props.numberFormat"
+              />
+            </g>
+
+            <!-- Painted above the elements, matching the drawing, so a load is never hidden by a beam. -->
+            <g v-if="props.showLoads" data-fit-ignore="loads">
+              <SVGNodalLoad
+                v-for="(nload, index) in props.nodalLoads"
+                :key="`nodal-load-${index}`"
+                :nload="nload"
+                :scale="scale"
+                :convert-force="props.convertForce"
+                :font-size="props.fontSize"
+                :number-format="props.numberFormat"
+              />
+              <SVGPrescribedDisplacement
+                v-for="(nload, index) in props.prescribedDisplacements"
+                :key="`nodal-load-${index}`"
+                :nload="nload"
+                :scale="scale"
+                :convert-displacement="props.convertDisplacement"
                 :multiplier="defoScale * props.resultsScalePx"
                 :font-size="props.fontSize"
                 :number-format="props.numberFormat"
               />
             </g>
-          </g>
+            <g class="nodes">
+              <g v-for="(node, index) in props.nodes" :key="`node-${index}`">
+                <SVGNode
+                  :node="node"
+                  :scale="scale"
+                  :show-label="props.showNodeLabels"
+                  :show-supports="props.showSupports"
+                  :show-deformed-shape="props.showDeformedShape"
+                  :show-reactions="props.showReactions"
+                  :convert-force="props.convertForce"
+                  :convert-moment="props.convertMoment"
+                  :load-case="props.solver.loadCases[0]"
+                  :multiplier="defoScale * props.resultsScalePx"
+                  :font-size="props.fontSize"
+                  :number-format="props.numberFormat"
+                />
+              </g>
+            </g>
+          </template>
 
           <g>
             <SVGDimensioning

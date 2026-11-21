@@ -45,7 +45,7 @@ const highlightStyle = computed(() => (props.diagramStyle ? { ...props.diagramSt
 </script>
 
 <template>
-  <g v-if="element">
+  <g v-if="element" class="hovered-copy">
     <SVGElement
       :key="`element-geometry-${element.label}`"
       class="pointer-events-none hovered"

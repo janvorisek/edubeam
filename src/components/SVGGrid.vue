@@ -26,24 +26,12 @@
         </text>
       </g>
     </g>
-    <g v-if="!props.viewMode && axisConvention === 'y-up'" class="cs" :transform="`translate(${csLeft} ${csTop})`">
-      <text fill="red" text-anchor="middle" dy="0.35em" x="40" y="-10"> x </text>
-      <text fill="green" text-anchor="middle" dy="0.35em" x="10" y="-40"> y </text>
-      <line y1="0" x1="0" y2="-40" x2="0" stroke-width="3" stroke="green" stroke-linecap="round" />
-      <line y1="0" x1="0" y2="0" x2="40" stroke-width="3" stroke="red" stroke-linecap="round" />
-    </g>
-    <g v-else-if="!props.viewMode" class="cs" :transform="`translate(${csLeft} ${csTop})`">
-      <text fill="red" text-anchor="middle" dy="0.35em" x="40" y="-30"> x </text>
-      <text fill="green" text-anchor="middle" dy="0.35em" x="10" y="0"> z </text>
-      <line y1="-40" x1="0" y2="0" x2="0" stroke-width="3" stroke="green" stroke-linecap="round" />
-      <line y1="-40" x1="0" y2="-40" x2="40" stroke-width="3" stroke="red" stroke-linecap="round" />
-    </g>
   </g>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { axisConvention, vertical } from '@/utils/axisConvention';
+import { vertical } from '@/utils/axisConvention';
 import { useAppStore } from '@/store/app';
 import { formatFeetInches, rulerStep, rulerStepFeet, stepDecimals } from '@/utils/grid';
 
@@ -68,8 +56,6 @@ const gridTX = ref(0);
 const gridTY = ref(0);
 const trueOffsetX = ref(0);
 const trueOffsetY = ref(0);
-const csLeft = ref(0);
-const csTop = ref(0);
 const decimals = ref(2);
 
 /** Feet read in feet and inches, as on a US drawing; every other unit as a decimal. */
@@ -89,9 +75,9 @@ const refreshGrid = (isZooming = false) => {
 
   rightBottom.x = svgBB.right - svgBB.left;
   rightBottom.y = svgBB.bottom - svgBB.top;
-
-  csLeft.value = 45;
-  csTop.value = svgBB.bottom - svgBB.top - 45;
+  // A drawing hidden behind another tab has no size: its rulers would be NaN. They stay as they
+  // were until it is shown again.
+  if (rightBottom.x < 80 || rightBottom.y <= 0) return;
 
   const inv = matrix.inverse();
   const svgP1 = leftTop.matrixTransform(inv);

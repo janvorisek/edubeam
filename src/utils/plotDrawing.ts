@@ -335,7 +335,7 @@ export const editorFit = (
   layers: ReadonlySet<PlotLayer>,
   box: FigureBox,
   { extra = [], diagramScale, minAspect = 0 }: FitOptions = {}
-): Fit => {
+): EditorFit => {
   const marks = extra.map((at): SceneItem => ({
     kind: 'circle',
     group: 'extra',
@@ -374,6 +374,11 @@ export const editorFit = (
   return editorCentred(model, look, layers, Math.max(fit.s, floor), box, { extra, diagramScale });
 };
 
+/** A fit, and where in its box what it draws is painted, px */
+export interface EditorFit extends Fit {
+  readonly painted: { readonly left: number; readonly top: number; readonly right: number; readonly bottom: number };
+}
+
 /** The span a model with no extent is shown at, m: as the classic drawing's fit (fitBounds) */
 const NOMINAL_SPAN_M = 10;
 
@@ -389,7 +394,7 @@ export const editorCentred = (
   scale: number,
   box: { readonly width: number; readonly height: number },
   { extra = [], diagramScale }: Pick<FitOptions, 'extra' | 'diagramScale'> = {}
-): Fit => {
+): EditorFit => {
   const t = { s: scale, tx: 0, ty: 0 };
   const placed = resolveScene(
     buildStructureScene(model, editorSceneOptions(look, layers, scale, diagramScale)),
@@ -404,12 +409,20 @@ export const editorCentred = (
   if (xs.length === 0) xs.push(...nodes.map(([x]) => x));
   if (ys.length === 0) ys.push(...nodes.map(([, y]) => y));
   const middle = (vs: readonly number[]) => (vs.length === 0 ? 0 : (Math.min(...vs) + Math.max(...vs)) / 2);
+  const tx = box.width / 2 - middle(xs);
+  const ty = box.height / 2 - middle(ys);
   return {
     s: scale,
-    tx: box.width / 2 - middle(xs),
-    ty: box.height / 2 - middle(ys),
+    tx,
+    ty,
     width: box.width,
     height: box.height,
+    painted: {
+      left: Math.min(...xs) + tx,
+      top: Math.min(...ys) + ty,
+      right: Math.max(...xs) + tx,
+      bottom: Math.max(...ys) + ty,
+    },
   };
 };
 

@@ -562,6 +562,16 @@ const plotRendererReady = computed(() => viewerStore.renderer === 'plot' && plot
  * in the bottom ones.
  */
 const PLOT_FIT_PADDING = { top: 56, right: 40, bottom: 56, left: 40 } as const;
+/*
+ * Top and bottom are the short side of a laptop's canvas, where that padding took a quarter of the
+ * height. The controls it clears sit in the corners, which a structure fitted to the height, in the
+ * middle of a wide canvas, never reaches: so the fit first keeps little more than the rulers clear (16
+ * px and 16 more), and takes the full padding only where the drawing would then run under a corner's
+ * controls.
+ */
+const PLOT_FIT_TIGHT = { top: 32, right: 40, bottom: 32, left: 40 } as const;
+/** What floats over the canvas's corners, which a fitted drawing is kept clear of */
+const CORNER_CONTROLS = ['#undoRedo', '#viewerControls', '#gridAndUnits', '.axes-helper'] as const;
 const fitPadding = computed(() => (plotMode.value ? PLOT_FIT_PADDING : 16));
 /**
  * A straight beam has no height: fitted exactly it would run edge to edge. Both drawings fit it as
@@ -603,19 +613,54 @@ const viewOf = (fit: Pick<Fit, 's' | 'tx' | 'ty'>, width: number, height: number
   h: height / fit.s,
 });
 
+/** Whether a drawing painted there, px in the canvas less `pad`, would run under a corner's controls */
+const underCornerControls = (
+  painted: { readonly left: number; readonly top: number; readonly right: number; readonly bottom: number },
+  pad: Padding
+): boolean => {
+  const canvas = svg.value?.getBoundingClientRect();
+  if (!canvas) return true;
+  const left = canvas.left + pad.left + painted.left;
+  const top = canvas.top + pad.top + painted.top;
+  const right = canvas.left + pad.left + painted.right;
+  const bottom = canvas.top + pad.top + painted.bottom;
+  // A little room between the drawing and a control, px
+  const GAP = 6;
+  return CORNER_CONTROLS.some((selector) => {
+    const control = document.querySelector(selector)?.getBoundingClientRect();
+    if (!control || control.width === 0) return false;
+    return (
+      left < control.right + GAP &&
+      right > control.left - GAP &&
+      top < control.bottom + GAP &&
+      bottom > control.top - GAP
+    );
+  });
+};
+
 const plotFitView = (width: number, height: number, padding: Padding): ViewBox | null => {
   try {
     const model = readEditorModel(projectStore.solver);
     if (model.nodes.length === 0) return null;
     const look = editorLook.value;
-    const fit = editorFit(
-      model,
-      look,
-      editorLayers.value,
-      { width: width - padding.left - padding.right, height: height - padding.top - padding.bottom, padding: 0 },
-      { extra: plotDimensionAnchors(look.fontSize), diagramScale: editorDiagramScales.value, minAspect: FIT_MIN_ASPECT }
-    );
-    return viewOf({ s: fit.s, tx: fit.tx + padding.left, ty: fit.ty + padding.top }, width, height);
+    const fitIn = (pad: Padding) => {
+      const fit = editorFit(
+        model,
+        look,
+        editorLayers.value,
+        { width: width - pad.left - pad.right, height: height - pad.top - pad.bottom, padding: 0 },
+        {
+          extra: plotDimensionAnchors(look.fontSize),
+          diagramScale: editorDiagramScales.value,
+          minAspect: FIT_MIN_ASPECT,
+        }
+      );
+      return { fit, pad };
+    };
+    // Tight above and below first (see PLOT_FIT_TIGHT); the full padding where that runs under a control
+    const tight = fitIn({ ...padding, top: PLOT_FIT_TIGHT.top, bottom: PLOT_FIT_TIGHT.bottom });
+    const { fit, pad } = underCornerControls(tight.fit.painted, tight.pad) ? fitIn(padding) : tight;
+    return viewOf({ s: fit.s, tx: fit.tx + pad.left, ty: fit.ty + pad.top }, width, height);
   } catch (error) {
     console.warn('[plot renderer] cannot fit the model', error);
     return null;

@@ -201,7 +201,12 @@ defineExpose({ refreshGrid });
     fill: var(--eb-ruler, var(--eb-ink, #000));
   }
 
+  // The rulers' inner edge, 16 px in on every side. As attributes, a rect can only start at 16 px and
+  // be as wide as the drawing, which put its right and bottom edges 16 px outside it, where they were
+  // cut off: there was a border there only where a grid line happened to fall.
   .chartBorder {
+    width: calc(100% - 32px);
+    height: calc(100% - 32px);
     fill: transparent;
     stroke: var(--eb-muted, #666);
     stroke-width: 1px;

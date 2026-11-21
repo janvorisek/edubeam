@@ -5,13 +5,32 @@ import type { ViewBox } from '@/utils/fitBounds';
 import { defaultGridStep } from '@/utils/grid';
 import { DEFAULT_DIAGRAM_STYLE, type DiagramStyle } from '@/utils/diagramStyle';
 import { useAppStore } from './app';
+import { hasStoredSettings } from '@/utils';
+
+/** A figure of the Report tab: the structure with its loads, its reactions, a diagram, its deformed shape */
+export type ReportFigure = 'loads' | 'reactions' | 'N' | 'V' | 'M' | 'w';
+/** A paper the Report tab is laid out on */
+export type ReportPaper = 'a4' | 'a3' | 'letter' | 'legal';
+const DEFAULT_REPORT_FIGURES: readonly ReportFigure[] = ['loads', 'N', 'V', 'M', 'w'];
+const REPORT_FIGURES: ReadonlySet<unknown> = new Set<ReportFigure>(['loads', 'reactions', 'N', 'V', 'M', 'w']);
+const REPORT_PAPERS: ReadonlySet<unknown> = new Set<ReportPaper>(['a4', 'a3', 'letter', 'legal']);
+
+/**
+ * What someone new starts with where it differs from what was offered before: the plot renderer and
+ * hatched diagrams. Anyone who has used EduBeam in this browser keeps what they had - their saved
+ * settings are read back over these, and those saved before these settings existed did not have
+ * them, so for them the old defaults stand.
+ */
+const NEW_USER_DEFAULTS = { renderer: 'plot', fill: 'hatch' } as const;
+const OLD_DEFAULTS = { renderer: 'classic', fill: DEFAULT_DIAGRAM_STYLE.fill } as const;
 
 export const useViewerStore = defineStore(
   'viewer',
   () => {
+    const defaults = hasStoredSettings('viewer') ? OLD_DEFAULTS : NEW_USER_DEFAULTS;
     const resultLabelMode = ref<'axis' | 'horizontal'>('axis');
     /** Sides, fill and degree labels of the internal force diagrams. */
-    const diagramStyle = reactive<DiagramStyle>({ ...DEFAULT_DIAGRAM_STYLE });
+    const diagramStyle = reactive<DiagramStyle>({ ...DEFAULT_DIAGRAM_STYLE, fill: defaults.fill });
     const showSupports = ref(true);
     const showNodeLabels = ref(true);
     const showElementLabels = ref(true);
@@ -49,11 +68,51 @@ export const useViewerStore = defineStore(
 
     const fontSize = ref(14);
 
+    /**
+     * Who draws the model. `plot` is the drawing by @edubeam/plot, which places labels where they do
+     * not collide: what someone new starts with, while those who were here before keep the classic
+     * one until they switch (see NEW_USER_DEFAULTS). `?renderer=` in a link sets it too.
+     */
+    const renderer = ref<'classic' | 'plot'>(defaults.renderer);
+
+    /** The plot renderer reads the values of the member under the pointer beside its diagrams */
+    const showReadout = ref(true);
+
+    /** The Report tab: its figures one under another, or side by side */
+    const reportLayout = ref<'column' | 'row'>('column');
+    /** and which figures it shows */
+    const reportFigures = ref<ReportFigure[]>([...DEFAULT_REPORT_FIGURES]);
+    /** and the guide lines across them, through member ends, load points and moment extremes */
+    const reportGuides = ref(true);
+    /** and the paper it is laid out on, as it prints: ISO where the units are metric, US Letter else */
+    const reportPaper = ref<ReportPaper>(useAppStore().unitSystem === 'us' ? 'letter' : 'a4');
+    const reportOrientation = ref<'portrait' | 'landscape'>('portrait');
+
     const settingsOpen = ref(true);
+
+    /**
+     * The settings this version added, as read back from storage: what one cannot be (written by
+     * hand, or by a later version) goes back to its default rather than break the Report tab.
+     */
+    const sanitizeStored = () => {
+      if (renderer.value !== 'classic' && renderer.value !== 'plot') renderer.value = 'classic';
+      if (typeof showReadout.value !== 'boolean') showReadout.value = true;
+      if (reportLayout.value !== 'column' && reportLayout.value !== 'row') reportLayout.value = 'column';
+      const figures: unknown = reportFigures.value;
+      reportFigures.value = Array.isArray(figures)
+        ? figures.filter((f): f is ReportFigure => REPORT_FIGURES.has(f))
+        : [...DEFAULT_REPORT_FIGURES];
+      if (typeof reportGuides.value !== 'boolean') reportGuides.value = true;
+      if (!REPORT_PAPERS.has(reportPaper.value)) reportPaper.value = 'a4';
+      if (reportOrientation.value !== 'portrait' && reportOrientation.value !== 'landscape') {
+        reportOrientation.value = 'portrait';
+      }
+    };
 
     const reset = () => {
       resultLabelMode.value = 'axis';
-      Object.assign(diagramStyle, DEFAULT_DIAGRAM_STYLE);
+      // The look someone new starts with
+      Object.assign(diagramStyle, DEFAULT_DIAGRAM_STYLE, { fill: NEW_USER_DEFAULTS.fill });
       showSupports.value = true;
       showNodeLabels.value = true;
       showElementLabels.value = true;
@@ -85,6 +144,11 @@ export const useViewerStore = defineStore(
       supportSize.value = 1;
 
       fontSize.value = 14;
+      renderer.value = NEW_USER_DEFAULTS.renderer;
+      showReadout.value = true;
+      reportLayout.value = 'column';
+      reportFigures.value = [...DEFAULT_REPORT_FIGURES];
+      reportGuides.value = true;
 
       settingsOpen.value = true;
     };
@@ -136,13 +200,21 @@ export const useViewerStore = defineStore(
       resultsScalePx_: resultsScalePx_,
 
       fontSize,
+      renderer,
+      showReadout,
+      reportLayout,
+      reportFigures,
+      reportGuides,
+      reportPaper,
+      reportOrientation,
 
       supportSize,
 
       settingsOpen,
 
       reset,
+      sanitizeStored,
     };
   },
-  { persist: true }
+  { persist: { afterHydrate: ({ store }) => store.sanitizeStored() } }
 );

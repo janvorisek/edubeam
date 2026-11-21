@@ -2,7 +2,8 @@
   "tabView": {
     "viewer": "Visor",
     "settings": "Configuración",
-    "results": "Resultados"
+    "results": "Resultados",
+    "report": "Informe"
   },
   "common": {
     "label": "Etiqueta",
@@ -86,6 +87,7 @@
     "addPrescribedDisplacement": "Imponer desplazamiento",
     "UDL": "UDL",
     "forceMoment": "Fuerza/Momento",
+    "moment": "Momento",
     "editLoad": "Editar carga",
     "loadPositionOnBeam": "Posición de carga desde el nodo inicial",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Cambio de temperatura de las fibras inferiores menos superiores",
@@ -198,6 +200,10 @@
     "result_label_orientation": "Orientación de las etiquetas de resultados",
     "result_label_orientation_axis": "Perpendicular al diagrama",
     "result_label_orientation_horizontal": "Siempre horizontales",
+    "renderer": "Motor de renderizado",
+    "renderer_classic": "Clásico",
+    "renderer_plot": "Nuevo (beta)",
+    "show_readout": "Mostrar valores junto al puntero",
     "result_labels": "Etiquetas de resultados",
     "diagrams": {
       "title": "Diagramas de esfuerzos internos",
@@ -232,7 +238,13 @@
     "boxSelect": "Selección por rectángulo",
     "centerContent": "Centrar contenido",
     "fitContent": "Ajustar contenido a la pantalla",
-    "holdCtrl": "Mantenga Ctrl para añadir con el ratón"
+    "holdCtrl": "Mantenga Ctrl para añadir con el ratón",
+    "select": "Seleccionar",
+    "tools": "Herramientas",
+    "snapMiddle": "Punto medio",
+    "snapThird": "Tercio",
+    "snapOnElement": "En el elemento {label}",
+    "placeFreely": "Mantén Alt para colocar libremente"
   },
   "dofs": {
     "bcs": "Grados de libertad restringidos"
@@ -399,6 +411,19 @@
     "shareLayers": "Mostrar lo que veo",
     "shareLayersHint": "El enlace se abre con los diagramas, cargas y etiquetas que tiene activados."
   },
+  "shortcuts": {
+    "title": "Atajos de teclado",
+    "drawing": "Dibujo",
+    "editing": "Edición",
+    "cancel": "Volver a seleccionar, cancelar lo que se coloca",
+    "placeFreely": "Colocar libremente, sin ajuste (mantener)",
+    "grid": "Mostrar u ocultar la cuadrícula",
+    "snap": "Activar o desactivar el ajuste a la cuadrícula",
+    "zoom": "Acercar y alejar",
+    "selectAll": "Seleccionar todo",
+    "save": "Guardar el proyecto",
+    "exportImage": "Exportar una imagen"
+  },
   "tour": {
     "menu": {
       "title": "Menú",
@@ -407,6 +432,10 @@
     "undoRedo": {
       "title": "Deshacer y rehacer",
       "description": "Avanza y retrocede por tus cambios. Ctrl+Z y Ctrl+Mayús+Z hacen lo mismo."
+    },
+    "tools": {
+      "title": "Herramientas",
+      "description": "Añada nodos, elementos, apoyos y cargas directamente en el dibujo. Mantenga pulsada una herramienta o haga clic en su esquina para elegir el tipo de apoyo o de carga. Los puntos se ajustan a los nodos y al centro y los tercios de un elemento; mantenga Alt para colocar libremente. Teclas: V seleccionar, N nodo, E elemento, U apoyo, L carga, D cota, Esc volver a seleccionar."
     },
     "viewerControls": {
       "title": "Botones del visor",
@@ -777,5 +806,15 @@
       "acrylic": "acrílico",
       "approx": "aprox."
     }
+  },
+  "report": {
+    "column": "En columna",
+    "row": "En fila",
+    "no_results": "Se muestra una vez resuelta la estructura",
+    "guides": "Líneas guía",
+    "print": "Imprimir",
+    "paper": "Papel",
+    "portrait": "Vertical",
+    "landscape": "Horizontal"
   }
 }

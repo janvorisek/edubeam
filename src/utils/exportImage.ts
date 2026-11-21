@@ -587,7 +587,7 @@ const flattenStyles = (source: Element, clone: Element, context: FlattenContext)
  * An SVG file is in the same position on someone else's machine, only more so — it may
  * be opened somewhere Barlow was never installed.
  */
-const fontFaceCss = () =>
+export const fontFaceCss = () =>
   `@font-face{font-family:'Barlow';font-style:normal;font-weight:400;src:url(${barlowRegular}) format('woff2');}`;
 
 /**

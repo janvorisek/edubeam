@@ -45,6 +45,7 @@
                 :convert-moment="convertMoment"
                 :convert-force-distance="convertForce"
                 :support-size="0.5"
+                :plot="tileLook"
               />
             </button>
             <div class="recent-copy">
@@ -86,12 +87,16 @@ import { computed, ref } from 'vue';
 import { closeModal } from 'jenesius-vue-modal';
 import { LinearStaticSolver } from '@edubeam/fem';
 import SVGElementViewer from '../SVGElementViewer.vue';
+import { useTileLook } from '@/utils/useEditorLook';
 import { deserializeModel, parseSerializedModel, replaceModel, resetModel } from '@/utils';
 import { useProjectStore } from '@/store/project';
 import { useAppStore } from '@/store/app';
 import { RECENT_STRUCTURES_LIMIT, useRecentStructuresStore, type RecentStructure } from '@/store/recentStructures';
 import { eventBus, EventType } from '@/EventBus';
 import type { DimensionLine } from '@/types/dimension';
+
+// Drawn by the renderer the canvas uses
+const tileLook = useTileLook();
 
 const open = ref(true);
 const recentStructures = useRecentStructuresStore();

@@ -2,7 +2,8 @@
   "tabView": {
     "viewer": "Structure",
     "settings": "Paramètres",
-    "results": "Résultats"
+    "results": "Résultats",
+    "report": "Rapport"
   },
   "common": {
     "label": "Libellé",
@@ -86,6 +87,7 @@
     "addPrescribedDisplacement": "Imposer un déplacement",
     "UDL": "Charge uniformément répartie",
     "forceMoment": "Force/Moment",
+    "moment": "Moment",
     "editLoad": "Modifier la charge",
     "loadPositionOnBeam": "Position de la charge depuis le nœud initial",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Variation de température des fibres inférieures moins supérieures",
@@ -198,6 +200,10 @@
     "result_label_orientation": "Orientation des étiquettes de résultats",
     "result_label_orientation_axis": "Perpendiculaires au diagramme",
     "result_label_orientation_horizontal": "Toujours horizontales",
+    "renderer": "Moteur de rendu",
+    "renderer_classic": "Classique",
+    "renderer_plot": "Nouveau (bêta)",
+    "show_readout": "Afficher les valeurs au pointeur",
     "result_labels": "Étiquettes des résultats",
     "diagrams": {
       "title": "Diagrammes des efforts internes",
@@ -232,7 +238,13 @@
     "boxSelect": "Sélection par rectangle",
     "centerContent": "Centrer le contenu",
     "fitContent": "Ajuster à l'écran",
-    "holdCtrl": "Maintenez Ctrl pour ajouter à la souris"
+    "holdCtrl": "Maintenez Ctrl pour ajouter à la souris",
+    "select": "Sélectionner",
+    "tools": "Outils",
+    "snapMiddle": "Milieu",
+    "snapThird": "Tiers",
+    "snapOnElement": "Sur l’élément {label}",
+    "placeFreely": "Maintenez Alt pour placer librement"
   },
   "dofs": {
     "bcs": "DDL bloqués"
@@ -399,6 +411,19 @@
     "shareLayers": "Montrer ce que je vois",
     "shareLayersHint": "Le lien s'ouvre avec les diagrammes, charges et étiquettes que vous avez activés."
   },
+  "shortcuts": {
+    "title": "Raccourcis clavier",
+    "drawing": "Dessin",
+    "editing": "Édition",
+    "cancel": "Retour à la sélection, annuler le placement",
+    "placeFreely": "Placer librement, sans accrochage (maintenir)",
+    "grid": "Afficher ou masquer la grille",
+    "snap": "Activer ou désactiver l’accrochage à la grille",
+    "zoom": "Zoomer et dézoomer",
+    "selectAll": "Tout sélectionner",
+    "save": "Enregistrer le projet",
+    "exportImage": "Exporter une image"
+  },
   "tour": {
     "menu": {
       "title": "Menu",
@@ -407,6 +432,10 @@
     "undoRedo": {
       "title": "Annuler et rétablir",
       "description": "Revenez en arrière ou en avant dans vos modifications. Ctrl+Z et Ctrl+Maj+Z font de même."
+    },
+    "tools": {
+      "title": "Outils",
+      "description": "Ajoutez des nœuds, des éléments, des appuis et des charges directement sur le dessin. Maintenez un outil ou cliquez sur son coin pour choisir le type d’appui ou de charge. Les points s’accrochent aux nœuds ainsi qu’au milieu et aux tiers d’un élément ; maintenez Alt pour placer librement. Touches : V sélection, N nœud, E élément, U appui, L charge, D cote, Échap retour à la sélection."
     },
     "viewerControls": {
       "title": "Boutons de visualisation",
@@ -777,5 +806,15 @@
       "acrylic": "acrylique",
       "approx": "approx."
     }
+  },
+  "report": {
+    "column": "En colonne",
+    "row": "En ligne",
+    "no_results": "Affiché une fois la structure calculée",
+    "guides": "Lignes de repère",
+    "print": "Imprimer",
+    "paper": "Papier",
+    "portrait": "Portrait",
+    "landscape": "Paysage"
   }
 }

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { mount, type VueWrapper } from '@vue/test-utils';
 import { createVuetify } from 'vuetify';
@@ -8,6 +8,8 @@ import { i18n } from '@/plugins/i18n';
 import SVGViewer from '@/components/SVGViewer.vue';
 import { useProjectStore } from '@/store/project';
 import { useViewerStore } from '@/store/viewer';
+import { useAppStore } from '@/store/app';
+import { MouseMode } from '@/mouse';
 import {
   fieldOwnsUndo,
   forKeyboard,
@@ -61,6 +63,91 @@ describe('shortcuts in the drawing', () => {
   });
 
   afterEach(() => wrapper.unmount());
+
+  it('takes up a tool with its key, and puts it down with the same key or V', async () => {
+    const app = useAppStore();
+
+    await press('n');
+    expect(app.mouseMode).toBe(MouseMode.ADD_NODE);
+    await press('n');
+    expect(app.mouseMode).toBe(MouseMode.NONE);
+    await press('d');
+    expect(app.mouseMode).toBe(MouseMode.ADD_DIMLINE);
+    await press('v');
+    expect(app.mouseMode).toBe(MouseMode.NONE);
+    await press('u');
+    expect(app.mouseMode).toBe(MouseMode.ADD_SUPPORT);
+    await press('l');
+    expect(app.mouseMode).toBe(MouseMode.ADD_LOAD);
+    await press('l');
+    expect(app.mouseMode).toBe(MouseMode.NONE);
+  });
+
+  it('leaves the tools alone with Ctrl or Cmd', async () => {
+    await press('Control', 'n');
+    await press('Meta', 'd');
+
+    expect(useAppStore().mouseMode).toBe(MouseMode.NONE);
+  });
+
+  it('asks for a material and a cross section before the element tool', async () => {
+    const alert = vi.fn();
+    vi.stubGlobal('alert', alert);
+
+    await press('e');
+    expect(alert).toHaveBeenCalledOnce();
+    expect(useAppStore().mouseMode).toBe(MouseMode.NONE);
+
+    const domain = useProjectStore().solver.domain;
+    domain.createMaterial(1, { e: 210000e6, g: 8.75e10, alpha: 12e-6, d: 4000 });
+    domain.createCrossSection(1, { a: 1, iy: 8.356e-5, iz: 1, dyz: 999991, h: 1, k: 1e32, j: 99999 });
+    await press('e');
+    expect(useAppStore().mouseMode).toBe(MouseMode.ADD_ELEMENT);
+    vi.unstubAllGlobals();
+  });
+
+  it('shows the tool in use on the rail, and takes one up from there', async () => {
+    const node = wrapper.find('#toolRail [data-tool="node"]');
+    await node.trigger('click');
+
+    expect(useAppStore().mouseMode).toBe(MouseMode.ADD_NODE);
+    expect(node.attributes('aria-pressed')).toBe('true');
+    expect(wrapper.find('#toolRail [data-tool="select"]').attributes('aria-pressed')).toBe('false');
+  });
+
+  it('keeps undo and redo where the tour points', () => {
+    expect(wrapper.findAll('#undoRedo v-btn')).toHaveLength(2);
+  });
+
+  it('asks the load tool for the load in the mode banner', async () => {
+    await wrapper.find('#toolRail [data-tool="load"]').trigger('click');
+
+    expect(useAppStore().mouseMode).toBe(MouseMode.ADD_LOAD);
+    expect(wrapper.findAll('#addModeBanner .tool-value')).toHaveLength(2);
+  });
+
+  it('opens the kinds of a support or a load from their buttons without taking the tool up', async () => {
+    const load = wrapper.find('#toolRail [data-tool="load"]');
+    await load.trigger('contextmenu');
+
+    expect(load.attributes('aria-haspopup')).toBe('menu');
+    expect(wrapper.find('#toolRail [data-tool="support"]').attributes('aria-haspopup')).toBe('menu');
+    expect(wrapper.find('#toolRail [data-tool="node"]').attributes('aria-haspopup')).toBeUndefined();
+    expect(useAppStore().mouseMode).toBe(MouseMode.NONE);
+  });
+
+  it('opens the kinds of a tool on a tap, and takes it up with the last kind on a click', async () => {
+    const load = wrapper.find('#toolRail [data-tool="load"]');
+
+    await load.trigger('pointerdown', { pointerType: 'touch', button: 0 });
+    await load.trigger('click', { detail: 1 });
+    expect(useAppStore().mouseMode).toBe(MouseMode.NONE);
+
+    // Away from the triangle in the corner (the button has no size here)
+    await load.trigger('pointerdown', { pointerType: 'mouse', button: 0 });
+    await load.trigger('click', { detail: 1, clientX: -50, clientY: -50 });
+    expect(useAppStore().mouseMode).toBe(MouseMode.ADD_LOAD);
+  });
 
   it('toggles snap with S alone', async () => {
     const viewer = useViewerStore();

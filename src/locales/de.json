@@ -2,7 +2,8 @@
   "tabView": {
     "viewer": "Ansicht",
     "settings": "Einstellungen",
-    "results": "Ergebnisse"
+    "results": "Ergebnisse",
+    "report": "Bericht"
   },
   "common": {
     "label": "Bezeichnung",
@@ -86,6 +87,7 @@
     "addPrescribedDisplacement": "Verschiebung vorgeben",
     "UDL": "Gleichlast",
     "forceMoment": "Kraft/Moment",
+    "moment": "Moment",
     "editLoad": "Last bearbeiten",
     "loadPositionOnBeam": "Lastposition vom Anfangsknoten",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Temperaturänderung untere minus obere Faser",
@@ -198,6 +200,10 @@
     "result_label_orientation": "Ausrichtung der Ergebnisbeschriftungen",
     "result_label_orientation_axis": "Senkrecht zum Diagramm",
     "result_label_orientation_horizontal": "Immer horizontal",
+    "renderer": "Renderer",
+    "renderer_classic": "Klassisch",
+    "renderer_plot": "Neu (Beta)",
+    "show_readout": "Werte am Mauszeiger anzeigen",
     "result_labels": "Ergebnisbeschriftungen",
     "diagrams": {
       "title": "Schnittgrößenverläufe",
@@ -232,7 +238,13 @@
     "boxSelect": "Rechteckauswahl",
     "centerContent": "Inhalt zentrieren",
     "fitContent": "Inhalt an Bildschirm anpassen",
-    "holdCtrl": "Ctrl halten, um per Maus hinzuzufügen"
+    "holdCtrl": "Ctrl halten, um per Maus hinzuzufügen",
+    "select": "Auswählen",
+    "tools": "Werkzeuge",
+    "snapMiddle": "Mittelpunkt",
+    "snapThird": "Drittelpunkt",
+    "snapOnElement": "Auf Element {label}",
+    "placeFreely": "Alt halten, um frei zu platzieren"
   },
   "dofs": {
     "bcs": "Gelagerte Freiheitsgrade"
@@ -399,6 +411,19 @@
     "shareLayers": "Zeigen, was ich sehe",
     "shareLayersHint": "Der Link öffnet sich mit den Verläufen, Lasten und Beschriftungen, die Sie eingeschaltet haben."
   },
+  "shortcuts": {
+    "title": "Tastenkürzel",
+    "drawing": "Zeichnung",
+    "editing": "Bearbeiten",
+    "cancel": "Zurück zur Auswahl, Platzieren abbrechen",
+    "placeFreely": "Frei platzieren, ohne Einrasten (halten)",
+    "grid": "Raster ein- oder ausblenden",
+    "snap": "Am Raster einrasten ein oder aus",
+    "zoom": "Vergrößern und verkleinern",
+    "selectAll": "Alles auswählen",
+    "save": "Projekt speichern",
+    "exportImage": "Bild exportieren"
+  },
   "tour": {
     "menu": {
       "title": "Menü",
@@ -407,6 +432,10 @@
     "undoRedo": {
       "title": "Rückgängig und Wiederholen",
       "description": "Gehen Sie in Ihren Änderungen zurück und vor. Strg+Z und Strg+Umschalt+Z tun dasselbe."
+    },
+    "tools": {
+      "title": "Werkzeuge",
+      "description": "Fügen Sie Knoten, Elemente, Lager und Lasten direkt in der Zeichnung hinzu. Halten Sie ein Werkzeug gedrückt oder klicken Sie auf seine Ecke, um die Art des Lagers oder der Last zu wählen. Punkte rasten an Knoten sowie an Mitte und Dritteln eines Elements ein; mit gedrückter Alt-Taste platzieren Sie frei. Tasten: V Auswahl, N Knoten, E Element, U Lager, L Last, D Bemaßung, Esc zurück zur Auswahl."
     },
     "viewerControls": {
       "title": "Viewer-Schaltflächen",
@@ -777,5 +806,15 @@
       "acrylic": "Acrylglas",
       "approx": "ca."
     }
+  },
+  "report": {
+    "column": "Untereinander",
+    "row": "Nebeneinander",
+    "no_results": "Wird angezeigt, sobald das Tragwerk berechnet ist",
+    "guides": "Hilfslinien",
+    "print": "Drucken",
+    "paper": "Papier",
+    "portrait": "Hochformat",
+    "landscape": "Querformat"
   }
 }

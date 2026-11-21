@@ -2,7 +2,8 @@
   "tabView": {
     "viewer": "Vista",
     "settings": "Impostazioni",
-    "results": "Risultati"
+    "results": "Risultati",
+    "report": "Relazione"
   },
   "common": {
     "label": "Etichetta",
@@ -86,6 +87,7 @@
     "addPrescribedDisplacement": "Imponi spostamento",
     "UDL": "Carico uniforme",
     "forceMoment": "Forza/Momento",
+    "moment": "Momento",
     "editLoad": "Modifica carico",
     "loadPositionOnBeam": "Posizione del carico dal nodo iniziale",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Variazione di temperatura delle fibre inferiori meno quella delle superiori",
@@ -198,6 +200,10 @@
     "result_label_orientation": "Orientamento delle etichette dei risultati",
     "result_label_orientation_axis": "Perpendicolari al diagramma",
     "result_label_orientation_horizontal": "Sempre orizzontali",
+    "renderer": "Motore di rendering",
+    "renderer_classic": "Classico",
+    "renderer_plot": "Nuovo (beta)",
+    "show_readout": "Mostra i valori al puntatore",
     "result_labels": "Etichette dei risultati",
     "diagrams": {
       "title": "Diagrammi delle forze interne",
@@ -232,7 +238,13 @@
     "boxSelect": "Selezione con riquadro",
     "centerContent": "Centra il modello",
     "fitContent": "Adatta allo schermo",
-    "holdCtrl": "Tieni premuto Ctrl per aggiungere col mouse"
+    "holdCtrl": "Tieni premuto Ctrl per aggiungere col mouse",
+    "select": "Seleziona",
+    "tools": "Strumenti",
+    "snapMiddle": "Punto medio",
+    "snapThird": "Terzo",
+    "snapOnElement": "Sull’elemento {label}",
+    "placeFreely": "Tieni premuto Alt per posizionare liberamente"
   },
   "dofs": {
     "bcs": "GdL vincolati"
@@ -399,6 +411,19 @@
     "shareLayers": "Mostra ciò che vedo",
     "shareLayersHint": "Il link si apre con i diagrammi, i carichi e le etichette che hai attivato."
   },
+  "shortcuts": {
+    "title": "Scorciatoie da tastiera",
+    "drawing": "Disegno",
+    "editing": "Modifica",
+    "cancel": "Torna alla selezione, annulla il posizionamento",
+    "placeFreely": "Posiziona liberamente, senza aggancio (tieni premuto)",
+    "grid": "Mostra o nascondi la griglia",
+    "snap": "Attiva o disattiva l’aggancio alla griglia",
+    "zoom": "Ingrandisci e riduci",
+    "selectAll": "Seleziona tutto",
+    "save": "Salva il progetto",
+    "exportImage": "Esporta un’immagine"
+  },
   "tour": {
     "menu": {
       "title": "Menu",
@@ -407,6 +432,10 @@
     "undoRedo": {
       "title": "Annulla e ripeti",
       "description": "Torna indietro e avanti tra le modifiche. Ctrl+Z e Ctrl+Shift+Z hanno lo stesso effetto."
+    },
+    "tools": {
+      "title": "Strumenti",
+      "description": "Aggiungi nodi, elementi, vincoli e carichi direttamente sul disegno. Tieni premuto uno strumento o fai clic sul suo angolo per scegliere il tipo di vincolo o di carico. I punti si agganciano ai nodi e al centro e ai terzi di un elemento; tieni premuto Alt per posizionare liberamente. Tasti: V selezione, N nodo, E elemento, U vincolo, L carico, D quota, Esc torna alla selezione."
     },
     "viewerControls": {
       "title": "Pulsanti della vista",
@@ -777,5 +806,15 @@
       "acrylic": "acrilico",
       "approx": "appross."
     }
+  },
+  "report": {
+    "column": "In colonna",
+    "row": "In riga",
+    "no_results": "Visualizzato una volta risolta la struttura",
+    "guides": "Linee guida",
+    "print": "Stampa",
+    "paper": "Carta",
+    "portrait": "Verticale",
+    "landscape": "Orizzontale"
   }
 }

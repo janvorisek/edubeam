@@ -67,6 +67,10 @@ const steps = computed(() => [
     content: { title: t('tour.undoRedo.title'), description: t('tour.undoRedo.description') },
   },
   {
+    attachTo: { element: '#toolRail' },
+    content: { title: t('tour.tools.title'), description: t('tour.tools.description') },
+  },
+  {
     attachTo: { element: '#viewerControls' },
     content: {
       title: t('tour.viewerControls.title'),
@@ -106,9 +110,9 @@ const steps = computed(() => [
  * once, before the first step, is simpler than asking each step that needs it to switch for itself.
  */
 const startTour = async () => {
-  const drawing = appStore.tabs.findIndex((tab) => tab.props.id === 'viewer');
+  const drawing = appStore.tabs.find((tab) => tab.props.id === 'viewer');
 
-  if (drawing >= 0) appStore.tab = drawing;
+  if (drawing) appStore.tab = drawing.value;
 
   viewerStore.settingsOpen = true;
   await nextTick();
@@ -225,6 +229,9 @@ onMounted(() => {
   const panel = params.get('panel');
   // The layers the link was shared with; without it, the viewer's own (see viewLayers).
   const show = params.get('show');
+  // ?renderer=plot opts into the prototype drawing, ?renderer=classic goes back; it is remembered.
+  const renderer = params.get('renderer');
+  if (renderer === 'plot' || renderer === 'classic') useViewerStore().renderer = renderer;
 
   // Someone who has not been through the welcome dialog yet is new here: this version is what
   // they start with, not news, so the changelog waits for the next release.
@@ -236,6 +243,10 @@ onMounted(() => {
   }
 
   if (show !== null) Object.assign(viewerStore, decodeLayers(show));
+
+  // A link to a model opens on the drawing, as it always has, whichever tab was left open last:
+  // the viewer has no tabs to get back with, and a shared model is there to be seen
+  if (inViewerMode || name) appStore.tab = 0;
 
   if (inViewerMode) {
     appStore.inViewerMode = true;

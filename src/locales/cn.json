@@ -2,7 +2,8 @@
   "tabView": {
     "viewer": "视图",
     "settings": "设置",
-    "results": "结果"
+    "results": "结果",
+    "report": "报告"
   },
   "common": {
     "label": "标签",
@@ -86,6 +87,7 @@
     "addPrescribedDisplacement": "施加位移约束",
     "UDL": "UDL",
     "forceMoment": "力/力矩",
+    "moment": "力矩",
     "editLoad": "编辑荷载",
     "loadPositionOnBeam": "距起始节点的荷载位置",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... 下缘与上缘纤维温差",
@@ -198,6 +200,10 @@
     "result_label_orientation": "结果标签方向",
     "result_label_orientation_axis": "垂直于图表",
     "result_label_orientation_horizontal": "始终水平",
+    "renderer": "渲染器",
+    "renderer_classic": "经典",
+    "renderer_plot": "新版（测试版）",
+    "show_readout": "在指针处显示数值",
     "result_labels": "结果标签",
     "diagrams": {
       "title": "内力图",
@@ -232,7 +238,13 @@
     "boxSelect": "框选",
     "centerContent": "内容居中",
     "fitContent": "适配屏幕",
-    "holdCtrl": "按住 Ctrl 可用鼠标添加"
+    "holdCtrl": "按住 Ctrl 可用鼠标添加",
+    "select": "选择",
+    "tools": "工具",
+    "snapMiddle": "中点",
+    "snapThird": "三分点",
+    "snapOnElement": "在单元 {label} 上",
+    "placeFreely": "按住 Alt 自由放置"
   },
   "dofs": {
     "bcs": "受约束自由度"
@@ -399,6 +411,19 @@
     "shareLayers": "显示我看到的内容",
     "shareLayersHint": "链接打开时将显示您当前开启的内力图、荷载和标签。"
   },
+  "shortcuts": {
+    "title": "键盘快捷键",
+    "drawing": "图面",
+    "editing": "编辑",
+    "cancel": "返回选择，取消放置",
+    "placeFreely": "自由放置，不吸附（按住）",
+    "grid": "显示或隐藏网格",
+    "snap": "开启或关闭网格吸附",
+    "zoom": "放大和缩小",
+    "selectAll": "全选",
+    "save": "保存项目",
+    "exportImage": "导出图像"
+  },
   "tour": {
     "menu": {
       "title": "菜单",
@@ -407,6 +432,10 @@
     "undoRedo": {
       "title": "撤销和重做",
       "description": "在修改记录中前后移动。Ctrl+Z 和 Ctrl+Shift+Z 功能相同。"
+    },
+    "tools": {
+      "title": "工具",
+      "description": "直接在图上添加节点、单元、支座和荷载。按住工具或点击其角落可选择支座或荷载的类型。点会吸附到节点以及单元的中点和三分点；按住 Alt 可自由放置。按键：V 选择、N 节点、E 单元、U 支座、L 荷载、D 尺寸、Esc 返回选择。"
     },
     "viewerControls": {
       "title": "视图按钮",
@@ -777,5 +806,15 @@
       "acrylic": "亚克力",
       "approx": "近似"
     }
+  },
+  "report": {
+    "column": "纵向排列",
+    "row": "横向排列",
+    "no_results": "结构求解后显示",
+    "guides": "辅助线",
+    "print": "打印",
+    "paper": "纸张",
+    "portrait": "纵向",
+    "landscape": "横向"
   }
 }

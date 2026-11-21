@@ -56,7 +56,7 @@ const mark = computed(() => {
 <style scoped lang="scss">
 /* Its own colour: not a load's, a result's, a reaction's, nor the selection's blue */
 .snap-mark {
-  --snap: #0f9d58;
+  --snap: var(--eb-snap, #0f9d58);
 }
 
 .snap-mark-shape {
@@ -68,7 +68,7 @@ const mark = computed(() => {
 
 .snap-mark-halo {
   fill: none;
-  stroke: #ffffff;
+  stroke: var(--eb-paper, #ffffff);
   stroke-width: 5px;
   stroke-linejoin: round;
   opacity: 0.9;
@@ -79,7 +79,7 @@ const mark = computed(() => {
   font-size: 12px;
   font-weight: 600;
   paint-order: stroke;
-  stroke: #ffffff;
+  stroke: var(--eb-paper, #ffffff);
   stroke-width: 3.5px;
   stroke-linejoin: round;
 }

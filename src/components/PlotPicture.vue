@@ -32,6 +32,7 @@ import PlotReadout from './PlotReadout.vue';
 import PlotShapes from './PlotShapes.vue';
 import type { PlotHit, PlotHits, PlotLabelHit } from './plotHit';
 import { editorResolveOptions, editorSceneOptions, editorTones, readEditorModel } from '@/utils/plotDrawing';
+import { themedColors, useThemeName } from '@/utils/theme';
 import { useEditorDiagramScales, useEditorLayers, useEditorLook } from '@/utils/useEditorLook';
 
 const props = defineProps<{
@@ -84,7 +85,10 @@ watch(
 /* ── The editor's settings, in plot's terms ─────────────────────────────────────────────────── */
 const layers = useEditorLayers();
 const look = useEditorLook();
-const colors = computed(() => toneVars(editorTones(viewerStore.colors)));
+const themeName = useThemeName();
+const colors = computed(() =>
+  toneVars(editorTones(themedColors(viewerStore.colors, themeName.value), themeName.value))
+);
 const colour = (tone: Tone | 'paper') => `var(--ebp-${tone})`;
 
 const RESULT_GROUPS: ReadonlySet<string> = new Set(['N', 'V', 'M']);
@@ -104,7 +108,8 @@ const placing = computed(() =>
 /* ── Hover and selection: a few style rules over the drawn scene, which is not built again ─── */
 /** What steps back while a member is hovered: the members and what is drawn on them */
 const DIMMED = ['members', 'nodes', 'memberLabels', ...RESULT_LAYERS] as const;
-const SELECTED = 'rgb(0, 94, 255)';
+// The theme's (see drawingVars): the picture stands inside the viewer that sets it
+const SELECTED = 'var(--eb-select, rgb(0, 94, 255))';
 const quoted = (entity: string) => `"${entity.replace(/["\\]/g, '\\$&')}"`;
 const highlight = computed((): string => {
   const root = '.plot-picture';

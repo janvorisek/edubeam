@@ -1,10 +1,14 @@
 <template>
-  <div id="bottomBar" style="border-top: 1px solid #ddd" :style="`min-height: ${props.height}px; overflow: hidden`">
+  <div
+    id="bottomBar"
+    style="border-top: 1px solid rgba(var(--v-border-color), var(--v-border-opacity))"
+    :style="`min-height: ${props.height}px; overflow: hidden`"
+  >
     <!-- The strip is also the bar's resize handle; see Editor.vue for the drag it starts. -->
-    <div class="d-flex justify-space-between bg-primary" data-resize-handle="vertical">
+    <div class="d-flex justify-space-between bg-appbar" data-resize-handle="vertical">
       <v-tabs
         :model-value="appStore.bottomBarTab"
-        bg-color="primary"
+        bg-color="appbar"
         :show-arrows="false"
         height="36"
         :hide-slider="props.height === 36"
@@ -16,12 +20,12 @@
           <template v-if="'count' in tab && tab.count() > 0" #append>{{ tab.count() }}</template>
         </v-tab>
       </v-tabs>
-      <div class="bg-primary d-flex align-center">
+      <div class="bg-appbar d-flex align-center">
         <span id="bottomBarHelp" class="d-flex">
           <HelpTip :topic="activeHelpTopic" location="top left" size="small" density="comfortable" align="center" />
         </span>
         <v-btn
-          color="primary"
+          color="appbar"
           density="compact"
           :icon="'mdi-window-minimize'"
           @click="appStore.bottomBarOpen = !appStore.bottomBarOpen"
@@ -52,7 +56,7 @@
             size="small"
             variant="flat"
             :color="appStore.mouseMode === MouseMode.ADD_NODE ? 'primary' : 'secondary'"
-            style="border-left: 1px solid #ccc"
+            style="border-left: 1px solid rgba(var(--v-border-color), 0.2)"
             :rounded="0"
             @click.stop="chooseTool('node')"
           >
@@ -285,7 +289,7 @@
             size="small"
             variant="flat"
             :color="appStore.mouseMode === MouseMode.ADD_ELEMENT ? 'primary' : 'secondary'"
-            style="border-left: 1px solid #ccc"
+            style="border-left: 1px solid rgba(var(--v-border-color), 0.2)"
             :rounded="0"
             @click.stop="chooseTool('element')"
           >
@@ -509,7 +513,7 @@
             size="small"
             variant="flat"
             color="secondary"
-            style="border-left: 1px solid #ccc"
+            style="border-left: 1px solid rgba(var(--v-border-color), 0.2)"
             :rounded="0"
             @click.stop="if (useProjectStore().solver.domain.elements.size > 0) openModal(AddElementLoad);"
           >
@@ -998,7 +1002,7 @@
             variant="flat"
             color="secondary"
             :rounded="0"
-            style="border-left: 1px solid #ccc"
+            style="border-left: 1px solid rgba(var(--v-border-color), 0.2)"
             @click.stop="openModal(MaterialLibraryDialog)"
           >
             <v-icon small>mdi-database-search-outline</v-icon> {{ $t('materials.material_library') }}
@@ -1133,7 +1137,7 @@
             variant="flat"
             color="secondary"
             :rounded="0"
-            style="border-left: 1px solid #ccc"
+            style="border-left: 1px solid rgba(var(--v-border-color), 0.2)"
             @click.stop="openModal(CrossSectionLibraryDialog)"
           >
             <v-icon small>mdi-database-search-outline</v-icon> {{ $t('materials.section_library') }}
@@ -1143,7 +1147,7 @@
             variant="flat"
             color="secondary"
             :rounded="0"
-            style="border-left: 1px solid #ccc"
+            style="border-left: 1px solid rgba(var(--v-border-color), 0.2)"
             @click.stop="openModal(PolygonSectionEditor)"
           >
             <v-icon small>mdi-vector-polygon</v-icon> {{ $t('crossSections.addPolygonal') }}
@@ -1295,7 +1299,7 @@
             size="small"
             variant="flat"
             color="secondary"
-            style="border-left: 1px solid #ccc"
+            style="border-left: 1px solid rgba(var(--v-border-color), 0.2)"
             :rounded="0"
             @click="layoutStore.bottomBarResultsTab = 'elements'"
           >
@@ -1306,7 +1310,7 @@
             size="small"
             variant="flat"
             color="secondary"
-            style="border-left: 1px solid #ccc"
+            style="border-left: 1px solid rgba(var(--v-border-color), 0.2)"
             :rounded="0"
             :disabled="!projStore.solver.loadCases[0].solved"
             @click="exportResults"
@@ -1317,7 +1321,7 @@
             size="small"
             variant="flat"
             color="secondary"
-            style="border-left: 1px solid #ccc"
+            style="border-left: 1px solid rgba(var(--v-border-color), 0.2)"
             :rounded="0"
             :disabled="!projStore.solver.loadCases[0].solved"
             @click="copyResults"

@@ -1,9 +1,12 @@
 <script lang="ts" setup>
+import { useThemeName } from '@/utils/theme';
 import SVGElementViewer from '@/components/SVGElementViewer.vue';
 
 import { useProjectStore } from '@/store/project';
 import { useLayoutStore } from '@/store/layout';
 
+/** The previews drawn on the theme's canvas, as the editor is */
+const themeName = useThemeName();
 const projectStore = useProjectStore();
 const layoutStore = useLayoutStore();
 
@@ -29,6 +32,7 @@ const props = withDefaults(
           <div v-if="props.widget.props.label" style="width: 64px; height: 48px">
             <SVGElementViewer
               v-if="projectStore.solver.domain.elements.has(props.widget.props.label)"
+              :theme="themeName"
               class="overflow-hidden pa-1"
               :solver="projectStore.solver"
               :nodes="[]"

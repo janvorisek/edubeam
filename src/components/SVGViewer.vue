@@ -9,6 +9,7 @@ import SvgViewerDefs from './SVGViewerDefs.vue';
 import { useProjectStore } from '../store/project';
 import { ref, shallowRef, onMounted, computed, nextTick, watch, reactive, onUnmounted, provide, toRaw } from 'vue';
 import { useViewerStore } from '../store/viewer';
+import { drawingVars, themedColors, useThemeName } from '@/utils/theme';
 import { useAppStore } from '@/store/app';
 
 import AddElementDialog from './dialogs/AddElement.vue';
@@ -154,6 +155,11 @@ const dimlineDist = ref(48); // preview offset
 const appStore = useAppStore();
 const projectStore = useProjectStore();
 const viewerStore = useViewerStore();
+
+/* Light or dark (see useThemeName): the drawing's colours, and the diagrams' with the dark stand-ins */
+const themeName = useThemeName();
+const colors = computed(() => themedColors(viewerStore.colors, themeName.value));
+const themeVars = computed(() => drawingVars(themeName.value));
 const layoutStore = useLayoutStore();
 
 const resolvedResultLabelMode = computed(() => props.resultLabelMode ?? viewerStore.resultLabelMode);
@@ -3104,6 +3110,8 @@ const optionsCtxMenu = reactive({
   minWidth: 230,
   x: 0,
   y: 0,
+  // The menu's own light or dark look, with the app's
+  theme: computed(() => (themeName.value === 'dark' ? 'default dark' : 'default')),
 });
 
 /** The element under a pointer, from the handle it landed on. */
@@ -3222,7 +3230,7 @@ defineExpose({ centerContent, fitContent });
 </script>
 
 <template>
-  <div class="d-flex flex-column fill-height svg-viewer">
+  <div class="d-flex flex-column fill-height svg-viewer" :class="`drawing-${themeName}`" :style="themeVars">
     <!-- <div style="position: absolute; top: 0; left: 0; background: red; z-index: 101">{{ intersected }}</div> -->
     <div
       v-if="!appStore.inViewerMode"
@@ -3241,7 +3249,7 @@ defineExpose({ centerContent, fitContent });
                 density="compact"
                 variant="text"
                 rounded="0"
-                :class="viewerStore.showGrid ? 'text-black' : 'text-grey'"
+                :class="viewerStore.showGrid ? 'text-on-surface' : 'text-grey'"
                 @click="toggleGridVisibility"
               >
                 <div>G</div>
@@ -3257,7 +3265,7 @@ defineExpose({ centerContent, fitContent });
                 density="compact"
                 variant="text"
                 rounded="0"
-                :class="viewerStore.snapToGrid ? 'text-black' : 'text-grey'"
+                :class="viewerStore.snapToGrid ? 'text-on-surface' : 'text-grey'"
                 @click="toggleSnapToGrid"
               >
                 <div>S</div>
@@ -3282,7 +3290,7 @@ defineExpose({ centerContent, fitContent });
             v-bind="tooltipProps"
             density="compact"
             class="pa-0 justify-center align-self-center"
-            :class="viewerStore.showCrosshair ? 'text-black' : 'text-grey'"
+            :class="viewerStore.showCrosshair ? 'text-on-surface' : 'text-grey'"
             style="min-width: 28px"
             @click="viewerStore.showCrosshair = !viewerStore.showCrosshair"
           >
@@ -3424,7 +3432,11 @@ defineExpose({ centerContent, fitContent });
         </v-list>
       </v-menu>
     </v-sheet>
-    <div id="viewerControls" class="text-black d-flex" style="position: absolute; z-index: 100; top: 24px; right: 24px">
+    <div
+      id="viewerControls"
+      class="text-on-surface d-flex"
+      style="position: absolute; z-index: 100; top: 24px; right: 24px"
+    >
       <v-btn
         icon="mdi:mdi-image-filter-center-focus"
         size="32"
@@ -3800,7 +3812,7 @@ defineExpose({ centerContent, fitContent });
 
     <div
       ref="tooltip"
-      class="tooltip body-2 black--text"
+      class="tooltip body-2"
       :class="{ 'plot-reading': plotReading, 'plot-mode': plotMode }"
       style="display: none"
     >
@@ -3952,6 +3964,7 @@ defineExpose({ centerContent, fitContent });
     >
       <svg
         ref="svg"
+        class="drawing-svg"
         :style="{
           opacity: isFitted ? 1 : 0,
           '--marker-force': markerForce,
@@ -3985,7 +3998,7 @@ defineExpose({ centerContent, fitContent });
           '--marker-force-tip-selected': markerForceTipSelected,
           '--marker-dim-tip': markerDimTip,
           '--filter-text-label': markerTextLabel,
-          '--colors-loads': viewerStore.colors.loads,
+          '--colors-loads': colors.loads,
         }"
         :class="{ 'plot-renderer': plotRendererReady, 'load-dragging': loadDrag?.started }"
         @click.right.prevent="openCtxMenu($event)"
@@ -3994,12 +4007,7 @@ defineExpose({ centerContent, fitContent });
         @pointerup="onMouseUp"
         @pointercancel="onPointerCancel"
       >
-        <SvgViewerDefs
-          :id="props.id"
-          :colors="viewerStore.colors"
-          :support-size="viewerStore.supportSize"
-          :scale="scale"
-        />
+        <SvgViewerDefs :id="props.id" :colors="colors" :support-size="viewerStore.supportSize" :scale="scale" />
         <g ref="viewport" :class="{ disablePointerEvents: isZooming || isPanning }">
           <!-- PROTOTYPE: the opt-in drawing, under the editor's layers, which then draw transparent -->
           <PlotPicture
@@ -4540,12 +4548,7 @@ defineExpose({ centerContent, fitContent });
 
     <div v-if="viewerStore.settingsOpen" class="display-options">
       <div id="viewerSettings" class="d-flex flex-sm-column pa-1 overflow-y-auto ga-2 align-end justify-end">
-        <div
-          color="grey-lighten-5"
-          rounded="lg"
-          class="d-sm-flex bg-grey-lighten-5 elevation-1 rounded"
-          style="width: fit-content"
-        >
+        <div color="panel" rounded="lg" class="d-sm-flex bg-panel elevation-1 rounded" style="width: fit-content">
           <v-checkbox
             v-model="useViewerStore().showDeformedShape"
             :label="$t('sideSettings.showDeformedShape')"
@@ -4598,7 +4601,7 @@ defineExpose({ centerContent, fitContent });
           />
         </div>
 
-        <div color="grey-lighten-5" rounded="lg" height="32" class="d-sm-flex bg-grey-lighten-5 elevation-1 rounded">
+        <div color="panel" rounded="lg" height="32" class="d-sm-flex bg-panel elevation-1 rounded">
           <v-checkbox
             v-model="useViewerStore().showSupports"
             :label="$t('sideSettings.supports')"
@@ -4634,7 +4637,7 @@ defineExpose({ centerContent, fitContent });
       </div>
       <div class="text-right text-sm-body-2 d-flex align-center justify-end display-options-links">
         <HelpTip topic="diagrams" location="bottom end" />
-        <button class="text-decoration-underline bg-white" @click="appStore.openSettings('appearance')">
+        <button class="text-decoration-underline bg-surface" @click="appStore.openSettings('appearance')">
           {{ $t('sideSettings.more_settings') }}
         </button>
       </div>
@@ -4643,9 +4646,19 @@ defineExpose({ centerContent, fitContent });
 </template>
 
 <style lang="scss" scoped>
+/*
+ * What is drawn without a fill of its own (labels, mostly) takes it from here rather than the SVG
+ * default of black: the theme's ink (see drawingVars), black itself in the light theme.
+ */
+// The drawing's own SVG only: the icons in the tool rail and the panels draw with fill="none"
+.svg-viewer svg.drawing-svg {
+  fill: var(--eb-ink, black);
+}
 /* A long press opens the drawing's menu; iOS would otherwise also pop up its own callout over it. */
 .svg-viewer {
   -webkit-touch-callout: none;
+  // The canvas: white, or the website's night canvas a step above the page (see themeVars)
+  background: var(--eb-paper);
 }
 
 /*
@@ -4692,14 +4705,14 @@ defineExpose({ centerContent, fitContent });
 
 /* The read only properties sit above the actions the panel offers, divided from them. */
 .selection-details {
-  border-bottom: thin solid rgba(0, 0, 0, 0.12);
+  border-bottom: thin solid rgba(var(--v-border-color), var(--v-border-opacity));
   line-height: 1.5;
 }
 
 .svg-viewer :deep(*) {
   .element-load.load-1d {
     text {
-      fill: v-bind('viewerStore.colors.loads');
+      fill: v-bind('colors.loads');
     }
 
     stroke-linecap: butt;
@@ -4710,7 +4723,7 @@ defineExpose({ centerContent, fitContent });
     }
 
     use {
-      stroke: v-bind('viewerStore.colors.loads');
+      stroke: v-bind('colors.loads');
     }
 
     use:hover {
@@ -4729,7 +4742,7 @@ defineExpose({ centerContent, fitContent });
 
     polygon,
     path {
-      stroke: v-bind('viewerStore.colors.loads');
+      stroke: v-bind('colors.loads');
       stroke-width: 1px;
 
       &.handle {
@@ -4744,20 +4757,20 @@ defineExpose({ centerContent, fitContent });
 
     &.selected {
       text {
-        fill: rgb(0, 55, 149);
+        fill: var(--eb-select-strong, rgb(0, 55, 149));
       }
 
       polygon.drawable,
       path.drawable {
-        stroke: rgb(0, 94, 255);
+        stroke: var(--eb-select, rgb(0, 94, 255));
         stroke-width: 4px;
         stroke-linejoin: round;
-        fill: rgba(0, 55, 149, 0.15);
+        fill: var(--eb-select-fill, rgba(0, 55, 149, 0.15));
       }
 
       use {
         stroke-width: 3px; /* affects the referenced element */
-        stroke: rgb(0, 94, 255);
+        stroke: var(--eb-select, rgb(0, 94, 255));
       }
     }
   }
@@ -4765,7 +4778,7 @@ defineExpose({ centerContent, fitContent });
   .element.element-1d {
     polyline {
       fill: none;
-      stroke: black;
+      stroke: var(--eb-ink, #000);
       stroke-width: 2px;
 
       // Narrower than the other handles: it lies above the diagrams, and the band it covers is
@@ -4785,26 +4798,26 @@ defineExpose({ centerContent, fitContent });
     // hit stroke lies in a layer above the diagrams.
     &.hovered {
       & polyline.drawable {
-        stroke: black;
+        stroke: var(--eb-ink, #000);
         stroke-width: 5px;
       }
     }
 
     &.selected {
       & polyline.drawable {
-        stroke: rgb(0, 94, 255);
+        stroke: var(--eb-select, rgb(0, 94, 255));
         stroke-width: 5px;
       }
     }
 
     polyline.fibers {
-      stroke: #666;
+      stroke: var(--eb-muted, #666);
       stroke-width: 1px;
     }
 
     path.deformedShape {
       fill: none;
-      stroke: v-bind('viewerStore.colors.deformedShape');
+      stroke: v-bind('colors.deformedShape');
       stroke-width: 2px;
 
       &.decoration {
@@ -4813,9 +4826,9 @@ defineExpose({ centerContent, fitContent });
     }
 
     .normal polyline {
-      stroke: v-bind('viewerStore.colors.normalForce');
+      stroke: v-bind('colors.normalForce');
       stroke-width: 1px;
-      fill: v-bind('viewerStore.colors.normalForce');
+      fill: v-bind('colors.normalForce');
       fill-opacity: 0.1;
 
       &:hover {
@@ -4824,16 +4837,16 @@ defineExpose({ centerContent, fitContent });
     }
     // Hatch lines across the member, drawn like the outline but lighter.
     .normal path.hatch {
-      stroke: v-bind('viewerStore.colors.normalForce');
+      stroke: v-bind('colors.normalForce');
       stroke-width: 1px;
       stroke-opacity: 0.55;
       fill: none;
     }
 
     .shear polyline {
-      stroke: v-bind('viewerStore.colors.shearForce');
+      stroke: v-bind('colors.shearForce');
       stroke-width: 1px;
-      fill: v-bind('viewerStore.colors.shearForce');
+      fill: v-bind('colors.shearForce');
       fill-opacity: 0.1;
 
       &:hover {
@@ -4842,16 +4855,16 @@ defineExpose({ centerContent, fitContent });
     }
     // Hatch lines across the member, drawn like the outline but lighter.
     .shear path.hatch {
-      stroke: v-bind('viewerStore.colors.shearForce');
+      stroke: v-bind('colors.shearForce');
       stroke-width: 1px;
       stroke-opacity: 0.55;
       fill: none;
     }
 
     .moment polyline {
-      stroke: v-bind('viewerStore.colors.bendingMoment');
+      stroke: v-bind('colors.bendingMoment');
       stroke-width: 1px;
-      fill: v-bind('viewerStore.colors.bendingMoment');
+      fill: v-bind('colors.bendingMoment');
       fill-opacity: 0.1;
 
       &:hover {
@@ -4860,7 +4873,7 @@ defineExpose({ centerContent, fitContent });
     }
     // Hatch lines across the member, drawn like the outline but lighter.
     .moment path.hatch {
-      stroke: v-bind('viewerStore.colors.bendingMoment');
+      stroke: v-bind('colors.bendingMoment');
       stroke-width: 1px;
       stroke-opacity: 0.55;
       fill: none;
@@ -4869,7 +4882,7 @@ defineExpose({ centerContent, fitContent });
 
   .node {
     polyline {
-      stroke: #000;
+      stroke: var(--eb-ink, #000);
       stroke-linecap: square;
       stroke-width: 6px;
       vector-effect: non-scaling-stroke;
@@ -4886,28 +4899,28 @@ defineExpose({ centerContent, fitContent });
       }
 
       &.drawable.deformed {
-        stroke: v-bind('viewerStore.colors.deformedShape');
+        stroke: v-bind('colors.deformedShape');
       }
     }
 
     &:hover polyline.drawable {
-      stroke: black;
+      stroke: var(--eb-ink, #000);
       stroke-width: 10px;
     }
 
     &.selected polyline.drawable {
-      stroke: rgb(0, 55, 149);
+      stroke: var(--eb-select-strong, rgb(0, 55, 149));
       stroke-width: 8px;
     }
   }
 
   .prescribed polyline {
-    stroke: v-bind('viewerStore.colors.loads');
+    stroke: v-bind('colors.loads');
   }
 
   .nodal-load {
     text {
-      fill: v-bind('viewerStore.colors.loads');
+      fill: v-bind('colors.loads');
     }
 
     polyline {
@@ -4998,31 +5011,31 @@ defineExpose({ centerContent, fitContent });
 
     &.selected polyline.decoration.marker-forceTip {
       marker-end: var(--marker-force-tip-selected);
-      stroke: rgb(0, 55, 149);
+      stroke: var(--eb-select-strong, rgb(0, 55, 149));
       stroke-width: 2px;
     }
 
     &.selected {
       text {
-        fill: rgb(0, 55, 149);
+        fill: var(--eb-select-strong, rgb(0, 55, 149));
       }
     }
   }
 
   .normal text {
-    fill: v-bind('viewerStore.colors.normalForce');
+    fill: v-bind('colors.normalForce');
   }
 
   .shear text {
-    fill: v-bind('viewerStore.colors.shearForce');
+    fill: v-bind('colors.shearForce');
   }
 
   .moment text {
-    fill: v-bind('viewerStore.colors.bendingMoment');
+    fill: v-bind('colors.bendingMoment');
   }
 
   .reaction {
-    fill: v-bind('viewerStore.colors.reactions');
+    fill: v-bind('colors.reactions');
   }
 
   .marker-reaction {

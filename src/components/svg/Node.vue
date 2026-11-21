@@ -450,8 +450,7 @@ const emit = defineEmits(['nodemousemove', 'nodepointerdown', 'nodepointerup', '
         :cx="node.coords[0]"
         :cy="node.coords[2]"
         :r="(1 + (fontSize / 2) * (1 + Math.pow(node.label.toString().length - 1, 1.7) * 0.3)) / scale"
-        fill="rgba(255, 255, 255, 0.8)"
-        stroke="black"
+        style="fill: var(--eb-paper, #fff); fill-opacity: 0.8; stroke: var(--eb-ink, black)"
         vector-effect="non-scaling-stroke"
       ></circle>
       <text

@@ -4,6 +4,7 @@ import SvgViewerDefs from './SVGViewerDefs.vue';
 import { ref, onMounted, computed, watch, provide, useId, shallowRef } from 'vue';
 import type { PlotModel } from '@edubeam/plot';
 import PlotScene from './PlotScene.vue';
+import { drawingVars, themedColors, type ThemeName } from '@/utils/theme';
 import { dimensionAnchors, editorFit, editorLayers, readEditorModel, type EditorLook } from '@/utils/plotDrawing';
 
 import {
@@ -103,6 +104,8 @@ const props = withDefaults(
      * canvas does with the plot renderer; the dimension lines stay. The layers follow the show* props.
      */
     plot?: EditorLook | null;
+    /** The canvas it is drawn on: the light one unless given, as in an export (see drawingVars) */
+    theme?: ThemeName;
   }>(),
   {
     id: undefined,
@@ -129,6 +132,7 @@ const props = withDefaults(
     fitIgnore: '[data-fit-ignore]',
     fitReservePx: undefined,
     noFitForResults: false,
+    theme: 'light',
     colors: () => {
       return {
         normalForce: '#2222ff',
@@ -156,6 +160,9 @@ const props = withDefaults(
     plot: null,
   }
 );
+
+/** The colours drawn: on the dark canvas with the stand-ins for the default ones (see themedColors) */
+const drawn = computed(() => themedColors(props.colors, props.theme));
 
 const panZoom = ref<InstanceType<typeof SvgPanZoom> | null>(null);
 
@@ -397,7 +404,7 @@ defineExpose({ centerContent, fitContent, setView, update });
 </script>
 
 <template>
-  <div class="d-flex flex-column fill-height svg-viewer" style="z-index: 1">
+  <div class="d-flex flex-column fill-height svg-viewer" style="z-index: 1" :style="drawingVars(props.theme)">
     <SvgPanZoom
       ref="panZoom"
       :padding="props.padding"
@@ -411,6 +418,7 @@ defineExpose({ centerContent, fitContent, setView, update });
     >
       <svg
         ref="svg"
+        class="drawing-svg"
         :style="{
           opacity: panZoom?.fitted ? 1 : 0,
           '--marker-force': markerForce,
@@ -444,10 +452,10 @@ defineExpose({ centerContent, fitContent, setView, update });
           '--marker-force-tip-selected': markerForceTipSelected,
           '--marker-dim-tip': markerDimTip,
           '--filter-text-label': markerTextLabel,
-          '--colors-loads': props.colors.loads,
+          '--colors-loads': drawn.loads,
         }"
       >
-        <SvgViewerDefs :id="viewerId" :colors="colors" :support-size="supportSize" :scale="scale" />
+        <SvgViewerDefs :id="viewerId" :colors="drawn" :support-size="supportSize" :scale="scale" />
         <g ref="viewport">
           <PlotScene
             v-if="props.plot && plotModel"
@@ -455,7 +463,8 @@ defineExpose({ centerContent, fitContent, setView, update });
             :look="props.plot"
             :layers="plotLayers"
             :scale="scale"
-            :colors="props.colors"
+            :colors="drawn"
+            :theme="props.theme"
             :diagram-scale="plotDiagramScale"
           />
           <template v-else>
@@ -614,10 +623,18 @@ defineExpose({ centerContent, fitContent, setView, update });
 </template>
 
 <style lang="scss" scoped>
+/*
+ * What is drawn without a fill of its own (labels, mostly) takes it from here rather than the SVG
+ * default of black: the theme's ink (see drawingVars), black itself in the light theme.
+ */
+// The drawing's own SVG only: the icons in the tool rail and the panels draw with fill="none"
+.svg-viewer svg.drawing-svg {
+  fill: var(--eb-ink, black);
+}
 .svg-viewer :deep(*) {
   .element-load.load-1d {
     text {
-      fill: v-bind('colors.loads');
+      fill: v-bind('drawn.loads');
     }
 
     stroke-linecap: butt;
@@ -628,7 +645,7 @@ defineExpose({ centerContent, fitContent, setView, update });
     }
 
     use {
-      stroke: v-bind('colors.loads');
+      stroke: v-bind('drawn.loads');
     }
 
     use:hover {
@@ -647,7 +664,7 @@ defineExpose({ centerContent, fitContent, setView, update });
 
     polygon,
     path {
-      stroke: v-bind('colors.loads');
+      stroke: v-bind('drawn.loads');
       stroke-width: 1px;
 
       &.handle {
@@ -662,20 +679,20 @@ defineExpose({ centerContent, fitContent, setView, update });
 
     &.selected {
       text {
-        fill: rgb(0, 55, 149);
+        fill: var(--eb-select-strong, rgb(0, 55, 149));
       }
 
       polygon.drawable,
       path.drawable {
-        stroke: rgb(0, 94, 255);
+        stroke: var(--eb-select, rgb(0, 94, 255));
         stroke-width: 4px;
         stroke-linejoin: round;
-        fill: rgba(0, 55, 149, 0.15);
+        fill: var(--eb-select-fill, rgba(0, 55, 149, 0.15));
       }
 
       use {
         stroke-width: 3px; /* affects the referenced element */
-        stroke: rgb(0, 94, 255);
+        stroke: var(--eb-select, rgb(0, 94, 255));
       }
     }
   }
@@ -683,7 +700,7 @@ defineExpose({ centerContent, fitContent, setView, update });
   .element.element-1d {
     polyline {
       fill: none;
-      stroke: black;
+      stroke: var(--eb-ink, #000);
       stroke-width: 2px;
       &.handle {
         cursor: pointer;
@@ -696,33 +713,33 @@ defineExpose({ centerContent, fitContent, setView, update });
     }
     &:hover {
       & polyline.drawable {
-        stroke: black;
+        stroke: var(--eb-ink, #000);
         stroke-width: 5px;
       }
     }
     &.selected {
       & polyline.drawable {
-        stroke: rgb(0, 94, 255);
+        stroke: var(--eb-select, rgb(0, 94, 255));
         stroke-width: 5px;
       }
     }
 
     polyline.fibers {
-      stroke: #666;
+      stroke: var(--eb-muted, #666);
       stroke-width: 1px;
     }
     path.deformedShape {
       fill: none;
-      stroke: v-bind('colors.deformedShape');
+      stroke: v-bind('drawn.deformedShape');
       stroke-width: 2px;
       &.decoration {
         stroke-width: 1px;
       }
     }
     .normal polyline {
-      stroke: v-bind('colors.normalForce');
+      stroke: v-bind('drawn.normalForce');
       stroke-width: 1px;
-      fill: v-bind('colors.normalForce');
+      fill: v-bind('drawn.normalForce');
       fill-opacity: 0.1;
       &:hover {
         fill-opacity: 0.2;
@@ -730,15 +747,15 @@ defineExpose({ centerContent, fitContent, setView, update });
     }
     // Hatch lines across the member, drawn like the outline but lighter.
     .normal path.hatch {
-      stroke: v-bind('colors.normalForce');
+      stroke: v-bind('drawn.normalForce');
       stroke-width: 1px;
       stroke-opacity: 0.55;
       fill: none;
     }
     .shear polyline {
-      stroke: v-bind('colors.shearForce');
+      stroke: v-bind('drawn.shearForce');
       stroke-width: 1px;
-      fill: v-bind('colors.shearForce');
+      fill: v-bind('drawn.shearForce');
       fill-opacity: 0.1;
       &:hover {
         fill-opacity: 0.2;
@@ -746,15 +763,15 @@ defineExpose({ centerContent, fitContent, setView, update });
     }
     // Hatch lines across the member, drawn like the outline but lighter.
     .shear path.hatch {
-      stroke: v-bind('colors.shearForce');
+      stroke: v-bind('drawn.shearForce');
       stroke-width: 1px;
       stroke-opacity: 0.55;
       fill: none;
     }
     .moment polyline {
-      stroke: v-bind('colors.bendingMoment');
+      stroke: v-bind('drawn.bendingMoment');
       stroke-width: 1px;
-      fill: v-bind('colors.bendingMoment');
+      fill: v-bind('drawn.bendingMoment');
       fill-opacity: 0.1;
       &:hover {
         fill-opacity: 0.2;
@@ -762,7 +779,7 @@ defineExpose({ centerContent, fitContent, setView, update });
     }
     // Hatch lines across the member, drawn like the outline but lighter.
     .moment path.hatch {
-      stroke: v-bind('colors.bendingMoment');
+      stroke: v-bind('drawn.bendingMoment');
       stroke-width: 1px;
       stroke-opacity: 0.55;
       fill: none;
@@ -771,7 +788,7 @@ defineExpose({ centerContent, fitContent, setView, update });
 
   .node {
     polyline {
-      stroke: #000;
+      stroke: var(--eb-ink, #000);
       stroke-linecap: square;
       stroke-width: 6px;
       vector-effect: non-scaling-stroke;
@@ -785,26 +802,26 @@ defineExpose({ centerContent, fitContent, setView, update });
         stroke: none;
       }
       &.drawable.deformed {
-        stroke: v-bind('colors.deformedShape');
+        stroke: v-bind('drawn.deformedShape');
       }
     }
     &:hover polyline.drawable {
-      stroke: black;
+      stroke: var(--eb-ink, #000);
       stroke-width: 10px;
     }
     &.selected polyline.drawable {
-      stroke: rgb(0, 55, 149);
+      stroke: var(--eb-select-strong, rgb(0, 55, 149));
       stroke-width: 8px;
     }
   }
 
   .prescribed polyline {
-    stroke: v-bind('colors.loads');
+    stroke: v-bind('drawn.loads');
   }
 
   .nodal-load {
     text {
-      fill: v-bind('colors.loads');
+      fill: v-bind('drawn.loads');
     }
     polyline {
       stroke-linecap: butt;
@@ -891,30 +908,30 @@ defineExpose({ centerContent, fitContent, setView, update });
 
     &.selected polyline.decoration.marker-forceTip {
       marker-end: var(--marker-force-tip-selected);
-      stroke: rgb(0, 55, 149);
+      stroke: var(--eb-select-strong, rgb(0, 55, 149));
       stroke-width: 2px;
     }
     &.selected {
       text {
-        fill: rgb(0, 55, 149);
+        fill: var(--eb-select-strong, rgb(0, 55, 149));
       }
     }
   }
 
   .normal text {
-    fill: v-bind('colors.normalForce');
+    fill: v-bind('drawn.normalForce');
   }
 
   .shear text {
-    fill: v-bind('colors.shearForce');
+    fill: v-bind('drawn.shearForce');
   }
 
   .moment text {
-    fill: v-bind('colors.bendingMoment');
+    fill: v-bind('drawn.bendingMoment');
   }
 
   .reaction {
-    fill: v-bind('colors.reactions');
+    fill: v-bind('drawn.reactions');
   }
 
   .marker-reaction {

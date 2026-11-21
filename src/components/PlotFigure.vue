@@ -10,6 +10,7 @@ import type { Anchor, Fit, PlotLayer, PlotModel } from '@edubeam/plot';
 import { useViewerStore } from '@/store/viewer';
 import { editorFigureSvg, editorFit, editorScene } from '@/utils/plotDrawing';
 import { useEditorLook } from '@/utils/useEditorLook';
+import { themedColors, useThemeName } from '@/utils/theme';
 
 const props = withDefaults(
   defineProps<{
@@ -29,6 +30,7 @@ const GHOST = '#9e9e9e';
 
 const viewerStore = useViewerStore();
 const look = useEditorLook();
+const themeName = useThemeName();
 const root = ref<HTMLElement>();
 const { width } = useElementSize(root);
 
@@ -46,9 +48,11 @@ const svg = computed((): string => {
       fit,
       scene: props.ghostLoads ? { ...scene, texts: scene.texts.filter((t) => t.group !== 'loads') } : scene,
     };
-    const colors = props.ghostLoads ? { ...viewerStore.colors, loads: GHOST } : viewerStore.colors;
+    const themed = themedColors(viewerStore.colors, themeName.value);
+    const colors = props.ghostLoads ? { ...themed, loads: GHOST } : themed;
     return editorFigureSvg(figure, look.value, colors, {
       background: false,
+      theme: themeName.value,
       over: props.over?.(figure.fit),
     });
   } catch (error) {

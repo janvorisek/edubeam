@@ -17,6 +17,7 @@ import { targetOf, toolLoadFits, type ToolLoad } from '@/utils/toolTarget';
 import { supportTypes, type SupportType } from '@/utils/supports';
 import { editorResolveOptions, editorSceneOptions, plotNodeOf } from '@/utils/plotDrawing';
 import { useEditorLook } from '@/utils/useEditorLook';
+import { DRAWING_PALETTES, useThemeName } from '@/utils/theme';
 
 /**
  * What the support or load tool would add, drawn in grey where a click would put it: on the node
@@ -44,7 +45,11 @@ const look = useEditorLook();
 /** The stretch a load on a member is shown over where there is no member under the pointer, px */
 const FREE_SPAN_PX = 72;
 const FREE = { dx: false, dz: false, ry: false } as const;
-const GHOST = '#5f6368';
+/** The ghost's grey, and the canvas its labels stand out from: by theme, as attributes take no var() */
+const themeName = useThemeName();
+const GHOSTS = { light: '#5f6368', dark: '#9aa0b4' } as const;
+const ghostInk = computed(() => GHOSTS[themeName.value]);
+const paper = computed(() => DRAWING_PALETTES[themeName.value].paper);
 
 const target = computed(() => (props.tool === null || !snap.value ? null : targetOf(snap.value)));
 
@@ -162,12 +167,12 @@ const picture = computed(() => {
       v-for="(p, i) in picture.paths"
       :key="`p${i}`"
       :d="p.d"
-      :stroke="p.width > 0 ? GHOST : 'none'"
+      :stroke="p.width > 0 ? ghostInk : 'none'"
       :stroke-width="p.width > 0 ? p.width : undefined"
       :stroke-dasharray="p.dash"
       :stroke-linecap="p.cap ?? 'round'"
       stroke-linejoin="round"
-      :fill="p.fill === 'tone' ? GHOST : p.fill === 'paper' ? '#ffffff' : 'none'"
+      :fill="p.fill === 'tone' ? ghostInk : p.fill === 'paper' ? paper : 'none'"
       :fill-opacity="p.fillOpacity"
     />
     <circle
@@ -176,9 +181,9 @@ const picture = computed(() => {
       :cx="c.cx"
       :cy="c.cy"
       :r="c.r"
-      :stroke="GHOST"
+      :stroke="ghostInk"
       :stroke-width="c.width"
-      :fill="c.fill === 'paper' ? '#ffffff' : GHOST"
+      :fill="c.fill === 'paper' ? paper : ghostInk"
     />
     <text
       v-for="(t, i) in picture.texts"
@@ -188,7 +193,7 @@ const picture = computed(() => {
       :y="t.y"
       :text-anchor="t.anchor"
       :transform="t.transform"
-      :fill="GHOST"
+      :fill="ghostInk"
       :font-weight="t.weight"
       :font-size="t.size ?? look.fontSize"
     >
@@ -209,7 +214,7 @@ const picture = computed(() => {
 
 .ghost-label {
   paint-order: stroke;
-  stroke: #ffffff;
+  stroke: var(--eb-paper, #ffffff);
   stroke-width: 3px;
   stroke-linejoin: round;
 }

@@ -38,7 +38,7 @@ const stiffness = computed(() =>
           <td
             v-for="(value, j) in row"
             :key="j"
-            :class="{ 'bg-grey-lighten-3 font-weight-medium': i === j }"
+            :class="{ 'bg-panel-strong font-weight-medium': i === j }"
             class="px-1"
           >
             {{ value.toExponential(2) }}

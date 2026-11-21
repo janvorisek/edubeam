@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useThemeName } from '@/utils/theme';
 import { computed, nextTick, ref, watch } from 'vue';
 import SVGElementViewer from './SVGElementViewer.vue';
 import { useAppStore } from '@/store/app';
@@ -19,6 +20,8 @@ import PlotFigure from './PlotFigure.vue';
 import { alignedDimensionMarkup, plotLoadsOf, plotNodeOf } from '@/utils/plotDrawing';
 import { useEditorLook } from '@/utils/useEditorLook';
 
+/** The previews drawn on the theme's canvas, as the editor is */
+const themeName = useThemeName();
 const props = withDefaults(
   defineProps<{
     load?: BeamElementLoad | null;
@@ -207,6 +210,7 @@ watch(
     <SVGElementViewer
       :id="`element-load-preview`"
       ref="viewer"
+      :theme="themeName"
       class="overflow-hidden pa-1 w-100"
       :solver="solver"
       :nodes="nodes"

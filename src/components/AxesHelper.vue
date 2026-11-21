@@ -55,7 +55,7 @@ const open = () => appStore.openSettings('lang');
   transition: background-color 0.12s;
 
   &:hover {
-    background: rgba(0, 0, 0, 0.06);
+    background: rgba(var(--v-theme-on-surface), 0.06);
   }
 
   &:focus-visible {

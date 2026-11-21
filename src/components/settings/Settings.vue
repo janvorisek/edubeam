@@ -8,7 +8,7 @@
               :active="tab === 'lang'"
               value="lang"
               class="py-2"
-              color="grey-lighten-4"
+              color="panel-variant"
               link
               :title="$t('settings.language_and_locale')"
               :subtitle="$t('settings.language_and_locale_subtitle')"
@@ -22,7 +22,7 @@
               :active="tab === 'appearance'"
               value="appearance"
               class="py-2"
-              color="grey-lighten-4"
+              color="panel-variant"
               link
               :title="$t('settings.viewer_settings')"
               :subtitle="$t('settings.viewer_settings_subtitle')"
@@ -36,7 +36,7 @@
               :active="tab === 'controls'"
               value="controls"
               class="py-2"
-              color="grey-lighten-4"
+              color="panel-variant"
               link
               :title="$t('settings.controls_and_shortcuts')"
               :subtitle="$t('settings.controls_and_shortcuts_subtitle')"

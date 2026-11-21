@@ -9,6 +9,7 @@
  */
 import { computed } from 'vue';
 import { sceneMarkup, type PlotLayer, type PlotModel } from '@edubeam/plot';
+import type { ThemeName } from '@/utils/theme';
 import { editorScene, editorTones, type DiagramScales, type EditorColors, type EditorLook } from '@/utils/plotDrawing';
 
 const props = defineProps<{
@@ -18,6 +19,8 @@ const props = defineProps<{
   /** The viewer's scale, px per metre */
   scale: number;
   colors: EditorColors;
+  /** The canvas it is drawn on; light unless given */
+  theme?: ThemeName;
   diagramScale?: DiagramScales;
 }>();
 
@@ -26,7 +29,7 @@ const markup = computed((): string => {
   if (!(s > 0) || props.model.nodes.length === 0) return '';
   try {
     const scene = editorScene(props.model, props.look, props.layers, { s, tx: 0, ty: 0 }, props.diagramScale);
-    return sceneMarkup(scene, { colors: editorTones(props.colors), fontSize: props.look.fontSize });
+    return sceneMarkup(scene, { colors: editorTones(props.colors, props.theme), fontSize: props.look.fontSize });
   } catch (error) {
     console.warn('[plot renderer] cannot draw the model', error);
     return '';

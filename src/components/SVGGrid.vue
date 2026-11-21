@@ -3,7 +3,7 @@
     <g class="grid">
       <rect class="chartBorder" x="16" y="16" width="100%" height="100%" />
       <path
-        stroke="#ccc"
+        class="grid-lines"
         vector-effect="non-scaling-stroke"
         :d="gridPath"
         :transform="`translate(${gridTX} ${gridTY})`"
@@ -11,10 +11,10 @@
     </g>
 
     <g class="grid">
-      <rect fill="white" x="0" y="0" height="100%" width="16" />
-      <rect fill="white" x="100%" y="0" height="100%" width="16" transform="translate(-16 0)" />
-      <rect fill="white" x="0" y="0" width="100%" height="16" />
-      <rect fill="white" x="0" y="100%" width="100%" height="16" transform="translate(0 -16)" />
+      <rect class="ruler-band" x="0" y="0" height="100%" width="16" />
+      <rect class="ruler-band" x="100%" y="0" height="100%" width="16" transform="translate(-16 0)" />
+      <rect class="ruler-band" x="0" y="0" width="100%" height="16" />
+      <rect class="ruler-band" x="0" y="100%" width="100%" height="16" transform="translate(0 -16)" />
       <g v-for="(item, i) in xGridTexts" :key="`x${i}`" :transform="`translate(${item.x + gridTX} ${item.y})`">
         <text text-anchor="middle" dy="0.35em">
           {{ rulerLabel(appStore.convertLength(Number(item.value) + trueOffsetX)) }}
@@ -188,9 +188,22 @@ defineExpose({ refreshGrid });
     shape-rendering: crispEdges;
   }
 
+  // The theme's (see SVGViewer's custom properties); the light ones where none is set, as in an export
+  .grid-lines {
+    stroke: var(--eb-grid, #ccc);
+  }
+
+  .ruler-band {
+    fill: var(--eb-paper, #fff);
+  }
+
+  text {
+    fill: var(--eb-ruler, var(--eb-ink, #000));
+  }
+
   .chartBorder {
     fill: transparent;
-    stroke: #666;
+    stroke: var(--eb-muted, #666);
     stroke-width: 1px;
   }
 }

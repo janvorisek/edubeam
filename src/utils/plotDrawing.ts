@@ -4,6 +4,7 @@
  * Shared by the canvas (PlotPicture) and by every picture drawn once and kept: the Appearance
  * preview, the image export and the thumbnails. They all look alike because they are all built here.
  */
+import { DRAWING_PALETTES, type ThemeName } from '@/utils/theme';
 import { toRaw } from 'vue';
 import {
   BeamConcentratedLoad,
@@ -123,11 +124,11 @@ export interface EditorColors {
   readonly reactions: string;
 }
 
-/** The editor's colours as plot's tones */
-export const editorTones = (c: EditorColors): Partial<Record<Tone | 'paper', string>> => ({
-  ink: '#000000',
-  paper: '#ffffff',
-  muted: '#666666',
+/** The editor's colours as plot's tones, on the theme's canvas: light, as on paper, unless asked */
+export const editorTones = (c: EditorColors, theme: ThemeName = 'light'): Partial<Record<Tone | 'paper', string>> => ({
+  ink: DRAWING_PALETTES[theme].ink,
+  paper: DRAWING_PALETTES[theme].paper,
+  muted: DRAWING_PALETTES[theme].muted,
   normal: c.normalForce,
   shear: c.shearForce,
   moment: c.bendingMoment,
@@ -491,6 +492,8 @@ export const editorFigureSvg = (
      * band above it kept for the figure's title. `under` is not moved, so it can run the full height.
      */
     readonly shift?: number;
+    /** The canvas it is drawn for: light, as on paper and in a file, unless asked */
+    readonly theme?: ThemeName;
   } = {}
 ): string => {
   const shift = options.shift ?? 0;
@@ -498,7 +501,7 @@ export const editorFigureSvg = (
     figure.scene,
     { ...figure.fit, height: figure.fit.height + shift },
     {
-      colors: editorTones(colors),
+      colors: editorTones(colors, options.theme),
       fontSize: look.fontSize,
       fontFamily: 'inherit',
       background: options.background,

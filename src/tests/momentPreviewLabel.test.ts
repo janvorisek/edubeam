@@ -133,7 +133,8 @@ describe('the moment value in the nodal load preview', () => {
     const bubble = wrapper.find('g.node circle');
 
     expect(bubble.exists()).toBe(true);
-    expect(bubble.attributes('stroke')).toBe('black');
+    // In the dialog's text colour, so it reads on the dark theme too
+    expect(bubble.attributes('stroke')).toBe('currentColor');
     expect(Number(bubble.attributes('r'))).toBeGreaterThan(0);
   });
 

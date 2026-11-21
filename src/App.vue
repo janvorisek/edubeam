@@ -27,7 +27,9 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { computed, onMounted, provide, ref } from 'vue';
+import { computed, onMounted, provide, ref, watchEffect } from 'vue';
+import { useTheme } from 'vuetify';
+import { useThemeName } from '@/utils/theme';
 import { setLocale, availableLocales } from './plugins/i18n';
 
 import Welcome from '@/components/dialogs/Welcome.vue';
@@ -54,6 +56,15 @@ const { t } = useI18n();
 const viewerStore = useViewerStore();
 
 const file = ref<HTMLInputElement | null>(null);
+
+// Light or dark, as chosen or as the system is (see useThemeName): Vuetify's theme, and the page's
+// own colour scheme, so its scrollbars and form controls follow too
+const vuetifyTheme = useTheme();
+const themeName = useThemeName();
+watchEffect(() => {
+  vuetifyTheme.change(themeName.value);
+  document.documentElement.style.colorScheme = themeName.value;
+});
 
 const onboardingWrapper = ref(null);
 provide('onboardingWrapper', onboardingWrapper);
@@ -513,7 +524,7 @@ const app_commit = APP_COMMIT;
             <div class="d-flex align-center ga-2 mt-4">
               <span class="text-caption text-medium-emphasis">{{ index + 1 }} / {{ steps.length }}</span>
               <v-spacer />
-              <v-btn v-if="!isFirst" flat color="grey-lighten-3" @click="previous">
+              <v-btn v-if="!isFirst" flat color="panel-strong" @click="previous">
                 {{ $t('tour.previousButton') }}
               </v-btn>
               <v-btn color="primary" flat @click="next">
@@ -525,7 +536,7 @@ const app_commit = APP_COMMIT;
       </template>
     </VOnboardingWrapper>
 
-    <v-app-bar v-if="!appStore.inViewerMode" clipped-lefs clipped-right app color="primary" density="compact">
+    <v-app-bar v-if="!appStore.inViewerMode" clipped-lefs clipped-right app color="appbar" density="compact">
       <v-app-bar-nav-icon
         id="appMenu"
         :aria-label="$t('tour.menu.title')"
@@ -566,6 +577,16 @@ const app_commit = APP_COMMIT;
       <v-btn class="d-inline-flex" href="https://edubeam.app" target="_blank">
         {{ $t('common.documentation') }}
         <v-icon class="ml-1">mdi-open-in-new</v-icon>
+      </v-btn>
+
+      <!-- Light or dark at a click, as the website's header has it; System is in the settings -->
+      <v-btn
+        icon
+        :title="themeName === 'dark' ? $t('settings.theme_toLight') : $t('settings.theme_toDark')"
+        :aria-label="themeName === 'dark' ? $t('settings.theme_toLight') : $t('settings.theme_toDark')"
+        @click="appStore.theme = themeName === 'dark' ? 'light' : 'dark'"
+      >
+        <v-icon>{{ themeName === 'dark' ? 'mdi-white-balance-sunny' : 'mdi-weather-night' }}</v-icon>
       </v-btn>
 
       <v-btn
@@ -654,7 +675,7 @@ const app_commit = APP_COMMIT;
         ></v-list-item>
       </v-list>
       <v-divider />
-      <div class="pa-3 text-grey-darken-2" style="font-size: 12px">
+      <div class="pa-3 text-medium-emphasis" style="font-size: 12px">
         v{{ app_version }}<br />{{ new Date(app_released).toLocaleDateString(appStore.locale) }}
         {{ new Date(app_released).toLocaleTimeString(appStore.locale) }}<br />
         <span style="font-size: 10px">{{ app_commit }}</span>
@@ -677,13 +698,13 @@ const app_commit = APP_COMMIT;
     >
       <div>
         <a
-          class="text-black text-decoration-none font-weight-medium"
+          class="text-on-surface text-decoration-none font-weight-medium"
           href="https://github.com/janvorisek/edubeam/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=%5BBUG%5D"
           target="_blank"
           >{{ $t("footer.reportIssue") }}</a
         >
         <a
-          class="text-black text-decoration-none font-weight-medium ml-3"
+          class="text-on-surface text-decoration-none font-weight-medium ml-3"
           href="https://github.com/janvorisek/edubeam/issues/new?assignees=&labels=&projects=&template=feature_request.md&title="
           target="_blank"
           >{{ $t("footer.requestFeature") }}</a
@@ -772,11 +793,12 @@ svg text {
 
 .tooltip .content {
   position: relative;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(var(--v-theme-surface), 0.9);
+  color: rgb(var(--v-theme-on-surface));
   z-index: 100;
   padding: 3px 8px;
   //font-weight: bold;
-  box-shadow: 1px 1px 1px #ddd;
+  box-shadow: 1px 1px 1px var(--eb-ui-line);
 }
 
 .tooltip .content:after {
@@ -786,7 +808,7 @@ svg text {
   border-bottom: 6px solid transparent;
   left: -6px;
   top: 8px;
-  border-right: 6px solid rgba(255, 255, 255, 0.9);
+  border-right: 6px solid rgba(var(--v-theme-surface), 0.9);
   z-index: 1000;
 }
 

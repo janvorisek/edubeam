@@ -30,6 +30,7 @@ import { angle, axisConvention, axisLetters, vertical } from '@/utils/axisConven
 import { useProjectStore } from './project';
 import { useViewerStore } from './viewer';
 import { gridStepAfterUnitChange } from '@/utils/grid';
+import { isThemePreference, type ThemePreference } from '@/utils/theme';
 
 export type SettingsTab = 'lang' | 'appearance' | 'controls';
 
@@ -73,6 +74,14 @@ export const useAppStore = defineStore(
       stored === undefined
         ? unitSystems[suggestBrowserUnitSystem()]
         : sanitizeUnitChoice({ ...asRecord(stored?.units), moment: stored?.momentUnits }, unitSystems.si);
+
+    // Light or dark. Someone new follows the system; anyone who has been here before keeps the light
+    // look they have always had, until they choose (see useThemeName)
+    const theme = ref<ThemePreference>(stored === undefined ? 'system' : 'light');
+    /** A stored theme that is none of them, written by hand or a later version: the light one */
+    const sanitizeTheme = () => {
+      if (!isThemePreference(theme.value)) theme.value = 'light';
+    };
 
     // A moment unit is a pair, so it is stored as one: `units.Moment` is only its label.
     const momentUnits = ref<{ force: ForceUnit; length: LengthUnit }>({ ...initial.moment });
@@ -303,6 +312,7 @@ export const useAppStore = defineStore(
       applyUnitChoice(unitSystems[suggestBrowserUnitSystem()]);
       axisConvention.value = 'z-down';
       panButton.value = -1;
+      theme.value = 'system';
     };
 
     return {
@@ -326,6 +336,8 @@ export const useAppStore = defineStore(
       unitSystem,
       setLengthUnit,
       sanitizeUnits,
+      theme,
+      sanitizeTheme,
       zooming,
       tab,
       openedTab,
@@ -399,9 +411,13 @@ export const useAppStore = defineStore(
         'axisConvention',
         'shortShareLinks',
         'shareLayers',
+        'theme',
       ],
       debug: true,
-      afterHydrate: ({ store }) => store.sanitizeUnits(),
+      afterHydrate: ({ store }) => {
+        store.sanitizeUnits();
+        store.sanitizeTheme();
+      },
     },
   }
 );

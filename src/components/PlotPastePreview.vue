@@ -3,6 +3,7 @@
  * What a paste will place, carried under the pointer: the copied members, nodes and supports as the
  * plot renderer draws them. Drawn once when the paste starts; the editor moves it with a transform.
  */
+import { themedColors, useThemeName } from '@/utils/theme';
 import { computed } from 'vue';
 import { buildStructureScene, resolveScene, mergePaths, type PlotLayer, type Tone } from '@edubeam/plot';
 import { useProjectStore } from '@/store/project';
@@ -27,7 +28,8 @@ const projectStore = useProjectStore();
 const viewerStore = useViewerStore();
 const clipboardStore = useClipboardStore();
 const look = useEditorLook();
-const tones = computed(() => editorTones(viewerStore.colors));
+const themeName = useThemeName();
+const tones = computed(() => editorTones(themedColors(viewerStore.colors, themeName.value), themeName.value));
 
 const picture = computed(() => {
   const s = props.scale;

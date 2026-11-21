@@ -282,7 +282,7 @@ const strokeDash = computed(() => (isDisplacement.value ? '4 3' : undefined));
         refY="3.5"
         orient="auto"
       >
-        <polygon points="3 1, 10 3.5, 3 6" vector-effect="non-scaling-stroke" fill="black" />
+        <polygon points="3 1, 10 3.5, 3 6" vector-effect="non-scaling-stroke" fill="currentColor" />
       </marker>
     </defs>
 
@@ -293,7 +293,7 @@ const strokeDash = computed(() => (isDisplacement.value ? '4 3' : undefined));
         y1="0"
         :x2="end.x"
         :y2="end.y"
-        stroke="black"
+        stroke="currentColor"
         stroke-width="2"
         :stroke-dasharray="strokeDash"
         vector-effect="non-scaling-stroke"
@@ -349,7 +349,7 @@ const strokeDash = computed(() => (isDisplacement.value ? '4 3' : undefined));
       <text
         :x="center2.x"
         :y="center2.y"
-        fill="black"
+        fill="currentColor"
         font-size="10"
         text-anchor="middle"
         :transform="`rotate(${props.fx < 0 ? 180 + angle : angle}, ${center2.x}, ${center2.y})`"
@@ -363,13 +363,20 @@ const strokeDash = computed(() => (isDisplacement.value ? '4 3' : undefined));
       <path
         :d="arcPath"
         fill="none"
-        stroke="black"
+        stroke="currentColor"
         stroke-width="2"
         :stroke-dasharray="strokeDash"
         vector-effect="non-scaling-stroke"
         :marker-end="`url(#${arrowheadId})`"
       />
-      <text :x="rotationLabel.x" :y="rotationLabel.y" fill="black" font-size="10" text-anchor="middle" dy="0.35em">
+      <text
+        :x="rotationLabel.x"
+        :y="rotationLabel.y"
+        fill="currentColor"
+        font-size="10"
+        text-anchor="middle"
+        dy="0.35em"
+      >
         {{ formatValue(Math.abs(loadNodeValueMyInUnits)) }}
       </text>
     </g>
@@ -378,7 +385,7 @@ const strokeDash = computed(() => (isDisplacement.value ? '4 3' : undefined));
     <g v-if="hasLabel" class="node" :transform="`translate(${nodeAt.x} ${nodeAt.y})`">
       <polyline
         points="-0.5,0 0.5,0"
-        stroke="#000"
+        stroke="currentColor"
         :stroke-width="NODE_STROKE"
         stroke-linecap="square"
         vector-effect="non-scaling-stroke"
@@ -386,8 +393,8 @@ const strokeDash = computed(() => (isDisplacement.value ? '4 3' : undefined));
       <g :transform="`translate(${-LABEL_OFFSET - (String(props.label).length - 1) * 2} ${-LABEL_OFFSET})`">
         <circle
           :r="1 + 5 * (1 + Math.pow(String(props.label).length - 1, 1.7) * 0.3)"
-          fill="rgba(255, 255, 255, 0.8)"
-          stroke="black"
+          style="fill: rgb(var(--v-theme-surface)); fill-opacity: 0.8"
+          stroke="currentColor"
           vector-effect="non-scaling-stroke"
         />
         <text font-size="10" font-weight="normal" text-anchor="middle" dy="0.35em">

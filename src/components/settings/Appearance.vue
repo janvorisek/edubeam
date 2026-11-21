@@ -3,6 +3,21 @@
     <v-col cols="12" md="6">
       <h3 class="mb-1">{{ $t('settings.viewer_settings') }}</h3>
 
+      <div class="vs-heading">{{ $t('settings.theme') }}</div>
+      <v-btn-toggle
+        v-model="appStore.theme"
+        class="vs-toggle mb-3"
+        color="primary"
+        density="compact"
+        variant="outlined"
+        divided
+        mandatory
+      >
+        <v-btn value="system" prepend-icon="mdi-theme-light-dark">{{ $t('settings.theme_system') }}</v-btn>
+        <v-btn value="light" prepend-icon="mdi-white-balance-sunny">{{ $t('settings.theme_light') }}</v-btn>
+        <v-btn value="dark" prepend-icon="mdi-weather-night">{{ $t('settings.theme_dark') }}</v-btn>
+      </v-btn-toggle>
+
       <div class="vs-heading">{{ $t('settings.renderer') }}</div>
       <v-btn-toggle
         v-model="viewerStore.renderer"
@@ -140,6 +155,7 @@
         <SVGElementViewer
           v-else-if="_created && viewerStore.renderer === 'classic'"
           id="settings-appearance"
+          :theme="themeName"
           class="overflow-hidden"
           :solver="solver"
           :nodes="[solver.domain.getNode('a'), solver.domain.getNode('b')]"
@@ -270,6 +286,7 @@
 </template>
 
 <script lang="ts" setup>
+import { themedColors, useThemeName } from '@/utils/theme';
 import { useViewerStore } from '@/store/viewer';
 import { useAppStore } from '@/store/app';
 import SVGElementViewer from '../SVGElementViewer.vue';
@@ -286,6 +303,8 @@ import SettingStepper from './SettingStepper.vue';
 import { useI18n } from 'vue-i18n';
 import type { DiagramFill } from '@/utils/diagramStyle';
 
+/** The previews drawn on the theme's canvas, as the editor is */
+const themeName = useThemeName();
 const viewerStore = useViewerStore();
 const appStore = useAppStore();
 const { t } = useI18n();
@@ -466,7 +485,10 @@ const plotPreviewSvg = computed((): string => {
   });
   try {
     const figure = editorFigure(model, look.value, shown, { width, height, padding: PREVIEW_PADDING }, PREVIEW_RESERVE);
-    return editorFigureSvg(figure, look.value, viewerStore.colors, { background: false });
+    return editorFigureSvg(figure, look.value, themedColors(viewerStore.colors, themeName.value), {
+      background: false,
+      theme: themeName.value,
+    });
   } catch (error) {
     console.warn('[plot renderer] cannot draw the preview', error);
     return '';
@@ -667,7 +689,8 @@ onMounted(() => {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
+  /* A ring of the text's colour, faint: a black colour stays seen on the dark theme too */
+  box-shadow: 0 0 0 1px rgba(var(--v-theme-on-surface), 0.25);
 }
 
 .vs-swatch__name {

@@ -14,6 +14,8 @@ export type PlacingContext = {
   y: Ref<number>;
   /** The end already placed, which the rubber line is drawn from. */
   startNode: Ref<PlacingStartNode>;
+  /** Nothing points at the drawing (a finger lifted): only the end already placed is marked. */
+  pointerAbsent: Ref<boolean>;
   /** Whether the pointer is over a node, which the rubber line draws solid rather than dashed. */
   snappedToNode: Ref<boolean>;
 };

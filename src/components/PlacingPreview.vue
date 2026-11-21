@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { inject } from 'vue';
+import { computed, inject } from 'vue';
 import { useAppStore } from '@/store/app';
 import { MouseMode } from '@/mouse';
 import { placingKey } from '@/types/placing';
 
 /**
  * What a placing mode shows under the pointer: the square that marks where the next node lands,
- * and the rubber line back to the end already placed.
+ * and the rubber line back to the end already placed. With no pointer on the drawing, a finger
+ * lifted, only the end already placed is marked.
  *
  * Its own component because the pointer position it follows is written on every pointer report,
  * and the drawing is one component: read there, every node, element and load would be rebuilt for
@@ -16,19 +17,27 @@ defineProps<{ scale: number }>();
 
 const appStore = useAppStore();
 const placing = inject(placingKey)!;
+
+/** Where the square stands: under the pointer, or with no pointer on the drawing at the end already placed */
+const marked = computed((): { x: number; y: number } | null => {
+  if (!placing.pointerAbsent.value) return { x: placing.x.value, y: placing.y.value };
+  const start = placing.startNode.value;
+  return start ? { x: start.x, y: start.y } : null;
+});
 </script>
 
 <template>
   <g
     v-if="
-      appStore.mouseMode === MouseMode.ADD_NODE ||
-      appStore.mouseMode === MouseMode.ADD_ELEMENT ||
-      appStore.mouseMode === MouseMode.ADD_DIMLINE
+      (appStore.mouseMode === MouseMode.ADD_NODE ||
+        appStore.mouseMode === MouseMode.ADD_ELEMENT ||
+        appStore.mouseMode === MouseMode.ADD_DIMLINE) &&
+      marked
     "
   >
     <rect
-      :x="placing.x.value"
-      :y="placing.y.value"
+      :x="marked.x"
+      :y="marked.y"
       :width="8 / scale"
       :height="8 / scale"
       :transform="`translate(${-8 / 2 / scale},${-8 / 2 / scale})`"
@@ -38,7 +47,8 @@ const placing = inject(placingKey)!;
   <g
     v-if="
       (appStore.mouseMode === MouseMode.ADD_ELEMENT || appStore.mouseMode === MouseMode.PASTE_CLIPBOARD) &&
-      placing.startNode.value !== null
+      placing.startNode.value !== null &&
+      !placing.pointerAbsent.value
     "
   >
     <line

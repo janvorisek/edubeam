@@ -92,9 +92,10 @@ const memberLoad = (l: ToolLoad, at: number): PlotLoad => {
 
 /** A model of only what is previewed: its node or member, and the support or load on it */
 const ghost = computed((): { model: PlotModel; layers: ReadonlySet<PlotLayer> } | null => {
-  if (props.tool === null) return null;
+  // No point to preview at: no tool, or no pointer on the drawing (a finger lifted)
+  if (props.tool === null || !snap.value) return null;
   const t = lands.value ? target.value : null;
-  const here = { x: snap.value?.x ?? 0, z: snap.value?.y ?? 0 };
+  const here = { x: snap.value.x, z: snap.value.y };
 
   if (props.tool === 'support') {
     const fixity = fixityOf(props.support);

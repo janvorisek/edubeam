@@ -990,7 +990,17 @@ const snapTakes = computed((): SnapTakes | null => {
 
 /** Where the point the active tool puts down goes: what its preview, its snap mark and its click use */
 const snap = computed((): Snap | null => (snapTakes.value === null ? null : snapNow(snapTakes.value)));
-provide(snapKey, snap);
+
+/**
+ * Nothing points at the drawing: a finger has lifted, or none has touched it yet. A mouse is always
+ * somewhere, and what it would place follows it; a finger's last place is only where it was, and a
+ * preview left there reads as one more load or node still to come. The previews hide till it is back.
+ */
+const pointerAbsent = ref(true);
+provide(
+  snapKey,
+  computed(() => (pointerAbsent.value ? null : snap.value))
+);
 
 /** The modes whose placing preview stands where the point snaps: a node's, an element's end, a dimension's */
 const placingNodes = computed(
@@ -1004,6 +1014,7 @@ provide(placingKey, {
   x: computed(() => (placingNodes.value && snap.value ? snap.value.x : mouseXReal.value)),
   y: computed(() => (placingNodes.value && snap.value ? snap.value.y : mouseYReal.value)),
   startNode,
+  pointerAbsent,
   snappedToNode: computed(() =>
     placingNodes.value ? snap.value?.node !== undefined : intersected.value.type === 'node'
   ),
@@ -1522,16 +1533,23 @@ const cancelLongPress = () => {
 
 /**
  * After a long press some browsers still fire a compatibility click at the touch point, which now
- * lies on the freshly opened menu and would activate or close it. Eat the first click, briefly.
+ * lies on the freshly opened menu and would activate or close it. Eat that click: the first, and
+ * only of the same gesture - a press after it is a tap on the menu, whose click must go through.
  */
 const swallowNextClick = () => {
+  const stop = () => {
+    window.removeEventListener('click', swallow, { capture: true });
+    window.removeEventListener('pointerdown', stop, { capture: true });
+  };
   const swallow = (ev: MouseEvent) => {
     ev.stopPropagation();
     ev.preventDefault();
+    stop();
   };
 
   window.addEventListener('click', swallow, { capture: true });
-  window.setTimeout(() => window.removeEventListener('click', swallow, { capture: true }), 700);
+  window.addEventListener('pointerdown', stop, { capture: true });
+  window.setTimeout(stop, 700);
 };
 
 /** A one finger drag draws a selection box while Box select is on (see the tool rail) */
@@ -1762,7 +1780,12 @@ const plotLoadAt = (e: Event): { kind: string; index: number } | null => {
   const index = Number(i);
   return kind && Number.isInteger(index) ? { kind, index } : null;
 };
-const onPlotLoadHover = (e: PointerEvent) => {
+/*
+ * On mousemove, as the members and nodes hover, not pointermove: a finger has no hover, and the
+ * browser's touch adjustment counts only mouse and click listeners. Without one the loads did not
+ * count as tappable, and a finger on a load was moved onto the member under it.
+ */
+const onPlotLoadHover = (e: MouseEvent) => {
   const hit = plotLoadAt(e);
   if (!hit) return;
   const lc = projectStore.solver.loadCases[0];
@@ -2177,6 +2200,7 @@ const updatePointerPosition = (e: Pick<PointerEvent, 'clientX' | 'clientY'>) => 
 
 const mouseMove = (e: PointerEvent) => {
   lastPointerType = e.pointerType;
+  pointerAbsent.value = false;
 
   if (longPressTimer !== null && hasMoved(e)) cancelLongPress();
 
@@ -2609,6 +2633,7 @@ const onMouseDown = (e: PointerEvent) => {
   lastPointerType = e.pointerType;
   // A press of its own: one a menu took, whose release was lost off the drawing, is over
   pressTaken = false;
+  pointerAbsent.value = false;
 
   // Picking a window: the drag is the whole interaction, nothing is selected or placed.
   if (appStore.mouseMode === MouseMode.PICK_WINDOW) {
@@ -2858,6 +2883,8 @@ const onPointerCancel = (e: PointerEvent) => {
 
 const onMouseUp = (e: PointerEvent) => {
   activePointers.delete(e.pointerId);
+  // The last finger off the drawing: no preview of what it would place is left behind
+  if (e.pointerType === 'touch' && activePointers.size === 0) pointerAbsent.value = true;
   cancelLongPress();
   // Every release disarms a load drag, however it ends: a press armed but never followed must not
   // drag that load on the next press elsewhere. The load's own pointerup has read it already.
@@ -3447,13 +3474,21 @@ defineExpose({ centerContent, fitContent });
         <SupportIcon v-if="appStore.mouseMode === MouseMode.ADD_SUPPORT" :type="toolSupport" :size="18" />
         <LoadIcon v-else-if="appStore.mouseMode === MouseMode.ADD_LOAD" :type="toolLoadKind" :size="18" />
         <v-icon v-else size="16" :icon="activeAddMode.icon" />
-        <span class="text-body-2 text-no-wrap">{{ activeAddMode.label }}</span>
+        <!-- On a narrow phone the name gives way, not Cancel -->
+        <span class="text-body-2 text-truncate" style="min-width: 0">{{ activeAddMode.label }}</span>
         <!-- Where a keyboard is at hand: how to put a point down off the snaps -->
         <span v-if="snapTakes !== null && deviceHasHover" class="text-caption text-medium-emphasis text-no-wrap ml-2">
           {{ $t('viewer.placeFreely') }}
         </span>
         <v-spacer />
-        <v-btn size="small" variant="text" color="error" density="comfortable" @click="cancelActiveMode">
+        <v-btn
+          size="small"
+          variant="text"
+          color="error"
+          density="comfortable"
+          class="flex-shrink-0"
+          @click="cancelActiveMode"
+        >
           {{ $t('dialogs.common.cancel') }}
         </v-btn>
       </div>
@@ -4259,7 +4294,7 @@ defineExpose({ centerContent, fitContent });
             <g
               data-fit-ignore="loads"
               class="load-hits"
-              @pointermove="onPlotLoadHover"
+              @mousemove="onPlotLoadHover"
               @pointerleave="onPlotLoadLeave"
               @pointerdown="onPlotLoadPress"
               @pointerup="onPlotLoadClick"
@@ -4307,7 +4342,7 @@ defineExpose({ centerContent, fitContent });
             <g
               data-fit-ignore="loads"
               class="load-hits"
-              @pointermove="onPlotLoadHover"
+              @mousemove="onPlotLoadHover"
               @pointerleave="onPlotLoadLeave"
               @pointerdown="onPlotLoadPress"
               @pointerup="onPlotLoadClick"

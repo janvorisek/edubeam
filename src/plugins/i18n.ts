@@ -8,6 +8,7 @@ const APPLE_KEYBOARD = isApplePlatform();
 export const availableLocales = [
   { code: 'en', name: 'English' },
   { code: 'cs', name: 'Čeština' },
+  { code: 'sk', name: 'Slovenčina' },
   { code: 'de', name: 'Deutsch' },
   { code: 'fr', name: 'Français' },
   { code: 'es', name: 'Español' },

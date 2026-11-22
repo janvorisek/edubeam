@@ -292,10 +292,13 @@ const cloneUpcoming = (entry: UpcomingEntry): UpcomingEntry => ({
   detail: entry.detail,
 });
 
+/** Languages without release notes of their own that read a close one better than English */
+const CLOSE_LOCALES: Record<string, string> = { sk: 'cs' };
+
 const getLocaleFallbacks = (value: string) => {
   const trimmed = value.toLowerCase();
   const [base] = trimmed.split('-');
-  const unique = new Set<string>([trimmed, base, baseLocale]);
+  const unique = new Set<string>([trimmed, base, CLOSE_LOCALES[base] ?? '', baseLocale]);
   return Array.from(unique).filter(Boolean);
 };
 

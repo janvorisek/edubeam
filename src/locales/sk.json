@@ -1,0 +1,838 @@
+{
+  "tabView": {
+    "viewer": "Konštrukcia",
+    "settings": "Nastavenia",
+    "results": "Výsledky",
+    "report": "Protokol"
+  },
+  "common": {
+    "label": "Označenie",
+    "node": "Uzol",
+    "element": "Prvok",
+    "crossSection": "Prierez",
+    "material": "Materiál",
+    "settings": "Nastavenia",
+    "actions": "Akcie",
+    "coords": "Súradnice",
+    "type": "Typ",
+    "nodes": "Uzly",
+    "endHinges": "Koncové kĺby",
+    "massMatrix": "Matica hmotnosti",
+    "target": "Pôsobisko",
+    "components": "Zložky",
+    "loadCase": "Zaťažovací stav",
+    "loads": "Zaťaženie",
+    "clearMesh": "Vymazať konštrukciu",
+    "shareModel": "Zdieľať konštrukciu",
+    "documentation": "Dokumentácia",
+    "addUsingDialog": "Pridať dialógom",
+    "addUsingMouse": "Pridať myšou",
+    "edit": "Upraviť",
+    "copy": "Kopírovať",
+    "delete": "Vymazať",
+    "stiffnessMatrix": "Matica tuhosti",
+    "normalForce": "Normálová sila",
+    "shearForce": "Priečna sila",
+    "bendingMoment": "Ohybový moment",
+    "deformedShape": "Deformovaný tvar",
+    "reactions": "Reakcie",
+    "elements": "Prvky",
+    "confirm": "Potvrdiť",
+    "saveProject": "Uložiť projekt",
+    "openProject": "Otvoriť projekt",
+    "lcs": "Lokálny súradný systém",
+    "paste": "Vložiť",
+    "addNew": "Pridať",
+    "whatisnew": "Čo je nové?",
+    "reverse_orientation": "Prevrátiť kótu",
+    "undo": "Späť",
+    "redo": "Znova",
+    "ok": "OK",
+    "close": "Zavrieť"
+  },
+  "nodes": {
+    "addNode": "Pridať uzol",
+    "editNode": "Upraviť uzol",
+    "defineSupports": "Podpery uzla",
+    "lcsAngle": "Pootočenie súradného systému",
+    "equilibrium": "Rovnováha uzla",
+    "equilibriumOf": "Rovnováha uzla {label}",
+    "equilibriumSymbols": "Symboly",
+    "equilibriumValues": "Hodnoty"
+  },
+  "supports": {
+    "free": "Voľný",
+    "pin": "Pevný kĺb",
+    "roller": "Posuvný kĺb",
+    "verticalRoller": "Zvislý posuvný kĺb",
+    "slider": "Posuvné votknutie",
+    "verticalSlider": "Zvislé posuvné votknutie",
+    "rotation": "Zabránené pootočenie",
+    "fixed": "Votknutie",
+    "custom": "Vlastné"
+  },
+  "elements": {
+    "addElement": "Pridať prvok",
+    "editElement": "Upraviť prvok",
+    "swapNodeOrder": "Vymeniť poradie uzlov",
+    "hingeStart": "Kĺb na začiatku",
+    "hingeEnd": "Kĺb na konci",
+    "hinge": "Kĺb",
+    "from": "Od",
+    "to": "Do"
+  },
+  "loads": {
+    "addNodalLoad": "Pridať uzlové zaťaženie",
+    "addElementLoad": "Pridať prvkové zaťaženie",
+    "addLoad": "Pridať zaťaženie",
+    "nodalLoad": "Uzlové zaťaženie",
+    "elementLoad": "Prvkové zaťaženie",
+    "prescribedDisplacement": "Predpísané posunutie",
+    "addPrescribedDisplacement": "Predpísať posunutie",
+    "UDL": "Rovnomerné",
+    "forceMoment": "Sila/moment",
+    "moment": "Moment",
+    "editLoad": "Upraviť zaťaženie",
+    "loadPositionOnBeam": "Vzdialenosť od počiatočného uzla",
+    "temperatureAxial": "ΔT<sub>d</sub>-ΔT<sub>h</sub> ... Rozdiel oteplenia dolných a horných vlákien",
+    "temperatureBending": "ΔT<sub>s</sub> ... Oteplenie strednice",
+    "temperatureDeltaTbt": "ΔT<sub>d</sub>-ΔT<sub>h</sub>",
+    "temperatureDeltaTs": "ΔT<sub>s</sub>",
+    "temperatureDeltaTsNoHTML": "ΔTs",
+    "temperatureDeltaTbtNoHTML": "ΔTd-ΔTh",
+    "globalAxes": "Globálne osi",
+    "nodeAxes": "Osi uzla",
+    "alongSupportAxes": "V smere vlastných osí podpery."
+  },
+  "tabs": {
+    "nodes": "Uzly",
+    "elements": "Prvky",
+    "loads": "Zaťaženie",
+    "materials": "Materiály",
+    "crossSections": "Prierezy",
+    "results": "Výsledky"
+  },
+  "crossSection": {
+    "area": "Plocha",
+    "h": "Výška",
+    "iy": "Iy",
+    "k": "Šmykový súčiniteľ",
+    "iz": "Iz",
+    "b": "Šírka",
+    "centroid": "Ťažisko",
+    "alpha": "Uhol hlavných osí",
+    "radiusOfGyration": "Polomer zotrvačnosti",
+    "polygonal": "Polygonálny tvar",
+    "derivedFromShape": "Odvodené z polygonálneho tvaru – na úpravu zmeňte tvar"
+  },
+  "material": {
+    "e": "E",
+    "g": "G",
+    "density": "Hustota",
+    "alphaT": "α_T"
+  },
+  "settings": {
+    "results_scale": "Mierka výsledkov",
+    "grid_snap_step": "Krok prichytávania k mriežke",
+    "snap_to_grid": "Prichytávať k mriežke",
+    "show_crosshair": "Zobraziť zameriavací kríž",
+    "model_checks": "Kontrola modelu",
+    "show_mechanisms": "Zobraziť, ako sa môže nestabilná konštrukcia pohybovať",
+    "animate_mechanisms": "Animovať pohyb",
+    "number_format": "Formát čísel",
+    "number_format_description": "Ako sa zapisujú hodnoty výsledkov; desatinný oddeľovač sa riadi jazykom.",
+    "number_format_auto": "Automatický",
+    "number_format_scientific": "Vedecký (1,5 · 10⁴)",
+    "number_format_engineering": "Inžiniersky (15 · 10³)",
+    "language": "Jazyk",
+    "language_and_locale": "Jazyk a prostredie",
+    "show_normal_force": "Kresliť normálovú silu",
+    "show_shear_force": "Kresliť priečnu silu",
+    "show_bending_moment": "Kresliť ohybový moment",
+    "show_deformed_shape": "Kresliť deformovaný tvar",
+    "show_loads": "Kresliť zaťaženie",
+    "units": {
+      "units": "Jednotky",
+      "length": "Dĺžka",
+      "mass": "Hmotnosť",
+      "force": "Sila",
+      "moment": "Ohybový moment",
+      "pressure": "Napätie",
+      "area": "Plocha",
+      "areaM2": "Moment zotrvačnosti",
+      "system": "Sústava jednotiek",
+      "systemSI": "SI (metrická)",
+      "systemUS": "Americká (imperiálna)",
+      "systemCustom": "Vlastná",
+      "temperature": "Teplota",
+      "sectionLength": "Rozmery prierezu",
+      "displacement": "Posunutie"
+    },
+    "grid": "Mriežka",
+    "show_grid": "Zobraziť mriežku",
+    "mouse": {
+      "mouse": "Myš",
+      "pan_button": "Posun zobrazenia pomocou",
+      "wheel": "Koliesko myši",
+      "right_button": "Pravé tlačidlo",
+      "all": "Koliesko alebo pravé tlačidlo"
+    },
+    "colors": {
+      "colors": "Farby"
+    },
+    "results": {
+      "results": "Výsledky"
+    },
+    "viewer_settings": "Nastavenia zobrazenia",
+    "controls_and_shortcuts": "Ovládanie a skratky",
+    "language_and_locale_subtitle": "Nastavenia jazyka, lokalizácie a jednotiek",
+    "viewer_settings_subtitle": "Mierka, farby, mriežka a ďalšie",
+    "controls_and_shortcuts_subtitle": "Nastavenia klávesnice a myši",
+    "viewer_preview": "Náhľad zobrazenia",
+    "language_description": "Vyberte preferovaný jazyk používateľského rozhrania.",
+    "units_description": "Vyberte preferované jednotky merania.",
+    "axisConvention": "Súradný systém",
+    "axisConvention_description": "Ktorým smerom smeruje zvislá os pri zadávaní a vo výsledkoch. Model ani uložené súbory sa nemenia.",
+    "axisConvention_zDown": "x doprava, z nadol",
+    "axisConvention_yUp": "x doprava, y nahor",
+    "reset_settings": "Obnoviť predvolené nastavenia",
+    "sizes": {
+      "sizes": "Veľkosť",
+      "supportSize": "Veľkosť podpier"
+    },
+    "font_size": "Veľkosť písma",
+    "result_label_orientation": "Orientácia popisov výsledkov",
+    "result_label_orientation_axis": "Kolmo na graf",
+    "result_label_orientation_horizontal": "Vždy vodorovne",
+    "theme": "Motív",
+    "theme_system": "Podľa systému",
+    "theme_light": "Svetlý",
+    "theme_dark": "Tmavý",
+    "theme_toDark": "Tmavý motív",
+    "theme_toLight": "Svetlý motív",
+    "renderer": "Vykresľovanie",
+    "renderer_classic": "Klasické",
+    "renderer_plot": "Nové (beta)",
+    "show_readout": "Zobraziť hodnoty pri kurzore",
+    "result_labels": "Popisy výsledkov",
+    "diagrams": {
+      "title": "Priebehy vnútorných síl",
+      "moment": "Ohybový moment",
+      "tensionSide": "Na ťahanej strane",
+      "compressionSide": "Na tlačenej strane",
+      "normal": "Kladná normálová sila",
+      "shear": "Kladná priečna sila",
+      "awayFromDashed": "Opačná strana",
+      "dashedSide": "Čiarkovaná strana",
+      "fill": "Výplň",
+      "fillSolid": "Plná",
+      "fillHatch": "Šrafovaná",
+      "fillNone": "Žiadna",
+      "degrees": "Stupeň polynómu na úsekoch",
+      "dashedHint": "Čiarkovaná čiara pozdĺž prvku označuje jeho dolné vlákna."
+    }
+  },
+  "sideSettings": {
+    "showDeformedShape": "Deformovaný tvar",
+    "supports": "Podpery",
+    "loads": "Zaťaženie",
+    "nodeLabels": "Popisy uzlov",
+    "elementLabels": "Popisy prvkov",
+    "more_settings": "Všetky nastavenia",
+    "showReactions": "Reakcie"
+  },
+  "viewer": {
+    "toggleGrid": "Zobraziť/skryť mriežku (G)",
+    "toggleSnap": "Prichytávanie k mriežke (S)",
+    "toggleCrosshair": "Zobraziť/skryť zameriavací kríž",
+    "boxSelect": "Výber obdĺžnikom",
+    "centerContent": "Vycentrovať konštrukciu",
+    "fitContent": "Prispôsobiť obrazovke",
+    "holdCtrl": "Podržaním Ctrl pridáte myšou",
+    "select": "Výber",
+    "tools": "Nástroje",
+    "snapMiddle": "Stred",
+    "snapThird": "Tretina",
+    "snapOnElement": "Na prúte {label}",
+    "placeFreely": "Podržaním Alt umiestnite voľne"
+  },
+  "dofs": {
+    "bcs": "Podopreté stupne voľnosti"
+  },
+  "results": {
+    "results": "Výsledky",
+    "nodal_results": "Výsledky v uzloch",
+    "element_results": "Výsledky na prvkoch",
+    "end_forces": "Koncové sily (v lokálnych súradniciach)",
+    "exportCsv": "Exportovať CSV",
+    "exportHint": "Stiahne obe tabuľky výsledkov v zobrazených jednotkách, pripravené pre tabuľkový procesor.",
+    "copied": "Výsledky skopírované do schránky",
+    "copyFailed": "Výsledky sa nepodarilo skopírovať do schránky."
+  },
+  "materials": {
+    "addMaterial": "Pridať materiál",
+    "material_library": "Knižnica materiálov",
+    "section_library": "Knižnica prierezov"
+  },
+  "crossSections": {
+    "addCrossSection": "Pridať prierez",
+    "addPolygonal": "Polygonálny prierez"
+  },
+  "dialogs": {
+    "addNode": {
+      "addNewNode": "Pridať nový uzol",
+      "coordinate_x": "Súradnica X",
+      "coordinate_z": "Súradnica {v}",
+      "addNode": "Pridať uzol"
+    },
+    "common": {
+      "cancel": "Zrušiť",
+      "orChooseFromLibrary": "Alebo vybrať z knižnice"
+    },
+    "addElement": {
+      "fromNodeId": "Počiatočný uzol",
+      "toNodeId": "Koncový uzol",
+      "addElement": "Pridať prvok",
+      "addNewElement": "Pridať nový prvok",
+      "material": "Materiál",
+      "crossSection": "Prierez"
+    },
+    "addNodalLoad": {
+      "addNewNodalLoad": "Pridať nové uzlové zaťaženie",
+      "addNodalLoad": "Pridať uzlové zaťaženie"
+    },
+    "addElementLoad": {
+      "addNewElementLoad": "Pridať nové prvkové zaťaženie",
+      "addElementLoad": "Pridať prvkové zaťaženie"
+    },
+    "addMaterial": {
+      "addNewMaterial": "Pridať nový materiál",
+      "addMaterial": "Pridať materiál",
+      "E": "E - Modul pružnosti",
+      "G": "G - Šmykový modul",
+      "density": "ρ - hustota",
+      "alphaT": "α - Súčiniteľ teplotnej rozťažnosti"
+    },
+    "addCrossSection": {
+      "addNewCrossSection": "Pridať nový prierez",
+      "addCrossSection": "Pridať prierez",
+      "orDefinePolygon": "Alebo zadať polygonálny tvar"
+    },
+    "editNodalLoad": {
+      "editNodalLoad": "Upraviť uzlové zaťaženie"
+    },
+    "editElementLoad": {
+      "editElementLoad": "Upraviť prvkové zaťaženie"
+    },
+    "update": {
+      "title": "K dispozícii je aktualizácia",
+      "update": "Aktualizovať",
+      "text1": "K dispozícii je aktualizácia, ktorá vyžaduje reštartovanie aplikácie. To znamená, že všetky úpravy sa stratia.",
+      "text2": "Ak si želáte zachovať svoju aktuálnu prácu, môžete aktualizáciu zrušiť."
+    },
+    "editNode": {
+      "editNode": "Upraviť uzol"
+    },
+    "changelog": {
+      "title": "Čo je nové?",
+      "description": "Novinky, vylepšenia a ukážky toho, čo pripravujeme.",
+      "contributors": "Na tejto verzii sa podieľali: {names}",
+      "comingSoon": "Pripravujeme",
+      "tryIt": "Vyskúšať",
+      "tried": {
+        "diagramStyles": "Šrafované priebehy so stupňom polynómu na úsekoch sú zapnuté.",
+        "newDrawing": "Nové vykresľovanie so šrafovanými priebehmi je zapnuté."
+      }
+    },
+    "polygonSection": {
+      "title": "Nový polygonálny prierez",
+      "editTitle": "Upraviť polygonálny prierez",
+      "preset": "Predloha",
+      "apply": "Použiť",
+      "snapStep": "Krok prichytávania",
+      "centerAtCentroid": "Vycentrovať do ťažiska",
+      "hint": "Ťahaním presuniete vrcholy, kliknutím na stred hrany vložíte vrchol, dvojklikom vrchol odstránite.",
+      "outline": "Obrys",
+      "hole": "Otvor",
+      "addHole": "Pridať otvor",
+      "addVertex": "Pridať vrchol",
+      "removeContour": "Odobrať otvor",
+      "properties": "Prierezové charakteristiky",
+      "invalidShape": "Tvar musí byť jednoduchý polygón s kladnou plochou: hrany sa nesmú krížiť a otvory musia ležať vnútri obrysu.",
+      "labelInUse": "Označenie sa už používa",
+      "save": "Uložiť",
+      "editShape": "Upraviť polygonálny tvar",
+      "presets": {
+        "rectangle": "Obdĺžnik",
+        "iSection": "I-profil",
+        "tSection": "T-profil",
+        "lSection": "L-profil",
+        "channel": "U-profil",
+        "box": "Obdĺžniková rúra",
+        "circle": "Kruh",
+        "pipe": "Kruhová rúra"
+      },
+      "params": {
+        "b": "Šírka b",
+        "h": "Výška h",
+        "tw": "Stojina tw",
+        "tf": "Pásnica tf",
+        "t": "Hrúbka t",
+        "d": "Priemer d",
+        "n": "Počet segmentov"
+      },
+      "vertices": "Vrcholy",
+      "legendOutline": "Obrys",
+      "legendHole": "Otvor",
+      "legendPrincipal": "Hlavné osi a elipsa zotrvačnosti",
+      "legendCentroid": "Ťažisko",
+      "shape": "Tvar",
+      "noShape": "Bez polygonálneho tvaru",
+      "centroidal": "ťažiskové",
+      "centroidalNote": "Všetky momenty zotrvačnosti sú vztiahnuté k osiam prechádzajúcim ťažiskom; I₁, I₂ sú hlavné momenty a α je uhol od osi y k osi 1.",
+      "outOfPlaneNote": "Prierez nie je symetrický k rovine rámu. 2D výpočet je presný len vtedy, ak je prút po celej dĺžke zaistený proti vybočeniu do strany (z obrazovky) a proti skrúteniu, napríklad doskou alebo husto rozmiestneným stužením; samotné podpery v uzloch nestačia. Voľný prút sa navyše skrúca, pretože zaťaženie nepôsobí v strede šmyku, a toto skrútenie nie je v deformáciách zahrnuté.",
+      "outOfPlaneRestrained": "Zaistený do strany a proti skrúteniu po celej dĺžke: {inertia}",
+      "outOfPlaneFree": "Voľne vychýliteľný do strany (skrútenie stále nie je zahrnuté): {inertia}"
+    }
+  },
+  "tooltip": {
+    "materials": {},
+    "material": {
+      "alphaT": "Súčiniteľ teplotnej rozťažnosti opisuje, ako sa mení veľkosť telesa so zmenou teploty.",
+      "e": "Youngov modul pružnosti vyjadruje tuhosť v ťahu alebo tlaku pri sile pôsobiacej v pozdĺžnom smere.",
+      "g": "Šmykový modul je vlastnosť, ktorá vyjadruje odolnosť voči deformácii pri šmykovom napätí, teda tuhosť materiálu pri pôsobení síl rovnobežných s jeho povrchom.",
+      "density": "Hustota vyjadruje, koľko hmoty obsahuje daný objem látky."
+    }
+  },
+  "footer": {
+    "reportIssue": "Nahlásiť problém",
+    "requestFeature": "Navrhnúť novú funkciu",
+    "released": "vydané"
+  },
+  "sharing": {
+    "shareViaURL": "Zdieľajte konštrukciu pomocou odkazu",
+    "instructions": "Kliknutím kamkoľvek do poľa skopírujete odkaz, ktorý potom pošlite svojim spolupracovníkom.",
+    "copyCue": "Kopírovať odkaz",
+    "openLink": "Otvoriť odkaz",
+    "nativeShare": "Zdieľať cez systémové dialógové okno",
+    "linkCopied": "Odkaz bol skopírovaný do schránky",
+    "copyFailed": "Automatické kopírovanie zlyhalo. Použite, prosím, klávesové skratky.",
+    "shortLink": "Kratší odkaz",
+    "shortLinkHint": "Približne polovičná dĺžka. Kto používa staršiu verziu aplikácie EduBeam, musí ju pred otvorením odkazu aktualizovať.",
+    "shareLayers": "Zobraziť to, čo vidím ja",
+    "shareLayersHint": "Odkaz sa otvorí s rovnakými priebehmi, zaťaženiami a popismi, aké máte zapnuté."
+  },
+  "shortcuts": {
+    "title": "Klávesové skratky",
+    "drawing": "Kreslenie",
+    "editing": "Úpravy",
+    "cancel": "Späť na výber, zrušenie vkladania",
+    "placeFreely": "Voľné umiestnenie bez prichytávania (podržať)",
+    "grid": "Zobraziť alebo skryť mriežku",
+    "snap": "Zapnúť alebo vypnúť prichytávanie k mriežke",
+    "zoom": "Priblížiť a oddialiť",
+    "selectAll": "Vybrať všetko",
+    "save": "Uložiť projekt",
+    "exportImage": "Exportovať obrázok"
+  },
+  "tour": {
+    "menu": {
+      "title": "Menu",
+      "description": "Otvorte, uložte a zdieľajte projekty, exportujte obrázok, načítajte príklad alebo znova spustite túto prehliadku či úlohu s prvým nosníkom."
+    },
+    "undoRedo": {
+      "title": "Späť a znova",
+      "description": "Prechádzajte svoje zmeny dozadu aj dopredu. To isté robí Ctrl+Z a Ctrl+Shift+Z."
+    },
+    "tools": {
+      "title": "Nástroje",
+      "description": "Uzly, prvky, podpery a zaťaženia pridáte priamo do výkresu. Podržaním nástroja alebo kliknutím na jeho roh zvolíte druh podpery či zaťaženia. Body sa prichytávajú k uzlom a k stredu a tretinám prvkov; podržaním Alt umiestnite voľne. Klávesy: V výber, N uzol, E prvok, U podpera, L zaťaženie, D kóta, Esc späť na výber.",
+      "descriptionTouch": "Uzly, prvky, podpery a zaťaženia pridáte priamo do výkresu: ťuknite na nástroj, potom na miesto, kam patrí, a nakoniec na šípku. Nástroje podpier a zaťažení ponúknu zoznam druhov. Body sa prichytávajú k uzlom a k stredu a tretinám prvkov. Jedným prstom posuniete pohľad, dvoma priblížite. Uzol presuniete ťahaním, zaťaženie zdvihnete podržaním a podržaním inde otvoríte ponuku."
+    },
+    "viewerControls": {
+      "title": "Tlačidlá zobrazenia",
+      "description": "Ovládacie prvky zobrazenia slúžia na vycentrovanie alebo prispôsobenie konštrukcie obrazovke a na výber toho, čo sa má zobrazovať."
+    },
+    "viewerSettings": {
+      "title": "Prispôsobiť možnosti zobrazenia",
+      "description": "Vyberte, čo sa má zobraziť – normálová sila, priečna sila, ohybový moment, deformovaný tvar alebo všetko naraz."
+    },
+    "gridUnits": {
+      "title": "Mriežka, prichytávanie a jednotky",
+      "description": "G zobrazí mriežku a S k nej prichytí nové uzly. Kliknutím na jednotky zmeníte jednotky, jazyk alebo súradný systém."
+    },
+    "bottomBar": {
+      "title": "Pridávanie, odoberanie a úprava entít",
+      "description": "Centrálne miesto, kde môžete jednoducho meniť každý aspekt svojej konštrukcie. Od uzlov po prvky, zaťaženia, materiály a prierezy – tu urobíte rýchle aj rozsiahle zmeny."
+    },
+    "help": {
+      "title": "Pomocník",
+      "description": "? vysvetlí otvorenú záložku. ? pri záhlaví stĺpca vysvetlí daný stĺpec."
+    },
+    "previousButton": "Predchádzajúci",
+    "nextButton": "Ďalší",
+    "finishButton": "Dokončiť prehliadku",
+    "close": "Zavrieť prehliadku"
+  },
+  "firstBeam": {
+    "title": "Váš prvý nosník",
+    "step": "Krok {n} z {total}",
+    "close": "Zavrieť sprievodcu",
+    "finish": "Hotovo",
+    "next": "Ďalší",
+    "steps": {
+      "tool": {
+        "title": "Vyberte nástroj",
+        "body": "Na karte {elementsTab} dole stlačte tlačidlo {addElement} s ikonou kurzora."
+      },
+      "draw": {
+        "title": "Nakreslite nosník",
+        "body": "Kliknite, kde nosník začína, a potom, kde končí. Konce sa prichytia k mriežke."
+      },
+      "supports": {
+        "title": "Podoprite ho",
+        "body": "Kliknite na ľavý koniec, otvorte {defineSupports} a zaškrtnite Dx a D{v} pre pevný kĺb. Potom kliknite na pravý koniec a zaškrtnite D{v} pre posuvný kĺb."
+      },
+      "load": {
+        "title": "Zaťažte ho",
+        "body": "Kliknite na nosník, zvoľte {addLoad}, zadajte hodnotu do f{v} a potvrďte."
+      },
+      "display": {
+        "title": "Vyberte, čo sa zobrazí",
+        "body": "Ozubené koliesko vpravo hore otvára možnosti zobrazenia: vnútorné sily, deformovaný tvar, reakcie a ďalšie. Otvorte ho teraz."
+      },
+      "fit": {
+        "title": "Prispôsobte zobrazenie",
+        "body": "Tlačidlá vpravo hore prispôsobia model obrazovke alebo ho vycentrujú. Teraz stlačte prispôsobenie obrazovke a použite ho vždy, keď vám výkres ujde zo zobrazenia."
+      },
+      "results": {
+        "title": "Prezrite si výsledky",
+        "body": "Ohybový moment a deformovaný tvar sú vykreslené na nosníku a menia sa pri každej úprave. Všetky uzly, prvky a zaťaženia nájdete aj v tabuľkách dole, kde môžete zadať presné hodnoty. {undo} vráti model, ktorý ste mali predtým."
+      }
+    }
+  },
+  "welcome": {
+    "title": "Vitajte v <span class=\"edubeam\">EduBeame</span>! 🚀",
+    "description": "Modelujte nosníky, rámy a priehradové konštrukcie a sledujte vnútorné sily už pri kreslení.",
+    "start": "Ako chcete začať?",
+    "showAround": "Prehliadka aplikácie",
+    "showAroundHint": "Krátka prehliadka plochy s modelom, možností zobrazenia a spodného panela.",
+    "drawFirstBeam": "Nakresliť prvý nosník",
+    "drawFirstBeamHint": "Krátky sprievodca: nakreslíte nosník, podopriete ho a zaťažíte.",
+    "openExample": "Otvoriť príklad",
+    "openExampleHint": "Začnite s hotovým modelom a upravte ho.",
+    "skip": "Preskočiť"
+  },
+  "confirmation": {
+    "clearMesh": {
+      "message": "Naozaj chcete vymazať konštrukciu? Ctrl+Z ju vráti a zostane aj v Nedávnych konštrukciách.",
+      "title": "Vymazať konštrukciu?",
+      "materials": "Vymazať materiály",
+      "crossSections": "Vymazať prierezy"
+    },
+    "resetSettings": {
+      "title": "Obnoviť predvolené nastavenia?",
+      "message": "Naozaj chcete obnoviť všetky predvolené nastavenia? Túto akciu nemožno vrátiť späť."
+    },
+    "splitElementAndPlaceNode": {
+      "title": "Potvrdiť umiestnenie uzla",
+      "message": "<p>Vyzerá to, že umiestňujete uzol na nosník {label}.</p><p class=\"mt-3\">Chcete prvok rozdeliť a uzol pripojiť, alebo umiestniť uzol na konštrukciu nepripojený?</p>",
+      "split": "Pripojiť ku konštrukcii"
+    },
+    "placeIndividualNode": "Umiestniť samostatný uzol"
+  },
+  "selection": {
+    "node": "Uzol",
+    "element": "Prvok",
+    "dimension": "Kóta",
+    "nodal-load": "Uzlové zaťaženie",
+    "element-load": "Prvkové zaťaženie",
+    "prescribedbc-load": "Predpísané posunutie"
+  },
+  "validators": {
+    "enterValue": "Zadajte hodnotu",
+    "invalidNumber": "Neplatné číslo",
+    "positiveNumber": "Zadajte číslo väčšie ako nula",
+    "between": "Zadajte hodnotu medzi {min} a {max}",
+    "sameNodes": "Prvok musí spájať dva rôzne uzly",
+    "materialInUse": "Materiál používa prvok {elements}. Pred vymazaním mu priraďte iný. | Materiál používajú prvky {elements}. Pred vymazaním im priraďte iný.",
+    "crossSectionInUse": "Prierez používa prvok {elements}. Pred vymazaním mu priraďte iný. | Prierez používajú prvky {elements}. Pred vymazaním im priraďte iný."
+  },
+  "solveDiagnostics": {
+    "summaryErrors": "Chyby v modeli: {errors}",
+    "summaryWarnings": "Upozornenia v modeli: {warnings}",
+    "summaryIncomplete": "Podpery chýbajú pri častiach konštrukcie: {count}.",
+    "incompleteChip": "Chýbajú podpery",
+    "hideMotion": "Skryť pohyb",
+    "showMotion": "Zobraziť pohyb",
+    "dismissWarnings": "Skryť tieto upozornenia",
+    "collapseErrors": "Zmenšiť túto správu",
+    "showDetails": "Zobraziť podrobnosti",
+    "blockedTitle": "Model nemožno vypočítať",
+    "blockedDescription": "Pred výpočtom opravte uvedené chyby.",
+    "warningsTitle": "Upozornenia k modelu",
+    "warningsDescription": "Model bol vypočítaný, ale boli zistené nasledujúce upozornenia.",
+    "incompleteTitle": "Model zatiaľ nemožno vypočítať",
+    "incompleteDescription": "Výsledky sa zobrazia, len čo bude konštrukcia podopretá. Čiarkovaný obrys na plátne ukazuje, ako sa ešte môže pohybovať.",
+    "errors": "Chyby",
+    "warnings": "Upozornenia",
+    "incomplete": "Zostáva doplniť",
+    "issues": {
+      "elementNodeCount": "Prvok {element} musí odkazovať práve na 2 uzly.",
+      "elementSameNode": "Prvok {element} má na oboch koncoch rovnaký uzol.",
+      "elementZeroLength": "Prvok {element} má nulovú dĺžku: uzly {start} a {end} ležia v rovnakom bode.",
+      "elementMissingNode": "Prvok {element} odkazuje na neexistujúci uzol {node}.",
+      "elementMissingMaterial": "Prvok {element} odkazuje na neexistujúci materiál {material}.",
+      "elementMissingCrossSection": "Prvok {element} odkazuje na neexistujúci prierez {crossSection}.",
+      "nodalLoadMissingNode": "Uzlové zaťaženie č. {index} odkazuje na neexistujúci uzol {node}.",
+      "nodalLoadInvalid": "Uzlové zaťaženie č. {index} obsahuje neplatné hodnoty.",
+      "prescribedMissingNode": "Predpísané posunutie č. {index} odkazuje na neexistujúci uzol {node}.",
+      "prescribedInvalid": "Predpísané posunutie č. {index} obsahuje neplatné hodnoty.",
+      "elementLoadMissingElement": "Prvkové zaťaženie č. {index} odkazuje na neexistujúci prvok {element}.",
+      "supportedNodeNotConnected": "Uzol {node} je podopretý, ale nepripája sa k nemu žiadny prvok, takže podpera nič neprenáša.",
+      "nodeNotConnected": "Uzol {node} nie je pripojený k žiadnemu prvku a výpočet ho ignoruje.",
+      "insufficientSupports": "Aby bol model pri 2D výpočte stabilný, musí mať aspoň 3 podopreté stupne voľnosti.",
+      "needsSupports": "Konštrukcia potrebuje podpery, inak ju nemožno vypočítať.",
+      "partUnsupported": "Samostatná časť konštrukcie (uzly {nodes}) má menej ako 3 podopreté stupne voľnosti a môže sa voľne pohybovať.",
+      "partNeedsSupports": "Časť s uzlami {nodes} potrebuje podpery.",
+      "mechanism": "Konštrukcia má dostatok podpier, ale tie ju nezaisťujú: stále sa môže {motion}. Ak sú všetky väzby rovnobežné alebo sa ich nositeľky pretínajú v jednom bode, konštrukcia sa môže voľne pohybovať.",
+      "mechanismShort": "Podpery konštrukciu nezaisťujú: stále sa môže {motion}.",
+      "partMechanism": "Samostatná časť konštrukcie (uzly {nodes}) má dostatok podpier, ale tie ju nezaisťujú: stále sa môže {motion}. Ak sú všetky väzby rovnobežné alebo sa ich nositeľky pretínajú v jednom bode, konštrukcia sa môže voľne pohybovať.",
+      "partMechanismShort": "Časť s uzlami {nodes} nie je zaistená: stále sa môže {motion}.",
+      "hingeMechanism": "Podpery konštrukciu držia, ale napriek tomu je to mechanizmus: jej prúty sa môžu otáčať okolo kĺbov v uzle {nodes}. Odstráňte kĺb alebo pridajte prút či podperu, ktorá pohybu zabráni. | Podpery konštrukciu držia, ale napriek tomu je to mechanizmus: jej prúty sa môžu otáčať okolo kĺbov v uzloch {nodes}. Odstráňte kĺb alebo pridajte prút či podperu, ktorá pohybu zabráni.",
+      "hingeMechanismShort": "Kĺby v uzle {nodes} umožňujú pohyb konštrukcie. | Kĺby v uzloch {nodes} umožňujú pohyb konštrukcie.",
+      "motion": {
+        "horizontal": "posúvať vodorovne",
+        "vertical": "posúvať zvislo",
+        "rotation": "voľne otáčať",
+        "mixed": "pohybovať ako tuhý celok"
+      },
+      "unstable": "Konštrukcia je nestabilná – tieto pohyby nemajú prakticky žiadny odpor: {dofs}. Pridajte podperu alebo prvok, odstráňte koncový kĺb alebo skontrolujte tuhosť prierezu.",
+      "unstableShort": "Konštrukcia je nestabilná: pohybuje sa takmer bez odporu.",
+      "unstableDof": {
+        "dx": "vodorovné posunutie uzla {node} (Dx)",
+        "dz": "zvislé posunutie uzla {node} (D{v})",
+        "ry": "pootočenie uzla {node} (R{r})",
+        "other": "stupeň voľnosti {dof} uzla {node}"
+      },
+      "unstableMore": "{list} a ďalšie ({count})",
+      "singularMatrix": "Konštrukcia je mechanizmus: matica tuhosti je singulárna. Skontrolujte, či je každá časť zaistená aspoň 3 väzbami a či koncové kĺby nenechávajú niektorý prút voľne otočný.",
+      "singularMatrixShort": "Konštrukcia je mechanizmus: môže sa pohybovať bez odporu.",
+      "solverFailed": "Výpočet zlyhal pre vnútornú nekonzistentnosť modelu. Skontrolujte, prosím, odkazy v modeli a zaťaženia."
+    }
+  },
+  "loadType": {
+    "loadType": "Typ zaťaženia",
+    "concentrated": "Osamelá sila",
+    "trapezoidal": "Lineárne sa meniace zaťaženie",
+    "udl": "Rovnomerné spojité zaťaženie",
+    "temperature": "Zmena teploty"
+  },
+  "dimensioning": {
+    "add_dimension": "Pridať kótu",
+    "add_along_element": "Okótovať prvok {label}"
+  },
+  "warnings": {
+    "noMaterialsDefined": "Nie je definovaný žiadny materiál.",
+    "noCrossSectionsDefined": "Nie je definovaný žiadny prierez.",
+    "importFailed": "Súbor sa nepodarilo importovať. Skontrolujte, prosím, formát súboru.",
+    "sessionLoadCasesSkipped": "Táto relácia programu EduBeam má niekoľko zaťažovacích stavov, ale otvoriť možno iba jeden. Otvorený: {loaded}. Neotvorené: {skipped}.",
+    "prescribedDisplacementExists": "Pre tento uzol už predpísané posunutie existuje. Najprv ho, prosím, odstráňte.",
+    "addMaterialFirst": "Najprv, prosím, pridajte materiál.",
+    "addCrossSectionFirst": "Najprv, prosím, pridajte prierez.",
+    "selectMaterialAndCrossSection": "Vyberte, prosím, materiál a prierez.",
+    "labelInUse": "Označenie {label} sa už používa.",
+    "noMaterialOrCrossSection": "Prvok nemá zadaný materiál alebo prierez.",
+    "elementMissing": "Prvok {label} už neexistuje.",
+    "nodeMissing": "Uzol {label} už neexistuje."
+  },
+  "help": {
+    "aria": "Zobraziť pomocníka",
+    "readMore": "Viac v dokumentácii",
+    "troubleshooting": "Riešenie problémov",
+    "nodes": {
+      "title": "Uzly",
+      "body": "Uzly držia konštrukciu pohromade. Súradnice, podpery, kĺby aj zaťaženie sa zadávajú pre každý uzol zvlášť."
+    },
+    "supports": {
+      "title": "Podpery",
+      "body": "Zaškrtnutím stupňa voľnosti ho podopriete: Dx a D{v} bránia posunu, R{r} pootočeniu. Konštrukcia potrebuje aspoň tri nezávislé väzby."
+    },
+    "elements": {
+      "title": "Prvky",
+      "body": "Prvok spája dva uzly a nesie materiál a prierez. Uvoľnením konca vznikne kĺbovo pripojený alebo priehradový prút."
+    },
+    "loads": {
+      "title": "Zaťaženie",
+      "body": "Zaťaženie pôsobí v uzloch alebo po dĺžke prvku. Kladné hodnoty zodpovedajú globálnym osiam, os z smeruje nadol.",
+      "bodyYUp": "Zaťaženie pôsobí v uzloch alebo po dĺžke prvku. Kladné hodnoty zodpovedajú globálnym osiam, os y smeruje nahor."
+    },
+    "nodalLoads": {
+      "title": "Uzlové zaťaženia",
+      "body": "Uzlové zaťaženie vnáša do uzla silu alebo moment. Predpísaným posunutím možno namiesto toho zadať pokles podpery."
+    },
+    "elementLoads": {
+      "title": "Zaťaženie prvku",
+      "body": "Zaťaženie prvku pôsobí po jeho dĺžke: rovnomerné, lichobežníkové, osamelé alebo teplotné. Možno ho zadať v globálnych aj lokálnych osiach."
+    },
+    "materials": {
+      "title": "Materiály",
+      "body": "Materiál nesie modul pružnosti, šmykový modul, hustotu a teplotnú rozťažnosť. Statický výpočet používa E, G pre šmykové deformácie a α pre teplotné zaťaženie; hustota doň nevstupuje."
+    },
+    "crossSections": {
+      "title": "Prierezy",
+      "body": "Prierez dodáva plochu a moment zotrvačnosti pre tuhosť. Vyberte ho z knižnice alebo si nakreslite vlastný polygón."
+    },
+    "hinges": {
+      "title": "Koncové kĺby",
+      "body": "Zaškrtnutie uvoľní na danom konci prvku ohybový moment. Oba konce urobia z prvku priehradový prút, jeden koniec vloží do rámu kĺb."
+    },
+    "signConvention": {
+      "title": "Znamienková konvencia",
+      "body": "Globálna os z smeruje nadol, kladné Fz alebo fz teda pôsobí nadol a My je kladný proti smeru hodinových ručičiek. Zaťaženie v lokálnom systéme sleduje prvok.",
+      "bodyYUp": "Globálna os y smeruje nahor, kladné Fy alebo fy teda pôsobí nahor a Mz je kladný proti smeru hodinových ručičiek. Zaťaženie v lokálnom systéme sleduje prvok."
+    },
+    "results": {
+      "title": "Výsledky",
+      "body": "Po výpočte získate normálovú a priečnu silu, ohybový moment, deformovaný tvar a reakcie, a to ako diagramy aj tabuľky."
+    },
+    "diagrams": {
+      "title": "Vykreslenie výsledkov",
+      "body": "Prepínače vykresľujú normálovú a priečnu silu, ohybový moment, deformovaný tvar a reakcie. N je kladná v ťahu, M{r} je kladný, keď sú ťahané dolné vlákna."
+    },
+    "endForces": {
+      "title": "Koncové sily",
+      "body": "X12, Z12 a M12 pôsobia v počiatočnom uzle, X21, Z21 a M21 v koncovom, vždy v lokálnom systéme prvku, ktorý smeruje od počiatočného ku koncovému uzlu."
+    },
+    "settings": {
+      "title": "Jednotky a nastavenia",
+      "body": "Jazyk, jednotky, mierku zobrazenia, farby a klávesové skratky nájdete tu. Jednotky iba prevádzajú hodnoty, model nemenia."
+    },
+    "sharing": {
+      "title": "Ukladanie a zdieľanie",
+      "body": "Model uložíte do súboru, skopírujete odkaz, ktorý obsahuje celú konštrukciu, alebo vložíte prehliadač iba na čítanie do vlastnej stránky."
+    }
+  },
+  "exportImage": {
+    "title": "Exportovať obrázok",
+    "transparentBackground": "Priehľadné pozadie",
+    "download": "Stiahnuť PNG",
+    "downloadSvg": "Stiahnuť SVG",
+    "copyToClipboard": "Kopírovať do schránky",
+    "copied": "Obrázok skopírovaný do schránky",
+    "exported": "Obrázok exportovaný",
+    "failed": "Obrázok sa nepodarilo vykresliť.",
+    "previewAlt": "Náhľad exportovaného obrázka",
+    "instructions": "Obrázok sa vykreslí priamo pre zvolenú veľkosť, takže čiary aj popisy si zachovajú skutočnú hrúbku. Rovnaká veľkosť vždy zarámuje konštrukciu rovnako – hodí sa na export M, N a V vedľa seba.",
+    "width": "Šírka",
+    "height": "Výška",
+    "lockAspect": "Zachovať pomer strán",
+    "fitPreview": "Prispôsobiť",
+    "actualSize": "Skutočná veľkosť",
+    "preview": "Náhľad",
+    "fitAll": "Všetko",
+    "window": "Výrez…",
+    "pickWindowHint": "Ťahaním vyberte oblasť výkresu na export",
+    "dragEdge": "Ťahaním rozšírte alebo orežte túto stranu",
+    "scale": "Mierka",
+    "scaleCaption": "1 m modelu je {cm} cm na papieri (96 DPI). Kolieskom myši nad náhľadom priblížite.",
+    "doesNotFit": "V tejto veľkosti sa všetko nezmestí: diagramy, zaťaženie a popisy presahujú okraj asi o {px} px. Zmenšite diagramy (teraz {diagrams} px) alebo zväčšite plátno.",
+    "shrinkDiagrams": "Zmenšiť diagramy",
+    "enlargeCanvas": "Zväčšiť plátno",
+    "diagramHeight": "Výška diagramov",
+    "shrinkNotEnough": "Menšie diagramy tu nestačia – samotné zaťaženie a popisy potrebujú viac miesta. Zväčšite plátno."
+  },
+  "examples": {
+    "title": "Príklady",
+    "instructions": "Otvorte pripravený model a preskúmajte ho. Nahradí ten súčasný a Ctrl+Z vám ho vráti späť.",
+    "moreInDocs": "Ďalšie príklady a cvičenia",
+    "items": {
+      "welcome": {
+        "title": "Staticky neurčitý nosník",
+        "blurb": "Staticky neurčitý nosník dĺžky 3 m (votknutie – posuvný kĺb) s rovnomerným spojitým zaťažením 10 kN/m."
+      },
+      "cantilever": {
+        "title": "Konzola",
+        "blurb": "Konzola dĺžky 4 m zaťažená zvislou uzlovou silou 18 kN smerom nadol – ukazuje krivosť a priehyb voľného konca."
+      },
+      "pratt": {
+        "title": "Warrenov priehradový nosník",
+        "blurb": "Jednoduchý Warrenov priehradový nosník so silami 8 kN v uzloch – ukazuje rozdelenie normálových síl a posunutia."
+      },
+      "continuous": {
+        "title": "Spojitý nosník s tromi poľami",
+        "blurb": "Polia 5 + 6 + 5 m so spojitým, osamelým a opäť spojitým zaťažením na porovnanie krivosti a pootočení nad podperami."
+      },
+      "portal": {
+        "title": "Rámová konštrukcia",
+        "blurb": "Nosník dĺžky 8 m na stĺpoch výšky 6 m, zaťažený rovnomerným zaťažením strechy a vodorovnými a zvislými silami v rohoch rámu – na posúdenie vodorovného posunu a ohybu."
+      },
+      "temperature": {
+        "title": "Teplotné zaťaženie",
+        "blurb": "Prostý nosník dĺžky 8 m s rovnomernou a nerovnomernou zmenou teploty."
+      }
+    }
+  },
+  "recentStructures": {
+    "title": "Nedávne konštrukcie",
+    "instructions": "V tomto prehliadači sa uchováva posledných {count} konštrukcií, ktoré boli vymazané alebo nahradené. Obnovenie nahradí aktuálnu konštrukciu a Ctrl+Z ju vráti späť.",
+    "empty": "Zatiaľ tu nič nie je. Keď konštrukciu vymažete alebo cez ňu otvoríte inú, uloží sa sem.",
+    "restore": "Obnoviť",
+    "remove": "Odobrať",
+    "counts": "Uzly: {nodes} · Prvky: {elements}",
+    "linkNotice": "Otvorená zdieľaná konštrukcia. Predchádzajúcu nájdete v Nedávnych konštrukciách.",
+    "show": "Zobraziť",
+    "reasons": {
+      "clear": "Vymazané",
+      "link": "Nahradené zdieľaným odkazom",
+      "file": "Nahradené otvoreným súborom",
+      "example": "Nahradené príkladom",
+      "firstBeam": "Nahradené úlohou „prvý nosník“",
+      "restore": "Nahradené obnovenou konštrukciou"
+    }
+  },
+  "library": {
+    "name": {
+      "steel": "Oceľ",
+      "steelHss": "Oceľ HSS",
+      "stainlessSteel": "Nehrdzavejúca oceľ",
+      "aluminum": "Hliník",
+      "concrete": "Betón",
+      "timber": "Drevo",
+      "castIron": "Liatina",
+      "copper": "Meď",
+      "brass": "Mosadz",
+      "bronze": "Bronz",
+      "titanium": "Titán",
+      "glass": "Sklo",
+      "polycarbonate": "Polykarbonát",
+      "rect": "Obdĺžnik",
+      "square": "Štvorec",
+      "circular": "Kruh"
+    },
+    "qualifier": {
+      "gray": "sivá",
+      "lightweight": "ľahký",
+      "sodaLime": "sodnovápenaté",
+      "quasiIsotropic": "kváziizotropný",
+      "rigid": "tvrdé",
+      "acrylic": "akrylát",
+      "approx": "pribl."
+    }
+  },
+  "report": {
+    "column": "Pod sebou",
+    "row": "Vedľa seba",
+    "no_results": "Zobrazí sa po vyriešení konštrukcie",
+    "guides": "Pomocné čiary",
+    "print": "Tlač",
+    "paper": "Papier",
+    "portrait": "Na výšku",
+    "landscape": "Na šírku"
+  },
+  "languageOffer": {
+    "message": "EduBeam je dostupný v slovenčine.",
+    "switch": "Prepnúť do slovenčiny",
+    "dismiss": "Nie, ďakujem"
+  }
+}

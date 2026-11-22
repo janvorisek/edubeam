@@ -27,8 +27,11 @@ const DOCS_LOCALES = new Set([
   'ko',
 ]);
 
-/** App locale codes that differ from the documentation ones. */
-const DOCS_LOCALE_ALIASES: Record<string, string> = { cn: 'zh' };
+/**
+ * App locale codes that differ from the documentation ones. The guide has no Slovak: Slovak readers
+ * read the Czech one, the closest language it has, rather than English.
+ */
+const DOCS_LOCALE_ALIASES: Record<string, string> = { cn: 'zh', sk: 'cs' };
 
 /**
  * Builds an absolute link into the documentation for the currently selected language,

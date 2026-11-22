@@ -12,7 +12,8 @@ describe('the help links of every language', () => {
     'link %s help to its own docs',
     (locale) => {
       i18n.global.locale.value = locale;
-      const docsLocale = locale === 'cn' ? 'zh' : locale;
+      // Slovak has no guide of its own and opens the Czech one
+      const docsLocale = locale === 'cn' ? 'zh' : locale === 'sk' ? 'cs' : locale;
       expect(new URL(docsUrl('/essentials/loads')).pathname.startsWith(`/${docsLocale}/`)).toBe(true);
       i18n.global.locale.value = 'en';
     }
@@ -25,6 +26,11 @@ describe('the language of a first visit', () => {
     expect(suggestLanguage(['pt-BR'])).toBe('pt');
     expect(suggestLanguage(['de-CH', 'en'])).toBe('de');
     expect(suggestLanguage(['th'])).toBe('th');
+  });
+
+  it('opens Slovak for a Slovak browser', () => {
+    expect(suggestLanguage(['sk-SK', 'cs', 'en'])).toBe('sk');
+    expect(suggestLanguage(['sk'])).toBe('sk');
   });
 
   it('takes the first language the app speaks', () => {

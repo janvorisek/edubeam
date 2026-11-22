@@ -83,7 +83,7 @@ Rules:
 
 ## Translations
 
-- `src/locales/en.json` is the source. `locales.test.ts` fails unless **every** locale has every English key, no extra keys, and the same `{placeholders}`. A new string means adding it to all 12 locale files.
+- `src/locales/en.json` is the source. `locales.test.ts` fails unless **every** locale has every English key, no extra keys, and the same `{placeholders}`. A new string means adding it to every locale file (19 of them).
 - Where academic and software terminology differ, use the terms structural analysis software (SAP2000, ETABS, …) uses in that language.
 - The guide is part of the website, www.edubeam.app, in its own repository (`@edubeam/web`). English is served from the root (`/guide/…`), other languages under `/<lang>/…`. Help links in the app go through `docsUrl` (`src/utils/docs.ts`) and point to headings by their English id (`## Podpory {#supports}`) in every language, so keep those ids when a help topic moves.
 - The guide's screenshots are taken by the website's `npm run screenshots`, which drives this app through its URL (`npm run dev` here). Retake them there when the UI they show changes.

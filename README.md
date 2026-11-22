@@ -22,7 +22,7 @@
 <p align="center">
   <img alt="Version" src="https://img.shields.io/github/package-json/v/janvorisek/edubeam?color=1a1f4e&label=version">
   <img alt="License" src="https://img.shields.io/github/license/janvorisek/edubeam?color=1a1f4e">
-  <img alt="Languages" src="https://img.shields.io/badge/languages-18-1a1f4e">
+  <img alt="Languages" src="https://img.shields.io/badge/languages-19-1a1f4e">
   <img alt="Contributors" src="https://img.shields.io/github/contributors/janvorisek/edubeam?color=1a1f4e">
 </p>
 
@@ -70,7 +70,7 @@ in front of a class, or in every student's hands, with a link.
 
 - The **Report** tab: loads, internal forces and deflection, ready to print.
 - SVG for Word, LaTeX and Inkscape, PNG at any size, CSV for spreadsheets, and a readable `project.json`.
-- Mouse, keyboard or touch; SI or US units; z-down or y-up axes; light or dark; 18 languages.
+- Mouse, keyboard or touch; SI or US units; z-down or y-up axes; light or dark; 19 languages.
 
 <table>
   <tr>
@@ -108,7 +108,7 @@ first bending moment.
   ```html
   <iframe src="https://run.edubeam.app/?viewer=1&model=…" width="100%" height="400"></iframe>
   ```
-- **In your students' language.** Add `lang=` with `cs`, `de`, `es`, `fr`, `it`, `pl`, `pt`, `ru`, `uk`, `tr`,
+- **In your students' language.** Add `lang=` with `cs`, `sk`, `de`, `es`, `fr`, `it`, `pl`, `pt`, `ru`, `uk`, `tr`,
   `cn`, `ja`, `ko`, `hi`, `id`, `th` or `vi`.
 - **Assignments as files.** <kbd>Ctrl</kbd>+<kbd>S</kbd> saves a plain JSON `project.json`, easy to generate or check
   with a script: see the [file format](https://www.edubeam.app/essentials/import-export).
@@ -163,7 +163,7 @@ src/
   components/           the viewer, context menus, dialogs, settings, widgets
   store/                Pinia stores: project (the model), viewer, layout, app settings, clipboard
   CommandManager.ts     undo and redo: every edit of the model goes through it
-  locales/              the interface in 18 languages, one JSON file each
+  locales/              the interface in 19 languages, one JSON file each
   tests/                Vitest specs
 public/changelog/       the release notes shown in the app, and their pictures
 ```
@@ -195,7 +195,7 @@ in your classes are all welcome.
 - **Translating?** The interface is in [`src/locales/`](src/locales), with [`en.json`](src/locales/en.json) as the
   source; the guide is part of the [website](https://github.com/EduBeamApp/web).
 
-EduBeam speaks English, Czech, German, Spanish, French, Italian, Polish, Portuguese, Russian, Ukrainian, Turkish,
+EduBeam speaks English, Czech, Slovak, German, Spanish, French, Italian, Polish, Portuguese, Russian, Ukrainian, Turkish,
 Chinese, Japanese, Korean, Hindi, Indonesian, Thai and Vietnamese. Thanks to everyone who helped get it there.
 
 ## License

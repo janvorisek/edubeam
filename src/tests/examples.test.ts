@@ -38,8 +38,9 @@ describe('the truss example', () => {
     expect(vertical).toEqual([]);
   });
 
+  // Importing i18n reads every locale, which under a full parallel run can take longer than the default 5 s
   it('is titled one', async () => {
     const { i18n } = await import('@/plugins/i18n');
     expect(i18n.global.t('examples.items.pratt.title', {}, { locale: 'en' })).toBe('Warren truss');
-  });
+  }, 20_000);
 });

@@ -26,6 +26,7 @@
             <button class="recent-preview" :aria-label="$t('recentStructures.restore')" @click="restore(entry)">
               <SVGElementViewer
                 :id="`recent-${entry.id}`"
+                :theme="themeName"
                 :solver="preview.solver"
                 :nodes="preview.nodes"
                 :elements="preview.elements"
@@ -45,6 +46,7 @@
                 :convert-moment="convertMoment"
                 :convert-force-distance="convertForce"
                 :support-size="0.5"
+                :plot="tileLook"
               />
             </button>
             <div class="recent-copy">
@@ -82,16 +84,23 @@
 </template>
 
 <script setup lang="ts">
+import { useThemeName } from '@/utils/theme';
 import { computed, ref } from 'vue';
 import { closeModal } from 'jenesius-vue-modal';
 import { LinearStaticSolver } from '@edubeam/fem';
 import SVGElementViewer from '../SVGElementViewer.vue';
+import { useTileLook } from '@/utils/useEditorLook';
 import { deserializeModel, parseSerializedModel, replaceModel, resetModel } from '@/utils';
 import { useProjectStore } from '@/store/project';
 import { useAppStore } from '@/store/app';
 import { RECENT_STRUCTURES_LIMIT, useRecentStructuresStore, type RecentStructure } from '@/store/recentStructures';
 import { eventBus, EventType } from '@/EventBus';
 import type { DimensionLine } from '@/types/dimension';
+
+// Drawn by the renderer the canvas uses
+/** The previews drawn on the theme's canvas, as the editor is */
+const themeName = useThemeName();
+const tileLook = useTileLook();
 
 const open = ref(true);
 const recentStructures = useRecentStructuresStore();

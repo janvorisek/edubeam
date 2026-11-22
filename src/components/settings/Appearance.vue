@@ -3,6 +3,47 @@
     <v-col cols="12" md="6">
       <h3 class="mb-1">{{ $t('settings.viewer_settings') }}</h3>
 
+      <div class="vs-heading">{{ $t('settings.theme') }}</div>
+      <v-btn-toggle
+        v-model="appStore.theme"
+        class="vs-toggle mb-3"
+        color="primary"
+        density="compact"
+        variant="outlined"
+        divided
+        mandatory
+      >
+        <v-btn value="system" prepend-icon="mdi-theme-light-dark">{{ $t('settings.theme_system') }}</v-btn>
+        <v-btn value="light" prepend-icon="mdi-white-balance-sunny">{{ $t('settings.theme_light') }}</v-btn>
+        <v-btn value="dark" prepend-icon="mdi-weather-night">{{ $t('settings.theme_dark') }}</v-btn>
+      </v-btn-toggle>
+
+      <div class="vs-heading">{{ $t('settings.renderer') }}</div>
+      <v-btn-toggle
+        v-model="viewerStore.renderer"
+        class="vs-toggle"
+        color="primary"
+        density="compact"
+        variant="outlined"
+        divided
+        mandatory
+      >
+        <v-btn value="classic">{{ $t('settings.renderer_classic') }}</v-btn>
+        <v-btn value="plot">{{ $t('settings.renderer_plot') }}</v-btn>
+      </v-btn-toggle>
+      <div class="vs-group mt-2">
+        <label class="vs-row vs-row--switch">
+          <span>{{ $t('settings.show_readout') }}</span>
+          <v-switch
+            v-model="viewerStore.showReadout"
+            :disabled="viewerStore.renderer !== 'plot'"
+            color="primary"
+            density="compact"
+            hide-details
+          />
+        </label>
+      </div>
+
       <div class="vs-heading">{{ $t('settings.grid') }}</div>
       <div class="vs-group">
         <label class="vs-row vs-row--switch">
@@ -108,10 +149,13 @@
 
     <v-col cols="12" md="6">
       <div class="vs-heading mt-md-8">{{ $t('settings.viewer_preview') }}</div>
-      <div class="vs-preview">
+      <div ref="previewBox" class="vs-preview">
+        <!-- Drawn by the renderer the canvas uses: the preview shows what the settings will look like -->
+        <div v-if="plotPreviewSvg" class="vs-preview-plot" v-html="plotPreviewSvg" />
         <SVGElementViewer
-          v-if="_created"
+          v-else-if="_created && viewerStore.renderer === 'classic'"
           id="settings-appearance"
+          :theme="themeName"
           class="overflow-hidden"
           :solver="solver"
           :nodes="[solver.domain.getNode('a'), solver.domain.getNode('b')]"
@@ -242,11 +286,16 @@
 </template>
 
 <script lang="ts" setup>
+import { themedColors, useThemeName } from '@/utils/theme';
 import { useViewerStore } from '@/store/viewer';
 import { useAppStore } from '@/store/app';
 import SVGElementViewer from '../SVGElementViewer.vue';
 import { LinearStaticSolver, DofID } from '@edubeam/fem';
-import { computed, onMounted, ref, watch, type Ref } from 'vue';
+import { computed, onMounted, ref, useTemplateRef, watch, type Ref } from 'vue';
+import { useElementSize } from '@vueuse/core';
+import type { PlotLayer, PlotModel } from '@edubeam/plot';
+import { editorFigure, editorFigureSvg, editorLayers, readEditorModel } from '@/utils/plotDrawing';
+import { useEditorLook } from '@/utils/useEditorLook';
 import { unitSize } from '@/utils/unitConversions';
 import { presetFamily, type PresetFamily } from '@/utils/presetFamily';
 import { checkNumber, parseFloat2, positiveNumberRules } from '@/utils';
@@ -254,6 +303,8 @@ import SettingStepper from './SettingStepper.vue';
 import { useI18n } from 'vue-i18n';
 import type { DiagramFill } from '@/utils/diagramStyle';
 
+/** The previews drawn on the theme's canvas, as the editor is */
+const themeName = useThemeName();
 const viewerStore = useViewerStore();
 const appStore = useAppStore();
 const { t } = useI18n();
@@ -395,6 +446,53 @@ const PREVIEW_PADDING = 8;
 const previewReserve = computed(() => {
   const band = Math.min(MAX_BAND_PX, Math.max(SUPPORT_BAND_PX, viewerStore.resultsScalePx_ + LABEL_PX));
   return { top: band, bottom: band, left: 48, right: 48 };
+});
+
+/* ── The preview as the plot renderer draws it ──────────────────────────────────────────────── */
+const previewBox = useTemplateRef<HTMLElement>('previewBox');
+// The box inside its border
+const { width: previewWidth, height: previewHeight } = useElementSize(previewBox, undefined, { box: 'content-box' });
+const look = useEditorLook();
+
+const previewModel = computed((): PlotModel | null => {
+  try {
+    return readEditorModel(solver.value);
+  } catch (error) {
+    console.warn('[plot renderer] cannot read the preview', error);
+    return null;
+  }
+});
+
+/** Every quantity the buttons show makes room, so switching between them keeps the beam where it is */
+const PREVIEW_RESERVE: readonly PlotLayer[] = ['N', 'V', 'M', 'w', 'reactions'];
+
+const plotPreviewSvg = computed((): string => {
+  const model = previewModel.value;
+  const width = Math.floor(previewWidth.value);
+  const height = Math.floor(previewHeight.value);
+  if (viewerStore.renderer !== 'plot' || !model || width <= 0 || height <= 0) return '';
+  const q = showQuantity.value;
+  const shown = editorLayers({
+    supports: true,
+    loads: true,
+    reactions: q === 'reactions',
+    nodeLabels: false,
+    memberLabels: false,
+    normalForce: q === 'normalForce',
+    shearForce: q === 'shearForce',
+    bendingMoment: q === 'bendingMoment',
+    deformedShape: q === 'deformedShape',
+  });
+  try {
+    const figure = editorFigure(model, look.value, shown, { width, height, padding: PREVIEW_PADDING }, PREVIEW_RESERVE);
+    return editorFigureSvg(figure, look.value, themedColors(viewerStore.colors, themeName.value), {
+      background: false,
+      theme: themeName.value,
+    });
+  } catch (error) {
+    console.warn('[plot renderer] cannot draw the preview', error);
+    return '';
+  }
 });
 
 const _created = ref(false);
@@ -542,6 +640,10 @@ onMounted(() => {
   height: 100%;
 }
 
+.vs-preview-plot :deep(svg) {
+  display: block;
+}
+
 /* As tall as the other controls, with no more padding than the names need */
 .vs-quantities {
   height: 32px;
@@ -587,7 +689,8 @@ onMounted(() => {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
+  /* A ring of the text's colour, faint: a black colour stays seen on the dark theme too */
+  box-shadow: 0 0 0 1px rgba(var(--v-theme-on-surface), 0.25);
 }
 
 .vs-swatch__name {

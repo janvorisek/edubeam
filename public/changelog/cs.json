@@ -1,6 +1,59 @@
 {
   "releases": [
     {
+      "version": "1.4.0",
+      "title": "Nové vykreslování, nástroje a protokol",
+      "date": "21. listopadu 2026",
+      "highlights": [
+        "Nové vykreslování, ve kterém se popisky nepřekrývají.",
+        "Najetím na prut odečtete N, V, M a průhyb v daném místě.",
+        "Podpory a zatížení přidáte přímo z panelu nástrojů.",
+        "Zatížení přesunete přetažením.",
+        "Záložka Protokol: zatížení, vnitřní síly a průhyb připravené k tisku.",
+        "Rovnováha uzlu: síly působící na uzel a jejich součty rozepsané krok za krokem.",
+        "Tmavý režim podle systému, nebo přepnutý v záhlaví.",
+        "Také: přichytávání ke středům a třetinám prutů, náhledy zatížení v dialozích a přehled zkratek."
+      ],
+      "media": [
+        {
+          "src": "/changelog/media/new-drawing.gif",
+          "alt": "Kurzor jede po příčli rámu; vedle průběhů se ukazuje ohybový moment a průhyb v místě kurzoru",
+          "caption": "Hodnoty pod kurzorem"
+        },
+        {
+          "src": "/changelog/media/toolbar-loads.gif",
+          "alt": "Ze seznamu nástroje zatížení se vybere spojité rovnoměrné zatížení, šedý náhled ukáže, kam padne, a kliknutí ho umístí na sloup",
+          "caption": "Zatížení z panelu nástrojů"
+        },
+        {
+          "src": "/changelog/media/snapping.gif",
+          "alt": "Vkládání uzlu: kurzor se přichytí k uzlu, ke třetině a ke středu příčle a uzel příčel v tom místě rozdělí",
+          "caption": "Přichytávání"
+        },
+        {
+          "src": "/changelog/media/drag-load.gif",
+          "alt": "Lichoběžníkové zatížení se přetáhne z příčle na levý sloup a výsledky se přepočítají",
+          "caption": "Přetažení zatížení"
+        },
+        {
+          "src": "/changelog/media/report-tab.png",
+          "alt": "Stránka protokolu nosníku s vetknutím a podporou: zatížení, posouvající síla, ohybový moment a průhyb pod sebou, s pomocnou čarou maximem momentu",
+          "caption": "Záložka Protokol"
+        },
+        {
+          "src": "/changelog/media/node-equilibrium.png",
+          "alt": "Rovnováha vetknutého uzlu: odříznutý prut s N, V a M v řezu, reakce a součty sil a momentů rozepsané v symbolech i číslech",
+          "caption": "Rovnováha uzlu"
+        },
+        {
+          "src": "/changelog/media/dark-mode.png",
+          "alt": "EduBeam v tmavém režimu: rám s ohybovým momentem, deformovaným tvarem a reakcemi na tmavém plátně",
+          "caption": "Tmavý režim"
+        }
+      ],
+      "tag": "Nejnovější"
+    },
+    {
       "version": "1.3.4",
       "title": "Přesnější výsledky",
       "date": "18. listopadu 2026",
@@ -8,8 +61,7 @@
         "Přesné výsledky pro pruty se smykovou deformací: osamělá břemena, momenty a lichoběžníková zatížení.",
         "Uzlová zatížení na pootočených podporách působí v globálních osách.",
         "Také: smazání vybraných zatížení odstraní ta správná."
-      ],
-      "tag": "Nejnovější"
+      ]
     },
     {
       "version": "1.3.3",

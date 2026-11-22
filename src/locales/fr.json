@@ -2,7 +2,8 @@
   "tabView": {
     "viewer": "Structure",
     "settings": "Paramètres",
-    "results": "Résultats"
+    "results": "Résultats",
+    "report": "Rapport"
   },
   "common": {
     "label": "Libellé",
@@ -53,7 +54,11 @@
     "addNode": "Ajouter un nœud",
     "editNode": "Modifier le nœud",
     "defineSupports": "Appuis du nœud",
-    "lcsAngle": "Angle du SCL nodal"
+    "lcsAngle": "Angle du SCL nodal",
+    "equilibrium": "Équilibre du nœud",
+    "equilibriumOf": "Équilibre du nœud {label}",
+    "equilibriumSymbols": "Symboles",
+    "equilibriumValues": "Valeurs"
   },
   "supports": {
     "free": "Libre",
@@ -86,6 +91,7 @@
     "addPrescribedDisplacement": "Imposer un déplacement",
     "UDL": "Charge uniformément répartie",
     "forceMoment": "Force/Moment",
+    "moment": "Moment",
     "editLoad": "Modifier la charge",
     "loadPositionOnBeam": "Position de la charge depuis le nœud initial",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Variation de température des fibres inférieures moins supérieures",
@@ -198,6 +204,16 @@
     "result_label_orientation": "Orientation des étiquettes de résultats",
     "result_label_orientation_axis": "Perpendiculaires au diagramme",
     "result_label_orientation_horizontal": "Toujours horizontales",
+    "theme": "Thème",
+    "theme_system": "Système",
+    "theme_light": "Clair",
+    "theme_dark": "Sombre",
+    "theme_toDark": "Thème sombre",
+    "theme_toLight": "Thème clair",
+    "renderer": "Moteur de rendu",
+    "renderer_classic": "Classique",
+    "renderer_plot": "Nouveau (bêta)",
+    "show_readout": "Afficher les valeurs au pointeur",
     "result_labels": "Étiquettes des résultats",
     "diagrams": {
       "title": "Diagrammes des efforts internes",
@@ -232,7 +248,13 @@
     "boxSelect": "Sélection par rectangle",
     "centerContent": "Centrer le contenu",
     "fitContent": "Ajuster à l'écran",
-    "holdCtrl": "Maintenez Ctrl pour ajouter à la souris"
+    "holdCtrl": "Maintenez Ctrl pour ajouter à la souris",
+    "select": "Sélectionner",
+    "tools": "Outils",
+    "snapMiddle": "Milieu",
+    "snapThird": "Tiers",
+    "snapOnElement": "Sur l’élément {label}",
+    "placeFreely": "Maintenez Alt pour placer librement"
   },
   "dofs": {
     "bcs": "DDL bloqués"
@@ -318,7 +340,8 @@
       "comingSoon": "Bientôt disponible",
       "tryIt": "Essayer",
       "tried": {
-        "diagramStyles": "Les diagrammes hachurés avec le degré de chaque tronçon sont activés."
+        "diagramStyles": "Les diagrammes hachurés avec le degré de chaque tronçon sont activés.",
+        "newDrawing": "Le nouveau dessin avec des diagrammes hachurés est activé."
       }
     },
     "polygonSection": {
@@ -399,6 +422,19 @@
     "shareLayers": "Montrer ce que je vois",
     "shareLayersHint": "Le lien s'ouvre avec les diagrammes, charges et étiquettes que vous avez activés."
   },
+  "shortcuts": {
+    "title": "Raccourcis clavier",
+    "drawing": "Dessin",
+    "editing": "Édition",
+    "cancel": "Retour à la sélection, annuler le placement",
+    "placeFreely": "Placer librement, sans accrochage (maintenir)",
+    "grid": "Afficher ou masquer la grille",
+    "snap": "Activer ou désactiver l’accrochage à la grille",
+    "zoom": "Zoomer et dézoomer",
+    "selectAll": "Tout sélectionner",
+    "save": "Enregistrer le projet",
+    "exportImage": "Exporter une image"
+  },
   "tour": {
     "menu": {
       "title": "Menu",
@@ -407,6 +443,11 @@
     "undoRedo": {
       "title": "Annuler et rétablir",
       "description": "Revenez en arrière ou en avant dans vos modifications. Ctrl+Z et Ctrl+Maj+Z font de même."
+    },
+    "tools": {
+      "title": "Outils",
+      "description": "Ajoutez des nœuds, des éléments, des appuis et des charges directement sur le dessin. Maintenez un outil ou cliquez sur son coin pour choisir le type d’appui ou de charge. Les points s’accrochent aux nœuds ainsi qu’au milieu et aux tiers d’un élément ; maintenez Alt pour placer librement. Touches : V sélection, N nœud, E élément, U appui, L charge, D cote, Échap retour à la sélection.",
+      "descriptionTouch": "Ajoutez des nœuds, des éléments, des appuis et des charges directement sur le dessin : touchez un outil, puis l’endroit voulu, et la flèche une fois terminé. Les outils d’appui et de charge ouvrent la liste des types. Les points s’accrochent aux nœuds ainsi qu’au milieu et aux tiers d’un élément. Un doigt déplace la vue, deux doigts zooment. Faites glisser un nœud pour le déplacer, maintenez une charge pour la saisir, ou maintenez ailleurs pour ouvrir le menu."
     },
     "viewerControls": {
       "title": "Boutons de visualisation",
@@ -602,7 +643,8 @@
     "selectMaterialAndCrossSection": "Veuillez sélectionner un matériau et une section.",
     "labelInUse": "Le libellé {label} est déjà utilisé.",
     "noMaterialOrCrossSection": "L'élément ne spécifie pas de matériau ou de section.",
-    "elementMissing": "L'élément {label} n'existe plus."
+    "elementMissing": "L'élément {label} n'existe plus.",
+    "nodeMissing": "Le nœud {label} n'existe plus."
   },
   "help": {
     "aria": "Afficher l'aide",
@@ -777,5 +819,20 @@
       "acrylic": "acrylique",
       "approx": "approx."
     }
+  },
+  "report": {
+    "column": "En colonne",
+    "row": "En ligne",
+    "no_results": "Affiché une fois la structure calculée",
+    "guides": "Lignes de repère",
+    "print": "Imprimer",
+    "paper": "Papier",
+    "portrait": "Portrait",
+    "landscape": "Paysage"
+  },
+  "languageOffer": {
+    "message": "EduBeam est disponible en français.",
+    "switch": "Passer au français",
+    "dismiss": "Non merci"
   }
 }

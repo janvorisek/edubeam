@@ -1,32 +1,31 @@
 <template>
-  <div id="bottomBar" style="border-top: 1px solid #ddd" :style="`min-height: ${props.height}px; overflow: hidden`">
+  <div
+    id="bottomBar"
+    style="border-top: 1px solid rgba(var(--v-border-color), var(--v-border-opacity))"
+    :style="`min-height: ${props.height}px; overflow: hidden`"
+  >
     <!-- The strip is also the bar's resize handle; see Editor.vue for the drag it starts. -->
-    <div class="d-flex justify-space-between bg-primary" data-resize-handle="vertical">
+    <div class="d-flex justify-space-between bg-appbar" data-resize-handle="vertical">
       <v-tabs
-        v-model="appStore.bottomBarTab"
-        bg-color="primary"
+        :model-value="appStore.bottomBarTab"
+        bg-color="appbar"
         :show-arrows="false"
         height="36"
         :hide-slider="props.height === 36"
       >
-        <v-tab
-          v-for="(tab, index) in tabs"
-          :key="index"
-          :value="`tab-${tab.id}`"
-          @click="appStore.bottomBarOpen = true"
-        >
+        <v-tab v-for="(tab, index) in tabs" :key="index" :value="`tab-${tab.id}`" @click="onTab(`tab-${tab.id}`)">
           <template #default>
             <v-icon small class="mr-3">{{ tab.icon }}</v-icon> {{ $t(tab.title) }}</template
           >
           <template v-if="'count' in tab && tab.count() > 0" #append>{{ tab.count() }}</template>
         </v-tab>
       </v-tabs>
-      <div class="bg-primary d-flex align-center">
+      <div class="bg-appbar d-flex align-center">
         <span id="bottomBarHelp" class="d-flex">
           <HelpTip :topic="activeHelpTopic" location="top left" size="small" density="comfortable" align="center" />
         </span>
         <v-btn
-          color="primary"
+          color="appbar"
           density="compact"
           :icon="'mdi-window-minimize'"
           @click="appStore.bottomBarOpen = !appStore.bottomBarOpen"
@@ -57,9 +56,9 @@
             size="small"
             variant="flat"
             :color="appStore.mouseMode === MouseMode.ADD_NODE ? 'primary' : 'secondary'"
-            style="border-left: 1px solid #ccc"
+            style="border-left: 1px solid rgba(var(--v-border-color), 0.2)"
             :rounded="0"
-            @click.stop="toggleMouseMode(MouseMode.ADD_NODE)"
+            @click.stop="chooseTool('node')"
           >
             <v-icon small>mdi-cursor-default-outline</v-icon> {{ $t('nodes.addNode') }}
           </v-btn>
@@ -290,9 +289,9 @@
             size="small"
             variant="flat"
             :color="appStore.mouseMode === MouseMode.ADD_ELEMENT ? 'primary' : 'secondary'"
-            style="border-left: 1px solid #ccc"
+            style="border-left: 1px solid rgba(var(--v-border-color), 0.2)"
             :rounded="0"
-            @click.stop="addElementUsingMouse"
+            @click.stop="chooseTool('element')"
           >
             <v-icon small>mdi-cursor-default-outline</v-icon> {{ $t('elements.addElement') }}
           </v-btn>
@@ -440,7 +439,8 @@
             </select>
           </template>
           <template #item.loads="{ item }">
-            <div class="d-flex align-center">
+            <!-- As tall as the other tables' rows, as the nodes' loads are: a chip group pads itself out -->
+            <div class="d-flex align-center" style="height: 28px">
               <v-btn
                 icon="mdi-plus-circle"
                 density="compact"
@@ -513,7 +513,7 @@
             size="small"
             variant="flat"
             color="secondary"
-            style="border-left: 1px solid #ccc"
+            style="border-left: 1px solid rgba(var(--v-border-color), 0.2)"
             :rounded="0"
             @click.stop="if (useProjectStore().solver.domain.elements.size > 0) openModal(AddElementLoad);"
           >
@@ -1002,7 +1002,7 @@
             variant="flat"
             color="secondary"
             :rounded="0"
-            style="border-left: 1px solid #ccc"
+            style="border-left: 1px solid rgba(var(--v-border-color), 0.2)"
             @click.stop="openModal(MaterialLibraryDialog)"
           >
             <v-icon small>mdi-database-search-outline</v-icon> {{ $t('materials.material_library') }}
@@ -1137,7 +1137,7 @@
             variant="flat"
             color="secondary"
             :rounded="0"
-            style="border-left: 1px solid #ccc"
+            style="border-left: 1px solid rgba(var(--v-border-color), 0.2)"
             @click.stop="openModal(CrossSectionLibraryDialog)"
           >
             <v-icon small>mdi-database-search-outline</v-icon> {{ $t('materials.section_library') }}
@@ -1147,7 +1147,7 @@
             variant="flat"
             color="secondary"
             :rounded="0"
-            style="border-left: 1px solid #ccc"
+            style="border-left: 1px solid rgba(var(--v-border-color), 0.2)"
             @click.stop="openModal(PolygonSectionEditor)"
           >
             <v-icon small>mdi-vector-polygon</v-icon> {{ $t('crossSections.addPolygonal') }}
@@ -1299,7 +1299,7 @@
             size="small"
             variant="flat"
             color="secondary"
-            style="border-left: 1px solid #ccc"
+            style="border-left: 1px solid rgba(var(--v-border-color), 0.2)"
             :rounded="0"
             @click="layoutStore.bottomBarResultsTab = 'elements'"
           >
@@ -1310,7 +1310,7 @@
             size="small"
             variant="flat"
             color="secondary"
-            style="border-left: 1px solid #ccc"
+            style="border-left: 1px solid rgba(var(--v-border-color), 0.2)"
             :rounded="0"
             :disabled="!projStore.solver.loadCases[0].solved"
             @click="exportResults"
@@ -1321,7 +1321,7 @@
             size="small"
             variant="flat"
             color="secondary"
-            style="border-left: 1px solid #ccc"
+            style="border-left: 1px solid rgba(var(--v-border-color), 0.2)"
             :rounded="0"
             :disabled="!projStore.solver.loadCases[0].solved"
             @click="copyResults"
@@ -1538,6 +1538,7 @@
 
 <script setup lang="ts">
 import { parseNumberInput } from '@/utils/numberInput';
+import { useTools } from '@/utils/useTools';
 import { axisMark } from '@/utils/nodalLcs';
 import { formatDisplacementLabel } from '@/utils/numberDisplay';
 import {
@@ -1629,6 +1630,19 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const appStore = useAppStore();
+
+/**
+ * A tab opens the bar on itself; the open tab, pressed again, closes the bar - as a panel's tabs do
+ * in other programs. Set here rather than by the tabs' own model, which can only select.
+ */
+const onTab = (tab: string) => {
+  if (appStore.bottomBarOpen && appStore.bottomBarTab === tab) {
+    appStore.bottomBarOpen = false;
+    return;
+  }
+  appStore.bottomBarTab = tab;
+  appStore.bottomBarOpen = true;
+};
 
 /**
  * Where along its beam a concentrated load sits.
@@ -2005,35 +2019,17 @@ const formatElementLoadsAtElement = (item: Beam2D): [number, string][] => {
       if (Math.abs(nl.ref.values[0]) > 1e-12) tmp.push(ff + '<sub>x</sub> = ' + shown(convert(nl.ref.values[0])));
       if (Math.abs(nl.ref.values[1]) > 1e-12)
         tmp.push(`${ff}<sub>${appStore.axes.v}</sub> = ` + shown(appStore.vertical(convert(nl.ref.values[1]))));
+      // A point load's moment, written as a nodal one is: without it, a moment alone had an empty chip
+      if (nl.type === 'concentrated' && Math.abs(nl.ref.values[2] ?? 0) > 1e-12)
+        tmp.push(`M<sub>${appStore.axes.r}</sub> = ` + shown(appStore.convertMoment(nl.ref.values[2])));
     }
     return [nl.index, tmp.join(chipSeparator())];
   });
 };
 
-/** The button that starts a placing mode also leaves it, for touch where there is no Esc key. */
-const toggleMouseMode = (mode: MouseMode) => {
-  appStore.mouseMode = appStore.mouseMode === mode ? MouseMode.NONE : mode;
-};
-
-const addElementUsingMouse = () => {
-  if (appStore.mouseMode === MouseMode.ADD_ELEMENT) {
-    appStore.mouseMode = MouseMode.NONE;
-    return;
-  }
-
-  // check if we have material and CS to assign
-  if (projStore.solver.domain.materials.size === 0) {
-    alert(t('warnings.addMaterialFirst'));
-    return;
-  }
-
-  if (projStore.solver.domain.crossSections.size === 0) {
-    alert(t('warnings.addCrossSectionFirst'));
-    return;
-  }
-
-  appStore.mouseMode = MouseMode.ADD_ELEMENT;
-};
+// The button that starts a placing mode also leaves it, for touch where there is no Esc key: the
+// drawing's tools, as its tool rail chooses them
+const { choose: chooseTool } = useTools();
 
 const tabs = reactive([
   {

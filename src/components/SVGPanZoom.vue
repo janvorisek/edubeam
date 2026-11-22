@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Bounds } from '@/utils/fitBounds';
+import { resolvePadding, type Bounds, type Padding, type ViewBox } from '@/utils/fitBounds';
 import { centerSvgContent, fitSvgContent } from '@/utils/fitSvgContent';
 import { gestureZoomStep, limitZoomFactor, wheelZoomStep } from '@/utils/zoomLimits';
 import { nextTick, onMounted, onUnmounted, ref } from 'vue';
@@ -13,18 +13,25 @@ const appStore = useAppStore();
 
 const props = withDefaults(
   defineProps<{
-    /** Screen pixels kept free on every side of the fitted content. */
-    padding?: number;
-    mobilePadding?: number;
+    /** Screen pixels kept free around the fitted content: one for every side, or each its own. */
+    padding?: number | Partial<Padding>;
+    mobilePadding?: number | Partial<Padding>;
     canFitContent?: boolean;
     /** Pure model-space bounds of the drawing (node coordinates); seeds the fit. */
     modelBounds?: () => Bounds | null;
     /** Selector for decorations excluded from the fit; `fitReserve` makes room for them. */
     fitIgnore?: string;
-    /** Screen pixels guaranteed free around the geometry for the ignored decorations. */
-    fitReserve?: number;
+    /** Screen pixels guaranteed free around the geometry for the ignored decorations: one for every side, or each its own. */
+    fitReserve?: number | Partial<Padding>;
     /** Smallest short-to-long side ratio of the geometry box the fit zooms for (0 = exact fit). */
     fitMinAspect?: number;
+    /**
+     * The fitted view, worked out by the caller for a viewport of this size and padding, px, instead
+     * of measured off what is drawn: for a drawing that knows its own extents exactly.
+     */
+    fitView?: ((width: number, height: number, padding: Padding) => ViewBox | null) | null;
+    /** The view centred at this scale, worked out by the caller as `fitView` is, instead of measured. */
+    centerView?: ((width: number, height: number, scale: number) => ViewBox | null) | null;
     /**
      * After fitting, centre the view on everything actually drawn (ignored decorations
      * included), so a diagram hanging off one side does not leave the picture lopsided.
@@ -33,13 +40,15 @@ const props = withDefaults(
     touch?: boolean;
   }>(),
   {
-    padding: 0,
-    mobilePadding: 0,
+    padding: (): number | Partial<Padding> => 0,
+    mobilePadding: (): number | Partial<Padding> => 0,
     canFitContent: true,
     modelBounds: () => null,
     fitIgnore: '',
-    fitReserve: 0,
+    fitReserve: (): number | Partial<Padding> => 0,
     fitMinAspect: 0,
+    fitView: null,
+    centerView: null,
     centerAfterFit: false,
     touch: true,
   }
@@ -289,8 +298,10 @@ const onMouseMove = (event: MouseEvent): void => {
 const centerContent = (): void => {
   if (!svgRef.value) return;
 
-  const centered = centerSvgContent(svgRef.value, viewBox);
-  if (!centered) return;
+  const centered = props.centerView
+    ? props.centerView(svgRef.value.clientWidth, svgRef.value.clientHeight, scale.value)
+    : centerSvgContent(svgRef.value, viewBox);
+  if (!centered || !Number.isFinite(centered.x) || !Number.isFinite(centered.y)) return;
 
   viewBox = centered;
   updateMatrix(true);
@@ -324,6 +335,24 @@ const fitContent = async (): Promise<boolean> => {
   if (typeof document !== 'undefined' && document.fonts?.ready) await document.fonts.ready;
   if (version !== fitVersion || svgRef.value !== svgEl) return false;
 
+  const padding = window.innerWidth > 768 ? props.padding : props.mobilePadding;
+
+  if (props.fitView) {
+    const width = svgEl.clientWidth;
+    const box = props.fitView(width, svgEl.clientHeight, resolvePadding(padding));
+    // A view that cannot be shown (a NaN place, an endless zoom) is not taken: the view stays as it is
+    if (!box || !(box.w > 0) || !(box.h > 0) || !Number.isFinite(box.x) || !Number.isFinite(box.y)) return false;
+    if (!Number.isFinite(width / box.w)) return false;
+
+    viewBox = { ...box };
+    scale.value = width / box.w;
+    updateMatrix(true);
+    fitted.value = true;
+    autoFit.value = true;
+
+    return true;
+  }
+
   const result = await fitSvgContent(
     {
       svg: svgEl,
@@ -336,7 +365,7 @@ const fitContent = async (): Promise<boolean> => {
       isCancelled: () => version !== fitVersion || svgRef.value !== svgEl,
     },
     {
-      padding: window.innerWidth > 768 ? props.padding : props.mobilePadding,
+      padding,
       reserve: props.fitReserve,
       minAspect: props.fitMinAspect,
       modelBounds: props.modelBounds?.() ?? null,

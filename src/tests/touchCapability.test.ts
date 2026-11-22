@@ -42,9 +42,7 @@ describe('the box select button', () => {
   const VIEWER = readFileSync(join(process.cwd(), 'src/components/SVGViewer.vue'), 'utf-8');
 
   it('is shown by what the device can do, not by what it cannot', () => {
-    const button = VIEWER.slice(VIEWER.indexOf('mdi:mdi-select-drag') - 400, VIEWER.indexOf('mdi:mdi-select-drag'));
-
-    expect(button).toContain('v-if="deviceCanTouch"');
-    expect(button).not.toContain('v-if="!deviceHasHover"');
+    expect(VIEWER).toContain('deviceCanTouch.value ? [TOOLS[0], BOX_SELECT, ...TOOLS.slice(1)] : TOOLS');
+    expect(VIEWER).not.toContain('v-if="!deviceHasHover"');
   });
 });

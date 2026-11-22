@@ -822,8 +822,7 @@ const emit = defineEmits(['elementresultsmousemove', 'elementpointerup']);
         v-if="element.hinges[0]"
         :transform="`translate(${elementHinges[0]})`"
         :r="hingeRadius"
-        fill="white"
-        stroke="black"
+        style="fill: var(--eb-paper, white); stroke: var(--eb-ink, black)"
         vector-effect="non-scaling-stroke"
         stroke-width="2"
       />
@@ -832,8 +831,7 @@ const emit = defineEmits(['elementresultsmousemove', 'elementpointerup']);
         v-if="element.hinges[1]"
         :transform="`translate(${elementHinges[1]})`"
         :r="hingeRadius"
-        fill="white"
-        stroke="black"
+        style="fill: var(--eb-paper, white); stroke: var(--eb-ink, black)"
         vector-effect="non-scaling-stroke"
         stroke-width="2"
       />

@@ -2,7 +2,8 @@
   "tabView": {
     "viewer": "Tampilan",
     "settings": "Pengaturan",
-    "results": "Hasil"
+    "results": "Hasil",
+    "report": "Laporan"
   },
   "common": {
     "label": "Label",
@@ -53,7 +54,11 @@
     "addNode": "Tambah joint",
     "editNode": "Edit joint",
     "defineSupports": "Tumpuan joint",
-    "lcsAngle": "Sudut LCS joint"
+    "lcsAngle": "Sudut LCS joint",
+    "equilibrium": "Keseimbangan joint",
+    "equilibriumOf": "Keseimbangan joint {label}",
+    "equilibriumSymbols": "Simbol",
+    "equilibriumValues": "Nilai"
   },
   "supports": {
     "free": "Bebas",
@@ -86,6 +91,7 @@
     "addPrescribedDisplacement": "Tetapkan perpindahan",
     "UDL": "Merata",
     "forceMoment": "Gaya/Momen",
+    "moment": "Momen",
     "editLoad": "Edit beban",
     "loadPositionOnBeam": "Posisi beban dari joint awal",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Perubahan suhu serat bawah dikurangi serat atas",
@@ -198,6 +204,16 @@
     "result_label_orientation": "Orientasi label hasil",
     "result_label_orientation_axis": "Tegak lurus diagram",
     "result_label_orientation_horizontal": "Selalu horizontal",
+    "theme": "Tema",
+    "theme_system": "Sistem",
+    "theme_light": "Terang",
+    "theme_dark": "Gelap",
+    "theme_toDark": "Tema gelap",
+    "theme_toLight": "Tema terang",
+    "renderer": "Perender",
+    "renderer_classic": "Klasik",
+    "renderer_plot": "Baru (beta)",
+    "show_readout": "Tampilkan nilai di penunjuk",
     "result_labels": "Label hasil",
     "diagrams": {
       "title": "Diagram gaya dalam",
@@ -232,7 +248,13 @@
     "boxSelect": "Pilih dengan kotak",
     "centerContent": "Pusatkan model",
     "fitContent": "Sesuaikan dengan layar",
-    "holdCtrl": "Tahan Ctrl untuk menambah dengan mouse"
+    "holdCtrl": "Tahan Ctrl untuk menambah dengan mouse",
+    "select": "Pilih",
+    "tools": "Alat",
+    "snapMiddle": "Titik tengah",
+    "snapThird": "Titik sepertiga",
+    "snapOnElement": "Pada elemen {label}",
+    "placeFreely": "Tahan Alt untuk menempatkan bebas"
   },
   "dofs": {
     "bcs": "DOF yang ditahan"
@@ -318,7 +340,8 @@
       "comingSoon": "Segera hadir",
       "tryIt": "Coba",
       "tried": {
-        "diagramStyles": "Diagram berarsir dengan derajat tiap segmen telah aktif."
+        "diagramStyles": "Diagram berarsir dengan derajat tiap segmen telah aktif.",
+        "newDrawing": "Gambar baru dengan diagram berarsir telah aktif."
       }
     },
     "polygonSection": {
@@ -399,6 +422,19 @@
     "shareLayers": "Tampilkan yang saya lihat",
     "shareLayersHint": "Tautan terbuka dengan diagram, beban, dan label yang Anda aktifkan."
   },
+  "shortcuts": {
+    "title": "Pintasan keyboard",
+    "drawing": "Gambar",
+    "editing": "Pengeditan",
+    "cancel": "Kembali ke pilih, batalkan penempatan",
+    "placeFreely": "Tempatkan bebas tanpa penjajaran (tahan)",
+    "grid": "Tampilkan atau sembunyikan grid",
+    "snap": "Aktifkan atau nonaktifkan penjajaran ke grid",
+    "zoom": "Perbesar dan perkecil",
+    "selectAll": "Pilih semua",
+    "save": "Simpan proyek",
+    "exportImage": "Ekspor gambar"
+  },
   "tour": {
     "menu": {
       "title": "Menu",
@@ -407,6 +443,11 @@
     "undoRedo": {
       "title": "Urungkan dan ulangi",
       "description": "Mundur dan maju melalui perubahan Anda. Ctrl+Z dan Ctrl+Shift+Z melakukan hal yang sama."
+    },
+    "tools": {
+      "title": "Alat",
+      "description": "Tambahkan joint, elemen, tumpuan, dan beban langsung pada gambar. Tahan sebuah alat atau klik sudutnya untuk memilih jenis tumpuan atau beban. Titik menempel ke joint serta ke tengah dan sepertiga elemen; tahan Alt untuk menempatkan bebas. Tombol: V pilih, N joint, E elemen, U tumpuan, L beban, D dimensi, Esc kembali ke pilih.",
+      "descriptionTouch": "Tambahkan joint, elemen, tumpuan, dan beban langsung pada gambar: ketuk sebuah alat, lalu ketuk tempatnya, dan ketuk panah setelah selesai. Alat tumpuan dan beban membuka daftar jenisnya. Titik menempel ke joint serta ke tengah dan sepertiga elemen. Satu jari menggeser tampilan, dua jari memperbesar. Seret joint untuk memindahkannya, tahan beban untuk mengangkatnya, atau tahan di tempat lain untuk membuka menu."
     },
     "viewerControls": {
       "title": "Tombol tampilan",
@@ -602,7 +643,8 @@
     "selectMaterialAndCrossSection": "Pilih material dan penampang.",
     "labelInUse": "Label {label} sudah digunakan.",
     "noMaterialOrCrossSection": "Elemen tidak memiliki material atau penampang.",
-    "elementMissing": "Elemen {label} sudah tidak ada."
+    "elementMissing": "Elemen {label} sudah tidak ada.",
+    "nodeMissing": "Joint {label} sudah tidak ada."
   },
   "help": {
     "aria": "Tampilkan bantuan",
@@ -777,5 +819,20 @@
       "acrylic": "akrilik",
       "approx": "perkiraan"
     }
+  },
+  "report": {
+    "column": "Bersusun",
+    "row": "Berjajar",
+    "no_results": "Ditampilkan setelah struktur diselesaikan",
+    "guides": "Garis bantu",
+    "print": "Cetak",
+    "paper": "Kertas",
+    "portrait": "Potret",
+    "landscape": "Lanskap"
+  },
+  "languageOffer": {
+    "message": "EduBeam tersedia dalam Bahasa Indonesia.",
+    "switch": "Beralih ke Bahasa Indonesia",
+    "dismiss": "Tidak, terima kasih"
   }
 }

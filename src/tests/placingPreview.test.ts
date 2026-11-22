@@ -12,7 +12,12 @@ import { MouseMode } from '@/mouse';
  * a separate component so that the drawing it sits in is not rendered again for each one; a scene
  * that counts its renders stands in for it here.
  */
-const scene = (x: ReturnType<typeof ref<number>>, y: ReturnType<typeof ref<number>>, startNode: PlacingStartNode) => {
+const scene = (
+  x: ReturnType<typeof ref<number>>,
+  y: ReturnType<typeof ref<number>>,
+  startNode: PlacingStartNode,
+  pointerAbsent = false
+) => {
   let sceneRenders = 0;
 
   const wrapper = mount({
@@ -21,6 +26,7 @@ const scene = (x: ReturnType<typeof ref<number>>, y: ReturnType<typeof ref<numbe
         x: x as never,
         y: y as never,
         startNode: ref(startNode),
+        pointerAbsent: ref(pointerAbsent),
         snappedToNode: computed(() => false),
       }),
     render() {
@@ -77,5 +83,22 @@ describe('the placing preview', () => {
 
     expect(renders()).toBe(rendersBeforeTheMove);
     expect(wrapper.find('line').attributes('x2')).toBe('4');
+  });
+
+  it('leaves nothing where a finger lifted, but the end already placed', async () => {
+    const appStore = useAppStore();
+    appStore.mouseMode = MouseMode.ADD_NODE;
+    const lifted = scene(ref(3), ref(-4), null, true);
+    await nextTick();
+    expect(lifted.wrapper.find('rect').exists()).toBe(false);
+
+    appStore.mouseMode = MouseMode.ADD_ELEMENT;
+    const started = scene(ref(3), ref(-4), { label: '1', x: 1, y: -2 }, true);
+    await nextTick();
+    expect([started.wrapper.find('rect').attributes('x'), started.wrapper.find('rect').attributes('y')]).toEqual([
+      '1',
+      '-2',
+    ]);
+    expect(started.wrapper.find('line').exists()).toBe(false);
   });
 });

@@ -26,6 +26,7 @@ export default defineConfig({
     server: { deps: { inline: ['vuetify'] } },
   },
   resolve: {
+    dedupe: ['@edubeam/fem', 'vue'],
     alias: {
       '@': resolve(__dirname, './src'),
       // vite-plugin-pwa is not in this config, so its virtual modules do not exist here. A stub

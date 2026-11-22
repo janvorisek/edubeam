@@ -2,7 +2,8 @@
   "tabView": {
     "viewer": "Mô hình",
     "settings": "Cài đặt",
-    "results": "Kết quả"
+    "results": "Kết quả",
+    "report": "Báo cáo"
   },
   "common": {
     "label": "Nhãn",
@@ -53,7 +54,11 @@
     "addNode": "Thêm nút",
     "editNode": "Sửa nút",
     "defineSupports": "Gối tựa tại nút",
-    "lcsAngle": "Góc LCS của nút"
+    "lcsAngle": "Góc LCS của nút",
+    "equilibrium": "Cân bằng nút",
+    "equilibriumOf": "Cân bằng nút {label}",
+    "equilibriumSymbols": "Ký hiệu",
+    "equilibriumValues": "Giá trị"
   },
   "supports": {
     "free": "Tự do",
@@ -86,6 +91,7 @@
     "addPrescribedDisplacement": "Chuyển vị cưỡng bức",
     "UDL": "Phân bố đều",
     "forceMoment": "Lực/Mô men",
+    "moment": "Mô men",
     "editLoad": "Sửa tải trọng",
     "loadPositionOnBeam": "Vị trí tải tính từ nút đầu",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Chênh lệch nhiệt độ thớ dưới trừ thớ trên",
@@ -198,6 +204,16 @@
     "result_label_orientation": "Hướng nhãn kết quả",
     "result_label_orientation_axis": "Vuông góc với biểu đồ",
     "result_label_orientation_horizontal": "Luôn nằm ngang",
+    "theme": "Giao diện",
+    "theme_system": "Theo hệ thống",
+    "theme_light": "Sáng",
+    "theme_dark": "Tối",
+    "theme_toDark": "Giao diện tối",
+    "theme_toLight": "Giao diện sáng",
+    "renderer": "Bộ kết xuất",
+    "renderer_classic": "Cổ điển",
+    "renderer_plot": "Mới (beta)",
+    "show_readout": "Hiển thị giá trị tại con trỏ",
     "result_labels": "Nhãn kết quả",
     "diagrams": {
       "title": "Biểu đồ nội lực",
@@ -232,7 +248,13 @@
     "boxSelect": "Chọn bằng khung",
     "centerContent": "Căn giữa",
     "fitContent": "Vừa màn hình",
-    "holdCtrl": "Giữ Ctrl để thêm bằng chuột"
+    "holdCtrl": "Giữ Ctrl để thêm bằng chuột",
+    "select": "Chọn",
+    "tools": "Công cụ",
+    "snapMiddle": "Trung điểm",
+    "snapThird": "Điểm một phần ba",
+    "snapOnElement": "Trên phần tử {label}",
+    "placeFreely": "Giữ Alt để đặt tự do"
   },
   "dofs": {
     "bcs": "Bậc tự do bị chặn"
@@ -318,7 +340,8 @@
       "comingSoon": "Sắp ra mắt",
       "tryIt": "Dùng thử",
       "tried": {
-        "diagramStyles": "Đã bật biểu đồ gạch chéo kèm bậc đa thức của từng đoạn."
+        "diagramStyles": "Đã bật biểu đồ gạch chéo kèm bậc đa thức của từng đoạn.",
+        "newDrawing": "Đã bật bản vẽ mới với biểu đồ gạch chéo."
       }
     },
     "polygonSection": {
@@ -399,6 +422,19 @@
     "shareLayers": "Hiện đúng những gì tôi thấy",
     "shareLayersHint": "Liên kết sẽ mở với các biểu đồ, tải trọng và nhãn mà bạn đang bật."
   },
+  "shortcuts": {
+    "title": "Phím tắt",
+    "drawing": "Bản vẽ",
+    "editing": "Chỉnh sửa",
+    "cancel": "Quay lại chọn, hủy việc đặt",
+    "placeFreely": "Đặt tự do, không bắt dính (giữ)",
+    "grid": "Hiện hoặc ẩn lưới",
+    "snap": "Bật hoặc tắt bắt dính vào lưới",
+    "zoom": "Phóng to và thu nhỏ",
+    "selectAll": "Chọn tất cả",
+    "save": "Lưu dự án",
+    "exportImage": "Xuất hình ảnh"
+  },
   "tour": {
     "menu": {
       "title": "Menu",
@@ -407,6 +443,11 @@
     "undoRedo": {
       "title": "Hoàn tác và làm lại",
       "description": "Hoàn tác hoặc làm lại các thay đổi của bạn. Ctrl+Z và Ctrl+Shift+Z có tác dụng tương tự."
+    },
+    "tools": {
+      "title": "Công cụ",
+      "description": "Thêm nút, phần tử, gối tựa và tải trọng ngay trên bản vẽ. Giữ một công cụ hoặc nhấp vào góc của nó để chọn loại gối tựa hoặc tải trọng. Điểm bắt dính vào nút và vào trung điểm, điểm một phần ba của phần tử; giữ Alt để đặt tự do. Phím: V chọn, N nút, E phần tử, U gối tựa, L tải trọng, D kích thước, Esc quay lại chọn.",
+      "descriptionTouch": "Thêm nút, phần tử, gối tựa và tải trọng ngay trên bản vẽ: chạm vào một công cụ, rồi chạm vào vị trí cần đặt, và chạm mũi tên khi xong. Công cụ gối tựa và tải trọng mở danh sách các loại. Điểm bắt dính vào nút và vào trung điểm, điểm một phần ba của phần tử. Một ngón tay để di chuyển khung nhìn, hai ngón tay để thu phóng. Kéo một nút để di chuyển, giữ một tải trọng để nhấc lên, hoặc giữ ở chỗ khác để mở menu."
     },
     "viewerControls": {
       "title": "Nút điều khiển hiển thị",
@@ -602,7 +643,8 @@
     "selectMaterialAndCrossSection": "Vui lòng chọn vật liệu và tiết diện.",
     "labelInUse": "Nhãn {label} đã được dùng.",
     "noMaterialOrCrossSection": "Phần tử chưa có vật liệu hoặc tiết diện.",
-    "elementMissing": "Phần tử {label} không còn tồn tại."
+    "elementMissing": "Phần tử {label} không còn tồn tại.",
+    "nodeMissing": "Nút {label} không còn tồn tại."
   },
   "help": {
     "aria": "Hiện trợ giúp",
@@ -777,5 +819,20 @@
       "acrylic": "acrylic",
       "approx": "gần đúng"
     }
+  },
+  "report": {
+    "column": "Theo cột",
+    "row": "Theo hàng",
+    "no_results": "Hiển thị sau khi giải kết cấu",
+    "guides": "Đường gióng",
+    "print": "In",
+    "paper": "Khổ giấy",
+    "portrait": "Dọc",
+    "landscape": "Ngang"
+  },
+  "languageOffer": {
+    "message": "EduBeam có giao diện tiếng Việt.",
+    "switch": "Chuyển sang tiếng Việt",
+    "dismiss": "Không, cảm ơn"
   }
 }

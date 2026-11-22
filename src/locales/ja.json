@@ -2,7 +2,8 @@
   "tabView": {
     "viewer": "ビューア",
     "settings": "設定",
-    "results": "結果"
+    "results": "結果",
+    "report": "レポート"
   },
   "common": {
     "label": "ラベル",
@@ -53,7 +54,11 @@
     "addNode": "節点を追加",
     "editNode": "節点を編集",
     "defineSupports": "支点条件",
-    "lcsAngle": "節点座標系の角度"
+    "lcsAngle": "節点座標系の角度",
+    "equilibrium": "節点の釣り合い",
+    "equilibriumOf": "節点 {label} の釣り合い",
+    "equilibriumSymbols": "記号",
+    "equilibriumValues": "数値"
   },
   "supports": {
     "free": "自由",
@@ -86,6 +91,7 @@
     "addPrescribedDisplacement": "強制変位を設定",
     "UDL": "等分布",
     "forceMoment": "力/モーメント",
+    "moment": "モーメント",
     "editLoad": "荷重を編集",
     "loadPositionOnBeam": "始端節点からの荷重位置",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... 下縁と上縁の温度変化の差",
@@ -198,6 +204,16 @@
     "result_label_orientation": "結果ラベルの向き",
     "result_label_orientation_axis": "図に垂直",
     "result_label_orientation_horizontal": "常に水平",
+    "theme": "テーマ",
+    "theme_system": "システム",
+    "theme_light": "ライト",
+    "theme_dark": "ダーク",
+    "theme_toDark": "ダークテーマ",
+    "theme_toLight": "ライトテーマ",
+    "renderer": "レンダラー",
+    "renderer_classic": "クラシック",
+    "renderer_plot": "新バージョン（ベータ）",
+    "show_readout": "ポインター位置の値を表示",
     "result_labels": "結果ラベル",
     "diagrams": {
       "title": "断面力図",
@@ -232,7 +248,13 @@
     "boxSelect": "矩形選択",
     "centerContent": "中央に表示",
     "fitContent": "画面に合わせる",
-    "holdCtrl": "Ctrl を押しながらマウスで追加"
+    "holdCtrl": "Ctrl を押しながらマウスで追加",
+    "select": "選択",
+    "tools": "ツール",
+    "snapMiddle": "中点",
+    "snapThird": "3等分点",
+    "snapOnElement": "要素 {label} 上",
+    "placeFreely": "Alt を押したままで自由に配置"
   },
   "dofs": {
     "bcs": "拘束自由度"
@@ -318,7 +340,8 @@
       "comingSoon": "近日公開",
       "tryIt": "試してみる",
       "tried": {
-        "diagramStyles": "各区間の多項式の次数付きのハッチング図が有効になりました。"
+        "diagramStyles": "各区間の多項式の次数付きのハッチング図が有効になりました。",
+        "newDrawing": "ハッチング図の新しい描画が有効になりました。"
       }
     },
     "polygonSection": {
@@ -399,6 +422,19 @@
     "shareLayers": "自分の表示を共有",
     "shareLayersHint": "リンクを開くと、現在表示している断面力図、荷重、ラベルがそのまま表示されます。"
   },
+  "shortcuts": {
+    "title": "キーボードショートカット",
+    "drawing": "図面",
+    "editing": "編集",
+    "cancel": "選択に戻る、配置を取り消す",
+    "placeFreely": "スナップせずに自由に配置（押したまま）",
+    "grid": "グリッドの表示・非表示",
+    "snap": "グリッドへのスナップのオン・オフ",
+    "zoom": "拡大と縮小",
+    "selectAll": "すべて選択",
+    "save": "プロジェクトを保存",
+    "exportImage": "画像をエクスポート"
+  },
   "tour": {
     "menu": {
       "title": "メニュー",
@@ -407,6 +443,11 @@
     "undoRedo": {
       "title": "元に戻す・やり直し",
       "description": "変更履歴を前後に移動します。Ctrl+Z と Ctrl+Shift+Z でも同じ操作ができます。"
+    },
+    "tools": {
+      "title": "ツール",
+      "description": "節点、要素、支点、荷重を図面上で直接追加できます。ツールを長押しするか角をクリックすると、支点や荷重の種類を選べます。点は節点や要素の中点・3等分点にスナップします。Alt を押したままで自由に配置できます。キー: V 選択、N 節点、E 要素、U 支点、L 荷重、D 寸法、Esc 選択に戻る。",
+      "descriptionTouch": "節点、要素、支点、荷重を図面上で直接追加できます。ツールをタップし、置く場所をタップして、終わったら矢印をタップします。支点と荷重のツールは種類の一覧を開きます。点は節点や要素の中点・3等分点にスナップします。1本指で表示を移動し、2本指でズームします。節点はドラッグで移動、荷重は長押しで持ち上げ、それ以外の場所を長押しするとメニューが開きます。"
     },
     "viewerControls": {
       "title": "ビューアのボタン",
@@ -602,7 +643,8 @@
     "selectMaterialAndCrossSection": "材料と断面を選択してください。",
     "labelInUse": "ラベル {label} は既に使われています。",
     "noMaterialOrCrossSection": "要素に材料または断面が指定されていません。",
-    "elementMissing": "要素 {label} はもう存在しません。"
+    "elementMissing": "要素 {label} はもう存在しません。",
+    "nodeMissing": "節点 {label} はもう存在しません。"
   },
   "help": {
     "aria": "ヘルプを表示",
@@ -777,5 +819,20 @@
       "acrylic": "アクリル",
       "approx": "概略"
     }
+  },
+  "report": {
+    "column": "縦に並べる",
+    "row": "横に並べる",
+    "no_results": "構造の解析後に表示されます",
+    "guides": "ガイド線",
+    "print": "印刷",
+    "paper": "用紙",
+    "portrait": "縦向き",
+    "landscape": "横向き"
+  },
+  "languageOffer": {
+    "message": "EduBeam は日本語でもご利用いただけます。",
+    "switch": "日本語に切り替える",
+    "dismiss": "今はしない"
   }
 }

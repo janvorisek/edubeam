@@ -20,6 +20,11 @@ const props = withDefaults(
     fitReserve?: number | Partial<Padding>;
     panButton?: number;
     zoomEnabled?: boolean;
+    /**
+     * The fitted view, worked out by the caller for a viewport of this size, px, and this padding,
+     * instead of measured off what is drawn: for a drawing that knows its own extents exactly.
+     */
+    fitView?: ((width: number, height: number, padding: number) => ViewBox | null) | null;
   }>(),
   {
     padding: 0,
@@ -30,6 +35,7 @@ const props = withDefaults(
     fitReserve: (): number | Partial<Padding> => 0,
     panButton: 4,
     zoomEnabled: true,
+    fitView: null,
   }
 );
 
@@ -257,6 +263,23 @@ const fitContent = async (): Promise<FitContentResult | null> => {
   if (typeof document !== 'undefined' && document.fonts?.ready) await document.fonts.ready;
   if (version !== fitVersion || svgRef.value !== svgEl) return null;
 
+  const padding = window.innerWidth > 768 ? props.padding : props.mobilePadding;
+
+  if (props.fitView) {
+    const width = svgEl.clientWidth;
+    const box = props.fitView(width, svgEl.clientHeight, padding);
+    // A view that cannot be shown (a NaN place, an endless zoom) is not taken
+    if (!box || !(box.w > 0) || !(box.h > 0) || !Number.isFinite(box.x) || !Number.isFinite(box.y)) return null;
+
+    viewBox = { ...box };
+    scale.value = width / box.w;
+    updateMatrix(true);
+    fitted.value = true;
+    autoFit.value = true;
+
+    return { viewBox: { ...box }, scale: scale.value, converged: true, iterations: 1 };
+  }
+
   const result = await fitSvgContent(
     {
       svg: svgEl,
@@ -269,7 +292,7 @@ const fitContent = async (): Promise<FitContentResult | null> => {
       isCancelled: () => version !== fitVersion || svgRef.value !== svgEl,
     },
     {
-      padding: window.innerWidth > 768 ? props.padding : props.mobilePadding,
+      padding,
       reserve: props.fitReserve,
       modelBounds: props.modelBounds?.() ?? null,
       viewBox,

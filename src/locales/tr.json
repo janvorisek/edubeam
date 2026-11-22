@@ -2,7 +2,8 @@
   "tabView": {
     "viewer": "Görüntüleyici",
     "settings": "Ayarlar",
-    "results": "Sonuçlar"
+    "results": "Sonuçlar",
+    "report": "Rapor"
   },
   "common": {
     "label": "Etiket",
@@ -53,7 +54,11 @@
     "addNode": "Düğüm ekle",
     "editNode": "Düğümü düzenle",
     "defineSupports": "Düğüm mesnetleri",
-    "lcsAngle": "Düğüm yerel eksen açısı"
+    "lcsAngle": "Düğüm yerel eksen açısı",
+    "equilibrium": "Düğüm dengesi",
+    "equilibriumOf": "{label} düğümünün dengesi",
+    "equilibriumSymbols": "Semboller",
+    "equilibriumValues": "Değerler"
   },
   "supports": {
     "free": "Serbest",
@@ -86,6 +91,7 @@
     "addPrescribedDisplacement": "Yer değiştirme tanımla",
     "UDL": "Yayılı yük",
     "forceMoment": "Kuvvet/Moment",
+    "moment": "Moment",
     "editLoad": "Yükü düzenle",
     "loadPositionOnBeam": "Yükün başlangıç düğümüne uzaklığı",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Alt ve üst liflerin sıcaklık değişimleri farkı",
@@ -198,6 +204,16 @@
     "result_label_orientation": "Sonuç etiketlerinin yönü",
     "result_label_orientation_axis": "Diyagrama dik",
     "result_label_orientation_horizontal": "Her zaman yatay",
+    "theme": "Tema",
+    "theme_system": "Sistem",
+    "theme_light": "Açık",
+    "theme_dark": "Koyu",
+    "theme_toDark": "Koyu tema",
+    "theme_toLight": "Açık tema",
+    "renderer": "Çizim motoru",
+    "renderer_classic": "Klasik",
+    "renderer_plot": "Yeni (beta)",
+    "show_readout": "İmleçteki değerleri göster",
     "result_labels": "Sonuç etiketleri",
     "diagrams": {
       "title": "İç kuvvet diyagramları",
@@ -232,7 +248,13 @@
     "boxSelect": "Dikdörtgenle seç",
     "centerContent": "Modeli ortala",
     "fitContent": "Modeli ekrana sığdır",
-    "holdCtrl": "Fareyle eklemek için Ctrl tuşunu basılı tutun"
+    "holdCtrl": "Fareyle eklemek için Ctrl tuşunu basılı tutun",
+    "select": "Seç",
+    "tools": "Araçlar",
+    "snapMiddle": "Orta nokta",
+    "snapThird": "Üçte bir nokta",
+    "snapOnElement": "{label} elemanı üzerinde",
+    "placeFreely": "Serbest yerleştirmek için Alt tuşunu basılı tutun"
   },
   "dofs": {
     "bcs": "Tutulu serbestlik dereceleri"
@@ -318,7 +340,8 @@
       "comingSoon": "Yakında",
       "tryIt": "Dene",
       "tried": {
-        "diagramStyles": "Her bölümün polinom derecesiyle taralı diyagramlar açık."
+        "diagramStyles": "Her bölümün polinom derecesiyle taralı diyagramlar açık.",
+        "newDrawing": "Taralı diyagramlarla yeni çizim açık."
       }
     },
     "polygonSection": {
@@ -399,6 +422,19 @@
     "shareLayers": "Gördüğümü göster",
     "shareLayersHint": "Bağlantı, açık olan diyagramlar, yükler ve etiketlerle açılır."
   },
+  "shortcuts": {
+    "title": "Klavye kısayolları",
+    "drawing": "Çizim",
+    "editing": "Düzenleme",
+    "cancel": "Seçime dön, yerleştirmeyi iptal et",
+    "placeFreely": "Yakalama olmadan serbest yerleştir (basılı tut)",
+    "grid": "Izgarayı göster veya gizle",
+    "snap": "Izgaraya yakalamayı aç veya kapat",
+    "zoom": "Yakınlaştır ve uzaklaştır",
+    "selectAll": "Tümünü seç",
+    "save": "Projeyi kaydet",
+    "exportImage": "Görüntü dışa aktar"
+  },
   "tour": {
     "menu": {
       "title": "Menü",
@@ -407,6 +443,11 @@
     "undoRedo": {
       "title": "Geri al ve yinele",
       "description": "Değişiklikleriniz arasında geri ve ileri gidin. Ctrl+Z ve Ctrl+Shift+Z aynı işi yapar."
+    },
+    "tools": {
+      "title": "Araçlar",
+      "description": "Düğümleri, elemanları, mesnetleri ve yükleri doğrudan çizime ekleyin. Mesnet veya yük türünü seçmek için bir aracı basılı tutun ya da köşesine tıklayın. Noktalar düğümlere ve bir elemanın ortasına ve üçte birlik noktalarına yapışır; serbest yerleştirmek için Alt tuşunu basılı tutun. Tuşlar: V seçim, N düğüm, E eleman, U mesnet, L yük, D ölçü, Esc seçime dön.",
+      "descriptionTouch": "Düğümleri, elemanları, mesnetleri ve yükleri doğrudan çizime ekleyin: bir araca, sonra yerleşeceği yere, iş bitince de oka dokunun. Mesnet ve yük araçları bir tür listesi açar. Noktalar düğümlere ve bir elemanın ortasına ve üçte birlik noktalarına yapışır. Tek parmak görünümü kaydırır, iki parmak yakınlaştırır. Bir düğümü taşımak için sürükleyin, bir yükü kaldırmak için basılı tutun ya da menü için başka bir yerde basılı tutun."
     },
     "viewerControls": {
       "title": "Görüntüleyici düğmeleri",
@@ -602,7 +643,8 @@
     "selectMaterialAndCrossSection": "Lütfen bir malzeme ve bir kesit seçin.",
     "labelInUse": "{label} etiketi zaten kullanılıyor.",
     "noMaterialOrCrossSection": "Elemana malzeme veya kesit atanmamış.",
-    "elementMissing": "{label} elemanı artık mevcut değil."
+    "elementMissing": "{label} elemanı artık mevcut değil.",
+    "nodeMissing": "{label} düğümü artık mevcut değil."
   },
   "help": {
     "aria": "Yardımı göster",
@@ -777,5 +819,20 @@
       "acrylic": "akrilik",
       "approx": "yaklaşık"
     }
+  },
+  "report": {
+    "column": "Alt alta",
+    "row": "Yan yana",
+    "no_results": "Yapı çözüldükten sonra gösterilir",
+    "guides": "Kılavuz çizgileri",
+    "print": "Yazdır",
+    "paper": "Kâğıt",
+    "portrait": "Dikey",
+    "landscape": "Yatay"
+  },
+  "languageOffer": {
+    "message": "EduBeam Türkçe olarak da kullanılabilir.",
+    "switch": "Türkçeye geç",
+    "dismiss": "Hayır, teşekkürler"
   }
 }

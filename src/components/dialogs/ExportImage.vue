@@ -39,7 +39,7 @@
               :variant="layers[chip.key] ? 'flat' : 'tonal'"
               :disabled="chip.results && dynamic"
             >
-              <span class="layers__mark" :class="{ 'layers__mark--on': layers[chip.key] }" />
+              <ChipCheck :on="layers[chip.key]" />
               <!-- eslint-disable-next-line vue/no-v-html -->
               <span v-html="chip.label" />
             </v-chip>
@@ -54,7 +54,7 @@
               :variant="layers[chip.key] ? 'flat' : 'tonal'"
               :disabled="chip.key === 'showLoads' && dynamic"
             >
-              <span class="layers__mark" :class="{ 'layers__mark--on': layers[chip.key] }" />
+              <ChipCheck :on="layers[chip.key]" />
               {{ chip.label }}
             </v-chip>
           </v-chip-group>
@@ -250,6 +250,8 @@
 
 <script setup lang="ts">
 import { axisLetters } from '@/utils/axisConvention';
+import ChipCheck from '../ChipCheck.vue';
+import { useEditorLook } from '@/utils/useEditorLook';
 import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue';
 import { closeModal } from 'jenesius-vue-modal';
 import { useI18n } from 'vue-i18n';
@@ -501,6 +503,8 @@ const dimensionLines = computed(() =>
 );
 
 /** Everything the throwaway viewer needs to draw the model exactly as the editor does. */
+const editorLook = useEditorLook();
+
 const viewerProps = computed(() => ({
   id: 'export',
   solver: projectStore.solver,
@@ -543,6 +547,8 @@ const viewerProps = computed(() => ({
   // reserve would need to guess at, and only a thin edge is kept.
   fitIgnore: '',
   fitReservePx: 0,
+  // The file is drawn by the renderer the canvas uses
+  plot: viewerStore.renderer === 'plot' ? { ...editorLook.value, resultsScalePx: diagramPx.value } : null,
 }));
 
 /**
@@ -1343,40 +1349,6 @@ const copy = () =>
 .layers__group :deep(.v-chip) {
   margin-right: 4px;
   padding: 0 7px;
-}
-
-/* A checkbox in miniature: an outlined square, with a check inside when the layer is on.
-   Box and check are both drawn in the chip's text colour, so they read on a tinted chip
-   and on a filled one alike, and the box is the same size in both states. */
-.layers__mark {
-  position: relative;
-  display: inline-block;
-  width: 11px;
-  height: 11px;
-  margin-right: 5px;
-  flex: 0 0 auto;
-  box-sizing: border-box;
-  border: 1.5px solid currentColor;
-  border-radius: 2px;
-}
-
-/* The check: a short-and-tall rectangle showing only its right and bottom edges, turned. */
-.layers__mark::after {
-  content: '';
-  position: absolute;
-  left: 2.5px;
-  top: 0;
-  width: 3px;
-  height: 6px;
-  border: solid currentColor;
-  border-width: 0 1.5px 1.5px 0;
-  transform: rotate(45deg);
-  opacity: 0;
-  transition: opacity 0.12s;
-}
-
-.layers__mark--on::after {
-  opacity: 1;
 }
 
 /* Vuetify gives a compact switch generous vertical padding; the row above already spaces it. */

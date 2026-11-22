@@ -1,11 +1,11 @@
 // assets/vuetifyTheme.scss
-$font: "Barlow", sans-serif;
+$font: 'Barlow', sans-serif;
 
-@use "vuetify" with (
+@use 'vuetify' with (
   $body-font-family: $font
 );
 
-@import url("https://fonts.googleapis.com/css?family=Barlow:300,400,500,700|Lobster&display=swap");
+@import url('https://fonts.googleapis.com/css?family=Barlow:300,400,500,700|Lobster&display=swap');
 
 :root {
   --mx-menu-backgroud-radius: 8px;
@@ -16,8 +16,9 @@ $font: "Barlow", sans-serif;
   height: calc(var(--dvh, 1dvh) * 100 - 48px) !important;
 }
 
-.app-title, .edubeam {
-  font-family: "Lobster", "Barlow", sans-serif;
+.app-title,
+.edubeam {
+  font-family: 'Lobster', 'Barlow', sans-serif;
   font-weight: normal;
 }
 
@@ -69,19 +70,86 @@ html {
   height: 10px;
 }
 
+/*
+ * The app's own fields, tables and lines: the light values as they always were, and the dark theme's
+ * a step up from the website's night page (www.edubeam.app), so a table reads as a sheet on it.
+ */
+:root {
+  --eb-ui-field: #fff;
+  --eb-ui-field-muted: #eee;
+  --eb-ui-field-disabled: #f5f5f5;
+  --eb-ui-disabled-text: rgba(0, 0, 0, 0.38);
+  --eb-ui-line: #ddd;
+  --eb-ui-row: #ffffff;
+  --eb-ui-row-alt: #f8f8f8;
+  --eb-ui-row-hover: #eee;
+  --eb-ui-row-selected: #ecedf7;
+  --eb-ui-scrollbar: #c9d1d4;
+  --eb-ui-scrollbar-hover: #a8bbbf;
+}
+
+.v-theme--dark {
+  --eb-ui-field: #0d1019;
+  --eb-ui-field-muted: #1c2030;
+  --eb-ui-field-disabled: #10131c;
+  --eb-ui-disabled-text: rgba(228, 230, 236, 0.38);
+  --eb-ui-line: #232838;
+  --eb-ui-row: #131623;
+  --eb-ui-row-alt: #161a27;
+  --eb-ui-row-hover: #1d2131;
+  --eb-ui-row-selected: #24284a;
+  --eb-ui-scrollbar: #262b3b;
+  --eb-ui-scrollbar-hover: #343a4f;
+
+  // Checked boxes, radios and switches in the brand's violet, as the website's controls are: white
+  // ones were the brightest thing on the screen. One given a colour of its own keeps it.
+  .v-selection-control--dirty .v-selection-control__wrapper:not([class*='text-']) .v-selection-control__input {
+    color: rgb(var(--v-theme-primary));
+  }
+
+  // The header and the bars of tabs: lines, not slabs, and the open tab underlined in the brand's violet
+  .v-app-bar.bg-appbar {
+    border-bottom: 1px solid var(--eb-ui-line);
+  }
+
+  .v-tabs:is(.bg-appbar, .bg-secondary) .v-tab.v-tab--selected {
+    background: rgba(111, 115, 242, 0.1) !important;
+    box-shadow: inset 0 -2px 0 rgb(var(--v-theme-primary));
+  }
+
+  .v-tab__slider {
+    color: rgb(var(--v-theme-primary));
+  }
+
+  // What floats over the drawing outlined, as a shadow does not show on the dark
+  .svg-viewer :is(.bg-panel, #toolRail, .tool-rail) {
+    outline: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  // A table's buttons a step behind its values, coming forward to the pointer
+  .v-table .v-btn .v-icon {
+    opacity: 0.72;
+    transition: opacity 0.12s;
+  }
+
+  .v-table .v-btn:hover .v-icon {
+    opacity: 1;
+  }
+}
+
 ::-webkit-scrollbar-track {
   background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #c9d1d4;
+  background-color: var(--eb-ui-scrollbar);
   border-radius: 20px;
   border: 3px solid transparent;
   background-clip: content-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #a8bbbf;
+  background-color: var(--eb-ui-scrollbar-hover);
 }
 
 .shape-cell {
@@ -113,8 +181,8 @@ html {
 .inline-edit {
   display: flex;
   align-items: center;
-  background: #fff;
-  border: thin solid #ddd;
+  background: var(--eb-ui-field);
+  border: thin solid var(--eb-ui-line);
   border-radius: 4px;
   box-sizing: content-box;
   width: 100%;
@@ -127,16 +195,16 @@ html {
 }
 
 input.inline-edit:disabled {
-  background: #f5f5f5;
-  color: rgba(0, 0, 0, 0.38);
+  background: var(--eb-ui-field-disabled);
+  color: var(--eb-ui-disabled-text);
   cursor: not-allowed;
 }
 
 .inline-edit-group.disabled {
   .input-before,
   .input-after {
-    color: rgba(0, 0, 0, 0.38);
-    background: #f5f5f5;
+    color: var(--eb-ui-disabled-text);
+    background: var(--eb-ui-field-disabled);
   }
 }
 
@@ -150,7 +218,7 @@ input.inline-edit:disabled {
   }
 }
 
-input.inline-edit  {
+input.inline-edit {
   padding: 1px 6px;
 }
 
@@ -176,7 +244,8 @@ div.inline-edit.fw {
 }
 
 .inline-edit-group.load {
-  .input-before, .input-after {
+  .input-before,
+  .input-after {
     min-width: 28px;
   }
   &:has(.input-before) .inline-edit {
@@ -190,12 +259,13 @@ div.inline-edit.fw {
   }
 }
 
-.input-before, .input-after {
-  border: thin solid #ddd;
+.input-before,
+.input-after {
+  border: thin solid var(--eb-ui-line);
   border-radius: 4px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-  background: #eee;
+  background: var(--eb-ui-field-muted);
   padding: 0 5px;
   text-align: center;
   font-weight: 500;
@@ -206,12 +276,13 @@ div.inline-edit.fw {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
   font-weight: normal;
-  background: #fff;
+  background: var(--eb-ui-field);
 }
 
 select.mini-select {
-  background-color: white;
-  border: thin solid #ddd;
+  background-color: var(--eb-ui-field);
+  color: inherit;
+  border: thin solid var(--eb-ui-line);
   border-radius: 4px;
   display: inline-block;
   font: inherit;
@@ -220,8 +291,9 @@ select.mini-select {
   padding-right: 24px;
   min-width: 100px;
 
-  background-image: linear-gradient(45deg, transparent 50%, gray 50%),
-    linear-gradient(135deg, gray 50%, transparent 50%), linear-gradient(to right, #ccc, #ccc);
+  background-image:
+    linear-gradient(45deg, transparent 50%, gray 50%), linear-gradient(135deg, gray 50%, transparent 50%),
+    linear-gradient(to right, var(--eb-ui-line), var(--eb-ui-line));
   background-position:
     calc(100% - 12px) calc(0.5em + 2px),
     calc(100% - 7px) calc(0.5em + 2px),
@@ -259,7 +331,7 @@ select.mini-select {
   //border: thin solid #ddd;
   border-radius: 8px;
   overflow: hidden;
-  background: #fff;
+  background: rgb(var(--v-theme-surface));
   z-index: 101;
   width: 210px;
 }
@@ -268,11 +340,11 @@ select.mini-select {
   transition: none;
 }
 
-.v-tabs.bg-primary {
+.v-tabs:is(.bg-primary, .bg-appbar) {
   .v-tab-item--selected,
   .v-tab.v-tab--selected {
-    background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06)) !important;
-    box-shadow: inset 0 -3px 0 rgba(255,255,255,0.35);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06)) !important;
+    box-shadow: inset 0 -3px 0 rgba(255, 255, 255, 0.35);
   }
 }
 
@@ -288,24 +360,22 @@ select.mini-select {
     //padding-left: var(--fixed-column-size);
   }
   table {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--eb-ui-line);
   }
   thead {
-
   }
   table tr:nth-child(even) td {
-    background: #ffffff !important;
+    background: var(--eb-ui-row) !important;
   }
   table tr:nth-child(odd) td {
-    background: #f8f8f8 !important;
+    background: var(--eb-ui-row-alt) !important;
   }
   table tr:hover td {
-    background: #eee !important;
+    background: var(--eb-ui-row-hover) !important;
   }
-  &.fixed-left-col
-  {
-    th:nth-of-type(1), td:nth-of-type(1)
-    {
+  &.fixed-left-col {
+    th:nth-of-type(1),
+    td:nth-of-type(1) {
       position: sticky !important;
       min-width: var(--fixed-column-size);
       left: 0px;
@@ -318,7 +388,7 @@ select.mini-select {
 }
 
 .v-table table tr.selected td {
-  background: #ecedf7 !important;
+  background: var(--eb-ui-row-selected) !important;
 }
 
 .v-table > .v-table__wrapper > table > tbody > tr > td,
@@ -365,10 +435,28 @@ select.mini-select {
   border-radius: 0 !important;
 }
 
+// The canvas menu's dark look in the app's colours, not the library's grey (see optionsCtxMenu.theme)
+.mx-context-menu.dark {
+  --mx-menu-backgroud: #191d2c;
+  --mx-menu-hover-backgroud: #24284a;
+  --mx-menu-active-backgroud: #2b3060;
+  --mx-menu-open-backgroud: #24284a;
+  --mx-menu-open-hover-backgroud: #24284a;
+  --mx-menu-divider: #232838;
+  --mx-menu-text: #e4e6ec;
+  --mx-menu-hover-text: #ffffff;
+  --mx-menu-active-text: #ffffff;
+  --mx-menu-disabled-text: #6b7186;
+  outline: 1px solid rgba(255, 255, 255, 0.06);
+}
+
 .mx-context-menu {
   padding: 0;
   //overflow: hidden;
-  box-shadow: 0px 2px 1px -1px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)), 0px 1px 1px 0px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)), 0px 1px 3px 0px var(--v-shadow-key-ambient-opacity, rgba(0, 0, 0, 0.12)) !important;
+  box-shadow:
+    0px 2px 1px -1px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)),
+    0px 1px 1px 0px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)),
+    0px 1px 3px 0px var(--v-shadow-key-ambient-opacity, rgba(0, 0, 0, 0.12)) !important;
   .mx-context-menu-items {
     .mx-context-menu-item-wrapper:first-child .mx-context-menu-item {
       border-top-left-radius: var(--mx-menu-backgroud-radius);
@@ -394,7 +482,8 @@ select.mini-select {
 }
 
 // fix dialog
-.v-dialog > .v-overlay__content > .v-card > .v-card-text, .v-dialog > .v-overlay__content > form > .v-card > .v-card-text {
+.v-dialog > .v-overlay__content > .v-card > .v-card-text,
+.v-dialog > .v-overlay__content > form > .v-card > .v-card-text {
   padding: 0px 16px 10px;
   letter-spacing: normal;
 }
@@ -402,7 +491,6 @@ select.mini-select {
 .v-dialog > .v-overlay__content > .v-card > .v-card-title {
   font-weight: bold;
 }
-
 
 // onboarding
 :root {
@@ -445,7 +533,7 @@ select.mini-select {
   pointer-events: none;
 
   polyline.drawable {
-    stroke: #000;
+    stroke: var(--eb-ink, #000);
     stroke-width: 1px;
     fill: none;
     vector-effect: non-scaling-stroke;
@@ -468,12 +556,12 @@ select.mini-select {
 
     &:hover:not(.selected) {
       polyline.drawable {
-        stroke: #222;
+        stroke: var(--eb-ink-hover, #222);
         stroke-width: 2px;
       }
 
       text {
-        fill: #222;
+        fill: var(--eb-ink-hover, #222);
       }
     }
   }
@@ -481,11 +569,11 @@ select.mini-select {
   &.selected {
     polyline.drawable {
       stroke-width: 2px;
-      stroke: rgb(0, 94, 255);
+      stroke: var(--eb-select, rgb(0, 94, 255));
     }
 
     text {
-      fill: rgb(0, 94, 255);
+      fill: var(--eb-select, rgb(0, 94, 255));
       font-weight: 600;
     }
   }
@@ -495,22 +583,22 @@ select.mini-select {
   }
 
   .endpoint {
-    stroke: #000;
+    stroke: var(--eb-ink, #000);
     stroke-width: 1.5px;
-    fill: #fff;
+    fill: var(--eb-paper, #fff);
     vector-effect: non-scaling-stroke;
     pointer-events: all;
     cursor: move;
 
     &.snapped {
-      fill: rgb(0, 94, 255);
-      stroke: rgb(0, 94, 255);
+      fill: var(--eb-select, rgb(0, 94, 255));
+      stroke: var(--eb-select, rgb(0, 94, 255));
     }
   }
 
   &.selected {
     .endpoint.free {
-      stroke: rgb(0, 94, 255);
+      stroke: var(--eb-select, rgb(0, 94, 255));
     }
   }
 }
@@ -518,5 +606,5 @@ select.mini-select {
 #sentry-feedback {
   --background: rgb(var(--v-theme-primary));
   --font-size: 14px;
-  --font-family: "Barlow", sans-serif;
+  --font-family: 'Barlow', sans-serif;
 }

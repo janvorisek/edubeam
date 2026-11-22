@@ -2,6 +2,11 @@
 import { useAppStore } from '../store/app';
 import { computed, useId } from 'vue';
 import { formatDisplacementLabel } from '@/utils/numberDisplay';
+import type { PlotLayer, PlotLoad, PlotModel, PlotNode } from '@edubeam/plot';
+import PlotFigure from './PlotFigure.vue';
+import { useProjectStore } from '@/store/project';
+import { useViewerStore } from '@/store/viewer';
+import { plotNodeOf } from '@/utils/plotDrawing';
 
 const props = withDefaults(
   defineProps<{
@@ -26,6 +31,50 @@ const props = withDefaults(
 );
 
 const appStore = useAppStore();
+
+/* ── With the plot renderer on: the node and what acts on it, as the drawing will show them ──── */
+const viewerStore = useViewerStore();
+const projectStore = useProjectStore();
+const plotOn = computed(() => viewerStore.renderer === 'plot');
+
+/** Every value zero: nothing typed yet */
+const valuesEmpty = computed(() => !props.fx && !props.fz && !props.my);
+
+const plotModel = computed((): PlotModel => {
+  const id = props.label === undefined ? 'node' : String(props.label);
+  const real = props.label === undefined ? undefined : projectStore.solver.domain.nodes.get(String(props.label));
+  // At the origin, with its support and its axes as they are
+  const node: PlotNode = real
+    ? { ...plotNodeOf(real, id), x: 0, z: 0 }
+    : { id, x: 0, z: 0, fixity: { dx: false, dz: false, ry: false }, angle: 0 };
+  const loads: PlotLoad[] = [];
+  // Nothing typed yet: a grey stand-in of the kind, down the screen (see PlotFigure's ghostLoads)
+  if (valuesEmpty.value) {
+    loads.push(
+      props.type === 'displacement'
+        ? { kind: 'prescribed', node: id, dz: 1 }
+        : { kind: 'nodalForce', node: id, fx: 0, fz: 1 }
+    );
+    return { nodes: [node], members: [], loads };
+  }
+  if (props.type === 'displacement') {
+    // In the node's own axes, as a prescribed displacement always is
+    if (props.fx !== 0 || props.fz !== 0 || props.my !== 0) {
+      loads.push({ kind: 'prescribed', node: id, dx: props.fx, dz: props.fz, ry: props.my });
+    }
+  } else {
+    // Given in axes turned by `axesAngle` (x towards z): the global components the drawing takes
+    const a = (props.axesAngle * Math.PI) / 180;
+    const fx = props.fx * Math.cos(a) - props.fz * Math.sin(a);
+    const fz = props.fx * Math.sin(a) + props.fz * Math.cos(a);
+    if (fx !== 0 || fz !== 0) loads.push({ kind: 'nodalForce', node: id, fx, fz });
+    if (props.my !== 0) loads.push({ kind: 'nodalMoment', node: id, my: props.my });
+  }
+  return { nodes: [node], members: [], loads };
+});
+const plotLayers = computed(
+  () => new Set<PlotLayer>(['supports', 'loads', ...(props.label === undefined ? [] : (['nodeLabels'] as const))])
+);
 
 const uid = useId();
 const arrowheadId = computed(() => `${uid}-arrowhead`);
@@ -213,7 +262,15 @@ const strokeDash = computed(() => (isDisplacement.value ? '4 3' : undefined));
 </script>
 
 <template>
-  <svg width="160" height="160" :viewBox="vbox" xmlns="http://www.w3.org/2000/svg">
+  <PlotFigure
+    v-if="plotOn"
+    :model="plotModel"
+    :layers="plotLayers"
+    :height="160"
+    :ghost-loads="valuesEmpty"
+    style="min-width: 160px"
+  />
+  <svg v-else width="160" height="160" :viewBox="vbox" xmlns="http://www.w3.org/2000/svg">
     <!-- Arrowhead marker definition -->
     <defs>
       <marker
@@ -225,7 +282,7 @@ const strokeDash = computed(() => (isDisplacement.value ? '4 3' : undefined));
         refY="3.5"
         orient="auto"
       >
-        <polygon points="3 1, 10 3.5, 3 6" vector-effect="non-scaling-stroke" fill="black" />
+        <polygon points="3 1, 10 3.5, 3 6" vector-effect="non-scaling-stroke" fill="currentColor" />
       </marker>
     </defs>
 
@@ -236,7 +293,7 @@ const strokeDash = computed(() => (isDisplacement.value ? '4 3' : undefined));
         y1="0"
         :x2="end.x"
         :y2="end.y"
-        stroke="black"
+        stroke="currentColor"
         stroke-width="2"
         :stroke-dasharray="strokeDash"
         vector-effect="non-scaling-stroke"
@@ -292,7 +349,7 @@ const strokeDash = computed(() => (isDisplacement.value ? '4 3' : undefined));
       <text
         :x="center2.x"
         :y="center2.y"
-        fill="black"
+        fill="currentColor"
         font-size="10"
         text-anchor="middle"
         :transform="`rotate(${props.fx < 0 ? 180 + angle : angle}, ${center2.x}, ${center2.y})`"
@@ -306,13 +363,20 @@ const strokeDash = computed(() => (isDisplacement.value ? '4 3' : undefined));
       <path
         :d="arcPath"
         fill="none"
-        stroke="black"
+        stroke="currentColor"
         stroke-width="2"
         :stroke-dasharray="strokeDash"
         vector-effect="non-scaling-stroke"
         :marker-end="`url(#${arrowheadId})`"
       />
-      <text :x="rotationLabel.x" :y="rotationLabel.y" fill="black" font-size="10" text-anchor="middle" dy="0.35em">
+      <text
+        :x="rotationLabel.x"
+        :y="rotationLabel.y"
+        fill="currentColor"
+        font-size="10"
+        text-anchor="middle"
+        dy="0.35em"
+      >
         {{ formatValue(Math.abs(loadNodeValueMyInUnits)) }}
       </text>
     </g>
@@ -321,7 +385,7 @@ const strokeDash = computed(() => (isDisplacement.value ? '4 3' : undefined));
     <g v-if="hasLabel" class="node" :transform="`translate(${nodeAt.x} ${nodeAt.y})`">
       <polyline
         points="-0.5,0 0.5,0"
-        stroke="#000"
+        stroke="currentColor"
         :stroke-width="NODE_STROKE"
         stroke-linecap="square"
         vector-effect="non-scaling-stroke"
@@ -329,8 +393,8 @@ const strokeDash = computed(() => (isDisplacement.value ? '4 3' : undefined));
       <g :transform="`translate(${-LABEL_OFFSET - (String(props.label).length - 1) * 2} ${-LABEL_OFFSET})`">
         <circle
           :r="1 + 5 * (1 + Math.pow(String(props.label).length - 1, 1.7) * 0.3)"
-          fill="rgba(255, 255, 255, 0.8)"
-          stroke="black"
+          style="fill: rgb(var(--v-theme-surface)); fill-opacity: 0.8"
+          stroke="currentColor"
           vector-effect="non-scaling-stroke"
         />
         <text font-size="10" font-weight="normal" text-anchor="middle" dy="0.35em">

@@ -2,7 +2,8 @@
   "tabView": {
     "viewer": "뷰어",
     "settings": "설정",
-    "results": "결과"
+    "results": "결과",
+    "report": "보고서"
   },
   "common": {
     "label": "이름",
@@ -53,7 +54,11 @@
     "addNode": "절점 추가",
     "editNode": "절점 편집",
     "defineSupports": "지지조건",
-    "lcsAngle": "절점 좌표계 각도"
+    "lcsAngle": "절점 좌표계 각도",
+    "equilibrium": "절점 평형",
+    "equilibriumOf": "절점 {label}의 평형",
+    "equilibriumSymbols": "기호",
+    "equilibriumValues": "값"
   },
   "supports": {
     "free": "자유",
@@ -86,6 +91,7 @@
     "addPrescribedDisplacement": "강제변위 지정",
     "UDL": "등분포하중",
     "forceMoment": "힘/모멘트",
+    "moment": "모멘트",
     "editLoad": "하중 편집",
     "loadPositionOnBeam": "시작 절점 기준 하중 위치",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... 하연 온도 변화에서 상연 온도 변화를 뺀 값",
@@ -198,6 +204,16 @@
     "result_label_orientation": "결과 레이블 방향",
     "result_label_orientation_axis": "다이어그램에 수직",
     "result_label_orientation_horizontal": "항상 수평",
+    "theme": "테마",
+    "theme_system": "시스템",
+    "theme_light": "라이트",
+    "theme_dark": "다크",
+    "theme_toDark": "다크 테마",
+    "theme_toLight": "라이트 테마",
+    "renderer": "렌더러",
+    "renderer_classic": "기존",
+    "renderer_plot": "새 버전 (베타)",
+    "show_readout": "포인터 위치의 값 표시",
     "result_labels": "결과 레이블",
     "diagrams": {
       "title": "단면력도",
@@ -232,7 +248,13 @@
     "boxSelect": "영역 선택",
     "centerContent": "가운데 맞춤",
     "fitContent": "화면에 맞추기",
-    "holdCtrl": "Ctrl 키를 누른 채 마우스로 추가"
+    "holdCtrl": "Ctrl 키를 누른 채 마우스로 추가",
+    "select": "선택",
+    "tools": "도구",
+    "snapMiddle": "중점",
+    "snapThird": "3등분점",
+    "snapOnElement": "요소 {label} 위",
+    "placeFreely": "Alt 키를 누른 채 자유롭게 배치"
   },
   "dofs": {
     "bcs": "구속 자유도"
@@ -318,7 +340,8 @@
       "comingSoon": "출시 예정",
       "tryIt": "사용해 보기",
       "tried": {
-        "diagramStyles": "구간별 다항식 차수가 표시된 해칭 다이어그램이 켜졌습니다."
+        "diagramStyles": "구간별 다항식 차수가 표시된 해칭 다이어그램이 켜졌습니다.",
+        "newDrawing": "해칭 다이어그램의 새 도면이 켜졌습니다."
       }
     },
     "polygonSection": {
@@ -399,6 +422,19 @@
     "shareLayers": "내 화면 그대로 보기",
     "shareLayersHint": "링크를 열면 현재 켜 둔 단면력도, 하중, 레이블이 그대로 표시됩니다."
   },
+  "shortcuts": {
+    "title": "키보드 단축키",
+    "drawing": "도면",
+    "editing": "편집",
+    "cancel": "선택으로 돌아가기, 배치 취소",
+    "placeFreely": "스냅 없이 자유롭게 배치(누른 채로)",
+    "grid": "그리드 표시 또는 숨기기",
+    "snap": "그리드 스냅 켜기 또는 끄기",
+    "zoom": "확대 및 축소",
+    "selectAll": "모두 선택",
+    "save": "프로젝트 저장",
+    "exportImage": "이미지 내보내기"
+  },
   "tour": {
     "menu": {
       "title": "메뉴",
@@ -407,6 +443,11 @@
     "undoRedo": {
       "title": "실행 취소 및 다시 실행",
       "description": "변경 내용을 한 단계씩 되돌리거나 다시 적용합니다. Ctrl+Z와 Ctrl+Shift+Z도 같은 기능을 합니다."
+    },
+    "tools": {
+      "title": "도구",
+      "description": "도면에서 바로 절점, 요소, 지점, 하중을 추가하세요. 도구를 길게 누르거나 모서리를 클릭하면 지점이나 하중의 종류를 고를 수 있습니다. 점은 절점과 요소의 중점·3등분점에 스냅되며, Alt 키를 누른 채로 자유롭게 배치할 수 있습니다. 키: V 선택, N 절점, E 요소, U 지점, L 하중, D 치수, Esc 선택으로 돌아가기.",
+      "descriptionTouch": "도면에서 바로 절점, 요소, 지점, 하중을 추가하세요. 도구를 탭한 다음 놓을 위치를 탭하고, 끝나면 화살표를 탭합니다. 지점과 하중 도구를 누르면 종류 목록이 열립니다. 점은 절점과 요소의 중점·3등분점에 스냅됩니다. 한 손가락으로 화면을 이동하고 두 손가락으로 확대·축소합니다. 절점은 끌어서 옮기고, 하중은 길게 눌러 들어 올리며, 다른 곳을 길게 누르면 메뉴가 열립니다."
     },
     "viewerControls": {
       "title": "뷰어 버튼",
@@ -602,7 +643,8 @@
     "selectMaterialAndCrossSection": "재료와 단면을 선택하세요.",
     "labelInUse": "이름 {label}은(는) 이미 사용 중입니다.",
     "noMaterialOrCrossSection": "요소에 재료 또는 단면이 지정되지 않았습니다.",
-    "elementMissing": "요소 {label}이(가) 더 이상 존재하지 않습니다."
+    "elementMissing": "요소 {label}이(가) 더 이상 존재하지 않습니다.",
+    "nodeMissing": "절점 {label}이(가) 더 이상 존재하지 않습니다."
   },
   "help": {
     "aria": "도움말 보기",
@@ -777,5 +819,20 @@
       "acrylic": "아크릴",
       "approx": "근사"
     }
+  },
+  "report": {
+    "column": "세로로",
+    "row": "가로로",
+    "no_results": "구조물 해석 후 표시됩니다",
+    "guides": "보조선",
+    "print": "인쇄",
+    "paper": "용지",
+    "portrait": "세로",
+    "landscape": "가로"
+  },
+  "languageOffer": {
+    "message": "EduBeam을 한국어로 사용할 수 있습니다.",
+    "switch": "한국어로 전환",
+    "dismiss": "괜찮습니다"
   }
 }

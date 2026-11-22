@@ -3,7 +3,7 @@
     <g class="grid">
       <rect class="chartBorder" x="16" y="16" width="100%" height="100%" />
       <path
-        stroke="#ccc"
+        class="grid-lines"
         vector-effect="non-scaling-stroke"
         :d="gridPath"
         :transform="`translate(${gridTX} ${gridTY})`"
@@ -11,10 +11,10 @@
     </g>
 
     <g class="grid">
-      <rect fill="white" x="0" y="0" height="100%" width="16" />
-      <rect fill="white" x="100%" y="0" height="100%" width="16" transform="translate(-16 0)" />
-      <rect fill="white" x="0" y="0" width="100%" height="16" />
-      <rect fill="white" x="0" y="100%" width="100%" height="16" transform="translate(0 -16)" />
+      <rect class="ruler-band" x="0" y="0" height="100%" width="16" />
+      <rect class="ruler-band" x="100%" y="0" height="100%" width="16" transform="translate(-16 0)" />
+      <rect class="ruler-band" x="0" y="0" width="100%" height="16" />
+      <rect class="ruler-band" x="0" y="100%" width="100%" height="16" transform="translate(0 -16)" />
       <g v-for="(item, i) in xGridTexts" :key="`x${i}`" :transform="`translate(${item.x + gridTX} ${item.y})`">
         <text text-anchor="middle" dy="0.35em">
           {{ rulerLabel(appStore.convertLength(Number(item.value) + trueOffsetX)) }}
@@ -26,24 +26,12 @@
         </text>
       </g>
     </g>
-    <g v-if="!props.viewMode && axisConvention === 'y-up'" class="cs" :transform="`translate(${csLeft} ${csTop})`">
-      <text fill="red" text-anchor="middle" dy="0.35em" x="40" y="-10"> x </text>
-      <text fill="green" text-anchor="middle" dy="0.35em" x="10" y="-40"> y </text>
-      <line y1="0" x1="0" y2="-40" x2="0" stroke-width="3" stroke="green" stroke-linecap="round" />
-      <line y1="0" x1="0" y2="0" x2="40" stroke-width="3" stroke="red" stroke-linecap="round" />
-    </g>
-    <g v-else-if="!props.viewMode" class="cs" :transform="`translate(${csLeft} ${csTop})`">
-      <text fill="red" text-anchor="middle" dy="0.35em" x="40" y="-30"> x </text>
-      <text fill="green" text-anchor="middle" dy="0.35em" x="10" y="0"> z </text>
-      <line y1="-40" x1="0" y2="0" x2="0" stroke-width="3" stroke="green" stroke-linecap="round" />
-      <line y1="-40" x1="0" y2="-40" x2="40" stroke-width="3" stroke="red" stroke-linecap="round" />
-    </g>
   </g>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { axisConvention, vertical } from '@/utils/axisConvention';
+import { vertical } from '@/utils/axisConvention';
 import { useAppStore } from '@/store/app';
 import { formatFeetInches, rulerStep, rulerStepFeet, stepDecimals } from '@/utils/grid';
 
@@ -68,8 +56,6 @@ const gridTX = ref(0);
 const gridTY = ref(0);
 const trueOffsetX = ref(0);
 const trueOffsetY = ref(0);
-const csLeft = ref(0);
-const csTop = ref(0);
 const decimals = ref(2);
 
 /** Feet read in feet and inches, as on a US drawing; every other unit as a decimal. */
@@ -89,9 +75,9 @@ const refreshGrid = (isZooming = false) => {
 
   rightBottom.x = svgBB.right - svgBB.left;
   rightBottom.y = svgBB.bottom - svgBB.top;
-
-  csLeft.value = 45;
-  csTop.value = svgBB.bottom - svgBB.top - 45;
+  // A drawing hidden behind another tab has no size: its rulers would be NaN. They stay as they
+  // were until it is shown again.
+  if (rightBottom.x < 80 || rightBottom.y <= 0) return;
 
   const inv = matrix.inverse();
   const svgP1 = leftTop.matrixTransform(inv);
@@ -202,9 +188,27 @@ defineExpose({ refreshGrid });
     shape-rendering: crispEdges;
   }
 
+  // The theme's (see SVGViewer's custom properties); the light ones where none is set, as in an export
+  .grid-lines {
+    stroke: var(--eb-grid, #ccc);
+  }
+
+  .ruler-band {
+    fill: var(--eb-paper, #fff);
+  }
+
+  text {
+    fill: var(--eb-ruler, var(--eb-ink, #000));
+  }
+
+  // The rulers' inner edge, 16 px in on every side. As attributes, a rect can only start at 16 px and
+  // be as wide as the drawing, which put its right and bottom edges 16 px outside it, where they were
+  // cut off: there was a border there only where a grid line happened to fall.
   .chartBorder {
+    width: calc(100% - 32px);
+    height: calc(100% - 32px);
     fill: transparent;
-    stroke: #666;
+    stroke: var(--eb-frame, #666);
     stroke-width: 1px;
   }
 }

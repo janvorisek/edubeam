@@ -21,9 +21,25 @@ const TRY_IT = {
       viewer.showBendingMoment = before.showBendingMoment;
     };
   },
+  /** The new drawing, with hatched diagrams, as someone new starts with it. */
+  newDrawing: () => {
+    const viewer = useViewerStore();
+    const before = { renderer: viewer.renderer, fill: viewer.diagramStyle.fill };
+
+    viewer.renderer = 'plot';
+    viewer.diagramStyle.fill = 'hatch';
+
+    return () => {
+      viewer.renderer = before.renderer;
+      viewer.diagramStyle.fill = before.fill;
+    };
+  },
 } satisfies Record<string, () => () => void>;
 
 export type TryItId = keyof typeof TRY_IT;
+
+/** Every feature there is to try: each has its notice, `dialogs.changelog.tried.<id>` */
+export const TRY_IT_IDS = Object.keys(TRY_IT) as TryItId[];
 
 export const isTryItId = (value: unknown): value is TryItId =>
   typeof value === 'string' && Object.hasOwn(TRY_IT, value);

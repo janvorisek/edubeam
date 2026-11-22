@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import SvgPanZoom from './SVGPanZoom2.vue';
 import SvgViewerDefs from './SVGViewerDefs.vue';
-import { ref, onMounted, computed, watch, provide, useId } from 'vue';
+import { ref, onMounted, computed, watch, provide, useId, shallowRef } from 'vue';
+import type { PlotModel } from '@edubeam/plot';
+import PlotScene from './PlotScene.vue';
+import { drawingVars, themedColors, type ThemeName } from '@/utils/theme';
+import { dimensionAnchors, editorFit, editorLayers, readEditorModel, type EditorLook } from '@/utils/plotDrawing';
 
 import {
   Node,
@@ -95,6 +99,13 @@ const props = withDefaults(
     numberFormat?: Intl.NumberFormat;
     zoomEnabled?: boolean;
     fontSize?: number;
+    /**
+     * Draws the model with @edubeam/plot in this look instead of the editor's own drawing, as the
+     * canvas does with the plot renderer; the dimension lines stay. The layers follow the show* props.
+     */
+    plot?: EditorLook | null;
+    /** The canvas it is drawn on: the light one unless given, as in an export (see drawingVars) */
+    theme?: ThemeName;
   }>(),
   {
     id: undefined,
@@ -121,6 +132,7 @@ const props = withDefaults(
     fitIgnore: '[data-fit-ignore]',
     fitReservePx: undefined,
     noFitForResults: false,
+    theme: 'light',
     colors: () => {
       return {
         normalForce: '#2222ff',
@@ -145,8 +157,12 @@ const props = withDefaults(
     numberFormat: () => new Intl.NumberFormat(),
     zoomEnabled: false,
     fontSize: 13,
+    plot: null,
   }
 );
+
+/** The colours drawn: on the dark canvas with the stand-ins for the default ones (see themedColors) */
+const drawn = computed(() => themedColors(props.colors, props.theme));
 
 const panZoom = ref<InstanceType<typeof SvgPanZoom> | null>(null);
 
@@ -164,8 +180,70 @@ provide('viewer_uuid', viewerId);
 
 const update = () => {
   updateResultScales();
+  readPlotModel();
   fitContent();
 };
+
+/* ── Drawn by plot ───────────────────────────────────────────────────────────────────────────── */
+const plotModel = shallowRef<PlotModel | null>(null);
+// Read again with every update, which follows the solver
+const readPlotModel = () => {
+  if (!props.plot) {
+    plotModel.value = null;
+    return;
+  }
+  try {
+    plotModel.value = readEditorModel(props.solver);
+  } catch (error) {
+    console.warn('[plot renderer] cannot read the model', error);
+    plotModel.value = null;
+  }
+};
+
+const plotLayers = computed(() =>
+  editorLayers({
+    supports: props.showSupports,
+    loads: props.showLoads,
+    reactions: props.showReactions,
+    nodeLabels: props.showNodeLabels,
+    memberLabels: props.showElementLabels,
+    normalForce: props.showNormalForce,
+    shearForce: props.showShearForce,
+    bendingMoment: props.showMoments,
+    deformedShape: props.showDeformedShape,
+  })
+);
+
+/**
+ * Plot knows how far everything it draws reaches at any scale, so the fit is worked out, not
+ * measured off the drawing: symbols and labels keep their size in px, and on a small tile they can
+ * outweigh the structure, which a measured fit chases without end.
+ */
+const plotFitView = computed(() => {
+  const look = props.plot;
+  const model = plotModel.value;
+  if (!look || !model || model.nodes.length === 0) return null;
+  const layers = plotLayers.value;
+  const diagramScale = plotDiagramScale.value;
+  const dimensions = dimensionAnchors(props.dimlines, look.fontSize);
+  return (width: number, height: number, padding: number): ViewBox | null => {
+    try {
+      const fit = editorFit(model, look, layers, { width, height, padding }, { extra: dimensions, diagramScale });
+      return { x: -fit.tx / fit.s, y: -fit.ty / fit.s, w: width / fit.s, h: height / fit.s };
+    } catch (error) {
+      console.warn('[plot renderer] cannot fit the model', error);
+      return null;
+    }
+  };
+});
+
+/** This viewer's own diagram scales, px per SI unit, as its own drawing uses them */
+const plotDiagramScale = computed(() => ({
+  N: normalForceScale.value * props.resultsScalePx,
+  V: shearForceScale.value * props.resultsScalePx,
+  M: bendingMomentScale.value * props.resultsScalePx,
+  w: defoScale.value * props.resultsScalePx,
+}));
 
 const updateResultScales = () => {
   if (!props.solver.loadCases[0].solved) return;
@@ -206,6 +284,7 @@ watch(() => props.showDeformedShape, update);
 watch(() => props.showNormalForce, update);
 watch(() => props.showShearForce, update);
 watch(() => props.showMoments, update);
+watch(() => props.plot !== null, readPlotModel, { immediate: true });
 
 const defoScale = ref(1);
 const normalForceScale = ref(1);
@@ -247,6 +326,8 @@ const LOAD_DECORATION_PX = 60;
  */
 const fitReserve = computed(() => {
   if (props.fitReservePx !== undefined) return props.fitReservePx;
+  // Plot's drawing is measured as it is, labels and all: nothing to reserve room for
+  if (props.plot) return 0;
   if (props.noFitForResults) return 0;
 
   return Math.max(props.resultsScalePx, LOAD_DECORATION_PX) + props.fontSize + 8;
@@ -323,7 +404,7 @@ defineExpose({ centerContent, fitContent, setView, update });
 </script>
 
 <template>
-  <div class="d-flex flex-column fill-height svg-viewer" style="z-index: 1">
+  <div class="d-flex flex-column fill-height svg-viewer" style="z-index: 1" :style="drawingVars(props.theme)">
     <SvgPanZoom
       ref="panZoom"
       :padding="props.padding"
@@ -332,10 +413,12 @@ defineExpose({ centerContent, fitContent, setView, update });
       :model-bounds="modelBounds"
       :fit-ignore="props.fitIgnore"
       :fit-reserve="fitReserve"
+      :fit-view="plotFitView"
       style="overflow: visible; z-index: 50; min-height: 0"
     >
       <svg
         ref="svg"
+        class="drawing-svg"
         :style="{
           opacity: panZoom?.fitted ? 1 : 0,
           '--marker-force': markerForce,
@@ -369,142 +452,156 @@ defineExpose({ centerContent, fitContent, setView, update });
           '--marker-force-tip-selected': markerForceTipSelected,
           '--marker-dim-tip': markerDimTip,
           '--filter-text-label': markerTextLabel,
-          '--colors-loads': props.colors.loads,
+          '--colors-loads': drawn.loads,
         }"
       >
-        <SvgViewerDefs :id="viewerId" :colors="colors" :support-size="supportSize" :scale="scale" />
+        <SvgViewerDefs :id="viewerId" :colors="drawn" :support-size="supportSize" :scale="scale" />
         <g ref="viewport">
-          <g>
-            <g v-if="props.showLoads" data-fit-ignore="loads">
-              <template v-for="(eload, index) in props.elementLoads">
-                <SVGElementLoad
-                  v-if="eload instanceof BeamElementUniformEdgeLoad || eload instanceof BeamElementTrapezoidalEdgeLoad"
-                  :key="`element-udl-${index}`"
-                  :data-element-load-id="index"
-                  :eload="eload"
-                  :scale="scale"
-                  :convert-force-distance="props.convertForceDistance"
-                  :font-size="props.fontSize"
-                  :number-format="props.numberFormat"
-                />
-                <SVGElementTemperatureLoad
-                  v-else-if="loadType(eload) === 'temperature'"
-                  :key="`element-temperature-${index}`"
-                  :data-element-load-id="index"
-                  :eload="eload"
-                  :scale="scale"
-                  :convert-temperature="props.convertTemperature"
-                  :font-size="props.fontSize"
-                  :number-format="props.numberFormat"
-                />
-                <SVGElementConcentratedLoad
-                  v-else-if="eload instanceof BeamConcentratedLoad"
-                  :key="`element-cl-${index}`"
-                  :data-element-load-id="index"
-                  :eload="eload"
-                  :scale="scale"
-                  :convert-force="props.convertForce"
-                  :convert-moment="props.convertMoment"
-                  :font-size="props.fontSize"
-                  :number-format="props.numberFormat"
-                />
-              </template>
+          <PlotScene
+            v-if="props.plot && plotModel"
+            :model="plotModel"
+            :look="props.plot"
+            :layers="plotLayers"
+            :scale="scale"
+            :colors="drawn"
+            :theme="props.theme"
+            :diagram-scale="plotDiagramScale"
+          />
+          <template v-else>
+            <g>
+              <g v-if="props.showLoads" data-fit-ignore="loads">
+                <template v-for="(eload, index) in props.elementLoads">
+                  <SVGElementLoad
+                    v-if="
+                      eload instanceof BeamElementUniformEdgeLoad || eload instanceof BeamElementTrapezoidalEdgeLoad
+                    "
+                    :key="`element-udl-${index}`"
+                    :data-element-load-id="index"
+                    :eload="eload"
+                    :scale="scale"
+                    :convert-force-distance="props.convertForceDistance"
+                    :font-size="props.fontSize"
+                    :number-format="props.numberFormat"
+                  />
+                  <SVGElementTemperatureLoad
+                    v-else-if="loadType(eload) === 'temperature'"
+                    :key="`element-temperature-${index}`"
+                    :data-element-load-id="index"
+                    :eload="eload"
+                    :scale="scale"
+                    :convert-temperature="props.convertTemperature"
+                    :font-size="props.fontSize"
+                    :number-format="props.numberFormat"
+                  />
+                  <SVGElementConcentratedLoad
+                    v-else-if="eload instanceof BeamConcentratedLoad"
+                    :key="`element-cl-${index}`"
+                    :data-element-load-id="index"
+                    :eload="eload"
+                    :scale="scale"
+                    :convert-force="props.convertForce"
+                    :convert-moment="props.convertMoment"
+                    :font-size="props.fontSize"
+                    :number-format="props.numberFormat"
+                  />
+                </template>
+              </g>
             </g>
-          </g>
-          <g>
-            <SVGElement
-              v-for="(element, index) in props.elements"
-              :key="`element-geometry-${index}`"
-              :show-geometry="true"
-              :show-results="false"
-              :element="element"
-              :scale="scale"
-              :show-deformed-shape="props.showDeformedShape"
-              :show-normal-force="props.showNormalForce"
-              :show-shear-force="props.showShearForce"
-              :show-bending-moment="props.showMoments"
-              :show-label="props.showElementLabels"
-              :load-case="props.solver.loadCases[0]"
-              :deformed-shape-multiplier="defoScale * props.resultsScalePx"
-              :normal-force-multiplier="normalForceScale * props.resultsScalePx"
-              :shear-force-multiplier="shearForceScale * props.resultsScalePx"
-              :bending-moment-multiplier="bendingMomentScale * props.resultsScalePx"
-              :result-label-mode="props.resultLabelMode"
-              :diagram-style="props.diagramStyle"
-              :convert-force="props.convertForce"
-              :convert-moment="props.convertMoment"
-              :font-size="props.fontSize"
-              :number-format="props.numberFormat"
-            />
-          </g>
-
-          <g>
-            <SVGElement
-              v-for="(element, index) in props.elements"
-              :key="`element-results-${index}`"
-              :show-geometry="false"
-              :show-results="true"
-              :element="element"
-              :scale="scale"
-              :show-deformed-shape="props.showDeformedShape"
-              :show-normal-force="props.showNormalForce"
-              :show-shear-force="props.showShearForce"
-              :show-bending-moment="props.showMoments"
-              :show-label="props.showElementLabels"
-              :load-case="props.solver.loadCases[0]"
-              :deformed-shape-multiplier="defoScale * props.resultsScalePx"
-              :normal-force-multiplier="normalForceScale * props.resultsScalePx"
-              :shear-force-multiplier="shearForceScale * props.resultsScalePx"
-              :bending-moment-multiplier="bendingMomentScale * props.resultsScalePx"
-              :result-label-mode="props.resultLabelMode"
-              :diagram-style="props.diagramStyle"
-              :convert-force="props.convertForce"
-              :convert-moment="props.convertMoment"
-              :font-size="props.fontSize"
-              :number-format="props.numberFormat"
-            />
-          </g>
-
-          <!-- Painted above the elements, matching the drawing, so a load is never hidden by a beam. -->
-          <g v-if="props.showLoads" data-fit-ignore="loads">
-            <SVGNodalLoad
-              v-for="(nload, index) in props.nodalLoads"
-              :key="`nodal-load-${index}`"
-              :nload="nload"
-              :scale="scale"
-              :convert-force="props.convertForce"
-              :font-size="props.fontSize"
-              :number-format="props.numberFormat"
-            />
-            <SVGPrescribedDisplacement
-              v-for="(nload, index) in props.prescribedDisplacements"
-              :key="`nodal-load-${index}`"
-              :nload="nload"
-              :scale="scale"
-              :convert-displacement="props.convertDisplacement"
-              :multiplier="defoScale * props.resultsScalePx"
-              :font-size="props.fontSize"
-              :number-format="props.numberFormat"
-            />
-          </g>
-          <g class="nodes">
-            <g v-for="(node, index) in props.nodes" :key="`node-${index}`">
-              <SVGNode
-                :node="node"
+            <g>
+              <SVGElement
+                v-for="(element, index) in props.elements"
+                :key="`element-geometry-${index}`"
+                :show-geometry="true"
+                :show-results="false"
+                :element="element"
                 :scale="scale"
-                :show-label="props.showNodeLabels"
-                :show-supports="props.showSupports"
                 :show-deformed-shape="props.showDeformedShape"
-                :show-reactions="props.showReactions"
+                :show-normal-force="props.showNormalForce"
+                :show-shear-force="props.showShearForce"
+                :show-bending-moment="props.showMoments"
+                :show-label="props.showElementLabels"
+                :load-case="props.solver.loadCases[0]"
+                :deformed-shape-multiplier="defoScale * props.resultsScalePx"
+                :normal-force-multiplier="normalForceScale * props.resultsScalePx"
+                :shear-force-multiplier="shearForceScale * props.resultsScalePx"
+                :bending-moment-multiplier="bendingMomentScale * props.resultsScalePx"
+                :result-label-mode="props.resultLabelMode"
+                :diagram-style="props.diagramStyle"
                 :convert-force="props.convertForce"
                 :convert-moment="props.convertMoment"
+                :font-size="props.fontSize"
+                :number-format="props.numberFormat"
+              />
+            </g>
+
+            <g>
+              <SVGElement
+                v-for="(element, index) in props.elements"
+                :key="`element-results-${index}`"
+                :show-geometry="false"
+                :show-results="true"
+                :element="element"
+                :scale="scale"
+                :show-deformed-shape="props.showDeformedShape"
+                :show-normal-force="props.showNormalForce"
+                :show-shear-force="props.showShearForce"
+                :show-bending-moment="props.showMoments"
+                :show-label="props.showElementLabels"
                 :load-case="props.solver.loadCases[0]"
+                :deformed-shape-multiplier="defoScale * props.resultsScalePx"
+                :normal-force-multiplier="normalForceScale * props.resultsScalePx"
+                :shear-force-multiplier="shearForceScale * props.resultsScalePx"
+                :bending-moment-multiplier="bendingMomentScale * props.resultsScalePx"
+                :result-label-mode="props.resultLabelMode"
+                :diagram-style="props.diagramStyle"
+                :convert-force="props.convertForce"
+                :convert-moment="props.convertMoment"
+                :font-size="props.fontSize"
+                :number-format="props.numberFormat"
+              />
+            </g>
+
+            <!-- Painted above the elements, matching the drawing, so a load is never hidden by a beam. -->
+            <g v-if="props.showLoads" data-fit-ignore="loads">
+              <SVGNodalLoad
+                v-for="(nload, index) in props.nodalLoads"
+                :key="`nodal-load-${index}`"
+                :nload="nload"
+                :scale="scale"
+                :convert-force="props.convertForce"
+                :font-size="props.fontSize"
+                :number-format="props.numberFormat"
+              />
+              <SVGPrescribedDisplacement
+                v-for="(nload, index) in props.prescribedDisplacements"
+                :key="`nodal-load-${index}`"
+                :nload="nload"
+                :scale="scale"
+                :convert-displacement="props.convertDisplacement"
                 :multiplier="defoScale * props.resultsScalePx"
                 :font-size="props.fontSize"
                 :number-format="props.numberFormat"
               />
             </g>
-          </g>
+            <g class="nodes">
+              <g v-for="(node, index) in props.nodes" :key="`node-${index}`">
+                <SVGNode
+                  :node="node"
+                  :scale="scale"
+                  :show-label="props.showNodeLabels"
+                  :show-supports="props.showSupports"
+                  :show-deformed-shape="props.showDeformedShape"
+                  :show-reactions="props.showReactions"
+                  :convert-force="props.convertForce"
+                  :convert-moment="props.convertMoment"
+                  :load-case="props.solver.loadCases[0]"
+                  :multiplier="defoScale * props.resultsScalePx"
+                  :font-size="props.fontSize"
+                  :number-format="props.numberFormat"
+                />
+              </g>
+            </g>
+          </template>
 
           <g>
             <SVGDimensioning
@@ -526,10 +623,18 @@ defineExpose({ centerContent, fitContent, setView, update });
 </template>
 
 <style lang="scss" scoped>
+/*
+ * What is drawn without a fill of its own (labels, mostly) takes it from here rather than the SVG
+ * default of black: the theme's ink (see drawingVars), black itself in the light theme.
+ */
+// The drawing's own SVG only: the icons in the tool rail and the panels draw with fill="none"
+.svg-viewer svg.drawing-svg {
+  fill: var(--eb-ink, black);
+}
 .svg-viewer :deep(*) {
   .element-load.load-1d {
     text {
-      fill: v-bind('colors.loads');
+      fill: v-bind('drawn.loads');
     }
 
     stroke-linecap: butt;
@@ -540,7 +645,7 @@ defineExpose({ centerContent, fitContent, setView, update });
     }
 
     use {
-      stroke: v-bind('colors.loads');
+      stroke: v-bind('drawn.loads');
     }
 
     use:hover {
@@ -559,7 +664,7 @@ defineExpose({ centerContent, fitContent, setView, update });
 
     polygon,
     path {
-      stroke: v-bind('colors.loads');
+      stroke: v-bind('drawn.loads');
       stroke-width: 1px;
 
       &.handle {
@@ -574,20 +679,20 @@ defineExpose({ centerContent, fitContent, setView, update });
 
     &.selected {
       text {
-        fill: rgb(0, 55, 149);
+        fill: var(--eb-select-strong, rgb(0, 55, 149));
       }
 
       polygon.drawable,
       path.drawable {
-        stroke: rgb(0, 94, 255);
+        stroke: var(--eb-select, rgb(0, 94, 255));
         stroke-width: 4px;
         stroke-linejoin: round;
-        fill: rgba(0, 55, 149, 0.15);
+        fill: var(--eb-select-fill, rgba(0, 55, 149, 0.15));
       }
 
       use {
         stroke-width: 3px; /* affects the referenced element */
-        stroke: rgb(0, 94, 255);
+        stroke: var(--eb-select, rgb(0, 94, 255));
       }
     }
   }
@@ -595,7 +700,7 @@ defineExpose({ centerContent, fitContent, setView, update });
   .element.element-1d {
     polyline {
       fill: none;
-      stroke: black;
+      stroke: var(--eb-ink, #000);
       stroke-width: 2px;
       &.handle {
         cursor: pointer;
@@ -608,33 +713,33 @@ defineExpose({ centerContent, fitContent, setView, update });
     }
     &:hover {
       & polyline.drawable {
-        stroke: black;
+        stroke: var(--eb-ink, #000);
         stroke-width: 5px;
       }
     }
     &.selected {
       & polyline.drawable {
-        stroke: rgb(0, 94, 255);
+        stroke: var(--eb-select, rgb(0, 94, 255));
         stroke-width: 5px;
       }
     }
 
     polyline.fibers {
-      stroke: #666;
+      stroke: var(--eb-muted, #666);
       stroke-width: 1px;
     }
     path.deformedShape {
       fill: none;
-      stroke: v-bind('colors.deformedShape');
+      stroke: v-bind('drawn.deformedShape');
       stroke-width: 2px;
       &.decoration {
         stroke-width: 1px;
       }
     }
     .normal polyline {
-      stroke: v-bind('colors.normalForce');
+      stroke: v-bind('drawn.normalForce');
       stroke-width: 1px;
-      fill: v-bind('colors.normalForce');
+      fill: v-bind('drawn.normalForce');
       fill-opacity: 0.1;
       &:hover {
         fill-opacity: 0.2;
@@ -642,15 +747,15 @@ defineExpose({ centerContent, fitContent, setView, update });
     }
     // Hatch lines across the member, drawn like the outline but lighter.
     .normal path.hatch {
-      stroke: v-bind('colors.normalForce');
+      stroke: v-bind('drawn.normalForce');
       stroke-width: 1px;
       stroke-opacity: 0.55;
       fill: none;
     }
     .shear polyline {
-      stroke: v-bind('colors.shearForce');
+      stroke: v-bind('drawn.shearForce');
       stroke-width: 1px;
-      fill: v-bind('colors.shearForce');
+      fill: v-bind('drawn.shearForce');
       fill-opacity: 0.1;
       &:hover {
         fill-opacity: 0.2;
@@ -658,15 +763,15 @@ defineExpose({ centerContent, fitContent, setView, update });
     }
     // Hatch lines across the member, drawn like the outline but lighter.
     .shear path.hatch {
-      stroke: v-bind('colors.shearForce');
+      stroke: v-bind('drawn.shearForce');
       stroke-width: 1px;
       stroke-opacity: 0.55;
       fill: none;
     }
     .moment polyline {
-      stroke: v-bind('colors.bendingMoment');
+      stroke: v-bind('drawn.bendingMoment');
       stroke-width: 1px;
-      fill: v-bind('colors.bendingMoment');
+      fill: v-bind('drawn.bendingMoment');
       fill-opacity: 0.1;
       &:hover {
         fill-opacity: 0.2;
@@ -674,7 +779,7 @@ defineExpose({ centerContent, fitContent, setView, update });
     }
     // Hatch lines across the member, drawn like the outline but lighter.
     .moment path.hatch {
-      stroke: v-bind('colors.bendingMoment');
+      stroke: v-bind('drawn.bendingMoment');
       stroke-width: 1px;
       stroke-opacity: 0.55;
       fill: none;
@@ -683,7 +788,7 @@ defineExpose({ centerContent, fitContent, setView, update });
 
   .node {
     polyline {
-      stroke: #000;
+      stroke: var(--eb-ink, #000);
       stroke-linecap: square;
       stroke-width: 6px;
       vector-effect: non-scaling-stroke;
@@ -697,26 +802,26 @@ defineExpose({ centerContent, fitContent, setView, update });
         stroke: none;
       }
       &.drawable.deformed {
-        stroke: v-bind('colors.deformedShape');
+        stroke: v-bind('drawn.deformedShape');
       }
     }
     &:hover polyline.drawable {
-      stroke: black;
+      stroke: var(--eb-ink, #000);
       stroke-width: 10px;
     }
     &.selected polyline.drawable {
-      stroke: rgb(0, 55, 149);
+      stroke: var(--eb-select-strong, rgb(0, 55, 149));
       stroke-width: 8px;
     }
   }
 
   .prescribed polyline {
-    stroke: v-bind('colors.loads');
+    stroke: v-bind('drawn.loads');
   }
 
   .nodal-load {
     text {
-      fill: v-bind('colors.loads');
+      fill: v-bind('drawn.loads');
     }
     polyline {
       stroke-linecap: butt;
@@ -803,30 +908,30 @@ defineExpose({ centerContent, fitContent, setView, update });
 
     &.selected polyline.decoration.marker-forceTip {
       marker-end: var(--marker-force-tip-selected);
-      stroke: rgb(0, 55, 149);
+      stroke: var(--eb-select-strong, rgb(0, 55, 149));
       stroke-width: 2px;
     }
     &.selected {
       text {
-        fill: rgb(0, 55, 149);
+        fill: var(--eb-select-strong, rgb(0, 55, 149));
       }
     }
   }
 
   .normal text {
-    fill: v-bind('colors.normalForce');
+    fill: v-bind('drawn.normalForce');
   }
 
   .shear text {
-    fill: v-bind('colors.shearForce');
+    fill: v-bind('drawn.shearForce');
   }
 
   .moment text {
-    fill: v-bind('colors.bendingMoment');
+    fill: v-bind('drawn.bendingMoment');
   }
 
   .reaction {
-    fill: v-bind('colors.reactions');
+    fill: v-bind('drawn.reactions');
   }
 
   .marker-reaction {

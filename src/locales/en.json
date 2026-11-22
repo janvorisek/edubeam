@@ -2,7 +2,8 @@
   "tabView": {
     "viewer": "Viewer",
     "settings": "Settings",
-    "results": "Results"
+    "results": "Results",
+    "report": "Report"
   },
   "common": {
     "label": "Label",
@@ -53,7 +54,11 @@
     "addNode": "Add node",
     "editNode": "Edit node",
     "defineSupports": "Node supports",
-    "lcsAngle": "Nodal LCS angle"
+    "lcsAngle": "Nodal LCS angle",
+    "equilibrium": "Node equilibrium",
+    "equilibriumOf": "Equilibrium of node {label}",
+    "equilibriumSymbols": "Symbols",
+    "equilibriumValues": "Values"
   },
   "supports": {
     "free": "Free",
@@ -86,6 +91,7 @@
     "addPrescribedDisplacement": "Prescribe displacement",
     "UDL": "UDL",
     "forceMoment": "Force/Moment",
+    "moment": "Moment",
     "editLoad": "Edit load",
     "loadPositionOnBeam": "Load position from start node",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Temperature change of bottom minus top fibers",
@@ -198,6 +204,16 @@
     "result_label_orientation": "Result label orientation",
     "result_label_orientation_axis": "Perpendicular to chart",
     "result_label_orientation_horizontal": "Always horizontal",
+    "theme": "Theme",
+    "theme_system": "System",
+    "theme_light": "Light",
+    "theme_dark": "Dark",
+    "theme_toDark": "Dark theme",
+    "theme_toLight": "Light theme",
+    "renderer": "Renderer",
+    "renderer_classic": "Classic",
+    "renderer_plot": "New (beta)",
+    "show_readout": "Show values at the pointer",
     "result_labels": "Result labels",
     "diagrams": {
       "title": "Internal force diagrams",
@@ -232,7 +248,13 @@
     "boxSelect": "Box select",
     "centerContent": "Center content",
     "fitContent": "Fit content to screen",
-    "holdCtrl": "Hold Ctrl to add using mouse"
+    "holdCtrl": "Hold Ctrl to add using mouse",
+    "select": "Select",
+    "tools": "Tools",
+    "snapMiddle": "Midpoint",
+    "snapThird": "Third point",
+    "snapOnElement": "On element {label}",
+    "placeFreely": "Hold Alt to place freely"
   },
   "dofs": {
     "bcs": "Supported DOFs"
@@ -318,7 +340,8 @@
       "comingSoon": "Coming soon",
       "tryIt": "Try it",
       "tried": {
-        "diagramStyles": "Hatched diagrams with the degree of each segment are on."
+        "diagramStyles": "Hatched diagrams with the degree of each segment are on.",
+        "newDrawing": "The new drawing with hatched diagrams is on."
       }
     },
     "polygonSection": {
@@ -399,6 +422,19 @@
     "shareLayers": "Show what I see",
     "shareLayersHint": "The link opens with the diagrams, loads and labels you have on."
   },
+  "shortcuts": {
+    "title": "Keyboard shortcuts",
+    "drawing": "Drawing",
+    "editing": "Editing",
+    "cancel": "Back to Select, cancel what is being placed",
+    "placeFreely": "Place freely, off the snaps (hold)",
+    "grid": "Show or hide the grid",
+    "snap": "Snap to the grid on or off",
+    "zoom": "Zoom in and out",
+    "selectAll": "Select all",
+    "save": "Save the project",
+    "exportImage": "Export an image"
+  },
   "tour": {
     "menu": {
       "title": "Menu",
@@ -407,6 +443,11 @@
     "undoRedo": {
       "title": "Undo and redo",
       "description": "Step back and forward through your changes. Ctrl+Z and Ctrl+Shift+Z do the same."
+    },
+    "tools": {
+      "title": "Tools",
+      "description": "Add nodes, elements, supports and loads right on the drawing. Hold a tool, or click its corner, to choose the kind of support or load. Points snap to nodes and to an element's middle and thirds; hold Alt to place freely. Keys: V select, N node, E element, U support, L load, D dimension, Esc back to select.",
+      "descriptionTouch": "Add nodes, elements, supports and loads right on the drawing: tap a tool, then tap where it goes, and the arrow when you are done. The support and load tools open a list of kinds. Points snap to nodes and to an element's middle and thirds. One finger pans, two fingers zoom. Drag a node to move it, hold a load to pick it up, or hold anywhere else for the menu."
     },
     "viewerControls": {
       "title": "Viewer buttons",
@@ -602,7 +643,8 @@
     "selectMaterialAndCrossSection": "Please select a material and a cross section.",
     "labelInUse": "Label {label} is already in use.",
     "noMaterialOrCrossSection": "Element does not specify material or cross section.",
-    "elementMissing": "Element {label} no longer exists."
+    "elementMissing": "Element {label} no longer exists.",
+    "nodeMissing": "Node {label} no longer exists."
   },
   "help": {
     "aria": "Show help",
@@ -777,5 +819,20 @@
       "acrylic": "acrylic",
       "approx": "approx"
     }
+  },
+  "report": {
+    "column": "Column",
+    "row": "Row",
+    "no_results": "Shown once the structure is solved",
+    "guides": "Guide lines",
+    "print": "Print",
+    "paper": "Paper",
+    "portrait": "Portrait",
+    "landscape": "Landscape"
+  },
+  "languageOffer": {
+    "message": "EduBeam is available in English.",
+    "switch": "Switch to English",
+    "dismiss": "No thanks"
   }
 }

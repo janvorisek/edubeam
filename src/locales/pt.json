@@ -2,7 +2,8 @@
   "tabView": {
     "viewer": "Estrutura",
     "settings": "Configurações",
-    "results": "Resultados"
+    "results": "Resultados",
+    "report": "Relatório"
   },
   "common": {
     "label": "Rótulo",
@@ -53,7 +54,11 @@
     "addNode": "Adicionar nó",
     "editNode": "Editar nó",
     "defineSupports": "Apoios do nó",
-    "lcsAngle": "Ângulo do SCL nodal"
+    "lcsAngle": "Ângulo do SCL nodal",
+    "equilibrium": "Equilíbrio do nó",
+    "equilibriumOf": "Equilíbrio do nó {label}",
+    "equilibriumSymbols": "Símbolos",
+    "equilibriumValues": "Valores"
   },
   "supports": {
     "free": "Livre",
@@ -86,6 +91,7 @@
     "addPrescribedDisplacement": "Prescrever deslocamento",
     "UDL": "Carga distribuída uniforme",
     "forceMoment": "Força/Momento",
+    "moment": "Momento",
     "editLoad": "Editar carga",
     "loadPositionOnBeam": "Posição da carga a partir do nó inicial",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Variação de temperatura da fibra inferior menos superior",
@@ -198,6 +204,16 @@
     "result_label_orientation": "Orientação dos rótulos de resultados",
     "result_label_orientation_axis": "Perpendicular ao diagrama",
     "result_label_orientation_horizontal": "Sempre horizontais",
+    "theme": "Tema",
+    "theme_system": "Sistema",
+    "theme_light": "Claro",
+    "theme_dark": "Escuro",
+    "theme_toDark": "Tema escuro",
+    "theme_toLight": "Tema claro",
+    "renderer": "Renderizador",
+    "renderer_classic": "Clássico",
+    "renderer_plot": "Novo (beta)",
+    "show_readout": "Mostrar valores junto ao ponteiro",
     "result_labels": "Rótulos de resultados",
     "diagrams": {
       "title": "Diagramas de esforços internos",
@@ -232,7 +248,13 @@
     "boxSelect": "Seleção por retângulo",
     "centerContent": "Centralizar conteúdo",
     "fitContent": "Ajustar conteúdo à tela",
-    "holdCtrl": "Segure Ctrl para adicionar com o mouse"
+    "holdCtrl": "Segure Ctrl para adicionar com o mouse",
+    "select": "Selecionar",
+    "tools": "Ferramentas",
+    "snapMiddle": "Ponto médio",
+    "snapThird": "Terço",
+    "snapOnElement": "No elemento {label}",
+    "placeFreely": "Segure Alt para posicionar livremente"
   },
   "dofs": {
     "bcs": "GLs restringidos"
@@ -318,7 +340,8 @@
       "comingSoon": "Em breve",
       "tryIt": "Experimentar",
       "tried": {
-        "diagramStyles": "Os diagramas hachurados com o grau de cada trecho estão ativados."
+        "diagramStyles": "Os diagramas hachurados com o grau de cada trecho estão ativados.",
+        "newDrawing": "O novo desenho com diagramas hachurados está ativado."
       }
     },
     "polygonSection": {
@@ -399,6 +422,19 @@
     "shareLayers": "Mostrar o que eu vejo",
     "shareLayersHint": "O link abre com os diagramas, cargas e rótulos que você tem ativados."
   },
+  "shortcuts": {
+    "title": "Atalhos de teclado",
+    "drawing": "Desenho",
+    "editing": "Edição",
+    "cancel": "Voltar a selecionar, cancelar o posicionamento",
+    "placeFreely": "Posicionar livremente, sem ajuste (segurar)",
+    "grid": "Mostrar ou ocultar a grade",
+    "snap": "Ativar ou desativar o ajuste à grade",
+    "zoom": "Aproximar e afastar",
+    "selectAll": "Selecionar tudo",
+    "save": "Salvar o projeto",
+    "exportImage": "Exportar uma imagem"
+  },
   "tour": {
     "menu": {
       "title": "Menu",
@@ -407,6 +443,11 @@
     "undoRedo": {
       "title": "Desfazer e refazer",
       "description": "Volte e avance pelas suas alterações. Ctrl+Z e Ctrl+Shift+Z fazem o mesmo."
+    },
+    "tools": {
+      "title": "Ferramentas",
+      "description": "Adicione nós, elementos, apoios e cargas diretamente no desenho. Mantenha uma ferramenta pressionada ou clique no seu canto para escolher o tipo de apoio ou de carga. Os pontos se ajustam aos nós e ao meio e aos terços de um elemento; segure Alt para posicionar livremente. Teclas: V selecionar, N nó, E elemento, U apoio, L carga, D cota, Esc voltar a selecionar.",
+      "descriptionTouch": "Adicione nós, elementos, apoios e cargas diretamente no desenho: toque numa ferramenta, depois no local onde ela vai e, ao terminar, na seta. As ferramentas de apoios e cargas abrem uma lista de tipos. Os pontos se ajustam aos nós e ao meio e aos terços de um elemento. Um dedo move a vista, dois dedos fazem zoom. Arraste um nó para movê-lo, mantenha uma carga pressionada para levantá-la ou mantenha pressionado em outro lugar para abrir o menu."
     },
     "viewerControls": {
       "title": "Botões de visualização",
@@ -602,7 +643,8 @@
     "selectMaterialAndCrossSection": "Selecione um material e uma seção.",
     "labelInUse": "O rótulo {label} já está em uso.",
     "noMaterialOrCrossSection": "O elemento não especifica material ou seção.",
-    "elementMissing": "O elemento {label} não existe mais."
+    "elementMissing": "O elemento {label} não existe mais.",
+    "nodeMissing": "O nó {label} não existe mais."
   },
   "help": {
     "aria": "Mostrar ajuda",
@@ -777,5 +819,20 @@
       "acrylic": "acrílico",
       "approx": "aprox."
     }
+  },
+  "report": {
+    "column": "Em coluna",
+    "row": "Em linha",
+    "no_results": "Exibido depois de resolvida a estrutura",
+    "guides": "Linhas de guia",
+    "print": "Imprimir",
+    "paper": "Papel",
+    "portrait": "Retrato",
+    "landscape": "Paisagem"
+  },
+  "languageOffer": {
+    "message": "O EduBeam está disponível em português.",
+    "switch": "Mudar para português",
+    "dismiss": "Não, obrigado"
   }
 }

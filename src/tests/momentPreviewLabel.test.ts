@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
+import { useViewerStore } from '@/store/viewer';
 import { mount } from '@vue/test-utils';
 import { createVuetify } from 'vuetify';
 import Vector2DHelper from '@/components/Vector2DHelper.vue';
@@ -39,7 +40,11 @@ const labelOf = (wrapper: ReturnType<typeof mountHelper>) => {
 };
 
 describe('the moment value in the nodal load preview', () => {
-  beforeEach(() => setActivePinia(createPinia()));
+  beforeEach(() => {
+    setActivePinia(createPinia());
+    // The preview drawn by hand: the one the classic renderer shows (a new user starts on plot's)
+    useViewerStore().renderer = 'classic';
+  });
 
   for (const [name, my] of [
     ['a counter-clockwise moment', 5],
@@ -128,7 +133,8 @@ describe('the moment value in the nodal load preview', () => {
     const bubble = wrapper.find('g.node circle');
 
     expect(bubble.exists()).toBe(true);
-    expect(bubble.attributes('stroke')).toBe('black');
+    // In the dialog's text colour, so it reads on the dark theme too
+    expect(bubble.attributes('stroke')).toBe('currentColor');
     expect(Number(bubble.attributes('r'))).toBeGreaterThan(0);
   });
 

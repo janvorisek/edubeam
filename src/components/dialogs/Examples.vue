@@ -22,6 +22,7 @@
             <div class="example-preview" aria-hidden="true">
               <SVGElementViewer
                 :id="`example-${example.id}`"
+                :theme="themeName"
                 :solver="example.solver"
                 :nodes="example.nodes"
                 :elements="example.elements"
@@ -40,6 +41,7 @@
                 :convert-moment="convertMoment"
                 :zoom-enabled="false"
                 :support-size="0.5"
+                :plot="tileLook"
               />
             </div>
             <div class="example-copy">
@@ -68,14 +70,21 @@
 </template>
 
 <script setup lang="ts">
+import { useThemeName } from '@/utils/theme';
 import { ref } from 'vue';
 import { closeModal } from 'jenesius-vue-modal';
 import SVGElementViewer from '../SVGElementViewer.vue';
+import { useTileLook } from '@/utils/useEditorLook';
 import { buildExampleSolver, createExampleLibrary, examples, type ExampleDefinition } from '@/utils/examples';
 import { docsUrl, trackDocsClick } from '@/utils/docs';
 import { replaceModel, resetModel } from '@/utils';
 import { useProjectStore } from '@/store/project';
 import { eventBus, EventType } from '@/EventBus';
+
+// Drawn by the renderer the canvas uses
+/** The previews drawn on the theme's canvas, as the editor is */
+const themeName = useThemeName();
+const tileLook = useTileLook();
 
 const open = ref(true);
 

@@ -68,14 +68,14 @@ const current = computed(() => supportType(props.bcs));
   gap: 1px;
   height: 25px;
   padding: 0 1px 0 4px;
-  background: #fff;
-  border: thin solid #ddd;
+  background: rgb(var(--v-theme-surface));
+  border: thin solid rgba(var(--v-border-color), 0.13);
   border-radius: 4px;
-  color: rgba(0, 0, 0, 0.87);
+  color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
   cursor: pointer;
 
   &:hover {
-    border-color: #aaa;
+    border-color: rgba(var(--v-border-color), 0.33);
   }
 }
 

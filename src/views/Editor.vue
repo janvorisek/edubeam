@@ -1,13 +1,16 @@
 <template>
-  <div class="d-flex flex-column fill-height">
+  <!-- Relative, so the widgets' layer is the editor's own area and they stay inside the window -->
+  <div class="d-flex flex-column fill-height" style="position: relative">
     <div style="height: 100%; width: 100%; position: absolute; pointer-events: none">
       <TransitionGroup name="fade">
         <Widget v-for="widget of layoutStore.widgets" :key="widget.title" :widget="widget" />
       </TransitionGroup>
     </div>
     <HelloWorld class="fill-height" style="min-height: 0" />
-    <div class="resizer" data-direction="vertical"></div>
-    <BottomBar v-if="!appStore.inViewerMode" :height="computedBottomBarHeight" class="d-block" />
+    <!-- The model's tables belong with its drawing: the report and the settings take the whole height -->
+    <!-- Hidden, not unmounted, on the other tabs: a cell being typed in and the tables' scroll stay -->
+    <div v-show="bottomBarShown" class="resizer" data-direction="vertical"></div>
+    <BottomBar :height="computedBottomBarHeight" :class="bottomBarShown ? 'd-block' : 'd-none'" />
   </div>
 </template>
 
@@ -25,8 +28,12 @@ const layoutStore = useLayoutStore();
 
 const drag = ref(false);
 
+const bottomBarShown = computed(
+  () => !appStore.inViewerMode && (appStore.openedTab?.props.id ?? 'viewer') === 'viewer'
+);
+
 const computedBottomBarHeight = computed(() => {
-  if (appStore.inViewerMode) return 0;
+  if (!bottomBarShown.value) return 0;
 
   return appStore.bottomBarOpen ? appStore.bottomBarHeight : 36;
 });

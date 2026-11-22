@@ -2,7 +2,8 @@
   "tabView": {
     "viewer": "Widok",
     "settings": "Ustawienia",
-    "results": "Wyniki"
+    "results": "Wyniki",
+    "report": "Raport"
   },
   "common": {
     "label": "Etykieta",
@@ -53,7 +54,11 @@
     "addNode": "Dodaj węzeł",
     "editNode": "Edytuj węzeł",
     "defineSupports": "Podpory węzła",
-    "lcsAngle": "Kąt lokalnego układu"
+    "lcsAngle": "Kąt lokalnego układu",
+    "equilibrium": "Równowaga węzła",
+    "equilibriumOf": "Równowaga węzła {label}",
+    "equilibriumSymbols": "Symbole",
+    "equilibriumValues": "Wartości"
   },
   "supports": {
     "free": "Swobodny",
@@ -86,6 +91,7 @@
     "addPrescribedDisplacement": "Zadaj przemieszczenie",
     "UDL": "Obciążenie równomiernie rozłożone",
     "forceMoment": "Siła/Moment",
+    "moment": "Moment",
     "editLoad": "Edytuj obciążenie",
     "loadPositionOnBeam": "Pozycja obciążenia od węzła początkowego",
     "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Zmiana temperatury dolnych minus górnych włókien",
@@ -198,6 +204,16 @@
     "result_label_orientation": "Orientacja etykiet wyników",
     "result_label_orientation_axis": "Prostopadle do wykresu",
     "result_label_orientation_horizontal": "Zawsze poziomo",
+    "theme": "Motyw",
+    "theme_system": "Systemowy",
+    "theme_light": "Jasny",
+    "theme_dark": "Ciemny",
+    "theme_toDark": "Ciemny motyw",
+    "theme_toLight": "Jasny motyw",
+    "renderer": "Renderowanie",
+    "renderer_classic": "Klasyczne",
+    "renderer_plot": "Nowe (beta)",
+    "show_readout": "Pokaż wartości przy kursorze",
     "result_labels": "Etykiety wyników",
     "diagrams": {
       "title": "Wykresy sił wewnętrznych",
@@ -232,7 +248,13 @@
     "boxSelect": "Zaznaczanie prostokątem",
     "centerContent": "Wyśrodkuj widok",
     "fitContent": "Dopasuj do ekranu",
-    "holdCtrl": "Przytrzymaj Ctrl, aby dodawać myszą"
+    "holdCtrl": "Przytrzymaj Ctrl, aby dodawać myszą",
+    "select": "Zaznacz",
+    "tools": "Narzędzia",
+    "snapMiddle": "Środek",
+    "snapThird": "Jedna trzecia",
+    "snapOnElement": "Na elemencie {label}",
+    "placeFreely": "Przytrzymaj Alt, aby umieścić swobodnie"
   },
   "dofs": {
     "bcs": "Podparte stopnie swobody"
@@ -318,7 +340,8 @@
       "comingSoon": "Wkrótce",
       "tryIt": "Wypróbuj",
       "tried": {
-        "diagramStyles": "Kreskowane wykresy ze stopniem wielomianu na odcinkach są włączone."
+        "diagramStyles": "Kreskowane wykresy ze stopniem wielomianu na odcinkach są włączone.",
+        "newDrawing": "Nowy rysunek z kreskowanymi wykresami jest włączony."
       }
     },
     "polygonSection": {
@@ -399,6 +422,19 @@
     "shareLayers": "Pokaż to, co widzę",
     "shareLayersHint": "Link otworzy się z wykresami, obciążeniami i etykietami, które masz włączone."
   },
+  "shortcuts": {
+    "title": "Skróty klawiszowe",
+    "drawing": "Rysunek",
+    "editing": "Edycja",
+    "cancel": "Powrót do zaznaczania, anulowanie wstawiania",
+    "placeFreely": "Umieszczanie swobodne, bez przyciągania (przytrzymaj)",
+    "grid": "Pokaż lub ukryj siatkę",
+    "snap": "Włącz lub wyłącz przyciąganie do siatki",
+    "zoom": "Powiększanie i pomniejszanie",
+    "selectAll": "Zaznacz wszystko",
+    "save": "Zapisz projekt",
+    "exportImage": "Eksportuj obraz"
+  },
   "tour": {
     "menu": {
       "title": "Menu",
@@ -407,6 +443,11 @@
     "undoRedo": {
       "title": "Cofnij i ponów",
       "description": "Przechodź wstecz i naprzód przez swoje zmiany. Ctrl+Z i Ctrl+Shift+Z robią to samo."
+    },
+    "tools": {
+      "title": "Narzędzia",
+      "description": "Dodawaj węzły, elementy, podpory i obciążenia bezpośrednio na rysunku. Przytrzymaj narzędzie lub kliknij jego róg, aby wybrać rodzaj podpory lub obciążenia. Punkty przyciągają się do węzłów oraz do środka i trzecich części elementu; przytrzymaj Alt, aby umieścić swobodnie. Klawisze: V zaznaczanie, N węzeł, E element, U podpora, L obciążenie, D wymiar, Esc powrót do zaznaczania.",
+      "descriptionTouch": "Dodawaj węzły, elementy, podpory i obciążenia bezpośrednio na rysunku: dotknij narzędzia, potem miejsca, w którym ma się znaleźć, a na koniec strzałki. Narzędzia podpór i obciążeń otwierają listę rodzajów. Punkty przyciągają się do węzłów oraz do środka i trzecich części elementu. Jeden palec przesuwa widok, dwa palce przybliżają. Przeciągnij węzeł, aby go przesunąć, przytrzymaj obciążenie, aby je podnieść, albo przytrzymaj w innym miejscu, aby otworzyć menu."
     },
     "viewerControls": {
       "title": "Przyciski widoku",
@@ -602,7 +643,8 @@
     "selectMaterialAndCrossSection": "Wybierz materiał i przekrój.",
     "labelInUse": "Etykieta {label} jest już używana.",
     "noMaterialOrCrossSection": "Element nie ma określonego materiału lub przekroju.",
-    "elementMissing": "Element {label} już nie istnieje."
+    "elementMissing": "Element {label} już nie istnieje.",
+    "nodeMissing": "Węzeł {label} już nie istnieje."
   },
   "help": {
     "aria": "Pokaż pomoc",
@@ -777,5 +819,20 @@
       "acrylic": "akryl",
       "approx": "przybl."
     }
+  },
+  "report": {
+    "column": "W kolumnie",
+    "row": "W wierszu",
+    "no_results": "Wyświetlane po rozwiązaniu konstrukcji",
+    "guides": "Linie pomocnicze",
+    "print": "Drukuj",
+    "paper": "Papier",
+    "portrait": "Pionowo",
+    "landscape": "Poziomo"
+  },
+  "languageOffer": {
+    "message": "EduBeam jest dostępny po polsku.",
+    "switch": "Przełącz na polski",
+    "dismiss": "Nie, dziękuję"
   }
 }

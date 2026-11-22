@@ -1,7 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { useViewerStore } from '@/store/viewer';
-import { isTryItId, triedFeature, tryFeature, undoTriedFeature } from '@/utils/tryIt';
+import { TRY_IT_IDS, isTryItId, triedFeature, tryFeature, undoTriedFeature } from '@/utils/tryIt';
+import en from '@/locales/en.json';
 
 describe('trying a feature from the changelog', () => {
   beforeEach(() => {
@@ -33,5 +34,24 @@ describe('trying a feature from the changelog', () => {
     expect({ ...viewer.diagramStyle }).toEqual(before);
     expect(viewer.showBendingMoment).toBe(false);
     expect(triedFeature.value).toBeNull();
+  });
+
+  it('switches a returning user to the new drawing, and undo puts the classic one back', () => {
+    const viewer = useViewerStore();
+    viewer.renderer = 'classic';
+    viewer.diagramStyle.fill = 'solid';
+
+    tryFeature('newDrawing');
+    expect(viewer.renderer).toBe('plot');
+    expect(viewer.diagramStyle.fill).toBe('hatch');
+
+    undoTriedFeature();
+    expect(viewer.renderer).toBe('classic');
+    expect(viewer.diagramStyle.fill).toBe('solid');
+  });
+
+  it('has a notice for every feature, so the toast never shows a key', () => {
+    const tried: Record<string, string> = en.dialogs.changelog.tried;
+    for (const id of TRY_IT_IDS) expect(tried[id], id).toBeTruthy();
   });
 });

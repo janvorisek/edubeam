@@ -49,9 +49,16 @@ if (import.meta.env.PROD) {
     replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
     replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
     // Noise nothing in the app can act on: the browser failing to fetch or install the service
-    // worker (offline, private mode, storage limits), and Outlook's link scanner rejecting a promise
-    // with a plain object while it previews a share link.
-    ignoreErrors: [/service ?worker/i, /sw\.js load failed/, 'newestWorker is null', 'Object Not Found Matching Id'],
+    // worker (offline, private mode, storage limits), Outlook's link scanner rejecting a promise
+    // with a plain object while it previews a share link, and the browser's notice that a resize
+    // observer's callback resized something again (it simply runs again next frame).
+    ignoreErrors: [
+      /service ?worker/i,
+      /sw\.js load failed/,
+      'newestWorker is null',
+      'Object Not Found Matching Id',
+      /ResizeObserver loop/,
+    ],
     denyUrls: [/\/registerSW\.js/],
     /*beforeSend(event, hint) {
       // Check if it is an exception, and if so, show the report dialog

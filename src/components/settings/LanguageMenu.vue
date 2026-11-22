@@ -36,7 +36,10 @@ const current = computed(() => availableLocales.find((l) => l.code === appStore.
         :value="language.code"
         :lang="languageTag(language.code)"
         :active="language.code === appStore.locale"
-        @click="appStore.locale = language.code"
+        @click="
+          appStore.locale = language.code;
+          appStore.languageChosen = true;
+        "
       >
         <template #prepend>
           <img :src="languageFlags[language.code]" class="language-menu__flag" alt="" />

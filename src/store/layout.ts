@@ -1,18 +1,26 @@
 import { defineStore } from 'pinia';
 import { Component, Raw, Ref, markRaw, ref } from 'vue';
 
+/** What a widget is opened with: its place, and what it shows (an element's or a node's label) */
+export interface WidgetProps {
+  x: number;
+  y: number;
+  label?: string | number;
+  node?: string;
+}
+
+export interface Widget {
+  id: string;
+  title: string;
+  component: Raw<Component>;
+  props: WidgetProps;
+  closable: boolean;
+}
+
 export const useLayoutStore = defineStore(
   'layout',
   () => {
-    const widgets: Ref<
-      {
-        id: string;
-        title: string;
-        component: Raw<Component>;
-        props: unknown;
-        closable: boolean;
-      }[]
-    > = ref([]);
+    const widgets: Ref<Widget[]> = ref([]);
 
     const removeWidget = (id: string) => {
       const index = widgets.value.findIndex((widget) => widget.id === id);
@@ -21,16 +29,11 @@ export const useLayoutStore = defineStore(
       }
     };
 
-    const openWidget = (title: string, component: Component, props: unknown, closable = true) => {
+    const openWidget = (title: string, component: Component, shows: Omit<WidgetProps, 'x' | 'y'>, closable = true) => {
       const id = new Date().getTime().toString();
-
-      props.x = 32;
-      props.y = 64;
-
-      if (widgets.value.length > 0) {
-        props.x += 12 * widgets.value.length;
-        props.y += 12 * widgets.value.length;
-      }
+      // Each one a step down and right of the last, so none hides another
+      const step = 12 * widgets.value.length;
+      const props: WidgetProps = { ...shows, x: 32 + step, y: 64 + step };
 
       widgets.value.push({ id, title, component: markRaw(component), props, closable });
       return id;

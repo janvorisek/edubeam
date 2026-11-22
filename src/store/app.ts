@@ -5,6 +5,7 @@ import { reactive, ref, markRaw, type Ref, watch, Raw, Component, computed, next
 import SVGViewer from '../components/SVGViewer.vue';
 // import Results from "../components/Results.vue";
 import Settings from '../components/settings/Settings.vue';
+import Report from '../components/Report.vue';
 import { MouseMode } from '@/mouse';
 import { setLocale } from '@/plugins/i18n';
 import { openModal } from 'jenesius-vue-modal';
@@ -29,6 +30,7 @@ import { angle, axisConvention, axisLetters, vertical } from '@/utils/axisConven
 import { useProjectStore } from './project';
 import { useViewerStore } from './viewer';
 import { gridStepAfterUnitChange } from '@/utils/grid';
+import { isThemePreference, type ThemePreference } from '@/utils/theme';
 
 export type SettingsTab = 'lang' | 'appearance' | 'controls';
 
@@ -37,6 +39,8 @@ const asRecord = (value: unknown): Record<string, unknown> =>
 
 /** Labels on the drawing: two decimals. */
 const LABEL_DIGITS: Intl.NumberFormatOptions = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
+/** Loads are given, not worked out: written without the zeros results keep (10, 12.5) */
+const LOAD_DIGITS: Intl.NumberFormatOptions = { minimumFractionDigits: 0, maximumFractionDigits: 2 };
 /** Results span orders of magnitude: significant digits, the exponent written separately. */
 const RESULT_DIGITS: Intl.NumberFormatOptions = { maximumSignificantDigits: 5 };
 
@@ -52,7 +56,13 @@ export const useAppStore = defineStore(
     const bottomBarHeight = ref(226);
 
     const locale = ref(suggestLanguage());
+    /**
+     * Whether the language was chosen - from the menu, by a ?lang= link, or by answering the offer of
+     * the browser's own language - rather than taken from the browser. Only then is it left alone.
+     */
+    const languageChosen = ref(false);
     const numberFormatter = ref(createDisplayNumberFormat(locale.value, LABEL_DIGITS));
+    const loadFormatter = ref(createDisplayNumberFormat(locale.value, LOAD_DIGITS));
     // Results span orders of magnitude, so their mantissa is written by significant digits and
     // the exponent by the chosen style.
     const numberStyle = ref<ResultNumberStyle>('scientific');
@@ -69,6 +79,14 @@ export const useAppStore = defineStore(
       stored === undefined
         ? unitSystems[suggestBrowserUnitSystem()]
         : sanitizeUnitChoice({ ...asRecord(stored?.units), moment: stored?.momentUnits }, unitSystems.si);
+
+    // Light or dark. Someone new follows the system; anyone who has been here before keeps the light
+    // look they have always had, until they choose (see useThemeName)
+    const theme = ref<ThemePreference>(stored === undefined ? 'system' : 'light');
+    /** A stored theme that is none of them, written by hand or a later version: the light one */
+    const sanitizeTheme = () => {
+      if (!isThemePreference(theme.value)) theme.value = 'light';
+    };
 
     // A moment unit is a pair, so it is stored as one: `units.Moment` is only its label.
     const momentUnits = ref<{ force: ForceUnit; length: LengthUnit }>({ ...initial.moment });
@@ -215,13 +233,15 @@ export const useAppStore = defineStore(
     watch(locale, (newLocale) => {
       setLocale(newLocale);
       numberFormatter.value = createDisplayNumberFormat(newLocale, LABEL_DIGITS);
+      loadFormatter.value = createDisplayNumberFormat(newLocale, LOAD_DIGITS);
       resultFormatter.value = createDisplayNumberFormat(newLocale, RESULT_DIGITS);
     });
 
     const zooming = ref(false);
 
     const tab = ref(null);
-    const bottomBarTab = ref(null);
+    /** The bottom bar's open tab; the nodes' until another is chosen (the tabs only show, see BottomBar) */
+    const bottomBarTab = ref('tab-nodes');
 
     const mouseMode = ref<MouseMode>(MouseMode.NONE);
     const mouse = ref({ x: 0, y: 0, sx: 0, sy: 0 });
@@ -232,19 +252,35 @@ export const useAppStore = defineStore(
         component: Raw<Component>;
         props: { id?: string };
         closable: boolean;
+        /**
+         * What `tab` holds while it is open, kept for good: `tab` is saved, and a tab placed between
+         * two others must not take over the saved value of the one after it.
+         */
+        value: number;
       }[]
     > = ref([
-      { title: 'tabView.viewer', component: markRaw(SVGViewer), props: { id: 'viewer' }, closable: false },
+      { title: 'tabView.viewer', component: markRaw(SVGViewer), props: { id: 'viewer' }, closable: false, value: 0 },
+      // Next to the drawing it reports on
+      { title: 'tabView.report', component: markRaw(Report), props: { id: 'report' }, closable: false, value: 2 },
       //{ title: "tabView.results", component: markRaw(Results), props: {}, closable: true },
       /*
        * Not closable: closing it was a one way door, since nothing ever put it back - the gear opens
        * the same panel in a dialog instead, and the code that would have reopened the tab has been
        * commented out below since it was written.
        */
-      { title: 'tabView.settings', component: markRaw(Settings), props: { id: 'settings' }, closable: false },
+      {
+        title: 'tabView.settings',
+        component: markRaw(Settings),
+        props: { id: 'settings' },
+        closable: false,
+        value: 1,
+      },
     ]);
 
-    const openedTab = computed(() => tabs.value[tab.value] || null);
+    // Until the tab strip has chosen one (it picks the first as it mounts), the first: the drawing
+    const openedTab = computed(() =>
+      tab.value === null ? (tabs.value[0] ?? null) : (tabs.value.find((t) => t.value === tab.value) ?? null)
+    );
 
     const openSettings = (tab: SettingsTab = 'lang') => {
       openModal(SettingsModal, { tab });
@@ -281,6 +317,7 @@ export const useAppStore = defineStore(
       applyUnitChoice(unitSystems[suggestBrowserUnitSystem()]);
       axisConvention.value = 'z-down';
       panButton.value = -1;
+      theme.value = 'system';
     };
 
     return {
@@ -293,7 +330,9 @@ export const useAppStore = defineStore(
       bottomBarOpen,
       bottomBarHeight,
       locale,
+      languageChosen,
       numberFormatter,
+      loadFormatter,
       numberStyle,
       resultFormatter,
       formatResultHTML,
@@ -303,6 +342,8 @@ export const useAppStore = defineStore(
       unitSystem,
       setLengthUnit,
       sanitizeUnits,
+      theme,
+      sanitizeTheme,
       zooming,
       tab,
       openedTab,
@@ -358,6 +399,7 @@ export const useAppStore = defineStore(
         'onboardingFinished',
         'lastSeenChangelogVersion',
         'locale',
+        'languageChosen',
         'numberStyle',
         'tab',
         'bottomBarHeight',
@@ -376,9 +418,13 @@ export const useAppStore = defineStore(
         'axisConvention',
         'shortShareLinks',
         'shareLayers',
+        'theme',
       ],
       debug: true,
-      afterHydrate: ({ store }) => store.sanitizeUnits(),
+      afterHydrate: ({ store }) => {
+        store.sanitizeUnits();
+        store.sanitizeTheme();
+      },
     },
   }
 );

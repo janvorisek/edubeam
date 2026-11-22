@@ -14,6 +14,7 @@ import { nextTick } from 'vue';
 import { useViewerStore } from './store/viewer';
 import Confirmation from './components/dialogs/Confirmation.vue';
 import ReloadPrompt from './components/ReloadPrompt.vue';
+import LanguageOffer from './components/LanguageOffer.vue';
 import { buildStarterModel } from './utils/starterModel';
 import { fromShareParam } from './utils/serializeModel';
 import { isEduBeamSession, parseEduBeamSession } from './utils/edubeamSession';
@@ -27,7 +28,9 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { computed, onMounted, provide, ref } from 'vue';
+import { computed, onMounted, provide, ref, watchEffect } from 'vue';
+import { useTheme } from 'vuetify';
+import { useThemeName } from '@/utils/theme';
 import { setLocale, availableLocales } from './plugins/i18n';
 
 import Welcome from '@/components/dialogs/Welcome.vue';
@@ -43,6 +46,7 @@ import { startFirstBeam } from './utils/startFirstBeam';
 import { fieldOwnsUndo, hasShortcutModifier, zoomShortcut } from './utils/keyboard';
 import { isViewerModeParam } from './utils/urlParams';
 
+import { deviceHasHover } from '@/utils/pointer';
 import { VOnboardingWrapper, VOnboardingStep, useVOnboarding } from 'v-onboarding';
 import 'v-onboarding/dist/style.css';
 
@@ -53,6 +57,15 @@ const { t } = useI18n();
 const viewerStore = useViewerStore();
 
 const file = ref<HTMLInputElement | null>(null);
+
+// Light or dark, as chosen or as the system is (see useThemeName): Vuetify's theme, and the page's
+// own colour scheme, so its scrollbars and form controls follow too
+const vuetifyTheme = useTheme();
+const themeName = useThemeName();
+watchEffect(() => {
+  vuetifyTheme.change(themeName.value);
+  document.documentElement.style.colorScheme = themeName.value;
+});
 
 const onboardingWrapper = ref(null);
 provide('onboardingWrapper', onboardingWrapper);
@@ -65,6 +78,14 @@ const steps = computed(() => [
   {
     attachTo: { element: '#undoRedo' },
     content: { title: t('tour.undoRedo.title'), description: t('tour.undoRedo.description') },
+  },
+  {
+    attachTo: { element: '#toolRail' },
+    // Where nothing hovers, a finger: taps, holds and two fingers, not corners, Alt and keys
+    content: {
+      title: t('tour.tools.title'),
+      description: deviceHasHover.value ? t('tour.tools.description') : t('tour.tools.descriptionTouch'),
+    },
   },
   {
     attachTo: { element: '#viewerControls' },
@@ -105,18 +126,32 @@ const steps = computed(() => [
  * attach to: the pane it is about is hidden, so everything in it measures zero. Switching to it
  * once, before the first step, is simpler than asking each step that needs it to switch for itself.
  */
+/** The display options as the tour found them: it opens them to show them, and puts them back after */
+let settingsOpenBeforeTour: boolean | null = null;
+
 const startTour = async () => {
-  const drawing = appStore.tabs.findIndex((tab) => tab.props.id === 'viewer');
+  const drawing = appStore.tabs.find((tab) => tab.props.id === 'viewer');
 
-  if (drawing >= 0) appStore.tab = drawing;
+  if (drawing) appStore.tab = drawing.value;
 
+  settingsOpenBeforeTour ??= viewerStore.settingsOpen;
   viewerStore.settingsOpen = true;
   await nextTick();
   useVOnboarding(onboardingWrapper).start();
 };
 
 // The step slot's own `exit` only emits an event; this is what takes the tour down.
+provide('startTour', startTour);
+
 const endTour = () => useVOnboarding(onboardingWrapper).finish();
+
+// However it ends: the last step, its close button or Esc. Esc finishes a tour that is not running
+// too, which opened nothing.
+const onTourFinish = () => {
+  if (settingsOpenBeforeTour === null) return;
+  viewerStore.settingsOpen = settingsOpenBeforeTour;
+  settingsOpenBeforeTour = null;
+};
 
 /**
  * v-onboarding builds a fresh popper for each step the moment its bubble mounts, from whatever
@@ -225,6 +260,9 @@ onMounted(() => {
   const panel = params.get('panel');
   // The layers the link was shared with; without it, the viewer's own (see viewLayers).
   const show = params.get('show');
+  // ?renderer=plot opts into the prototype drawing, ?renderer=classic goes back; it is remembered.
+  const renderer = params.get('renderer');
+  if (renderer === 'plot' || renderer === 'classic') useViewerStore().renderer = renderer;
 
   // Someone who has not been through the welcome dialog yet is new here: this version is what
   // they start with, not news, so the changelog waits for the next release.
@@ -233,9 +271,14 @@ onMounted(() => {
   // Before the model: a shared link opens in the language it asks for too.
   if (lang && availableLocales.findIndex((l) => l.code === lang) >= 0) {
     appStore.locale = lang;
+    appStore.languageChosen = true;
   }
 
   if (show !== null) Object.assign(viewerStore, decodeLayers(show));
+
+  // A link to a model opens on the drawing, as it always has, whichever tab was left open last:
+  // the viewer has no tabs to get back with, and a shared model is there to be seen
+  if (inViewerMode || name) appStore.tab = 0;
 
   if (inViewerMode) {
     appStore.inViewerMode = true;
@@ -462,6 +505,7 @@ const app_commit = APP_COMMIT;
           enabled: false,
         },
       }"
+      @finish="onTourFinish"
     >
       <template #default="{ previous, next, step, isFirst, isLast, index }">
         <VOnboardingStep>
@@ -482,7 +526,7 @@ const app_commit = APP_COMMIT;
             <div class="d-flex align-center ga-2 mt-4">
               <span class="text-caption text-medium-emphasis">{{ index + 1 }} / {{ steps.length }}</span>
               <v-spacer />
-              <v-btn v-if="!isFirst" flat color="grey-lighten-3" @click="previous">
+              <v-btn v-if="!isFirst" flat color="panel-strong" @click="previous">
                 {{ $t('tour.previousButton') }}
               </v-btn>
               <v-btn color="primary" flat @click="next">
@@ -494,7 +538,7 @@ const app_commit = APP_COMMIT;
       </template>
     </VOnboardingWrapper>
 
-    <v-app-bar v-if="!appStore.inViewerMode" clipped-lefs clipped-right app color="primary" density="compact">
+    <v-app-bar v-if="!appStore.inViewerMode" clipped-lefs clipped-right app color="appbar" density="compact">
       <v-app-bar-nav-icon
         id="appMenu"
         :aria-label="$t('tour.menu.title')"
@@ -535,6 +579,16 @@ const app_commit = APP_COMMIT;
       <v-btn class="d-inline-flex" href="https://edubeam.app" target="_blank">
         {{ $t('common.documentation') }}
         <v-icon class="ml-1">mdi-open-in-new</v-icon>
+      </v-btn>
+
+      <!-- Light or dark at a click, as the website's header has it; System is in the settings -->
+      <v-btn
+        icon
+        :title="themeName === 'dark' ? $t('settings.theme_toLight') : $t('settings.theme_toDark')"
+        :aria-label="themeName === 'dark' ? $t('settings.theme_toLight') : $t('settings.theme_toDark')"
+        @click="appStore.theme = themeName === 'dark' ? 'light' : 'dark'"
+      >
+        <v-icon>{{ themeName === 'dark' ? 'mdi-white-balance-sunny' : 'mdi-weather-night' }}</v-icon>
       </v-btn>
 
       <v-btn
@@ -623,7 +677,7 @@ const app_commit = APP_COMMIT;
         ></v-list-item>
       </v-list>
       <v-divider />
-      <div class="pa-3 text-grey-darken-2" style="font-size: 12px">
+      <div class="pa-3 text-medium-emphasis" style="font-size: 12px">
         v{{ app_version }}<br />{{ new Date(app_released).toLocaleDateString(appStore.locale) }}
         {{ new Date(app_released).toLocaleTimeString(appStore.locale) }}<br />
         <span style="font-size: 10px">{{ app_commit }}</span>
@@ -646,13 +700,13 @@ const app_commit = APP_COMMIT;
     >
       <div>
         <a
-          class="text-black text-decoration-none font-weight-medium"
+          class="text-on-surface text-decoration-none font-weight-medium"
           href="https://github.com/janvorisek/edubeam/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=%5BBUG%5D"
           target="_blank"
           >{{ $t("footer.reportIssue") }}</a
         >
         <a
-          class="text-black text-decoration-none font-weight-medium ml-3"
+          class="text-on-surface text-decoration-none font-weight-medium ml-3"
           href="https://github.com/janvorisek/edubeam/issues/new?assignees=&labels=&projects=&template=feature_request.md&title="
           target="_blank"
           >{{ $t("footer.requestFeature") }}</a
@@ -661,6 +715,7 @@ const app_commit = APP_COMMIT;
       <div>edubeam v{{ app_version }} {{ $t("footer.released") }} {{ app_released }}</div>
     </div> -->
     <ReloadPrompt />
+    <LanguageOffer />
     <v-snackbar v-model="previousModelSaved" :timeout="10000" location="bottom">
       {{ $t('recentStructures.linkNotice') }}
       <template #actions>
@@ -741,11 +796,12 @@ svg text {
 
 .tooltip .content {
   position: relative;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(var(--v-theme-surface), 0.9);
+  color: rgb(var(--v-theme-on-surface));
   z-index: 100;
   padding: 3px 8px;
   //font-weight: bold;
-  box-shadow: 1px 1px 1px #ddd;
+  box-shadow: 1px 1px 1px var(--eb-ui-line);
 }
 
 .tooltip .content:after {
@@ -755,7 +811,7 @@ svg text {
   border-bottom: 6px solid transparent;
   left: -6px;
   top: 8px;
-  border-right: 6px solid rgba(255, 255, 255, 0.9);
+  border-right: 6px solid rgba(var(--v-theme-surface), 0.9);
   z-index: 1000;
 }
 

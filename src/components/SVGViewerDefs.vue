@@ -46,8 +46,8 @@ withDefaults(
       orient="auto"
       markerUnits="userSpaceOnUse"
     >
-      <polyline points="5,0 5,8" stroke="black" :stroke-width="0.5" fill="none" />
-      <polyline points="8,2 2,8" stroke="black" :stroke-width="0.5" fill="none" />
+      <polyline points="5,0 5,8" style="stroke: var(--eb-ink, black)" :stroke-width="0.5" fill="none" />
+      <polyline points="8,2 2,8" style="stroke: var(--eb-ink, black)" :stroke-width="0.5" fill="none" />
     </marker>
     <marker
       :id="`${id}-arrow`"
@@ -420,7 +420,7 @@ withDefaults(
       orient="auto"
       markerUnits="userSpaceOnUse"
     >
-      <line y1="6" x1="0" y2="40" x2="0" :stroke-width="2 / supportSize" stroke="black" />
+      <line y1="6" x1="0" y2="40" x2="0" :stroke-width="2 / supportSize" style="stroke: var(--eb-ink, black)" />
       <line
         v-for="i in 7"
         :key="i"
@@ -429,7 +429,7 @@ withDefaults(
         :y2="10 + (i * 40) / 7"
         x2="-10"
         :stroke-width="1 / supportSize"
-        stroke="black"
+        style="stroke: var(--eb-ink, black)"
         fill="none"
       />
     </marker>
@@ -444,7 +444,7 @@ withDefaults(
       orient="auto"
       markerUnits="userSpaceOnUse"
     >
-      <line y1="6" x1="-5" y2="40" x2="-5" :stroke-width="1 / supportSize" stroke="black" />
+      <line y1="6" x1="-5" y2="40" x2="-5" :stroke-width="1 / supportSize" style="stroke: var(--eb-ink, black)" />
       <line
         v-for="i in 7"
         :key="`mx-${i}`"
@@ -453,10 +453,10 @@ withDefaults(
         :y2="10 + (i * 40) / 7"
         x2="-15"
         :stroke-width="1 / supportSize"
-        stroke="black"
+        style="stroke: var(--eb-ink, black)"
         fill="none"
       />
-      <line y1="6" x1="5" y2="40" x2="5" :stroke-width="1 / supportSize" stroke="black" />
+      <line y1="6" x1="5" y2="40" x2="5" :stroke-width="1 / supportSize" style="stroke: var(--eb-ink, black)" />
       <line
         v-for="i in 7"
         :key="`mxr-${i}`"
@@ -465,7 +465,7 @@ withDefaults(
         :y2="10 + (i * 40) / 7"
         x2="15"
         :stroke-width="1 / supportSize"
-        stroke="black"
+        style="stroke: var(--eb-ink, black)"
         fill="none"
       />
     </marker>
@@ -480,17 +480,81 @@ withDefaults(
       orient="auto"
       markerUnits="userSpaceOnUse"
     >
-      <line y1="5" x1="-20" y2="5" x2="-5" :stroke-width="1 / supportSize" stroke="black" stroke-linecap="round" />
-      <line y1="-5" x1="-20" y2="-5" x2="-5" :stroke-width="1 / supportSize" stroke="black" stroke-linecap="round" />
+      <line
+        y1="5"
+        x1="-20"
+        y2="5"
+        x2="-5"
+        :stroke-width="1 / supportSize"
+        style="stroke: var(--eb-ink, black)"
+        stroke-linecap="round"
+      />
+      <line
+        y1="-5"
+        x1="-20"
+        y2="-5"
+        x2="-5"
+        :stroke-width="1 / supportSize"
+        style="stroke: var(--eb-ink, black)"
+        stroke-linecap="round"
+      />
 
-      <line y1="-5" x1="5" y2="-5" x2="20" :stroke-width="1 / supportSize" stroke="black" stroke-linecap="round" />
-      <line y1="5" x1="5" y2="5" x2="20" :stroke-width="1 / supportSize" stroke="black" stroke-linecap="round" />
+      <line
+        y1="-5"
+        x1="5"
+        y2="-5"
+        x2="20"
+        :stroke-width="1 / supportSize"
+        style="stroke: var(--eb-ink, black)"
+        stroke-linecap="round"
+      />
+      <line
+        y1="5"
+        x1="5"
+        y2="5"
+        x2="20"
+        :stroke-width="1 / supportSize"
+        style="stroke: var(--eb-ink, black)"
+        stroke-linecap="round"
+      />
 
-      <line y1="-20" x1="-5" y2="-5" x2="-5" :stroke-width="1 / supportSize" stroke="black" stroke-linecap="round" />
-      <line y1="-20" x1="5" y2="-5" x2="5" :stroke-width="1 / supportSize" stroke="black" stroke-linecap="round" />
+      <line
+        y1="-20"
+        x1="-5"
+        y2="-5"
+        x2="-5"
+        :stroke-width="1 / supportSize"
+        style="stroke: var(--eb-ink, black)"
+        stroke-linecap="round"
+      />
+      <line
+        y1="-20"
+        x1="5"
+        y2="-5"
+        x2="5"
+        :stroke-width="1 / supportSize"
+        style="stroke: var(--eb-ink, black)"
+        stroke-linecap="round"
+      />
 
-      <line y1="5" x1="5" y2="20" x2="5" :stroke-width="1 / supportSize" stroke="black" stroke-linecap="round" />
-      <line y1="5" x1="-5" y2="20" x2="-5" :stroke-width="1 / supportSize" stroke="black" stroke-linecap="round" />
+      <line
+        y1="5"
+        x1="5"
+        y2="20"
+        x2="5"
+        :stroke-width="1 / supportSize"
+        style="stroke: var(--eb-ink, black)"
+        stroke-linecap="round"
+      />
+      <line
+        y1="5"
+        x1="-5"
+        y2="20"
+        x2="-5"
+        :stroke-width="1 / supportSize"
+        style="stroke: var(--eb-ink, black)"
+        stroke-linecap="round"
+      />
 
       <!-- Diagonal dashes in the corners -->
       <line
@@ -501,7 +565,7 @@ withDefaults(
         :y2="8 + (i - 1) * 4"
         :x2="7"
         :stroke-width="1 / supportSize"
-        stroke="black"
+        style="stroke: var(--eb-ink, black)"
         stroke-linecap="round"
       />
       <line
@@ -512,7 +576,7 @@ withDefaults(
         :y2="-8 - (i - 1) * 4"
         :x2="-7"
         :stroke-width="1 / supportSize"
-        stroke="black"
+        style="stroke: var(--eb-ink, black)"
         stroke-linecap="round"
       />
       <line
@@ -523,7 +587,7 @@ withDefaults(
         :y2="8 + (i - 1) * 4"
         :x2="-7"
         :stroke-width="1 / supportSize"
-        stroke="black"
+        style="stroke: var(--eb-ink, black)"
         stroke-linecap="round"
       />
       <line
@@ -534,7 +598,7 @@ withDefaults(
         :y2="-8 - (i - 1) * 4"
         :x2="7"
         :stroke-width="1 / supportSize"
-        stroke="black"
+        style="stroke: var(--eb-ink, black)"
         stroke-linecap="round"
       />
     </marker>
@@ -550,7 +614,12 @@ withDefaults(
       orient="auto"
       markerUnits="userSpaceOnUse"
     >
-      <polyline points="10,0 -5,20 25,20 10,0" :stroke-width="1 / supportSize" fill="transparent" stroke="black" />
+      <polyline
+        points="10,0 -5,20 25,20 10,0"
+        :stroke-width="1 / supportSize"
+        fill="transparent"
+        style="stroke: var(--eb-ink, black)"
+      />
     </marker>
 
     <marker
@@ -564,8 +633,13 @@ withDefaults(
       orient="auto"
       markerUnits="userSpaceOnUse"
     >
-      <polyline points="10,0 -5,20 25,20 10,0" :stroke-width="1 / supportSize" fill="transparent" stroke="black" />
-      <line y1="25" x1="-5" y2="25" x2="25" :stroke-width="1 / supportSize" stroke="black" />
+      <polyline
+        points="10,0 -5,20 25,20 10,0"
+        :stroke-width="1 / supportSize"
+        fill="transparent"
+        style="stroke: var(--eb-ink, black)"
+      />
+      <line y1="25" x1="-5" y2="25" x2="25" :stroke-width="1 / supportSize" style="stroke: var(--eb-ink, black)" />
     </marker>
 
     <marker
@@ -579,8 +653,13 @@ withDefaults(
       orient="auto"
       markerUnits="userSpaceOnUse"
     >
-      <polyline points="0,10 20,-5 20,25 0,10" :stroke-width="1 / supportSize" fill="transparent" stroke="black" />
-      <line y1="-5" x1="25" y2="25" x2="25" :stroke-width="1 / supportSize" stroke="black" />
+      <polyline
+        points="0,10 20,-5 20,25 0,10"
+        :stroke-width="1 / supportSize"
+        fill="transparent"
+        style="stroke: var(--eb-ink, black)"
+      />
+      <line y1="-5" x1="25" y2="25" x2="25" :stroke-width="1 / supportSize" style="stroke: var(--eb-ink, black)" />
     </marker>
 
     <marker
@@ -593,7 +672,7 @@ withDefaults(
       overflow="visible"
       markerUnits="strokeWidth"
     >
-      <circle r="7" fill="white" stroke="black" stroke-width="2" />
+      <circle r="7" style="fill: var(--eb-paper, white); stroke: var(--eb-ink, black)" stroke-width="2" />
     </marker>
 
     <marker
@@ -606,11 +685,11 @@ withDefaults(
       overflow="visible"
       markerUnits="strokeWidth"
     >
-      <circle r="7" fill="white" stroke="black" stroke-width="2" />
+      <circle r="7" style="fill: var(--eb-paper, white); stroke: var(--eb-ink, black)" stroke-width="2" />
     </marker>
 
     <filter :id="`${id}-textLabel`" x="-2.5%" width="105%" y="0%" height="100%">
-      <feFlood flood-color="white" flood-opacity="0.8" />
+      <feFlood style="flood-color: var(--eb-paper, white)" flood-opacity="0.8" />
     </filter>
   </defs>
 </template>

@@ -10,6 +10,8 @@
         "Add supports and loads straight from the toolbar.",
         "Drag a load to move it.",
         "Report tab: loads, internal forces and deflection, ready to print.",
+        "Node equilibrium: the forces on a node and their sums, written out step by step.",
+        "Dark mode, following your system or switched from the header.",
         "Also: snapping to midpoints and thirds, load previews in dialogs, and a list of shortcuts."
       ],
       "tryIt": "newDrawing",
@@ -38,6 +40,16 @@
           "src": "/changelog/media/report-tab.png",
           "alt": "A Report page of a propped cantilever: loads, shear force, bending moment and deflection stacked, with a guide line through the moment's maximum",
           "caption": "Report tab"
+        },
+        {
+          "src": "/changelog/media/node-equilibrium.png",
+          "alt": "The equilibrium of a fixed node: the member cut off with N, V and M on its cut, the reactions, and the sums of forces and moments written out in symbols and numbers",
+          "caption": "Node equilibrium"
+        },
+        {
+          "src": "/changelog/media/dark-mode.png",
+          "alt": "EduBeam in dark mode: a frame with its bending moment, deformed shape and reactions on a dark canvas",
+          "caption": "Dark mode"
         }
       ],
       "tag": "Latest"

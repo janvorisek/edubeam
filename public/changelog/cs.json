@@ -10,6 +10,8 @@
         "Podpory a zatížení přidáte přímo z panelu nástrojů.",
         "Zatížení přesunete přetažením.",
         "Záložka Protokol: zatížení, vnitřní síly a průhyb připravené k tisku.",
+        "Rovnováha uzlu: síly působící na uzel a jejich součty rozepsané krok za krokem.",
+        "Tmavý režim podle systému, nebo přepnutý v záhlaví.",
         "Také: přichytávání ke středům a třetinám prutů, náhledy zatížení v dialozích a přehled zkratek."
       ],
       "media": [
@@ -37,6 +39,16 @@
           "src": "/changelog/media/report-tab.png",
           "alt": "Stránka protokolu nosníku s vetknutím a podporou: zatížení, posouvající síla, ohybový moment a průhyb pod sebou, s pomocnou čarou maximem momentu",
           "caption": "Záložka Protokol"
+        },
+        {
+          "src": "/changelog/media/node-equilibrium.png",
+          "alt": "Rovnováha vetknutého uzlu: odříznutý prut s N, V a M v řezu, reakce a součty sil a momentů rozepsané v symbolech i číslech",
+          "caption": "Rovnováha uzlu"
+        },
+        {
+          "src": "/changelog/media/dark-mode.png",
+          "alt": "EduBeam v tmavém režimu: rám s ohybovým momentem, deformovaným tvarem a reakcemi na tmavém plátně",
+          "caption": "Tmavý režim"
         }
       ],
       "tag": "Nejnovější"

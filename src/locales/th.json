@@ -829,5 +829,10 @@
     "paper": "กระดาษ",
     "portrait": "แนวตั้ง",
     "landscape": "แนวนอน"
+  },
+  "languageOffer": {
+    "message": "EduBeam มีภาษาไทยให้ใช้งาน",
+    "switch": "เปลี่ยนเป็นภาษาไทย",
+    "dismiss": "ไม่ ขอบคุณ"
   }
 }

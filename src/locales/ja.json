@@ -829,5 +829,10 @@
     "paper": "用紙",
     "portrait": "縦向き",
     "landscape": "横向き"
+  },
+  "languageOffer": {
+    "message": "EduBeam は日本語でもご利用いただけます。",
+    "switch": "日本語に切り替える",
+    "dismiss": "今はしない"
   }
 }

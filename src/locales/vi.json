@@ -829,5 +829,10 @@
     "paper": "Khổ giấy",
     "portrait": "Dọc",
     "landscape": "Ngang"
+  },
+  "languageOffer": {
+    "message": "EduBeam có giao diện tiếng Việt.",
+    "switch": "Chuyển sang tiếng Việt",
+    "dismiss": "Không, cảm ơn"
   }
 }

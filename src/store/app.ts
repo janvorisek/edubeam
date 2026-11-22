@@ -56,6 +56,11 @@ export const useAppStore = defineStore(
     const bottomBarHeight = ref(226);
 
     const locale = ref(suggestLanguage());
+    /**
+     * Whether the language was chosen - from the menu, by a ?lang= link, or by answering the offer of
+     * the browser's own language - rather than taken from the browser. Only then is it left alone.
+     */
+    const languageChosen = ref(false);
     const numberFormatter = ref(createDisplayNumberFormat(locale.value, LABEL_DIGITS));
     const loadFormatter = ref(createDisplayNumberFormat(locale.value, LOAD_DIGITS));
     // Results span orders of magnitude, so their mantissa is written by significant digits and
@@ -325,6 +330,7 @@ export const useAppStore = defineStore(
       bottomBarOpen,
       bottomBarHeight,
       locale,
+      languageChosen,
       numberFormatter,
       loadFormatter,
       numberStyle,
@@ -393,6 +399,7 @@ export const useAppStore = defineStore(
         'onboardingFinished',
         'lastSeenChangelogVersion',
         'locale',
+        'languageChosen',
         'numberStyle',
         'tab',
         'bottomBarHeight',

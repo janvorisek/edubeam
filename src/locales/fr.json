@@ -829,5 +829,10 @@
     "paper": "Papier",
     "portrait": "Portrait",
     "landscape": "Paysage"
+  },
+  "languageOffer": {
+    "message": "EduBeam est disponible en français.",
+    "switch": "Passer au français",
+    "dismiss": "Non merci"
   }
 }

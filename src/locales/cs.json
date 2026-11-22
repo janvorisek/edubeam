@@ -829,5 +829,10 @@
     "paper": "Papír",
     "portrait": "Na výšku",
     "landscape": "Na šířku"
+  },
+  "languageOffer": {
+    "message": "EduBeam je k dispozici v češtině.",
+    "switch": "Přepnout do češtiny",
+    "dismiss": "Ne, děkuji"
   }
 }

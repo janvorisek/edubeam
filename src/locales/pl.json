@@ -829,5 +829,10 @@
     "paper": "Papier",
     "portrait": "Pionowo",
     "landscape": "Poziomo"
+  },
+  "languageOffer": {
+    "message": "EduBeam jest dostępny po polsku.",
+    "switch": "Przełącz na polski",
+    "dismiss": "Nie, dziękuję"
   }
 }

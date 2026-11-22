@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRegisterSW } from 'virtual:pwa-register/vue';
+import { checkForUpdate } from '@/utils/serviceWorkerUpdate';
 
 const updating = ref(false);
 
@@ -11,8 +12,8 @@ const { offlineReady, needRefresh } = useRegisterSW({
 
     if (!r) return;
 
-    // 5 min periodic update, TODO: increase when we are more stable
-    setInterval(() => r.update(), 5 * 60000);
+    // A check for a new version every 5 minutes; one that fails waits for the next
+    setInterval(() => void checkForUpdate(r), 5 * 60000);
   },
 });
 

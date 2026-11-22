@@ -829,5 +829,10 @@
     "paper": "Kâğıt",
     "portrait": "Dikey",
     "landscape": "Yatay"
+  },
+  "languageOffer": {
+    "message": "EduBeam Türkçe olarak da kullanılabilir.",
+    "switch": "Türkçeye geç",
+    "dismiss": "Hayır, teşekkürler"
   }
 }

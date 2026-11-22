@@ -14,6 +14,7 @@ import { nextTick } from 'vue';
 import { useViewerStore } from './store/viewer';
 import Confirmation from './components/dialogs/Confirmation.vue';
 import ReloadPrompt from './components/ReloadPrompt.vue';
+import LanguageOffer from './components/LanguageOffer.vue';
 import { buildStarterModel } from './utils/starterModel';
 import { fromShareParam } from './utils/serializeModel';
 import { isEduBeamSession, parseEduBeamSession } from './utils/edubeamSession';
@@ -270,6 +271,7 @@ onMounted(() => {
   // Before the model: a shared link opens in the language it asks for too.
   if (lang && availableLocales.findIndex((l) => l.code === lang) >= 0) {
     appStore.locale = lang;
+    appStore.languageChosen = true;
   }
 
   if (show !== null) Object.assign(viewerStore, decodeLayers(show));
@@ -713,6 +715,7 @@ const app_commit = APP_COMMIT;
       <div>edubeam v{{ app_version }} {{ $t("footer.released") }} {{ app_released }}</div>
     </div> -->
     <ReloadPrompt />
+    <LanguageOffer />
     <v-snackbar v-model="previousModelSaved" :timeout="10000" location="bottom">
       {{ $t('recentStructures.linkNotice') }}
       <template #actions>

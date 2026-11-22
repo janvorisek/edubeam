@@ -829,5 +829,10 @@
     "paper": "काग़ज़",
     "portrait": "पोर्ट्रेट",
     "landscape": "लैंडस्केप"
+  },
+  "languageOffer": {
+    "message": "EduBeam हिन्दी में उपलब्ध है।",
+    "switch": "हिन्दी में बदलें",
+    "dismiss": "नहीं, धन्यवाद"
   }
 }

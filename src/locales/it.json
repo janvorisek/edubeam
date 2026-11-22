@@ -829,5 +829,10 @@
     "paper": "Carta",
     "portrait": "Verticale",
     "landscape": "Orizzontale"
+  },
+  "languageOffer": {
+    "message": "EduBeam è disponibile in italiano.",
+    "switch": "Passa all'italiano",
+    "dismiss": "No, grazie"
   }
 }

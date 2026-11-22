@@ -829,5 +829,10 @@
     "paper": "Papier",
     "portrait": "Hochformat",
     "landscape": "Querformat"
+  },
+  "languageOffer": {
+    "message": "EduBeam gibt es auch auf Deutsch.",
+    "switch": "Auf Deutsch umstellen",
+    "dismiss": "Nein, danke"
   }
 }

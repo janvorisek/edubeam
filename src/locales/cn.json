@@ -829,5 +829,10 @@
     "paper": "纸张",
     "portrait": "纵向",
     "landscape": "横向"
+  },
+  "languageOffer": {
+    "message": "EduBeam 提供中文界面。",
+    "switch": "切换到中文",
+    "dismiss": "不用了"
   }
 }

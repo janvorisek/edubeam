@@ -829,5 +829,10 @@
     "paper": "Kertas",
     "portrait": "Potret",
     "landscape": "Lanskap"
+  },
+  "languageOffer": {
+    "message": "EduBeam tersedia dalam Bahasa Indonesia.",
+    "switch": "Beralih ke Bahasa Indonesia",
+    "dismiss": "Tidak, terima kasih"
   }
 }

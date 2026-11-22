@@ -829,5 +829,10 @@
     "paper": "용지",
     "portrait": "세로",
     "landscape": "가로"
+  },
+  "languageOffer": {
+    "message": "EduBeam을 한국어로 사용할 수 있습니다.",
+    "switch": "한국어로 전환",
+    "dismiss": "괜찮습니다"
   }
 }

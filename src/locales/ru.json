@@ -829,5 +829,10 @@
     "paper": "Бумага",
     "portrait": "Книжная",
     "landscape": "Альбомная"
+  },
+  "languageOffer": {
+    "message": "EduBeam доступен на русском языке.",
+    "switch": "Переключить на русский",
+    "dismiss": "Нет, спасибо"
   }
 }

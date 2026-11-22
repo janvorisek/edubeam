@@ -209,7 +209,11 @@
     "addNode": "Přidat uzel",
     "editNode": "Upravit uzel",
     "defineSupports": "Podepření uzlu",
-    "lcsAngle": "Pootočení systému souřadnic"
+    "lcsAngle": "Pootočení systému souřadnic",
+    "equilibrium": "Rovnováha uzlu",
+    "equilibriumOf": "Rovnováha uzlu {label}",
+    "equilibriumSymbols": "Symboly",
+    "equilibriumValues": "Hodnoty"
   },
   "supports": {
     "free": "Volný",
@@ -639,7 +643,8 @@
     "selectMaterialAndCrossSection": "Vyberte prosím materiál a průřez.",
     "labelInUse": "Označení {label} je již použito.",
     "noMaterialOrCrossSection": "Prvek nemá zadaný materiál nebo průřez.",
-    "elementMissing": "Prvek {label} už neexistuje."
+    "elementMissing": "Prvek {label} už neexistuje.",
+    "nodeMissing": "Uzel {label} už neexistuje."
   },
   "help": {
     "aria": "Zobrazit nápovědu",

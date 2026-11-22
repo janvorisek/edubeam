@@ -54,7 +54,11 @@
     "addNode": "Añadir nodo",
     "editNode": "Editar nodo",
     "defineSupports": "Apoyos del nodo",
-    "lcsAngle": "Ángulo del SCL nodal"
+    "lcsAngle": "Ángulo del SCL nodal",
+    "equilibrium": "Equilibrio del nodo",
+    "equilibriumOf": "Equilibrio del nodo {label}",
+    "equilibriumSymbols": "Símbolos",
+    "equilibriumValues": "Valores"
   },
   "supports": {
     "free": "Libre",
@@ -639,7 +643,8 @@
     "selectMaterialAndCrossSection": "Seleccione un material y una sección transversal.",
     "labelInUse": "La etiqueta {label} ya está en uso.",
     "noMaterialOrCrossSection": "El elemento no tiene material o sección transversal.",
-    "elementMissing": "El elemento {label} ya no existe."
+    "elementMissing": "El elemento {label} ya no existe.",
+    "nodeMissing": "El nodo {label} ya no existe."
   },
   "help": {
     "aria": "Mostrar ayuda",

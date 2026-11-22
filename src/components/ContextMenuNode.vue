@@ -7,10 +7,14 @@ import { deleteNode, nodeLcsAngle, setNodeLcsAngle, toggleSet } from '@/utils';
 import { parseNumberInput } from '@/utils/numberInput';
 import { computed, ref, watch } from 'vue';
 import SupportPicker from './SupportPicker.vue';
+import NodeEquilibrium from './NodeEquilibrium.vue';
+import { useLayoutStore } from '@/store/layout';
+import { i18n } from '@/plugins/i18n';
 import { setSupportType } from '@/utils/supports';
 
 const projectStore = useProjectStore();
 const appStore = useAppStore();
+const layoutStore = useLayoutStore();
 
 const lcs = ref('0');
 
@@ -38,6 +42,16 @@ const lcsChange = () => {
   const degrees = parseNumberInput(lcs.value);
   if (Number.isFinite(degrees)) setNodeLcsAngle(node.value, appStore.angle(degrees));
   else lcs.value = angle.value.toString();
+};
+
+/** Only a solved structure has forces to balance; a node no member reaches has none either */
+const solved = computed(() => projectStore.solver.loadCases[0]?.solved === true);
+
+const openEquilibrium = () => {
+  if (!node.value) return;
+  const label = String(node.value.label);
+  layoutStore.openWidget(i18n.global.t('nodes.equilibriumOf', { label }), NodeEquilibrium, { node: label });
+  projectStore.selection.type = null;
 };
 
 const removeNode = () => {
@@ -128,6 +142,12 @@ const removeNode = () => {
         <div class="pr-2"><v-icon size="16" icon="mdi-ruler" /></div>
       </template>
       {{ $t('loads.addPrescribedDisplacement') }}
+    </v-list-item>
+    <v-list-item v-if="solved" link class="text-body-2" @click="openEquilibrium">
+      <template #prepend>
+        <div class="pr-2"><v-icon size="16" icon="mdi-scale-balance" /></div>
+      </template>
+      {{ $t('nodes.equilibrium') }}
     </v-list-item>
     <v-divider v-if="projectStore.selection.type === 'node'" />
     <v-list-item v-if="projectStore.selection.type === 'node'" link class="text-body-2 text-error" @click="removeNode">

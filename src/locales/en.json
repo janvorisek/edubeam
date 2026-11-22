@@ -54,7 +54,11 @@
     "addNode": "Add node",
     "editNode": "Edit node",
     "defineSupports": "Node supports",
-    "lcsAngle": "Nodal LCS angle"
+    "lcsAngle": "Nodal LCS angle",
+    "equilibrium": "Node equilibrium",
+    "equilibriumOf": "Equilibrium of node {label}",
+    "equilibriumSymbols": "Symbols",
+    "equilibriumValues": "Values"
   },
   "supports": {
     "free": "Free",
@@ -639,7 +643,8 @@
     "selectMaterialAndCrossSection": "Please select a material and a cross section.",
     "labelInUse": "Label {label} is already in use.",
     "noMaterialOrCrossSection": "Element does not specify material or cross section.",
-    "elementMissing": "Element {label} no longer exists."
+    "elementMissing": "Element {label} no longer exists.",
+    "nodeMissing": "Node {label} no longer exists."
   },
   "help": {
     "aria": "Show help",

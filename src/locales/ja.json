@@ -54,7 +54,11 @@
     "addNode": "節点を追加",
     "editNode": "節点を編集",
     "defineSupports": "支点条件",
-    "lcsAngle": "節点座標系の角度"
+    "lcsAngle": "節点座標系の角度",
+    "equilibrium": "節点の釣り合い",
+    "equilibriumOf": "節点 {label} の釣り合い",
+    "equilibriumSymbols": "記号",
+    "equilibriumValues": "数値"
   },
   "supports": {
     "free": "自由",
@@ -639,7 +643,8 @@
     "selectMaterialAndCrossSection": "材料と断面を選択してください。",
     "labelInUse": "ラベル {label} は既に使われています。",
     "noMaterialOrCrossSection": "要素に材料または断面が指定されていません。",
-    "elementMissing": "要素 {label} はもう存在しません。"
+    "elementMissing": "要素 {label} はもう存在しません。",
+    "nodeMissing": "節点 {label} はもう存在しません。"
   },
   "help": {
     "aria": "ヘルプを表示",

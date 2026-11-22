@@ -54,7 +54,11 @@
     "addNode": "Düğüm ekle",
     "editNode": "Düğümü düzenle",
     "defineSupports": "Düğüm mesnetleri",
-    "lcsAngle": "Düğüm yerel eksen açısı"
+    "lcsAngle": "Düğüm yerel eksen açısı",
+    "equilibrium": "Düğüm dengesi",
+    "equilibriumOf": "{label} düğümünün dengesi",
+    "equilibriumSymbols": "Semboller",
+    "equilibriumValues": "Değerler"
   },
   "supports": {
     "free": "Serbest",
@@ -639,7 +643,8 @@
     "selectMaterialAndCrossSection": "Lütfen bir malzeme ve bir kesit seçin.",
     "labelInUse": "{label} etiketi zaten kullanılıyor.",
     "noMaterialOrCrossSection": "Elemana malzeme veya kesit atanmamış.",
-    "elementMissing": "{label} elemanı artık mevcut değil."
+    "elementMissing": "{label} elemanı artık mevcut değil.",
+    "nodeMissing": "{label} düğümü artık mevcut değil."
   },
   "help": {
     "aria": "Yardımı göster",

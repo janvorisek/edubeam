@@ -54,7 +54,11 @@
     "addNode": "Tambah joint",
     "editNode": "Edit joint",
     "defineSupports": "Tumpuan joint",
-    "lcsAngle": "Sudut LCS joint"
+    "lcsAngle": "Sudut LCS joint",
+    "equilibrium": "Keseimbangan joint",
+    "equilibriumOf": "Keseimbangan joint {label}",
+    "equilibriumSymbols": "Simbol",
+    "equilibriumValues": "Nilai"
   },
   "supports": {
     "free": "Bebas",
@@ -639,7 +643,8 @@
     "selectMaterialAndCrossSection": "Pilih material dan penampang.",
     "labelInUse": "Label {label} sudah digunakan.",
     "noMaterialOrCrossSection": "Elemen tidak memiliki material atau penampang.",
-    "elementMissing": "Elemen {label} sudah tidak ada."
+    "elementMissing": "Elemen {label} sudah tidak ada.",
+    "nodeMissing": "Joint {label} sudah tidak ada."
   },
   "help": {
     "aria": "Tampilkan bantuan",

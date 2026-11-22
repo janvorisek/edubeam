@@ -54,7 +54,11 @@
     "addNode": "Dodaj węzeł",
     "editNode": "Edytuj węzeł",
     "defineSupports": "Podpory węzła",
-    "lcsAngle": "Kąt lokalnego układu"
+    "lcsAngle": "Kąt lokalnego układu",
+    "equilibrium": "Równowaga węzła",
+    "equilibriumOf": "Równowaga węzła {label}",
+    "equilibriumSymbols": "Symbole",
+    "equilibriumValues": "Wartości"
   },
   "supports": {
     "free": "Swobodny",
@@ -639,7 +643,8 @@
     "selectMaterialAndCrossSection": "Wybierz materiał i przekrój.",
     "labelInUse": "Etykieta {label} jest już używana.",
     "noMaterialOrCrossSection": "Element nie ma określonego materiału lub przekroju.",
-    "elementMissing": "Element {label} już nie istnieje."
+    "elementMissing": "Element {label} już nie istnieje.",
+    "nodeMissing": "Węzeł {label} już nie istnieje."
   },
   "help": {
     "aria": "Pokaż pomoc",

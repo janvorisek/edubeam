@@ -54,7 +54,11 @@
     "addNode": "절점 추가",
     "editNode": "절점 편집",
     "defineSupports": "지지조건",
-    "lcsAngle": "절점 좌표계 각도"
+    "lcsAngle": "절점 좌표계 각도",
+    "equilibrium": "절점 평형",
+    "equilibriumOf": "절점 {label}의 평형",
+    "equilibriumSymbols": "기호",
+    "equilibriumValues": "값"
   },
   "supports": {
     "free": "자유",
@@ -639,7 +643,8 @@
     "selectMaterialAndCrossSection": "재료와 단면을 선택하세요.",
     "labelInUse": "이름 {label}은(는) 이미 사용 중입니다.",
     "noMaterialOrCrossSection": "요소에 재료 또는 단면이 지정되지 않았습니다.",
-    "elementMissing": "요소 {label}이(가) 더 이상 존재하지 않습니다."
+    "elementMissing": "요소 {label}이(가) 더 이상 존재하지 않습니다.",
+    "nodeMissing": "절점 {label}이(가) 더 이상 존재하지 않습니다."
   },
   "help": {
     "aria": "도움말 보기",

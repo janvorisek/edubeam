@@ -54,7 +54,11 @@
     "addNode": "Knoten hinzufügen",
     "editNode": "Knoten bearbeiten",
     "defineSupports": "Knotenlagerung",
-    "lcsAngle": "Knoten-LKS-Winkel"
+    "lcsAngle": "Knoten-LKS-Winkel",
+    "equilibrium": "Knotengleichgewicht",
+    "equilibriumOf": "Gleichgewicht am Knoten {label}",
+    "equilibriumSymbols": "Symbole",
+    "equilibriumValues": "Werte"
   },
   "supports": {
     "free": "Frei",
@@ -639,7 +643,8 @@
     "selectMaterialAndCrossSection": "Bitte wählen Sie ein Material und einen Querschnitt aus.",
     "labelInUse": "Die Bezeichnung {label} ist bereits vergeben.",
     "noMaterialOrCrossSection": "Für das Element ist kein Material oder Querschnitt angegeben.",
-    "elementMissing": "Element {label} existiert nicht mehr."
+    "elementMissing": "Element {label} existiert nicht mehr.",
+    "nodeMissing": "Knoten {label} existiert nicht mehr."
   },
   "help": {
     "aria": "Hilfe anzeigen",

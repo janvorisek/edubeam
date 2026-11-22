@@ -54,7 +54,11 @@
     "addNode": "Thêm nút",
     "editNode": "Sửa nút",
     "defineSupports": "Gối tựa tại nút",
-    "lcsAngle": "Góc LCS của nút"
+    "lcsAngle": "Góc LCS của nút",
+    "equilibrium": "Cân bằng nút",
+    "equilibriumOf": "Cân bằng nút {label}",
+    "equilibriumSymbols": "Ký hiệu",
+    "equilibriumValues": "Giá trị"
   },
   "supports": {
     "free": "Tự do",
@@ -639,7 +643,8 @@
     "selectMaterialAndCrossSection": "Vui lòng chọn vật liệu và tiết diện.",
     "labelInUse": "Nhãn {label} đã được dùng.",
     "noMaterialOrCrossSection": "Phần tử chưa có vật liệu hoặc tiết diện.",
-    "elementMissing": "Phần tử {label} không còn tồn tại."
+    "elementMissing": "Phần tử {label} không còn tồn tại.",
+    "nodeMissing": "Nút {label} không còn tồn tại."
   },
   "help": {
     "aria": "Hiện trợ giúp",

@@ -54,7 +54,11 @@
     "addNode": "添加节点",
     "editNode": "编辑节点",
     "defineSupports": "节点支座",
-    "lcsAngle": "节点局部坐标系角度"
+    "lcsAngle": "节点局部坐标系角度",
+    "equilibrium": "节点平衡",
+    "equilibriumOf": "节点 {label} 的平衡",
+    "equilibriumSymbols": "符号",
+    "equilibriumValues": "数值"
   },
   "supports": {
     "free": "自由",
@@ -639,7 +643,8 @@
     "selectMaterialAndCrossSection": "请选择材料和截面。",
     "labelInUse": "标签 {label} 已被使用。",
     "noMaterialOrCrossSection": "单元未指定材料或截面。",
-    "elementMissing": "单元 {label} 已不存在。"
+    "elementMissing": "单元 {label} 已不存在。",
+    "nodeMissing": "节点 {label} 已不存在。"
   },
   "help": {
     "aria": "显示帮助",

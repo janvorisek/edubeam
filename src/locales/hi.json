@@ -54,7 +54,11 @@
     "addNode": "नोड जोड़ें",
     "editNode": "नोड संपादित करें",
     "defineSupports": "नोड के सपोर्ट",
-    "lcsAngle": "नोडल LCS कोण"
+    "lcsAngle": "नोडल LCS कोण",
+    "equilibrium": "नोड संतुलन",
+    "equilibriumOf": "नोड {label} का संतुलन",
+    "equilibriumSymbols": "प्रतीक",
+    "equilibriumValues": "मान"
   },
   "supports": {
     "free": "मुक्त",
@@ -639,7 +643,8 @@
     "selectMaterialAndCrossSection": "कृपया एक सामग्री और एक अनुप्रस्थ काट चुनें।",
     "labelInUse": "लेबल {label} पहले से उपयोग में है।",
     "noMaterialOrCrossSection": "अवयव में सामग्री या अनुप्रस्थ काट निर्दिष्ट नहीं है।",
-    "elementMissing": "अवयव {label} अब मौजूद नहीं है।"
+    "elementMissing": "अवयव {label} अब मौजूद नहीं है।",
+    "nodeMissing": "नोड {label} अब मौजूद नहीं है।"
   },
   "help": {
     "aria": "सहायता दिखाएँ",

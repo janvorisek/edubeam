@@ -1,5 +1,6 @@
 <template>
-  <div class="d-flex flex-column fill-height">
+  <!-- Relative, so the widgets' layer is the editor's own area and they stay inside the window -->
+  <div class="d-flex flex-column fill-height" style="position: relative">
     <div style="height: 100%; width: 100%; position: absolute; pointer-events: none">
       <TransitionGroup name="fade">
         <Widget v-for="widget of layoutStore.widgets" :key="widget.title" :widget="widget" />

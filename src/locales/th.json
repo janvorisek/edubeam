@@ -54,7 +54,11 @@
     "addNode": "เพิ่มโหนด",
     "editNode": "แก้ไขโหนด",
     "defineSupports": "จุดรองรับของโหนด",
-    "lcsAngle": "มุมระบบพิกัดท้องถิ่นของโหนด"
+    "lcsAngle": "มุมระบบพิกัดท้องถิ่นของโหนด",
+    "equilibrium": "สมดุลของโหนด",
+    "equilibriumOf": "สมดุลของโหนด {label}",
+    "equilibriumSymbols": "สัญลักษณ์",
+    "equilibriumValues": "ค่า"
   },
   "supports": {
     "free": "อิสระ",
@@ -639,7 +643,8 @@
     "selectMaterialAndCrossSection": "โปรดเลือกวัสดุและหน้าตัด",
     "labelInUse": "ชื่อ {label} ถูกใช้แล้ว",
     "noMaterialOrCrossSection": "เอลิเมนต์ไม่ได้ระบุวัสดุหรือหน้าตัด",
-    "elementMissing": "เอลิเมนต์ {label} ไม่มีอยู่แล้ว"
+    "elementMissing": "เอลิเมนต์ {label} ไม่มีอยู่แล้ว",
+    "nodeMissing": "โหนด {label} ไม่มีอยู่แล้ว"
   },
   "help": {
     "aria": "แสดงความช่วยเหลือ",

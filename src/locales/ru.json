@@ -54,7 +54,11 @@
     "addNode": "Добавить узел",
     "editNode": "Редактировать узел",
     "defineSupports": "Опоры узла",
-    "lcsAngle": "Угол локальной системы координат"
+    "lcsAngle": "Угол локальной системы координат",
+    "equilibrium": "Равновесие узла",
+    "equilibriumOf": "Равновесие узла {label}",
+    "equilibriumSymbols": "Обозначения",
+    "equilibriumValues": "Значения"
   },
   "supports": {
     "free": "Свободный",
@@ -639,7 +643,8 @@
     "selectMaterialAndCrossSection": "Выберите материал и сечение.",
     "labelInUse": "Метка {label} уже используется.",
     "noMaterialOrCrossSection": "Для элемента не задан материал или сечение.",
-    "elementMissing": "Элемент {label} больше не существует."
+    "elementMissing": "Элемент {label} больше не существует.",
+    "nodeMissing": "Узел {label} больше не существует."
   },
   "help": {
     "aria": "Показать справку",

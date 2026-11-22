@@ -379,12 +379,24 @@ const anchorFor = (outward: Vec): Label['anchor'] =>
   outward[0] > 0.35 ? 'start' : outward[0] < -0.35 ? 'end' : 'middle';
 
 /** A label out from a point along `outward`, anchored so it grows away from what it names */
-const labelFor = (a: Action, at: Vec, outward: Vec): Label => {
+const labelFor = (a: Action, at: Vec, outward: Vec, shaft?: readonly [Vec, Vec]): Label => {
+  // Beside its arrow, halfway along, on either side: as plainly its own, when its tip is crowded
+  const instead = shaft
+    ? [1, -1].map((sideSign) => {
+        const [p, q] = shaft;
+        const length = Math.hypot(q[0] - p[0], q[1] - p[1]) || 1;
+        const normal: Vec = [(-(q[1] - p[1]) / length) * sideSign, ((q[0] - p[0]) / length) * sideSign];
+        const mid = times(add(p, q), 0.5);
+        const spot = add(mid, times(normal, 8));
+        return { at: [round(spot[0]), round(spot[1] + FONT * 0.35)] as Vec, anchor: anchorFor(normal) };
+      })
+    : undefined;
   const base = {
     at: [round(at[0]), round(at[1] + FONT * 0.35)] as Vec,
     anchor: anchorFor(outward),
     color: a.color,
     out: outward,
+    instead,
   };
   return a.known ? { ...base, text: shown(inUnits(a.value, a.unit)) } : { ...base, letter: a.letter, sub: a.sub };
 };
@@ -451,9 +463,10 @@ const placeClear = (
   fixed: readonly Box[] = []
 ): Label[] => {
   const placed: Box[] = [...fixed];
-  // How much is in the way of a box: other labels count double, then arrows, rings and stubs
+  // How much is in the way of a box: another label most of all - two numbers on top of each other
+  // cannot be read - then arrows, rings and stubs
   const conflicts = (b: Box) =>
-    placed.filter((p) => overlaps(p, b)).length * 2 +
+    placed.filter((p) => overlaps(p, b)).length * 5 +
     segments.filter(([from, to]) => crosses(from, to, b)).length +
     circles.filter(({ center, r }) =>
       overlaps(b, { left: center[0] - r, top: center[1] - r, right: center[0] + r, bottom: center[1] + r })
@@ -461,16 +474,17 @@ const placeClear = (
   return labels.map((l) => {
     const out = l.out ?? [0, -1];
     const side: Vec = [-out[1], out[0]];
-    // A label far from its arrow is unclear: only small moves, and the distance counts against them
+    // A label far from its arrow is unclear: short moves, and every px counts against them, so one
+    // goes further only to get off another label
     const moves: Vec[] = [[0, 0]];
-    for (const along of [0, 4, 8, 12]) {
-      for (const across of [0, 5, -5, 10, -10]) {
+    for (const along of [0, 4, 8, 12, 18, 24]) {
+      for (const across of [0, 5, -5, 10, -10, 16, -16, 22, -22, 30, -30]) {
         if (along || across) moves.push(add(times(out, along), times(side, across)));
       }
     }
     const candidates = [
       ...moves.map((by) => ({ label: shifted(l, by), distance: Math.hypot(by[0], by[1]) })),
-      ...(l.instead ?? []).map((other) => ({ label: { ...l, ...other }, distance: 6 })),
+      ...(l.instead ?? []).map((other) => ({ label: { ...l, ...other }, distance: 12 })),
     ];
     let best = candidates[0];
     let lowest = Infinity;
@@ -597,7 +611,7 @@ const layout = (which: 'symbols' | 'values') => {
       const drawnN = out ? withParts(near, far, n) : withParts(far, near, n);
       arrows.push(...drawnN.arrows);
       labels.push(...drawnN.labels);
-      labels.push(labelFor(n, add(far, times(along, 8)), along));
+      labels.push(labelFor(n, add(far, times(along, 8)), along, [near, far]));
     }
 
     // Positive V on this cut face: toward the bottom fibres at the member's start, away at its end
@@ -611,7 +625,7 @@ const layout = (which: 'symbols' | 'values') => {
       const drawnV = towardFibres ? withParts(near, far, v) : withParts(far, near, v);
       arrows.push(...drawnV.arrows);
       labels.push(...drawnV.labels);
-      labels.push(labelFor(v, add(far, times(across, 8)), across));
+      labels.push(labelFor(v, add(far, times(across, 8)), across, [near, far]));
     }
 
     const m = byKey.get(`m${member.label}`);
@@ -647,7 +661,7 @@ const layout = (which: 'symbols' | 'values') => {
     const drawnA = inward ? withParts(far, near, a) : withParts(near, far, a);
     arrows.push(...drawnA.arrows);
     labels.push(...drawnA.labels);
-    labels.push(labelFor(a, add(far, times(outward, 8)), outward));
+    labels.push(labelFor(a, add(far, times(outward, 8)), outward, [near, far]));
     taken.push(angleOf(outward));
   }
 

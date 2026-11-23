@@ -467,7 +467,7 @@
     },
     "help": {
       "title": "Pomocník",
-      "description": "? vysvetlí otvorenú záložku. ? pri záhlaví stĺpca vysvetlí daný stĺpec."
+      "description": "? vysvetlí otvorenú kartu. ? pri záhlaví stĺpca vysvetlí daný stĺpec."
     },
     "previousButton": "Predchádzajúci",
     "nextButton": "Ďalší",

@@ -15,7 +15,7 @@
           item-value="code"
           hide-details="auto"
           auto-select-first
-          :no-auto-scroll="suggestedCodes.includes(appStore.locale)"
+          no-auto-scroll
           :items="languageItems"
           :custom-filter="filterLanguage"
           :label="$t('settings.language')"
@@ -188,15 +188,12 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const choices = languageChoices();
-// English and the browser's languages, a line, then the rest. The line is drawn on the last of the first
-// group rather than being an item of its own: the list scrolls to the chosen language by counting rows of
-// one height, and a thinner divider row threw it off, leaving the language half under the list's top edge.
-const languageItems = [...choices.suggested, ...choices.others];
-const lastSuggested = choices.suggested.at(-1)?.code;
-// The list opens scrolled to the language in use, unless it is one of the suggested at the top: scrolled
-// there, it pushed English and the languages above it out of sight.
-const suggestedCodes = choices.suggested.map((l) => l.code);
+// English, the language in use and the browser's, a line, then the rest. The language in use is always near
+// the top, so the list opens there rather than scrolled to it, which pushed English out of sight. The line
+// is drawn on the last of the first group, an inset that keeps every row the same height.
+const choices = computed(() => languageChoices(appStore.locale));
+const languageItems = computed(() => [...choices.value.suggested, ...choices.value.others]);
+const lastSuggested = computed(() => choices.value.suggested.at(-1)?.code);
 const languageQuery = ref('');
 
 const filterLanguage = (_value: string, query: string, item?: { raw: AppLanguage }) =>

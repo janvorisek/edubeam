@@ -18,12 +18,12 @@ const open = ref(false);
 const query = ref('');
 // A mouse or keyboard user can type at once; on touch, focusing would throw up the keyboard over the list
 const typeAtOnce = window.matchMedia('(pointer: fine)').matches;
-const choices = languageChoices();
+const choices = computed(() => languageChoices(appStore.locale));
 
 const matching = (languages: readonly AppLanguage[]) =>
   languages.filter((l) => languageMatches(l, query.value, appStore.locale));
-const suggested = computed(() => matching(choices.suggested));
-const others = computed(() => matching(choices.others));
+const suggested = computed(() => matching(choices.value.suggested));
+const others = computed(() => matching(choices.value.others));
 
 const choose = (code: string) => {
   appStore.locale = code;
@@ -40,20 +40,10 @@ const chooseFirst = () => {
 watch(open, (isOpen) => {
   if (!isOpen) query.value = '';
 });
-
-const list = ref<{ $el: HTMLElement } | null>(null);
-
-/** The language in use may be far down the list; bring it into view, keeping the search above it in sight. */
-const showCurrent = () => {
-  const el = list.value?.$el;
-  const active = el?.querySelector<HTMLElement>('.v-list-item--active');
-  if (!el || !active) return;
-  el.scrollTop = active.offsetTop - (el.clientHeight - active.offsetHeight) / 2;
-};
 </script>
 
 <template>
-  <v-menu v-model="open" location="bottom end" :close-on-content-click="false" @after-enter="showCurrent">
+  <v-menu v-model="open" location="bottom end" :close-on-content-click="false">
     <template #activator="{ props }">
       <v-btn
         v-bind="props"
@@ -83,14 +73,7 @@ const showCurrent = () => {
         class="language-menu__search"
         @keydown.enter.prevent="chooseFirst"
       />
-      <v-list
-        ref="list"
-        density="compact"
-        class="language-menu__list"
-        :selected="[appStore.locale]"
-        mandatory
-        color="primary"
-      >
+      <v-list density="compact" class="language-menu__list" :selected="[appStore.locale]" mandatory color="primary">
         <template v-for="(group, index) in [suggested, others]" :key="index">
           <v-divider v-if="index === 1 && suggested.length && others.length" class="my-1" />
           <v-list-item
@@ -132,7 +115,6 @@ const showCurrent = () => {
 }
 
 .language-menu__list {
-  position: relative; /* the items' offsetTop counts from the list, which scrolls */
   overflow-y: auto;
 }
 

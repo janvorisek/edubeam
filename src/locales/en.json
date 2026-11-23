@@ -584,6 +584,8 @@
       "elementMissingNode": "Element {element} references missing node {node}.",
       "elementMissingMaterial": "Element {element} references missing material {material}.",
       "elementMissingCrossSection": "Element {element} references missing cross section {crossSection}.",
+      "materialNotPositive": "Material {material}: {property} must be greater than zero.",
+      "crossSectionNotPositive": "Cross section {crossSection}: {property} must be greater than zero.",
       "nodalLoadMissingNode": "Nodal load #{index} references missing node {node}.",
       "nodalLoadInvalid": "Nodal load #{index} contains invalid values.",
       "prescribedMissingNode": "Prescribed displacement #{index} references missing node {node}.",

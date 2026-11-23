@@ -584,6 +584,8 @@
       "elementMissingNode": "अवयव {element} अनुपलब्ध नोड {node} का संदर्भ देता है।",
       "elementMissingMaterial": "अवयव {element} अनुपलब्ध सामग्री {material} का संदर्भ देता है।",
       "elementMissingCrossSection": "अवयव {element} अनुपलब्ध अनुप्रस्थ काट {crossSection} का संदर्भ देता है।",
+      "materialNotPositive": "सामग्री {material}: {property} शून्य से अधिक होना चाहिए।",
+      "crossSectionNotPositive": "अनुप्रस्थ काट {crossSection}: {property} शून्य से अधिक होना चाहिए।",
       "nodalLoadMissingNode": "नोडल भार #{index} अनुपलब्ध नोड {node} का संदर्भ देता है।",
       "nodalLoadInvalid": "नोडल भार #{index} में अमान्य मान हैं।",
       "prescribedMissingNode": "निर्धारित विस्थापन #{index} अनुपलब्ध नोड {node} का संदर्भ देता है।",

@@ -584,6 +584,8 @@
       "elementMissingNode": "Elemen {element} merujuk joint {node} yang tidak ada.",
       "elementMissingMaterial": "Elemen {element} merujuk material {material} yang tidak ada.",
       "elementMissingCrossSection": "Elemen {element} merujuk penampang {crossSection} yang tidak ada.",
+      "materialNotPositive": "Material {material}: {property} harus lebih besar dari nol.",
+      "crossSectionNotPositive": "Penampang {crossSection}: {property} harus lebih besar dari nol.",
       "nodalLoadMissingNode": "Beban joint #{index} merujuk joint {node} yang tidak ada.",
       "nodalLoadInvalid": "Beban joint #{index} berisi nilai yang tidak valid.",
       "prescribedMissingNode": "Perpindahan tumpuan #{index} merujuk joint {node} yang tidak ada.",

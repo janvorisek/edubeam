@@ -584,6 +584,8 @@
       "elementMissingNode": "要素 {element} が存在しない節点 {node} を参照しています。",
       "elementMissingMaterial": "要素 {element} が存在しない材料 {material} を参照しています。",
       "elementMissingCrossSection": "要素 {element} が存在しない断面 {crossSection} を参照しています。",
+      "materialNotPositive": "材料 {material}：{property} は 0 より大きい値にしてください。",
+      "crossSectionNotPositive": "断面 {crossSection}：{property} は 0 より大きい値にしてください。",
       "nodalLoadMissingNode": "節点荷重 #{index} が存在しない節点 {node} を参照しています。",
       "nodalLoadInvalid": "節点荷重 #{index} に無効な値が含まれています。",
       "prescribedMissingNode": "強制変位 #{index} が存在しない節点 {node} を参照しています。",

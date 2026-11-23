@@ -584,6 +584,8 @@
       "elementMissingNode": "Prvok {element} odkazuje na neexistujúci uzol {node}.",
       "elementMissingMaterial": "Prvok {element} odkazuje na neexistujúci materiál {material}.",
       "elementMissingCrossSection": "Prvok {element} odkazuje na neexistujúci prierez {crossSection}.",
+      "materialNotPositive": "Materiál {material}: hodnota {property} musí byť väčšia ako nula.",
+      "crossSectionNotPositive": "Prierez {crossSection}: hodnota {property} musí byť väčšia ako nula.",
       "nodalLoadMissingNode": "Uzlové zaťaženie č. {index} odkazuje na neexistujúci uzol {node}.",
       "nodalLoadInvalid": "Uzlové zaťaženie č. {index} obsahuje neplatné hodnoty.",
       "prescribedMissingNode": "Predpísané posunutie č. {index} odkazuje na neexistujúci uzol {node}.",

@@ -584,6 +584,8 @@
       "elementMissingNode": "Элемент {element} ссылается на несуществующий узел {node}.",
       "elementMissingMaterial": "Элемент {element} ссылается на несуществующий материал {material}.",
       "elementMissingCrossSection": "Элемент {element} ссылается на несуществующее сечение {crossSection}.",
+      "materialNotPositive": "Материал {material}: значение {property} должно быть больше нуля.",
+      "crossSectionNotPositive": "Сечение {crossSection}: значение {property} должно быть больше нуля.",
       "nodalLoadMissingNode": "Узловая нагрузка №{index} ссылается на несуществующий узел {node}.",
       "nodalLoadInvalid": "Узловая нагрузка №{index} содержит недопустимые значения.",
       "prescribedMissingNode": "Заданное перемещение №{index} ссылается на несуществующий узел {node}.",

@@ -584,6 +584,8 @@
       "elementMissingNode": "{element} elemanı mevcut olmayan {node} düğümüne bağlı.",
       "elementMissingMaterial": "{element} elemanına atanan {material} malzemesi mevcut değil.",
       "elementMissingCrossSection": "{element} elemanına atanan {crossSection} kesiti mevcut değil.",
+      "materialNotPositive": "{material} malzemesi: {property} sıfırdan büyük olmalıdır.",
+      "crossSectionNotPositive": "{crossSection} kesiti: {property} sıfırdan büyük olmalıdır.",
       "nodalLoadMissingNode": "Düğüm yükü #{index}, mevcut olmayan {node} düğümüne etkiyor.",
       "nodalLoadInvalid": "Düğüm yükü #{index} geçersiz değerler içeriyor.",
       "prescribedMissingNode": "Öngörülen yer değiştirme #{index}, mevcut olmayan {node} düğümüne tanımlanmış.",

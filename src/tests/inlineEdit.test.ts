@@ -67,6 +67,19 @@ describe('inline edit fields', () => {
       expect(el.value).not.toBe('1/2');
     });
 
+    it('puts a stiffness back rather than saving zero or less', () => {
+      // A zero Iy typed into the table made the solver crash on a hinged member (EDUBEAM-APP-FW)
+      const item = { iy: 8e-5 };
+      for (const typed of ['0', '-1']) {
+        const el = renderBoundInput('8e-5');
+        el.value = typed;
+        changeItem(item, 'iy', el, undefined, { positive: true });
+
+        expect(el.value).toBe('8e-5');
+        expect(item.iy).toBe(8e-5);
+      }
+    });
+
     it('takes the whole entry or none of it: 2+2 is 4, not 22', () => {
       const item = { e: 1 };
       const el = renderBoundInput('1');

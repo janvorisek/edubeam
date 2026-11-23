@@ -584,6 +584,8 @@
       "elementMissingNode": "요소 {element}에서 참조하는 절점 {node}이(가) 없습니다.",
       "elementMissingMaterial": "요소 {element}에서 참조하는 재료 {material}이(가) 없습니다.",
       "elementMissingCrossSection": "요소 {element}에서 참조하는 단면 {crossSection}이(가) 없습니다.",
+      "materialNotPositive": "재료 {material}: {property} 값은 0보다 커야 합니다.",
+      "crossSectionNotPositive": "단면 {crossSection}: {property} 값은 0보다 커야 합니다.",
       "nodalLoadMissingNode": "절점하중 #{index}에서 참조하는 절점 {node}이(가) 없습니다.",
       "nodalLoadInvalid": "절점하중 #{index}에 잘못된 값이 있습니다.",
       "prescribedMissingNode": "강제변위 #{index}에서 참조하는 절점 {node}이(가) 없습니다.",

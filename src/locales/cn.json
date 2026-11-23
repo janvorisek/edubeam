@@ -584,6 +584,8 @@
       "elementMissingNode": "单元 {element} 引用了不存在的节点 {node}。",
       "elementMissingMaterial": "单元 {element} 引用了不存在的材料 {material}。",
       "elementMissingCrossSection": "单元 {element} 引用了不存在的截面 {crossSection}。",
+      "materialNotPositive": "材料 {material}：{property} 必须大于零。",
+      "crossSectionNotPositive": "截面 {crossSection}：{property} 必须大于零。",
       "nodalLoadMissingNode": "节点荷载 #{index} 引用了不存在的节点 {node}。",
       "nodalLoadInvalid": "节点荷载 #{index} 包含无效数值。",
       "prescribedMissingNode": "位移约束 #{index} 引用了不存在的节点 {node}。",

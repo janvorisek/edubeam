@@ -584,6 +584,8 @@
       "elementMissingNode": "Elem {element}: nem létező csomópontra hivatkozik ({node}).",
       "elementMissingMaterial": "Elem {element}: nem létező anyagra hivatkozik ({material}).",
       "elementMissingCrossSection": "Elem {element}: nem létező keresztmetszetre hivatkozik ({crossSection}).",
+      "materialNotPositive": "Anyag ({material}): {property} értéke csak nullánál nagyobb lehet.",
+      "crossSectionNotPositive": "Keresztmetszet ({crossSection}): {property} értéke csak nullánál nagyobb lehet.",
       "nodalLoadMissingNode": "Csomóponti teher #{index}: nem létező csomópontra hivatkozik ({node}).",
       "nodalLoadInvalid": "Csomóponti teher #{index}: érvénytelen értékeket tartalmaz.",
       "prescribedMissingNode": "Előírt elmozdulás #{index}: nem létező csomópontra hivatkozik ({node}).",

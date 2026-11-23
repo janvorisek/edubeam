@@ -584,6 +584,8 @@
       "elementMissingNode": "L'élément {element} référence le nœud inexistant {node}.",
       "elementMissingMaterial": "L'élément {element} référence le matériau inexistant {material}.",
       "elementMissingCrossSection": "L'élément {element} référence la section inexistante {crossSection}.",
+      "materialNotPositive": "Matériau {material} : {property} doit être strictement positif.",
+      "crossSectionNotPositive": "Section {crossSection} : {property} doit être strictement positif.",
       "nodalLoadMissingNode": "La charge nodale n° {index} référence le nœud inexistant {node}.",
       "nodalLoadInvalid": "La charge nodale n° {index} contient des valeurs invalides.",
       "prescribedMissingNode": "Le déplacement imposé n° {index} référence le nœud inexistant {node}.",

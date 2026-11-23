@@ -584,6 +584,8 @@
       "elementMissingNode": "Το στοιχείο {element} αναφέρεται σε ανύπαρκτο κόμβο {node}.",
       "elementMissingMaterial": "Το στοιχείο {element} αναφέρεται σε ανύπαρκτο υλικό {material}.",
       "elementMissingCrossSection": "Το στοιχείο {element} αναφέρεται σε ανύπαρκτη διατομή {crossSection}.",
+      "materialNotPositive": "Υλικό {material}: το {property} πρέπει να είναι μεγαλύτερο από το μηδέν.",
+      "crossSectionNotPositive": "Διατομή {crossSection}: το {property} πρέπει να είναι μεγαλύτερο από το μηδέν.",
       "nodalLoadMissingNode": "Το κομβικό φορτίο #{index} αναφέρεται σε ανύπαρκτο κόμβο {node}.",
       "nodalLoadInvalid": "Το κομβικό φορτίο #{index} περιέχει μη έγκυρες τιμές.",
       "prescribedMissingNode": "Η επιβαλλόμενη μετακίνηση #{index} αναφέρεται σε ανύπαρκτο κόμβο {node}.",

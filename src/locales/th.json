@@ -584,6 +584,8 @@
       "elementMissingNode": "เอลิเมนต์ {element} อ้างอิงโหนด {node} ที่ไม่มีอยู่",
       "elementMissingMaterial": "เอลิเมนต์ {element} อ้างอิงวัสดุ {material} ที่ไม่มีอยู่",
       "elementMissingCrossSection": "เอลิเมนต์ {element} อ้างอิงหน้าตัด {crossSection} ที่ไม่มีอยู่",
+      "materialNotPositive": "วัสดุ {material}: {property} ต้องมากกว่าศูนย์",
+      "crossSectionNotPositive": "หน้าตัด {crossSection}: {property} ต้องมากกว่าศูนย์",
       "nodalLoadMissingNode": "แรงกระทำที่โหนด #{index} อ้างอิงโหนด {node} ที่ไม่มีอยู่",
       "nodalLoadInvalid": "แรงกระทำที่โหนด #{index} มีค่าที่ไม่ถูกต้อง",
       "prescribedMissingNode": "การกระจัดที่กำหนด #{index} อ้างอิงโหนด {node} ที่ไม่มีอยู่",

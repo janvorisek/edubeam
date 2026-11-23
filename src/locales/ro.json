@@ -584,6 +584,8 @@
       "elementMissingNode": "Elementul {element} face referire la nodul inexistent {node}.",
       "elementMissingMaterial": "Elementul {element} face referire la materialul inexistent {material}.",
       "elementMissingCrossSection": "Elementul {element} face referire la secțiunea inexistentă {crossSection}.",
+      "materialNotPositive": "Materialul {material}: {property} trebuie să fie mai mare decât zero.",
+      "crossSectionNotPositive": "Secțiunea {crossSection}: {property} trebuie să fie mai mare decât zero.",
       "nodalLoadMissingNode": "Încărcarea nodală nr. {index} face referire la nodul inexistent {node}.",
       "nodalLoadInvalid": "Încărcarea nodală nr. {index} conține valori invalide.",
       "prescribedMissingNode": "Deplasarea impusă nr. {index} face referire la nodul inexistent {node}.",

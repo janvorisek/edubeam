@@ -1,40 +1,11 @@
-import English from 'language-icons/icons/en.svg';
-import Czech from 'language-icons/icons/cs.svg';
-import German from 'language-icons/icons/de.svg';
-import Spanish from 'language-icons/icons/es.svg';
-import French from 'language-icons/icons/fr.svg';
-import Portuguese from 'language-icons/icons/pt.svg';
-import Chinese from 'language-icons/icons/zh.svg';
-import Polish from 'language-icons/icons/pl.svg';
-import Ukrainian from 'language-icons/icons/uk.svg';
-import Russian from 'language-icons/icons/ru.svg';
-import Turkish from 'language-icons/icons/tr.svg';
-import Hindi from 'language-icons/icons/hi.svg';
-import Vietnamese from 'language-icons/icons/vi.svg';
-import Italian from 'language-icons/icons/it.svg';
-import Indonesian from 'language-icons/icons/id.svg';
-import Japanese from 'language-icons/icons/ja.svg';
-import Korean from 'language-icons/icons/ko.svg';
-import ThaiFlag from '@/assets/th-flag.svg';
+/**
+ * The flag shown next to each app language, keyed by its locale code: circle-flags' language flags
+ * (MIT, HatScripts), the set the website uses, so a language looks the same in the app and the guide.
+ * Chinese is `cn` in the app and its flag file says so; Portuguese is the Brazilian flag, as the app's
+ * Portuguese is Brazilian.
+ */
+const files = import.meta.glob<string>('@/assets/flags/*.svg', { eager: true, import: 'default', query: '?url' });
 
-/** The icon shown next to each app language, keyed by its locale code. */
-export const languageFlags: Readonly<Record<string, string>> = {
-  en: English,
-  cs: Czech,
-  de: German,
-  es: Spanish,
-  fr: French,
-  pt: Portuguese,
-  cn: Chinese,
-  th: ThaiFlag,
-  pl: Polish,
-  uk: Ukrainian,
-  ru: Russian,
-  tr: Turkish,
-  hi: Hindi,
-  vi: Vietnamese,
-  it: Italian,
-  id: Indonesian,
-  ja: Japanese,
-  ko: Korean,
-};
+export const languageFlags: Readonly<Record<string, string>> = Object.fromEntries(
+  Object.entries(files).map(([path, url]) => [path.slice(path.lastIndexOf('/') + 1, -'.svg'.length), url])
+);

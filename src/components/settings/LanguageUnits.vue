@@ -15,6 +15,7 @@
           item-value="code"
           hide-details="auto"
           auto-select-first
+          :no-auto-scroll="suggestedCodes.includes(appStore.locale)"
           :items="languageItems"
           :custom-filter="filterLanguage"
           :label="$t('settings.language')"
@@ -193,6 +194,9 @@ const choices = languageChoices();
 // one height, and a thinner divider row threw it off, leaving the language half under the list's top edge.
 const languageItems = [...choices.suggested, ...choices.others];
 const lastSuggested = choices.suggested.at(-1)?.code;
+// The list opens scrolled to the language in use, unless it is one of the suggested at the top: scrolled
+// there, it pushed English and the languages above it out of sight.
+const suggestedCodes = choices.suggested.map((l) => l.code);
 const languageQuery = ref('');
 
 const filterLanguage = (_value: string, query: string, item?: { raw: AppLanguage }) =>

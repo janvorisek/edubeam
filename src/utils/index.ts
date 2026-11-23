@@ -668,9 +668,19 @@ export const rangeRule =
     return i18n.global.t('validators.between', { min: show(min), max: `${show(max)} ${unit}` });
   };
 
-export const changeItem = (item: object, value: string, el?: HTMLInputElement, formatter?: (v: number) => number) => {
+/**
+ * Commits a number typed into an inline field. `positive` is for a stiffness (E, G, A, Iy, h, k), which
+ * the Add dialogs already require above zero: typed into the table, a zero made the solver crash.
+ */
+export const changeItem = (
+  item: object,
+  value: string,
+  el?: HTMLInputElement,
+  formatter?: (v: number) => number,
+  { positive = false }: { positive?: boolean } = {}
+) => {
   const val = parseNumberInput(el.value);
-  if (!Number.isFinite(val)) return restoreRenderedValue(el, item[value]);
+  if (!Number.isFinite(val) || (positive && val <= 0)) return restoreRenderedValue(el, item[value]);
 
   executeModelMutationWithUndo(() => {
     setUnsolved();

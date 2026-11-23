@@ -1074,7 +1074,11 @@
               :value="formatScientificNumber(appStore.convertPressure(item.e))"
               class="inline-edit"
               @keydown="checkNumber($event)"
-              @change="changeItem(item, 'e', $event.target as HTMLInputElement, appStore.convertInversePressure)"
+              @change="
+                changeItem(item, 'e', $event.target as HTMLInputElement, appStore.convertInversePressure, {
+                  positive: true,
+                })
+              "
             />
           </template>
           <template #item.g="{ item }">
@@ -1082,7 +1086,11 @@
               :value="formatScientificNumber(appStore.convertPressure(item.g))"
               class="inline-edit"
               @keydown="checkNumber($event)"
-              @change="changeItem(item, 'g', $event.target as HTMLInputElement, appStore.convertInversePressure)"
+              @change="
+                changeItem(item, 'g', $event.target as HTMLInputElement, appStore.convertInversePressure, {
+                  positive: true,
+                })
+              "
             />
           </template>
           <template #item.alpha="{ item }">
@@ -1224,7 +1232,11 @@
               :value="formatScientificNumber(appStore.convertArea(item.a))"
               class="inline-edit"
               @keydown="checkNumber($event)"
-              @change="changeItem(item, 'a', $event.target as HTMLInputElement, appStore.convertInverseArea)"
+              @change="
+                changeItem(item, 'a', $event.target as HTMLInputElement, appStore.convertInverseArea, {
+                  positive: true,
+                })
+              "
             />
           </template>
           <template #item.iy="{ item }">
@@ -1236,7 +1248,11 @@
               :value="formatScientificNumber(appStore.convertAreaM2(item.iy))"
               class="inline-edit"
               @keydown="checkNumber($event)"
-              @change="changeItem(item, 'iy', $event.target as HTMLInputElement, appStore.convertInverseAreaM2)"
+              @change="
+                changeItem(item, 'iy', $event.target as HTMLInputElement, appStore.convertInverseAreaM2, {
+                  positive: true,
+                })
+              "
             />
           </template>
           <template #item.h="{ item }">
@@ -1248,7 +1264,11 @@
               :value="formatScientificNumber(appStore.convertSectionLength(item.h))"
               class="inline-edit"
               @keydown="checkNumber($event)"
-              @change="changeItem(item, 'h', $event.target as HTMLInputElement, appStore.convertInverseSectionLength)"
+              @change="
+                changeItem(item, 'h', $event.target as HTMLInputElement, appStore.convertInverseSectionLength, {
+                  positive: true,
+                })
+              "
             />
           </template>
           <template #item.k="{ item }">
@@ -1256,7 +1276,7 @@
               :value="formatScientificNumber(item.k)"
               class="inline-edit"
               @keydown="checkNumber($event)"
-              @change="changeItem(item, 'k', $event.target as HTMLInputElement)"
+              @change="changeItem(item, 'k', $event.target as HTMLInputElement, undefined, { positive: true })"
             />
           </template>
           <template #item.actions="{ item }">

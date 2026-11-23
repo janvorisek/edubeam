@@ -584,6 +584,8 @@
       "elementMissingNode": "Phần tử {element} tham chiếu nút {node} không tồn tại.",
       "elementMissingMaterial": "Phần tử {element} tham chiếu vật liệu {material} không tồn tại.",
       "elementMissingCrossSection": "Phần tử {element} tham chiếu tiết diện {crossSection} không tồn tại.",
+      "materialNotPositive": "Vật liệu {material}: {property} phải lớn hơn 0.",
+      "crossSectionNotPositive": "Tiết diện {crossSection}: {property} phải lớn hơn 0.",
       "nodalLoadMissingNode": "Tải trọng nút #{index} tham chiếu nút {node} không tồn tại.",
       "nodalLoadInvalid": "Tải trọng nút #{index} chứa giá trị không hợp lệ.",
       "prescribedMissingNode": "Chuyển vị cưỡng bức #{index} tham chiếu nút {node} không tồn tại.",

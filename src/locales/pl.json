@@ -584,6 +584,8 @@
       "elementMissingNode": "Element {element} odwołuje się do nieistniejącego węzła {node}.",
       "elementMissingMaterial": "Element {element} odwołuje się do nieistniejącego materiału {material}.",
       "elementMissingCrossSection": "Element {element} odwołuje się do nieistniejącego przekroju {crossSection}.",
+      "materialNotPositive": "Materiał {material}: wartość {property} musi być większa od zera.",
+      "crossSectionNotPositive": "Przekrój {crossSection}: wartość {property} musi być większa od zera.",
       "nodalLoadMissingNode": "Obciążenie węzłowe #{index} odwołuje się do nieistniejącego węzła {node}.",
       "nodalLoadInvalid": "Obciążenie węzłowe #{index} zawiera nieprawidłowe wartości.",
       "prescribedMissingNode": "Zadane przemieszczenie #{index} odwołuje się do nieistniejącego węzła {node}.",

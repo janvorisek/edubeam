@@ -584,6 +584,8 @@
       "elementMissingNode": "Element {element} referenziert den fehlenden Knoten {node}.",
       "elementMissingMaterial": "Element {element} referenziert das fehlende Material {material}.",
       "elementMissingCrossSection": "Element {element} referenziert den fehlenden Querschnitt {crossSection}.",
+      "materialNotPositive": "Material {material}: {property} muss größer als null sein.",
+      "crossSectionNotPositive": "Querschnitt {crossSection}: {property} muss größer als null sein.",
       "nodalLoadMissingNode": "Knotenlast #{index} referenziert den fehlenden Knoten {node}.",
       "nodalLoadInvalid": "Knotenlast #{index} enthält ungültige Werte.",
       "prescribedMissingNode": "Vorgegebene Verschiebung #{index} referenziert den fehlenden Knoten {node}.",

@@ -17,6 +17,54 @@ const buildBeam = (bcs: DofID[]) => {
   return ls;
 };
 
+describe('validateSolverModel stiffness checks', () => {
+  /** A propped cantilever with a hinge, the model of EDUBEAM-APP-FW, and its section changed */
+  const hingedBeam = (section: Record<string, number>, material: Record<string, number> = {}) => {
+    const ls = new LinearStaticSolver();
+    const d = ls.domain;
+    d.createMaterial('m', { d: 7850, e: 210e9, g: 80e9, alpha: 12e-6, ...material });
+    d.createCrossSection('cs', { a: 0.01, iy: 8e-5, h: 0.2, k: 1e32, ...section });
+    d.createNode('1', [0, 0, 0], [DofID.Dx, DofID.Dz]);
+    d.createNode('2', [3, 0, 0], [DofID.Dz]);
+    d.createNode('3', [6, 0, 0], [DofID.Dz]);
+    d.createBeam2D('B1', ['1', '2'], 'm', 'cs', [false, true]);
+    d.createBeam2D('B2', ['2', '3'], 'm', 'cs');
+    return ls;
+  };
+
+  it.each([
+    [{ iy: 0 }, {}, 'CROSS_SECTION_NOT_POSITIVE', 'Cross section cs: Iy must be greater than zero.'],
+    [{ a: 0 }, {}, 'CROSS_SECTION_NOT_POSITIVE', 'Cross section cs: A must be greater than zero.'],
+    [{ iy: -1e-5 }, {}, 'CROSS_SECTION_NOT_POSITIVE', 'Cross section cs: Iy must be greater than zero.'],
+    [{ k: 0 }, {}, 'CROSS_SECTION_NOT_POSITIVE', 'Cross section cs: k must be greater than zero.'],
+    [{}, { e: 0 }, 'MATERIAL_NOT_POSITIVE', 'Material m: E must be greater than zero.'],
+    [{}, { g: 0 }, 'MATERIAL_NOT_POSITIVE', 'Material m: G must be greater than zero.'],
+  ])('reports %o %o rather than letting the solver throw', (section, material, code, message) => {
+    const diagnostics = validateSolverModel(hingedBeam(section, material));
+
+    expect(codes(diagnostics.errors)).toEqual([code]);
+    expect(diagnostics.errors[0].message).toBe(message);
+  });
+
+  it('reports each zero once, however many members use the section', () => {
+    expect(codes(validateSolverModel(hingedBeam({ iy: 0, a: 0 })).errors)).toEqual([
+      'CROSS_SECTION_NOT_POSITIVE',
+      'CROSS_SECTION_NOT_POSITIVE',
+    ]);
+  });
+
+  it('accepts a shear-rigid section written with an infinite shear factor', () => {
+    expect(validateSolverModel(hingedBeam({ k: Infinity })).errors).toEqual([]);
+  });
+
+  it('ignores a material that no member uses', () => {
+    const ls = hingedBeam({});
+    ls.domain.createMaterial('unused', { d: 0, e: 0, g: 0, alpha: 0 });
+
+    expect(validateSolverModel(ls).errors).toEqual([]);
+  });
+});
+
 describe('validateSolverModel stability checks', () => {
   it('finds nothing wrong with an empty model', () => {
     expect(validateSolverModel(new LinearStaticSolver())).toEqual({ errors: [], incomplete: [], warnings: [] });

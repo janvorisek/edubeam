@@ -584,6 +584,8 @@
       "elementMissingNode": "El elemento {element} hace referencia al nodo inexistente {node}.",
       "elementMissingMaterial": "El elemento {element} hace referencia al material inexistente {material}.",
       "elementMissingCrossSection": "El elemento {element} hace referencia a la sección transversal inexistente {crossSection}.",
+      "materialNotPositive": "Material {material}: {property} debe ser mayor que cero.",
+      "crossSectionNotPositive": "Sección transversal {crossSection}: {property} debe ser mayor que cero.",
       "nodalLoadMissingNode": "La carga nodal #{index} hace referencia al nodo inexistente {node}.",
       "nodalLoadInvalid": "La carga nodal #{index} contiene valores no válidos.",
       "prescribedMissingNode": "El desplazamiento impuesto #{index} hace referencia al nodo inexistente {node}.",

@@ -1,4 +1,4 @@
-import { DofID, type LinearStaticSolver, type Node } from '@edubeam/fem';
+import { DofID, type CrossSection, type LinearStaticSolver, type Material, type Node } from '@edubeam/fem';
 import { i18n } from '@/plugins/i18n';
 import { axisLetters } from './axisConvention';
 import { coincide } from './drawableBeam';
@@ -77,6 +77,58 @@ export const solveIssue = (
 };
 
 const isFiniteNumber = (value: unknown) => typeof value === 'number' && Number.isFinite(value);
+
+/**
+ * The stiffness properties a member needs above zero, named by their symbols. A zero A, Iy, E, G or k
+ * divides by zero inside the solver: with a hinge in the model it threw "Static condensation needs a
+ * member with a hinge", without one it gave a singular system or NaN results (EDUBEAM-APP-FW).
+ */
+const MATERIAL_STIFFNESS = [
+  ['e', 'E'],
+  ['g', 'G'],
+] as const satisfies readonly (readonly [keyof Material, string])[];
+const CROSS_SECTION_STIFFNESS = [
+  ['a', 'A'],
+  ['iy', 'Iy'],
+  ['k', 'k'],
+] as const satisfies readonly (readonly [keyof CrossSection, string])[];
+
+/** Above zero; Infinity passes, as a shear factor that large is how a shear-rigid section is written. */
+const isPositive = (value: number) => value > 0;
+
+/** An issue for each property of the materials and cross-sections in use that is not above zero. */
+const appendStiffnessIssues = (solver: LinearStaticSolver, diagnostics: SolveDiagnostics) => {
+  const { domain } = solver;
+  const used = (key: 'mat' | 'cs') =>
+    new Set([...domain.elements.values()].map((element) => toLabel((element as { mat?: unknown; cs?: unknown })[key])));
+  // A missing material or section is reported by the element checks above
+
+  for (const label of used('mat')) {
+    const material = domain.materials.get(label);
+    for (const [key, property] of MATERIAL_STIFFNESS) {
+      if (material && !isPositive(material[key])) {
+        diagnostics.errors.push(
+          solveIssue('error', 'MATERIAL_NOT_POSITIVE', () =>
+            t('materialNotPositive', { material: shownLabel(label), property })
+          )
+        );
+      }
+    }
+  }
+
+  for (const label of used('cs')) {
+    const section = domain.crossSections.get(label);
+    for (const [key, property] of CROSS_SECTION_STIFFNESS) {
+      if (section && !isPositive(section[key])) {
+        diagnostics.errors.push(
+          solveIssue('error', 'CROSS_SECTION_NOT_POSITIVE', () =>
+            t('crossSectionNotPositive', { crossSection: shownLabel(label), property })
+          )
+        );
+      }
+    }
+  }
+};
 
 export const validateSolverModel = (solver: LinearStaticSolver): SolveDiagnostics => {
   const diagnostics = emptyDiagnostics();
@@ -205,6 +257,8 @@ export const validateSolverModel = (solver: LinearStaticSolver): SolveDiagnostic
       );
     }
   }
+
+  appendStiffnessIssues(solver, diagnostics);
 
   // Stability is a question about well-formed elements. Asked of a beam with no length or a missing
   // node, it answered with a mechanism the broken beam made up, piled on top of the real error.

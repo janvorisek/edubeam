@@ -584,6 +584,8 @@
       "elementMissingNode": "Елемент {element} посилається на відсутній вузол {node}.",
       "elementMissingMaterial": "Елемент {element} посилається на відсутній матеріал {material}.",
       "elementMissingCrossSection": "Елемент {element} посилається на відсутній переріз {crossSection}.",
+      "materialNotPositive": "Матеріал {material}: значення {property} має бути більшим за нуль.",
+      "crossSectionNotPositive": "Переріз {crossSection}: значення {property} має бути більшим за нуль.",
       "nodalLoadMissingNode": "Вузлове навантаження #{index} посилається на відсутній вузол {node}.",
       "nodalLoadInvalid": "Вузлове навантаження #{index} містить некоректні значення.",
       "prescribedMissingNode": "Задане переміщення #{index} посилається на відсутній вузол {node}.",

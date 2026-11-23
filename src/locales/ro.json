@@ -1,0 +1,838 @@
+{
+  "tabView": {
+    "viewer": "Vizualizare",
+    "settings": "Setări",
+    "results": "Rezultate",
+    "report": "Raport"
+  },
+  "common": {
+    "label": "Etichetă",
+    "node": "Nod",
+    "element": "Element",
+    "crossSection": "Secțiune transversală",
+    "material": "Material",
+    "settings": "Setări",
+    "actions": "Acțiuni",
+    "coords": "Coordonate",
+    "type": "Tip",
+    "nodes": "Noduri",
+    "endHinges": "Articulații la capete",
+    "massMatrix": "Matrice de masă",
+    "target": "Punct de aplicare",
+    "components": "Componente",
+    "loadCase": "Caz de încărcare",
+    "loads": "Încărcări",
+    "clearMesh": "Golește modelul",
+    "shareModel": "Partajează modelul",
+    "documentation": "Documentație",
+    "addUsingDialog": "Adaugă prin dialog",
+    "addUsingMouse": "Adaugă cu mouse-ul",
+    "edit": "Editează",
+    "copy": "Copiază",
+    "delete": "Șterge",
+    "stiffnessMatrix": "Matrice de rigiditate",
+    "normalForce": "Forță axială",
+    "shearForce": "Forță tăietoare",
+    "bendingMoment": "Moment încovoietor",
+    "deformedShape": "Deformata",
+    "reactions": "Reacțiuni",
+    "elements": "Elemente",
+    "confirm": "Confirmă",
+    "saveProject": "Salvează proiectul",
+    "openProject": "Deschide un proiect",
+    "lcs": "Sistem de coordonate local",
+    "paste": "Lipește",
+    "addNew": "Adaugă",
+    "whatisnew": "Ce este nou?",
+    "reverse_orientation": "Inversează cota",
+    "undo": "Anulează",
+    "redo": "Refă",
+    "ok": "OK",
+    "close": "Închide"
+  },
+  "nodes": {
+    "addNode": "Adaugă nod",
+    "editNode": "Editează nodul",
+    "defineSupports": "Reazeme în nod",
+    "lcsAngle": "Unghiul sistemului local al nodului",
+    "equilibrium": "Echilibrul nodului",
+    "equilibriumOf": "Echilibrul nodului {label}",
+    "equilibriumSymbols": "Simboluri",
+    "equilibriumValues": "Valori"
+  },
+  "supports": {
+    "free": "Liber",
+    "pin": "Articulație",
+    "roller": "Reazem simplu",
+    "verticalRoller": "Reazem simplu vertical",
+    "slider": "Încastrare glisantă",
+    "verticalSlider": "Încastrare glisantă verticală",
+    "rotation": "Doar rotire blocată",
+    "fixed": "Încastrare",
+    "custom": "Personalizat"
+  },
+  "elements": {
+    "addElement": "Adaugă element",
+    "editElement": "Editează elementul",
+    "swapNodeOrder": "Inversează nodurile",
+    "hingeStart": "Articulație la început",
+    "hingeEnd": "Articulație la sfârșit",
+    "hinge": "Articulație",
+    "from": "De la",
+    "to": "Până la"
+  },
+  "loads": {
+    "addNodalLoad": "Adaugă încărcare nodală",
+    "addElementLoad": "Adaugă încărcare pe element",
+    "addLoad": "Adaugă încărcare",
+    "nodalLoad": "Încărcare nodală",
+    "elementLoad": "Încărcare pe element",
+    "prescribedDisplacement": "Deplasare impusă",
+    "addPrescribedDisplacement": "Impune o deplasare",
+    "UDL": "Încărcare uniform distribuită",
+    "forceMoment": "Forță/Moment",
+    "moment": "Moment",
+    "editLoad": "Editează încărcarea",
+    "loadPositionOnBeam": "Poziția încărcării față de nodul inițial",
+    "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Variația de temperatură a fibrei inferioare minus a celei superioare",
+    "temperatureBending": "ΔT<sub>c</sub> ... Variația de temperatură în axa barei",
+    "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
+    "temperatureDeltaTs": "ΔT<sub>c</sub>",
+    "temperatureDeltaTsNoHTML": "ΔTc",
+    "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt",
+    "globalAxes": "Axe globale",
+    "nodeAxes": "Axele nodului",
+    "alongSupportAxes": "După axele proprii ale reazemului."
+  },
+  "tabs": {
+    "nodes": "Noduri",
+    "elements": "Elemente",
+    "loads": "Încărcări",
+    "materials": "Materiale",
+    "crossSections": "Secțiuni",
+    "results": "Rezultate"
+  },
+  "crossSection": {
+    "area": "Arie",
+    "h": "Înălțime",
+    "iy": "Iy",
+    "k": "Coeficient de forfecare",
+    "iz": "Iz",
+    "b": "Lățime",
+    "centroid": "Centru de greutate",
+    "alpha": "Unghiul axelor principale",
+    "radiusOfGyration": "Rază de girație",
+    "polygonal": "Formă poligonală",
+    "derivedFromShape": "Calculat din forma poligonală – editează forma pentru a-l modifica"
+  },
+  "material": {
+    "e": "E",
+    "g": "G",
+    "density": "Densitate",
+    "alphaT": "α_T"
+  },
+  "settings": {
+    "results_scale": "Scara rezultatelor",
+    "grid_snap_step": "Pasul de aliniere la grilă",
+    "snap_to_grid": "Aliniere la grilă",
+    "show_crosshair": "Afișează reticulul",
+    "model_checks": "Verificări ale modelului",
+    "show_mechanisms": "Arată cum se poate mișca o structură instabilă",
+    "animate_mechanisms": "Animează mișcarea",
+    "number_format": "Formatul numerelor",
+    "number_format_description": "Cum sunt scrise valorile rezultatelor; separatorul zecimal urmează limba.",
+    "number_format_auto": "Automat",
+    "number_format_scientific": "Științific (1,5 · 10⁴)",
+    "number_format_engineering": "Ingineresc (15 · 10³)",
+    "language": "Limbă",
+    "language_and_locale": "Limbă și regiune",
+    "show_normal_force": "Afișează forța axială",
+    "show_shear_force": "Afișează forța tăietoare",
+    "show_bending_moment": "Afișează momentul încovoietor",
+    "show_deformed_shape": "Afișează deformata",
+    "show_loads": "Afișează încărcările",
+    "units": {
+      "units": "Unități",
+      "length": "Lungime",
+      "mass": "Masă",
+      "force": "Forță",
+      "moment": "Moment încovoietor",
+      "pressure": "Presiune",
+      "area": "Arie",
+      "areaM2": "Moment de inerție",
+      "system": "Sistem de unități",
+      "systemSI": "SI (metric)",
+      "systemUS": "Unități americane (imperiale)",
+      "systemCustom": "Personalizat",
+      "temperature": "Temperatură",
+      "sectionLength": "Dimensiunile secțiunii",
+      "displacement": "Deplasare"
+    },
+    "grid": "Grilă",
+    "show_grid": "Afișează grila",
+    "mouse": {
+      "mouse": "Mouse",
+      "pan_button": "Deplasarea vederii cu",
+      "wheel": "Rotița mouse-ului",
+      "right_button": "Butonul din dreapta",
+      "all": "Rotița sau butonul din dreapta"
+    },
+    "colors": {
+      "colors": "Culori"
+    },
+    "results": {
+      "results": "Rezultate"
+    },
+    "viewer_settings": "Setări de afișare",
+    "controls_and_shortcuts": "Comenzi și scurtături",
+    "language_and_locale_subtitle": "Limbă, regiune și unități",
+    "viewer_settings_subtitle": "Scară, culori, grilă și altele",
+    "controls_and_shortcuts_subtitle": "Setări pentru tastatură și mouse",
+    "viewer_preview": "Previzualizare",
+    "language_description": "Alege limba interfeței.",
+    "units_description": "Alege unitățile de măsură.",
+    "axisConvention": "Sistem de coordonate",
+    "axisConvention_description": "Încotro este orientată axa verticală la date de intrare și rezultate. Modelul și fișierele salvate nu se schimbă.",
+    "axisConvention_zDown": "x spre dreapta, z în jos",
+    "axisConvention_yUp": "x spre dreapta, y în sus",
+    "reset_settings": "Resetează setările",
+    "sizes": {
+      "sizes": "Dimensiuni",
+      "supportSize": "Mărimea reazemelor"
+    },
+    "font_size": "Mărimea fontului",
+    "result_label_orientation": "Orientarea valorilor",
+    "result_label_orientation_axis": "Perpendicular pe diagramă",
+    "result_label_orientation_horizontal": "Întotdeauna orizontal",
+    "theme": "Temă",
+    "theme_system": "Sistem",
+    "theme_light": "Luminoasă",
+    "theme_dark": "Întunecată",
+    "theme_toDark": "Temă întunecată",
+    "theme_toLight": "Temă luminoasă",
+    "renderer": "Desenare",
+    "renderer_classic": "Clasică",
+    "renderer_plot": "Nouă (beta)",
+    "show_readout": "Afișează valorile la cursor",
+    "result_labels": "Valorile rezultatelor",
+    "diagrams": {
+      "title": "Diagrame de eforturi",
+      "moment": "Moment încovoietor",
+      "tensionSide": "Pe fibra întinsă",
+      "compressionSide": "Pe fibra comprimată",
+      "normal": "Forță axială pozitivă",
+      "shear": "Forță tăietoare pozitivă",
+      "awayFromDashed": "Pe partea opusă",
+      "dashedSide": "Pe partea punctată",
+      "fill": "Umplere",
+      "fillSolid": "Plină",
+      "fillHatch": "Hașurată",
+      "fillNone": "Fără",
+      "degrees": "Gradul fiecărui segment",
+      "dashedHint": "Linia punctată de-a lungul fiecărui element marchează fibra inferioară."
+    }
+  },
+  "sideSettings": {
+    "showDeformedShape": "Deformata",
+    "supports": "Reazeme",
+    "loads": "Încărcări",
+    "nodeLabels": "Etichetele nodurilor",
+    "elementLabels": "Etichetele elementelor",
+    "more_settings": "Mai multe setări",
+    "showReactions": "Reacțiuni"
+  },
+  "viewer": {
+    "toggleGrid": "Afișează/ascunde grila (G)",
+    "toggleSnap": "Pornește/oprește alinierea la grilă (S)",
+    "toggleCrosshair": "Afișează/ascunde reticulul",
+    "boxSelect": "Selectare cu dreptunghi",
+    "centerContent": "Centrează modelul",
+    "fitContent": "Încadrează modelul în ecran",
+    "holdCtrl": "Ține apăsat Ctrl pentru a adăuga cu mouse-ul",
+    "select": "Selectare",
+    "tools": "Instrumente",
+    "snapMiddle": "Mijloc",
+    "snapThird": "Treime",
+    "snapOnElement": "Pe elementul {label}",
+    "placeFreely": "Ține apăsat Alt pentru plasare liberă"
+  },
+  "dofs": {
+    "bcs": "Grade de libertate blocate"
+  },
+  "results": {
+    "results": "Rezultate",
+    "nodal_results": "Rezultate în noduri",
+    "element_results": "Rezultate pe elemente",
+    "end_forces": "Forțe la capete (în sistemul de coordonate local)",
+    "exportCsv": "Exportă CSV",
+    "exportHint": "Descarcă ambele tabele de rezultate în unitățile afișate, gata pentru un program de calcul tabelar.",
+    "copied": "Rezultatele au fost copiate în clipboard",
+    "copyFailed": "Rezultatele nu au putut fi copiate în clipboard."
+  },
+  "materials": {
+    "addMaterial": "Adaugă material",
+    "material_library": "Bibliotecă de materiale",
+    "section_library": "Bibliotecă de secțiuni"
+  },
+  "crossSections": {
+    "addCrossSection": "Adaugă secțiune",
+    "addPolygonal": "Secțiune poligonală"
+  },
+  "dialogs": {
+    "addNode": {
+      "addNewNode": "Adaugă un nod nou",
+      "coordinate_x": "Coordonata X",
+      "coordinate_z": "Coordonata {v}",
+      "addNode": "Adaugă nod"
+    },
+    "common": {
+      "cancel": "Renunță",
+      "orChooseFromLibrary": "Sau alege din bibliotecă"
+    },
+    "addElement": {
+      "fromNodeId": "Nodul inițial",
+      "toNodeId": "Nodul final",
+      "addElement": "Adaugă element",
+      "addNewElement": "Adaugă un element nou",
+      "material": "Material",
+      "crossSection": "Secțiune transversală"
+    },
+    "addNodalLoad": {
+      "addNewNodalLoad": "Adaugă o încărcare nodală nouă",
+      "addNodalLoad": "Adaugă încărcare nodală"
+    },
+    "addElementLoad": {
+      "addNewElementLoad": "Adaugă o încărcare nouă pe element",
+      "addElementLoad": "Adaugă încărcare pe element"
+    },
+    "addMaterial": {
+      "addNewMaterial": "Adaugă un material nou",
+      "addMaterial": "Adaugă material",
+      "E": "E - modul de elasticitate longitudinal (Young)",
+      "G": "G - modul de elasticitate transversal",
+      "density": "ρ - densitate",
+      "alphaT": "α - coeficient de dilatare termică"
+    },
+    "addCrossSection": {
+      "addNewCrossSection": "Adaugă o secțiune nouă",
+      "addCrossSection": "Adaugă secțiune",
+      "orDefinePolygon": "Sau definește o formă poligonală"
+    },
+    "editNodalLoad": {
+      "editNodalLoad": "Editează încărcarea nodală"
+    },
+    "editElementLoad": {
+      "editElementLoad": "Editează încărcarea pe element"
+    },
+    "update": {
+      "title": "Actualizare disponibilă",
+      "update": "Actualizează",
+      "text1": "Lansăm o actualizare care necesită resetarea aplicației. Tot ce ai lucrat până acum se va pierde.",
+      "text2": "Dacă vrei să păstrezi lucrul curent, poți renunța la actualizare."
+    },
+    "editNode": {
+      "editNode": "Editează nodul"
+    },
+    "changelog": {
+      "title": "Ce este nou?",
+      "description": "Funcții noi, îmbunătățiri și o privire asupra a ceea ce pregătim.",
+      "contributors": "Au contribuit la această versiune: {names}",
+      "comingSoon": "În curând",
+      "tryIt": "Încearcă",
+      "tried": {
+        "diagramStyles": "Diagramele hașurate cu gradul fiecărui segment sunt pornite.",
+        "newDrawing": "Noua desenare cu diagrame hașurate este pornită."
+      }
+    },
+    "polygonSection": {
+      "title": "Secțiune transversală poligonală nouă",
+      "editTitle": "Editează secțiunea poligonală",
+      "preset": "Formă predefinită",
+      "apply": "Aplică",
+      "snapStep": "Pas de aliniere",
+      "centerAtCentroid": "Centrează în centrul de greutate",
+      "hint": "Trage vârfurile pentru a le muta, dă clic pe mijlocul unei laturi pentru a insera un vârf, dublu clic pe un vârf pentru a-l elimina.",
+      "outline": "Contur",
+      "hole": "Gol",
+      "addHole": "Adaugă gol",
+      "addVertex": "Adaugă vârf",
+      "removeContour": "Elimină golul",
+      "properties": "Caracteristicile secțiunii",
+      "invalidShape": "Forma trebuie să fie un poligon simplu cu arie pozitivă: fără laturi care se intersectează, iar golurile trebuie să rămână în interiorul conturului.",
+      "labelInUse": "Eticheta este deja folosită",
+      "save": "Salvează",
+      "editShape": "Editează forma poligonală",
+      "presets": {
+        "rectangle": "Dreptunghi",
+        "iSection": "Profil I",
+        "tSection": "Profil T",
+        "lSection": "Cornier (L)",
+        "channel": "Profil U",
+        "box": "Țeavă rectangulară",
+        "circle": "Cerc",
+        "pipe": "Țeavă rotundă"
+      },
+      "params": {
+        "b": "Lățime b",
+        "h": "Înălțime h",
+        "tw": "Inimă tw",
+        "tf": "Talpă tf",
+        "t": "Grosime t",
+        "d": "Diametru d",
+        "n": "Segmente"
+      },
+      "vertices": "Vârfuri",
+      "legendOutline": "Contur",
+      "legendHole": "Gol",
+      "legendPrincipal": "Axe principale și elipsa de inerție",
+      "legendCentroid": "Centru de greutate",
+      "shape": "Formă",
+      "noShape": "Fără formă poligonală",
+      "centroidal": "centrale",
+      "centroidalNote": "Toate momentele de inerție sunt calculate față de axe care trec prin centrul de greutate; I₁, I₂ sunt valorile principale, iar α este unghiul de la axa y la axa 1.",
+      "outOfPlaneNote": "Această secțiune nu este simetrică față de planul cadrului. Un calcul 2D este exact numai dacă bara este împiedicată să se deplaseze lateral (perpendicular pe ecran) și să se răsucească pe toată lungimea ei, de exemplu de o placă sau de contravântuiri dese; reazemele din noduri nu sunt suficiente. O bară liberă se și răsucește, deoarece încărcările acționează excentric față de centrul de forfecare, iar această răsucire nu este inclusă în deplasări.",
+      "outOfPlaneRestrained": "Fixată lateral și împotriva răsucirii pe toată lungimea: {inertia}",
+      "outOfPlaneFree": "Liberă să se deplaseze lateral (răsucirea tot nu este inclusă): {inertia}"
+    }
+  },
+  "tooltip": {
+    "materials": {},
+    "material": {
+      "alphaT": "Coeficientul de dilatare termică descrie cât se modifică dimensiunile unui corp la o variație de temperatură.",
+      "e": "Modulul de elasticitate longitudinal (Young) măsoară rigiditatea la întindere sau compresiune când forța acționează în lungul barei.",
+      "g": "Modulul de elasticitate transversal măsoară rezistența materialului la deformare sub tensiuni tangențiale, adică rigiditatea lui la forțe paralele cu suprafața.",
+      "density": "Densitatea arată câtă masă conține un anumit volum dintr-o substanță."
+    }
+  },
+  "footer": {
+    "reportIssue": "Raportează o problemă",
+    "requestFeature": "Propune o funcție",
+    "released": "lansată"
+  },
+  "sharing": {
+    "shareViaURL": "Partajează modelul printr-un link",
+    "instructions": "Dă clic oriunde în câmp pentru a copia linkul, apoi trimite-l colegilor.",
+    "copyCue": "Copiază linkul",
+    "openLink": "Deschide linkul",
+    "nativeShare": "Partajează prin dialogul sistemului",
+    "linkCopied": "Linkul a fost copiat în clipboard",
+    "copyFailed": "Copierea automată nu a reușit. Folosește scurtăturile de tastatură.",
+    "shortLink": "Link mai scurt",
+    "shortLinkHint": "Cam de două ori mai scurt. Cine are o versiune mai veche a EduBeam trebuie să actualizeze aplicația înainte ca linkul să se deschidă.",
+    "shareLayers": "Arată ce văd eu",
+    "shareLayersHint": "Linkul se deschide cu diagramele, încărcările și etichetele pe care le ai pornite."
+  },
+  "shortcuts": {
+    "title": "Scurtături de tastatură",
+    "drawing": "Desenare",
+    "editing": "Editare",
+    "cancel": "Înapoi la Selectare, renunță la ce se plasează",
+    "placeFreely": "Plasare liberă, fără aliniere (ține apăsat)",
+    "grid": "Afișează sau ascunde grila",
+    "snap": "Pornește sau oprește alinierea la grilă",
+    "zoom": "Mărire și micșorare",
+    "selectAll": "Selectează tot",
+    "save": "Salvează proiectul",
+    "exportImage": "Exportă o imagine"
+  },
+  "tour": {
+    "menu": {
+      "title": "Meniu",
+      "description": "Deschide, salvează și partajează proiectele, exportă o imagine, încarcă un exemplu sau pornește din nou acest tur ori exercițiul cu prima grindă."
+    },
+    "undoRedo": {
+      "title": "Anulare și refacere",
+      "description": "Mergi înapoi și înainte prin modificări. Ctrl+Z și Ctrl+Shift+Z fac același lucru."
+    },
+    "tools": {
+      "title": "Instrumente",
+      "description": "Adaugă noduri, elemente, reazeme și încărcări direct pe desen. Ține apăsat un instrument sau dă clic pe colțul lui pentru a alege tipul de reazem sau de încărcare. Punctele se aliniază la noduri și la mijlocul și treimile elementelor; ține apăsat Alt pentru plasare liberă. Taste: V selectare, N nod, E element, U reazem, L încărcare, D cotă, Esc înapoi la selectare.",
+      "descriptionTouch": "Adaugă noduri, elemente, reazeme și încărcări direct pe desen: atinge un instrument, apoi locul unde trebuie pus, iar la final săgeata. Instrumentele pentru reazeme și încărcări deschid o listă de tipuri. Punctele se aliniază la noduri și la mijlocul și treimile elementelor. Un deget deplasează vederea, două degete măresc. Trage un nod pentru a-l muta, ține apăsat pe o încărcare pentru a o ridica sau ține apăsat în altă parte pentru meniu."
+    },
+    "viewerControls": {
+      "title": "Butoanele vederii",
+      "description": "Cu aceste butoane centrezi structura sau o încadrezi în ecran și alegi ce se afișează."
+    },
+    "viewerSettings": {
+      "title": "Opțiuni de afișare",
+      "description": "Alege ce se afișează – forța axială, forța tăietoare, momentul încovoietor, deformata sau toate deodată."
+    },
+    "gridUnits": {
+      "title": "Grilă, aliniere și unități",
+      "description": "G afișează grila, iar S aliniază la ea nodurile noi. Dă clic pe unități pentru a schimba unitățile, limba sau sistemul de coordonate."
+    },
+    "bottomBar": {
+      "title": "Adăugare, ștergere și modificare",
+      "description": "Locul central din care modifici orice parte a structurii. Noduri, elemente, încărcări, materiale și secțiuni – toate se schimbă rapid de aici."
+    },
+    "help": {
+      "title": "Ajutor",
+      "description": "Semnul ? explică fila deschisă. Semnul ? de lângă titlul unei coloane explică acea coloană."
+    },
+    "previousButton": "Înapoi",
+    "nextButton": "Înainte",
+    "finishButton": "Gata",
+    "close": "Închide turul"
+  },
+  "firstBeam": {
+    "title": "Prima ta grindă",
+    "step": "Pasul {n} din {total}",
+    "close": "Închide ghidul",
+    "finish": "Gata",
+    "next": "Înainte",
+    "steps": {
+      "tool": {
+        "title": "Alege instrumentul de desenare",
+        "body": "În fila {elementsTab} de jos, apasă butonul {addElement} cu pictograma cursorului."
+      },
+      "draw": {
+        "title": "Desenează grinda",
+        "body": "Dă clic unde începe grinda, apoi unde se termină. Capetele se aliniază la grilă."
+      },
+      "supports": {
+        "title": "Rezem-o",
+        "body": "Dă clic pe capătul din stânga, deschide {defineSupports} și bifează Dx și D{v} pentru o articulație. Apoi dă clic pe capătul din dreapta și bifează D{v} pentru un reazem simplu."
+      },
+      "load": {
+        "title": "Încarc-o",
+        "body": "Dă clic pe grindă, alege {addLoad}, introdu o valoare în f{v} și confirmă."
+      },
+      "display": {
+        "title": "Alege ce se afișează",
+        "body": "Rotița dințată din dreapta sus deschide opțiunile de afișare: eforturi, deformata, reacțiuni și altele. Deschide-o acum."
+      },
+      "fit": {
+        "title": "Încadrează în ecran",
+        "body": "Butoanele din dreapta sus încadrează modelul în ecran sau îl centrează. Apasă acum pe încadrare și din nou ori de câte ori desenul iese din vedere."
+      },
+      "results": {
+        "title": "Citește rezultatele",
+        "body": "Momentul încovoietor și deformata sunt desenate pe grindă și se actualizează pe măsură ce editezi. Fiecare nod, element și încărcare apare și în tabelele de jos, unde poți introduce valori exacte. {undo} readuce modelul de dinainte."
+      }
+    }
+  },
+  "welcome": {
+    "title": "Bine ai venit în <span class=\"edubeam\">EduBeam</span>! 🚀",
+    "description": "Modelează grinzi, cadre și grinzi cu zăbrele și vezi eforturile pe măsură ce desenezi.",
+    "start": "Cum vrei să începi?",
+    "showAround": "Prezintă-mi aplicația",
+    "showAroundHint": "O privire rapidă asupra vederii, a opțiunilor de afișare și a barei de jos.",
+    "drawFirstBeam": "Desenează prima grindă",
+    "drawFirstBeamHint": "Un scurt exercițiu ghidat: desenezi o grindă, o rezemi și o încarci.",
+    "openExample": "Deschide un exemplu",
+    "openExampleHint": "Pornește de la un model gata făcut și modifică-l.",
+    "skip": "Mai târziu"
+  },
+  "confirmation": {
+    "clearMesh": {
+      "message": "Sigur vrei să golești modelul? Ctrl+Z îl readuce, iar el rămâne și în Structuri recente.",
+      "title": "Golești modelul?",
+      "materials": "Șterge materialele",
+      "crossSections": "Șterge secțiunile"
+    },
+    "resetSettings": {
+      "title": "Resetezi setările?",
+      "message": "Sigur vrei să readuci toate setările la valorile implicite? Această acțiune nu poate fi anulată."
+    },
+    "splitElementAndPlaceNode": {
+      "title": "Confirmarea plasării nodului",
+      "message": "<p>Se pare că plasezi un nod pe grinda {label}.</p><p class=\"mt-3\">Vrei să împarți elementul și să conectezi nodul sau să plasezi nodul neconectat la structură?</p>",
+      "split": "Conectează la structură"
+    },
+    "placeIndividualNode": "Plasează un nod separat"
+  },
+  "selection": {
+    "node": "Nod",
+    "element": "Element",
+    "dimension": "Cotă",
+    "nodal-load": "Încărcare nodală",
+    "element-load": "Încărcare pe element",
+    "prescribedbc-load": "Deplasare impusă"
+  },
+  "validators": {
+    "enterValue": "Introdu o valoare",
+    "invalidNumber": "Număr invalid",
+    "positiveNumber": "Introdu un număr mai mare decât zero",
+    "between": "Introdu o valoare între {min} și {max}",
+    "sameNodes": "Un element trebuie să lege două noduri diferite",
+    "materialInUse": "Materialul este folosit de elementul {elements}. Atribuie-i alt material înainte de a-l șterge. | Materialul este folosit de elementele {elements}. Atribuie-le alt material înainte de a-l șterge.",
+    "crossSectionInUse": "Secțiunea este folosită de elementul {elements}. Atribuie-i altă secțiune înainte de a o șterge. | Secțiunea este folosită de elementele {elements}. Atribuie-le altă secțiune înainte de a o șterge."
+  },
+  "solveDiagnostics": {
+    "summaryErrors": "Erori în model: {errors}",
+    "summaryWarnings": "Avertismente în model: {warnings}",
+    "summaryIncomplete": "Părți ale structurii care au nevoie de reazeme: {count}.",
+    "incompleteChip": "Necesită reazeme",
+    "hideMotion": "Ascunde mișcarea",
+    "showMotion": "Arată mișcarea",
+    "dismissWarnings": "Ascunde aceste avertismente",
+    "collapseErrors": "Micșorează acest mesaj",
+    "showDetails": "Arată detaliile",
+    "blockedTitle": "Modelul nu poate fi calculat",
+    "blockedDescription": "Corectează erorile din listă înainte de calcul.",
+    "warningsTitle": "Avertismente pentru model",
+    "warningsDescription": "Modelul a fost calculat, dar au fost găsite următoarele avertismente.",
+    "incompleteTitle": "Încă nu poate fi calculat",
+    "incompleteDescription": "Rezultatele apar de îndată ce structura este fixată. Conturul punctat de pe desen arată cum se mai poate mișca.",
+    "errors": "Erori",
+    "warnings": "Avertismente",
+    "incomplete": "Mai lipsește",
+    "issues": {
+      "elementNodeCount": "Elementul {element} trebuie să aibă exact 2 noduri.",
+      "elementSameNode": "Elementul {element} are același nod la ambele capete.",
+      "elementZeroLength": "Elementul {element} are lungime zero: nodurile {start} și {end} sunt în același punct.",
+      "elementMissingNode": "Elementul {element} face referire la nodul inexistent {node}.",
+      "elementMissingMaterial": "Elementul {element} face referire la materialul inexistent {material}.",
+      "elementMissingCrossSection": "Elementul {element} face referire la secțiunea inexistentă {crossSection}.",
+      "nodalLoadMissingNode": "Încărcarea nodală nr. {index} face referire la nodul inexistent {node}.",
+      "nodalLoadInvalid": "Încărcarea nodală nr. {index} conține valori invalide.",
+      "prescribedMissingNode": "Deplasarea impusă nr. {index} face referire la nodul inexistent {node}.",
+      "prescribedInvalid": "Deplasarea impusă nr. {index} conține valori invalide.",
+      "elementLoadMissingElement": "Încărcarea pe element nr. {index} face referire la elementul inexistent {element}.",
+      "supportedNodeNotConnected": "Nodul {node} are reazem, dar niciun element nu este legat de el, așa că reazemul nu preia nimic.",
+      "nodeNotConnected": "Nodul {node} nu este legat de niciun element și este ignorat la calcul.",
+      "insufficientSupports": "Pentru a fi stabil în calculul 2D, modelul are nevoie de cel puțin 3 grade de libertate blocate.",
+      "needsSupports": "Structura are nevoie de reazeme înainte de a putea fi calculată.",
+      "partUnsupported": "O parte separată a structurii (nodurile {nodes}) are mai puțin de 3 grade de libertate blocate și se poate mișca liber.",
+      "partNeedsSupports": "Partea cu nodurile {nodes} are nevoie de reazeme.",
+      "mechanism": "Structura are destule reazeme, dar acestea nu o fixează: încă se poate {motion}. Reazemele care sunt toate paralele sau ale căror direcții se intersectează într-un singur punct lasă structura liberă să se miște.",
+      "mechanismShort": "Reazemele nu fixează structura: încă se poate {motion}.",
+      "partMechanism": "O parte separată a structurii (nodurile {nodes}) are destule reazeme, dar acestea nu o fixează: încă se poate {motion}. Reazemele care sunt toate paralele sau ale căror direcții se intersectează într-un singur punct lasă structura liberă să se miște.",
+      "partMechanismShort": "Partea cu nodurile {nodes} nu este fixată: încă se poate {motion}.",
+      "hingeMechanism": "Reazemele fixează structura, dar ea este încă un mecanism: barele se pot roti în jurul articulațiilor din nodul {nodes}. Elimină o articulație sau adaugă o bară ori un reazem care oprește mișcarea. | Reazemele fixează structura, dar ea este încă un mecanism: barele se pot roti în jurul articulațiilor din nodurile {nodes}. Elimină o articulație sau adaugă o bară ori un reazem care oprește mișcarea.",
+      "hingeMechanismShort": "Articulațiile din nodul {nodes} permit mișcarea structurii. | Articulațiile din nodurile {nodes} permit mișcarea structurii.",
+      "motion": {
+        "horizontal": "deplasa pe orizontală",
+        "vertical": "deplasa pe verticală",
+        "rotation": "roti liber",
+        "mixed": "mișca precum un corp rigid"
+      },
+      "unstable": "Structura este instabilă: {dofs} se deplasează practic fără rezistență. Adaugă un reazem sau un element, elimină o articulație de capăt sau verifică rigiditatea secțiunii.",
+      "unstableShort": "Structura este instabilă: se deplasează aproape fără rezistență.",
+      "unstableDof": {
+        "dx": "nodul {node} pe orizontală (Dx)",
+        "dz": "nodul {node} pe verticală (D{v})",
+        "ry": "nodul {node} prin rotire (R{r})",
+        "other": "nodul {node} după gradul de libertate {dof}"
+      },
+      "unstableMore": "{list} și încă {count}",
+      "singularMatrix": "Structura este un mecanism: matricea de rigiditate este singulară. Verifică dacă fiecare parte este fixată de cel puțin 3 legături și dacă articulațiile de capăt nu lasă vreo bară liberă să se rotească.",
+      "singularMatrixShort": "Structura este un mecanism: se poate mișca fără rezistență.",
+      "solverFailed": "Calculul a eșuat din cauza unei neconcordanțe interne în model. Verifică referințele și încărcările din model."
+    }
+  },
+  "loadType": {
+    "loadType": "Tipul încărcării",
+    "concentrated": "Forță concentrată",
+    "trapezoidal": "Încărcare trapezoidală",
+    "udl": "Încărcare uniform distribuită",
+    "temperature": "Variație de temperatură"
+  },
+  "dimensioning": {
+    "add_dimension": "Adaugă cotă",
+    "add_along_element": "Cotează elementul {label}"
+  },
+  "warnings": {
+    "noMaterialsDefined": "Nu există materiale definite.",
+    "noCrossSectionsDefined": "Nu există secțiuni definite.",
+    "importFailed": "Fișierul nu a putut fi importat. Verifică formatul fișierului.",
+    "sessionLoadCasesSkipped": "Această sesiune EduBeam are mai multe cazuri de încărcare, dar se poate deschide doar unul odată. Deschis: {loaded}. Nedeschise: {skipped}.",
+    "prescribedDisplacementExists": "Pentru acest nod există deja o deplasare impusă. Elimin-o mai întâi.",
+    "addMaterialFirst": "Adaugă mai întâi un material.",
+    "addCrossSectionFirst": "Adaugă mai întâi o secțiune.",
+    "selectMaterialAndCrossSection": "Alege un material și o secțiune.",
+    "labelInUse": "Eticheta {label} este deja folosită.",
+    "noMaterialOrCrossSection": "Elementul nu are material sau secțiune.",
+    "elementMissing": "Elementul {label} nu mai există.",
+    "nodeMissing": "Nodul {label} nu mai există."
+  },
+  "help": {
+    "aria": "Arată ajutorul",
+    "readMore": "Citește mai mult în documentație",
+    "troubleshooting": "Depanare",
+    "nodes": {
+      "title": "Noduri",
+      "body": "Nodurile sunt punctele care leagă structura. Coordonatele, reazemele, articulațiile și încărcările aplicate se definesc pentru fiecare nod."
+    },
+    "supports": {
+      "title": "Reazeme",
+      "body": "Bifează un grad de libertate pentru a-l bloca: Dx și D{v} blochează translația, R{r} blochează rotirea. O structură are nevoie de cel puțin trei legături independente."
+    },
+    "elements": {
+      "title": "Elemente",
+      "body": "Elementele leagă două noduri și au un material și o secțiune. Eliberează un capăt pentru a transforma o grindă într-o bară articulată sau de grindă cu zăbrele."
+    },
+    "loads": {
+      "title": "Încărcări",
+      "body": "Încărcările acționează în noduri sau în lungul elementelor. Valorile pozitive urmează axele globale, cu z în jos.",
+      "bodyYUp": "Încărcările acționează în noduri sau în lungul elementelor. Valorile pozitive urmează axele globale, cu y în sus."
+    },
+    "nodalLoads": {
+      "title": "Încărcări nodale",
+      "body": "O încărcare nodală aplică o forță sau un moment direct într-un nod. Cu deplasările impuse poți introduce în schimb o cedare de reazem."
+    },
+    "elementLoads": {
+      "title": "Încărcări pe elemente",
+      "body": "Încărcările pe elemente acționează în lungul barei: uniform distribuite, trapezoidale, concentrate sau din variație de temperatură. Pot fi date în axe globale sau locale."
+    },
+    "materials": {
+      "title": "Materiale",
+      "body": "Un material are modul de elasticitate longitudinal, modul de elasticitate transversal, densitate și coeficient de dilatare termică. Calculul static folosește E, G pentru deformațiile din forfecare și α pentru variațiile de temperatură; densitatea nu intervine."
+    },
+    "crossSections": {
+      "title": "Secțiuni transversale",
+      "body": "Secțiunea transversală dă aria și momentul de inerție folosite pentru rigiditate. Alege una din bibliotecă sau desenează propriul poligon."
+    },
+    "hinges": {
+      "title": "Articulații la capete",
+      "body": "O căsuță bifată eliberează momentul încovoietor la acel capăt al elementului. Bifează ambele capete pentru o bară de grindă cu zăbrele sau un singur capăt pentru o articulație în interiorul unui cadru."
+    },
+    "signConvention": {
+      "title": "Convenția de semne",
+      "body": "Axa globală z este orientată în jos, deci un Fz sau fz pozitiv trage în jos, iar My este pozitiv în sens antiorar. Încărcările trecute în sistemul local urmează în schimb elementul.",
+      "bodyYUp": "Axa globală y este orientată în sus, deci un Fy sau fy pozitiv împinge în sus, iar Mz este pozitiv în sens antiorar. Încărcările trecute în sistemul local urmează în schimb elementul."
+    },
+    "results": {
+      "title": "Rezultate",
+      "body": "După calculul modelului obții forța axială, forța tăietoare, momentul încovoietor, deformata și reacțiunile, atât ca diagrame, cât și ca tabele."
+    },
+    "diagrams": {
+      "title": "Afișarea rezultatelor",
+      "body": "Aceste comutatoare desenează peste model forța axială, forța tăietoare, momentul încovoietor, deformata și reacțiunile. N este pozitivă la întindere, M{r} este pozitiv când întinde fibra inferioară."
+    },
+    "endForces": {
+      "title": "Forțe la capete",
+      "body": "X12, Z12 și M12 acționează în nodul inițial, X21, Z21 și M21 în nodul final, întotdeauna în sistemul local al elementului, orientat de la nodul inițial spre cel final."
+    },
+    "settings": {
+      "title": "Unități și setări",
+      "body": "Aici se află limba, unitățile, scara vederii, culorile și scurtăturile. Unitățile convertesc valorile existente, nu schimbă niciodată modelul."
+    },
+    "sharing": {
+      "title": "Salvare și partajare",
+      "body": "Salvează modelul ca fișier, copiază un link care conține toată structura sau încorporează o vizualizare doar pentru citire în propria pagină."
+    }
+  },
+  "exportImage": {
+    "title": "Exportă imaginea",
+    "transparentBackground": "Fundal transparent",
+    "download": "Descarcă PNG",
+    "downloadSvg": "Descarcă SVG",
+    "copyToClipboard": "Copiază în clipboard",
+    "copied": "Imaginea a fost copiată în clipboard",
+    "exported": "Imaginea a fost exportată",
+    "failed": "Imaginea nu a putut fi generată.",
+    "previewAlt": "Previzualizarea imaginii exportate",
+    "instructions": "Desenul este refăcut pentru dimensiunea aleasă, astfel încât liniile și etichetele își păstrează grosimea reală. Aceeași dimensiune încadrează structura mereu la fel – util când exporți M, N și V una lângă alta.",
+    "width": "Lățime",
+    "height": "Înălțime",
+    "lockAspect": "Păstrează proporțiile",
+    "fitPreview": "Încadrare",
+    "actualSize": "Mărime reală",
+    "preview": "Previzualizare",
+    "fitAll": "Tot modelul",
+    "window": "Fereastră…",
+    "pickWindowHint": "Trage un dreptunghi peste partea de desen pe care vrei s-o exporți",
+    "dragEdge": "Trage pentru a extinde sau a tăia această latură",
+    "scale": "Scară",
+    "scaleCaption": "1 m din model înseamnă {cm} cm pe hârtie (96 DPI). Rotește rotița deasupra previzualizării pentru mărire.",
+    "doesNotFit": "Nu încape totul la această dimensiune: diagramele, încărcările și etichetele depășesc marginea cu aproximativ {px} px. Micșorează diagramele (acum {diagrams} px) sau mărește planșa.",
+    "shrinkDiagrams": "Micșorează diagramele",
+    "enlargeCanvas": "Mărește planșa",
+    "diagramHeight": "Înălțimea diagramelor",
+    "shrinkNotEnough": "Diagramele mai mici nu ajung aici – doar încărcările și etichetele au nevoie de mai mult loc. Mărește în schimb planșa."
+  },
+  "examples": {
+    "title": "Exemple",
+    "instructions": "Deschide un model gata făcut pentru a-l explora. Acesta îl înlocuiește pe cel curent, iar Ctrl+Z îl readuce pe al tău.",
+    "moreInDocs": "Mai multe exemple și exerciții",
+    "items": {
+      "welcome": {
+        "title": "Grindă static nedeterminată",
+        "blurb": "Grindă static nedeterminată de 3 m, încastrată și simplu rezemată, încărcată cu 10 kN/m uniform distribuit."
+      },
+      "cantilever": {
+        "title": "Consolă",
+        "blurb": "Consolă de 4 m încărcată cu o forță nodală de 18 kN în jos, cu curbura și săgeata la capăt."
+      },
+      "pratt": {
+        "title": "Grindă cu zăbrele Warren",
+        "blurb": "Grindă cu zăbrele Warren simplă, cu forțe de 8 kN în noduri, care arată distribuția forțelor axiale și deplasările."
+      },
+      "continuous": {
+        "title": "Grindă continuă cu trei deschideri",
+        "blurb": "Deschideri de 5+6+5 m cu încărcare uniform distribuită + forță concentrată + încărcare uniform distribuită, pentru a compara curbura și rotirile din reazeme."
+      },
+      "portal": {
+        "title": "Cadru portal",
+        "blurb": "Grindă de 8 m pe stâlpi de 6 m, cu încărcare uniform distribuită pe acoperiș și forțe laterale și verticale la colțuri, pentru verificarea deplasării laterale și a încovoierii."
+      },
+      "temperature": {
+        "title": "Variație de temperatură",
+        "blurb": "Grindă simplu rezemată de 8 m cu variație de temperatură uniformă și neuniformă."
+      }
+    }
+  },
+  "recentStructures": {
+    "title": "Structuri recente",
+    "instructions": "Ultimele {count} structuri golite sau înlocuite sunt păstrate în acest browser. Restaurarea uneia înlocuiește structura curentă, iar Ctrl+Z o readuce.",
+    "empty": "Încă nu e nimic aici. Când golești o structură sau deschizi alta peste ea, ea este păstrată aici.",
+    "restore": "Restaurează",
+    "remove": "Elimină",
+    "counts": "Noduri: {nodes} · Elemente: {elements}",
+    "linkNotice": "S-a deschis o structură partajată. Cea anterioară este păstrată în Structuri recente.",
+    "show": "Arată",
+    "reasons": {
+      "clear": "Golită",
+      "link": "Înlocuită de un link partajat",
+      "file": "Înlocuită de un fișier deschis",
+      "example": "Înlocuită de un exemplu",
+      "firstBeam": "Înlocuită de exercițiul cu prima grindă",
+      "restore": "Înlocuită de o structură restaurată"
+    }
+  },
+  "library": {
+    "name": {
+      "steel": "Oțel",
+      "steelHss": "Oțel HSS",
+      "stainlessSteel": "Oțel inoxidabil",
+      "aluminum": "Aluminiu",
+      "concrete": "Beton",
+      "timber": "Lemn",
+      "castIron": "Fontă",
+      "copper": "Cupru",
+      "brass": "Alamă",
+      "bronze": "Bronz",
+      "titanium": "Titan",
+      "glass": "Sticlă",
+      "polycarbonate": "Policarbonat",
+      "rect": "Dreptunghi",
+      "square": "Pătrat",
+      "circular": "Cerc"
+    },
+    "qualifier": {
+      "gray": "cenușie",
+      "lightweight": "ușor",
+      "sodaLime": "sodo-calcică",
+      "quasiIsotropic": "cvasi-izotrop",
+      "rigid": "rigid",
+      "acrylic": "acrilic",
+      "approx": "aprox."
+    }
+  },
+  "report": {
+    "column": "Coloană",
+    "row": "Rând",
+    "no_results": "Apare după calculul structurii",
+    "guides": "Linii ajutătoare",
+    "print": "Tipărește",
+    "paper": "Hârtie",
+    "portrait": "Portret",
+    "landscape": "Peisaj"
+  },
+  "languageOffer": {
+    "message": "EduBeam este disponibil în limba română.",
+    "switch": "Treci la română",
+    "dismiss": "Nu, mulțumesc"
+  }
+}

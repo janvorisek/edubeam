@@ -1,0 +1,838 @@
+{
+  "tabView": {
+    "viewer": "Szerkezet",
+    "settings": "Beállítások",
+    "results": "Eredmények",
+    "report": "Jelentés"
+  },
+  "common": {
+    "label": "Jelölés",
+    "node": "Csomópont",
+    "element": "Elem",
+    "crossSection": "Keresztmetszet",
+    "material": "Anyag",
+    "settings": "Beállítások",
+    "actions": "Műveletek",
+    "coords": "Koordináták",
+    "type": "Típus",
+    "nodes": "Csomópontok",
+    "endHinges": "Rúdvégi csuklók",
+    "massMatrix": "Tömegmátrix",
+    "target": "Hely",
+    "components": "Összetevők",
+    "loadCase": "Terhelési eset",
+    "loads": "Terhek",
+    "clearMesh": "Szerkezet törlése",
+    "shareModel": "Szerkezet megosztása",
+    "documentation": "Dokumentáció",
+    "addUsingDialog": "Hozzáadás párbeszédablakkal",
+    "addUsingMouse": "Hozzáadás egérrel",
+    "edit": "Szerkesztés",
+    "copy": "Másolás",
+    "delete": "Törlés",
+    "stiffnessMatrix": "Merevségi mátrix",
+    "normalForce": "Normálerő",
+    "shearForce": "Nyíróerő",
+    "bendingMoment": "Hajlítónyomaték",
+    "deformedShape": "Deformált alak",
+    "reactions": "Támaszerők",
+    "elements": "Elemek",
+    "confirm": "Megerősítés",
+    "saveProject": "Projekt mentése",
+    "openProject": "Projekt megnyitása",
+    "lcs": "Lokális koordináta-rendszer",
+    "paste": "Beillesztés",
+    "addNew": "Új hozzáadása",
+    "whatisnew": "Újdonságok",
+    "reverse_orientation": "Méretvonal átfordítása",
+    "undo": "Visszavonás",
+    "redo": "Újra",
+    "ok": "OK",
+    "close": "Bezárás"
+  },
+  "nodes": {
+    "addNode": "Csomópont hozzáadása",
+    "editNode": "Csomópont szerkesztése",
+    "defineSupports": "Csomóponti támasz",
+    "lcsAngle": "Csomóponti koordináta-rendszer szöge",
+    "equilibrium": "Csomópont egyensúlya",
+    "equilibriumOf": "Csomópont egyensúlya: {label}",
+    "equilibriumSymbols": "Jelölések",
+    "equilibriumValues": "Értékek"
+  },
+  "supports": {
+    "free": "Szabad",
+    "pin": "Csuklós támasz",
+    "roller": "Görgős támasz",
+    "verticalRoller": "Függőleges görgős támasz",
+    "slider": "Görgős befogás",
+    "verticalSlider": "Függőleges görgős befogás",
+    "rotation": "Gátolt elfordulás",
+    "fixed": "Befogás",
+    "custom": "Egyéni"
+  },
+  "elements": {
+    "addElement": "Elem hozzáadása",
+    "editElement": "Elem szerkesztése",
+    "swapNodeOrder": "Csomópontok felcserélése",
+    "hingeStart": "Csukló a kezdőpontban",
+    "hingeEnd": "Csukló a végpontban",
+    "hinge": "Csukló",
+    "from": "Kezdőpont",
+    "to": "Végpont"
+  },
+  "loads": {
+    "addNodalLoad": "Csomóponti teher hozzáadása",
+    "addElementLoad": "Rúdteher hozzáadása",
+    "addLoad": "Teher hozzáadása",
+    "nodalLoad": "Csomóponti teher",
+    "elementLoad": "Rúdteher",
+    "prescribedDisplacement": "Előírt elmozdulás",
+    "addPrescribedDisplacement": "Elmozdulás előírása",
+    "UDL": "Megoszló",
+    "forceMoment": "Erő/nyomaték",
+    "moment": "Nyomaték",
+    "editLoad": "Teher szerkesztése",
+    "loadPositionOnBeam": "Távolság a kezdőponttól",
+    "temperatureAxial": "ΔT<sub>b</sub>-ΔT<sub>t</sub> ... Az alsó és a felső szál hőmérséklet-változásának különbsége",
+    "temperatureBending": "ΔT<sub>c</sub> ... A rúdtengely hőmérséklet-változása",
+    "temperatureDeltaTbt": "ΔT<sub>b</sub>-ΔT<sub>t</sub>",
+    "temperatureDeltaTs": "ΔT<sub>c</sub>",
+    "temperatureDeltaTsNoHTML": "ΔTc",
+    "temperatureDeltaTbtNoHTML": "ΔTb-ΔTt",
+    "globalAxes": "Globális tengelyek",
+    "nodeAxes": "Csomóponti tengelyek",
+    "alongSupportAxes": "A támasz saját tengelyei szerint."
+  },
+  "tabs": {
+    "nodes": "Csomópontok",
+    "elements": "Elemek",
+    "loads": "Terhek",
+    "materials": "Anyagok",
+    "crossSections": "Keresztmetszetek",
+    "results": "Eredmények"
+  },
+  "crossSection": {
+    "area": "Terület",
+    "h": "Magasság",
+    "iy": "Iy",
+    "k": "Nyírási tényező",
+    "iz": "Iz",
+    "b": "Szélesség",
+    "centroid": "Súlypont",
+    "alpha": "Főtengely szöge",
+    "radiusOfGyration": "Inerciasugár",
+    "polygonal": "Sokszög alakú",
+    "derivedFromShape": "A sokszögből számítva – a módosításához szerkeszd az alakot"
+  },
+  "material": {
+    "e": "E",
+    "g": "G",
+    "density": "Sűrűség",
+    "alphaT": "α_T"
+  },
+  "settings": {
+    "results_scale": "Eredmények léptéke",
+    "grid_snap_step": "Rácsillesztés lépésköze",
+    "snap_to_grid": "Illesztés a rácshoz",
+    "show_crosshair": "Szálkereszt megjelenítése",
+    "model_checks": "Modell ellenőrzése",
+    "show_mechanisms": "Mutassa, hogyan mozdulhat el a labilis szerkezet",
+    "animate_mechanisms": "A mozgás animálása",
+    "number_format": "Számformátum",
+    "number_format_description": "Az eredmények számértékeinek írásmódja; a tizedesjel a nyelvet követi.",
+    "number_format_auto": "Automatikus",
+    "number_format_scientific": "Tudományos (1,5 · 10⁴)",
+    "number_format_engineering": "Mérnöki (15 · 10³)",
+    "language": "Nyelv",
+    "language_and_locale": "Nyelv és területi beállítások",
+    "show_normal_force": "Normálerő megjelenítése",
+    "show_shear_force": "Nyíróerő megjelenítése",
+    "show_bending_moment": "Hajlítónyomaték megjelenítése",
+    "show_deformed_shape": "Deformált alak megjelenítése",
+    "show_loads": "Terhek megjelenítése",
+    "units": {
+      "units": "Mértékegységek",
+      "length": "Hossz",
+      "mass": "Tömeg",
+      "force": "Erő",
+      "moment": "Hajlítónyomaték",
+      "pressure": "Feszültség",
+      "area": "Terület",
+      "areaM2": "Inercianyomaték",
+      "system": "Mértékegységrendszer",
+      "systemSI": "SI (metrikus)",
+      "systemUS": "Amerikai (angolszász)",
+      "systemCustom": "Egyéni",
+      "temperature": "Hőmérséklet",
+      "sectionLength": "Keresztmetszet méretei",
+      "displacement": "Elmozdulás"
+    },
+    "grid": "Rács",
+    "show_grid": "Rács megjelenítése",
+    "mouse": {
+      "mouse": "Egér",
+      "pan_button": "Nézet mozgatása",
+      "wheel": "Egérgörgő",
+      "right_button": "Jobb gomb",
+      "all": "Egérgörgő vagy jobb gomb"
+    },
+    "colors": {
+      "colors": "Színek"
+    },
+    "results": {
+      "results": "Eredmények"
+    },
+    "viewer_settings": "Megjelenítés beállításai",
+    "controls_and_shortcuts": "Vezérlés és billentyűparancsok",
+    "language_and_locale_subtitle": "Nyelv, területi beállítások és mértékegységek",
+    "viewer_settings_subtitle": "Lépték, színek, rács és egyebek",
+    "controls_and_shortcuts_subtitle": "Billentyűzet és egér beállításai",
+    "viewer_preview": "Megjelenítés előnézete",
+    "language_description": "Válaszd ki a felület nyelvét.",
+    "units_description": "Válaszd ki a használt mértékegységeket.",
+    "axisConvention": "Koordináta-rendszer",
+    "axisConvention_description": "Merre mutat a függőleges tengely az adatbevitelben és az eredményekben. A modellt és a mentett fájlokat nem érinti.",
+    "axisConvention_zDown": "x jobbra, z lefelé",
+    "axisConvention_yUp": "x jobbra, y felfelé",
+    "reset_settings": "Beállítások visszaállítása",
+    "sizes": {
+      "sizes": "Méretek",
+      "supportSize": "Támaszok mérete"
+    },
+    "font_size": "Betűméret",
+    "result_label_orientation": "Eredményfeliratok iránya",
+    "result_label_orientation_axis": "Merőleges az ábrára",
+    "result_label_orientation_horizontal": "Mindig vízszintes",
+    "theme": "Téma",
+    "theme_system": "Rendszer szerint",
+    "theme_light": "Világos",
+    "theme_dark": "Sötét",
+    "theme_toDark": "Sötét téma",
+    "theme_toLight": "Világos téma",
+    "renderer": "Megjelenítő",
+    "renderer_classic": "Klasszikus",
+    "renderer_plot": "Új (béta)",
+    "show_readout": "Értékek a mutató helyén",
+    "result_labels": "Eredményfeliratok",
+    "diagrams": {
+      "title": "Igénybevételi ábrák",
+      "moment": "Hajlítónyomaték",
+      "tensionSide": "A húzott oldalon",
+      "compressionSide": "A nyomott oldalon",
+      "normal": "Pozitív normálerő",
+      "shear": "Pozitív nyíróerő",
+      "awayFromDashed": "Ellenkező oldalon",
+      "dashedSide": "Szaggatott oldalon",
+      "fill": "Kitöltés",
+      "fillSolid": "Teli",
+      "fillHatch": "Vonalkázott",
+      "fillNone": "Nincs",
+      "degrees": "Szakaszonkénti fokszám",
+      "dashedHint": "Az elem mentén húzott szaggatott vonal az alsó szálat jelöli."
+    }
+  },
+  "sideSettings": {
+    "showDeformedShape": "Deformált alak",
+    "supports": "Támaszok",
+    "loads": "Terhek",
+    "nodeLabels": "Csomópontok jelölése",
+    "elementLabels": "Elemek jelölése",
+    "more_settings": "További beállítások",
+    "showReactions": "Támaszerők"
+  },
+  "viewer": {
+    "toggleGrid": "Rács be/ki (G)",
+    "toggleSnap": "Rácsillesztés be/ki (S)",
+    "toggleCrosshair": "Szálkereszt be/ki",
+    "boxSelect": "Kijelölés téglalappal",
+    "centerContent": "Középre igazítás",
+    "fitContent": "Igazítás a képernyőhöz",
+    "holdCtrl": "Egérrel való hozzáadáshoz tartsd lenyomva a Ctrl billentyűt",
+    "select": "Kijelölés",
+    "tools": "Eszközök",
+    "snapMiddle": "Felezőpont",
+    "snapThird": "Harmadolópont",
+    "snapOnElement": "Elemen: {label}",
+    "placeFreely": "Szabad elhelyezéshez tartsd lenyomva az Alt billentyűt"
+  },
+  "dofs": {
+    "bcs": "Megtámasztott szabadságfokok"
+  },
+  "results": {
+    "results": "Eredmények",
+    "nodal_results": "Csomóponti eredmények",
+    "element_results": "Elemek eredményei",
+    "end_forces": "Rúdvégi erők (lokális koordináta-rendszerben)",
+    "exportCsv": "CSV exportálása",
+    "exportHint": "Mindkét eredménytáblázat letöltése a megjelenített mértékegységekben, táblázatkezelőhöz előkészítve.",
+    "copied": "Az eredmények a vágólapra kerültek",
+    "copyFailed": "Az eredményeket nem sikerült a vágólapra másolni."
+  },
+  "materials": {
+    "addMaterial": "Anyag hozzáadása",
+    "material_library": "Anyagkönyvtár",
+    "section_library": "Szelvénykönyvtár"
+  },
+  "crossSections": {
+    "addCrossSection": "Keresztmetszet hozzáadása",
+    "addPolygonal": "Sokszög keresztmetszet"
+  },
+  "dialogs": {
+    "addNode": {
+      "addNewNode": "Új csomópont hozzáadása",
+      "coordinate_x": "X koordináta",
+      "coordinate_z": "{v} koordináta",
+      "addNode": "Csomópont hozzáadása"
+    },
+    "common": {
+      "cancel": "Mégse",
+      "orChooseFromLibrary": "Vagy válassz a könyvtárból"
+    },
+    "addElement": {
+      "fromNodeId": "Kezdő csomópont",
+      "toNodeId": "Vég csomópont",
+      "addElement": "Elem hozzáadása",
+      "addNewElement": "Új elem hozzáadása",
+      "material": "Anyag",
+      "crossSection": "Keresztmetszet"
+    },
+    "addNodalLoad": {
+      "addNewNodalLoad": "Új csomóponti teher hozzáadása",
+      "addNodalLoad": "Csomóponti teher hozzáadása"
+    },
+    "addElementLoad": {
+      "addNewElementLoad": "Új rúdteher hozzáadása",
+      "addElementLoad": "Rúdteher hozzáadása"
+    },
+    "addMaterial": {
+      "addNewMaterial": "Új anyag hozzáadása",
+      "addMaterial": "Anyag hozzáadása",
+      "E": "E - Rugalmassági modulus",
+      "G": "G - Nyírási rugalmassági modulus",
+      "density": "ρ - sűrűség",
+      "alphaT": "α - Hőtágulási együttható"
+    },
+    "addCrossSection": {
+      "addNewCrossSection": "Új keresztmetszet hozzáadása",
+      "addCrossSection": "Keresztmetszet hozzáadása",
+      "orDefinePolygon": "Vagy adj meg egy sokszöget"
+    },
+    "editNodalLoad": {
+      "editNodalLoad": "Csomóponti teher szerkesztése"
+    },
+    "editElementLoad": {
+      "editElementLoad": "Rúdteher szerkesztése"
+    },
+    "update": {
+      "title": "Frissítés érhető el",
+      "update": "Frissítés",
+      "text1": "Frissítést adunk ki, amelyhez az alkalmazást alaphelyzetbe kell állítani. Ezzel minden eddigi munkád elveszik.",
+      "text2": "Ha meg szeretnéd tartani a jelenlegi munkádat, megszakíthatod a frissítést."
+    },
+    "editNode": {
+      "editNode": "Csomópont szerkesztése"
+    },
+    "changelog": {
+      "title": "Újdonságok",
+      "description": "Új funkciók, fejlesztések és ízelítő abból, amin éppen dolgozunk.",
+      "contributors": "A kiadás közreműködői: {names}",
+      "comingSoon": "Hamarosan",
+      "tryIt": "Kipróbálom",
+      "tried": {
+        "diagramStyles": "Bekapcsoltad a vonalkázott ábrákat a szakaszonkénti fokszámmal.",
+        "newDrawing": "Bekapcsoltad az új megjelenítést a vonalkázott ábrákkal."
+      }
+    },
+    "polygonSection": {
+      "title": "Új sokszög keresztmetszet",
+      "editTitle": "Sokszög keresztmetszet szerkesztése",
+      "preset": "Sablon",
+      "apply": "Alkalmaz",
+      "snapStep": "Illesztés lépésköze",
+      "centerAtCentroid": "Súlypontba helyezés",
+      "hint": "A csúcsokat húzással mozgathatod, egy él felezőpontjára kattintva új csúcsot szúrsz be, dupla kattintással csúcsot törölsz.",
+      "outline": "Körvonal",
+      "hole": "Lyuk",
+      "addHole": "Lyuk hozzáadása",
+      "addVertex": "Csúcs hozzáadása",
+      "removeContour": "Lyuk eltávolítása",
+      "properties": "Keresztmetszeti jellemzők",
+      "invalidShape": "Az alaknak pozitív területű, egyszerű sokszögnek kell lennie: az élek nem metszhetik egymást, és a lyukaknak a körvonalon belül kell maradniuk.",
+      "labelInUse": "Ez a jelölés már foglalt",
+      "save": "Mentés",
+      "editShape": "Sokszög alak szerkesztése",
+      "presets": {
+        "rectangle": "Téglalap",
+        "iSection": "I-szelvény",
+        "tSection": "T-szelvény",
+        "lSection": "L-szelvény",
+        "channel": "U-szelvény",
+        "box": "Négyszög zártszelvény",
+        "circle": "Kör",
+        "pipe": "Kör zártszelvény (cső)"
+      },
+      "params": {
+        "b": "Szélesség b",
+        "h": "Magasság h",
+        "tw": "Gerinc tw",
+        "tf": "Öv tf",
+        "t": "Vastagság t",
+        "d": "Átmérő d",
+        "n": "Szakaszok"
+      },
+      "vertices": "Csúcsok",
+      "legendOutline": "Körvonal",
+      "legendHole": "Lyuk",
+      "legendPrincipal": "Főtengelyek és inerciaellipszis",
+      "legendCentroid": "Súlypont",
+      "shape": "Alak",
+      "noShape": "Nincs sokszög alak",
+      "centroidal": "súlyponti",
+      "centroidalNote": "Minden inercianyomaték a súlyponton átmenő tengelyekre vonatkozik; I₁, I₂ a fő inercianyomatékok, α pedig az y tengely és az 1-es tengely szöge.",
+      "outOfPlaneNote": "Ez a keresztmetszet nem szimmetrikus a keret síkjára. A síkbeli számítás csak akkor pontos, ha a rúd teljes hosszán meg van támasztva oldalirányú elmozdulás (a képernyőből kifelé) és elcsavarodás ellen, például födémlemezzel vagy sűrűn elhelyezett merevítéssel; a csomóponti támaszok önmagukban nem elegendők. A szabad rúd ráadásul el is csavarodik, mert a terhek nem a nyírási középpontjában hatnak, és ezt az elcsavarodást az elmozdulások nem tartalmazzák.",
+      "outOfPlaneRestrained": "Teljes hosszán oldalirányban és elcsavarodás ellen megtámasztva: {inertia}",
+      "outOfPlaneFree": "Oldalirányban szabadon elmozdulhat (az elcsavarodás továbbra sincs benne): {inertia}"
+    }
+  },
+  "tooltip": {
+    "materials": {},
+    "material": {
+      "alphaT": "A hőtágulási együttható azt írja le, hogyan változik egy test mérete a hőmérséklet változásával.",
+      "e": "A rugalmassági (Young-) modulus a hossz irányában ható erővel szembeni húzó- vagy nyomómerevséget fejezi ki.",
+      "g": "A nyírási rugalmassági modulus a nyírófeszültség okozta alakváltozással szembeni ellenállást méri, vagyis az anyag merevségét a felületével párhuzamos erőkkel szemben.",
+      "density": "A sűrűség megadja, mekkora tömeg van egy anyag adott térfogatában."
+    }
+  },
+  "footer": {
+    "reportIssue": "Hiba bejelentése",
+    "requestFeature": "Új funkció javaslata",
+    "released": "kiadva"
+  },
+  "sharing": {
+    "shareViaURL": "Szerkezet megosztása linkkel",
+    "instructions": "Kattints bárhová a mezőbe a link másolásához, majd küldd el a társaidnak.",
+    "copyCue": "Link másolása",
+    "openLink": "Link megnyitása",
+    "nativeShare": "Megosztás a rendszer párbeszédablakával",
+    "linkCopied": "A link a vágólapra került",
+    "copyFailed": "Az automatikus másolás nem sikerült. Használd a billentyűparancsokat.",
+    "shortLink": "Rövidebb link",
+    "shortLinkHint": "Nagyjából feleakkora. Aki az EduBeam régebbi verzióját használja, annak frissítenie kell az alkalmazást, mielőtt megnyílik.",
+    "shareLayers": "Úgy, ahogy én látom",
+    "shareLayersHint": "A link a nálad bekapcsolt ábrákkal, terhekkel és feliratokkal nyílik meg."
+  },
+  "shortcuts": {
+    "title": "Billentyűparancsok",
+    "drawing": "Rajzolás",
+    "editing": "Szerkesztés",
+    "cancel": "Vissza a kijelöléshez, az elhelyezés megszakítása",
+    "placeFreely": "Szabad elhelyezés illesztés nélkül (lenyomva tartva)",
+    "grid": "Rács megjelenítése vagy elrejtése",
+    "snap": "Rácsillesztés be- vagy kikapcsolása",
+    "zoom": "Nagyítás és kicsinyítés",
+    "selectAll": "Az összes kijelölése",
+    "save": "A projekt mentése",
+    "exportImage": "Kép exportálása"
+  },
+  "tour": {
+    "menu": {
+      "title": "Menü",
+      "description": "Itt nyithatod meg, mentheted és oszthatod meg a projektjeidet, exportálhatsz képet, betölthetsz egy példát, vagy újraindíthatod ezt a bemutatót vagy az első tartó feladatot."
+    },
+    "undoRedo": {
+      "title": "Visszavonás és újra",
+      "description": "Lépkedj vissza és előre a módosításaid között. Ugyanezt teszi a Ctrl+Z és a Ctrl+Shift+Z."
+    },
+    "tools": {
+      "title": "Eszközök",
+      "description": "Csomópontokat, elemeket, támaszokat és terheket közvetlenül a rajzon adhatsz hozzá. Egy eszközt lenyomva tartva vagy a sarkára kattintva választhatod ki a támasz vagy a teher fajtáját. A pontok a csomópontokhoz, valamint az elemek felező- és harmadolópontjaihoz illeszkednek; szabad elhelyezéshez tartsd lenyomva az Alt billentyűt. Billentyűk: V kijelölés, N csomópont, E elem, U támasz, L teher, D méretvonal, Esc vissza a kijelöléshez.",
+      "descriptionTouch": "Csomópontokat, elemeket, támaszokat és terheket közvetlenül a rajzon adhatsz hozzá: koppints egy eszközre, majd oda, ahová kerülnie kell, végül a nyílra, ha kész vagy. A támasz és a teher eszköz a fajták listáját nyitja meg. A pontok a csomópontokhoz, valamint az elemek felező- és harmadolópontjaihoz illeszkednek. Egy ujjal mozgathatod a nézetet, két ujjal nagyíthatsz. Csomópontot húzással mozgathatsz, terhet lenyomva tartva vehetsz fel, máshol lenyomva tartva a menü nyílik meg."
+    },
+    "viewerControls": {
+      "title": "A nézet gombjai",
+      "description": "Ezekkel a gombokkal igazíthatod középre vagy a képernyőhöz a szerkezetet, és választhatod ki, mi jelenjen meg."
+    },
+    "viewerSettings": {
+      "title": "Megjelenítési beállítások",
+      "description": "Válaszd ki, mi jelenjen meg: normálerő, nyíróerő, hajlítónyomaték, deformált alak vagy mind egyszerre."
+    },
+    "gridUnits": {
+      "title": "Rács, illesztés és mértékegységek",
+      "description": "A G megjeleníti a rácsot, az S pedig hozzá illeszti az új csomópontokat. A mértékegységekre kattintva módosíthatod a mértékegységeket, a nyelvet vagy a koordináta-rendszert."
+    },
+    "bottomBar": {
+      "title": "Elemek hozzáadása, törlése és módosítása",
+      "description": "Itt módosíthatod a szerkezet minden részét. Csomópontok, elemek, terhek, anyagok és keresztmetszetek: a gyors és az átfogó változtatások helye egyaránt."
+    },
+    "help": {
+      "title": "Súgó",
+      "description": "A ? a megnyitott fület magyarázza el. Az oszlopfejléc melletti ? az adott oszlopot."
+    },
+    "previousButton": "Előző",
+    "nextButton": "Következő",
+    "finishButton": "Befejezés",
+    "close": "Bemutató bezárása"
+  },
+  "firstBeam": {
+    "title": "Az első tartód",
+    "step": "{n}/{total}. lépés",
+    "close": "Útmutató bezárása",
+    "finish": "Kész",
+    "next": "Tovább",
+    "steps": {
+      "tool": {
+        "title": "Válaszd ki a rajzeszközt",
+        "body": "Lent az {elementsTab} fülön nyomd meg a kurzor ikonos {addElement} gombot."
+      },
+      "draw": {
+        "title": "Rajzold meg a tartót",
+        "body": "Kattints oda, ahol a tartó kezdődik, majd oda, ahol véget ér. A végpontok a rácshoz illeszkednek."
+      },
+      "supports": {
+        "title": "Támaszd meg",
+        "body": "Kattints a bal végére, nyisd meg a {defineSupports} részt, és csuklós támaszhoz jelöld be a Dx és a D{v} mezőt. Ezután kattints a jobb végére, és görgős támaszhoz jelöld be a D{v} mezőt."
+      },
+      "load": {
+        "title": "Terheld meg",
+        "body": "Kattints a tartóra, válaszd a {addLoad} lehetőséget, írj be egy értéket az f{v} mezőbe, és erősítsd meg."
+      },
+      "display": {
+        "title": "Válaszd ki, mi jelenjen meg",
+        "body": "A jobb felső fogaskerék a megjelenítési beállításokat nyitja meg: igénybevételek, deformált alak, támaszerők és egyebek. Nyisd meg most."
+      },
+      "fit": {
+        "title": "Igazítsd a képernyőhöz",
+        "body": "A jobb felső gombokkal a modellt a képernyőhöz igazíthatod vagy középre helyezheted. Nyomd meg most az igazítást, és később is, valahányszor a rajz kicsúszik a nézetből."
+      },
+      "results": {
+        "title": "Nézd meg az eredményeket",
+        "body": "A hajlítónyomaték és a deformált alak a tartón látható, és minden módosításkor frissül. Minden csomópont, elem és teher szerepel a lenti táblázatokban is, ahol pontos értékeket írhatsz be. A {undo} gomb visszahozza a korábbi modellt."
+      }
+    }
+  },
+  "welcome": {
+    "title": "Üdvözöl az <span class=\"edubeam\">EduBeam</span>! 🚀",
+    "description": "Modellezz tartókat, kereteket és rácsos tartókat, és lásd az igénybevételeiket már rajzolás közben.",
+    "start": "Hogyan szeretnéd kezdeni?",
+    "showAround": "Mutasd be az alkalmazást",
+    "showAroundHint": "Gyors áttekintés a nézetről, a megjelenítési beállításokról és az alsó sávról.",
+    "drawFirstBeam": "Rajzold meg az első tartódat",
+    "drawFirstBeamHint": "Rövid, vezetett feladat: rajzolj egy tartót, támaszd meg és terheld meg.",
+    "openExample": "Példa megnyitása",
+    "openExampleHint": "Indulj ki egy kész modellből, és módosítsd.",
+    "skip": "Most kihagyom"
+  },
+  "confirmation": {
+    "clearMesh": {
+      "message": "Biztosan törlöd a szerkezetet? A Ctrl+Z visszahozza, és a Legutóbbi szerkezetek között is megmarad.",
+      "title": "Törlöd a szerkezetet?",
+      "materials": "Anyagok törlése",
+      "crossSections": "Keresztmetszetek törlése"
+    },
+    "resetSettings": {
+      "title": "Visszaállítod a beállításokat?",
+      "message": "Biztosan visszaállítod az összes beállítást az alapértelmezettre? Ez a művelet nem vonható vissza."
+    },
+    "splitElementAndPlaceNode": {
+      "title": "Csomópont elhelyezése",
+      "message": "<p>Úgy tűnik, a csomópontot egy rúdra helyezed (jelölése: {label}).</p><p class=\"mt-3\">Kettéosszam az elemet, és bekössem a csomópontot, vagy a csomópont önállóan, a szerkezethez kapcsolás nélkül kerüljön a helyére?</p>",
+      "split": "Bekötés a szerkezetbe"
+    },
+    "placeIndividualNode": "Önálló csomópont elhelyezése"
+  },
+  "selection": {
+    "node": "Csomópont",
+    "element": "Elem",
+    "dimension": "Méretvonal",
+    "nodal-load": "Csomóponti teher",
+    "element-load": "Rúdteher",
+    "prescribedbc-load": "Előírt elmozdulás"
+  },
+  "validators": {
+    "enterValue": "Adj meg egy értéket",
+    "invalidNumber": "Érvénytelen szám",
+    "positiveNumber": "Nullánál nagyobb számot adj meg",
+    "between": "Adj meg egy értéket {min} és {max} között",
+    "sameNodes": "Az elemnek két különböző csomópontot kell összekötnie",
+    "materialInUse": "Ezt az anyagot használja egy elem: {elements}. Törlés előtt rendelj hozzá másik anyagot. | Ezt az anyagot használják ezek az elemek: {elements}. Törlés előtt rendelj hozzájuk másik anyagot.",
+    "crossSectionInUse": "Ezt a keresztmetszetet használja egy elem: {elements}. Törlés előtt rendelj hozzá másik keresztmetszetet. | Ezt a keresztmetszetet használják ezek az elemek: {elements}. Törlés előtt rendelj hozzájuk másik keresztmetszetet."
+  },
+  "solveDiagnostics": {
+    "summaryErrors": "Hibák a modellben: {errors}",
+    "summaryWarnings": "Figyelmeztetések a modellben: {warnings}",
+    "summaryIncomplete": "Támaszra váró szerkezetrészek: {count}.",
+    "incompleteChip": "Támaszok hiányoznak",
+    "hideMotion": "Mozgás elrejtése",
+    "showMotion": "Mozgás megjelenítése",
+    "dismissWarnings": "Figyelmeztetések elrejtése",
+    "collapseErrors": "Üzenet összecsukása",
+    "showDetails": "Részletek",
+    "blockedTitle": "A modell nem számítható",
+    "blockedDescription": "A számítás előtt javítsd ki a felsorolt hibákat.",
+    "warningsTitle": "Figyelmeztetések",
+    "warningsDescription": "A modell számítása lefutott, de a következő figyelmeztetések merültek fel.",
+    "incompleteTitle": "Még nem számítható",
+    "incompleteDescription": "Az eredmények akkor jelennek meg, ha a szerkezet meg van támasztva. A rajzon a szaggatott körvonal mutatja, hogyan mozdulhat még el.",
+    "errors": "Hibák",
+    "warnings": "Figyelmeztetések",
+    "incomplete": "Még hiányzik",
+    "issues": {
+      "elementNodeCount": "Elem {element}: pontosan 2 csomópontra kell hivatkoznia.",
+      "elementSameNode": "Elem {element}: mindkét végén ugyanaz a csomópont van.",
+      "elementZeroLength": "Elem {element}: a hossza nulla, mert a végcsomópontjai ({start}, {end}) ugyanabban a pontban vannak.",
+      "elementMissingNode": "Elem {element}: nem létező csomópontra hivatkozik ({node}).",
+      "elementMissingMaterial": "Elem {element}: nem létező anyagra hivatkozik ({material}).",
+      "elementMissingCrossSection": "Elem {element}: nem létező keresztmetszetre hivatkozik ({crossSection}).",
+      "nodalLoadMissingNode": "Csomóponti teher #{index}: nem létező csomópontra hivatkozik ({node}).",
+      "nodalLoadInvalid": "Csomóponti teher #{index}: érvénytelen értékeket tartalmaz.",
+      "prescribedMissingNode": "Előírt elmozdulás #{index}: nem létező csomópontra hivatkozik ({node}).",
+      "prescribedInvalid": "Előírt elmozdulás #{index}: érvénytelen értékeket tartalmaz.",
+      "elementLoadMissingElement": "Rúdteher #{index}: nem létező elemre hivatkozik ({element}).",
+      "supportedNodeNotConnected": "Csomópont {node}: meg van támasztva, de egyetlen elem sem csatlakozik hozzá, így a támasz semmit sem visel.",
+      "nodeNotConnected": "Csomópont {node}: egyetlen elemhez sem kapcsolódik, ezért a számítás figyelmen kívül hagyja.",
+      "insufficientSupports": "Ahhoz, hogy a modell síkbeli számításban stabil legyen, legalább 3 megtámasztott szabadságfok kell.",
+      "needsSupports": "A szerkezetet meg kell támasztani, mielőtt kiszámítható.",
+      "partUnsupported": "A szerkezet egy különálló részének (csomópontok: {nodes}) 3-nál kevesebb megtámasztott szabadságfoka van, így szabadon elmozdulhat.",
+      "partNeedsSupports": "Támaszokra van szüksége a résznek, amelyhez ezek a csomópontok tartoznak: {nodes}.",
+      "mechanism": "A szerkezetnek elég támasza van, de ezek nem rögzítik: még mindig képes {motion}. Ha a támaszok mind párhuzamosak, vagy hatásvonaluk egy pontban metszi egymást, a szerkezet szabadon elmozdulhat.",
+      "mechanismShort": "A támaszok nem rögzítik a szerkezetet: még mindig képes {motion}.",
+      "partMechanism": "A szerkezet egy különálló részének (csomópontok: {nodes}) elég támasza van, de ezek nem rögzítik: még mindig képes {motion}. Ha a támaszok mind párhuzamosak, vagy hatásvonaluk egy pontban metszi egymást, a szerkezet szabadon elmozdulhat.",
+      "partMechanismShort": "A rész nincs rögzítve (csomópontok: {nodes}): még mindig képes {motion}.",
+      "hingeMechanism": "A támaszok rögzítik a szerkezetet, de az mégis mechanizmus: rúdjai elfordulhatnak a csomópont csuklói körül (csomópont: {nodes}). Távolíts el egy csuklót, vagy adj hozzá a mozgást megakadályozó rudat vagy támaszt. | A támaszok rögzítik a szerkezetet, de az mégis mechanizmus: rúdjai elfordulhatnak a csomópontok csuklói körül (csomópontok: {nodes}). Távolíts el egy csuklót, vagy adj hozzá a mozgást megakadályozó rudat vagy támaszt.",
+      "hingeMechanismShort": "A csomópont csuklói miatt a szerkezet elmozdulhat (csomópont: {nodes}). | A csomópontok csuklói miatt a szerkezet elmozdulhat (csomópontok: {nodes}).",
+      "motion": {
+        "horizontal": "vízszintesen eltolódni",
+        "vertical": "függőlegesen elmozdulni",
+        "rotation": "szabadon elfordulni",
+        "mixed": "merev testként elmozdulni"
+      },
+      "unstable": "A szerkezet labilis, ezek a mozgások gyakorlatilag ellenállás nélkül jönnek létre: {dofs}. Adj hozzá támaszt vagy elemet, távolíts el egy rúdvégi csuklót, vagy ellenőrizd a keresztmetszet merevségét.",
+      "unstableShort": "A szerkezet labilis: szinte ellenállás nélkül elmozdul.",
+      "unstableDof": {
+        "dx": "csomópont {node} vízszintesen (Dx)",
+        "dz": "csomópont {node} függőlegesen (D{v})",
+        "ry": "csomópont {node} elfordulása (R{r})",
+        "other": "csomópont {node}, szabadságfok {dof}"
+      },
+      "unstableMore": "{list} és további {count}",
+      "singularMatrix": "A szerkezet mechanizmus: a merevségi mátrix szinguláris. Ellenőrizd, hogy minden részét legalább 3 kényszer rögzíti-e, és hogy a rúdvégi csuklók nem hagynak-e szabadon elfordulni egy rudat.",
+      "singularMatrixShort": "A szerkezet mechanizmus: ellenállás nélkül elmozdulhat.",
+      "solverFailed": "A számítás a modell belső ellentmondása miatt nem sikerült. Ellenőrizd a modell hivatkozásait és a terheket."
+    }
+  },
+  "loadType": {
+    "loadType": "Teher típusa",
+    "concentrated": "Koncentrált teher",
+    "trapezoidal": "Trapéz alakú teher",
+    "udl": "Egyenletesen megoszló teher",
+    "temperature": "Hőmérsékleti teher"
+  },
+  "dimensioning": {
+    "add_dimension": "Méretvonal hozzáadása",
+    "add_along_element": "Elem méretezése: {label}"
+  },
+  "warnings": {
+    "noMaterialsDefined": "Nincs megadva anyag.",
+    "noCrossSectionsDefined": "Nincs megadva keresztmetszet.",
+    "importFailed": "A fájlt nem sikerült importálni. Ellenőrizd a fájl formátumát.",
+    "sessionLoadCasesSkipped": "Ebben az EduBeam-munkamenetben több terhelési eset van, de egyszerre csak egy nyitható meg. Megnyitva: {loaded}. Nincs megnyitva: {skipped}.",
+    "prescribedDisplacementExists": "Ehhez a csomóponthoz már tartozik előírt elmozdulás. Előbb töröld azt.",
+    "addMaterialFirst": "Előbb adj hozzá egy anyagot.",
+    "addCrossSectionFirst": "Előbb adj hozzá egy keresztmetszetet.",
+    "selectMaterialAndCrossSection": "Válassz anyagot és keresztmetszetet.",
+    "labelInUse": "Ez a jelölés már foglalt: {label}.",
+    "noMaterialOrCrossSection": "Az elemnek nincs megadva anyaga vagy keresztmetszete.",
+    "elementMissing": "Ez az elem már nem létezik: {label}.",
+    "nodeMissing": "Ez a csomópont már nem létezik: {label}."
+  },
+  "help": {
+    "aria": "Súgó megjelenítése",
+    "readMore": "Bővebben a dokumentációban",
+    "troubleshooting": "Hibaelhárítás",
+    "nodes": {
+      "title": "Csomópontok",
+      "body": "A csomópontok tartják össze a szerkezetet. A koordinátákat, a támaszokat, a csuklókat és a rájuk ható terheket csomópontonként adod meg."
+    },
+    "supports": {
+      "title": "Támaszok",
+      "body": "Egy szabadságfokot bejelölve megtámasztod: a Dx és a D{v} az eltolódást, az R{r} az elfordulást gátolja. A szerkezetnek legalább három független kényszer kell."
+    },
+    "elements": {
+      "title": "Elemek",
+      "body": "Az elemek két csomópontot kötnek össze, és anyag, valamint keresztmetszet tartozik hozzájuk. Egy rúdvég felszabadításával a gerendából csuklós bekötésű rúd vagy rácsrúd lesz."
+    },
+    "loads": {
+      "title": "Terhek",
+      "body": "A terhek csomópontokon vagy az elemek mentén hatnak. A pozitív értékek a globális tengelyek irányát követik, a z tengely lefelé mutat.",
+      "bodyYUp": "A terhek csomópontokon vagy az elemek mentén hatnak. A pozitív értékek a globális tengelyek irányát követik, az y tengely felfelé mutat."
+    },
+    "nodalLoads": {
+      "title": "Csomóponti terhek",
+      "body": "A csomóponti teher erőt vagy nyomatékot működtet közvetlenül egy csomópontra. Előírt elmozdulással helyette támaszsüllyedést adhatsz meg."
+    },
+    "elementLoads": {
+      "title": "Rúdterhek",
+      "body": "A rúdterhek a rúd mentén hatnak: egyenletesen megoszló, trapéz alakú, koncentrált vagy hőmérsékleti teher. Globális vagy lokális tengelyekben is megadhatók."
+    },
+    "materials": {
+      "title": "Anyagok",
+      "body": "Az anyaghoz rugalmassági modulus, nyírási rugalmassági modulus, sűrűség és hőtágulási együttható tartozik. A statikai számítás az E-t, a nyírási alakváltozáshoz a G-t és a hőmérsékleti terhekhez az α-t használja; a sűrűség nem szerepel benne."
+    },
+    "crossSections": {
+      "title": "Keresztmetszetek",
+      "body": "A keresztmetszet adja a merevséghez szükséges területet és inercianyomatékot. Válassz egyet a könyvtárból, vagy rajzolj saját sokszöget."
+    },
+    "hinges": {
+      "title": "Rúdvégi csuklók",
+      "body": "A bejelölt mező felszabadítja a hajlítónyomatékot az elem adott végén. Mindkét végét bejelölve rácsrudat kapsz, egyiket bejelölve csuklót teszel a keretbe."
+    },
+    "signConvention": {
+      "title": "Előjelszabály",
+      "body": "A globális z tengely lefelé mutat, így a pozitív Fz vagy fz lefelé húz, az My pedig az óramutató járásával ellentétesen pozitív. A lokális rendszerbe átállított terhek az elemet követik.",
+      "bodyYUp": "A globális y tengely felfelé mutat, így a pozitív Fy vagy fy felfelé tol, az Mz pedig az óramutató járásával ellentétesen pozitív. A lokális rendszerbe átállított terhek az elemet követik."
+    },
+    "results": {
+      "title": "Eredmények",
+      "body": "A számítás után megkapod a normálerőt, a nyíróerőt, a hajlítónyomatékot, a deformált alakot és a támaszerőket, ábrákon és táblázatokban egyaránt."
+    },
+    "diagrams": {
+      "title": "Eredmények a rajzon",
+      "body": "Ezek a kapcsolók a normálerőt, a nyíróerőt, a hajlítónyomatékot, a deformált alakot és a támaszerőket rajzolják a modellre. Az N húzásnál pozitív, az M{r} akkor, ha az alsó szál húzott."
+    },
+    "endForces": {
+      "title": "Rúdvégi erők",
+      "body": "Az X12, Z12 és M12 a kezdő csomópontban, az X21, Z21 és M21 a végcsomópontban hat, mindig az elem lokális rendszerében, amely a kezdő csomóponttól a végcsomópont felé mutat."
+    },
+    "settings": {
+      "title": "Mértékegységek és beállítások",
+      "body": "Itt állíthatod be a nyelvet, a mértékegységeket, a nézet léptékét, a színeket és a billentyűparancsokat. A mértékegység váltása csak átszámítja a meglévő értékeket, a modellt sosem változtatja meg."
+    },
+    "sharing": {
+      "title": "Mentés és megosztás",
+      "body": "Mentsd a modellt fájlba, másolj egy linket, amely a teljes szerkezetet tartalmazza, vagy ágyazz be egy csak megtekintésre szolgáló nézetet a saját oldaladba."
+    }
+  },
+  "exportImage": {
+    "title": "Kép exportálása",
+    "transparentBackground": "Átlátszó háttér",
+    "download": "PNG letöltése",
+    "downloadSvg": "SVG letöltése",
+    "copyToClipboard": "Másolás a vágólapra",
+    "copied": "A kép a vágólapra került",
+    "exported": "A kép exportálva",
+    "failed": "A képet nem sikerült elkészíteni.",
+    "previewAlt": "Az exportált kép előnézete",
+    "instructions": "A rajz mindig a választott méretre készül újra, így a vonalak és a feliratok megtartják valódi vastagságukat. Azonos méretnél a szerkezet mindig ugyanúgy kerül a képre – ez jól jön, ha az M, N és V ábrát egymás mellé exportálod.",
+    "width": "Szélesség",
+    "height": "Magasság",
+    "lockAspect": "Méretarány megtartása",
+    "fitPreview": "Igazítás",
+    "actualSize": "Valódi méret",
+    "preview": "Előnézet",
+    "fitAll": "Teljes rajz",
+    "window": "Kivágat…",
+    "pickWindowHint": "Húzz egy téglalapot a rajz exportálandó része köré",
+    "dragEdge": "Húzással bővítheted vagy vághatod ezt az oldalt",
+    "scale": "Lépték",
+    "scaleCaption": "A modell 1 m-e a papíron {cm} cm (96 DPI). Az előnézet fölött görgetve nagyíthatsz.",
+    "doesNotFit": "Ebben a méretben nem fér el minden: az ábrák, terhek és feliratok kb. {px} px-lel túlnyúlnak a szélén. Kicsinyítsd az ábrákat (most {diagrams} px), vagy nagyítsd a rajzlapot.",
+    "shrinkDiagrams": "Ábrák kicsinyítése",
+    "enlargeCanvas": "Rajzlap nagyítása",
+    "diagramHeight": "Ábrák magassága",
+    "shrinkNotEnough": "Itt a kisebb ábrák sem elegendők – már a terheknek és a feliratoknak is több hely kell. Inkább nagyítsd a rajzlapot."
+  },
+  "examples": {
+    "title": "Példák",
+    "instructions": "Nyiss meg egy kész modellt, és fedezd fel. A jelenlegit lecseréli, de a Ctrl+Z visszahozza a sajátodat.",
+    "moreInDocs": "További példák és feladatok",
+    "items": {
+      "welcome": {
+        "title": "Statikailag határozatlan tartó",
+        "blurb": "Statikailag határozatlan, 3 m-es tartó befogással és görgős támasszal, 10 kN/m egyenletesen megoszló teherrel."
+      },
+      "cantilever": {
+        "title": "Konzol",
+        "blurb": "4 m-es konzol 18 kN-os lefelé mutató csomóponti teherrel; jól látható a görbület és a konzolvég lehajlása."
+      },
+      "pratt": {
+        "title": "Warren-rendszerű rácsos tartó",
+        "blurb": "Egyszerű Warren-rendszerű rácsos tartó 8 kN-os csomóponti terhekkel: a rúderők eloszlása és az elmozdulások."
+      },
+      "continuous": {
+        "title": "Háromtámaszközű többtámaszú tartó",
+        "blurb": "5 + 6 + 5 m-es támaszközök megoszló, koncentrált és ismét megoszló teherrel, a görbület és a támaszok feletti elfordulások összevetéséhez."
+      },
+      "portal": {
+        "title": "Keret terhelési esete",
+        "blurb": "8 m-es gerenda 6 m-es oszlopokon, egyenletesen megoszló tetőteherrel, valamint vízszintes és függőleges sarokterhekkel az oldalirányú elmozdulás és a hajlítás vizsgálatához."
+      },
+      "temperature": {
+        "title": "Hőmérsékleti teher",
+        "blurb": "8 m-es kéttámaszú tartó egyenletes és egyenlőtlen hőmérsékleti teherrel."
+      }
+    }
+  },
+  "recentStructures": {
+    "title": "Legutóbbi szerkezetek",
+    "instructions": "Ez a böngésző megőrzi az utolsó törölt vagy lecserélt szerkezeteket (legfeljebb {count} darabot). Egy szerkezet visszaállítása lecseréli a jelenlegit, de a Ctrl+Z azt is visszahozza.",
+    "empty": "Itt még nincs semmi. Ha törölsz egy szerkezetet, vagy megnyitsz helyette egy másikat, ide kerül.",
+    "restore": "Visszaállítás",
+    "remove": "Eltávolítás",
+    "counts": "Csomópontok: {nodes} · Elemek: {elements}",
+    "linkNotice": "Megnyitottál egy megosztott szerkezetet. Az előzőt a Legutóbbi szerkezetek között találod.",
+    "show": "Megjelenítés",
+    "reasons": {
+      "clear": "Törölve",
+      "link": "Megosztott link váltotta fel",
+      "file": "Megnyitott fájl váltotta fel",
+      "example": "Példa váltotta fel",
+      "firstBeam": "Az első tartó feladat váltotta fel",
+      "restore": "Visszaállított szerkezet váltotta fel"
+    }
+  },
+  "library": {
+    "name": {
+      "steel": "Acél",
+      "steelHss": "Acél zártszelvény",
+      "stainlessSteel": "Rozsdamentes acél",
+      "aluminum": "Alumínium",
+      "concrete": "Beton",
+      "timber": "Fa",
+      "castIron": "Öntöttvas",
+      "copper": "Réz",
+      "brass": "Sárgaréz",
+      "bronze": "Bronz",
+      "titanium": "Titán",
+      "glass": "Üveg",
+      "polycarbonate": "Polikarbonát",
+      "rect": "Téglalap",
+      "square": "Négyzet",
+      "circular": "Kör"
+    },
+    "qualifier": {
+      "gray": "szürke",
+      "lightweight": "könnyű",
+      "sodaLime": "nátron-mész",
+      "quasiIsotropic": "kvázi-izotróp",
+      "rigid": "kemény",
+      "acrylic": "akril",
+      "approx": "kb."
+    }
+  },
+  "report": {
+    "column": "Egymás alatt",
+    "row": "Egymás mellett",
+    "no_results": "A szerkezet kiszámítása után jelenik meg",
+    "guides": "Segédvonalak",
+    "print": "Nyomtatás",
+    "paper": "Papír",
+    "portrait": "Álló",
+    "landscape": "Fekvő"
+  },
+  "languageOffer": {
+    "message": "Az EduBeam magyarul is elérhető.",
+    "switch": "Váltás magyarra",
+    "dismiss": "Nem, köszönöm"
+  }
+}

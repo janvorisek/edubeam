@@ -8,23 +8,36 @@
 
         <div class="mb-3">{{ $t('settings.language_description') }}</div>
 
-        <v-select
+        <v-autocomplete
           v-model="appStore.locale"
+          v-model:search="languageQuery"
           item-title="name"
           item-value="code"
           hide-details="auto"
-          :items="availableLocales"
+          auto-select-first
+          :items="languageItems"
+          :custom-filter="filterLanguage"
           :label="$t('settings.language')"
         >
+          <!-- A selection slot also starts the search empty, so typing finds a language rather than adding to a name -->
+          <template #selection="{ item }">
+            <template v-if="!languageQuery">
+              <img :src="languageFlags[codeOf(item.raw)]" class="language-flag mr-2" alt="" />
+              <span :lang="languageTag(codeOf(item.raw))">{{ item.title }}</span>
+            </template>
+          </template>
           <template #item="{ item, props }">
             <!-- Each name in its own language, or the browser shapes हिन्दी with the page's font fallback. -->
-            <v-list-item v-bind="props" color="primary" :lang="languageTag(item.raw.code)">
+            <v-list-item v-bind="props" color="primary" :lang="languageTag(codeOf(item.raw))">
               <template #prepend>
-                <img :src="languageFlags[item.raw.code]" class="mr-3" height="24" alt="" />
+                <img :src="languageFlags[codeOf(item.raw)]" class="language-flag mr-3" alt="" />
               </template>
             </v-list-item>
           </template>
-        </v-select>
+          <template #divider>
+            <v-divider class="my-1" />
+          </template>
+        </v-autocomplete>
 
         <h4 class="mb-1 mt-3">{{ $t('settings.number_format') }}</h4>
 
@@ -157,19 +170,34 @@
 
 <script lang="ts" setup>
 import { useAppStore } from '@/store/app';
-import { availableLocales, languageTag } from '../../plugins/i18n';
+import { languageTag } from '../../plugins/i18n';
 import { formatMeasureAsHTML } from '../../SVGUtils';
 import AxisConventionPicker from './AxisConventionPicker.vue';
 
 const appStore = useAppStore();
 
 import { languageFlags } from '@/utils/languageFlags';
-import { computed } from 'vue';
+import { languageChoices, languageMatches } from '@/utils/languageChoices';
+import { computed, ref } from 'vue';
 import { momentLabel, unitText, type ForceUnit, type LengthUnit, type TemperatureUnit } from '@/utils/unitConversions';
 import type { UnitSystem } from '@/utils/unitSystems';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
+
+const choices = languageChoices();
+// English and the browser's languages, a line, then the rest
+const languageItems = [...choices.suggested, { type: 'divider' } as const, ...choices.others];
+
+type LanguageItem = (typeof languageItems)[number];
+
+/** The divider has no code; it never reaches the item slot, but the slot's type includes it. */
+const codeOf = (raw: LanguageItem) => ('code' in raw ? raw.code : '');
+
+const languageQuery = ref('');
+
+const filterLanguage = (_value: string, query: string, item?: { raw: LanguageItem }) =>
+  !!item && 'code' in item.raw && languageMatches(item.raw, query, appStore.locale);
 
 const numberStyleItems = computed(() => [
   { title: t('settings.number_format_auto'), value: 'auto' },
@@ -236,6 +264,11 @@ const unitSystemProxy = computed({
 </script>
 
 <style scoped>
+.language-flag {
+  width: 24px;
+  height: 24px;
+}
+
 /* Room between the rows for the labels set into the outlined fields' borders */
 .unit-grid > .v-col {
   padding-block: 6px;

@@ -500,14 +500,13 @@ const appLocaleOf = (tag: string): string | undefined => {
   return availableLocales.some((l) => l.code === locale.language) ? locale.language : undefined;
 };
 
-export const suggestLanguage = (languages: readonly string[] = navigator.languages ?? [navigator.language]) => {
-  for (const tag of languages) {
-    const locale = appLocaleOf(tag);
-    if (locale) return locale;
-  }
+/** The app locales a browser asks for, in its order of preference, each once. */
+export const browserAppLocales = (languages: readonly string[]): string[] => [
+  ...new Set(languages.map(appLocaleOf).filter((locale): locale is string => !!locale)),
+];
 
-  return 'en';
-};
+export const suggestLanguage = (languages: readonly string[] = navigator.languages ?? [navigator.language]) =>
+  browserAppLocales(languages)[0] ?? 'en';
 
 /**
  * A dialog field's value while it is being typed, for previews: what cannot be read yet (an empty

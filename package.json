@@ -33,7 +33,7 @@
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
     "v-onboarding": "^2.12.4",
-    "vue": "^3.5.43",
+    "vue": "^3.5.46",
     "vue-draggable-resizable": "^3.0.0",
     "vue-gtag": "^3.7.1",
     "vue-i18n": "^11.4.12",
